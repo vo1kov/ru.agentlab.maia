@@ -1,0 +1,29 @@
+# Dirs With Binaries #
+/plugins/*/bin/
+/plugins/*/lib/
+/plugins/*/target/
+/plugins/*/classes/
+temp
+
+# Binary Files #
+*.class
+*.dll
+*.lib
+*.exe
+*.obj
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.rar
+*.7z
+*.tar
+
+# Temporary Files #
+*.bak
+
+# Data Files #
+*.dat
+*.idn
