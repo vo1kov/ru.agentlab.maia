@@ -2,7 +2,33 @@
 /plugins/*/bin/
 /plugins/*/lib/
 /plugins/*/target/
+/plugins/*/xtend-gen/
+/plugins/*/src-gen/
 /plugins/*/classes/
+/tests/*/bin/
+/tests/*/lib/
+/tests/*/target/
+/tests/*/xtend-gen/
+/tests/*/src-gen/
+/tests/*/classes/
+/examples/*/bin/
+/examples/*/lib/
+/examples/*/target/
+/examples/*/xtend-gen/
+/examples/*/src-gen/
+/examples/*/classes/
+/releng/*/bin/
+/releng/*/lib/
+/releng/*/target/
+/releng/*/xtend-gen/
+/releng/*/src-gen/
+/releng/*/classes/
+/features/*/bin/
+/features/*/lib/
+/features/*/target/
+/features/*/xtend-gen/
+/features/*/src-gen/
+/features/*/classes/
 temp
 
 # Binary Files #
@@ -27,3 +53,7 @@ temp
 # Data Files #
 *.dat
 *.idn
+
+# Agent Platform #
+APDescription.txt
+MTPs-Main-Container.txt
