@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.pde.ui.EquinoxLauncher">
+<booleanAttribute key="append.args" value="true"/>
+<booleanAttribute key="automaticAdd" value="true"/>
+<booleanAttribute key="automaticValidate" value="true"/>
+<stringAttribute key="bootstrap" value=""/>
+<stringAttribute key="checked" value="[NONE]"/>
+<booleanAttribute key="clearConfig" value="false"/>
+<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/MAIA platform"/>
+<booleanAttribute key="default" value="true"/>
+<booleanAttribute key="default_auto_start" value="true"/>
+<intAttribute key="default_start_level" value="4"/>
+<stringAttribute key="deselected_workspace_plugins" value="com.tilab.jade.content,com.tilab.jade.core,com.tilab.jade.core.agent1,com.tilab.jade.core.behaviours,com.tilab.jade.core.container,com.tilab.jade.core.platform,com.tilab.jade.domain,com.tilab.jade.domain.ams,com.tilab.jade.domain.behaviour,com.tilab.jade.domain.envelope,com.tilab.jade.fipa,com.tilab.jade.imtp,com.tilab.jade.lang.acl,com.tilab.jade.lang.acl.codec,com.tilab.jade.lang.acl.codec.leap,com.tilab.jade.lang.acl.stringaclcodec,com.tilab.jade.mtp,com.tilab.jade.proto,com.tilab.jade.security,com.tilab.jade.testsuite,com.tilab.jade.tools,com.tilab.jade.tools.dfgui,com.tilab.jade.tools.dummyagent,com.tilab.jade.tools.introspector,com.tilab.jade.tools.logging,com.tilab.jade.tools.rma,com.tilab.jade.tools.sniffer,com.tilab.jade.tools.testagent,com.tilab.jade.util,com.tilab.jade.wrapper,test"/>
+<booleanAttribute key="includeOptional" value="false"/>
+<booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -console"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.requiredJavaVersion=1.6 -Xms40m -Xmx512m -Declipse.ignoreApp=true -Dosgi.noShutdown=true"/>
+<stringAttribute key="pde.version" value="3.3"/>
+<booleanAttribute key="show_selected_only" value="true"/>
+<stringAttribute key="target_bundles" value="com.google.guava*15.0.0.v201403281430@default:default,javax.annotation@default:default,javax.inject@default:default,org.apache.felix.gogo.command@2:default,org.apache.felix.gogo.runtime@1:default,org.apache.felix.gogo.shell@default:default,org.eclipse.equinox.console@default:default,org.eclipse.osgi@-1:true,org.eclipse.xtend.lib.macro@default:default,org.eclipse.xtend.lib@default:default,org.eclipse.xtext.xbase.lib@default:default,org.slf4j.api@default:default"/>
+<booleanAttribute key="tracing" value="false"/>
+<booleanAttribute key="useCustomFeatures" value="false"/>
+<booleanAttribute key="useDefaultConfigArea" value="true"/>
+<stringAttribute key="workspace_bundles" value="org.eclipse.e4.core.contexts@default:default,org.eclipse.e4.core.di@default:default,ru.agentlab.maia.agent@default:default,ru.agentlab.maia.container@default:default,ru.agentlab.maia.launcher@5:default,ru.agentlab.maia.messageq@default:default,ru.agentlab.maia.platform@default:default,ru.agentlab.maia.scheduler@default:default,ru.agentlab.maia@default:default"/>
+</launchConfiguration>
