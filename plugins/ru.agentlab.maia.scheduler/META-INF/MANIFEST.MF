@@ -14,3 +14,4 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  ru.agentlab.maia;bundle-version="1.0.0"
+Service-Component: OSGI-INF/SchedulerProvider.xml
