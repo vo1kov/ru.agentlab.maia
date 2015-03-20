@@ -12,6 +12,8 @@ import ru.agentlab.maia.messageq.IMessageQueue
 import ru.agentlab.maia.messageq.IMessageQueueProvider
 import ru.agentlab.maia.scheduler.IScheduler
 import ru.agentlab.maia.scheduler.ISchedulerProvider
+import org.osgi.framework.Bundle
+import ru.agentlab.maia.annotation.Setup
 
 class AgentLifecycleService implements IAgentLifecycleService {
 
@@ -24,7 +26,7 @@ class AgentLifecycleService implements IAgentLifecycleService {
 	@Inject
 	IMessageQueueProvider messageQueueProvider
 
-	override IAgent bornAgent(String id, IContainerId container, Object contributor) {
+	override IAgent bornAgent(String id, IContainerId container, Bundle bundle, String className) {
 		val scheduler = schedulerProvider.get
 		val messageQueue = messageQueueProvider.get
 
@@ -34,9 +36,17 @@ class AgentLifecycleService implements IAgentLifecycleService {
 			set(IAgent.KEY_NAME, id)
 			set(IAgent.KEY_STATE, IAgent.STATE_INITIATED)
 		]
-
+		
 		val agent = ContextInjectionFactory.make(Agent, agentContext)
 		ContextInjectionFactory.invoke(agent, PostConstruct, agentContext)
+		agentContext.set(IAgent, agent)
+		
+		val contribClass = bundle.loadClass(className)
+		
+		val contrib = ContextInjectionFactory.make(contribClass, agentContext)
+//		ContextInjectionFactory.invoke(contrib, Setup, agentContext)
+		ContextInjectionFactory.invoke(contrib, PostConstruct, agentContext)
+
 		return agent
 	}
 

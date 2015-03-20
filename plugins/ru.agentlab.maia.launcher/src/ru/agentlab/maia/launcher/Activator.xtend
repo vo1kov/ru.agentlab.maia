@@ -19,7 +19,7 @@ class Activator implements BundleActivator {
 		Activator.context = bundleContext
 		val ref = context.getServiceReference(IAgentLifecycleService)
 		val service = context.getService(ref)
-		val agent = service.bornAgent("testAget", null, null)
+		val agent = service.bornAgent("testAget", null, bundleContext.bundle, AgentExample.canonicalName)
 		agent.pause
 	}
 
