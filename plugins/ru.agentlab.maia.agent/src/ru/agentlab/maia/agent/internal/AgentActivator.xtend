@@ -26,7 +26,12 @@ class AgentActivator implements BundleActivator {
 		AgentActivator.context = bundleContext
 		var EclipseContextOSGi osgiContext = new EclipseContextOSGi(context)
 		val service = ContextInjectionFactory.make(AgentLifecycleService, osgiContext)
-//		ContextInjectionFactory.invoke(service, PostConstruct, osgiContext)
+		
+		try {
+			ContextInjectionFactory.invoke(service, PostConstruct, osgiContext)
+		} catch(Exception e){
+			//
+		}
 		
 		context.registerService(IAgentLifecycleService, service, null)
 		
