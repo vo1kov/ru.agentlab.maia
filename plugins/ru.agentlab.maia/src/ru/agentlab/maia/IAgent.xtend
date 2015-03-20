@@ -29,4 +29,6 @@ interface IAgent {
 	def IMessage receive(IMessageTemplate template)
 	
 	def String getState()
+	
+	def String getName()
 }
