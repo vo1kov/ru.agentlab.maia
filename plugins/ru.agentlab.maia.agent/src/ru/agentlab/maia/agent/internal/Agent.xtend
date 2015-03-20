@@ -3,6 +3,7 @@ package ru.agentlab.maia.agent.internal
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import org.eclipse.e4.core.contexts.IEclipseContext
+import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.IAgent
 import ru.agentlab.maia.IBehaviour
 import ru.agentlab.maia.IMessage
@@ -12,7 +13,8 @@ import ru.agentlab.maia.scheduler.IScheduler
 
 class Agent implements IAgent {
 
-	@Inject
+	@Inject 
+	@Accessors
 	IEclipseContext context
 
 	@Inject
@@ -20,7 +22,7 @@ class Agent implements IAgent {
 
 	@Inject
 	IMessageQueue quiue
-
+	
 	@PostConstruct
 	def void init() {
 	}
@@ -52,6 +54,10 @@ class Agent implements IAgent {
 	}
 	
 	override getState() {
+		return context.get(KEY_STATE) as String
+	}
+	
+	override getName(){
 		return context.get(KEY_NAME) as String
 	}
 
