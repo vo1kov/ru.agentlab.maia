@@ -139,20 +139,7 @@ class Scheduler implements Serializable, IScheduler {
 
 	// Helper method for persistence service
 	override synchronized IBehaviour[] getBehaviours() {
-		return null // IBehaviour[] result = new IBehaviour[blockedIBehaviours.size()
-		// + readyIBehaviours.size()]
-		// Iterator itReady = readyIBehaviours.iterator()
-		// Iterator itBlocked = blockedIBehaviours.iterator()
-		// for (int i = 0 i < result.length i++) {
-		// IBehaviour b = null
-		// if (itReady.hasNext()) {
-		// b = (IBehaviour) itReady.next()
-		// } else {
-		// b = (IBehaviour) itBlocked.next()
-		// }
-		// result[i] = b
-		// }
-		// return result
+		return readyBehaviours + blockedBehaviours
 	}
 
 	/**
