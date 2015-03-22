@@ -8,6 +8,7 @@ import org.eclipse.e4.core.internal.contexts.EclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgent
 import ru.agentlab.maia.agent.IAgentId
+import ru.agentlab.maia.agent.IAgentLifecycleService
 
 class AgentExample {
 
@@ -32,13 +33,13 @@ class AgentExample {
 		agent.addBehaviour("second", BehaviourExample2)
 		LOGGER.info("Agent ID: [{}] ", agentId.name)
 		LOGGER.info("Agent context: [{}]", context)
-		(context as EclipseContext).localData.forEach[p1, p2|
+		(context as EclipseContext).localData.forEach [ p1, p2 |
 			LOGGER.info("Context Data: [{}] -> [{}]", p1, p2)
 		]
 	}
 
 	@Inject
-	def void onStateChange(@Named(IAgent.KEY_STATE) String state) {
+	def void onStateChange(@Named(IAgentLifecycleService.KEY_STATE) String state) {
 		LOGGER.info("State changed: [{}]", state)
 	}
 }

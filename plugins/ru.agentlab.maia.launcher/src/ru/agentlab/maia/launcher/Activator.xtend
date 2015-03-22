@@ -4,6 +4,7 @@ import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
+import ru.agentlab.maia.agent.IAgentLifecycleService
 import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.platform.IPlatformFactory
 
@@ -31,6 +32,7 @@ class Activator implements BundleActivator {
 		platformFactory = context.getService(context.getServiceReference(IPlatformFactory))
 		containerFactory = context.getService(context.getServiceReference(IContainerFactory))
 		agentFactory = context.getService(context.getServiceReference(IAgentFactory))
+		val agentLyfecycleService = context.getService(context.getServiceReference(IAgentLifecycleService))
 
 		LOGGER.info("Create platform")
 		val platform1 = platformFactory.create("Platform1", null)
@@ -46,16 +48,16 @@ class Activator implements BundleActivator {
 
 		Thread.sleep(3000)
 		LOGGER.info("STOP1")
-		agent1.stop
+		agentLyfecycleService.stop(agent1)
 		Thread.sleep(3000)
 		LOGGER.info("WOKE UP1")
-		agent1.resume
+		agentLyfecycleService.resume(agent1)
 		Thread.sleep(3000)
 		LOGGER.info("STOP2")
-		agent2.stop
+		agentLyfecycleService.stop(agent2)
 		Thread.sleep(3000)
 		LOGGER.info("WOKE UP2")
-		agent2.resume
+		agentLyfecycleService.resume(agent2)
 	}
 
 	/*

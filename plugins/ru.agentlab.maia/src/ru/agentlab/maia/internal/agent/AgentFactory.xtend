@@ -15,6 +15,7 @@ import ru.agentlab.maia.agent.ISchedulerFactory
 import ru.agentlab.maia.container.IContainer
 import ru.agentlab.maia.messaging.IMessageQueue
 import ru.agentlab.maia.messaging.IMessageQueueFactory
+import ru.agentlab.maia.agent.IAgentLifecycleService
 
 class AgentFactory implements IAgentFactory {
 
@@ -62,7 +63,7 @@ class AgentFactory implements IAgentFactory {
 			set(IScheduler, scheduler)
 			set(IMessageQueue, messageQueue)
 			set(IAgent.KEY_NAME, name)
-			set(IAgent.KEY_STATE, IAgent.STATE_INITIATED)
+			set(IAgentLifecycleService.KEY_STATE, IAgentLifecycleService.STATE_INITIATED)
 		]
 
 		LOGGER.info("Prepare AgentID in Context...")
