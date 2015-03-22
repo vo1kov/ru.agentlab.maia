@@ -25,10 +25,12 @@ class PlatformFactory implements IPlatformFactory {
 		platformContext.set(IPlatform, platform)
 
 		// Create Platform Contributor in Context
-		val contributor = ContextInjectionFactory.make(contributorClass, platformContext)
-		ContextInjectionFactory.invoke(contributor, PostConstruct, platformContext, null)
-		platformContext.set(IPlatform.KEY_CONTRIBUTOR, contributor)
-
+		if (contributorClass != null) {
+			val contributor = ContextInjectionFactory.make(contributorClass, platformContext)
+			ContextInjectionFactory.invoke(contributor, PostConstruct, platformContext, null)
+			platformContext.set(IPlatform.KEY_CONTRIBUTOR, contributor)
+		}
+		
 		return platform
 	}
 
