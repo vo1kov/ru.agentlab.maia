@@ -1,10 +1,14 @@
 package ru.agentlab.maia.behaviour
 
+import org.eclipse.e4.core.contexts.IEclipseContext
+
 interface IBehaviour {
 
 	val static String KEY_STATE = "behaviour.state"
 
 	val static String KEY_NAME = "behaviour.name"
+
+	val static String KEY_CONTRIBUTOR = "behaviour.contributor"
 
 	/**
 	 *  A constant identifying the runnable state.
@@ -21,6 +25,14 @@ interface IBehaviour {
 	 */
 	val static String STATE_RUNNING = "RUNNING"
 
+	val static String TYPE_ONE_SHOT = "ONE_SHOT"
+
+	val static String TYPE_CYCLYC = "CYCLYC"
+
+	val static String TYPE_TICKER = "TICKER"
+
+	val static String TYPE_DEFAULT = "DEFAULT"
+
 	/**
 	 *  Runs the behaviour. This abstract method must be implemented by
 	 *  <code>Behaviour</code>subclasses to perform ordinary behaviour
@@ -31,25 +43,25 @@ interface IBehaviour {
 	 *  soon as possible to preserve agent responsiveness. To split a
 	 *  long and slow task into smaller section, recursive behaviour
 	 *  aggregation may be used.
-	 *  @see jade.core.behaviours.CompositeBehaviour
+	 *  @see CompositeBehaviour
 	 */
-//	def void action()
-	
+	def Object action()
+
 	/**
-	 Give a name to this behaviour object.
-	 @param name The name to give to this behaviour.
+	 *  Give a name to this behaviour object.
+	 *  @param name The name to give to this behaviour.
 	 */
 //	def void setName(String name)
-	
 	/**
-	 Retrieve the name of this behaviour object. If no explicit name
-	 was set, a default one is given, based on the behaviour class
-	 name.
-	 @return The name of this behaviour.
+	 *  Retrieve the name of this behaviour object. If no explicit name
+	 *  was set, a default one is given, based on the behaviour class
+	 *  name.
+	 *  @return The name of this behaviour.
 	 */
 //	def String getName()
-	
 	def String getState()
+
+	def IEclipseContext getContext()
 
 	/**
 	 *  Check if this behaviour is done. The agent scheduler calls this
@@ -60,7 +72,7 @@ interface IBehaviour {
 	 *  are kept within to be run again when their turn comes again.
 	 *  @return <code>true</code> if the behaviour has completely executed.
 	 */
-//	def boolean done()
+	def boolean isDone()
 
 	/**
 	 *  This method is just an empty placeholder for subclasses. It is
@@ -80,7 +92,7 @@ interface IBehaviour {
 	 *  @return an integer code representing the termination value of
 	 *  the behaviour.
 	 */
-//	def int onEnd()
+	def int onEnd()
 
 	/**
 	 *  This method is just an empty placeholders for subclasses. It is
@@ -88,6 +100,8 @@ interface IBehaviour {
 	 *  Therefore, it acts as a prolog to the task
 	 *  represented by this <code>Behaviour</code>.
 	 */
-//	def void onStart()
+	def void onStart()
+
+	def void reset()
 
 }
