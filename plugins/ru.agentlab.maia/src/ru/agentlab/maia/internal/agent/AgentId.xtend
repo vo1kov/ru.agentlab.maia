@@ -9,18 +9,18 @@ import ru.agentlab.maia.agent.IAgentId
 class AgentId implements IAgentId {
 	
 	@Accessors
-	private String platformID
+	var String platformID
 	
 	@Accessors
-	private String name
+	var String name
 	
 	@Accessors
-	private List<String> addresses = new ArrayList<String>
+	var List<String> addresses = new ArrayList<String>
 	
 	@Accessors
-	private List<IAgentId> resolvers = new ArrayList<IAgentId>
+	var List<IAgentId> resolvers = new ArrayList<IAgentId>
 	
 	@Accessors
-	private Properties userDefSlots = new Properties
+	var Properties userDefSlots = new Properties
 	
 }
