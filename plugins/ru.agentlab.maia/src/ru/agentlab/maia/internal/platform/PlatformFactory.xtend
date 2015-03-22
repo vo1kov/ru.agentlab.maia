@@ -37,8 +37,8 @@ class PlatformFactory implements IPlatformFactory {
 		LOGGER.info("Prepare Platform Contributor in Context...")
 		if (contributorClass != null) {
 			val contributor = ContextInjectionFactory.make(contributorClass, platformContext)
-			ContextInjectionFactory.invoke(contributor, PostConstruct, platformContext, null)
 			platformContext.set(IPlatform.KEY_CONTRIBUTOR, contributor)
+			ContextInjectionFactory.invoke(contributor, PostConstruct, platformContext, null)
 		}
 
 		return platform

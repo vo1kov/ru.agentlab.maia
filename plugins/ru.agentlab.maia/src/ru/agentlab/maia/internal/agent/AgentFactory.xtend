@@ -65,22 +65,21 @@ class AgentFactory implements IAgentFactory {
 			set(IAgent.KEY_STATE, IAgent.STATE_INITIATED)
 		]
 
+		LOGGER.info("Prepare AgentID in Context...")
+		val containerId = container.containerId
+		val agentId = agentIdFactory.create(containerId, name)
+		agentContext.set(IAgentId, agentId)
+		
 		LOGGER.info("Prepare Agent Instance in Context...")
 		val agent = ContextInjectionFactory.make(Agent, agentContext)
 		ContextInjectionFactory.invoke(agent, PostConstruct, agentContext, null)
 		agentContext.set(IAgent, agent)
 
-		LOGGER.info("Prepare AgentID in Context...")
-		val containerId = container.containerId
-		val agentId = agentIdFactory.create(containerId, name)
-		agentContext.set(IAgentId, agentId)
-		agent.agentId = agentId
-
 		LOGGER.info("Prepare Agent Contributor in Context...")
 		if (contributorClass != null) {
 			val contributor = ContextInjectionFactory.make(contributorClass, agentContext)
-			ContextInjectionFactory.invoke(contributor, PostConstruct, agentContext, null)
 			agentContext.set(IAgent.KEY_CONTRIBUTOR, agent)
+			ContextInjectionFactory.invoke(contributor, PostConstruct, agentContext, null)
 		}
 
 		return agent

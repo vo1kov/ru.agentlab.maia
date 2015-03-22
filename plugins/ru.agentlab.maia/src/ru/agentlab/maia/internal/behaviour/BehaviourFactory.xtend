@@ -48,10 +48,11 @@ class BehaviourFactory implements IBehaviourFactory {
 		behaviourContext.set(IBehaviour, behaviour)
 
 		// Create Behaviour Contributor in Context
-		val contributor = ContextInjectionFactory.make(contributorClass, behaviourContext)
-
-		ContextInjectionFactory.invoke(contributor, PostConstruct, behaviourContext, null)
-		behaviourContext.set(IBehaviour.KEY_CONTRIBUTOR, contributor)
+		if(contributorClass != null){
+			val contributor = ContextInjectionFactory.make(contributorClass, behaviourContext)
+			behaviourContext.set(IBehaviour.KEY_CONTRIBUTOR, contributor)
+			ContextInjectionFactory.invoke(contributor, PostConstruct, behaviourContext, null)
+		}
 
 		return behaviour
 	}
