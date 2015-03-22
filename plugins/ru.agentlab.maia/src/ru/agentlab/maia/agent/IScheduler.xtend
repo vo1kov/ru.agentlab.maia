@@ -2,7 +2,7 @@ package ru.agentlab.maia.agent
 
 import ru.agentlab.maia.behaviour.IBehaviour
 
-interface IScheduler {
+interface IScheduler extends Runnable {
 	/** 
 	 * Add a behaviour at the end of the behaviours queue. This can never change
 	 * the index of the current behaviour. If the behaviours queue was empty
@@ -43,17 +43,5 @@ interface IScheduler {
 	 * @param behaviour
 	 */
 	def void remove(IBehaviour behaviour)
-
-	/** 
-	 * Selects the appropriate behaviour for execution, with a trivial
-	 * round-robin algorithm.
-	 */
-	def IBehaviour schedule() throws InterruptedException
-
-	/** 
-	 * Helper method for persistence service
-	 * @return
-	 */
-	def IBehaviour[] getBehaviours()
 
 }
