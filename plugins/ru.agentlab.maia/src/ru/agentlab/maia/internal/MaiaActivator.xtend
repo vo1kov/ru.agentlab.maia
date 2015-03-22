@@ -5,9 +5,11 @@ import org.eclipse.e4.core.internal.contexts.osgi.EclipseContextOSGi
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import ru.agentlab.maia.agent.IAgentFactory
+import ru.agentlab.maia.agent.IAgentNameGenerator
 import ru.agentlab.maia.agent.ISchedulerFactory
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.internal.agent.AgentFactory
+import ru.agentlab.maia.internal.agent.AgentNameGenerator
 import ru.agentlab.maia.internal.agent.SchedulerFactory
 import ru.agentlab.maia.internal.behaviour.BehaviourFactory
 import ru.agentlab.maia.internal.messaging.MessageFactory
@@ -16,7 +18,7 @@ import ru.agentlab.maia.messaging.IMessageFactory
 import ru.agentlab.maia.messaging.IMessageQueueFactory
 
 class MaiaActivator implements BundleActivator {
-	
+
 	static BundleContext context
 
 	def static package BundleContext getContext() {
@@ -34,6 +36,7 @@ class MaiaActivator implements BundleActivator {
 			registerService(ISchedulerFactory, new SchedulerFactory, null)
 			registerService(IMessageFactory, new MessageFactory, null)
 			registerService(IMessageQueueFactory, new MessageQueueFactory, null)
+			registerService(IAgentNameGenerator, new AgentNameGenerator, null)
 		]
 		var osgiContext = new EclipseContextOSGi(context)
 

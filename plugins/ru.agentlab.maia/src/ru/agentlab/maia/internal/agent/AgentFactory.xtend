@@ -10,6 +10,7 @@ import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.agent.ISchedulerFactory
 import ru.agentlab.maia.messaging.IMessageQueue
 import ru.agentlab.maia.messaging.IMessageQueueFactory
+import ru.agentlab.maia.agent.IAgentNameGenerator
 
 class AgentFactory implements IAgentFactory {
 
@@ -22,39 +23,49 @@ class AgentFactory implements IAgentFactory {
 	@Inject
 	IMessageQueueFactory messageQueueProvider
 
+	@Inject
+	IAgentNameGenerator nameGenerator
+	
+	/**
+	 * Create agent instance
+	 * 
+	 * @param id
+	 * 			- unique id of agent. If <code>null</code>, then <code>IAgentNameGenerator</code> 
+	 * 			will be used for generating agent name.
+	 * @param contributorClass
+	 * 			- class that contain customization of agent realization. Contributor class 
+	 * 			is simple POJO. Services can be accessed via injection. If <code>null</code> then 
+	 * 			default agent realization will be used.
+	 */
 	override create(String id, Class<?> contributorClass) {
-		val scheduler = schedulerProvider.get
+		val name = if (id != null) {
+				id
+			} else {
+				nameGenerator.generateName
+			}
+		val scheduler = schedulerProvider.create(name)
 		val messageQueue = messageQueueProvider.get
 
 		// Prepare Agent Context
-		val agentContext = context.createChild("Agent [" + id + "] Context") => [
+		val agentContext = context.createChild("Agent [" + name + "] Context") => [
 			set(IScheduler, scheduler)
 			set(IMessageQueue, messageQueue)
-			set(IAgent.KEY_NAME, id)
+			set(IAgent.KEY_NAME, name)
 			set(IAgent.KEY_STATE, IAgent.STATE_INITIATED)
 		]
 
 		// Create Agent instance in Context
 		val agent = ContextInjectionFactory.make(Agent, agentContext)
-		try {
-			ContextInjectionFactory.invoke(agent, PostConstruct, agentContext)
-		} catch (Exception e) {
-//			e.printStackTrace
-		}
+		ContextInjectionFactory.invoke(agent, PostConstruct, agentContext, null)
 		agentContext.set(IAgent, agent)
 
 		// Create Agent Contributor in Context
-		val contributor = ContextInjectionFactory.make(contributorClass, agentContext)
-		try {
-			ContextInjectionFactory.invoke(contributor, PostConstruct, agentContext)
-		} catch (Exception e) {
-//			e.printStackTrace
+		if (contributorClass != null) {
+			val contributor = ContextInjectionFactory.make(contributorClass, agentContext)
+			ContextInjectionFactory.invoke(contributor, PostConstruct, agentContext, null)
+			agentContext.set(IAgent.KEY_CONTRIBUTOR, agent)
 		}
 
-		// test
-		agentContext.set(IAgent.KEY_STATE, IAgent.STATE_ACTIVE)
-		agentContext.set(IAgent.KEY_STATE, IAgent.STATE_IDLE)
-		agentContext.set(IAgent.KEY_STATE, IAgent.STATE_ACTIVE)
 		return agent
 	}
 
