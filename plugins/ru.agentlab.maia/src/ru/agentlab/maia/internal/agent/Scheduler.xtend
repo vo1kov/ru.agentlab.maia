@@ -55,14 +55,12 @@ class Scheduler extends Thread implements IScheduler {
 	 * If the behaviours queue was empty notifies the embedded thread of
 	 * the owner agent that a behaviour is now available.
 	 */
-	override void add(IBehaviour action) {
-		println("Scheduler add " + action)
+	override void add(IBehaviour behaviour) {
+		LOGGER.info("Try to add [{}]", behaviour)
 		synchronized (behavioursLock) {
-			readyBehaviours += action
+			readyBehaviours += behaviour
 		}
-		synchronized (suspendLock) {
-			suspendLock.notify
-		}
+		doNotify
 	}
 
 	override void run() {
@@ -71,19 +69,18 @@ class Scheduler extends Thread implements IScheduler {
 			synchronized (behavioursLock) {
 				size = readyBehaviours.size
 				if (size > 0) {
-					val behhaviour = schedule
-					behhaviour.action()
-					if (behhaviour.isDone) {
-						removeFromReady(behhaviour)
+					val behaviour = readyBehaviours.get(currentIndex)
+					LOGGER.debug("Try to invoke action of [{}] behaviour", behaviour)
+					currentIndex = (currentIndex + 1) % readyBehaviours.size()
+					behaviour.action()
+					if (behaviour.isDone) {
+						removeFromReady(behaviour)
 					}
 				}
 				size = readyBehaviours.size
 			}
 			if (size == 0) {
-				println("Scheduler wait")
-				synchronized (suspendLock) {
-					suspendLock.wait
-				}
+				doWait
 			}
 		}
 	}
@@ -91,16 +88,17 @@ class Scheduler extends Thread implements IScheduler {
 	/**
 	 * Moves a behaviour from the ready queue to the sleeping queue. 
 	 */
-	override void block(IBehaviour b) {
+	override void block(IBehaviour behaviour) {
+		LOGGER.info("Try to block [{}] Behaviour...", behaviour)
 		synchronized (behavioursLock) {
-			if (b.removeFromReady) {
-				blockedBehaviours += b
+			if (behaviour.removeFromReady) {
+				blockedBehaviours += behaviour
 			}
 		}
 	}
 
 	override void blockAll() {
-		println("Scheduler block all")
+		LOGGER.info("Try to block all...")
 		synchronized (behavioursLock) {
 			blockedBehaviours += readyBehaviours
 			readyBehaviours.clear
@@ -111,14 +109,13 @@ class Scheduler extends Thread implements IScheduler {
 	/**
 	 * Moves a behaviour from the sleeping queue to the ready queue.
 	 */
-	override void restart(IBehaviour b) {
+	override void restart(IBehaviour behaviour) {
+		LOGGER.info("Try to remove [{}] Behaviour...", behaviour)
 		synchronized (behavioursLock) {
-			if (b.removeFromBlocked) {
-				readyBehaviours += b
+			if (behaviour.removeFromBlocked) {
+				readyBehaviours += behaviour
 			}
-			synchronized (suspendLock) {
-				suspendLock.notify
-			}
+			doNotify
 		}
 	}
 
@@ -133,53 +130,45 @@ class Scheduler extends Thread implements IScheduler {
 	 * children blocked. These children must be restarted too.
 	 */
 	override void restartAll() {
-		println("RESTART ALL")
+		LOGGER.info("Try to restart all...")
 		synchronized (behavioursLock) {
 			readyBehaviours += blockedBehaviours
 			blockedBehaviours.clear
 			currentIndex = 0
-			synchronized (suspendLock) {
-				suspendLock.notify
-			}
+			doNotify
 		}
 	}
 
 	/** 
 	 * Removes a specified behaviour from the scheduler
 	 */
-	override void remove(IBehaviour b) {
-		println("REMOVE " + b)
-		var found = removeFromBlocked(b)
+	override void remove(IBehaviour behaviour) {
+		LOGGER.info("Try to remove [{}] Behaviour...", behaviour)
+		var found = removeFromBlocked(behaviour)
 		if (!found) {
-			found = removeFromReady(b)
-		}
-		if (found) {
+			found = removeFromReady(behaviour)
 		}
 	}
 
 	/** 
-	 * Selects the appropriate behaviour for execution, with a trivial
-	 * round-robin algorithm.
+	 * Removes a specified behaviour from the scheduler
 	 */
-	override IBehaviour schedule() throws InterruptedException {
-		if (!readyBehaviours.empty) {
-			val IBehaviour b = readyBehaviours.get(currentIndex)
-			currentIndex = (currentIndex + 1) % readyBehaviours.size()
-			return b
+	def void removeAll() {
+		LOGGER.info("Try to remove all...")
+		synchronized (behavioursLock) {
+			readyBehaviours.clear
+			blockedBehaviours.clear
+			currentIndex = 0
 		}
-	}
-
-	// Helper method for persistence service
-	override IBehaviour[] getBehaviours() {
-		return readyBehaviours + blockedBehaviours
 	}
 
 	/**
 	 *  Removes a specified behaviour from the blocked queue.
 	 */
-	def private boolean removeFromBlocked(IBehaviour b) {
+	def private boolean removeFromBlocked(IBehaviour behaviour) {
+		LOGGER.info("Try to remove [{}] Behaviour from blocked...", behaviour)
 		synchronized (behavioursLock) {
-			return blockedBehaviours.remove(b)
+			return blockedBehaviours.remove(behaviour)
 		}
 	}
 
@@ -189,25 +178,40 @@ class Scheduler extends Thread implements IScheduler {
 	 * made: if the just removed behaviour has an index lesser than the
 	 * current one, then the current index must be decremented.
 	 */
-	def private boolean removeFromReady(IBehaviour b) {
+	def private boolean removeFromReady(IBehaviour behaviour) {
+		LOGGER.info("Try to remove [{}] Behaviour from ready...", behaviour)
 		var boolean result
-		val index = readyBehaviours.indexOf(b)
-		println("Scheduler removeFromReady size " + readyBehaviours.size)
-		println("Scheduler removeFromReady index " + index)
-		println("Scheduler removeFromReady currentIndex " + currentIndex)
+		val index = readyBehaviours.indexOf(behaviour)
+		LOGGER.debug("Scheduler removeFromReady size " + readyBehaviours.size)
+		LOGGER.debug("Scheduler removeFromReady index " + index)
+		LOGGER.debug("Scheduler removeFromReady currentIndex " + currentIndex)
 		if (index != -1) {
-			println("Scheduler removeFromReady " + b)
-			result = readyBehaviours.remove(b)
-			println("Scheduler removeFromReady result " + result)
+			LOGGER.debug("Scheduler removeFromReady " + behaviour)
+			result = readyBehaviours.remove(behaviour)
+			LOGGER.debug("Scheduler removeFromReady result " + result)
 			if (index < currentIndex) {
 				currentIndex = currentIndex - 1
 			} else if (index == currentIndex && currentIndex == readyBehaviours.size())
 				currentIndex = 0
 		}
-		println("Scheduler removeFromReady size " + readyBehaviours.size)
-		println("Scheduler removeFromReady index " + index)
-		println("Scheduler removeFromReady currentIndex " + currentIndex)
+		LOGGER.debug("Scheduler removeFromReady size " + readyBehaviours.size)
+		LOGGER.debug("Scheduler removeFromReady index " + index)
+		LOGGER.debug("Scheduler removeFromReady currentIndex " + currentIndex)
 		return result
+	}
+
+	def private void doNotify() {
+		synchronized (suspendLock) {
+			LOGGER.info("Notify...")
+			suspendLock.notify
+		}
+	}
+
+	def private void doWait() {
+		synchronized (suspendLock) {
+			LOGGER.info("Begin waiting...")
+			suspendLock.wait
+		}
 	}
 
 }
