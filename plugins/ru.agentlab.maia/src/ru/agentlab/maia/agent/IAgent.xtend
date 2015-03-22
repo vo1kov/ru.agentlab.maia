@@ -39,5 +39,7 @@ interface IAgent {
 	def IEclipseContext getContext()
 
 	def void resume()
+	
+	def IAgentId getAgentId()
 
 }

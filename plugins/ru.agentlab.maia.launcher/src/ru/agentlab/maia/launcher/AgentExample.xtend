@@ -5,6 +5,7 @@ import javax.inject.Inject
 import javax.inject.Named
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgent
+import ru.agentlab.maia.agent.IAgentId
 
 class AgentExample {
 
@@ -15,12 +16,16 @@ class AgentExample {
 
 	@Inject
 	IAgent agent
+	
+	@Inject
+	IAgentId agentId
 
 	@PostConstruct
 	def void setup() {
 		LOGGER.info("Setup of: [{}] agent", agentName)
 		agent.addBehaviour("first", BehaviourExample)
 		agent.addBehaviour("second", BehaviourExample2)
+		LOGGER.info("Agent ID: [{}] ", agentId.name)
 	}
 
 	@Inject

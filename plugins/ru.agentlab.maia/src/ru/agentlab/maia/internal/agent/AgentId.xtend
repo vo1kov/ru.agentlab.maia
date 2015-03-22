@@ -2,25 +2,22 @@ package ru.agentlab.maia.internal.agent
 
 import java.util.ArrayList
 import java.util.List
-import java.util.Properties
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.agent.IAgentId
+import ru.agentlab.maia.behaviour.IBehaviourId
+import ru.agentlab.maia.container.IContainerId
 
+@Accessors
 class AgentId implements IAgentId {
-	
-	@Accessors
-	var String platformID
-	
-	@Accessors
+
+	var IContainerId containerId
+
+	val List<IBehaviourId> behaviourIds = new ArrayList<IBehaviourId>
+
 	var String name
-	
-	@Accessors
-	var List<String> addresses = new ArrayList<String>
-	
-	@Accessors
-	var List<IAgentId> resolvers = new ArrayList<IAgentId>
-	
-	@Accessors
-	var Properties userDefSlots = new Properties
-	
+
+	val List<String> addresses = new ArrayList<String>
+
+	val List<IAgentId> resolvers = new ArrayList<IAgentId>
+
 }

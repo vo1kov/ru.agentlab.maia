@@ -4,15 +4,21 @@ import javax.annotation.PostConstruct
 import javax.inject.Inject
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
+import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgent
 import ru.agentlab.maia.agent.IAgentFactory
+import ru.agentlab.maia.agent.IAgentId
+import ru.agentlab.maia.agent.IAgentIdFactory
+import ru.agentlab.maia.agent.IAgentNameGenerator
 import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.agent.ISchedulerFactory
+import ru.agentlab.maia.container.IContainer
 import ru.agentlab.maia.messaging.IMessageQueue
 import ru.agentlab.maia.messaging.IMessageQueueFactory
-import ru.agentlab.maia.agent.IAgentNameGenerator
 
 class AgentFactory implements IAgentFactory {
+
+	val static LOGGER = LoggerFactory.getLogger(AgentFactory)
 
 	@Inject
 	IEclipseContext context
@@ -25,7 +31,10 @@ class AgentFactory implements IAgentFactory {
 
 	@Inject
 	IAgentNameGenerator nameGenerator
-	
+
+	@Inject
+	IAgentIdFactory agentIdFactory
+
 	/**
 	 * Create agent instance
 	 * 
@@ -37,16 +46,18 @@ class AgentFactory implements IAgentFactory {
 	 * 			is simple POJO. Services can be accessed via injection. If <code>null</code> then 
 	 * 			default agent realization will be used.
 	 */
-	override create(String id, Class<?> contributorClass) {
+	override create(IContainer container, String id, Class<?> contributorClass) {
+		LOGGER.info("Prepare Agent Name...")
 		val name = if (id != null) {
 				id
 			} else {
-				nameGenerator.generateName
+				nameGenerator.generateName(container)
 			}
+
 		val scheduler = schedulerProvider.create(name)
 		val messageQueue = messageQueueProvider.get
 
-		// Prepare Agent Context
+		LOGGER.info("Prepare Agent Context...")
 		val agentContext = context.createChild("Agent [" + name + "] Context") => [
 			set(IScheduler, scheduler)
 			set(IMessageQueue, messageQueue)
@@ -54,12 +65,18 @@ class AgentFactory implements IAgentFactory {
 			set(IAgent.KEY_STATE, IAgent.STATE_INITIATED)
 		]
 
-		// Create Agent instance in Context
+		LOGGER.info("Prepare Agent Instance in Context...")
 		val agent = ContextInjectionFactory.make(Agent, agentContext)
 		ContextInjectionFactory.invoke(agent, PostConstruct, agentContext, null)
 		agentContext.set(IAgent, agent)
 
-		// Create Agent Contributor in Context
+		LOGGER.info("Prepare AgentID in Context...")
+		val containerId = container.containerId
+		val agentId = agentIdFactory.create(containerId, name)
+		agentContext.set(IAgentId, agentId)
+		agent.agentId = agentId
+
+		LOGGER.info("Prepare Agent Contributor in Context...")
 		if (contributorClass != null) {
 			val contributor = ContextInjectionFactory.make(contributorClass, agentContext)
 			ContextInjectionFactory.invoke(contributor, PostConstruct, agentContext, null)

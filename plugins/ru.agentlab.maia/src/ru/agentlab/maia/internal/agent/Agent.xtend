@@ -4,6 +4,7 @@ import javax.inject.Inject
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.agent.IAgent
+import ru.agentlab.maia.agent.IAgentId
 import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.messaging.IMessage
@@ -15,6 +16,9 @@ class Agent implements IAgent {
 	@Inject
 	@Accessors
 	IEclipseContext context
+
+	@Accessors
+	IAgentId agentId
 
 	@Inject
 	IScheduler scheduler
@@ -44,8 +48,8 @@ class Agent implements IAgent {
 	override receive(IMessageTemplate template) {
 		queue.receive(template)
 	}
-	
-	override void resume(){
+
+	override void resume() {
 		scheduler.restartAll
 		context.set(IAgent.KEY_STATE, IAgent.STATE_ACTIVE)
 	}

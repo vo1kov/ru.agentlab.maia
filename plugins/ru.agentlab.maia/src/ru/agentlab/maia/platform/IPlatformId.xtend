@@ -1,6 +1,8 @@
 package ru.agentlab.maia.platform
 
 import java.net.URI
+import java.util.List
+import ru.agentlab.maia.container.IContainerId
 
 interface IPlatformId {
 
@@ -15,5 +17,8 @@ interface IPlatformId {
 	 *   @return The transport address of this location (in the specified protocol).
 	 */
 	def URI getAddress()
+	
+	
+	def List<IContainerId> getContainerIds()
 
 }

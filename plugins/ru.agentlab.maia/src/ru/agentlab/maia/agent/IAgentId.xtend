@@ -1,13 +1,13 @@
 package ru.agentlab.maia.agent
 
 import java.util.List
-import java.util.Properties
+import ru.agentlab.maia.container.IContainerId
 
 interface IAgentId {
 
-	def String getPlatformID()
+	def IContainerId getContainerId()
 
-	def void setPlatformID(String platformID)
+	def void setContainerId(IContainerId containerId)
 
 	def String getName()
 
@@ -15,14 +15,6 @@ interface IAgentId {
 
 	def List<String> getAddresses()
 
-	def void setAddresses(List<String> addresses)
-
 	def List<IAgentId> getResolvers()
-
-	def void setResolvers(List<IAgentId> resolvers)
-
-	def Properties getUserDefSlots()
-
-	def void setUserDefSlots(Properties userDefSlots)
 
 }
