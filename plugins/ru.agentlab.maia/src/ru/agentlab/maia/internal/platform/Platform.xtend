@@ -15,7 +15,8 @@ class Platform implements IPlatform {
 	@Inject
 	IEclipseContext context
 
-	var IPlatformId platformId
+	@Inject
+	IPlatformId platformId
 
 	val List<IContainer> containers = new ArrayList<IContainer>
 }

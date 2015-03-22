@@ -11,13 +11,13 @@ import ru.agentlab.maia.messaging.IMessage
 import ru.agentlab.maia.messaging.IMessageQueue
 import ru.agentlab.maia.messaging.IMessageTemplate
 
+@Accessors
 class Agent implements IAgent {
 
 	@Inject
-	@Accessors
 	IEclipseContext context
 
-	@Accessors
+	@Inject
 	IAgentId agentId
 
 	@Inject
