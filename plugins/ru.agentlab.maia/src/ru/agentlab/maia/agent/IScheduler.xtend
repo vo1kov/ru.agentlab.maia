@@ -17,6 +17,8 @@ interface IScheduler {
 	 * @param behaviour
 	 */
 	def void block(IBehaviour behaviour)
+	
+	def void blockAll()
 
 	/** 
 	 * Moves a behaviour from the sleeping queue to the ready queue.
@@ -53,11 +55,5 @@ interface IScheduler {
 	 * @return
 	 */
 	def IBehaviour[] getBehaviours()
-
-	/** 
-	 * Helper method for persistence service
-	 * @param behaviours
-	 */
-	def void setBehaviours(IBehaviour[] behaviours)
 
 }

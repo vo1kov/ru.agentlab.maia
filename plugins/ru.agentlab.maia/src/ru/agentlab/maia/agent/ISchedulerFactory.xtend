@@ -1,6 +1,6 @@
 package ru.agentlab.maia.agent
 
-import javax.inject.Provider
+interface ISchedulerFactory {
 
-interface ISchedulerFactory extends Provider<IScheduler> {
+	def IScheduler create(String name)
 }

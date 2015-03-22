@@ -4,9 +4,9 @@ import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.agent.ISchedulerFactory
 
 class SchedulerFactory implements ISchedulerFactory {
-	
-	override IScheduler get() {
-		return new Scheduler()
+
+	override IScheduler create(String name) {
+		return new Scheduler(name)
 	}
 
 }

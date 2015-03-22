@@ -18,11 +18,10 @@
  */
 package ru.agentlab.maia.internal.agent
 
-import java.io.Serializable
 import java.util.LinkedList
-import java.util.List
-import ru.agentlab.maia.behaviour.IBehaviour
+import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IScheduler
+import ru.agentlab.maia.behaviour.IBehaviour
 
 /** 
  * Name: Scheduler
@@ -32,13 +31,23 @@ import ru.agentlab.maia.agent.IScheduler
  * + Manages the resources needed to synchronize and execute agent behaviours,
  * such as thread pools, locks, etc.
  */
-class Scheduler implements Serializable, IScheduler {
+class Scheduler extends Thread implements IScheduler {
 
-	protected List<IBehaviour> readyBehaviours = new LinkedList<IBehaviour>
+	val static LOGGER = LoggerFactory.getLogger(Scheduler)
 
-	protected List<IBehaviour> blockedBehaviours = new LinkedList<IBehaviour>
+	val readyBehaviours = new LinkedList<IBehaviour>
+
+	val blockedBehaviours = new LinkedList<IBehaviour>
+
+	private transient Object suspendLock = new Object
+	private transient Object behavioursLock = new Object
 
 	private int currentIndex = 0
+
+	new(String name) {
+		super(name)
+		start
+	}
 
 	/**
 	 * Add a behaviour at the end of the behaviours queue.
@@ -46,33 +55,70 @@ class Scheduler implements Serializable, IScheduler {
 	 * If the behaviours queue was empty notifies the embedded thread of
 	 * the owner agent that a behaviour is now available.
 	 */
-	override synchronized void add(IBehaviour b) {
-		readyBehaviours.add(b)
-		notify()
-	// owner.notifyAddIBehaviour(b)
+	override void add(IBehaviour action) {
+		println("Scheduler add " + action)
+		synchronized (behavioursLock) {
+			readyBehaviours += action
+		}
+		synchronized (suspendLock) {
+			suspendLock.notify
+		}
+	}
+
+	override void run() {
+		while (true) {
+			var int size
+			synchronized (behavioursLock) {
+				size = readyBehaviours.size
+				if (size > 0) {
+					val behhaviour = schedule
+					behhaviour.action()
+					if (behhaviour.isDone) {
+						removeFromReady(behhaviour)
+					}
+				}
+				size = readyBehaviours.size
+			}
+			if (size == 0) {
+				println("Scheduler wait")
+				synchronized (suspendLock) {
+					suspendLock.wait
+				}
+			}
+		}
 	}
 
 	/**
 	 * Moves a behaviour from the ready queue to the sleeping queue. 
 	 */
-	override synchronized void block(IBehaviour b) {
-		if (removeFromReady(b)) {
-			blockedBehaviours.add(b)
-//		 owner.notifyChangeIBehaviourState(b, IBehaviour.STATE_READY,
-//			IBehaviour.STATE_BLOCKED
-//			)
+	override void block(IBehaviour b) {
+		synchronized (behavioursLock) {
+			if (b.removeFromReady) {
+				blockedBehaviours += b
+			}
+		}
+	}
+
+	override void blockAll() {
+		println("Scheduler block all")
+		synchronized (behavioursLock) {
+			blockedBehaviours += readyBehaviours
+			readyBehaviours.clear
+			currentIndex = 0
 		}
 	}
 
 	/**
 	 * Moves a behaviour from the sleeping queue to the ready queue.
 	 */
-	override synchronized void restart(IBehaviour b) {
-		if (removeFromBlocked(b)) {
-			readyBehaviours.add(b)
-			notify()
-//		 owner.notifyChangeIBehaviourState(b, IBehaviour.STATE_BLOCKED,
-//		 IBehaviour.STATE_READY)
+	override void restart(IBehaviour b) {
+		synchronized (behavioursLock) {
+			if (b.removeFromBlocked) {
+				readyBehaviours += b
+			}
+			synchronized (suspendLock) {
+				suspendLock.notify
+			}
 		}
 	}
 
@@ -86,41 +132,28 @@ class Scheduler implements Serializable, IScheduler {
 	 * behaviours? Some ready behaviour can be a ParallelIBehaviour with some of its
 	 * children blocked. These children must be restarted too.
 	 */
-	override synchronized void restartAll() {
-		blockedBehaviours.forEach [
-			restart
-		]
-
-	//
-	// IBehaviour[] behaviours = new IBehaviour[readyIBehaviours.size()]
-	// int counter = 0
-	// for (Iterator it = readyIBehaviours.iterator() it.hasNext())
-	// behaviours[counter++] = (IBehaviour) it.next()
-	// for (int i = 0 i < behaviours.length i++) {
-	// IBehaviour b = behaviours[i]
-	// b.restart()
-	// }
-	// behaviours = new IBehaviour[blockedIBehaviours.size()]
-	// counter = 0
-	// for (Iterator it = blockedIBehaviours.iterator() it.hasNext()) {
-	// behaviours[counter++] = (IBehaviour) it.next()
-	// }
-	// for (int i = 0 i < behaviours.length i++) {
-	// IBehaviour b = behaviours[i]
-	// b.restart()
-	// }
+	override void restartAll() {
+		println("RESTART ALL")
+		synchronized (behavioursLock) {
+			readyBehaviours += blockedBehaviours
+			blockedBehaviours.clear
+			currentIndex = 0
+			synchronized (suspendLock) {
+				suspendLock.notify
+			}
+		}
 	}
 
 	/** 
 	 * Removes a specified behaviour from the scheduler
 	 */
-	override synchronized void remove(IBehaviour b) {
+	override void remove(IBehaviour b) {
+		println("REMOVE " + b)
 		var found = removeFromBlocked(b)
 		if (!found) {
 			found = removeFromReady(b)
 		}
 		if (found) {
-//			owner.notifyRemoveIBehaviour(b)
 		}
 	}
 
@@ -128,44 +161,26 @@ class Scheduler implements Serializable, IScheduler {
 	 * Selects the appropriate behaviour for execution, with a trivial
 	 * round-robin algorithm.
 	 */
-	override synchronized IBehaviour schedule() throws InterruptedException {
-		while (readyBehaviours.isEmpty()) {
-//		 owner.idle()
+	override IBehaviour schedule() throws InterruptedException {
+		if (!readyBehaviours.empty) {
+			val IBehaviour b = readyBehaviours.get(currentIndex)
+			currentIndex = (currentIndex + 1) % readyBehaviours.size()
+			return b
 		}
-		val IBehaviour b = readyBehaviours.get(currentIndex)
-		currentIndex = (currentIndex + 1) % readyBehaviours.size()
-		return b
 	}
 
 	// Helper method for persistence service
-	override synchronized IBehaviour[] getBehaviours() {
+	override IBehaviour[] getBehaviours() {
 		return readyBehaviours + blockedBehaviours
-	}
-
-	/**
-	 * Helper method for persistence service
-	 */
-	override void setBehaviours(IBehaviour[] behaviours) {
-		// readyIBehaviours.clear()
-		// blockedIBehaviours.clear()
-		// for (int i = 0 i < behaviours.length i++) {
-		// IBehaviour b = behaviours[i]
-		// if (b.isRunnable()) {
-		// readyIBehaviours.add(b)
-		// } else {
-		// blockedIBehaviours.add(b)
-		// }
-		// }
-		//
-		// // The current index is not saved when persisting an agent
-		// currentIndex = 0
 	}
 
 	/**
 	 *  Removes a specified behaviour from the blocked queue.
 	 */
 	def private boolean removeFromBlocked(IBehaviour b) {
-		return blockedBehaviours.remove(b)
+		synchronized (behavioursLock) {
+			return blockedBehaviours.remove(b)
+		}
 	}
 
 	/**
@@ -175,15 +190,24 @@ class Scheduler implements Serializable, IScheduler {
 	 * current one, then the current index must be decremented.
 	 */
 	def private boolean removeFromReady(IBehaviour b) {
+		var boolean result
 		val index = readyBehaviours.indexOf(b)
+		println("Scheduler removeFromReady size " + readyBehaviours.size)
+		println("Scheduler removeFromReady index " + index)
+		println("Scheduler removeFromReady currentIndex " + currentIndex)
 		if (index != -1) {
-			readyBehaviours.remove(b)
+			println("Scheduler removeFromReady " + b)
+			result = readyBehaviours.remove(b)
+			println("Scheduler removeFromReady result " + result)
 			if (index < currentIndex) {
 				currentIndex = currentIndex - 1
 			} else if (index == currentIndex && currentIndex == readyBehaviours.size())
 				currentIndex = 0
 		}
-		return index != -1
+		println("Scheduler removeFromReady size " + readyBehaviours.size)
+		println("Scheduler removeFromReady index " + index)
+		println("Scheduler removeFromReady currentIndex " + currentIndex)
+		return result
 	}
 
 }
