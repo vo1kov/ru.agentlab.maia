@@ -14,8 +14,10 @@ import ru.agentlab.maia.internal.agent.SchedulerFactory
 import ru.agentlab.maia.internal.behaviour.BehaviourFactory
 import ru.agentlab.maia.internal.messaging.MessageFactory
 import ru.agentlab.maia.internal.messaging.MessageQueueFactory
+import ru.agentlab.maia.internal.platform.PlatformFactory
 import ru.agentlab.maia.messaging.IMessageFactory
 import ru.agentlab.maia.messaging.IMessageQueueFactory
+import ru.agentlab.maia.platform.IPlatformFactory
 
 class MaiaActivator implements BundleActivator {
 
@@ -39,6 +41,10 @@ class MaiaActivator implements BundleActivator {
 			registerService(IAgentNameGenerator, new AgentNameGenerator, null)
 		]
 		var osgiContext = new EclipseContextOSGi(context)
+
+		val platformFactory = ContextInjectionFactory.make(PlatformFactory, osgiContext)
+		osgiContext.set(IPlatformFactory, platformFactory)
+		context.registerService(IPlatformFactory, platformFactory, null)
 
 		val agentFactory = ContextInjectionFactory.make(AgentFactory, osgiContext)
 		osgiContext.set(IAgentFactory, agentFactory)
