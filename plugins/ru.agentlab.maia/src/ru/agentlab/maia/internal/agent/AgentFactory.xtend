@@ -66,8 +66,7 @@ class AgentFactory implements IAgentFactory {
 		]
 
 		LOGGER.info("Prepare AgentID in Context...")
-		val containerId = container.containerId
-		val agentId = agentIdFactory.create(containerId, name)
+		val agentId = agentIdFactory.create(container.containerId, name)
 		agentContext.set(IAgentId, agentId)
 		
 		LOGGER.info("Prepare Agent Instance in Context...")

@@ -35,16 +35,14 @@ class ContainerFactory implements IContainerFactory {
 			set(IContainer.KEY_NAME, name)
 		]
 
+		LOGGER.info("Prepare ContainerID in Context...")
+		val containerId = containerIdFactory.create(platform.platformId, name, null)
+		containerContext.set(IContainerId, containerId)
+
 		LOGGER.info("Prepare Container Instance in Context...")
 		val container = ContextInjectionFactory.make(Container, containerContext)
 		ContextInjectionFactory.invoke(container, PostConstruct, containerContext, null)
 		containerContext.set(IContainer, container)
-
-		LOGGER.info("Prepare ContainerID in Context...")
-		val platformId = platform.platformId
-		val containerId = containerIdFactory.create(platformId, name, null)
-		containerContext.set(IContainerId, containerId)
-		container.containerId = containerId
 
 		LOGGER.info("Prepare Container Contributor in Context...")
 		if (contributorClass != null) {

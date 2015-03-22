@@ -24,15 +24,14 @@ class PlatformFactory implements IPlatformFactory {
 			set(IPlatform.KEY_NAME, id)
 		]
 		
+		LOGGER.info("Prepare PlatformID in Context...")
+		val platformId = platformIdFactory.create(id)
+		platformContext.set(IPlatformId, platformId)
+		
 		LOGGER.info("Prepare Platform Instance in Context...")
 		val platform = ContextInjectionFactory.make(Platform, platformContext)
 		ContextInjectionFactory.invoke(platform, PostConstruct, platformContext, null)
 		platformContext.set(IPlatform, platform)
-
-		LOGGER.info("Prepare PlatformID in Context...")
-		val platformId = platformIdFactory.create(id)
-		platformContext.set(IPlatformId, platformId)
-		platform.platformId = platformId
 
 		LOGGER.info("Prepare Platform Contributor in Context...")
 		if (contributorClass != null) {
