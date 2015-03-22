@@ -1,7 +1,7 @@
 package ru.agentlab.maia.internal
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
-import org.eclipse.e4.core.internal.contexts.osgi.EclipseContextOSGi
+import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import ru.agentlab.maia.agent.IAgentFactory
@@ -40,7 +40,7 @@ class MaiaActivator implements BundleActivator {
 			registerService(IMessageQueueFactory, new MessageQueueFactory, null)
 			registerService(IAgentNameGenerator, new AgentNameGenerator, null)
 		]
-		var osgiContext = new EclipseContextOSGi(context)
+		var osgiContext = EclipseContextFactory.getServiceContext(bundleContext)
 
 		val platformFactory = ContextInjectionFactory.make(PlatformFactory, osgiContext)
 		osgiContext.set(IPlatformFactory, platformFactory)
