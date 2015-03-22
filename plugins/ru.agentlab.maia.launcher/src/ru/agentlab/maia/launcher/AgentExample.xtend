@@ -17,6 +17,7 @@ class AgentExample {
 	def void setup() {
 		println("AGENT_EXAMPLE setup of: [" + agentName + "] agent")
 		agent.addBehaviour("first", BehaviourExample)
+		agent.addBehaviour("second", BehaviourExample2)
 	}
 
 	@Inject

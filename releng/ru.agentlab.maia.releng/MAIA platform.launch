@@ -10,7 +10,7 @@
 <booleanAttribute key="default" value="true"/>
 <booleanAttribute key="default_auto_start" value="true"/>
 <intAttribute key="default_start_level" value="4"/>
-<stringAttribute key="deselected_workspace_plugins" value="com.tilab.jade"/>
+<stringAttribute key="deselected_workspace_plugins" value="com.tilab.jade,com.tilab.jade.lang.acl,com.tilab.jade.lang.acl.codec,com.tilab.jade.lang.acl.codec.leap,com.tilab.jade.lang.acl.stringaclcodec,com.tilab.jade.mtp,com.tilab.jade.proto,test"/>
 <booleanAttribute key="includeOptional" value="false"/>
 <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
@@ -23,5 +23,5 @@
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
 <booleanAttribute key="useDefaultConfigArea" value="true"/>
-<stringAttribute key="workspace_bundles" value="ru.agentlab.maia.agent@default:default,ru.agentlab.maia.launcher@5:default,ru.agentlab.maia@default:default"/>
+<stringAttribute key="workspace_bundles" value="ru.agentlab.maia.launcher@5:default,ru.agentlab.maia@default:default"/>
 </launchConfiguration>
