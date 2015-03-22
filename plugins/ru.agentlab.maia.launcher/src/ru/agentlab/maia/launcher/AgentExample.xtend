@@ -3,9 +3,12 @@ package ru.agentlab.maia.launcher
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import javax.inject.Named
+import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgent
 
 class AgentExample {
+
+	val static LOGGER = LoggerFactory.getLogger(AgentExample)
 
 	@Inject @Named(IAgent.KEY_NAME)
 	String agentName
@@ -15,13 +18,13 @@ class AgentExample {
 
 	@PostConstruct
 	def void setup() {
-		println("AGENT_EXAMPLE setup of: [" + agentName + "] agent")
+		LOGGER.info("Setup of: [{}] agent", agentName)
 		agent.addBehaviour("first", BehaviourExample)
 		agent.addBehaviour("second", BehaviourExample2)
 	}
 
 	@Inject
 	def void onStateChange(@Named(IAgent.KEY_STATE) String state) {
-		println("AGENT_EXAMPLE state changed: " + state)
+		LOGGER.info("State changed: [{}]", state)
 	}
 }

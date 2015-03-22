@@ -4,6 +4,7 @@ import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import ru.agentlab.maia.agent.IAgent
 import ru.agentlab.maia.agent.IAgentFactory
+import ru.agentlab.maia.platform.IPlatformFactory
 
 class Activator implements BundleActivator {
 	static BundleContext context
@@ -18,7 +19,14 @@ class Activator implements BundleActivator {
 	 */
 	override void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext
-		val agent1 = createAgent(null)
+		
+		println("Create platform")
+		val ref = context.getServiceReference(IPlatformFactory)
+		val service = context.getService(ref)
+		service.create("Platform1", null)
+		
+		
+		val agent1 = createAgent("TestAget1")
 		val agent2 = createAgent("TestAget2")
 		Thread.sleep(3000)
 		println("STOP1")
