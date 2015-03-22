@@ -10,6 +10,8 @@ interface IAgent {
 
 	val static String KEY_NAME = "agent.name"
 
+	val static String KEY_CONTRIBUTOR = "agent.contributor"
+
 	val static String STATE_INITIATED = "INITIATED"
 
 	val static String STATE_ACTIVE = "ACTIVE"
@@ -35,5 +37,7 @@ interface IAgent {
 	def String getState()
 
 	def IEclipseContext getContext()
+
+	def void resume()
 
 }
