@@ -11,11 +11,11 @@ interface IPlatform {
 	val static String KEY_NAME = "platform.name"
 
 	val static String KEY_CONTRIBUTOR = "platform.contributor"
-	
+
 	def IEclipseContext getContext()
-	
-	def IPlatformId getPlatformId()
-	
-	def List<IContainer> getContainers()
+
+	def IPlatformId getId()
+
+	def List<IContainer> getChilds()
 
 }

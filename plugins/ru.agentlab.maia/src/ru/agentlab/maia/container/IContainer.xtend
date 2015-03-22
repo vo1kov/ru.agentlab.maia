@@ -15,12 +15,12 @@ interface IContainer {
 
 	def IEclipseContext getContext()
 
-	def List<IAgent> getAgents()
+	def List<IAgent> getChilds()
 
-	def IPlatform getPlatform()
+	def IPlatform getRoot()
 
-	def IContainerId getContainerId()
+	def IContainerId getId()
 
-	def void setContainerId(IContainerId containerId)
+	def void setId(IContainerId id)
 
 }

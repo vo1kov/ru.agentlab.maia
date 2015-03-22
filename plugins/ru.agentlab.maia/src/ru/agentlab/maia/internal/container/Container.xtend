@@ -17,10 +17,11 @@ class Container implements IContainer {
 	IEclipseContext context
 
 	@Inject
-	var IContainerId containerId
+	var IContainerId id
 
-	var IPlatform platform
+	@Inject
+	var IPlatform root
 
-	val List<IAgent> agents = new ArrayList<IAgent>
+	val List<IAgent> childs = new ArrayList<IAgent>
 
 }

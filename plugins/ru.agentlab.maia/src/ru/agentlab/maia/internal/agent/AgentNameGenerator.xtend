@@ -7,7 +7,7 @@ class AgentNameGenerator implements IAgentNameGenerator {
 
 	override generateName(IContainer container) {
 		// TODO: make sure that name unique
-		val count = container.agents.size + 1
+		val count = container.childs.size + 1
 		return "Agent_" + count
 	}
 

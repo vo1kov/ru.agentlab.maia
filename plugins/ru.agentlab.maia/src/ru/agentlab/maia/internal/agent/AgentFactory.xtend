@@ -58,7 +58,7 @@ class AgentFactory implements IAgentFactory {
 		val messageQueue = messageQueueProvider.get
 
 		LOGGER.info("Prepare Agent Context...")
-		val agentContext = context.createChild("Agent [" + name + "] Context") => [
+		val agentContext = container.context.createChild("Agent [" + name + "] Context") => [
 			set(IScheduler, scheduler)
 			set(IMessageQueue, messageQueue)
 			set(IAgent.KEY_NAME, name)
@@ -66,11 +66,11 @@ class AgentFactory implements IAgentFactory {
 		]
 
 		LOGGER.info("Prepare AgentID in Context...")
-		val agentId = agentIdFactory.create(container.containerId, name)
+		val agentId = agentIdFactory.create(container.id, name)
 		agentContext.set(IAgentId, agentId)
 		
 		LOGGER.info("Prepare Agent Instance in Context...")
-		val agent = ContextInjectionFactory.make(Agent, agentContext)
+		val agent = ContextInjectionFactory.make(Agent, agentContext, context)
 		ContextInjectionFactory.invoke(agent, PostConstruct, agentContext, null)
 		agentContext.set(IAgent, agent)
 

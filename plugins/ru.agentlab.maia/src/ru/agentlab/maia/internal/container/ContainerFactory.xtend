@@ -36,7 +36,7 @@ class ContainerFactory implements IContainerFactory {
 		]
 
 		LOGGER.info("Prepare ContainerID in Context...")
-		val containerId = containerIdFactory.create(platform.platformId, name, null)
+		val containerId = containerIdFactory.create(platform.id, name, null)
 		containerContext.set(IContainerId, containerId)
 
 		LOGGER.info("Prepare Container Instance in Context...")

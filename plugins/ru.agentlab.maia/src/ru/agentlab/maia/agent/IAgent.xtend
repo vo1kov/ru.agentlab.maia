@@ -1,6 +1,9 @@
 package ru.agentlab.maia.agent
 
+import java.util.List
 import org.eclipse.e4.core.contexts.IEclipseContext
+import ru.agentlab.maia.behaviour.IBehaviour
+import ru.agentlab.maia.container.IContainer
 import ru.agentlab.maia.messaging.IMessage
 import ru.agentlab.maia.messaging.IMessageTemplate
 
@@ -39,7 +42,13 @@ interface IAgent {
 	def IEclipseContext getContext()
 
 	def void resume()
-	
-	def IAgentId getAgentId()
+
+	def IAgentId getId()
+
+	def IContainer getRoot()
+
+	def List<IBehaviour> getChilds()
+
+	def void setId(IAgentId id)
 
 }
