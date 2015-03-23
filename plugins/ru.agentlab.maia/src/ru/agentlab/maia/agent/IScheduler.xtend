@@ -11,6 +11,8 @@ interface IScheduler extends Runnable {
 	 * @param behaviour
 	 */
 	def void add(IBehaviour behaviour)
+	
+	def void start()
 
 	/** 
 	 * Moves a behaviour from the ready queue to the sleeping queue.

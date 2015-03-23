@@ -46,7 +46,6 @@ class Scheduler extends Thread implements IScheduler {
 
 	new(String name) {
 		super(name)
-		start
 	}
 
 	/**
