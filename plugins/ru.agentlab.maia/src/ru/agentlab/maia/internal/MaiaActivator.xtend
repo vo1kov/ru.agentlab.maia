@@ -6,8 +6,8 @@ import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.agent.IAgentIdFactory
-import ru.agentlab.maia.agent.IAgentLifecycleService
 import ru.agentlab.maia.agent.IAgentNameGenerator
+import ru.agentlab.maia.agent.IFipaAgentLifecycleService
 import ru.agentlab.maia.agent.ISchedulerFactory
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.container.IContainerFactory
@@ -15,8 +15,8 @@ import ru.agentlab.maia.container.IContainerIdFactory
 import ru.agentlab.maia.container.IContainerNameGenerator
 import ru.agentlab.maia.internal.agent.AgentFactory
 import ru.agentlab.maia.internal.agent.AgentIdFactory
-import ru.agentlab.maia.internal.agent.AgentLifecycleService
 import ru.agentlab.maia.internal.agent.AgentNameGenerator
+import ru.agentlab.maia.internal.agent.FipaAgentLifecycleService
 import ru.agentlab.maia.internal.agent.SchedulerFactory
 import ru.agentlab.maia.internal.behaviour.BehaviourFactory
 import ru.agentlab.maia.internal.container.ContainerFactory
@@ -50,8 +50,8 @@ class MaiaActivator implements BundleActivator {
 			registerService(ISchedulerFactory, new SchedulerFactory, null)
 			registerService(IMessageFactory, new MessageFactory, null)
 			registerService(IMessageQueueFactory, new MessageQueueFactory, null)
-			
-			registerService(IAgentLifecycleService, new AgentLifecycleService, null)
+
+			registerService(IFipaAgentLifecycleService, new FipaAgentLifecycleService, null)
 
 			registerService(IAgentNameGenerator, new AgentNameGenerator, null)
 			registerService(IContainerNameGenerator, new ContainerNameGenerator, null)
