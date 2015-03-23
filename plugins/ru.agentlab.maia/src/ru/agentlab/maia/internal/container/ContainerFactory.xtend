@@ -3,7 +3,9 @@ package ru.agentlab.maia.internal.container
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
+import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
+import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.container.IContainer
 import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.container.IContainerId
@@ -14,6 +16,9 @@ import ru.agentlab.maia.platform.IPlatform
 class ContainerFactory implements IContainerFactory {
 
 	val static LOGGER = LoggerFactory.getLogger(ContainerFactory)
+
+	@Inject
+	IEclipseContext context
 
 	@Inject
 	IContainerNameGenerator nameGenerator
@@ -35,6 +40,9 @@ class ContainerFactory implements IContainerFactory {
 			set(IContainer.KEY_NAME, name)
 		]
 
+		LOGGER.info("Prepare Container-layer Services...")
+		containerContext.set(IAgentFactory, context.get(IAgentFactory))
+
 		LOGGER.info("Prepare ContainerID in Context...")
 		val containerId = containerIdFactory.create(platform.id, name, null)
 		containerContext.set(IContainerId, containerId)
@@ -47,8 +55,8 @@ class ContainerFactory implements IContainerFactory {
 		LOGGER.info("Prepare Container Contributor in Context...")
 		if (contributorClass != null) {
 			val contributor = ContextInjectionFactory.make(contributorClass, containerContext)
+			containerContext.set(IContainer.KEY_CONTRIBUTOR, contributor)
 			ContextInjectionFactory.invoke(contributor, PostConstruct, containerContext, null)
-			containerContext.set(IContainer.KEY_CONTRIBUTOR, container)
 		}
 
 		return container

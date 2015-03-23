@@ -9,13 +9,15 @@ import ru.agentlab.maia.agent.IAgent
 import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.agent.IAgentId
 import ru.agentlab.maia.agent.IAgentIdFactory
+import ru.agentlab.maia.agent.IAgentLifecycleService
 import ru.agentlab.maia.agent.IAgentNameGenerator
+import ru.agentlab.maia.agent.IFipaAgentLifecycleService
 import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.agent.ISchedulerFactory
+import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.container.IContainer
 import ru.agentlab.maia.messaging.IMessageQueue
 import ru.agentlab.maia.messaging.IMessageQueueFactory
-import ru.agentlab.maia.agent.IAgentLifecycleService
 
 class AgentFactory implements IAgentFactory {
 
@@ -63,22 +65,25 @@ class AgentFactory implements IAgentFactory {
 			set(IScheduler, scheduler)
 			set(IMessageQueue, messageQueue)
 			set(IAgent.KEY_NAME, name)
-			set(IAgentLifecycleService.KEY_STATE, IAgentLifecycleService.STATE_INITIATED)
+			set(IAgentLifecycleService.KEY_STATE, IFipaAgentLifecycleService.State.INITIATED.toString)
 		]
+
+		LOGGER.info("Prepare Agent-layer Services...")
+		agentContext.set(IBehaviourFactory, context.get(IBehaviourFactory))
 
 		LOGGER.info("Prepare AgentID in Context...")
 		val agentId = agentIdFactory.create(container.id, name)
 		agentContext.set(IAgentId, agentId)
-		
+
 		LOGGER.info("Prepare Agent Instance in Context...")
-		val agent = ContextInjectionFactory.make(Agent, agentContext, context)
+		val agent = ContextInjectionFactory.make(Agent, agentContext)
 		ContextInjectionFactory.invoke(agent, PostConstruct, agentContext, null)
 		agentContext.set(IAgent, agent)
 
 		LOGGER.info("Prepare Agent Contributor in Context...")
 		if (contributorClass != null) {
 			val contributor = ContextInjectionFactory.make(contributorClass, agentContext)
-			agentContext.set(IAgent.KEY_CONTRIBUTOR, agent)
+			agentContext.set(IAgent.KEY_CONTRIBUTOR, contributor)
 			ContextInjectionFactory.invoke(contributor, PostConstruct, agentContext, null)
 		}
 
