@@ -1,7 +1,5 @@
 package ru.agentlab.maia.agent
 
-import java.lang.Exception
-
 class IllegalAgentState extends Exception {
 	
 	new(String arg0) {

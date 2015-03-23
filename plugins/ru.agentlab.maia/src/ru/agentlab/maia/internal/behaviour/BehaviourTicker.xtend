@@ -3,9 +3,11 @@ package ru.agentlab.maia.internal.behaviour
 import javax.inject.Inject
 import javax.inject.Named
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
+import org.eclipse.xtend.lib.annotations.AccessorType
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.Action
-import org.eclipse.xtend.lib.annotations.AccessorType
+
+import static extension org.eclipse.xtend.lib.annotations.AccessorType.*
 
 class BehaviourTicker extends Behaviour {
 

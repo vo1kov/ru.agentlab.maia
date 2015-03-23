@@ -9,7 +9,6 @@ import ru.agentlab.maia.agent.IAgent
 import ru.agentlab.maia.agent.IAgentId
 import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.behaviour.IBehaviour
-import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.container.IContainer
 import ru.agentlab.maia.messaging.IMessage
 import ru.agentlab.maia.messaging.IMessageQueue
