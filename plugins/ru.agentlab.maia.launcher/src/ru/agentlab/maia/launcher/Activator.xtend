@@ -7,6 +7,7 @@ import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.agent.IAgentLifecycleService
 import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.platform.IPlatformFactory
+import ru.agentlab.maia.agent.IFipaAgentLifecycleService
 
 class Activator implements BundleActivator {
 
@@ -32,31 +33,34 @@ class Activator implements BundleActivator {
 		platformFactory = context.getService(context.getServiceReference(IPlatformFactory))
 		containerFactory = context.getService(context.getServiceReference(IContainerFactory))
 		agentFactory = context.getService(context.getServiceReference(IAgentFactory))
-		val agentLyfecycleService = context.getService(context.getServiceReference(IAgentLifecycleService))
+		val agentLyfecycleService = context.getService(context.getServiceReference(IFipaAgentLifecycleService))
 
-		LOGGER.info("Create platform")
+		LOGGER.info("CREATE platform")
 		val platform1 = platformFactory.create("Platform1", null)
 
-		LOGGER.info("Create container1")
+		LOGGER.info("CREATE container1")
 		val container1 = containerFactory.create(platform1, "Container1", null)
 
-		LOGGER.info("Create agent1")
+		LOGGER.info("CREATE agent1")
 		val agent1 = agentFactory.create(container1, "TestAget1", AgentExample)
 
-		LOGGER.info("Create agent2")
+		LOGGER.info("CREATE agent2")
 		val agent2 = agentFactory.create(container1, null, AgentExample)
-
+		
+		agentLyfecycleService.invoke(agent1)
+		agentLyfecycleService.invoke(agent2)
+		
 		Thread.sleep(3000)
-		LOGGER.info("STOP1")
-		agentLyfecycleService.stop(agent1)
+		LOGGER.info("SUSPEND agent1")
+		agentLyfecycleService.suspend(agent1)
 		Thread.sleep(3000)
-		LOGGER.info("WOKE UP1")
+		LOGGER.info("RESUME agent1")
 		agentLyfecycleService.resume(agent1)
 		Thread.sleep(3000)
-		LOGGER.info("STOP2")
-		agentLyfecycleService.stop(agent2)
+		LOGGER.info("SUSPEND agent2")
+		agentLyfecycleService.suspend(agent2)
 		Thread.sleep(3000)
-		LOGGER.info("WOKE UP2")
+		LOGGER.info("RESUME agent2")
 		agentLyfecycleService.resume(agent2)
 	}
 
