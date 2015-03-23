@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgent
 import ru.agentlab.maia.agent.IAgentId
 import ru.agentlab.maia.agent.IAgentLifecycleService
+import ru.agentlab.maia.behaviour.IBehaviourFactory
 
 class AgentExample {
 
@@ -26,11 +27,14 @@ class AgentExample {
 	@Inject
 	IEclipseContext context
 
+	@Inject
+	IBehaviourFactory behaviourFactory
+
 	@PostConstruct
 	def void setup() {
 		LOGGER.info("Setup of: [{}] agent", agentName)
-		agent.addBehaviour("first", BehaviourExample)
-		agent.addBehaviour("second", BehaviourExample2)
+		behaviourFactory.create(agent, "first", BehaviourExample)
+		behaviourFactory.create(agent, "second", BehaviourExample)
 		LOGGER.info("Agent ID: [{}] ", agentId.name)
 		LOGGER.info("Agent context: [{}]", context)
 		(context as EclipseContext).localData.forEach [ p1, p2 |
