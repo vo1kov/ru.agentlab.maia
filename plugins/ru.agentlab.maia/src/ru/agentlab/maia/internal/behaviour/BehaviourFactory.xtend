@@ -46,6 +46,8 @@ class BehaviourFactory implements IBehaviourFactory {
 
 		ContextInjectionFactory.invoke(behaviour, PostConstruct, behaviourContext, null)
 		behaviourContext.set(IBehaviour, behaviour)
+		
+		agent.scheduler.add(behaviour)
 
 		// Create Behaviour Contributor in Context
 		if(contributorClass != null){

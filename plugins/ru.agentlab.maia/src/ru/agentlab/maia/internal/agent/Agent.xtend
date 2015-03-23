@@ -35,14 +35,6 @@ class Agent implements IAgent {
 	@Inject
 	IMessageQueue queue
 
-	@Inject
-	IBehaviourFactory behaviourFactory
-
-	override void addBehaviour(String id, Class<?> contributorClass) {
-		val behaviour = behaviourFactory.create(this, id, contributorClass)
-		scheduler.add(behaviour)
-	}
-
 	override receive(IMessageTemplate template) {
 		queue.receive(template)
 	}

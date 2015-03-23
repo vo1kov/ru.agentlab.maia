@@ -18,8 +18,6 @@ interface IAgent {
 
 	def IMessageQueue getQueue()
 
-	def void addBehaviour(String id, Class<?> contributorClass)
-
 	def void send(IMessage message)
 
 	def IMessage receive(IMessageTemplate template)
