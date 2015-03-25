@@ -42,7 +42,7 @@ class Activator implements BundleActivator {
 		val container1 = containerFactory.create(platform1, "Container1", null)
 
 		LOGGER.info("CREATE agent1")
-		val agent1 = agentFactory.create(container1, "TestAget1", AgentExample)
+		val agent1 = agentFactory.create(container1, null, AgentExample)
 
 		LOGGER.info("CREATE agent2")
 		val agent2 = agentFactory.create(container1, null, AgentExample)

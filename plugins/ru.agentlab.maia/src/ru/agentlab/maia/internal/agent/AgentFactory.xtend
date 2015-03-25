@@ -79,6 +79,7 @@ class AgentFactory implements IAgentFactory {
 		val agent = ContextInjectionFactory.make(Agent, agentContext)
 		ContextInjectionFactory.invoke(agent, PostConstruct, agentContext, null)
 		agentContext.set(IAgent, agent)
+		container.childs += agent
 
 		LOGGER.info("Prepare Agent Contributor in Context...")
 		if (contributorClass != null) {
