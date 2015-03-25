@@ -27,7 +27,7 @@ class FipaAgentLifecycleService implements IFipaAgentLifecycleService {
 			changeState(State.SUSPENDED)
 		]
 	}
-	
+
 	override void resume(IAgent agent) {
 		val currentState = agent.state
 		if (!currentState.equalsIgnoreCase(State.SUSPENDED.toString)) {
@@ -59,6 +59,17 @@ class FipaAgentLifecycleService implements IFipaAgentLifecycleService {
 		agent => [
 			context.set(State, state)
 			setState(state.toString)
+		]
+	}
+
+	override getPossibleStates() {
+		return #[
+			State.UNKNOWN.toString,
+			State.INITIATED.toString,
+			State.ACTIVE.toString,
+			State.SUSPENDED.toString,
+			State.WAITING.toString,
+			State.DELETED.toString
 		]
 	}
 

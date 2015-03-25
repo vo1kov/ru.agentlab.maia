@@ -8,4 +8,6 @@ interface IAgentLifecycleService {
 
 	def void setState(IAgent agent, String state) throws IllegalAgentState
 
+	def Iterable<String> getPossibleStates()
+
 }
