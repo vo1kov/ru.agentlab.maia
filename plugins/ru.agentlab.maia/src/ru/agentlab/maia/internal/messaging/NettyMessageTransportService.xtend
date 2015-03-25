@@ -13,6 +13,7 @@ import javax.annotation.PreDestroy
 import javax.inject.Inject
 import javax.inject.Named
 import ru.agentlab.maia.messaging.IMessage
+import ru.agentlab.maia.messaging.IMessageTransportEventListener
 import ru.agentlab.maia.messaging.INettyMessageTransportService
 
 class NettyMessageTransportService implements INettyMessageTransportService {
@@ -77,7 +78,7 @@ class NettyMessageTransportService implements INettyMessageTransportService {
 		bossGroup.shutdownGracefully
 	}
 
-	override void send(IMessage message) {
+	override send(IMessage message) {
 		message.receivers.forEach [
 			val channel = clientBootstrap.connect("127.0.0.1", 8899).sync.channel
 			if (channel.isWritable()) {
@@ -87,17 +88,11 @@ class NettyMessageTransportService implements INettyMessageTransportService {
 		]
 	}
 
-	def void addReceiveListener(IMessageTransportEventListener listener) {
+	override addReceiveListener(IMessageTransportEventListener listener) {
 	}
 
 //	def public static void main(String[] args) throws Exception {
 //		val port = Integer.parseInt(args.get(0))
 //		(new MessageTransportService).run(port)
 //	}
-	interface IMessageTransportEventListener {
-
-		def void onReceive(IMessage message)
-
-	}
-
 }
