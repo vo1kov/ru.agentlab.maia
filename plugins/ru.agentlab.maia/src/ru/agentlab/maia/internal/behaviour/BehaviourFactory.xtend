@@ -1,12 +1,12 @@
 package ru.agentlab.maia.internal.behaviour
 
-import javax.inject.Inject
 import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.Action
 import ru.agentlab.maia.ActionTicker
 import ru.agentlab.maia.behaviour.IBehaviourFactory
+import ru.agentlab.maia.context.ContextExtension
 import ru.agentlab.maia.internal.MaiaActivator
 import ru.agentlab.maia.naming.IBehaviourNameGenerator
 
@@ -14,18 +14,17 @@ class BehaviourFactory implements IBehaviourFactory {
 
 	val static LOGGER = LoggerFactory.getLogger(BehaviourFactory)
 
-	@Inject
-	IEclipseContext context
+	extension ContextExtension = new ContextExtension(LOGGER)
 
 	def private getTickerProperties(Class<?> contributorClass) {
 		for (method : contributorClass.methods) {
 			for (annotation : method.annotations) {
 				if (annotation instanceof ActionTicker) {
-					return context.createChild => [
-						set("period", annotation.period)
-						set("fixedPeriod", annotation.fixedPeriod)
-						it.parent = null
-					]
+//					return context.createChild => [
+//						set("period", annotation.period)
+//						set("fixedPeriod", annotation.fixedPeriod)
+//						it.parent = null
+//					]
 				}
 			}
 		}
@@ -101,16 +100,6 @@ class BehaviourFactory implements IBehaviourFactory {
 
 		LOGGER.info("Empty Behaviour successfully created!")
 		return context
-	}
-
-	def private void addContextProperty(IEclipseContext context, String key, Object value) {
-		LOGGER.debug("	Put Property [{}] with vale [{}]  to context...", key, value)
-		context.set(key, value)
-	}
-
-	def private <T> void addContextService(IEclipseContext context, Class<T> key, T value) {
-		LOGGER.debug("	Put Service [{}] with vale [{}]  to context...", key, value)
-		context.set(key, value)
 	}
 
 }
