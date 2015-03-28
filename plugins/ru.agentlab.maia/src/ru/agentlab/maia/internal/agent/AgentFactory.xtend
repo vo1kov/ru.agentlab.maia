@@ -1,7 +1,6 @@
 package ru.agentlab.maia.internal.agent
 
 import org.eclipse.e4.core.contexts.IEclipseContext
-import org.eclipse.e4.core.internal.contexts.EclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.agent.IScheduler
@@ -25,13 +24,20 @@ class AgentFactory implements IAgentFactory {
 		val context = createEmpty(root, id)
 		val name = context.get(KEY_NAME) as String
 
-		(context as EclipseContext).localData.forEach [ p1, p2 |
-			LOGGER.info("Context Data: [{}] -> [{}]", p1, p2)
-		]
-		(context.parent as EclipseContext).localData.forEach [ p1, p2 |
-			LOGGER.info("ContextParent Data: [{}] -> [{}]", p1, p2)
-		]
-
+//		(context as EclipseContext).localData.forEach [ p1, p2 |
+//			LOGGER.info("Context Data: [{}] -> [{}]", p1, p2)
+//		]
+//		(context.parent as EclipseContext).localData.forEach [ p1, p2 |
+//			LOGGER.info("ContextParent Data: [{}] -> [{}]", p1, p2)
+//		]
+//		var c = context.parent
+//		while (c != null) {
+//			LOGGER.info("Context [{}] hold:", c)
+//			(c as EclipseContext).localData.forEach [ p1, p2 |
+//				LOGGER.info("	[{}] -> [{}]", p1, p2)
+//			]
+//			c = c.parent
+//		}
 		val schedulerFactory = context.get(ISchedulerFactory)
 		val scheduler = schedulerFactory.create(name)
 		val messageQueueProvider = context.get(IMessageQueueFactory)

@@ -30,7 +30,6 @@ class ServiceManagementService implements IServiceManagementService {
 		if (service != null) {
 			LOGGER.debug("	Put [{}] Service to [{}] context...", serviceClass.simpleName, context)
 			context.set(serviceClass, service)
-			root.set(serviceClass, null)
 		} else {
 			throw new IllegalStateException("Context [" + root + "] have no [" + serviceClass + "] service")
 		}
