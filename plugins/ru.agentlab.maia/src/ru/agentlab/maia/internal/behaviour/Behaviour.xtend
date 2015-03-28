@@ -4,7 +4,6 @@ import javax.inject.Inject
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.slf4j.LoggerFactory
 import ru.agentlab.maia.Action
 import ru.agentlab.maia.ActionDone
 import ru.agentlab.maia.behaviour.IBehaviour
@@ -12,8 +11,7 @@ import ru.agentlab.maia.context.IContributionService
 
 class Behaviour implements IBehaviour {
 
-	val static LOGGER = LoggerFactory.getLogger(Behaviour)
-
+//	val static LOGGER = LoggerFactory.getLogger(Behaviour)
 	@Inject
 	@Accessors
 	IEclipseContext context
