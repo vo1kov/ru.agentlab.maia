@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory
 import ru.agentlab.maia.internal.messaging.DiscardServerHandler
 import ru.agentlab.maia.messaging.IMessage
 import ru.agentlab.maia.messaging.IMessageDeliveryEventListener
-import ru.agentlab.maia.messaging.IMessageQueue
 import ru.agentlab.maia.messaging.netty.INettyMessageDeliveryService
 
 class NettyMessageDeliveryService implements INettyMessageDeliveryService {
@@ -54,10 +53,9 @@ class NettyMessageDeliveryService implements INettyMessageDeliveryService {
 
 //	@Inject
 //	IMessageQueueFactory messageQueueFactory
-	var IMessageQueue inputQueue
-
-	var IMessageQueue outpuQueue
-
+//	var IMessageQueue inputQueue
+//
+//	var IMessageQueue outpuQueue
 	@PostConstruct
 	def void init() {
 		try {
