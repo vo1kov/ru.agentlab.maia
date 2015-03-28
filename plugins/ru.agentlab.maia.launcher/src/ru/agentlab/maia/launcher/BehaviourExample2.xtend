@@ -6,15 +6,16 @@ import org.slf4j.LoggerFactory
 import ru.agentlab.maia.Action
 import ru.agentlab.maia.agent.IAgentIdFactory
 import ru.agentlab.maia.behaviour.IBehaviour
-import ru.agentlab.maia.messaging.IMessageFactory
+import ru.agentlab.maia.context.IContextFactory
 import ru.agentlab.maia.messaging.IMessageDeliveryService
+import ru.agentlab.maia.messaging.IMessageFactory
 
 class BehaviourExample2 {
 
 	val static LOGGER = LoggerFactory.getLogger(BehaviourExample2)
 
 	@Inject
-	@Named(IBehaviour.KEY_NAME)
+	@Named(IContextFactory.KEY_NAME)
 	String behName
 
 	@Inject
@@ -22,7 +23,7 @@ class BehaviourExample2 {
 
 	@Inject
 	IMessageFactory messageFactory
-	
+
 	@Inject
 	IAgentIdFactory agentIdFactory
 
