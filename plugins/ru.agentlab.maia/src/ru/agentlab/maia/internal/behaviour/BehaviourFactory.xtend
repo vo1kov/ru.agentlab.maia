@@ -15,6 +15,7 @@ import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.context.ContextExtension
 import ru.agentlab.maia.internal.MaiaActivator
 import ru.agentlab.maia.naming.IBehaviourNameGenerator
+import ru.agentlab.maia.behaviour.BehaviourNotFoundException
 
 class BehaviourFactory implements IBehaviourFactory {
 
@@ -26,11 +27,11 @@ class BehaviourFactory implements IBehaviourFactory {
 		for (method : contributorClass.methods) {
 			for (annotation : method.annotations) {
 				if (annotation instanceof ActionTicker) {
-//					return context.createChild => [
-//						set("period", annotation.period)
-//						set("fixedPeriod", annotation.fixedPeriod)
-//						it.parent = null
-//					]
+					return EclipseContextFactory.create => [
+						set("period", annotation.period)
+						set("fixedPeriod", annotation.fixedPeriod)
+						it.parent = null
+					]
 				}
 			}
 		}
@@ -122,6 +123,37 @@ class BehaviourFactory implements IBehaviourFactory {
 			set("fixedPeriod", true)
 		]
 		context.createBehaviour(properties, BehaviourTicker)
+
+		LOGGER.info("Behaviour successfully created!")
+		return context
+	}
+	
+	override createFromAnnotation(IEclipseContext root, String id, Class<?> contributorClass) {
+		LOGGER.info("Try to create new Cyclyc Behaviour...")
+		LOGGER.debug("	root context: [{}]", root)
+		LOGGER.debug("	behaviour Id: [{}]", id)
+
+		val context = internalCreateEmpty(root, id)
+
+		LOGGER.info("Create Behaviour instance...")
+		//		// Create Behaviour instance in Context
+		val type = contributorClass.getBehaviourType
+
+		switch (type) {
+			case IBehaviour.TYPE_ONE_SHOT: {
+				context.createBehaviour(null, BehaviourOneShot)
+			}
+			case IBehaviour.TYPE_CYCLYC: {
+				context.createBehaviour(null, BehaviourCyclyc)
+			}
+			case IBehaviour.TYPE_TICKER: {
+				val properties = contributorClass.getTickerProperties
+				context.createBehaviour(properties, BehaviourTicker)
+			}
+			default: {
+				throw new BehaviourNotFoundException("Behaviour Action with id " + id + " not found")
+			}
+		}
 
 		LOGGER.info("Behaviour successfully created!")
 		return context
