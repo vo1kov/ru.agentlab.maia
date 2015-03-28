@@ -55,29 +55,10 @@ class BehaviourFactory implements IBehaviourFactory {
 
 		val context = internalCreateEmpty(root, id)
 
-//		// Create Behaviour instance in Context
-//		val type = contributorClass.getBehaviourType
-//
-//		val behaviour = switch (type) {
-//			case IBehaviour.TYPE_ONE_SHOT: {
-//				ContextInjectionFactory.make(BehaviourOneShot, behaviourContext)
-//			}
-//			case IBehaviour.TYPE_CYCLYC: {
-//				ContextInjectionFactory.make(BehaviourCyclyc, behaviourContext)
-//			}
-//			case IBehaviour.TYPE_TICKER: {
-//				val properties = contributorClass.getTickerProperties
-//				ContextInjectionFactory.make(BehaviourTicker, behaviourContext, properties)
-//			}
-//			default: {
-//				throw new BehaviourNotFoundException("Behaviour Action with id " + id + " not found")
-//			}
-//		}
-//
-//		ContextInjectionFactory.invoke(behaviour, PostConstruct, behaviourContext, null)
-//		behaviourContext.set(IBehaviour, behaviour)
-//
-//		agent.scheduler.add(behaviour)
+		LOGGER.info("Create Behaviour instance...")
+		context.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_DEFAULT)
+		context.createBehaviour(null, Behaviour)
+		
 		LOGGER.info("Behaviour successfully created!")
 		return context
 	}
@@ -90,6 +71,7 @@ class BehaviourFactory implements IBehaviourFactory {
 		val context = internalCreateEmpty(root, id)
 
 		LOGGER.info("Create Behaviour instance...")
+		context.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_CYCLYC)
 		context.createBehaviour(null, BehaviourCyclyc)
 
 		LOGGER.info("Behaviour successfully created!")
@@ -104,12 +86,13 @@ class BehaviourFactory implements IBehaviourFactory {
 		val context = internalCreateEmpty(root, id)
 
 		LOGGER.info("Create Behaviour instance...")
+		context.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_ONE_SHOT)
 		context.createBehaviour(null, BehaviourOneShot)
 
 		LOGGER.info("Behaviour successfully created!")
 		return context
 	}
-	
+
 	override createTicker(IEclipseContext root, String id, long delay) {
 		LOGGER.info("Try to create new Cyclyc Behaviour...")
 		LOGGER.debug("	root context: [{}]", root)
@@ -122,12 +105,13 @@ class BehaviourFactory implements IBehaviourFactory {
 			set("period", delay)
 			set("fixedPeriod", true)
 		]
+		context.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_TICKER)
 		context.createBehaviour(properties, BehaviourTicker)
 
 		LOGGER.info("Behaviour successfully created!")
 		return context
 	}
-	
+
 	override createFromAnnotation(IEclipseContext root, String id, Class<?> contributorClass) {
 		LOGGER.info("Try to create new Cyclyc Behaviour...")
 		LOGGER.debug("	root context: [{}]", root)
@@ -136,17 +120,19 @@ class BehaviourFactory implements IBehaviourFactory {
 		val context = internalCreateEmpty(root, id)
 
 		LOGGER.info("Create Behaviour instance...")
-		//		// Create Behaviour instance in Context
 		val type = contributorClass.getBehaviourType
 
 		switch (type) {
 			case IBehaviour.TYPE_ONE_SHOT: {
+				context.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_ONE_SHOT)
 				context.createBehaviour(null, BehaviourOneShot)
 			}
 			case IBehaviour.TYPE_CYCLYC: {
+				context.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_CYCLYC)
 				context.createBehaviour(null, BehaviourCyclyc)
 			}
 			case IBehaviour.TYPE_TICKER: {
+				context.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_TICKER)
 				val properties = contributorClass.getTickerProperties
 				context.createBehaviour(properties, BehaviourTicker)
 			}
@@ -158,7 +144,7 @@ class BehaviourFactory implements IBehaviourFactory {
 		LOGGER.info("Behaviour successfully created!")
 		return context
 	}
-	
+
 	override createEmpty(IEclipseContext root, String id) {
 		LOGGER.info("Try to create new Empty Behaviour...")
 		LOGGER.debug("	root context: [{}]", root)
@@ -220,7 +206,7 @@ class BehaviourFactory implements IBehaviourFactory {
 			rootContext.set(KEY_BEHAVIOURS, behaviours)
 		}
 		behaviours += context
-		context
+		return context
 	}
 
 }
