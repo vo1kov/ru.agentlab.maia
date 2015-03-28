@@ -4,10 +4,10 @@ import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
-import ru.agentlab.maia.agent.IAgentLifecycleService
+import ru.agentlab.maia.agent.IFipaAgentLifecycleService
+import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.platform.IPlatformFactory
-import ru.agentlab.maia.agent.IFipaAgentLifecycleService
 
 class Activator implements BundleActivator {
 
@@ -33,6 +33,7 @@ class Activator implements BundleActivator {
 		platformFactory = context.getService(context.getServiceReference(IPlatformFactory))
 		containerFactory = context.getService(context.getServiceReference(IContainerFactory))
 		agentFactory = context.getService(context.getServiceReference(IAgentFactory))
+		val behaviourFactory = context.getService(context.getServiceReference(IBehaviourFactory))
 		val agentLyfecycleService = context.getService(context.getServiceReference(IFipaAgentLifecycleService))
 
 		LOGGER.info("CREATE platform")
@@ -45,23 +46,29 @@ class Activator implements BundleActivator {
 		val agent1 = agentFactory.create(container1, null, AgentExample)
 
 		LOGGER.info("CREATE agent2")
-		val agent2 = agentFactory.create(container1, null, AgentExample)
+		val agent2 = agentFactory.create(container1, null, null)
 		
+		LOGGER.info("INVOKE agent1")
 		agentLyfecycleService.invoke(agent1)
+		
+		behaviourFactory.create(agent2, "beh", BehaviourExample2)
+		
+		Thread.sleep(5000)
+		LOGGER.info("INVOKE agent2")
 		agentLyfecycleService.invoke(agent2)
 		
-		Thread.sleep(3000)
-		LOGGER.info("SUSPEND agent1")
-		agentLyfecycleService.suspend(agent1)
-		Thread.sleep(3000)
-		LOGGER.info("RESUME agent1")
-		agentLyfecycleService.resume(agent1)
-		Thread.sleep(3000)
-		LOGGER.info("SUSPEND agent2")
-		agentLyfecycleService.suspend(agent2)
-		Thread.sleep(3000)
-		LOGGER.info("RESUME agent2")
-		agentLyfecycleService.resume(agent2)
+//		Thread.sleep(3000)
+//		LOGGER.info("SUSPEND agent1")
+//		agentLyfecycleService.suspend(agent1)
+//		Thread.sleep(3000)
+//		LOGGER.info("RESUME agent1")
+//		agentLyfecycleService.resume(agent1)
+//		Thread.sleep(3000)
+//		LOGGER.info("SUSPEND agent2")
+//		agentLyfecycleService.suspend(agent2)
+//		Thread.sleep(3000)
+//		LOGGER.info("RESUME agent2")
+//		agentLyfecycleService.resume(agent2)
 	}
 
 	/*

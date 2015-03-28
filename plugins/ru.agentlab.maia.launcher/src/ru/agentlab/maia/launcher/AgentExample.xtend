@@ -34,7 +34,7 @@ class AgentExample {
 	def void setup() {
 		LOGGER.info("Setup of: [{}] agent", agentName)
 		behaviourFactory.create(agent, "first", BehaviourExample)
-		behaviourFactory.create(agent, "second", BehaviourExample)
+//		behaviourFactory.create(agent, "second", BehaviourExample)
 		LOGGER.info("Agent ID: [{}] ", agentId.name)
 		LOGGER.info("Agent context: [{}]", context)
 		(context as EclipseContext).localData.forEach [ p1, p2 |
