@@ -19,15 +19,12 @@
 package ru.agentlab.maia.internal.messaging
 
 import java.util.LinkedList
-import javax.inject.Inject
-import javax.inject.Named
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.agent.IAgent
 import ru.agentlab.maia.messaging.IMessage
 import ru.agentlab.maia.messaging.IMessageQueue
-import ru.agentlab.maia.messaging.IMessageTemplate
+import ru.agentlab.maia.messaging.matching.IMessageTemplate
 
 /** 
  * @author Giovanni Rimassa - Universita` di Parma
@@ -37,9 +34,6 @@ import ru.agentlab.maia.messaging.IMessageTemplate
 class MessageQueue implements IMessageQueue {
 
 	static Logger LOGGER = LoggerFactory.getLogger(MessageQueue)
-
-	@Inject @Named(IAgent.KEY_NAME)
-	String agentName
 
 	LinkedList<IMessage> list = new LinkedList<IMessage>
 
@@ -83,7 +77,7 @@ class MessageQueue implements IMessageQueue {
 	override void addLast(IMessage msg) {
 		if ((maxSize != 0) && (list.size() >= maxSize)) {
 			list.removeFirst() // FIFO replacement policy
-			LOGGER.error("Agent {} - Message queue size exceeded. Message discarded!!!!!", agentName)
+			LOGGER.error("Message queue size exceeded. Message discarded!!!!!")
 		}
 		list.addLast(msg)
 	}
