@@ -42,7 +42,11 @@ class BehaviourFactory implements IBehaviourFactory {
 	}
 
 	override createDefault(IEclipseContext root, String id) {
-		val context = root.createEmpty(id)
+		LOGGER.info("Try to create new Default Behaviour...")
+		LOGGER.debug("	root context: [{}]", root)
+		LOGGER.debug("	behaviour Id: [{}]", id)
+
+		val context = internalCreateEmpty(root, id)
 
 //		// Create Behaviour instance in Context
 //		val type = contributorClass.getBehaviourType
@@ -67,18 +71,26 @@ class BehaviourFactory implements IBehaviourFactory {
 //		behaviourContext.set(IBehaviour, behaviour)
 //
 //		agent.scheduler.add(behaviour)
+		LOGGER.info("Behaviour successfully created!")
 		return context
 	}
 
 	override createEmpty(IEclipseContext root, String id) {
-		LOGGER.info("Try to create new empty Behaviour...")
-		LOGGER.debug("	Behaviour Id: [{}]", id)
+		LOGGER.info("Try to create new Empty Behaviour...")
+		LOGGER.debug("	root context: [{}]", root)
+		LOGGER.debug("	behaviour Id: [{}]", id)
 
-		LOGGER.info("Prepare Behaviour root context...")
+		val context = internalCreateEmpty(root, id)
+
+		LOGGER.info("Behaviour successfully created!")
+		return context
+	}
+
+	private def internalCreateEmpty(IEclipseContext root, String id) {
 		val rootContext = if (root != null) {
 				root
 			} else {
-				LOGGER.info("Root context is null, get it from OSGI services...")
+				LOGGER.warn("Root context is null, get it from OSGI services...")
 				EclipseContextFactory.getServiceContext(MaiaActivator.getContext)
 			}
 
@@ -97,9 +109,7 @@ class BehaviourFactory implements IBehaviourFactory {
 			addContextProperty(KEY_NAME, name)
 			addContextProperty(KEY_TYPE, "ru.agentlab.maia.behaviour")
 		]
-
-		LOGGER.info("Empty Behaviour successfully created!")
-		return context
+		context
 	}
 
 }

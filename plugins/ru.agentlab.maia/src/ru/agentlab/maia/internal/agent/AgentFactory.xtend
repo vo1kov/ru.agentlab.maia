@@ -1,5 +1,6 @@
 package ru.agentlab.maia.internal.agent
 
+import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
@@ -10,7 +11,6 @@ import ru.agentlab.maia.internal.MaiaActivator
 import ru.agentlab.maia.messaging.IMessageQueue
 import ru.agentlab.maia.messaging.IMessageQueueFactory
 import ru.agentlab.maia.naming.IAgentNameGenerator
-import org.eclipse.e4.core.contexts.EclipseContextFactory
 
 class AgentFactory implements IAgentFactory {
 
@@ -19,10 +19,11 @@ class AgentFactory implements IAgentFactory {
 	extension ContextExtension = new ContextExtension(LOGGER)
 
 	override createDefault(IEclipseContext root, String id) {
-		LOGGER.info("Try to create new Agent...")
-		LOGGER.debug("	Agent Id: [{}]", id)
+		LOGGER.info("Try to create new Default Agent...")
+		LOGGER.debug("	root context: [{}]", root)
+		LOGGER.debug("	agent Id: [{}]", id)
 
-		val context = createEmpty(root, id)
+		val context = internalCreateEmpty(root, id)
 		val name = context.get(KEY_NAME) as String
 
 //		(context as EclipseContext).localData.forEach [ p1, p2 |
@@ -41,6 +42,7 @@ class AgentFactory implements IAgentFactory {
 //		}
 		val schedulerFactory = context.get(ISchedulerFactory)
 		val scheduler = schedulerFactory.create(name)
+		
 		val messageQueueProvider = context.get(IMessageQueueFactory)
 		val messageQueue = messageQueueProvider.get
 
@@ -51,6 +53,8 @@ class AgentFactory implements IAgentFactory {
 			// Every behaviour can access to message queue
 			addContextService(IMessageQueue, messageQueue)
 		]
+		
+		LOGGER.info("Agent successfully created!")
 		return context
 	}
 
@@ -62,17 +66,24 @@ class AgentFactory implements IAgentFactory {
 	 * 			will be used for generating agent name.
 	 */
 	override createEmpty(IEclipseContext root, String id) {
-		LOGGER.info("Try to create new empty Agent...")
-		LOGGER.debug("	Agent Id: [{}]", id)
+		LOGGER.info("Try to create new Empty Agent...")
+		LOGGER.debug("	root context: [{}]", root)
+		LOGGER.debug("	agent Id: [{}]", id)
 
-		LOGGER.info("Prepare Agent root context...")
+		val context = internalCreateEmpty(root, id)
+
+		LOGGER.info("Empty Agent successfully created!")
+		return context
+	}
+	
+	private def internalCreateEmpty(IEclipseContext root, String id) {
 		val rootContext = if (root != null) {
 				root
 			} else {
-				LOGGER.info("Root context is null, get it from OSGI services...")
+				LOGGER.warn("Root context is null, get it from OSGI services...")
 				EclipseContextFactory.getServiceContext(MaiaActivator.context)
 			}
-
+		
 		val name = if (id != null) {
 				id
 			} else {
@@ -82,15 +93,13 @@ class AgentFactory implements IAgentFactory {
 				LOGGER.debug("	Agent Name is [{}]", n)
 				n
 			}
-
+		
 		LOGGER.info("Create Agent Context...")
 		val context = rootContext.createChild("Context for Agent: " + name) => [
 			addContextProperty(KEY_NAME, name)
 			addContextProperty(KEY_TYPE, "ru.agentlab.maia.agent")
 		]
-
-		LOGGER.info("Empty Agent successfully created!")
-		return context
+		context
 	}
 
 }

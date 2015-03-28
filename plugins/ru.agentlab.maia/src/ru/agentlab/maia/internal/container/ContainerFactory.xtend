@@ -18,33 +18,42 @@ class ContainerFactory implements IContainerFactory {
 	extension ContextExtension = new ContextExtension(LOGGER)
 
 	override createDefault(IEclipseContext root, String id) {
-		LOGGER.info("Try to create new Container...")
-		LOGGER.debug("	Container Id: [{}]", id)
+		LOGGER.info("Try to create new Default Container...")
+		LOGGER.debug("	root context: [{}]", root)
+		LOGGER.debug("	container Id: [{}]", id)
 
-		val context = createEmpty(root, id)
+		val context = internalCreateEmpty(root, id)
 		val name = context.get(KEY_NAME) as String
 
-		LOGGER.info("Prepare ContainerID in Context...")
+		LOGGER.info("Create Container ID...")
 		val containerIdFactory = context.get(IContainerIdFactory)
 		val platformId = context.get(IPlatformId)
 		val containerId = containerIdFactory.create(platformId, name, null)
 		context.set(IContainerId, containerId)
 
+		LOGGER.info("Container successfully created!")
 		return context
 	}
 
 	override createEmpty(IEclipseContext root, String id) {
-		LOGGER.info("Try to create new empty Container...")
-		LOGGER.debug("	Container Id: [{}]", id)
+		LOGGER.info("Try to create new Empty Container...")
+		LOGGER.debug("	root context: [{}]", root)
+		LOGGER.debug("	container Id: [{}]", id)
 
-		LOGGER.info("Prepare Container root context...")
+		val context = internalCreateEmpty(root, id)
+
+		LOGGER.info("Container successfully created!")
+		return context
+	}
+	
+	private def internalCreateEmpty(IEclipseContext root, String id) {
 		val rootContext = if (root != null) {
 				root
 			} else {
-				LOGGER.info("Root context is null, get it from OSGI services...")
+				LOGGER.warn("Root context is null, get it from OSGI services...")
 				EclipseContextFactory.getServiceContext(MaiaActivator.context)
 			}
-
+		
 		val name = if (id != null) {
 				id
 			} else {
@@ -54,15 +63,13 @@ class ContainerFactory implements IContainerFactory {
 				LOGGER.debug("	Container Name is [{}]", n)
 				n
 			}
-
+		
 		LOGGER.info("Create Container Context...")
 		val context = rootContext.createChild("Context for Container: " + name) => [
 			addContextProperty(KEY_NAME, name)
 			addContextProperty(KEY_TYPE, "ru.agentlab.maia.container")
 		]
-
-		LOGGER.info("Empty Container successfully created!")
-		return context
+		context
 	}
 
 }

@@ -37,10 +37,11 @@ class PlatformFactory implements IPlatformFactory {
 	 * </ul>
 	 */
 	override createDefault(IEclipseContext root, String id) {
-		LOGGER.info("Try to create new Platform...")
-		LOGGER.debug("	Platform Id: [{}]", id)
+		LOGGER.info("Try to create new Default Platform...")
+		LOGGER.debug("	root context: [{}]", root)
+		LOGGER.debug("	platform Id: [{}]", id)
 
-		val context = createEmpty(root, id)
+		val context = internalCreateEmpty(root, id)
 
 		LOGGER.info("Create Platform-specific Services...")
 		context.parent.get(IServiceManagementService) => [
@@ -78,14 +79,21 @@ class PlatformFactory implements IPlatformFactory {
 	 * Fill name and type properties
 	 */
 	override IEclipseContext createEmpty(IEclipseContext root, String id) {
-		LOGGER.info("Try to create new empty Platform...")
-		LOGGER.debug("	Platform Id: [{}]", id)
+		LOGGER.info("Try to create new Empty Platform...")
+		LOGGER.debug("	root context: [{}]", root)
+		LOGGER.debug("	platform Id: [{}]", id)
 
-		LOGGER.info("Prepare platform root context...")
+		val context = internalCreateEmpty(root, id)
+
+		LOGGER.info("Platform successfully created!")
+		return context
+	}
+
+	private def internalCreateEmpty(IEclipseContext root, String id) {
 		val rootContext = if (root != null) {
 				root
 			} else {
-				LOGGER.info("Root context is null, get it from OSGI services...")
+				LOGGER.warn("Root context is null, get it from OSGI services...")
 				EclipseContextFactory.getServiceContext(MaiaActivator.context)
 			}
 
@@ -104,9 +112,7 @@ class PlatformFactory implements IPlatformFactory {
 			addContextProperty(KEY_NAME, name)
 			addContextProperty(KEY_TYPE, "ru.agentlab.maia.platform")
 		]
-
-		LOGGER.info("Empty Platform successfully created!")
-		return platformContext
+		platformContext
 	}
 
 }
