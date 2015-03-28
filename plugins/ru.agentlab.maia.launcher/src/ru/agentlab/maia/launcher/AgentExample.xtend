@@ -30,13 +30,17 @@ class AgentExample {
 	IBehaviourFactory behaviourFactory
 
 	@Inject
-	IContributionService contributionService
+	extension IContributionService contributionService
 
 	@PostConstruct
 	def void setup() {
 		LOGGER.info("Setup of: [{}] agent", agentName)
-		val behaviour = behaviourFactory.createDefault(context, "first")
-		contributionService.addContributor(behaviour, BehaviourExample)
+		behaviourFactory.createTicker(context, "first", 1000) => [
+			addContributor(BehaviourExample)			
+		]
+		behaviourFactory.createFromAnnotation(context, "first2", BehaviourExample) => [
+			addContributor(BehaviourExample)			
+		]
 
 //		behaviourFactory.create(agent, "second", BehaviourExample)
 		LOGGER.info("Agent ID: [{}] ", agentId.name)
