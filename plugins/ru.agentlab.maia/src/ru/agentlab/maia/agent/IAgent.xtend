@@ -4,9 +4,7 @@ import java.util.List
 import org.eclipse.e4.core.contexts.IEclipseContext
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.container.IContainer
-import ru.agentlab.maia.messaging.IMessage
 import ru.agentlab.maia.messaging.IMessageQueue
-import ru.agentlab.maia.messaging.IMessageTemplate
 
 interface IAgent {
 
@@ -17,10 +15,6 @@ interface IAgent {
 	def IScheduler getScheduler()
 
 	def IMessageQueue getQueue()
-
-	def void send(IMessage message)
-
-	def IMessage receive(IMessageTemplate template)
 
 	def IEclipseContext getContext()
 
