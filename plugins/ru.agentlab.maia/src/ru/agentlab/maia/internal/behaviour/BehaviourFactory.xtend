@@ -2,11 +2,15 @@ package ru.agentlab.maia.internal.behaviour
 
 import java.util.ArrayList
 import java.util.List
+import javax.annotation.PostConstruct
+import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.Action
 import ru.agentlab.maia.ActionTicker
+import ru.agentlab.maia.agent.IScheduler
+import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.context.ContextExtension
 import ru.agentlab.maia.internal.MaiaActivator
@@ -77,6 +81,52 @@ class BehaviourFactory implements IBehaviourFactory {
 		return context
 	}
 
+	override IEclipseContext createCyclyc(IEclipseContext root, String id) {
+		LOGGER.info("Try to create new Cyclyc Behaviour...")
+		LOGGER.debug("	root context: [{}]", root)
+		LOGGER.debug("	behaviour Id: [{}]", id)
+
+		val context = internalCreateEmpty(root, id)
+
+		LOGGER.info("Create Behaviour instance...")
+		context.createBehaviour(null, BehaviourCyclyc)
+
+		LOGGER.info("Behaviour successfully created!")
+		return context
+	}
+
+	override IEclipseContext createOneShot(IEclipseContext root, String id) {
+		LOGGER.info("Try to create new Cyclyc Behaviour...")
+		LOGGER.debug("	root context: [{}]", root)
+		LOGGER.debug("	behaviour Id: [{}]", id)
+
+		val context = internalCreateEmpty(root, id)
+
+		LOGGER.info("Create Behaviour instance...")
+		context.createBehaviour(null, BehaviourOneShot)
+
+		LOGGER.info("Behaviour successfully created!")
+		return context
+	}
+	
+	override createTicker(IEclipseContext root, String id, long delay) {
+		LOGGER.info("Try to create new Cyclyc Behaviour...")
+		LOGGER.debug("	root context: [{}]", root)
+		LOGGER.debug("	behaviour Id: [{}]", id)
+
+		val context = internalCreateEmpty(root, id)
+
+		LOGGER.info("Create Behaviour instance...")
+		val properties = EclipseContextFactory.create => [
+			set("period", delay)
+			set("fixedPeriod", true)
+		]
+		context.createBehaviour(properties, BehaviourTicker)
+
+		LOGGER.info("Behaviour successfully created!")
+		return context
+	}
+	
 	override createEmpty(IEclipseContext root, String id) {
 		LOGGER.info("Try to create new Empty Behaviour...")
 		LOGGER.debug("	root context: [{}]", root)
@@ -86,6 +136,23 @@ class BehaviourFactory implements IBehaviourFactory {
 
 		LOGGER.info("Behaviour successfully created!")
 		return context
+	}
+
+	def private IBehaviour createBehaviour(IEclipseContext context, IEclipseContext local,
+		Class<? extends IBehaviour> behaviourClass) {
+		LOGGER.info("Create {} instance...", behaviourClass.simpleName)
+		val behaviour = ContextInjectionFactory.make(behaviourClass, context, local)
+		ContextInjectionFactory.invoke(behaviour, PostConstruct, context, null)
+		context.set(IBehaviour, behaviour)
+
+		LOGGER.info("Add Behaviour to agent scheduler...")
+		val scheduler = context.parent.get(IScheduler)
+		if (scheduler != null) {
+			scheduler.add(behaviour)
+		} else {
+			LOGGER.info("Root context [{}] have no scheduler", context.parent)
+		}
+		return behaviour
 	}
 
 	private def internalCreateEmpty(IEclipseContext root, String id) {
@@ -112,10 +179,10 @@ class BehaviourFactory implements IBehaviourFactory {
 			addContextProperty(KEY_NAME, name)
 			addContextProperty(KEY_TYPE, TYPE_BEHAVIOUR)
 		]
-		
+
 		LOGGER.info("Add link for parent Context...")
 		var behaviours = rootContext.get(KEY_BEHAVIOURS) as List<IEclipseContext>
-		if(behaviours == null){
+		if (behaviours == null) {
 			LOGGER.debug("	Parent Context [{}] have no behaviours link, create new list...", rootContext)
 			behaviours = new ArrayList<IEclipseContext>
 			rootContext.set(KEY_BEHAVIOURS, behaviours)
