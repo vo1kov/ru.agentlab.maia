@@ -16,7 +16,6 @@ import javax.inject.Inject
 import javax.inject.Named
 import org.eclipse.e4.core.di.annotations.Optional
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.internal.messaging.DiscardServerHandler
 import ru.agentlab.maia.messaging.IMessage
 import ru.agentlab.maia.messaging.IMessageDeliveryEventListener
 import ru.agentlab.maia.messaging.netty.INettyMessageDeliveryService
@@ -142,12 +141,12 @@ class NettyMessageDeliveryService implements INettyMessageDeliveryService {
 		val service = new NettyMessageDeliveryService => [
 			serverHandler = new ChannelInitializer<SocketChannel>() { // (4)
 				override public void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline.addLast(new DiscardServerHandler)
+					ch.pipeline.addLast(new LoggingHandler)
 				}
 			}
 			clientHandler = new ChannelInitializer<SocketChannel>() { // (4)
 				override public void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline.addLast(new DiscardServerHandler)
+					ch.pipeline.addLast(new LoggingHandler)
 				}
 			}
 			it.port = port

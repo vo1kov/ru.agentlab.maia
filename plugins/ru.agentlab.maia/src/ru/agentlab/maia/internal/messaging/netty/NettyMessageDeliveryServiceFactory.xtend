@@ -7,7 +7,6 @@ import javax.annotation.PostConstruct
 import javax.inject.Inject
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
-import ru.agentlab.maia.internal.messaging.netty.NettyMessageDeliveryService
 import ru.agentlab.maia.messaging.IMessageDeliveryServiceFactory
 import ru.agentlab.maia.messaging.netty.INettyMessageDeliveryService
 
@@ -22,12 +21,12 @@ class NettyMessageDeliveryServiceFactory implements IMessageDeliveryServiceFacto
 			set(INettyMessageDeliveryService.KEY_WORKER_GROUP, new NioEventLoopGroup)
 			set(INettyMessageDeliveryService.KEY_CLIENT_HANDLER, new ChannelInitializer<SocketChannel>() { // (4)
 				override public void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline.addLast(new ru.agentlab.maia.internal.messaging.DiscardServerHandler)
+					ch.pipeline.addLast(new LoggingHandler)
 				}
 			})
 			set(INettyMessageDeliveryService.KEY_SERVER_HANDLER, new ChannelInitializer<SocketChannel>() { // (4)
 				override public void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline.addLast(new ru.agentlab.maia.internal.messaging.DiscardServerHandler)
+					ch.pipeline.addLast(new LoggingHandler)
 				}
 			})
 			val portString = System.getProperty("port", "8888")
