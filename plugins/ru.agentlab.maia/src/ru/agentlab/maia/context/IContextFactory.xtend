@@ -4,17 +4,17 @@ import org.eclipse.e4.core.contexts.IEclipseContext
 
 interface IContextFactory {
 
-	val static String KEY_NAME = "name"
+	val static String KEY_NAME = "context.name"
 
-	val static String KEY_TYPE = "type"
+	val static String KEY_TYPE = "context.type"
 
-	val static String KEY_PLATFORMS = "platforms"
+	val static String KEY_PLATFORMS = "context.platforms"
 
-	val static String KEY_CONTAINERS = "containers"
+	val static String KEY_CONTAINERS = "context.containers"
 
-	val static String KEY_AGENTS = "agents"
+	val static String KEY_AGENTS = "context.agents"
 
-	val static String KEY_BEHAVIOURS = "behaviours"
+	val static String KEY_BEHAVIOURS = "context.behaviours"
 
 	val static String TYPE_PLATFORM = "ru.agentlab.maia.platform"
 
