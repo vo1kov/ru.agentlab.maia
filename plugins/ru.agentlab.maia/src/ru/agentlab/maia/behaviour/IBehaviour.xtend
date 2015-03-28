@@ -5,10 +5,8 @@ import org.eclipse.e4.core.contexts.IEclipseContext
 interface IBehaviour {
 
 	val static String KEY_STATE = "behaviour.state"
-
-	val static String KEY_NAME = "behaviour.name"
-
-	val static String KEY_CONTRIBUTOR = "behaviour.contributor"
+	
+	val static String KEY_TYPE = "type"
 
 	/**
 	 *  A constant identifying the runnable state.
