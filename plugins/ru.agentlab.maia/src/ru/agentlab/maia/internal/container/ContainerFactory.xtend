@@ -72,8 +72,11 @@ class ContainerFactory implements IContainerFactory {
 			addContextProperty(KEY_NAME, name)
 			addContextProperty(KEY_TYPE, TYPE_CONTAINER)
 		]
+		
+		LOGGER.info("Add link for parent Context...")
 		var containers = rootContext.get(KEY_CONTAINERS) as List<IEclipseContext>
 		if (containers == null) {
+			LOGGER.debug("	Parent Context [{}] have no containers link, create new list...", rootContext)
 			containers = new ArrayList<IEclipseContext>
 			rootContext.set(KEY_CONTAINERS, containers)
 		}

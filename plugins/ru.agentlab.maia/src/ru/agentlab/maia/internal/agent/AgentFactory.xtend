@@ -97,8 +97,11 @@ class AgentFactory implements IAgentFactory {
 			addContextProperty(KEY_NAME, name)
 			addContextProperty(KEY_TYPE, TYPE_AGENT)
 		]
+		
+		LOGGER.info("Add link for parent Context...")
 		var agents = rootContext.get(KEY_AGENTS) as List<IEclipseContext>
 		if(agents == null){
+			LOGGER.debug("	Parent Context [{}] have no agents link, create new list...", rootContext)
 			agents = new ArrayList<IEclipseContext>
 			rootContext.set(KEY_AGENTS, agents)
 		}

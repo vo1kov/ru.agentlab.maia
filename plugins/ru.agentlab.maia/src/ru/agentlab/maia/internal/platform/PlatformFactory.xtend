@@ -115,8 +115,11 @@ class PlatformFactory implements IPlatformFactory {
 			addContextProperty(KEY_NAME, name)
 			addContextProperty(KEY_TYPE, TYPE_PLATFORM)
 		]
+
+		LOGGER.info("Add link for parent Context...")
 		var platforms = rootContext.get(KEY_PLATFORMS) as List<IEclipseContext>
-		if(platforms == null){
+		if (platforms == null) {
+			LOGGER.debug("	Parent Context [{}] have no platforms link, create new list...", rootContext)
 			platforms = new ArrayList<IEclipseContext>
 			rootContext.set(KEY_PLATFORMS, platforms)
 		}

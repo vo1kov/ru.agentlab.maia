@@ -112,8 +112,11 @@ class BehaviourFactory implements IBehaviourFactory {
 			addContextProperty(KEY_NAME, name)
 			addContextProperty(KEY_TYPE, TYPE_BEHAVIOUR)
 		]
+		
+		LOGGER.info("Add link for parent Context...")
 		var behaviours = rootContext.get(KEY_BEHAVIOURS) as List<IEclipseContext>
 		if(behaviours == null){
+			LOGGER.debug("	Parent Context [{}] have no behaviours link, create new list...", rootContext)
 			behaviours = new ArrayList<IEclipseContext>
 			rootContext.set(KEY_BEHAVIOURS, behaviours)
 		}
