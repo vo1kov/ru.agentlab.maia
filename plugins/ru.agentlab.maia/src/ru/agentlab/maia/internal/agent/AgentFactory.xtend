@@ -1,5 +1,7 @@
 package ru.agentlab.maia.internal.agent
 
+import java.util.ArrayList
+import java.util.List
 import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
@@ -93,8 +95,14 @@ class AgentFactory implements IAgentFactory {
 		LOGGER.info("Create Agent Context...")
 		val context = rootContext.createChild("Context for Agent: " + name) => [
 			addContextProperty(KEY_NAME, name)
-			addContextProperty(KEY_TYPE, "ru.agentlab.maia.agent")
+			addContextProperty(KEY_TYPE, TYPE_AGENT)
 		]
+		var agents = rootContext.get(KEY_AGENTS) as List<IEclipseContext>
+		if(agents == null){
+			agents = new ArrayList<IEclipseContext>
+			rootContext.set(KEY_AGENTS, agents)
+		}
+		agents += context
 		context
 	}
 

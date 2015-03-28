@@ -1,5 +1,7 @@
 package ru.agentlab.maia.internal.container
 
+import java.util.ArrayList
+import java.util.List
 import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
@@ -45,7 +47,7 @@ class ContainerFactory implements IContainerFactory {
 		LOGGER.info("Container successfully created!")
 		return context
 	}
-	
+
 	private def internalCreateEmpty(IEclipseContext root, String id) {
 		val rootContext = if (root != null) {
 				root
@@ -53,7 +55,7 @@ class ContainerFactory implements IContainerFactory {
 				LOGGER.warn("Root context is null, get it from OSGI services...")
 				EclipseContextFactory.getServiceContext(MaiaActivator.context)
 			}
-		
+
 		val name = if (id != null) {
 				id
 			} else {
@@ -63,12 +65,19 @@ class ContainerFactory implements IContainerFactory {
 				LOGGER.debug("	Container Name is [{}]", n)
 				n
 			}
-		
+
 		LOGGER.info("Create Container Context...")
 		val context = rootContext.createChild("Context for Container: " + name) => [
+			declareModifiable(KEY_AGENTS)
 			addContextProperty(KEY_NAME, name)
-			addContextProperty(KEY_TYPE, "ru.agentlab.maia.container")
+			addContextProperty(KEY_TYPE, TYPE_CONTAINER)
 		]
+		var containers = rootContext.get(KEY_CONTAINERS) as List<IEclipseContext>
+		if (containers == null) {
+			containers = new ArrayList<IEclipseContext>
+			rootContext.set(KEY_CONTAINERS, containers)
+		}
+		containers += context
 		context
 	}
 

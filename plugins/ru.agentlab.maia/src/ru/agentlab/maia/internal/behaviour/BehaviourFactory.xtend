@@ -1,5 +1,7 @@
 package ru.agentlab.maia.internal.behaviour
 
+import java.util.ArrayList
+import java.util.List
 import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
@@ -106,9 +108,16 @@ class BehaviourFactory implements IBehaviourFactory {
 
 		LOGGER.info("Create Behaviour Context...")
 		val context = rootContext.createChild("Context for Behaviour: " + name) => [
+			declareModifiable(KEY_BEHAVIOURS)
 			addContextProperty(KEY_NAME, name)
-			addContextProperty(KEY_TYPE, "ru.agentlab.maia.behaviour")
+			addContextProperty(KEY_TYPE, TYPE_BEHAVIOUR)
 		]
+		var behaviours = rootContext.get(KEY_BEHAVIOURS) as List<IEclipseContext>
+		if(behaviours == null){
+			behaviours = new ArrayList<IEclipseContext>
+			rootContext.set(KEY_BEHAVIOURS, behaviours)
+		}
+		behaviours += context
 		context
 	}
 
