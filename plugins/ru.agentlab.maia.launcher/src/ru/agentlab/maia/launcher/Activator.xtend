@@ -4,6 +4,7 @@ import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
+import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.lifecycle.fipa.IFipaAgentLifecycleService
 import ru.agentlab.maia.platform.IPlatformFactory
@@ -32,7 +33,7 @@ class Activator implements BundleActivator {
 		platformFactory = context.getService(context.getServiceReference(IPlatformFactory))
 		containerFactory = context.getService(context.getServiceReference(IContainerFactory))
 		agentFactory = context.getService(context.getServiceReference(IAgentFactory))
-//		val behaviourFactory = context.getService(context.getServiceReference(IBehaviourFactory))
+		val behaviourFactory = context.getService(context.getServiceReference(IBehaviourFactory))
 		val agentLyfecycleService = context.getService(context.getServiceReference(IFipaAgentLifecycleService))
 
 		LOGGER.info("CREATE platform")
@@ -50,14 +51,14 @@ class Activator implements BundleActivator {
 		val agent1 = agentFactory.createDefault(container1, "Agent1")
 
 		LOGGER.info("CREATE agent2")
-		val agent2 = agentFactory.createDefault(container1, "Agent2")
+		val agent2 = agentFactory.createDefault(null, "Agent2")
 
 		LOGGER.info("INVOKE agent1")
 		agentLyfecycleService.invoke(agent1)
 //		
 //		val port = Integer.parseInt(System.getProperty("port", "8899"))
 //		if(port == 8888){
-//			behaviourFactory.create(agent2, "beh", BehaviourExample2)
+//			behaviourFactory.createDefault(agent2, "beh", BehaviourExample2)
 //			
 		Thread.sleep(5000)
 		LOGGER.info("INVOKE agent2")
