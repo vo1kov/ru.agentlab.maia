@@ -1,4 +1,6 @@
-package ru.agentlab.maia.messaging
+package ru.agentlab.maia.messaging.matching
+
+import ru.agentlab.maia.messaging.IMessage
 
 /**
  * 	 This interface must be overriden in order to define an application 
@@ -9,7 +11,7 @@ package ru.agentlab.maia.messaging
  * 	 specific requirements <b>false</b> otherwise.
  */
 interface IMatchExpression {
-	
+
 	/**
 	 *  Check whether a given ACL message matches this
 	 *  template. Concrete implementations of this interface will

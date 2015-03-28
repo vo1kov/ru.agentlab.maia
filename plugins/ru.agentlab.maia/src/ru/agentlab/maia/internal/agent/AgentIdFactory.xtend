@@ -12,7 +12,9 @@ class AgentIdFactory implements IAgentIdFactory {
 		LOGGER.info("Create AgentId for [{}] containerId, [{}] name", containerId, name)
 		return new AgentId => [
 			it.containerId = containerId
-			containerId.agentIds += it
+			if (containerId != null) {
+				containerId.agentIds += it
+			}
 			it.name = name
 		]
 	}

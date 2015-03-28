@@ -5,13 +5,13 @@ import javax.inject.Inject
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.internal.messaging.NettyMessageTransportServiceFactory
-import ru.agentlab.maia.messaging.IMessageTransportService
+import ru.agentlab.maia.internal.messaging.netty.NettyMessageDeliveryServiceFactory
+import ru.agentlab.maia.messaging.IMessageDeliveryService
+import ru.agentlab.maia.messaging.IMessageFactory
 import ru.agentlab.maia.platform.IPlatform
 import ru.agentlab.maia.platform.IPlatformFactory
 import ru.agentlab.maia.platform.IPlatformId
 import ru.agentlab.maia.platform.IPlatformIdFactory
-import ru.agentlab.maia.messaging.IMessageFactory
 import ru.agentlab.maia.platform.IPlatformNameGenerator
 
 class PlatformFactory implements IPlatformFactory {
@@ -50,12 +50,12 @@ class PlatformFactory implements IPlatformFactory {
 		LOGGER.info("Create Platform-specific Services...")
 		LOGGER.debug("	Put [{}] Service to context...", IMessageFactory.simpleName)
 		platformContext.set(IMessageFactory, messageFactory)
-		LOGGER.debug("	Put [{}] Service to context...", IMessageTransportService.simpleName)
-		val mtsFactory = ContextInjectionFactory.make(NettyMessageTransportServiceFactory, platformContext)
+		LOGGER.debug("	Put [{}] Service to context...", IMessageDeliveryService.simpleName)
+		val mtsFactory = ContextInjectionFactory.make(NettyMessageDeliveryServiceFactory, platformContext)
 		ContextInjectionFactory.invoke(mtsFactory, PostConstruct, platformContext, null)
 		val mts = mtsFactory.create
 //		ContextInjectionFactory.invoke(mts, PostConstruct, platformContext, null)
-		platformContext.set(IMessageTransportService, mts)
+		platformContext.set(IMessageDeliveryService, mts)
 
 		LOGGER.info("Create Platform ID...")
 		val platformId = platformIdFactory.create(name)

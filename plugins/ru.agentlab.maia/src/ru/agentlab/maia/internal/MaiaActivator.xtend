@@ -26,10 +26,12 @@ import ru.agentlab.maia.internal.messaging.MessageFactory
 import ru.agentlab.maia.internal.messaging.MessageQueueFactory
 import ru.agentlab.maia.internal.platform.PlatformFactory
 import ru.agentlab.maia.internal.platform.PlatformIdFactory
+import ru.agentlab.maia.internal.platform.PlatformNameGenerator
 import ru.agentlab.maia.messaging.IMessageFactory
 import ru.agentlab.maia.messaging.IMessageQueueFactory
 import ru.agentlab.maia.platform.IPlatformFactory
 import ru.agentlab.maia.platform.IPlatformIdFactory
+import ru.agentlab.maia.platform.IPlatformNameGenerator
 
 class MaiaActivator implements BundleActivator {
 
@@ -55,6 +57,7 @@ class MaiaActivator implements BundleActivator {
 
 			registerService(IAgentNameGenerator, new AgentNameGenerator, null)
 			registerService(IContainerNameGenerator, new ContainerNameGenerator, null)
+			registerService(IPlatformNameGenerator, new PlatformNameGenerator, null)
 
 			registerService(IPlatformIdFactory, new PlatformIdFactory, null)
 			registerService(IContainerIdFactory, new ContainerIdFactory, null)

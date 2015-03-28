@@ -10,9 +10,7 @@ import ru.agentlab.maia.agent.IAgentId
 import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.container.IContainer
-import ru.agentlab.maia.messaging.IMessage
 import ru.agentlab.maia.messaging.IMessageQueue
-import ru.agentlab.maia.messaging.IMessageTemplate
 
 @Accessors
 class Agent implements IAgent {
@@ -33,13 +31,5 @@ class Agent implements IAgent {
 
 	@Inject
 	IMessageQueue queue
-
-	override receive(IMessageTemplate template) {
-		queue.receive(template)
-	}
-
-	override send(IMessage message) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
 
 }

@@ -20,6 +20,7 @@ package ru.agentlab.maia.messaging
 
 import java.util.LinkedList
 import ru.agentlab.maia.internal.agent.Agent
+import ru.agentlab.maia.messaging.matching.IMessageTemplate
 
 /** 
  * The interface to be implemented by agent message queue implementations

@@ -69,7 +69,7 @@ class Scheduler extends Thread implements IScheduler {
 				size = readyBehaviours.size
 				if (size > 0) {
 					val behaviour = readyBehaviours.get(currentIndex)
-					LOGGER.debug("Try to invoke action of [{}] behaviour", behaviour)
+//					LOGGER.debug("Try to invoke action of [{}] behaviour", behaviour)
 					currentIndex = (currentIndex + 1) % readyBehaviours.size()
 					behaviour.action()
 					if (behaviour.isDone) {

@@ -1,6 +1,6 @@
 package ru.agentlab.maia.messaging
 
-interface IMessageTransportEventListener {
+interface IMessageDeliveryEventListener {
 
 	def void onReceive(IMessage message)
 

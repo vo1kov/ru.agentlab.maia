@@ -65,6 +65,7 @@ class AgentFactory implements IAgentFactory {
 			set(IScheduler, scheduler)
 			set(IMessageQueue, messageQueue)
 			set(IAgent.KEY_NAME, name)
+			set(IAgentIdFactory, agentIdFactory)
 			set(IAgentLifecycleService.KEY_STATE, IFipaAgentLifecycleService.State.INITIATED.toString)
 		]
 
