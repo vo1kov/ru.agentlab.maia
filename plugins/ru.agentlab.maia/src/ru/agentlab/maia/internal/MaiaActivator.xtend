@@ -10,12 +10,14 @@ import ru.agentlab.maia.agent.ISchedulerFactory
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.container.IContainerIdFactory
+import ru.agentlab.maia.context.IContributionService
 import ru.agentlab.maia.internal.agent.AgentFactory
 import ru.agentlab.maia.internal.agent.AgentIdFactory
 import ru.agentlab.maia.internal.agent.SchedulerFactory
 import ru.agentlab.maia.internal.behaviour.BehaviourFactory
 import ru.agentlab.maia.internal.container.ContainerFactory
 import ru.agentlab.maia.internal.container.ContainerIdFactory
+import ru.agentlab.maia.internal.context.ContributionService
 import ru.agentlab.maia.internal.lifecycle.fipa.FipaAgentLifecycleService
 import ru.agentlab.maia.internal.messaging.MessageFactory
 import ru.agentlab.maia.internal.messaging.MessageQueueFactory
@@ -69,6 +71,7 @@ class MaiaActivator implements BundleActivator {
 			registerService(IBehaviourFactory, new BehaviourFactory, null)
 
 			registerService(IServiceManagementService, new ServiceManagementService, null)
+			registerService(IContributionService, new ContributionService, null)
 		]
 
 //
