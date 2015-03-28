@@ -1,9 +1,6 @@
 package ru.agentlab.maia.agent
 
-import ru.agentlab.maia.container.IContainer
+import ru.agentlab.maia.context.IContextFactory
 
-interface IAgentFactory {
-
-	def IAgent create(IContainer container, String id, Class<?> contributorClass)
-
+interface IAgentFactory extends IContextFactory {
 }

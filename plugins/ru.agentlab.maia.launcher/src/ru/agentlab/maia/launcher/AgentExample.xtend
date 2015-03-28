@@ -6,20 +6,18 @@ import javax.inject.Named
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.eclipse.e4.core.internal.contexts.EclipseContext
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.agent.IAgent
 import ru.agentlab.maia.agent.IAgentId
-import ru.agentlab.maia.agent.IAgentLifecycleService
 import ru.agentlab.maia.behaviour.IBehaviourFactory
+import ru.agentlab.maia.context.IContextFactory
+import ru.agentlab.maia.context.IContributionService
+import ru.agentlab.maia.lifecycle.IAgentLifecycleService
 
 class AgentExample {
 
 	val static LOGGER = LoggerFactory.getLogger(AgentExample)
 
-	@Inject @Named(IAgent.KEY_NAME)
+	@Inject @Named(IContextFactory.KEY_NAME)
 	String agentName
-
-	@Inject
-	IAgent agent
 
 	@Inject
 	IAgentId agentId
@@ -30,10 +28,15 @@ class AgentExample {
 	@Inject
 	IBehaviourFactory behaviourFactory
 
+	@Inject
+	IContributionService contributionService
+
 	@PostConstruct
 	def void setup() {
 		LOGGER.info("Setup of: [{}] agent", agentName)
-		behaviourFactory.create(agent, "first", BehaviourExample)
+		val behaviour = behaviourFactory.createDefault(context, "first")
+		contributionService.addContributor(behaviour, BehaviourExample)
+
 //		behaviourFactory.create(agent, "second", BehaviourExample)
 		LOGGER.info("Agent ID: [{}] ", agentId.name)
 		LOGGER.info("Agent context: [{}]", context)

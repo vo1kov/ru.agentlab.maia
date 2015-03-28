@@ -1,7 +1,6 @@
 package ru.agentlab.maia.platform
 
-interface IPlatformFactory {
+import ru.agentlab.maia.context.IContextFactory
 
-	def IPlatform create(String id, Class<?> contributorClass)
-
+interface IPlatformFactory extends IContextFactory {
 }

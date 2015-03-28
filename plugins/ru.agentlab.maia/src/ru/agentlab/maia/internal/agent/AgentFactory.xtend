@@ -1,95 +1,94 @@
 package ru.agentlab.maia.internal.agent
 
-import javax.annotation.PostConstruct
-import javax.inject.Inject
-import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
+import org.eclipse.e4.core.internal.contexts.EclipseContext
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.agent.IAgent
 import ru.agentlab.maia.agent.IAgentFactory
-import ru.agentlab.maia.agent.IAgentId
-import ru.agentlab.maia.agent.IAgentIdFactory
-import ru.agentlab.maia.agent.IAgentLifecycleService
-import ru.agentlab.maia.agent.IAgentNameGenerator
-import ru.agentlab.maia.agent.IFipaAgentLifecycleService
 import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.agent.ISchedulerFactory
-import ru.agentlab.maia.behaviour.IBehaviourFactory
-import ru.agentlab.maia.container.IContainer
+import ru.agentlab.maia.internal.MaiaActivator
 import ru.agentlab.maia.messaging.IMessageQueue
 import ru.agentlab.maia.messaging.IMessageQueueFactory
+import ru.agentlab.maia.naming.IAgentNameGenerator
 
 class AgentFactory implements IAgentFactory {
 
 	val static LOGGER = LoggerFactory.getLogger(AgentFactory)
 
-	@Inject
-	IEclipseContext context
+	override createDefault(IEclipseContext root, String id) {
+		LOGGER.info("Try to create new Agent...")
+		LOGGER.debug("	Agent Id: [{}]", id)
 
-	@Inject
-	ISchedulerFactory schedulerProvider
+		val context = createEmpty(root, id)
+		val name = context.get(KEY_NAME) as String
 
-	@Inject
-	IMessageQueueFactory messageQueueProvider
+		(context as EclipseContext).localData.forEach [ p1, p2 |
+			LOGGER.info("Context Data: [{}] -> [{}]", p1, p2)
+		]
+		(context.parent as EclipseContext).localData.forEach [ p1, p2 |
+			LOGGER.info("ContextParent Data: [{}] -> [{}]", p1, p2)
+		]
 
-	@Inject
-	IAgentNameGenerator nameGenerator
+		val schedulerFactory = context.get(ISchedulerFactory)
+		val scheduler = schedulerFactory.create(name)
+		val messageQueueProvider = context.get(IMessageQueueFactory)
+		val messageQueue = messageQueueProvider.get
 
-	@Inject
-	IAgentIdFactory agentIdFactory
+		LOGGER.info("Create Agent-specific Services...")
+		context => [
+			addContextService(IScheduler, scheduler)
+			addContextService(IMessageQueue, messageQueue)
+		]
+		return context
+	}
 
 	/**
-	 * Create agent instance
+	 * Create empty Agent-Context
 	 * 
 	 * @param id
-	 * 			- unique id of agent. If <code>null</code>, then <code>IAgentNameGenerator</code> 
+	 * 			- unique id of agent. If <code>null</code>, then <code>INameGenerator</code> 
 	 * 			will be used for generating agent name.
-	 * @param contributorClass
-	 * 			- class that contain customization of agent realization. Contributor class 
-	 * 			is simple POJO. Services can be accessed via injection. If <code>null</code> then 
-	 * 			default agent realization will be used.
 	 */
-	override create(IContainer container, String id, Class<?> contributorClass) {
-		LOGGER.info("Prepare Agent Name...")
+	override createEmpty(IEclipseContext root, String id) {
+		LOGGER.info("Try to create new empty Agent...")
+		LOGGER.debug("	Agent Id: [{}]", id)
+
+		LOGGER.info("Prepare Agent root context...")
+		val rootContext = if (root != null) {
+				root
+			} else {
+				LOGGER.info("Root context is null, get it from OSGI services...")
+				MaiaActivator.osgiContext
+			}
+
 		val name = if (id != null) {
 				id
 			} else {
-				nameGenerator.generateName(container)
+				LOGGER.info("Generate Agent Name...")
+				val nameGenerator = rootContext.get(IAgentNameGenerator)
+				val n = nameGenerator.generate(rootContext)
+				LOGGER.debug("	Agent Name is [{}]", n)
+				n
 			}
 
-		val scheduler = schedulerProvider.create(name)
-		val messageQueue = messageQueueProvider.get
-
-		LOGGER.info("Prepare Agent Context...")
-		val agentContext = container.context.createChild("Agent [" + name + "] Context") => [
-			set(IScheduler, scheduler)
-			set(IMessageQueue, messageQueue)
-			set(IAgent.KEY_NAME, name)
-			set(IAgentIdFactory, agentIdFactory)
-			set(IAgentLifecycleService.KEY_STATE, IFipaAgentLifecycleService.State.INITIATED.toString)
+		LOGGER.info("Create Agent Context...")
+		val context = rootContext.createChild("Agent [" + name + "] Context") => [
+			addContextProperty(KEY_NAME, name)
+			addContextProperty(KEY_TYPE, "ru.agentlab.maia.agent")
 		]
 
-		LOGGER.info("Prepare Agent-layer Services...")
-		agentContext.set(IBehaviourFactory, context.get(IBehaviourFactory))
+		LOGGER.info("Empty Agent successfully created!")
+		return context
+	}
 
-		LOGGER.info("Prepare AgentID in Context...")
-		val agentId = agentIdFactory.create(container.id, name)
-		agentContext.set(IAgentId, agentId)
+	def private void addContextProperty(IEclipseContext context, String key, Object value) {
+		LOGGER.debug("	Put Property [{}] with vale [{}]  to context...", key, value)
+		context.set(key, value)
+	}
 
-		LOGGER.info("Prepare Agent Instance in Context...")
-		val agent = ContextInjectionFactory.make(Agent, agentContext)
-		ContextInjectionFactory.invoke(agent, PostConstruct, agentContext, null)
-		agentContext.set(IAgent, agent)
-		container.childs += agent
-
-		LOGGER.info("Prepare Agent Contributor in Context...")
-		if (contributorClass != null) {
-			val contributor = ContextInjectionFactory.make(contributorClass, agentContext)
-			agentContext.set(IAgent.KEY_CONTRIBUTOR, contributor)
-			ContextInjectionFactory.invoke(contributor, PostConstruct, agentContext, null)
-		}
-
-		return agent
+	def private <T> void addContextService(IEclipseContext context, Class<T> key, T value) {
+		LOGGER.debug("	Put Service [{}] with vale [{}]  to context...", key.name, value)
+		context.set(key, value)
 	}
 
 }

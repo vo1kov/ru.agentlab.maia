@@ -1,6 +1,6 @@
-package ru.agentlab.maia.agent
+package ru.agentlab.maia.lifecycle
 
-class IllegalAgentState extends Exception {
+class IllegalAgentStateException extends IllegalStateException {
 	
 	new(String arg0) {
 		super(arg0)

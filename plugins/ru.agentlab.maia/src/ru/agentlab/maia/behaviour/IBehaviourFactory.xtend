@@ -1,8 +1,6 @@
 package ru.agentlab.maia.behaviour
 
-import ru.agentlab.maia.agent.IAgent
+import ru.agentlab.maia.context.IContextFactory
 
-interface IBehaviourFactory {
-	
-	def IBehaviour create(IAgent agent, String id, Class<?> contributorClass)
+interface IBehaviourFactory extends IContextFactory {
 }

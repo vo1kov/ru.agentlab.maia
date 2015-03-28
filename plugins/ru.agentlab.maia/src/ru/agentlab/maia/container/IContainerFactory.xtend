@@ -1,9 +1,6 @@
 package ru.agentlab.maia.container
 
-import ru.agentlab.maia.platform.IPlatform
+import ru.agentlab.maia.context.IContextFactory
 
-interface IContainerFactory {
-
-	def IContainer create(IPlatform platform, String id, Class<?> contributorClass)
-
+interface IContainerFactory extends IContextFactory {
 }
