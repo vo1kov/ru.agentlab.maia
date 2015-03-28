@@ -1,8 +1,5 @@
 package ru.agentlab.maia.internal
 
-import org.eclipse.e4.core.contexts.EclipseContextFactory
-import org.eclipse.e4.core.contexts.IEclipseContext
-import org.eclipse.e4.core.internal.contexts.EclipseContext
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import ru.agentlab.maia.IServiceManagementService
@@ -44,8 +41,6 @@ class MaiaActivator implements BundleActivator {
 		return context
 	}
 
-	public static IEclipseContext osgiContext
-
 	/*
 	 * (non-Javadoc)
 	 * @see BundleActivator#start(org.osgi.framework.BundleContext)
@@ -74,10 +69,6 @@ class MaiaActivator implements BundleActivator {
 			registerService(IBehaviourFactory, new BehaviourFactory, null)
 
 			registerService(IServiceManagementService, new ServiceManagementService, null)
-		]
-		osgiContext = EclipseContextFactory.getServiceContext(context)
-		(osgiContext as EclipseContext).localData.forEach [ p1, p2 |
-			println("ContextParent Data: [" + p1 + "] -> [" + p2 + "]")
 		]
 
 //

@@ -10,6 +10,7 @@ import ru.agentlab.maia.internal.MaiaActivator
 import ru.agentlab.maia.messaging.IMessageQueue
 import ru.agentlab.maia.messaging.IMessageQueueFactory
 import ru.agentlab.maia.naming.IAgentNameGenerator
+import org.eclipse.e4.core.contexts.EclipseContextFactory
 
 class AgentFactory implements IAgentFactory {
 
@@ -69,7 +70,7 @@ class AgentFactory implements IAgentFactory {
 				root
 			} else {
 				LOGGER.info("Root context is null, get it from OSGI services...")
-				MaiaActivator.osgiContext
+				EclipseContextFactory.getServiceContext(MaiaActivator.context)
 			}
 
 		val name = if (id != null) {

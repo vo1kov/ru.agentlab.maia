@@ -1,5 +1,6 @@
 package ru.agentlab.maia.internal.container
 
+import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.container.IContainerFactory
@@ -13,7 +14,7 @@ import ru.agentlab.maia.platform.IPlatformId
 class ContainerFactory implements IContainerFactory {
 
 	val static LOGGER = LoggerFactory.getLogger(ContainerFactory)
-	
+
 	extension ContextExtension = new ContextExtension(LOGGER)
 
 	override createDefault(IEclipseContext root, String id) {
@@ -41,7 +42,7 @@ class ContainerFactory implements IContainerFactory {
 				root
 			} else {
 				LOGGER.info("Root context is null, get it from OSGI services...")
-				MaiaActivator.osgiContext
+				EclipseContextFactory.getServiceContext(MaiaActivator.context)
 			}
 
 		val name = if (id != null) {
