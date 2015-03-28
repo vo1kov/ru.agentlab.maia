@@ -11,7 +11,8 @@ class ServiceManagementService implements IServiceManagementService {
 
 	override <T> moveFromRoot(IEclipseContext context, Class<T> serviceClass) throws IllegalStateException{
 		context.copyFromRoot(serviceClass)
-		context.parent.set(serviceClass, null)
+		LOGGER.debug("	Remove [{}] Service from [{}] context...", serviceClass.simpleName, context.parent)
+		context.parent.remove(serviceClass)
 	}
 
 	override <T> copyFromRoot(IEclipseContext context, Class<T> serviceClass) throws IllegalStateException{
@@ -24,14 +25,14 @@ class ServiceManagementService implements IServiceManagementService {
 		rootContext.copyTo(context, serviceClass)
 	}
 
-	def private <T> void copyTo(IEclipseContext root, IEclipseContext context,
+	def private <T> void copyTo(IEclipseContext from, IEclipseContext to,
 		Class<T> serviceClass) throws IllegalStateException{
-		val service = root.get(serviceClass)
+		val service = from.get(serviceClass)
 		if (service != null) {
-			LOGGER.debug("	Put [{}] Service to [{}] context...", serviceClass.simpleName, context)
-			context.set(serviceClass, service)
+			LOGGER.debug("	Copy [{}] Service from [{}] to [{}] context...", serviceClass.simpleName, from, to)
+			to.set(serviceClass, service)
 		} else {
-			throw new IllegalStateException("Context [" + root + "] have no [" + serviceClass + "] service")
+			throw new IllegalStateException("Context [" + from + "] have no [" + serviceClass + "] service")
 		}
 	}
 
