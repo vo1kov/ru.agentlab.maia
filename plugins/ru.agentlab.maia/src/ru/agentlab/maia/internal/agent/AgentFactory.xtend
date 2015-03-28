@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.agent.ISchedulerFactory
+import ru.agentlab.maia.context.ContextExtension
 import ru.agentlab.maia.internal.MaiaActivator
 import ru.agentlab.maia.messaging.IMessageQueue
 import ru.agentlab.maia.messaging.IMessageQueueFactory
@@ -14,6 +15,8 @@ import ru.agentlab.maia.naming.IAgentNameGenerator
 class AgentFactory implements IAgentFactory {
 
 	val static LOGGER = LoggerFactory.getLogger(AgentFactory)
+
+	extension ContextExtension = new ContextExtension(LOGGER)
 
 	override createDefault(IEclipseContext root, String id) {
 		LOGGER.info("Try to create new Agent...")
@@ -36,7 +39,9 @@ class AgentFactory implements IAgentFactory {
 
 		LOGGER.info("Create Agent-specific Services...")
 		context => [
+			// Every behaviour can access to scheduler
 			addContextService(IScheduler, scheduler)
+			// Every behaviour can access to message queue
 			addContextService(IMessageQueue, messageQueue)
 		]
 		return context
@@ -72,23 +77,13 @@ class AgentFactory implements IAgentFactory {
 			}
 
 		LOGGER.info("Create Agent Context...")
-		val context = rootContext.createChild("Agent [" + name + "] Context") => [
+		val context = rootContext.createChild("Context for Agent: " + name) => [
 			addContextProperty(KEY_NAME, name)
 			addContextProperty(KEY_TYPE, "ru.agentlab.maia.agent")
 		]
 
 		LOGGER.info("Empty Agent successfully created!")
 		return context
-	}
-
-	def private void addContextProperty(IEclipseContext context, String key, Object value) {
-		LOGGER.debug("	Put Property [{}] with vale [{}]  to context...", key, value)
-		context.set(key, value)
-	}
-
-	def private <T> void addContextService(IEclipseContext context, Class<T> key, T value) {
-		LOGGER.debug("	Put Service [{}] with vale [{}]  to context...", key.name, value)
-		context.set(key, value)
 	}
 
 }

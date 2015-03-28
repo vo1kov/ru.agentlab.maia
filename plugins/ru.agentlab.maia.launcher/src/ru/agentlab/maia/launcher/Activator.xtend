@@ -38,6 +38,11 @@ class Activator implements BundleActivator {
 		LOGGER.info("CREATE platform")
 		val platform1 = platformFactory.createDefault(null, "Platform1")
 
+		LOGGER.info("CREATE ams agent")
+		val amsAgnet = agentFactory.createDefault(platform1, "ams") => [
+			agentLyfecycleService.invoke(it)
+		]
+
 		LOGGER.info("CREATE container1")
 		val container1 = containerFactory.createDefault(platform1, "Container1")
 

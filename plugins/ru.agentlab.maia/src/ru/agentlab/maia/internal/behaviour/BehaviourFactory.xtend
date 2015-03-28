@@ -94,7 +94,7 @@ class BehaviourFactory implements IBehaviourFactory {
 			}
 
 		LOGGER.info("Create Behaviour Context...")
-		val context = rootContext.createChild("Behaviour [" + name + "] Context") => [
+		val context = rootContext.createChild("Context for Behaviour: " + name) => [
 			addContextProperty(KEY_NAME, name)
 			addContextProperty(KEY_TYPE, "ru.agentlab.maia.behaviour")
 		]

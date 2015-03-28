@@ -7,6 +7,7 @@ import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.agent.ISchedulerFactory
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.container.IContainerFactory
+import ru.agentlab.maia.context.ContextExtension
 import ru.agentlab.maia.internal.MaiaActivator
 import ru.agentlab.maia.messaging.IMessageFactory
 import ru.agentlab.maia.messaging.IMessageQueueFactory
@@ -18,6 +19,8 @@ import ru.agentlab.maia.platform.IPlatformIdFactory
 class PlatformFactory implements IPlatformFactory {
 
 	val static LOGGER = LoggerFactory.getLogger(PlatformFactory)
+	
+	extension ContextExtension = new ContextExtension(LOGGER)
 
 	/**
 	 * Create new Platform-Context with required platform-specific services:
@@ -96,11 +99,9 @@ class PlatformFactory implements IPlatformFactory {
 			}
 
 		LOGGER.info("Create Platform Context...")
-		val platformContext = rootContext.createChild("Platform [" + name + "] Context") => [
-			LOGGER.debug("	Put [{}] Property to context...", KEY_NAME)
-			set(KEY_NAME, name)
-			LOGGER.debug("	Put [{}] Property to context...", KEY_TYPE)
-			set(KEY_TYPE, "ru.agentlab.maia.platform")
+		val platformContext = rootContext.createChild("Context for Platform: " + name) => [
+			addContextProperty(KEY_NAME, name)
+			addContextProperty(KEY_TYPE, "ru.agentlab.maia.platform")
 		]
 
 		LOGGER.info("Empty Platform successfully created!")

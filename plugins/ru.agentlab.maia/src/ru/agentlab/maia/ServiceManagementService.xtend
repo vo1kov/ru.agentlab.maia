@@ -28,7 +28,7 @@ class ServiceManagementService implements IServiceManagementService {
 		Class<T> serviceClass) throws IllegalStateException{
 		val service = root.get(serviceClass)
 		if (service != null) {
-			LOGGER.debug("	Put [{}] Service to context...", serviceClass.simpleName)
+			LOGGER.debug("	Put [{}] Service to [{}] context...", serviceClass.simpleName, context)
 			context.set(serviceClass, service)
 			root.set(serviceClass, null)
 		} else {

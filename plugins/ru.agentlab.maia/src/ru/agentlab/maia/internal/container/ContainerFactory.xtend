@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory
 import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.container.IContainerId
 import ru.agentlab.maia.container.IContainerIdFactory
+import ru.agentlab.maia.context.ContextExtension
 import ru.agentlab.maia.internal.MaiaActivator
 import ru.agentlab.maia.naming.IContainerNameGenerator
 import ru.agentlab.maia.platform.IPlatformId
@@ -12,6 +13,8 @@ import ru.agentlab.maia.platform.IPlatformId
 class ContainerFactory implements IContainerFactory {
 
 	val static LOGGER = LoggerFactory.getLogger(ContainerFactory)
+	
+	extension ContextExtension = new ContextExtension(LOGGER)
 
 	override createDefault(IEclipseContext root, String id) {
 		LOGGER.info("Try to create new Container...")
@@ -52,18 +55,13 @@ class ContainerFactory implements IContainerFactory {
 			}
 
 		LOGGER.info("Create Container Context...")
-		val context = rootContext.createChild("Container [" + name + "] Context") => [
+		val context = rootContext.createChild("Context for Container: " + name) => [
 			addContextProperty(KEY_NAME, name)
 			addContextProperty(KEY_TYPE, "ru.agentlab.maia.container")
 		]
 
 		LOGGER.info("Empty Container successfully created!")
 		return context
-	}
-
-	def private void addContextProperty(IEclipseContext context, String key, Object value) {
-		LOGGER.debug("	Put Property [{}] with vale [{}]  to context...", key, value)
-		context.set(key, value)
 	}
 
 }
