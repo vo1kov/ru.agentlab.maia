@@ -4,8 +4,11 @@ import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
+import ru.agentlab.maia.agent.IAgentId
+import ru.agentlab.maia.agent.IAgentIdFactory
 import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.agent.ISchedulerFactory
+import ru.agentlab.maia.container.IContainerId
 import ru.agentlab.maia.context.ContextExtension
 import ru.agentlab.maia.internal.MaiaActivator
 import ru.agentlab.maia.messaging.IMessageQueue
@@ -26,20 +29,6 @@ class AgentFactory implements IAgentFactory {
 		val context = internalCreateEmpty(root, id)
 		val name = context.get(KEY_NAME) as String
 
-//		(context as EclipseContext).localData.forEach [ p1, p2 |
-//			LOGGER.info("Context Data: [{}] -> [{}]", p1, p2)
-//		]
-//		(context.parent as EclipseContext).localData.forEach [ p1, p2 |
-//			LOGGER.info("ContextParent Data: [{}] -> [{}]", p1, p2)
-//		]
-//		var c = context.parent
-//		while (c != null) {
-//			LOGGER.info("Context [{}] hold:", c)
-//			(c as EclipseContext).localData.forEach [ p1, p2 |
-//				LOGGER.info("	[{}] -> [{}]", p1, p2)
-//			]
-//			c = c.parent
-//		}
 		val schedulerFactory = context.get(ISchedulerFactory)
 		val scheduler = schedulerFactory.create(name)
 		
@@ -53,6 +42,13 @@ class AgentFactory implements IAgentFactory {
 			// Every behaviour can access to message queue
 			addContextService(IMessageQueue, messageQueue)
 		]
+		
+		LOGGER.info("Create Agent ID...")
+		// TODO: fix if parent is not container
+		val agentIdFactory = context.get(IAgentIdFactory)
+		val containerId = context.get(IContainerId)
+		val agentId = agentIdFactory.create(containerId, name)
+		context.set(IAgentId, agentId)
 		
 		LOGGER.info("Agent successfully created!")
 		return context
