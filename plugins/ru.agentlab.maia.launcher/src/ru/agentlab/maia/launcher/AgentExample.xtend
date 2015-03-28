@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct
 import javax.inject.Inject
 import javax.inject.Named
 import org.eclipse.e4.core.contexts.IEclipseContext
+import org.eclipse.e4.core.di.annotations.Optional
 import org.eclipse.e4.core.internal.contexts.EclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentId
@@ -40,12 +41,17 @@ class AgentExample {
 //		behaviourFactory.create(agent, "second", BehaviourExample)
 		LOGGER.info("Agent ID: [{}] ", agentId.name)
 		LOGGER.info("Agent context: [{}]", context)
-		(context as EclipseContext).localData.forEach [ p1, p2 |
-			LOGGER.info("Context Data: [{}] -> [{}]", p1, p2)
-		]
+		var c = context
+		while (c != null) {
+			LOGGER.debug("Context [{}] hold:", c)
+			(c as EclipseContext).localData.forEach [ p1, p2 |
+				LOGGER.debug("	[{}] -> [{}]", p1, p2)
+			]
+			c = c.parent
+		}
 	}
 
-	@Inject
+	@Inject @Optional
 	def void onStateChange(@Named(IAgentLifecycleService.KEY_STATE) String state) {
 		LOGGER.info("State changed: [{}]", state)
 	}

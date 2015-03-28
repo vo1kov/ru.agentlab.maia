@@ -9,13 +9,14 @@ import org.slf4j.LoggerFactory
 import ru.agentlab.maia.Action
 import ru.agentlab.maia.ActionTicker
 import ru.agentlab.maia.behaviour.IBehaviour
+import ru.agentlab.maia.context.IContextFactory
 
 class BehaviourExample {
 
 	val static LOGGER = LoggerFactory.getLogger(BehaviourExample)
 
 	@Inject
-	@Named(IBehaviour.KEY_NAME)
+	@Named(IContextFactory.KEY_NAME)
 	String behName
 
 	@Inject
@@ -23,9 +24,14 @@ class BehaviourExample {
 
 	@PostConstruct
 	def void init() {
-		(context as EclipseContext).localData.forEach [ p1, p2 |
-			LOGGER.info("Context Data: [{}] -> [{}]", p1, p2)
-		]
+		var c = context
+		while (c != null) {
+			LOGGER.debug("Context [{}] hold:", c)
+			(c as EclipseContext).localData.forEach [ p1, p2 |
+				LOGGER.debug("	[{}] -> [{}]", p1, p2)
+			]
+			c = c.parent
+		}
 	}
 
 	@Action(type=IBehaviour.TYPE_TICKER)
