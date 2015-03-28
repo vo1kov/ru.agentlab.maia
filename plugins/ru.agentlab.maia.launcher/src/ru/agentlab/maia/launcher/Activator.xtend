@@ -51,11 +51,15 @@ class Activator implements BundleActivator {
 		LOGGER.info("INVOKE agent1")
 		agentLyfecycleService.invoke(agent1)
 		
-		behaviourFactory.create(agent2, "beh", BehaviourExample2)
+		val port = Integer.parseInt(System.getProperty("port", "8899"))
+		if(port == 8888){
+			behaviourFactory.create(agent2, "beh", BehaviourExample2)
+			
+			Thread.sleep(5000)
+			LOGGER.info("INVOKE agent2")
+			agentLyfecycleService.invoke(agent2)
+		}
 		
-		Thread.sleep(5000)
-		LOGGER.info("INVOKE agent2")
-		agentLyfecycleService.invoke(agent2)
 		
 //		Thread.sleep(3000)
 //		LOGGER.info("SUSPEND agent1")
