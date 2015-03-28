@@ -14,7 +14,7 @@ class ContributionService implements IContributionService {
 		if (contributorClass != null) {
 			LOGGER.info("Create Contributor...")
 			val contributor = ContextInjectionFactory.make(contributorClass, context)
-			LOGGER.debug("	Put [{}] object to context...", contributorClass.simpleName)
+			LOGGER.debug("	Put [{}]->[{}] to [{}] context...", KEY_CONTRIBUTOR, contributor, context)
 			context.set(KEY_CONTRIBUTOR, contributor)
 			ContextInjectionFactory.invoke(contributor, PostConstruct, context, null)
 		} else {
