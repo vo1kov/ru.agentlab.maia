@@ -4,7 +4,6 @@ import io.netty.channel.ChannelInitializer
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.SocketChannel
 import javax.annotation.PostConstruct
-import javax.inject.Inject
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import ru.agentlab.maia.messaging.IMessageDeliveryServiceFactory
@@ -12,10 +11,7 @@ import ru.agentlab.maia.messaging.netty.INettyMessageDeliveryService
 
 class NettyMessageDeliveryServiceFactory implements IMessageDeliveryServiceFactory {
 
-	@Inject
-	IEclipseContext context
-
-	override create() {
+	override create(IEclipseContext context) {
 		context => [
 			set(INettyMessageDeliveryService.KEY_BOSS_GROUP, new NioEventLoopGroup)
 			set(INettyMessageDeliveryService.KEY_WORKER_GROUP, new NioEventLoopGroup)

@@ -86,8 +86,9 @@ class PlatformFactory implements IPlatformFactory {
 
 		LOGGER.debug("	Put [{}] Service to context...", IMessageDeliveryService.simpleName)
 		val mtsFactory = context.parent.get(IMessageDeliveryServiceFactory)
+		println(mtsFactory)
 		ContextInjectionFactory.invoke(mtsFactory, PostConstruct, context, null)
-		val mts = mtsFactory.create
+		val mts = mtsFactory.create(context)
 		context.set(IMessageDeliveryService, mts)
 		
 		LOGGER.info("Platform successfully created!")

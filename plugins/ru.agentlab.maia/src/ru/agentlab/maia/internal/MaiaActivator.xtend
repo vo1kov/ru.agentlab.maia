@@ -21,12 +21,14 @@ import ru.agentlab.maia.internal.context.ContributionService
 import ru.agentlab.maia.internal.lifecycle.fipa.FipaAgentLifecycleService
 import ru.agentlab.maia.internal.messaging.MessageFactory
 import ru.agentlab.maia.internal.messaging.MessageQueueFactory
+import ru.agentlab.maia.internal.messaging.netty.NettyMessageDeliveryServiceFactory
 import ru.agentlab.maia.internal.naming.AgentNameGenerator
 import ru.agentlab.maia.internal.naming.ContainerNameGenerator
 import ru.agentlab.maia.internal.naming.PlatformNameGenerator
 import ru.agentlab.maia.internal.platform.PlatformFactory
 import ru.agentlab.maia.internal.platform.PlatformIdFactory
 import ru.agentlab.maia.lifecycle.fipa.IFipaAgentLifecycleService
+import ru.agentlab.maia.messaging.IMessageDeliveryServiceFactory
 import ru.agentlab.maia.messaging.IMessageFactory
 import ru.agentlab.maia.messaging.IMessageQueueFactory
 import ru.agentlab.maia.naming.IAgentNameGenerator
@@ -72,6 +74,8 @@ class MaiaActivator implements BundleActivator {
 
 			registerService(IServiceManagementService, new ServiceManagementService, null)
 			registerService(IContributionService, new ContributionService, null)
+			
+			registerService(IMessageDeliveryServiceFactory, new NettyMessageDeliveryServiceFactory, null)
 		]
 
 //
