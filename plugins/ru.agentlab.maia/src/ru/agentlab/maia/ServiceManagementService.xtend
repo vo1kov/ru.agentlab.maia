@@ -1,39 +1,65 @@
 package ru.agentlab.maia
 
-import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.internal.MaiaActivator
 
 class ServiceManagementService implements IServiceManagementService {
 
 	val static LOGGER = LoggerFactory.getLogger(ServiceManagementService)
 
-	override <T> moveFromRoot(IEclipseContext context, Class<T> serviceClass) throws IllegalStateException{
-		context.copyFromRoot(serviceClass)
-		LOGGER.debug("	Remove [{}] Service from [{}] context...", serviceClass.simpleName, context.parent)
-		context.parent.remove(serviceClass)
-	}
-
-	override <T> copyFromRoot(IEclipseContext context, Class<T> serviceClass) throws IllegalStateException{
-		val rootContext = context.parent
-		rootContext.copyTo(context, serviceClass)
-	}
-
-	override <T> copyFromOsgi(IEclipseContext context, Class<T> serviceClass) throws IllegalStateException{
-		val rootContext = EclipseContextFactory.getServiceContext(MaiaActivator.context)
-		rootContext.copyTo(context, serviceClass)
-	}
-
-	def private <T> void copyTo(IEclipseContext from, IEclipseContext to,
+	override <T> copyService(IEclipseContext fromContext, IEclipseContext toContext,
 		Class<T> serviceClass) throws IllegalStateException{
-		val service = from.get(serviceClass)
+		val service = fromContext.get(serviceClass)
 		if (service != null) {
-			LOGGER.debug("	Copy [{}] Service from [{}] to [{}] context...", serviceClass.simpleName, from, to)
-			to.set(serviceClass, service)
+			LOGGER.debug("	Copy [{}] Service from [{}] to [{}] context...", serviceClass.simpleName, fromContext,
+				toContext)
+			toContext.set(serviceClass, service)
 		} else {
-			throw new IllegalStateException("Context [" + from + "] have no [" + serviceClass + "] service")
+			throw new IllegalStateException("Context [" + fromContext + "] have no [" + serviceClass + "] service")
 		}
+	}
+	
+	override copyService(IEclipseContext fromContext, IEclipseContext toContext,
+		String serviceName) throws IllegalStateException{
+		val service = fromContext.get(serviceName)
+		if (service != null) {
+			LOGGER.debug("	Copy [{}] Service from [{}] to [{}] context...", serviceName, fromContext,
+				toContext)
+			toContext.set(serviceName, service)
+		} else {
+			throw new IllegalStateException("Context [" + fromContext + "] have no [" + serviceName + "] service")
+		}
+	}
+
+	override <T> moveService(IEclipseContext fromContext, IEclipseContext toContext,
+		Class<T> serviceClass) throws IllegalStateException {
+		fromContext.copyService(toContext, serviceClass)
+		fromContext.removeService(serviceClass)
+	}
+	override moveService(IEclipseContext fromContext, IEclipseContext toContext,
+		String serviceName) throws IllegalStateException {
+		fromContext.copyService(toContext, serviceName)
+		fromContext.removeService(serviceName)
+	}
+
+	override <T> addService(IEclipseContext context, Class<T> serviceClass, T service) {
+		LOGGER.debug("	Add Service [{}] with vale [{}] to [{}] context...", serviceClass.name, service, context)
+		context.set(serviceClass, service)
+	}
+	
+	override addService(IEclipseContext context, String serviceName, Object service) {
+		LOGGER.debug("	Add Service [{}] with vale [{}] to [{}] context...", serviceName, service, context)
+		context.set(serviceName, service)
+	}
+
+	override <T> removeService(IEclipseContext context, Class<T> serviceClass) {
+		LOGGER.debug("	Remove [{}] Service from [{}] context...", serviceClass.simpleName, context)
+		context.remove(serviceClass)
+	}
+	
+	override removeService(IEclipseContext context, String serviceName) {
+		LOGGER.debug("	Remove [{}] Service from [{}] context...", serviceName, context)
+		context.remove(serviceName)
 	}
 
 }

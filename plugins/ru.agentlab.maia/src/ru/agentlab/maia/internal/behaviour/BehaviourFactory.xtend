@@ -9,19 +9,17 @@ import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.Action
 import ru.agentlab.maia.ActionTicker
+import ru.agentlab.maia.IServiceManagementService
 import ru.agentlab.maia.agent.IScheduler
+import ru.agentlab.maia.behaviour.BehaviourNotFoundException
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.behaviour.IBehaviourFactory
-import ru.agentlab.maia.context.ContextExtension
 import ru.agentlab.maia.internal.MaiaActivator
 import ru.agentlab.maia.naming.IBehaviourNameGenerator
-import ru.agentlab.maia.behaviour.BehaviourNotFoundException
 
 class BehaviourFactory implements IBehaviourFactory {
 
 	val static LOGGER = LoggerFactory.getLogger(BehaviourFactory)
-
-	extension ContextExtension = new ContextExtension(LOGGER)
 
 	def private getTickerProperties(Class<?> contributorClass) {
 		for (method : contributorClass.methods) {
@@ -58,7 +56,7 @@ class BehaviourFactory implements IBehaviourFactory {
 		LOGGER.info("Create Behaviour instance...")
 		context.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_DEFAULT)
 		context.createBehaviour(null, Behaviour)
-		
+
 		LOGGER.info("Behaviour successfully created!")
 		return context
 	}
@@ -194,8 +192,12 @@ class BehaviourFactory implements IBehaviourFactory {
 		LOGGER.info("Create Behaviour Context...")
 		val context = rootContext.createChild("Context for Behaviour: " + name) => [
 			declareModifiable(KEY_BEHAVIOURS)
-			addContextProperty(KEY_NAME, name)
-			addContextProperty(KEY_TYPE, TYPE_BEHAVIOUR)
+		]
+		
+		LOGGER.info("Add properties to Context...")
+		rootContext.get(IServiceManagementService) => [
+			addService(context, KEY_NAME, name)
+			addService(context, KEY_TYPE, TYPE_BEHAVIOUR)
 		]
 
 		LOGGER.info("Add link for parent Context...")

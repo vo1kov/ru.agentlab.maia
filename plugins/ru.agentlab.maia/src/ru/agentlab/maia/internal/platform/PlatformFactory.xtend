@@ -12,7 +12,6 @@ import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.agent.ISchedulerFactory
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.container.IContainerFactory
-import ru.agentlab.maia.context.ContextExtension
 import ru.agentlab.maia.context.IContextFactory
 import ru.agentlab.maia.internal.MaiaActivator
 import ru.agentlab.maia.messaging.IMessageDeliveryService
@@ -34,9 +33,7 @@ class PlatformFactory implements IPlatformFactory {
 
 	val static LOGGER = LoggerFactory.getLogger(PlatformFactory)
 
-	extension ContextExtension = new ContextExtension(LOGGER)
-
-	 /**
+	/**
 	 * <p>Create Platform-Context with default set of platform-specific services.</p>
 	 * <p>That implementation of factory create Context with following services:</p>
 	 * <ul>
@@ -75,27 +72,28 @@ class PlatformFactory implements IPlatformFactory {
 		val context = internalCreateEmpty(root, id)
 
 		LOGGER.info("Create Platform-specific Services...")
-		context.parent.get(IServiceManagementService) => [
-			copyFromRoot(context, IMessageFactory)
-			copyFromRoot(context, IAgentFactory)
-			copyFromRoot(context, IContainerFactory)
-			copyFromRoot(context, IBehaviourFactory)
-			copyFromRoot(context, ISchedulerFactory)
-			copyFromRoot(context, IMessageQueueFactory)
-		]
-
-		LOGGER.debug("	Put [{}] Service to context...", IMessageDeliveryService.simpleName)
 		val mtsFactory = context.parent.get(IMessageDeliveryServiceFactory)
-		println(mtsFactory)
 		ContextInjectionFactory.invoke(mtsFactory, PostConstruct, context, null)
 		val mts = mtsFactory.create(context)
-		context.set(IMessageDeliveryService, mts)
-		
+		context.get(IServiceManagementService) => [
+			if (it != null) {
+				copyService(context.parent, context, IMessageFactory)
+				copyService(context.parent, context, IAgentFactory)
+				copyService(context.parent, context, IContainerFactory)
+				copyService(context.parent, context, IBehaviourFactory)
+				copyService(context.parent, context, ISchedulerFactory)
+				copyService(context.parent, context, IMessageQueueFactory)
+				addService(context, IMessageDeliveryService, mts)
+			} else {
+				LOGGER.warn("Context [{}] have no [{}] service", it, IServiceManagementService.name)
+			}
+		]
+
 		LOGGER.info("Platform successfully created!")
 		return context
 	}
 
-	 /**
+	/**
 	 * <p>Create Platform-Context without any platform-specific services.</p>
 	 * <p>Context will contain properties:</p>
 	 * <ul>
@@ -139,10 +137,17 @@ class PlatformFactory implements IPlatformFactory {
 			}
 
 		LOGGER.info("Create Platform Context...")
+		val serviceManagementService = rootContext.get(IServiceManagementService)
 		val context = rootContext.createChild("Context for Platform: " + name) => [
 			declareModifiable(KEY_CONTAINERS)
-			addContextProperty(KEY_NAME, name)
-			addContextProperty(KEY_TYPE, TYPE_PLATFORM)
+		]
+		LOGGER.info("Add properties to Context...")
+		rootContext.get(IServiceManagementService) => [
+			if (it != null) {
+				addService(context, KEY_NAME, name)
+				addService(context, KEY_TYPE, TYPE_PLATFORM)
+			} else {
+			}
 		]
 
 		LOGGER.info("Add link for parent Context...")
@@ -153,13 +158,12 @@ class PlatformFactory implements IPlatformFactory {
 			rootContext.set(KEY_PLATFORMS, platforms)
 		}
 		platforms += context
-		
+
 		LOGGER.info("Create Platform ID...")
 		val platformIdFactory = context.parent.get(IPlatformIdFactory)
 		val platformId = platformIdFactory.create(context.get(KEY_NAME) as String)
-		LOGGER.debug("	Put [{}] to context...", platformId)
-		context.set(IPlatformId, platformId)
-		
+		serviceManagementService.addService(context, IPlatformId, platformId)
+
 		return context
 	}
 
