@@ -25,13 +25,6 @@ class ContainerFactory implements IContainerFactory {
 		LOGGER.debug("	container Id: [{}]", id)
 
 		val context = internalCreateEmpty(root, id)
-		val name = context.get(KEY_NAME) as String
-
-		LOGGER.info("Create Container ID...")
-		val containerIdFactory = context.get(IContainerIdFactory)
-		val platformId = context.get(IPlatformId)
-		val containerId = containerIdFactory.create(platformId, name, null)
-		context.set(IContainerId, containerId)
 
 		LOGGER.info("Container successfully created!")
 		return context
@@ -81,7 +74,14 @@ class ContainerFactory implements IContainerFactory {
 			rootContext.set(KEY_CONTAINERS, containers)
 		}
 		containers += context
-		context
+		
+		LOGGER.info("Create Container ID...")
+		val containerIdFactory = context.get(IContainerIdFactory)
+		val platformId = context.get(IPlatformId)
+		val containerId = containerIdFactory.create(platformId, name, null)
+		context.set(IContainerId, containerId)
+		
+		return context
 	}
 
 }

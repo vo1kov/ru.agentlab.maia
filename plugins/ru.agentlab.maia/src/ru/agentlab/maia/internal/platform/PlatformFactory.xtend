@@ -60,6 +60,7 @@ class PlatformFactory implements IPlatformFactory {
 	 * <li><code>context.name</code> - name of context, contains agent name</li>
 	 * <li><code>context.type</code> - type of context, contains 
 	 * {@link IContextFactory#TYPE_AGENT AGENT} value</li>
+	 * <li>{@link IPlatformId IPlatformId} - Id of platform</li>
 	 * </ul>
 	 * @param root - parent context where platform will be created
 	 * @param id - unique id of agent. If <code>null</code>, then 
@@ -89,12 +90,6 @@ class PlatformFactory implements IPlatformFactory {
 		val mts = mtsFactory.create
 		context.set(IMessageDeliveryService, mts)
 		
-		LOGGER.info("Create Platform ID...")
-		val platformIdFactory = context.parent.get(IPlatformIdFactory)
-		val platformId = platformIdFactory.create(context.get(KEY_NAME) as String)
-		LOGGER.debug("	Put [{}] to context...", platformId)
-		context.set(IPlatformId, platformId)
-
 		LOGGER.info("Platform successfully created!")
 		return context
 	}
@@ -106,6 +101,7 @@ class PlatformFactory implements IPlatformFactory {
 	 * <li><code>context.name</code> - name of context, contains platform name</li>
 	 * <li><code>context.type</code> - type of context, contains 
 	 * {@link IContextFactory#TYPE_PLATFORM PLATFORM} value</li>
+	 * <li>{@link IPlatformId IPlatformId} - Id of platform</li>
 	 * </ul>
 	 * @param root - parent context where platform will be created
 	 * @param id - unique id of agent. If <code>null</code>, then 
@@ -156,6 +152,13 @@ class PlatformFactory implements IPlatformFactory {
 			rootContext.set(KEY_PLATFORMS, platforms)
 		}
 		platforms += context
+		
+		LOGGER.info("Create Platform ID...")
+		val platformIdFactory = context.parent.get(IPlatformIdFactory)
+		val platformId = platformIdFactory.create(context.get(KEY_NAME) as String)
+		LOGGER.debug("	Put [{}] to context...", platformId)
+		context.set(IPlatformId, platformId)
+		
 		return context
 	}
 

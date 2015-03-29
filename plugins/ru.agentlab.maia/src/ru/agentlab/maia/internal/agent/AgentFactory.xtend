@@ -41,6 +41,7 @@ class AgentFactory implements IAgentFactory {
 	 * <li><code>context.name</code> - name of context, contains agent name</li>
 	 * <li><code>context.type</code> - type of context, contains 
 	 * {@link IContextFactory#TYPE_AGENT AGENT} value</li>
+	 * <li>{@link IAgentId IAgentId} - Id of agent</li>
 	 * </ul>
 	 * @param root - parent context where agent will be created
 	 * @param id - unique id of agent. If <code>null</code>, then 
@@ -68,13 +69,6 @@ class AgentFactory implements IAgentFactory {
 			addContextService(IMessageQueue, messageQueue)
 		]
 
-		LOGGER.info("Create Agent ID...")
-		// TODO: fix if parent is not container
-		val agentIdFactory = context.get(IAgentIdFactory)
-		val containerId = context.get(IContainerId)
-		val agentId = agentIdFactory.create(containerId, name)
-		context.set(IAgentId, agentId)
-
 		LOGGER.info("Agent successfully created!")
 		return context
 	}
@@ -86,6 +80,7 @@ class AgentFactory implements IAgentFactory {
 	 * <li><code>context.name</code> - name of context, contains agent name</li>
 	 * <li><code>context.type</code> - type of context, contains 
 	 * {@link IContextFactory#TYPE_AGENT AGENT} value</li>
+	 * <li>{@link IAgentId IAgentId} - Id of agent</li>
 	 * </ul>
 	 * @param root - parent context where agent will be created
 	 * @param id - unique id of agent. If <code>null</code>, then 
@@ -134,6 +129,14 @@ class AgentFactory implements IAgentFactory {
 			rootContext.set(KEY_AGENTS, agents)
 		}
 		agents += context
+		
+		LOGGER.info("Create Agent ID...")
+		// TODO: fix if parent is not container
+		val agentIdFactory = context.get(IAgentIdFactory)
+		val containerId = context.get(IContainerId)
+		val agentId = agentIdFactory.create(containerId, name)
+		context.set(IAgentId, agentId)
+		
 		context
 	}
 
