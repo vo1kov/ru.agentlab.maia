@@ -2,8 +2,6 @@ package ru.agentlab.maia.internal
 
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
-import ru.agentlab.maia.IServiceManagementService
-import ru.agentlab.maia.ServiceManagementService
 import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.agent.IAgentIdFactory
 import ru.agentlab.maia.agent.ISchedulerFactory
@@ -27,6 +25,7 @@ import ru.agentlab.maia.internal.naming.ContainerNameGenerator
 import ru.agentlab.maia.internal.naming.PlatformNameGenerator
 import ru.agentlab.maia.internal.platform.PlatformFactory
 import ru.agentlab.maia.internal.platform.PlatformIdFactory
+import ru.agentlab.maia.internal.service.ServiceManagementService
 import ru.agentlab.maia.lifecycle.fipa.IFipaAgentLifecycleService
 import ru.agentlab.maia.messaging.IMessageDeliveryServiceFactory
 import ru.agentlab.maia.messaging.IMessageFactory
@@ -36,6 +35,7 @@ import ru.agentlab.maia.naming.IContainerNameGenerator
 import ru.agentlab.maia.naming.IPlatformNameGenerator
 import ru.agentlab.maia.platform.IPlatformFactory
 import ru.agentlab.maia.platform.IPlatformIdFactory
+import ru.agentlab.maia.service.IServiceManagementService
 
 class MaiaActivator implements BundleActivator {
 

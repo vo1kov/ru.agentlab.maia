@@ -5,13 +5,13 @@ import java.util.List
 import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.IServiceManagementService
 import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.container.IContainerId
 import ru.agentlab.maia.container.IContainerIdFactory
 import ru.agentlab.maia.internal.MaiaActivator
 import ru.agentlab.maia.naming.IContainerNameGenerator
 import ru.agentlab.maia.platform.IPlatformId
+import ru.agentlab.maia.service.IServiceManagementService
 
 class ContainerFactory implements IContainerFactory {
 
@@ -61,14 +61,13 @@ class ContainerFactory implements IContainerFactory {
 		val context = rootContext.createChild("Context for Container: " + name) => [
 			declareModifiable(KEY_AGENTS)
 		]
-		
+
 		LOGGER.info("Add properties to Context...")
 		rootContext.get(IServiceManagementService) => [
-			if(it != null){
+			if (it != null) {
 				addService(context, KEY_NAME, name)
 				addService(context, KEY_TYPE, TYPE_CONTAINER)
 			} else {
-				
 			}
 		]
 

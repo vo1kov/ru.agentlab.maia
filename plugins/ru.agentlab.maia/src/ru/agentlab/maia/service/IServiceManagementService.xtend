@@ -1,4 +1,4 @@
-package ru.agentlab.maia
+package ru.agentlab.maia.service
 
 import org.eclipse.e4.core.contexts.IEclipseContext
 

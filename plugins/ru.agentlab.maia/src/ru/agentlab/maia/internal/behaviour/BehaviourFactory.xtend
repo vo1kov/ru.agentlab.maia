@@ -9,13 +9,13 @@ import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.Action
 import ru.agentlab.maia.ActionTicker
-import ru.agentlab.maia.IServiceManagementService
 import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.behaviour.BehaviourNotFoundException
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.internal.MaiaActivator
 import ru.agentlab.maia.naming.IBehaviourNameGenerator
+import ru.agentlab.maia.service.IServiceManagementService
 
 class BehaviourFactory implements IBehaviourFactory {
 

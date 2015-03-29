@@ -1,7 +1,8 @@
-package ru.agentlab.maia
+package ru.agentlab.maia.internal.service
 
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
+import ru.agentlab.maia.service.IServiceManagementService
 
 class ServiceManagementService implements IServiceManagementService {
 
@@ -18,13 +19,12 @@ class ServiceManagementService implements IServiceManagementService {
 			throw new IllegalStateException("Context [" + fromContext + "] have no [" + serviceClass + "] service")
 		}
 	}
-	
+
 	override copyService(IEclipseContext fromContext, IEclipseContext toContext,
 		String serviceName) throws IllegalStateException{
 		val service = fromContext.get(serviceName)
 		if (service != null) {
-			LOGGER.debug("	Copy [{}] Service from [{}] to [{}] context...", serviceName, fromContext,
-				toContext)
+			LOGGER.debug("	Copy [{}] Service from [{}] to [{}] context...", serviceName, fromContext, toContext)
 			toContext.set(serviceName, service)
 		} else {
 			throw new IllegalStateException("Context [" + fromContext + "] have no [" + serviceName + "] service")
@@ -36,6 +36,7 @@ class ServiceManagementService implements IServiceManagementService {
 		fromContext.copyService(toContext, serviceClass)
 		fromContext.removeService(serviceClass)
 	}
+
 	override moveService(IEclipseContext fromContext, IEclipseContext toContext,
 		String serviceName) throws IllegalStateException {
 		fromContext.copyService(toContext, serviceName)
@@ -46,7 +47,7 @@ class ServiceManagementService implements IServiceManagementService {
 		LOGGER.debug("	Add Service [{}] with vale [{}] to [{}] context...", serviceClass.name, service, context)
 		context.set(serviceClass, service)
 	}
-	
+
 	override addService(IEclipseContext context, String serviceName, Object service) {
 		LOGGER.debug("	Add Service [{}] with vale [{}] to [{}] context...", serviceName, service, context)
 		context.set(serviceName, service)
@@ -56,7 +57,7 @@ class ServiceManagementService implements IServiceManagementService {
 		LOGGER.debug("	Remove [{}] Service from [{}] context...", serviceClass.simpleName, context)
 		context.remove(serviceClass)
 	}
-	
+
 	override removeService(IEclipseContext context, String serviceName) {
 		LOGGER.debug("	Remove [{}] Service from [{}] context...", serviceName, context)
 		context.remove(serviceName)

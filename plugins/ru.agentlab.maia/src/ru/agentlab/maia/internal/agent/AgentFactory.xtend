@@ -5,7 +5,6 @@ import java.util.List
 import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.IServiceManagementService
 import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.agent.IAgentId
 import ru.agentlab.maia.agent.IAgentIdFactory
@@ -17,6 +16,7 @@ import ru.agentlab.maia.internal.MaiaActivator
 import ru.agentlab.maia.messaging.IMessageQueue
 import ru.agentlab.maia.messaging.IMessageQueueFactory
 import ru.agentlab.maia.naming.IAgentNameGenerator
+import ru.agentlab.maia.service.IServiceManagementService
 
 /**
  * Factory for creating Agent-Contexts

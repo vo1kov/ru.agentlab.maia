@@ -7,7 +7,6 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.IServiceManagementService
 import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.agent.ISchedulerFactory
 import ru.agentlab.maia.behaviour.IBehaviourFactory
@@ -23,6 +22,7 @@ import ru.agentlab.maia.naming.IPlatformNameGenerator
 import ru.agentlab.maia.platform.IPlatformFactory
 import ru.agentlab.maia.platform.IPlatformId
 import ru.agentlab.maia.platform.IPlatformIdFactory
+import ru.agentlab.maia.service.IServiceManagementService
 
 /**
  * Factory for creating new Platforms.
