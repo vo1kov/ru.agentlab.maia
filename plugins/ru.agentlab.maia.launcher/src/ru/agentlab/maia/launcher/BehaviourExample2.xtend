@@ -8,7 +8,6 @@ import org.eclipse.e4.core.internal.contexts.EclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.Action
 import ru.agentlab.maia.agent.IAgentIdFactory
-import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.context.IContextFactory
 import ru.agentlab.maia.messaging.IMessageDeliveryService
 import ru.agentlab.maia.messaging.IMessageFactory
@@ -45,7 +44,7 @@ class BehaviourExample2 {
 		}
 	}
 
-	@Action(type=IBehaviour.TYPE_TICKER)
+	@Action
 	def void action() {
 		LOGGER.info("Create message...")
 		val message = messageFactory.create => [

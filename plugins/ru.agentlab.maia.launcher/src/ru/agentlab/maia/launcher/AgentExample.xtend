@@ -27,7 +27,7 @@ class AgentExample {
 	@PostConstruct
 	def void setup() {
 		LOGGER.info("Setup of: [{}] agent", agentName)
-		createTicker("first", 1000) => [
+		createDefault("first") => [
 			get(IContributionService).addContributor(BehaviourExample)
 		]
 //		createFromAnnotation("first2", BehaviourExample) => [

@@ -5,13 +5,11 @@ import java.util.List
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
-import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.Action
-import ru.agentlab.maia.ActionTicker
-import ru.agentlab.maia.behaviour.BehaviourNotFoundException
-import ru.agentlab.maia.behaviour.IBehaviour
+import ru.agentlab.maia.behaviour.IActionMapping
+import ru.agentlab.maia.behaviour.IActionScheme
+import ru.agentlab.maia.behaviour.IBehaviourActionService
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.context.IContributionService
 import ru.agentlab.maia.internal.context.ContributionService
@@ -31,31 +29,29 @@ class BehaviourFactory implements IBehaviourFactory {
 	@Inject
 	IServiceManagementService serviceManagementService
 
-	def private getTickerProperties(Class<?> contributorClass) {
-		for (method : contributorClass.methods) {
-			for (annotation : method.annotations) {
-				if (annotation instanceof ActionTicker) {
-					return EclipseContextFactory.create => [
-						set("period", annotation.period)
-						set("fixedPeriod", annotation.fixedPeriod)
-						it.parent = null
-					]
-				}
-			}
-		}
-	}
-
-	def private String getBehaviourType(Class<?> contributorClass) {
-		for (method : contributorClass.methods) {
-			for (annotation : method.annotations) {
-				if (annotation instanceof Action) {
-					return annotation.type
-				}
-			}
-		}
-		return null
-	}
-
+//	def private getTickerProperties(Class<?> contributorClass) {
+//		for (method : contributorClass.methods) {
+//			for (annotation : method.annotations) {
+//				if (annotation instanceof ActionTicker) {
+//					return EclipseContextFactory.create => [
+//						set("period", annotation.period)
+//						set("fixedPeriod", annotation.fixedPeriod)
+//						it.parent = null
+//					]
+//				}
+//			}
+//		}
+//	}
+//	def private String getBehaviourType(Class<?> contributorClass) {
+//		for (method : contributorClass.methods) {
+//			for (annotation : method.annotations) {
+//				if (annotation instanceof Action) {
+//					return annotation.type
+//				}
+//			}
+//		}
+//		return null
+//	}
 	override createDefault(String id) {
 		LOGGER.info("Try to create new Default Behaviour...")
 		LOGGER.debug("	home context: [{}]", context)
@@ -64,90 +60,10 @@ class BehaviourFactory implements IBehaviourFactory {
 		val result = internalCreateEmpty(id)
 
 		LOGGER.info("Create Behaviour instance...")
-		result.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_DEFAULT)
-		result.createBehaviour(Behaviour, null)
+		result.createService(IActionScheme, ActionSchemeOneShot)
+		result.createService(IBehaviourActionService, BehaviourActionService)
 
-		LOGGER.info("Behaviour successfully created!")
-		return result
-	}
-
-	override IEclipseContext createCyclyc(String id) {
-		LOGGER.info("Try to create new Cyclyc Behaviour...")
-		LOGGER.debug("	home context: [{}]", context)
-		LOGGER.debug("	behaviour Id: [{}]", id)
-
-		val result = internalCreateEmpty(id)
-
-		LOGGER.info("Create Behaviour instance...")
-		result.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_CYCLYC)
-		result.createBehaviour(BehaviourCyclyc, null)
-
-		LOGGER.info("Behaviour successfully created!")
-		return result
-	}
-
-	override IEclipseContext createOneShot(String id) {
-		LOGGER.info("Try to create new One Shot Behaviour...")
-		LOGGER.debug("	home context: [{}]", context)
-		LOGGER.debug("	behaviour Id: [{}]", id)
-
-		val result = internalCreateEmpty(id)
-
-		LOGGER.info("Create Behaviour instance...")
-		result.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_ONE_SHOT)
-		result.createBehaviour(BehaviourOneShot, null)
-
-		LOGGER.info("Behaviour successfully created!")
-		return result
-	}
-
-	override createTicker(String id, long delay) {
-		LOGGER.info("Try to create new Ticker Behaviour...")
-		LOGGER.debug("	home context: [{}]", context)
-		LOGGER.debug("	behaviour Id: [{}]", id)
-
-		val result = internalCreateEmpty(id)
-
-		LOGGER.info("Create Behaviour instance...")
-		val properties = EclipseContextFactory.create => [
-			set("period", delay)
-			set("fixedPeriod", true)
-		]
-		result.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_TICKER)
-		result.createBehaviour(BehaviourTicker, properties)
-
-		LOGGER.info("Behaviour successfully created!")
-		return result
-	}
-
-	override createFromAnnotation(String id, Class<?> contributorClass) {
-		LOGGER.info("Try to create new Behaviour from Annotation...")
-		LOGGER.debug("	home context: [{}]", context)
-		LOGGER.debug("	behaviour Id: [{}]", id)
-
-		val result = internalCreateEmpty(id)
-
-		LOGGER.info("Create Behaviour instance...")
-		val type = contributorClass.getBehaviourType
-
-		switch (type) {
-			case IBehaviour.TYPE_ONE_SHOT: {
-				result.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_ONE_SHOT)
-				result.createBehaviour(BehaviourOneShot, null)
-			}
-			case IBehaviour.TYPE_CYCLYC: {
-				result.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_CYCLYC)
-				result.createBehaviour(BehaviourCyclyc, null)
-			}
-			case IBehaviour.TYPE_TICKER: {
-				result.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_TICKER)
-				val properties = contributorClass.getTickerProperties
-				result.createBehaviour(BehaviourTicker, properties)
-			}
-			default: {
-				throw new BehaviourNotFoundException("Behaviour Action with id " + id + " not found")
-			}
-		}
+		result.runAndTrack(new BehaviourInstaller)
 
 		LOGGER.info("Behaviour successfully created!")
 		return result
@@ -164,15 +80,6 @@ class BehaviourFactory implements IBehaviourFactory {
 		return result
 	}
 
-	def private IBehaviour createBehaviour(IEclipseContext behaviourContext, Class<? extends IBehaviour> behaviourClass, IEclipseContext local) {
-		LOGGER.info("Create {} instance...", behaviourClass.simpleName)
-		val behaviour = ContextInjectionFactory.make(behaviourClass, behaviourContext, local)
-		ContextInjectionFactory.invoke(behaviour, PostConstruct, behaviourContext, null)
-		behaviourContext.set(IBehaviour, behaviour)
-		behaviourContext.runAndTrack(new BehaviourInstaller)
-		return behaviour
-	}
-
 	private def internalCreateEmpty(String id) {
 		val name = if (id != null) {
 				id
@@ -185,6 +92,8 @@ class BehaviourFactory implements IBehaviourFactory {
 		val result = context.createChild("Context for Behaviour: " + name) => [
 			declareModifiable(KEY_BEHAVIOURS)
 			declareModifiable(KEY_NAME)
+			declareModifiable(IActionScheme)
+			declareModifiable(IActionMapping)
 		]
 
 		LOGGER.info("Add properties to Context...")

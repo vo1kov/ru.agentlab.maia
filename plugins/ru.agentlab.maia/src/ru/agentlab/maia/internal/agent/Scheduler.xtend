@@ -24,7 +24,7 @@ import javax.inject.Named
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IScheduler
-import ru.agentlab.maia.behaviour.IBehaviour
+import ru.agentlab.maia.behaviour.IBehaviourActionService
 import ru.agentlab.maia.context.IContextFactory
 import ru.agentlab.maia.context.IContributionService
 
@@ -40,9 +40,9 @@ class Scheduler extends Thread implements IScheduler {
 
 	val static LOGGER = LoggerFactory.getLogger(Scheduler)
 
-	val readyBehaviours = new LinkedList<IBehaviour>
+	val readyBehaviours = new LinkedList<IBehaviourActionService>
 
-	val blockedBehaviours = new LinkedList<IBehaviour>
+	val blockedBehaviours = new LinkedList<IBehaviourActionService>
 
 	private transient Object suspendLock = new Object
 	private transient Object behavioursLock = new Object
@@ -81,8 +81,8 @@ class Scheduler extends Thread implements IScheduler {
 		}
 	}
 
-	def IBehaviour getBehaviour(IEclipseContext context) {
-		return context.get(IBehaviour)
+	def IBehaviourActionService getBehaviour(IEclipseContext context) {
+		return context.get(IBehaviourActionService)
 	}
 
 	def Object getContributor(IEclipseContext context) {
@@ -99,9 +99,9 @@ class Scheduler extends Thread implements IScheduler {
 //					LOGGER.debug("Try to invoke action of [{}] behaviour", behaviour)
 					currentIndex = (currentIndex + 1) % readyBehaviours.size()
 					behaviour.action()
-					if (behaviour.isDone) {
-						removeFromReady(behaviour)
-					}
+//					if (behaviour.isDone) {
+//						removeFromReady(behaviour)
+//					}
 				}
 				size = readyBehaviours.size
 			}
@@ -114,7 +114,7 @@ class Scheduler extends Thread implements IScheduler {
 	/**
 	 * Moves a behaviour from the ready queue to the sleeping queue. 
 	 */
-	override void block(IBehaviour behaviour) {
+	override void block(IBehaviourActionService behaviour) {
 		LOGGER.info("Try to block [{}] Behaviour...", behaviour)
 		synchronized (behavioursLock) {
 			if (behaviour.removeFromReady) {
@@ -135,7 +135,7 @@ class Scheduler extends Thread implements IScheduler {
 	/**
 	 * Moves a behaviour from the sleeping queue to the ready queue.
 	 */
-	override void restart(IBehaviour behaviour) {
+	override void restart(IBehaviourActionService behaviour) {
 		LOGGER.info("Try to remove [{}] Behaviour...", behaviour)
 		synchronized (behavioursLock) {
 			if (behaviour.removeFromBlocked) {
@@ -168,7 +168,7 @@ class Scheduler extends Thread implements IScheduler {
 	/** 
 	 * Removes a specified behaviour from the scheduler
 	 */
-	override void remove(IBehaviour behaviour) {
+	override void remove(IBehaviourActionService behaviour) {
 		LOGGER.info("Try to remove [{}] Behaviour...", behaviour)
 		var found = removeFromBlocked(behaviour)
 		if (!found) {
@@ -191,7 +191,7 @@ class Scheduler extends Thread implements IScheduler {
 	/**
 	 *  Removes a specified behaviour from the blocked queue.
 	 */
-	def private boolean removeFromBlocked(IBehaviour behaviour) {
+	def private boolean removeFromBlocked(IBehaviourActionService behaviour) {
 		LOGGER.info("Try to remove [{}] Behaviour from blocked...", behaviour)
 		synchronized (behavioursLock) {
 			return blockedBehaviours.remove(behaviour)
@@ -204,7 +204,7 @@ class Scheduler extends Thread implements IScheduler {
 	 * made: if the just removed behaviour has an index lesser than the
 	 * current one, then the current index must be decremented.
 	 */
-	def private boolean removeFromReady(IBehaviour behaviour) {
+	def private boolean removeFromReady(IBehaviourActionService behaviour) {
 		LOGGER.info("Try to remove [{}] Behaviour from ready...", behaviour)
 		var boolean result
 		val index = readyBehaviours.indexOf(behaviour)

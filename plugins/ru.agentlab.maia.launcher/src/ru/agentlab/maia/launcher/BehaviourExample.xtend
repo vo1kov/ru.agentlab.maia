@@ -2,49 +2,31 @@ package ru.agentlab.maia.launcher
 
 import javax.annotation.PostConstruct
 import javax.inject.Inject
-import javax.inject.Named
+import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
-import org.eclipse.e4.core.internal.contexts.EclipseContext
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.Action
-import ru.agentlab.maia.ActionTicker
-import ru.agentlab.maia.agent.IScheduler
-import ru.agentlab.maia.behaviour.IBehaviour
-import ru.agentlab.maia.context.IContextFactory
+import ru.agentlab.maia.behaviour.IActionMapping
+import ru.agentlab.maia.internal.behaviour.ActionMapping
+import ru.agentlab.maia.internal.behaviour.ActionSchemeOneShot
+import ru.agentlab.maia.launcher.task.ContextDumpTask
 
 class BehaviourExample {
 
 	val static LOGGER = LoggerFactory.getLogger(BehaviourExample)
 
 	@Inject
-	@Named(IContextFactory.KEY_NAME)
-	String behName
-
-	@Inject
 	IEclipseContext context
-
-	@Inject
-	IScheduler sch
 
 	@PostConstruct
 	def void init() {
-		var c = context
-		while (c != null) {
-			LOGGER.debug("Context [{}] hold:", c)
-			(c as EclipseContext).localData.forEach [ p1, p2 |
-				if (p1 != "org.eclipse.e4.core.internal.contexts.ContextObjectSupplier" && p1 != "debugString") {
-					LOGGER.debug("	[{}] -> [{}]", p1, p2)
-				}
-			]
-			c = c.parent
-		}
-	}
-
-	@Action(type=IBehaviour.TYPE_TICKER)
-	@ActionTicker(period=500, fixedPeriod=false)
-	def void action() {
-		LOGGER.info("Behaviour [{}] timestamp [{}]", behName, System.currentTimeMillis)
-		LOGGER.info("{}", sch.hashCode)
+//		LOGGER.info("Modify action scheme...")
+//		context.modify(IActionScheme, new ActionSchemeOneShot)
+		LOGGER.info("Modify scheme mapping...")
+		val mapping = new ActionMapping => [
+			val task = ContextInjectionFactory.make(ContextDumpTask, context)
+			map.put(ActionSchemeOneShot.STATE_MAIN, task)
+		]
+		context.modify(IActionMapping, mapping)
 	}
 
 }
