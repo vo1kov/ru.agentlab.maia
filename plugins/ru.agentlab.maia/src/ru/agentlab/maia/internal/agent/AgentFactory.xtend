@@ -17,10 +17,13 @@ import ru.agentlab.maia.context.IContextFactory
 import ru.agentlab.maia.context.IContributionService
 import ru.agentlab.maia.internal.behaviour.BehaviourFactory
 import ru.agentlab.maia.internal.context.ContributionService
-import ru.agentlab.maia.internal.lifecycle.fipa.FipaLifecycleService
+import ru.agentlab.maia.internal.lifecycle.LifecycleService
+import ru.agentlab.maia.internal.lifecycle.fipa.AgentFipaLifecycleListener
+import ru.agentlab.maia.internal.lifecycle.fipa.FipaLifecycleSchemaFactory
 import ru.agentlab.maia.internal.messaging.MessageQueue
 import ru.agentlab.maia.internal.naming.BehaviourNameGenerator
-import ru.agentlab.maia.lifecycle.fipa.IFipaLifecycleService
+import ru.agentlab.maia.lifecycle.ILifecycleSchema
+import ru.agentlab.maia.lifecycle.ILifecycleService
 import ru.agentlab.maia.messaging.IMessageQueue
 import ru.agentlab.maia.naming.IAgentNameGenerator
 import ru.agentlab.maia.naming.IBehaviourNameGenerator
@@ -73,16 +76,26 @@ class AgentFactory implements IAgentFactory {
 		val result = internalCreateEmpty(id)
 
 		LOGGER.info("Create Agent-specific Services...")
+
 		result => [
 			// agent layer
 			createService(IBehaviourNameGenerator, BehaviourNameGenerator)
 			createService(IBehaviourFactory, BehaviourFactory)
-			createService(IFipaLifecycleService, FipaLifecycleService)
+
+			val schema = (new FipaLifecycleSchemaFactory).createSchema
+			serviceManagementService.addService(it, ILifecycleSchema, schema)
+
+			createService(ILifecycleService, LifecycleService)
 
 			createService(IScheduler, Scheduler)
 			createService(IMessageQueue, MessageQueue)
 
 			createService(IContributionService, ContributionService)
+
+			val service = ContextInjectionFactory.make(AgentFipaLifecycleListener, it)
+			set(AgentFipaLifecycleListener, service)
+			ContextInjectionFactory.invoke(service, PostConstruct, it, null)
+			runAndTrack(service)
 		]
 
 		LOGGER.info("Agent successfully created!")
@@ -130,7 +143,6 @@ class AgentFactory implements IAgentFactory {
 		LOGGER.info("Create Agent Context...")
 		val result = context.createChild("Context for Agent: " + name) => [
 			declareModifiable(KEY_BEHAVIOURS)
-			declareModifiable(IContributionService.KEY_CONTRIBUTOR)
 		]
 
 		LOGGER.info("Add properties to Context...")
