@@ -11,6 +11,7 @@ import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.behaviour.IBehaviourScheme
 import ru.agentlab.maia.behaviour.IBehaviourTaskMapping
+import ru.agentlab.maia.behaviour.IBehaviourTaskMappingFactory
 import ru.agentlab.maia.behaviour.sheme.BehaviourSchemeOneShot
 import ru.agentlab.maia.context.IContributionService
 import ru.agentlab.maia.internal.context.ContributionService
@@ -61,8 +62,11 @@ class BehaviourFactory implements IBehaviourFactory {
 		val result = internalCreateEmpty(id)
 
 		LOGGER.info("Create Behaviour instance...")
-		result.createService(IBehaviourScheme, BehaviourSchemeOneShot)
-		result.createService(IBehaviour, Behaviour)
+		result => [
+			createService(IBehaviourScheme, BehaviourSchemeOneShot)
+			createService(IBehaviourTaskMappingFactory, BehaviourTaskMappingFactory)
+			createService(IBehaviour, Behaviour)
+		]
 
 		result.runAndTrack(new BehaviourInstaller)
 
