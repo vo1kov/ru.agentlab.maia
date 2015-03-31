@@ -95,7 +95,7 @@ class ContainerFactory implements IContainerFactory {
 		LOGGER.info("Create Container Context...")
 		val result = context.createChild("Context for Container: " + name) => [
 			declareModifiable(KEY_AGENTS)
-			declareModifiable(IContributionService.KEY_CONTRIBUTOR)
+			declareModifiable(KEY_NAME)
 		]
 
 		LOGGER.info("Add properties to Context...")

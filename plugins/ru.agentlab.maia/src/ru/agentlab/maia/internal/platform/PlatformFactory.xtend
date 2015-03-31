@@ -99,7 +99,7 @@ class PlatformFactory implements IPlatformFactory {
 			createService(IContainerFactory, ContainerFactory)
 			createService(IContributionService, ContributionService)
 		]
-		
+
 		serviceManagementService => [
 			ContextInjectionFactory.invoke(messageDeliveryServiceFactory, PostConstruct, result, null)
 			val mts = messageDeliveryServiceFactory.create(result)
@@ -110,7 +110,8 @@ class PlatformFactory implements IPlatformFactory {
 		return result
 	}
 
-	def private <T> void createService(IEclipseContext ctx, Class<T> serviceClass, Class<? extends T> implementationClass) {
+	def private <T> void createService(IEclipseContext ctx, Class<T> serviceClass,
+		Class<? extends T> implementationClass) {
 		val service = ContextInjectionFactory.make(implementationClass, ctx)
 		ContextInjectionFactory.invoke(service, PostConstruct, ctx, null)
 		serviceManagementService.addService(ctx, serviceClass, service)
@@ -152,7 +153,7 @@ class PlatformFactory implements IPlatformFactory {
 		LOGGER.info("Create Platform Context...")
 		val result = context.createChild("Context for Platform: " + name) => [
 			declareModifiable(KEY_CONTAINERS)
-			declareModifiable(IContributionService.KEY_CONTRIBUTOR)
+			declareModifiable(KEY_NAME)
 		]
 
 		LOGGER.info("Add properties to Context...")
