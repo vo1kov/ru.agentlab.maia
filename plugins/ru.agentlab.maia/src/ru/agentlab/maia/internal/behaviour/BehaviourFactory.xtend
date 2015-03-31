@@ -14,6 +14,7 @@ import ru.agentlab.maia.behaviour.BehaviourNotFoundException
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.context.IContributionService
+import ru.agentlab.maia.internal.context.ContributionService
 import ru.agentlab.maia.naming.IBehaviourNameGenerator
 import ru.agentlab.maia.service.IServiceManagementService
 
@@ -26,6 +27,9 @@ class BehaviourFactory implements IBehaviourFactory {
 
 	@Inject
 	IBehaviourNameGenerator behaviourNameGenerator
+
+	@Inject
+	IServiceManagementService serviceManagementService
 
 	def private getTickerProperties(Class<?> contributorClass) {
 		for (method : contributorClass.methods) {
@@ -61,7 +65,7 @@ class BehaviourFactory implements IBehaviourFactory {
 
 		LOGGER.info("Create Behaviour instance...")
 		result.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_DEFAULT)
-		createBehaviour(Behaviour, null)
+		result.createBehaviour(Behaviour, null)
 
 		LOGGER.info("Behaviour successfully created!")
 		return result
@@ -76,7 +80,7 @@ class BehaviourFactory implements IBehaviourFactory {
 
 		LOGGER.info("Create Behaviour instance...")
 		result.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_CYCLYC)
-		createBehaviour(BehaviourCyclyc, null)
+		result.createBehaviour(BehaviourCyclyc, null)
 
 		LOGGER.info("Behaviour successfully created!")
 		return result
@@ -91,7 +95,7 @@ class BehaviourFactory implements IBehaviourFactory {
 
 		LOGGER.info("Create Behaviour instance...")
 		result.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_ONE_SHOT)
-		createBehaviour(BehaviourOneShot, null)
+		result.createBehaviour(BehaviourOneShot, null)
 
 		LOGGER.info("Behaviour successfully created!")
 		return result
@@ -110,7 +114,7 @@ class BehaviourFactory implements IBehaviourFactory {
 			set("fixedPeriod", true)
 		]
 		result.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_TICKER)
-		createBehaviour(BehaviourTicker, properties)
+		result.createBehaviour(BehaviourTicker, properties)
 
 		LOGGER.info("Behaviour successfully created!")
 		return result
@@ -129,16 +133,16 @@ class BehaviourFactory implements IBehaviourFactory {
 		switch (type) {
 			case IBehaviour.TYPE_ONE_SHOT: {
 				result.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_ONE_SHOT)
-				createBehaviour(BehaviourOneShot, null)
+				result.createBehaviour(BehaviourOneShot, null)
 			}
 			case IBehaviour.TYPE_CYCLYC: {
 				result.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_CYCLYC)
-				createBehaviour(BehaviourCyclyc, null)
+				result.createBehaviour(BehaviourCyclyc, null)
 			}
 			case IBehaviour.TYPE_TICKER: {
 				result.set(IBehaviour.KEY_TYPE, IBehaviour.TYPE_TICKER)
 				val properties = contributorClass.getTickerProperties
-				createBehaviour(BehaviourTicker, properties)
+				result.createBehaviour(BehaviourTicker, properties)
 			}
 			default: {
 				throw new BehaviourNotFoundException("Behaviour Action with id " + id + " not found")
@@ -160,12 +164,12 @@ class BehaviourFactory implements IBehaviourFactory {
 		return result
 	}
 
-	def private IBehaviour createBehaviour(Class<? extends IBehaviour> behaviourClass, IEclipseContext local) {
+	def private IBehaviour createBehaviour(IEclipseContext behaviourContext, Class<? extends IBehaviour> behaviourClass, IEclipseContext local) {
 		LOGGER.info("Create {} instance...", behaviourClass.simpleName)
-		val behaviour = ContextInjectionFactory.make(behaviourClass, context, local)
-		ContextInjectionFactory.invoke(behaviour, PostConstruct, context, null)
-		context.set(IBehaviour, behaviour)
-		context.runAndTrack(new BehaviourInstaller)
+		val behaviour = ContextInjectionFactory.make(behaviourClass, behaviourContext, local)
+		ContextInjectionFactory.invoke(behaviour, PostConstruct, behaviourContext, null)
+		behaviourContext.set(IBehaviour, behaviour)
+		behaviourContext.runAndTrack(new BehaviourInstaller)
 		return behaviour
 	}
 
@@ -180,7 +184,7 @@ class BehaviourFactory implements IBehaviourFactory {
 		LOGGER.info("Create Behaviour Context...")
 		val result = context.createChild("Context for Behaviour: " + name) => [
 			declareModifiable(KEY_BEHAVIOURS)
-			declareModifiable(IContributionService.KEY_CONTRIBUTOR)
+			declareModifiable(KEY_NAME)
 		]
 
 		LOGGER.info("Add properties to Context...")
@@ -196,7 +200,16 @@ class BehaviourFactory implements IBehaviourFactory {
 			context.set(KEY_BEHAVIOURS, behaviours)
 		}
 		behaviours += result
+
+		result.createService(IContributionService, ContributionService)
 		return result
+	}
+
+	def private <T> void createService(IEclipseContext ctx, Class<T> serviceClass,
+		Class<? extends T> implementationClass) {
+		val service = ContextInjectionFactory.make(implementationClass, ctx)
+		ContextInjectionFactory.invoke(service, PostConstruct, ctx, null)
+		serviceManagementService.addService(ctx, serviceClass, service)
 	}
 
 }
