@@ -15,9 +15,9 @@ class BehaviourInstaller extends RunAndTrack {
 
 	override changed(IEclipseContext context) {
 		val scheduler = context.get(IScheduler)
-		LOGGER.info("Scheduler have changed. New value [{}]", scheduler)
+		LOGGER.info("Scheduler have changed. New value [{}], [{}]", scheduler, scheduler.hashCode)
 		if (scheduler != null) {
-			LOGGER.info("Add Behaviour to agent scheduler...")
+			LOGGER.info("Add Behaviour [{}] to agent scheduler [{}]...", context, scheduler)
 			scheduler.add(context)
 		} else {
 			LOGGER.info("Root context [{}] have no scheduler", context.parent)
