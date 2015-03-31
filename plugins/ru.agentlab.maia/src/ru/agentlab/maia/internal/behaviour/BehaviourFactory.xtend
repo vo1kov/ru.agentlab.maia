@@ -27,6 +27,9 @@ class BehaviourFactory implements IBehaviourFactory {
 
 	@Inject
 	IBehaviourNameGenerator behaviourNameGenerator
+	
+	@Inject
+	BehaviourSchemeOneShot behaviourSchemeOneShot
 
 	@Inject
 	IServiceManagementService serviceManagementService
@@ -63,7 +66,7 @@ class BehaviourFactory implements IBehaviourFactory {
 
 		LOGGER.info("Create Behaviour instance...")
 		result => [
-			createService(IBehaviourScheme, BehaviourSchemeOneShot)
+			serviceManagementService.addService(it, IBehaviourScheme, behaviourSchemeOneShot)
 			createService(IBehaviourTaskMappingFactory, BehaviourTaskMappingFactory)
 			createService(IBehaviour, Behaviour)
 		]

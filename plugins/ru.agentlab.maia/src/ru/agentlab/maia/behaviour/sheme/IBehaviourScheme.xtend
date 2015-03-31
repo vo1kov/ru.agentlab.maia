@@ -11,5 +11,7 @@ interface IBehaviourScheme extends IBehaviourState {
 	def List<IBehaviourState> getStates()
 
 	def List<IBehaviourTransition> getTransitions()
+	
+	def Object getDefaultTask(IBehaviourState state)
 
 }

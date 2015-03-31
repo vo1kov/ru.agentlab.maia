@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentId
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.behaviour.sheme.BehaviourSchemeCyclic
+import ru.agentlab.maia.behaviour.sheme.BehaviourSchemeOneShot
 import ru.agentlab.maia.behaviour.sheme.IBehaviourScheme
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMapping
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMappingFactory
@@ -29,6 +30,12 @@ class AgentExample {
 
 	@Inject
 	extension IBehaviourFactory
+	
+	@Inject
+	BehaviourSchemeOneShot oneShotScheme
+	
+	@Inject
+	BehaviourSchemeCyclic cyclicScheme
 
 	@PostConstruct
 	def void setup() {
@@ -37,12 +44,10 @@ class AgentExample {
 			get(IContributionService).addContributor(BehaviourExample)
 		]
 		createDefault("second") => [ beh |
-			val scheme = ContextInjectionFactory.make(BehaviourSchemeCyclic, beh)
-			ContextInjectionFactory.invoke(scheme, PostConstruct, beh, null)
-			beh.modify(IBehaviourScheme, scheme)
+			beh.modify(IBehaviourScheme, cyclicScheme)
 			val mapping = beh.get(IBehaviourTaskMappingFactory).create => [
-				val task = ContextInjectionFactory.make(DumpAgentNameTask, beh)
-				put(BehaviourSchemeCyclic.STATE_MAIN, task)
+//				val task = ContextInjectionFactory.make(DumpAgentNameTask, beh)
+//				put(BehaviourSchemeCyclic.STATE_MAIN, task)
 			]
 			beh.modify(IBehaviourTaskMapping, mapping)
 		]

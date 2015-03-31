@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.agent.IAgentIdFactory
 import ru.agentlab.maia.agent.ISchedulerFactory
+import ru.agentlab.maia.behaviour.sheme.BehaviourSchemeCyclic
+import ru.agentlab.maia.behaviour.sheme.BehaviourSchemeOneShot
+import ru.agentlab.maia.behaviour.sheme.BehaviourSchemeTicker
 import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.container.IContainerId
 import ru.agentlab.maia.container.IContainerIdFactory
@@ -60,6 +63,10 @@ class ContainerFactory implements IContainerFactory {
 			createService(IMessageFactory, MessageFactory)
 			createService(IAgentFactory, AgentFactory)
 			createService(IContributionService, ContributionService)
+
+			createService(BehaviourSchemeOneShot, BehaviourSchemeOneShot)
+			createService(BehaviourSchemeCyclic, BehaviourSchemeCyclic)
+			createService(BehaviourSchemeTicker, BehaviourSchemeTicker)
 		]
 
 		LOGGER.info("Container successfully created!")

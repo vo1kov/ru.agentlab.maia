@@ -3,7 +3,7 @@ package ru.agentlab.maia.behaviour.sheme
 import org.eclipse.xtend.lib.annotations.Accessors
 
 @Accessors
-class BehaviourState implements IBehaviourState {
+abstract class BehaviourState implements IBehaviourState {
 
 	var String name
 

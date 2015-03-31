@@ -1,8 +1,12 @@
-package ru.agentlab.maia.behaviour.sheme
+package ru.agentlab.maia.proto
 
-import ru.agentlab.maia.behaviour.task.TaskDelay
+import ru.agentlab.maia.behaviour.sheme.BehaviourScheme
+import ru.agentlab.maia.behaviour.sheme.BehaviourStateFinal
+import ru.agentlab.maia.behaviour.sheme.BehaviourStateImplement
+import ru.agentlab.maia.behaviour.sheme.BehaviourTransitionDefault
+import ru.agentlab.maia.behaviour.sheme.BehaviourTransitionException
 
-class BehaviourSchemeTicker extends BehaviourScheme {
+class BehaviourSchemeInitiator extends BehaviourScheme {
 
 	val public static STATE_MAIN = new BehaviourStateImplement("MAIN")
 
@@ -18,7 +22,7 @@ class BehaviourSchemeTicker extends BehaviourScheme {
 
 	val public static TRANSITION_FINISH2 = new BehaviourTransitionException(Exception, STATE_WAIT, STATE_FINAL)
 
-	override protected void init() {
+	override void init() {
 		super.init
 		states += STATE_MAIN
 		states += STATE_WAIT
@@ -27,8 +31,6 @@ class BehaviourSchemeTicker extends BehaviourScheme {
 		transitions += TRANSITION_CYCLE
 		transitions += TRANSITION_FINISH
 		transitions += TRANSITION_FINISH2
-
-		defaultMapping.put(STATE_WAIT, TaskDelay)
 	}
 
 }
