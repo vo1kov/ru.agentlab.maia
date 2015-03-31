@@ -52,10 +52,9 @@ class AgentFactory implements IAgentFactory {
 		LOGGER.debug("	agent Id: [{}]", id)
 
 		val context = internalCreateEmpty(root, id)
-		val name = context.get(KEY_NAME) as String
 
 		val schedulerFactory = context.get(ISchedulerFactory)
-		val scheduler = schedulerFactory.create(name)
+		val scheduler = schedulerFactory.create(context)
 
 		val messageQueueProvider = context.get(IMessageQueueFactory)
 		val messageQueue = messageQueueProvider.get
