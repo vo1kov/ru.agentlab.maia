@@ -19,9 +19,11 @@
 package ru.agentlab.maia.internal.agent
 
 import java.util.LinkedList
+import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.behaviour.IBehaviour
+import ru.agentlab.maia.context.IContributionService
 
 /** 
  * Name: Scheduler
@@ -54,12 +56,33 @@ class Scheduler extends Thread implements IScheduler {
 	 * If the behaviours queue was empty notifies the embedded thread of
 	 * the owner agent that a behaviour is now available.
 	 */
-	override void add(IBehaviour behaviour) {
-		LOGGER.info("Try to add [{}]", behaviour)
-		synchronized (behavioursLock) {
-			readyBehaviours += behaviour
+	override void add(IEclipseContext context) {
+		val behaviour = context.behaviour
+		if (behaviour == null) {
+			throw new IllegalStateException("Context [" + context + "] is not Behaviour")
+		} else {
+			val contributor = context.contributor
+			if (contributor != null) {
+				LOGGER.info("Try to add [{}] to ready list", behaviour)
+				synchronized (behavioursLock) {
+					readyBehaviours += behaviour
+				}
+				doNotify
+			} else {
+				LOGGER.info("Try to add [{}] to blocked list", behaviour)
+				synchronized (behavioursLock) {
+					blockedBehaviours += behaviour
+				}
+			}
 		}
-		doNotify
+	}
+
+	def IBehaviour getBehaviour(IEclipseContext context) {
+		return context.get(IBehaviour)
+	}
+
+	def Object getContributor(IEclipseContext context) {
+		return context.get(IContributionService.KEY_CONTRIBUTOR)
 	}
 
 	override void run() {
@@ -152,7 +175,7 @@ class Scheduler extends Thread implements IScheduler {
 	/** 
 	 * Removes a specified behaviour from the scheduler
 	 */
-	def void removeAll() {
+	override void removeAll() {
 		LOGGER.info("Try to remove all...")
 		synchronized (behavioursLock) {
 			readyBehaviours.clear
