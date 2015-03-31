@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.context.IContributionService
-import ru.agentlab.maia.lifecycle.fipa.IFipaAgentLifecycleService
+import ru.agentlab.maia.lifecycle.fipa.IFipaLifecycleService
 import ru.agentlab.maia.platform.IPlatformFactory
 
 class Activator implements BundleActivator {
@@ -27,9 +27,7 @@ class Activator implements BundleActivator {
 		Activator.context = bundleContext
 
 		val platformFactory = context.getService(context.getServiceReference(IPlatformFactory))
-		val agentLyfecycleService = context.getService(context.getServiceReference(IFipaAgentLifecycleService))
-		val contributionService = context.getService(context.getServiceReference(IContributionService))
-//		val schedulerFactory = context.getService(context.getServiceReference(ISchedulerFactory))
+
 		LOGGER.info("CREATE platform")
 		platformFactory.createDefault("Platform1") => [
 			get(IContainerFactory) => [
@@ -38,14 +36,15 @@ class Activator implements BundleActivator {
 					get(IAgentFactory) => [
 						LOGGER.info("CREATE agent1")
 						createDefault("Agent1") => [
-							contributionService.addContributor(it, AgentExample)
+							LOGGER.info("ADD contributor for agent1")
+							get(IContributionService).addContributor(AgentExample)
 							LOGGER.info("INVOKE agent1")
-							agentLyfecycleService.invoke(it)
+							get(IFipaLifecycleService).invoke
 						]
 					]
 				]
-//				LOGGER.info("CREATE container2")
-//				createDefault("Container2")
+				LOGGER.info("CREATE container2")
+				createDefault("Container2")
 			]
 		]
 

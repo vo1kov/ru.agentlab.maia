@@ -8,36 +8,26 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
-import ru.agentlab.maia.agent.IAgentIdFactory
 import ru.agentlab.maia.agent.ISchedulerFactory
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.container.IContainerIdFactory
 import ru.agentlab.maia.context.IContextFactory
 import ru.agentlab.maia.context.IContributionService
-import ru.agentlab.maia.internal.agent.AgentFactory
-import ru.agentlab.maia.internal.agent.AgentIdFactory
-import ru.agentlab.maia.internal.agent.SchedulerFactory
-import ru.agentlab.maia.internal.behaviour.BehaviourFactory
 import ru.agentlab.maia.internal.container.ContainerFactory
 import ru.agentlab.maia.internal.container.ContainerIdFactory
-import ru.agentlab.maia.internal.messaging.MessageFactory
-import ru.agentlab.maia.internal.messaging.MessageQueueFactory
-import ru.agentlab.maia.internal.naming.AgentNameGenerator
+import ru.agentlab.maia.internal.context.ContributionService
 import ru.agentlab.maia.internal.naming.ContainerNameGenerator
 import ru.agentlab.maia.messaging.IMessageDeliveryService
 import ru.agentlab.maia.messaging.IMessageDeliveryServiceFactory
 import ru.agentlab.maia.messaging.IMessageFactory
 import ru.agentlab.maia.messaging.IMessageQueueFactory
-import ru.agentlab.maia.naming.IAgentNameGenerator
-import ru.agentlab.maia.naming.IBehaviourNameGenerator
 import ru.agentlab.maia.naming.IContainerNameGenerator
 import ru.agentlab.maia.naming.IPlatformNameGenerator
 import ru.agentlab.maia.platform.IPlatformFactory
 import ru.agentlab.maia.platform.IPlatformId
 import ru.agentlab.maia.platform.IPlatformIdFactory
 import ru.agentlab.maia.service.IServiceManagementService
-import ru.agentlab.maia.internal.naming.BehaviourNameGenerator
 
 /**
  * Factory for creating new Platforms.
@@ -107,19 +97,7 @@ class PlatformFactory implements IPlatformFactory {
 			createService(IContainerNameGenerator, ContainerNameGenerator)
 			createService(IContainerIdFactory, ContainerIdFactory)
 			createService(IContainerFactory, ContainerFactory)
-			
-			// container layer
-			createService(IAgentNameGenerator, AgentNameGenerator)
-			createService(IAgentIdFactory, AgentIdFactory)
-			createService(ISchedulerFactory, SchedulerFactory)
-			createService(IMessageQueueFactory, MessageQueueFactory)
-			createService(IMessageFactory, MessageFactory)
-			createService(IAgentFactory, AgentFactory)
-			
-			// agent layer
-			createService(IBehaviourNameGenerator, BehaviourNameGenerator)
-			createService(IBehaviourFactory, BehaviourFactory)
-			
+			createService(IContributionService, ContributionService)
 		]
 		
 		serviceManagementService => [
@@ -180,7 +158,6 @@ class PlatformFactory implements IPlatformFactory {
 		LOGGER.info("Add properties to Context...")
 		serviceManagementService => [
 			addService(result, KEY_NAME, name)
-			addService(result, KEY_TYPE, TYPE_PLATFORM)
 		]
 
 		LOGGER.info("Add link for parent Context...")

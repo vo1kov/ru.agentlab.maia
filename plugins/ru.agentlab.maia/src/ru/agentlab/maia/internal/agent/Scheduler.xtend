@@ -19,10 +19,13 @@
 package ru.agentlab.maia.internal.agent
 
 import java.util.LinkedList
+import javax.inject.Inject
+import javax.inject.Named
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.behaviour.IBehaviour
+import ru.agentlab.maia.context.IContextFactory
 import ru.agentlab.maia.context.IContributionService
 
 /** 
@@ -46,7 +49,8 @@ class Scheduler extends Thread implements IScheduler {
 
 	private int currentIndex = 0
 
-	new(String name) {
+	@Inject
+	new(@Named(IContextFactory.KEY_NAME) String name) {
 		super(name)
 	}
 

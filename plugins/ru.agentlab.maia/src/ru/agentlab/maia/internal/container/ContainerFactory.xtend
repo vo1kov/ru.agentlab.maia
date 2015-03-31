@@ -2,21 +2,28 @@ package ru.agentlab.maia.internal.container
 
 import java.util.ArrayList
 import java.util.List
+import javax.annotation.PostConstruct
 import javax.inject.Inject
+import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.agent.IAgentIdFactory
 import ru.agentlab.maia.agent.ISchedulerFactory
-import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.container.IContainerId
 import ru.agentlab.maia.container.IContainerIdFactory
 import ru.agentlab.maia.context.IContributionService
+import ru.agentlab.maia.internal.agent.AgentFactory
+import ru.agentlab.maia.internal.agent.AgentIdFactory
+import ru.agentlab.maia.internal.agent.SchedulerFactory
+import ru.agentlab.maia.internal.context.ContributionService
+import ru.agentlab.maia.internal.messaging.MessageFactory
+import ru.agentlab.maia.internal.messaging.MessageQueueFactory
+import ru.agentlab.maia.internal.naming.AgentNameGenerator
 import ru.agentlab.maia.messaging.IMessageFactory
 import ru.agentlab.maia.messaging.IMessageQueueFactory
 import ru.agentlab.maia.naming.IAgentNameGenerator
-import ru.agentlab.maia.naming.IBehaviourNameGenerator
 import ru.agentlab.maia.naming.IContainerNameGenerator
 import ru.agentlab.maia.platform.IPlatformId
 import ru.agentlab.maia.service.IServiceManagementService
@@ -43,23 +50,27 @@ class ContainerFactory implements IContainerFactory {
 		LOGGER.debug("	container Id: [{}]", id)
 
 		val result = internalCreateEmpty(id)
-		
-		serviceManagementService=> [
+
+		result => [
 			// container layer
-			moveService(context, result, IAgentNameGenerator)
-			moveService(context, result, IAgentIdFactory)
-			moveService(context, result, ISchedulerFactory)
-			moveService(context, result, IMessageQueueFactory)
-			moveService(context, result, IMessageFactory)
-			moveService(context, result, IAgentFactory)
-			
-			// agent layer
-			moveService(context, result, IBehaviourNameGenerator)
-			moveService(context, result, IBehaviourFactory)
+			createService(IAgentNameGenerator, AgentNameGenerator)
+			createService(IAgentIdFactory, AgentIdFactory)
+			createService(ISchedulerFactory, SchedulerFactory)
+			createService(IMessageQueueFactory, MessageQueueFactory)
+			createService(IMessageFactory, MessageFactory)
+			createService(IAgentFactory, AgentFactory)
+			createService(IContributionService, ContributionService)
 		]
 
 		LOGGER.info("Container successfully created!")
 		return result
+	}
+
+	def private <T> void createService(IEclipseContext ctx, Class<T> serviceClass,
+		Class<? extends T> implementationClass) {
+		val service = ContextInjectionFactory.make(implementationClass, ctx)
+		ContextInjectionFactory.invoke(service, PostConstruct, ctx, null)
+		serviceManagementService.addService(ctx, serviceClass, service)
 	}
 
 	override createEmpty(String id) {
@@ -90,7 +101,6 @@ class ContainerFactory implements IContainerFactory {
 		LOGGER.info("Add properties to Context...")
 		serviceManagementService => [
 			addService(result, KEY_NAME, name)
-			addService(result, KEY_TYPE, TYPE_CONTAINER)
 		]
 
 		LOGGER.info("Add link for parent Context...")

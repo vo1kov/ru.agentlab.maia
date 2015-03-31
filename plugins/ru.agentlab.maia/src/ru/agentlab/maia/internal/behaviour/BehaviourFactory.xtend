@@ -186,7 +186,6 @@ class BehaviourFactory implements IBehaviourFactory {
 		LOGGER.info("Add properties to Context...")
 		context.get(IServiceManagementService) => [
 			addService(result, KEY_NAME, name)
-			addService(result, KEY_TYPE, TYPE_BEHAVIOUR)
 		]
 
 		LOGGER.info("Add link for parent Context...")

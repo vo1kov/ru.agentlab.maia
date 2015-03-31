@@ -18,11 +18,6 @@ interface IContextFactory {
 	val static String KEY_NAME = "context.name"
 
 	/**
-	 * Key for store context type
-	 */
-	val static String KEY_TYPE = "context.type"
-
-	/**
 	 * Key for store list of platforms in context
 	 */
 	val static String KEY_PLATFORMS = "context.platforms"
@@ -42,26 +37,6 @@ interface IContextFactory {
 	 */
 	val static String KEY_BEHAVIOURS = "context.behaviours"
 	
-	/**
-	 * Id indicated that context is a platform
-	 */
-	val static String TYPE_PLATFORM = "ru.agentlab.maia.platform"
-
-	/**
-	 * Id indicated that context is a container
-	 */
-	val static String TYPE_CONTAINER = "ru.agentlab.maia.container"
-	
-	/**
-	 * Id indicated that context is a agent
-	 */
-	val static String TYPE_AGENT = "ru.agentlab.maia.agent"
-
-	/**
-	 * Id indicated that context is a behaviour
-	 */
-	val static String TYPE_BEHAVIOUR = "ru.agentlab.maia.behaviour"
-
 	/**
 	 * Create Context with default set of services. Set of services depends of
 	 * implementation

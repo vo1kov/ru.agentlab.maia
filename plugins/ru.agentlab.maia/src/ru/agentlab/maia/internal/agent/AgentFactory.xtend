@@ -2,20 +2,26 @@ package ru.agentlab.maia.internal.agent
 
 import java.util.ArrayList
 import java.util.List
+import javax.annotation.PostConstruct
 import javax.inject.Inject
+import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.agent.IAgentId
 import ru.agentlab.maia.agent.IAgentIdFactory
 import ru.agentlab.maia.agent.IScheduler
-import ru.agentlab.maia.agent.ISchedulerFactory
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.container.IContainerId
 import ru.agentlab.maia.context.IContextFactory
 import ru.agentlab.maia.context.IContributionService
+import ru.agentlab.maia.internal.behaviour.BehaviourFactory
+import ru.agentlab.maia.internal.context.ContributionService
+import ru.agentlab.maia.internal.lifecycle.fipa.FipaLifecycleService
+import ru.agentlab.maia.internal.messaging.MessageQueue
+import ru.agentlab.maia.internal.naming.BehaviourNameGenerator
+import ru.agentlab.maia.lifecycle.fipa.IFipaLifecycleService
 import ru.agentlab.maia.messaging.IMessageQueue
-import ru.agentlab.maia.messaging.IMessageQueueFactory
 import ru.agentlab.maia.naming.IAgentNameGenerator
 import ru.agentlab.maia.naming.IBehaviourNameGenerator
 import ru.agentlab.maia.service.IServiceManagementService
@@ -36,13 +42,7 @@ class AgentFactory implements IAgentFactory {
 	IAgentNameGenerator agentNameGenerator
 
 	@Inject
-	ISchedulerFactory schedulerFactory
-
-	@Inject
 	IAgentIdFactory agentIdFactory
-
-	@Inject
-	IMessageQueueFactory messageQueueFactory
 
 	@Inject
 	IServiceManagementService serviceManagementService
@@ -73,19 +73,27 @@ class AgentFactory implements IAgentFactory {
 		val result = internalCreateEmpty(id)
 
 		LOGGER.info("Create Agent-specific Services...")
-		serviceManagementService => [
+		result => [
 			// agent layer
-			moveService(context, result, IBehaviourNameGenerator)
-			moveService(context, result, IBehaviourFactory)
+			createService(IBehaviourNameGenerator, BehaviourNameGenerator)
+			createService(IBehaviourFactory, BehaviourFactory)
+			createService(IFipaLifecycleService, FipaLifecycleService)
 
-			val scheduler = schedulerFactory.create
-			addService(result, IScheduler, scheduler)
-			val messageQueue = messageQueueFactory.get
-			addService(result, IMessageQueue, messageQueue)
+			createService(IScheduler, Scheduler)
+			createService(IMessageQueue, MessageQueue)
+
+			createService(IContributionService, ContributionService)
 		]
 
 		LOGGER.info("Agent successfully created!")
 		return result
+	}
+
+	def private <T> void createService(IEclipseContext ctx, Class<T> serviceClass,
+		Class<? extends T> implementationClass) {
+		val service = ContextInjectionFactory.make(implementationClass, ctx)
+		ContextInjectionFactory.invoke(service, PostConstruct, ctx, null)
+		serviceManagementService.addService(ctx, serviceClass, service)
 	}
 
 	/**
@@ -128,7 +136,6 @@ class AgentFactory implements IAgentFactory {
 		LOGGER.info("Add properties to Context...")
 		serviceManagementService => [
 			addService(result, KEY_NAME, name)
-			addService(result, KEY_TYPE, TYPE_AGENT)
 		]
 
 		LOGGER.info("Add link for parent Context...")

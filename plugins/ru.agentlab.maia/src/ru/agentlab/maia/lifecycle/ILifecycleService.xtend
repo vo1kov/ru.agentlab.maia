@@ -1,17 +1,28 @@
 package ru.agentlab.maia.lifecycle
 
-import org.eclipse.e4.core.contexts.IEclipseContext
-
 interface ILifecycleService {
-	
-	val static String KEY_STATE = "state"
 
-	def String getState(IEclipseContext context)
+	def ILifecycleState getState()
 
-	def void setState(IEclipseContext context, String state) throws IllegalStateException
+	def void setState(ILifecycleState state) throws IllegalStateException
 
-	def Iterable<String> getPossibleStates()
+	def Iterable<ILifecycleState> getPossibleStates()
 
-	
-	
+	def Iterable<ILifecycleTransition> getStatesTransitions()
+
+}
+
+interface ILifecycleState {
+
+	def String getName()
+
+}
+
+interface ILifecycleTransition {
+
+	def String getName()
+
+	def ILifecycleState getFromState()
+
+	def ILifecycleState getToState()
 }
