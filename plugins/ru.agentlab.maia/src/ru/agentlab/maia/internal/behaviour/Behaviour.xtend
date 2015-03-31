@@ -1,13 +1,17 @@
 package ru.agentlab.maia.internal.behaviour
 
 import javax.inject.Inject
+import javax.inject.Named
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
+import org.eclipse.e4.core.di.annotations.Optional
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.Action
 import ru.agentlab.maia.ActionDone
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.context.IContributionService
+import ru.agentlab.maia.agent.IScheduler
+import org.eclipse.e4.core.contexts.RunAndTrack
 
 class Behaviour implements IBehaviour {
 
@@ -15,10 +19,20 @@ class Behaviour implements IBehaviour {
 	@Inject
 	@Accessors
 	IEclipseContext context
+	
+	@Inject
+	IScheduler scheduler
 
-	protected boolean startFlag = true
+	protected volatile boolean startFlag = true
 
 	override getState() {
+//		context.runAndTrack(new RunAndTrack(){
+//			
+//			override changed(IEclipseContext context) {
+//				throw new UnsupportedOperationException("TODO: auto-generated method stub")
+//			}
+//			
+//			})
 		return context.get(KEY_STATE) as String
 	}
 
@@ -34,6 +48,19 @@ class Behaviour implements IBehaviour {
 			return null
 		}
 	}
+	
+	@Inject @Optional
+	def void onContributorChange(@Named(IContributionService.KEY_CONTRIBUTOR) Object contributor){
+		startFlag = true
+		scheduler.restart(this)
+	}
+	
+//	@Inject @Optional
+//	def void onSchedulerChange(IScheduler scheduler){
+//		this.scheduler.remove(this)
+//		scheduler.add(context)
+//		this.scheduler = scheduler
+//	}
 
 	override boolean isDone() {
 		ContextInjectionFactory.invoke(contributor, ActionDone, context) as Boolean
