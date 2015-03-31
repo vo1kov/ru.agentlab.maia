@@ -27,6 +27,7 @@ import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.context.IContextFactory
 import ru.agentlab.maia.context.IContributionService
+import ru.agentlab.maia.behaviour.IBehaviourTaskMapping
 
 /** 
  * Name: Scheduler
@@ -65,7 +66,7 @@ class Scheduler extends Thread implements IScheduler {
 		if (behaviour == null) {
 			throw new IllegalStateException("Context [" + context + "] is not Behaviour")
 		} else {
-			val contributor = context.contributor
+			val contributor = context.get(IBehaviourTaskMapping)
 			if (contributor != null) {
 				LOGGER.info("Try to add [{}] to ready list", behaviour)
 				synchronized (behavioursLock) {
