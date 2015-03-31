@@ -111,6 +111,7 @@ class NettyMessageDeliveryService implements INettyMessageDeliveryService {
 	}
 
 	override send(IMessage message) {
+		LOGGER.info("Try to send [{}] message" + message)
 		message.receivers.forEach [
 //			val address = addresses?.get(0)
 //			new InetSocketAddress(address)
