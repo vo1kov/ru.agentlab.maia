@@ -5,9 +5,9 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import ru.agentlab.maia.Action
 import ru.agentlab.maia.behaviour.IBehaviour
-import ru.agentlab.maia.behaviour.IBehaviourMapping
 import ru.agentlab.maia.behaviour.IBehaviourScheme
 import ru.agentlab.maia.behaviour.IBehaviourState
+import ru.agentlab.maia.behaviour.IBehaviourTaskMapping
 
 class Behaviour implements IBehaviour {
 
@@ -18,7 +18,7 @@ class Behaviour implements IBehaviour {
 	IBehaviourScheme actionScheme
 
 	@Inject
-	IBehaviourMapping actionMapping
+	IBehaviourTaskMapping actionMapping
 
 	IBehaviourState currentState = BehaviourScheme.STATE_INITIAL
 

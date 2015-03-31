@@ -13,8 +13,8 @@ import ru.agentlab.maia.internal.context.ContributionService
 import ru.agentlab.maia.naming.IBehaviourNameGenerator
 import ru.agentlab.maia.service.IServiceManagementService
 import ru.agentlab.maia.behaviour.IBehaviourScheme
-import ru.agentlab.maia.behaviour.IBehaviourMapping
 import ru.agentlab.maia.behaviour.IBehaviour
+import ru.agentlab.maia.behaviour.IBehaviourTaskMapping
 
 class BehaviourFactory implements IBehaviourFactory {
 
@@ -93,7 +93,7 @@ class BehaviourFactory implements IBehaviourFactory {
 			declareModifiable(KEY_BEHAVIOURS)
 			declareModifiable(KEY_NAME)
 			declareModifiable(IBehaviourScheme)
-			declareModifiable(IBehaviourMapping)
+			declareModifiable(IBehaviourTaskMapping)
 		]
 
 		LOGGER.info("Add properties to Context...")

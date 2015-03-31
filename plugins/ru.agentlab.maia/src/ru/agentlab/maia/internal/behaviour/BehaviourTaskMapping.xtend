@@ -3,15 +3,15 @@ package ru.agentlab.maia.internal.behaviour
 import java.util.HashMap
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.behaviour.IBehaviourState
-import ru.agentlab.maia.behaviour.IBehaviourMapping
+import ru.agentlab.maia.behaviour.IBehaviourTaskMapping
 
-class BehaviourMapping implements IBehaviourMapping {
-	
+class BehaviourTaskMapping implements IBehaviourTaskMapping {
+
 	@Accessors
 	val map = new HashMap<IBehaviourState, Object>
-	
+
 	override get(IBehaviourState state) {
 		map.get(state)
 	}
-	
+
 }
