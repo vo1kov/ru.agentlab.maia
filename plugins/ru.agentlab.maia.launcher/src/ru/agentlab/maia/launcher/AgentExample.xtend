@@ -24,18 +24,15 @@ class AgentExample {
 	@Inject
 	extension IBehaviourFactory
 
-	@Inject
-	extension IContributionService
-
 	@PostConstruct
 	def void setup() {
 		LOGGER.info("Setup of: [{}] agent", agentName)
 		createTicker("first", 1000) => [
-			addContributor(BehaviourExample)
+			get(IContributionService).addContributor(BehaviourExample)
 		]
-		createFromAnnotation("first2", BehaviourExample) => [
-			addContributor(BehaviourExample)
-		]
+//		createFromAnnotation("first2", BehaviourExample) => [
+//			get(IContributionService).addContributor(BehaviourExample)
+//		]
 //		behaviourFactory.createTicker(context, "second", 1000) => [
 //			addContributor(BehaviourExample)
 //		]

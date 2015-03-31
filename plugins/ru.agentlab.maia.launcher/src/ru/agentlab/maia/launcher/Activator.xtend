@@ -8,6 +8,7 @@ import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.context.IContributionService
 import ru.agentlab.maia.lifecycle.fipa.IFipaLifecycleService
 import ru.agentlab.maia.platform.IPlatformFactory
+import ru.agentlab.maia.lifecycle.ILifecycleService
 
 class Activator implements BundleActivator {
 
@@ -39,7 +40,7 @@ class Activator implements BundleActivator {
 							LOGGER.info("ADD contributor for agent1")
 							get(IContributionService).addContributor(AgentExample)
 							LOGGER.info("INVOKE agent1")
-							get(IFipaLifecycleService).invoke
+							get(ILifecycleService).invokeTransition = "INVOKE"
 						]
 					]
 				]

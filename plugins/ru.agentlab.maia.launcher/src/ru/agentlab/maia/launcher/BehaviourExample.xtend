@@ -22,7 +22,7 @@ class BehaviourExample {
 
 	@Inject
 	IEclipseContext context
-	
+
 	@Inject
 	IScheduler sch
 
@@ -32,7 +32,9 @@ class BehaviourExample {
 		while (c != null) {
 			LOGGER.debug("Context [{}] hold:", c)
 			(c as EclipseContext).localData.forEach [ p1, p2 |
-				LOGGER.debug("	[{}] -> [{}]", p1, p2)
+				if (p1 != "org.eclipse.e4.core.internal.contexts.ContextObjectSupplier" && p1 != "debugString") {
+					LOGGER.debug("	[{}] -> [{}]", p1, p2)
+				}
 			]
 			c = c.parent
 		}
