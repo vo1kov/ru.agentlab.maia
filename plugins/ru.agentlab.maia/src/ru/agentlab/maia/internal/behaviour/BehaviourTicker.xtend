@@ -66,7 +66,7 @@ class BehaviourTicker extends Behaviour {
 				// re-initialize wakeupTime
 				tickCount++
 
-				ContextInjectionFactory.invoke(contributor, Action, context)
+				ContextInjectionFactory.invoke(contributor, Action, context, null)
 
 				val currentTime = System.currentTimeMillis()
 				if (fixedPeriod) {
