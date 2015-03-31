@@ -16,6 +16,7 @@ import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.internal.MaiaActivator
 import ru.agentlab.maia.naming.IBehaviourNameGenerator
 import ru.agentlab.maia.service.IServiceManagementService
+import ru.agentlab.maia.context.IContributionService
 
 class BehaviourFactory implements IBehaviourFactory {
 
@@ -77,7 +78,7 @@ class BehaviourFactory implements IBehaviourFactory {
 	}
 
 	override IEclipseContext createOneShot(IEclipseContext root, String id) {
-		LOGGER.info("Try to create new Cyclyc Behaviour...")
+		LOGGER.info("Try to create new One Shot Behaviour...")
 		LOGGER.debug("	root context: [{}]", root)
 		LOGGER.debug("	behaviour Id: [{}]", id)
 
@@ -92,7 +93,7 @@ class BehaviourFactory implements IBehaviourFactory {
 	}
 
 	override createTicker(IEclipseContext root, String id, long delay) {
-		LOGGER.info("Try to create new Cyclyc Behaviour...")
+		LOGGER.info("Try to create new Ticker Behaviour...")
 		LOGGER.debug("	root context: [{}]", root)
 		LOGGER.debug("	behaviour Id: [{}]", id)
 
@@ -111,7 +112,7 @@ class BehaviourFactory implements IBehaviourFactory {
 	}
 
 	override createFromAnnotation(IEclipseContext root, String id, Class<?> contributorClass) {
-		LOGGER.info("Try to create new Cyclyc Behaviour...")
+		LOGGER.info("Try to create new Behaviour from Annotation...")
 		LOGGER.debug("	root context: [{}]", root)
 		LOGGER.debug("	behaviour Id: [{}]", id)
 
@@ -161,13 +162,23 @@ class BehaviourFactory implements IBehaviourFactory {
 		ContextInjectionFactory.invoke(behaviour, PostConstruct, context, null)
 		context.set(IBehaviour, behaviour)
 
-		LOGGER.info("Add Behaviour to agent scheduler...")
-		val scheduler = context.parent.get(IScheduler)
-		if (scheduler != null) {
-			scheduler.add(behaviour)
-		} else {
-			LOGGER.info("Root context [{}] have no scheduler", context.parent)
-		}
+		context.runAndTrack [ 
+			val scheduler = get(IScheduler)
+			if (scheduler != null) {
+				LOGGER.info("Add Behaviour to agent scheduler...")
+				scheduler.add(context)
+			} else {
+				LOGGER.info("Root context [{}] have no scheduler", context.parent)
+			}
+			return true
+		]
+//		LOGGER.info("Add Behaviour to agent scheduler...")
+//		val scheduler = context.parent.get(IScheduler)
+//		if (scheduler != null) {
+//			scheduler.add(context)
+//		} else {
+//			LOGGER.info("Root context [{}] have no scheduler", context.parent)
+//		}
 		return behaviour
 	}
 
@@ -192,8 +203,9 @@ class BehaviourFactory implements IBehaviourFactory {
 		LOGGER.info("Create Behaviour Context...")
 		val context = rootContext.createChild("Context for Behaviour: " + name) => [
 			declareModifiable(KEY_BEHAVIOURS)
+			declareModifiable(IContributionService.KEY_CONTRIBUTOR)
 		]
-		
+
 		LOGGER.info("Add properties to Context...")
 		rootContext.get(IServiceManagementService) => [
 			addService(context, KEY_NAME, name)
