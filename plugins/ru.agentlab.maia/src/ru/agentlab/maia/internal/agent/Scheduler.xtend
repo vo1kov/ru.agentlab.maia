@@ -24,9 +24,9 @@ import javax.inject.Named
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IScheduler
+import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.context.IContextFactory
 import ru.agentlab.maia.context.IContributionService
-import ru.agentlab.maia.behaviour.IBehaviour
 
 /** 
  * Name: Scheduler
@@ -170,9 +170,13 @@ class Scheduler extends Thread implements IScheduler {
 	 */
 	override void remove(IBehaviour behaviour) {
 		LOGGER.info("Try to remove [{}] Behaviour...", behaviour)
-		var found = removeFromBlocked(behaviour)
-		if (!found) {
+		synchronized (behavioursLock) {
+			var found = removeFromBlocked(behaviour)
+			LOGGER.info("Remove From Blocked result: [{}]...", found)
+//			if (!found) {
 			found = removeFromReady(behaviour)
+			LOGGER.info("Remove From Ready result: [{}]...", found)
+//			}
 		}
 	}
 
@@ -193,9 +197,9 @@ class Scheduler extends Thread implements IScheduler {
 	 */
 	def private boolean removeFromBlocked(IBehaviour behaviour) {
 		LOGGER.info("Try to remove [{}] Behaviour from blocked...", behaviour)
-		synchronized (behavioursLock) {
-			return blockedBehaviours.remove(behaviour)
-		}
+//		synchronized (behavioursLock) {
+		return blockedBehaviours.remove(behaviour)
+//		}
 	}
 
 	/**
@@ -207,6 +211,7 @@ class Scheduler extends Thread implements IScheduler {
 	def private boolean removeFromReady(IBehaviour behaviour) {
 		LOGGER.info("Try to remove [{}] Behaviour from ready...", behaviour)
 		var boolean result
+//		synchronized (behavioursLock) {
 		val index = readyBehaviours.indexOf(behaviour)
 		LOGGER.debug("Scheduler removeFromReady size " + readyBehaviours.size)
 		LOGGER.debug("Scheduler removeFromReady index " + index)
@@ -220,9 +225,11 @@ class Scheduler extends Thread implements IScheduler {
 			} else if (index == currentIndex && currentIndex == readyBehaviours.size())
 				currentIndex = 0
 		}
+
 		LOGGER.debug("Scheduler removeFromReady size " + readyBehaviours.size)
 		LOGGER.debug("Scheduler removeFromReady index " + index)
 		LOGGER.debug("Scheduler removeFromReady currentIndex " + currentIndex)
+//		}
 		return result
 	}
 

@@ -4,6 +4,7 @@ import javax.inject.Inject
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import ru.agentlab.maia.Action
+import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.behaviour.IBehaviourScheme
 import ru.agentlab.maia.behaviour.IBehaviourState
@@ -24,6 +25,9 @@ class Behaviour implements IBehaviour {
 	@Inject
 	IBehaviourTaskMapping actionMapping
 
+	@Inject
+	IScheduler scheduler
+
 	IBehaviourState currentState = BehaviourScheme.STATE_INITIAL
 
 	override void action() {
@@ -38,10 +42,14 @@ class Behaviour implements IBehaviour {
 		} catch (Exception e) {
 			getNextExceptionState(e.class)
 		}
+		if (nextState == BehaviourScheme.STATE_FINAL) {
+			scheduler.remove(this)
+		}
 		if (currentState != BehaviourScheme.STATE_FINAL) {
 			if (nextState == null) {
 				throw new IllegalStateException("Action state [" + currentState + "] have no transition to next state")
 			}
+		} else {
 		}
 		currentState = nextState
 	}
