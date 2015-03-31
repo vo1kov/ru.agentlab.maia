@@ -3,12 +3,12 @@ package ru.agentlab.maia.internal.lifecycle
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.lifecycle.ILifecycleSchema
 import ru.agentlab.maia.lifecycle.ILifecycleState
 import ru.agentlab.maia.lifecycle.ILifecycleTransition
+import ru.agentlab.maia.lifecycle.ILifecycleScheme
 
 @Accessors
-class LifecycleSchema implements ILifecycleSchema {
+class LifecycleScheme implements ILifecycleScheme {
 
 	val List<ILifecycleState> states = new ArrayList<ILifecycleState>
 

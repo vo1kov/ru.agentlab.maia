@@ -6,12 +6,12 @@ import org.eclipse.e4.core.contexts.IEclipseContext
 import org.eclipse.xtend.lib.annotations.AccessorType
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.lifecycle.ILifecycleSchema
 import ru.agentlab.maia.lifecycle.ILifecycleService
 import ru.agentlab.maia.lifecycle.ILifecycleState
 import ru.agentlab.maia.lifecycle.ILifecycleTransition
 
 import static extension org.eclipse.xtend.lib.annotations.AccessorType.*
+import ru.agentlab.maia.lifecycle.ILifecycleScheme
 
 @Accessors(AccessorType.PUBLIC_GETTER)
 class LifecycleService implements ILifecycleService {
@@ -22,7 +22,7 @@ class LifecycleService implements ILifecycleService {
 	IEclipseContext context
 
 	@Inject
-	ILifecycleSchema schema
+	ILifecycleScheme schema
 
 	ILifecycleState currentState = ILifecycleState.STATE_UNKNOWN
 

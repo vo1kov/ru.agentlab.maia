@@ -2,7 +2,7 @@ package ru.agentlab.maia.lifecycle
 
 import java.util.List
 
-interface ILifecycleSchema {
+interface ILifecycleScheme {
 
 	def ILifecycleState getInitialState()
 

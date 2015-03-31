@@ -2,7 +2,7 @@ package ru.agentlab.maia.lifecycle
 
 interface ILifecycleService {
 
-	def ILifecycleSchema getSchema()
+	def ILifecycleScheme getSchema()
 
 	def ILifecycleState getCurrentState()
 

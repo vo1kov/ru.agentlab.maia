@@ -3,13 +3,13 @@ package ru.agentlab.maia.internal.lifecycle.fipa
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import org.eclipse.e4.core.contexts.IEclipseContext
-import ru.agentlab.maia.internal.lifecycle.LifecycleSchema
 import ru.agentlab.maia.internal.lifecycle.LifecycleState
 import ru.agentlab.maia.internal.lifecycle.LifecycleTransition
-import ru.agentlab.maia.lifecycle.ILifecycleSchema
 import ru.agentlab.maia.lifecycle.ILifecycleState
+import ru.agentlab.maia.internal.lifecycle.LifecycleScheme
+import ru.agentlab.maia.lifecycle.ILifecycleScheme
 
-class FipaLifecycleSchema extends LifecycleSchema {
+class FipaLifecycleSchema extends LifecycleScheme {
 
 	val public static STATE_UNKNOWN = ILifecycleState.STATE_UNKNOWN
 
@@ -34,7 +34,7 @@ class FipaLifecycleSchema extends LifecycleSchema {
 
 	@PostConstruct
 	def void init() {
-		context.declareModifiable(ILifecycleSchema)
+		context.declareModifiable(ILifecycleScheme)
 
 		states += STATE_UNKNOWN
 		states += STATE_INITIATED
