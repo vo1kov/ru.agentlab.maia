@@ -17,10 +17,10 @@ class ContextDumpTask {
 	def void action() {
 		var c = context
 		while (c != null) {
-			LOGGER.debug("Context [{}] hold:", c)
+			LOGGER.info("Context [{}] consist of:", c)
 			(c as EclipseContext).localData.forEach [ p1, p2 |
 				if (p1 != "org.eclipse.e4.core.internal.contexts.ContextObjectSupplier" && p1 != "debugString") {
-					LOGGER.debug("	[{}] -> [{}]", p1, p2)
+					LOGGER.info("	[{}] -> [{}]", p1, p2)
 				}
 			]
 			c = c.parent

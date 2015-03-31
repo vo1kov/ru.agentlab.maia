@@ -3,12 +3,17 @@ package ru.agentlab.maia.launcher
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import javax.inject.Named
+import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.di.annotations.Optional
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentId
 import ru.agentlab.maia.behaviour.IBehaviourFactory
+import ru.agentlab.maia.behaviour.IBehaviourTaskMapping
+import ru.agentlab.maia.behaviour.IBehaviourTaskMappingFactory
+import ru.agentlab.maia.behaviour.sheme.BehaviourSchemeOneShot
 import ru.agentlab.maia.context.IContextFactory
 import ru.agentlab.maia.context.IContributionService
+import ru.agentlab.maia.launcher.task.DumpAgentNameTask
 import ru.agentlab.maia.lifecycle.ILifecycleState
 
 class AgentExample {
@@ -29,6 +34,13 @@ class AgentExample {
 		LOGGER.info("Setup of: [{}] agent", agentName)
 		createDefault("first") => [
 			get(IContributionService).addContributor(BehaviourExample)
+		]
+		createDefault("second") => [ beh |
+			val mapping = beh.get(IBehaviourTaskMappingFactory).create => [
+				val task = ContextInjectionFactory.make(DumpAgentNameTask, beh)
+				put(BehaviourSchemeOneShot.STATE_MAIN, task)
+			]
+			beh.modify(IBehaviourTaskMapping, mapping)
 		]
 //		createFromAnnotation("first2", BehaviourExample) => [
 //			get(IContributionService).addContributor(BehaviourExample)
