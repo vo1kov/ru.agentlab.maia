@@ -11,16 +11,16 @@ class AgentFipaLifecycleListener extends RunAndTrack {
 		val state = context.get(ILifecycleTransition)
 		val scheduler = context.get(IScheduler)
 		switch (state) {
-			case FipaLifecycleSchemaFactory.TRANSITION_INVOKE: {
+			case FipaLifecycleSchema.TRANSITION_INVOKE: {
 				scheduler.start
 			}
-			case FipaLifecycleSchemaFactory.TRANSITION_SUSPEND: {
+			case FipaLifecycleSchema.TRANSITION_SUSPEND: {
 				scheduler.blockAll
 			}
-			case FipaLifecycleSchemaFactory.TRANSITION_RESUME: {
+			case FipaLifecycleSchema.TRANSITION_RESUME: {
 				scheduler.restartAll
 			}
-			case FipaLifecycleSchemaFactory.TRANSITION_DELETE: {
+			case FipaLifecycleSchema.TRANSITION_DELETE: {
 				scheduler.removeAll
 			}
 		}

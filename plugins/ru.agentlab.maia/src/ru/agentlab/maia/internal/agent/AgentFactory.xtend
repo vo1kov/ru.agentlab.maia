@@ -19,7 +19,7 @@ import ru.agentlab.maia.internal.behaviour.BehaviourFactory
 import ru.agentlab.maia.internal.context.ContributionService
 import ru.agentlab.maia.internal.lifecycle.LifecycleService
 import ru.agentlab.maia.internal.lifecycle.fipa.AgentFipaLifecycleListener
-import ru.agentlab.maia.internal.lifecycle.fipa.FipaLifecycleSchemaFactory
+import ru.agentlab.maia.internal.lifecycle.fipa.FipaLifecycleSchema
 import ru.agentlab.maia.internal.messaging.MessageQueue
 import ru.agentlab.maia.internal.naming.BehaviourNameGenerator
 import ru.agentlab.maia.lifecycle.ILifecycleSchema
@@ -82,9 +82,7 @@ class AgentFactory implements IAgentFactory {
 			createService(IBehaviourNameGenerator, BehaviourNameGenerator)
 			createService(IBehaviourFactory, BehaviourFactory)
 
-			val schema = (new FipaLifecycleSchemaFactory).createSchema
-			serviceManagementService.addService(it, ILifecycleSchema, schema)
-
+			createService(ILifecycleSchema, FipaLifecycleSchema)
 			createService(ILifecycleService, LifecycleService)
 
 			createService(IScheduler, Scheduler)
