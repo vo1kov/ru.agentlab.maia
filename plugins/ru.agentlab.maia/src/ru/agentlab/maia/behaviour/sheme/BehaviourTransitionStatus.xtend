@@ -2,7 +2,8 @@ package ru.agentlab.maia.behaviour.sheme
 
 import org.eclipse.xtend.lib.annotations.AccessorType
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.behaviour.IBehaviourState
+
+import static extension org.eclipse.xtend.lib.annotations.AccessorType.*
 
 @Accessors(AccessorType.PUBLIC_GETTER)
 class BehaviourTransitionStatus extends BehaviourTransition {

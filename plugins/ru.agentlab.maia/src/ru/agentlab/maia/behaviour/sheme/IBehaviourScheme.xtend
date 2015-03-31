@@ -1,4 +1,4 @@
-package ru.agentlab.maia.behaviour
+package ru.agentlab.maia.behaviour.sheme
 
 import java.util.List
 

@@ -8,9 +8,10 @@ import org.eclipse.e4.core.di.annotations.Optional
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentId
 import ru.agentlab.maia.behaviour.IBehaviourFactory
-import ru.agentlab.maia.behaviour.IBehaviourTaskMapping
-import ru.agentlab.maia.behaviour.IBehaviourTaskMappingFactory
-import ru.agentlab.maia.behaviour.sheme.BehaviourSchemeOneShot
+import ru.agentlab.maia.behaviour.sheme.BehaviourSchemeCyclic
+import ru.agentlab.maia.behaviour.sheme.IBehaviourScheme
+import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMapping
+import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMappingFactory
 import ru.agentlab.maia.context.IContextFactory
 import ru.agentlab.maia.context.IContributionService
 import ru.agentlab.maia.launcher.task.DumpAgentNameTask
@@ -36,9 +37,12 @@ class AgentExample {
 			get(IContributionService).addContributor(BehaviourExample)
 		]
 		createDefault("second") => [ beh |
+			val scheme = ContextInjectionFactory.make(BehaviourSchemeCyclic, beh)
+			ContextInjectionFactory.invoke(scheme, PostConstruct, beh, null)
+			beh.modify(IBehaviourScheme, scheme)
 			val mapping = beh.get(IBehaviourTaskMappingFactory).create => [
 				val task = ContextInjectionFactory.make(DumpAgentNameTask, beh)
-				put(BehaviourSchemeOneShot.STATE_MAIN, task)
+				put(BehaviourSchemeCyclic.STATE_MAIN, task)
 			]
 			beh.modify(IBehaviourTaskMapping, mapping)
 		]

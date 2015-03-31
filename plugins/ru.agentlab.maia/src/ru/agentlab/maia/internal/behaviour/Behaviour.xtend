@@ -6,13 +6,13 @@ import org.eclipse.e4.core.contexts.IEclipseContext
 import ru.agentlab.maia.Action
 import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.behaviour.IBehaviour
-import ru.agentlab.maia.behaviour.IBehaviourScheme
-import ru.agentlab.maia.behaviour.IBehaviourState
-import ru.agentlab.maia.behaviour.IBehaviourTaskMapping
 import ru.agentlab.maia.behaviour.sheme.BehaviourScheme
 import ru.agentlab.maia.behaviour.sheme.BehaviourTransitionDefault
 import ru.agentlab.maia.behaviour.sheme.BehaviourTransitionException
 import ru.agentlab.maia.behaviour.sheme.BehaviourTransitionStatus
+import ru.agentlab.maia.behaviour.sheme.IBehaviourScheme
+import ru.agentlab.maia.behaviour.sheme.IBehaviourState
+import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMapping
 
 class Behaviour implements IBehaviour {
 

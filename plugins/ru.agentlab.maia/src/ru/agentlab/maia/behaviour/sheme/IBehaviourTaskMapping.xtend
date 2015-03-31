@@ -1,4 +1,4 @@
-package ru.agentlab.maia.behaviour
+package ru.agentlab.maia.behaviour.sheme
 
 /**
  * Mapping [<code>IActionState</code> -> <code>Contributor</code>]. Intended for

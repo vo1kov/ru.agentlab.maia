@@ -1,7 +1,5 @@
 package ru.agentlab.maia.naming
 
-import ru.agentlab.maia.naming.INameGenerator
-
 /**
  * Service for container name generating.
  * 

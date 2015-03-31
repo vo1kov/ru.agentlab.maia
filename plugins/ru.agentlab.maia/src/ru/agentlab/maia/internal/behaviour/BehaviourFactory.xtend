@@ -9,10 +9,10 @@ import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.behaviour.IBehaviourFactory
-import ru.agentlab.maia.behaviour.IBehaviourScheme
-import ru.agentlab.maia.behaviour.IBehaviourTaskMapping
-import ru.agentlab.maia.behaviour.IBehaviourTaskMappingFactory
 import ru.agentlab.maia.behaviour.sheme.BehaviourSchemeOneShot
+import ru.agentlab.maia.behaviour.sheme.IBehaviourScheme
+import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMapping
+import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMappingFactory
 import ru.agentlab.maia.context.IContributionService
 import ru.agentlab.maia.internal.context.ContributionService
 import ru.agentlab.maia.naming.IBehaviourNameGenerator

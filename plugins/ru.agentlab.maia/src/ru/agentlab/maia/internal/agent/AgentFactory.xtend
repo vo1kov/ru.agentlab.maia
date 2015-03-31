@@ -22,12 +22,12 @@ import ru.agentlab.maia.internal.lifecycle.fipa.AgentFipaLifecycleListener
 import ru.agentlab.maia.internal.lifecycle.fipa.FipaLifecycleSchema
 import ru.agentlab.maia.internal.messaging.MessageQueue
 import ru.agentlab.maia.internal.naming.BehaviourNameGenerator
+import ru.agentlab.maia.lifecycle.ILifecycleScheme
 import ru.agentlab.maia.lifecycle.ILifecycleService
 import ru.agentlab.maia.messaging.IMessageQueue
 import ru.agentlab.maia.naming.IAgentNameGenerator
 import ru.agentlab.maia.naming.IBehaviourNameGenerator
 import ru.agentlab.maia.service.IServiceManagementService
-import ru.agentlab.maia.lifecycle.ILifecycleScheme
 
 /**
  * Factory for creating Agent-Contexts

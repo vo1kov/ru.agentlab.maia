@@ -2,8 +2,8 @@ package ru.agentlab.maia.internal.behaviour
 
 import java.util.HashMap
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.behaviour.IBehaviourState
-import ru.agentlab.maia.behaviour.IBehaviourTaskMapping
+import ru.agentlab.maia.behaviour.sheme.IBehaviourState
+import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMapping
 
 class BehaviourTaskMapping implements IBehaviourTaskMapping {
 

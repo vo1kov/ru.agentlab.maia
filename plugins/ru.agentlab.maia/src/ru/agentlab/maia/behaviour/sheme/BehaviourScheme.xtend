@@ -6,9 +6,6 @@ import javax.annotation.PostConstruct
 import javax.inject.Inject
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.behaviour.IBehaviourScheme
-import ru.agentlab.maia.behaviour.IBehaviourState
-import ru.agentlab.maia.behaviour.IBehaviourTransition
 
 @Accessors
 abstract class BehaviourScheme implements IBehaviourScheme {
