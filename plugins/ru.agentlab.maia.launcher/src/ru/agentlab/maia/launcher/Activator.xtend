@@ -6,9 +6,8 @@ import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.context.IContributionService
-import ru.agentlab.maia.lifecycle.fipa.IFipaLifecycleService
-import ru.agentlab.maia.platform.IPlatformFactory
 import ru.agentlab.maia.lifecycle.ILifecycleService
+import ru.agentlab.maia.platform.IPlatformFactory
 
 class Activator implements BundleActivator {
 
