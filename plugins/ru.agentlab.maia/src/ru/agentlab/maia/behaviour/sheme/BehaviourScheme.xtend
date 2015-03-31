@@ -1,4 +1,4 @@
-package ru.agentlab.maia.internal.behaviour
+package ru.agentlab.maia.behaviour.sheme
 
 import java.util.ArrayList
 import java.util.List
@@ -33,7 +33,7 @@ abstract class BehaviourScheme implements IBehaviourScheme {
 		states += STATE_INITIAL
 		states += STATE_FINAL
 	}
-	
+
 	override getName() {
 		this.class.name
 	}

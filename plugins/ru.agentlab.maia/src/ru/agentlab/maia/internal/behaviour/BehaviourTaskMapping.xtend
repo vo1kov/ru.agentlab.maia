@@ -13,5 +13,9 @@ class BehaviourTaskMapping implements IBehaviourTaskMapping {
 	override get(IBehaviourState state) {
 		map.get(state)
 	}
+	
+	override put(IBehaviourState state, Object task) {
+		map.put(state, task)
+	}
 
 }

@@ -7,14 +7,15 @@ import javax.inject.Inject
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
+import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.behaviour.IBehaviourFactory
+import ru.agentlab.maia.behaviour.IBehaviourScheme
+import ru.agentlab.maia.behaviour.IBehaviourTaskMapping
+import ru.agentlab.maia.behaviour.sheme.BehaviourSchemeOneShot
 import ru.agentlab.maia.context.IContributionService
 import ru.agentlab.maia.internal.context.ContributionService
 import ru.agentlab.maia.naming.IBehaviourNameGenerator
 import ru.agentlab.maia.service.IServiceManagementService
-import ru.agentlab.maia.behaviour.IBehaviourScheme
-import ru.agentlab.maia.behaviour.IBehaviour
-import ru.agentlab.maia.behaviour.IBehaviourTaskMapping
 
 class BehaviourFactory implements IBehaviourFactory {
 

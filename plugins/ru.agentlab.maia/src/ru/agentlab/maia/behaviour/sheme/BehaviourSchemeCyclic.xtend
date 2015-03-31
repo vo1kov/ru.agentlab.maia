@@ -1,4 +1,4 @@
-package ru.agentlab.maia.internal.behaviour
+package ru.agentlab.maia.behaviour.sheme
 
 class BehaviourSchemeCyclic extends BehaviourScheme {
 
@@ -18,5 +18,5 @@ class BehaviourSchemeCyclic extends BehaviourScheme {
 		transitions += TRANSITION_CYCLE
 		transitions += TRANSITION_EXCEPTION
 	}
-	
+
 }

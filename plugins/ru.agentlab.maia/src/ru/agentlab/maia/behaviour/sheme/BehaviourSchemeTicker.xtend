@@ -1,4 +1,4 @@
-package ru.agentlab.maia.internal.behaviour
+package ru.agentlab.maia.behaviour.sheme
 
 class BehaviourSchemeTicker extends BehaviourScheme {
 

@@ -1,4 +1,4 @@
-package ru.agentlab.maia.internal.behaviour
+package ru.agentlab.maia.behaviour.sheme
 
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.AccessorType

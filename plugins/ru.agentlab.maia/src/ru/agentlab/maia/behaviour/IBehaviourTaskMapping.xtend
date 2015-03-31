@@ -7,5 +7,7 @@ package ru.agentlab.maia.behaviour
 interface IBehaviourTaskMapping {
 
 	def Object get(IBehaviourState state)
+	
+	def void put(IBehaviourState state, Object task)
 
 }

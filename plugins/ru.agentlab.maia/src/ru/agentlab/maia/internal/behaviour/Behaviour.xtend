@@ -8,6 +8,10 @@ import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.behaviour.IBehaviourScheme
 import ru.agentlab.maia.behaviour.IBehaviourState
 import ru.agentlab.maia.behaviour.IBehaviourTaskMapping
+import ru.agentlab.maia.behaviour.sheme.BehaviourScheme
+import ru.agentlab.maia.behaviour.sheme.BehaviourTransitionDefault
+import ru.agentlab.maia.behaviour.sheme.BehaviourTransitionException
+import ru.agentlab.maia.behaviour.sheme.BehaviourTransitionStatus
 
 class Behaviour implements IBehaviour {
 
