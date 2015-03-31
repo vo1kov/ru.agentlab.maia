@@ -1,6 +1,6 @@
 package ru.agentlab.maia.behaviour
 
-interface IActionState {
+interface IBehaviourState {
 	
 	def String getName()
 	

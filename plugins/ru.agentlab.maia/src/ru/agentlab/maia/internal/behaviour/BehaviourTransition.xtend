@@ -1,26 +1,26 @@
 package ru.agentlab.maia.internal.behaviour
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.behaviour.IActionState
-import ru.agentlab.maia.behaviour.IActionTransition
+import ru.agentlab.maia.behaviour.IBehaviourState
+import ru.agentlab.maia.behaviour.IBehaviourTransition
 
 @Accessors
-abstract class ActionTransition implements IActionTransition {
+abstract class BehaviourTransition implements IBehaviourTransition {
 
 	var String name
 
-	var IActionState fromState
+	var IBehaviourState fromState
 
-	var IActionState toState
+	var IBehaviourState toState
 
-	new(String name, IActionState fromState, IActionState toState) {
+	new(String name, IBehaviourState fromState, IBehaviourState toState) {
 		this.name = name
 		this.fromState = fromState
 		this.toState = toState
 	}
 
 	override equals(Object obj) {
-		if (obj instanceof ActionTransition) {
+		if (obj instanceof BehaviourTransition) {
 			return obj.fromState == fromState && obj.toState == toState
 		} else {
 			super.equals(obj)

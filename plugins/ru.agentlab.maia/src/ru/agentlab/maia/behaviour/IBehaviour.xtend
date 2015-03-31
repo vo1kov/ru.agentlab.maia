@@ -1,6 +1,6 @@
 package ru.agentlab.maia.behaviour
 
-interface IBehaviourActionService {
+interface IBehaviour {
 
 	def void action()
 

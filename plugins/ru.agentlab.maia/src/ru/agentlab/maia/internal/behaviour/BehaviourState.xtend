@@ -1,10 +1,10 @@
 package ru.agentlab.maia.internal.behaviour
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.behaviour.IActionState
+import ru.agentlab.maia.behaviour.IBehaviourState
 
 @Accessors
-class ActionState implements IActionState {
+class BehaviourState implements IBehaviourState {
 
 	var String name
 
@@ -13,7 +13,7 @@ class ActionState implements IActionState {
 	}
 
 	override equals(Object obj) {
-		if (obj instanceof ActionState) {
+		if (obj instanceof BehaviourState) {
 			return obj.name.equalsIgnoreCase(name)
 		} else {
 			super.equals(obj)

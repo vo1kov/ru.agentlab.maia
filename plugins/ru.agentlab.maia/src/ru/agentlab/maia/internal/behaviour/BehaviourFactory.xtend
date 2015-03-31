@@ -7,14 +7,14 @@ import javax.inject.Inject
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.behaviour.IActionMapping
-import ru.agentlab.maia.behaviour.IActionScheme
-import ru.agentlab.maia.behaviour.IBehaviourActionService
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.context.IContributionService
 import ru.agentlab.maia.internal.context.ContributionService
 import ru.agentlab.maia.naming.IBehaviourNameGenerator
 import ru.agentlab.maia.service.IServiceManagementService
+import ru.agentlab.maia.behaviour.IBehaviourScheme
+import ru.agentlab.maia.behaviour.IBehaviourMapping
+import ru.agentlab.maia.behaviour.IBehaviour
 
 class BehaviourFactory implements IBehaviourFactory {
 
@@ -60,8 +60,8 @@ class BehaviourFactory implements IBehaviourFactory {
 		val result = internalCreateEmpty(id)
 
 		LOGGER.info("Create Behaviour instance...")
-		result.createService(IActionScheme, ActionSchemeOneShot)
-		result.createService(IBehaviourActionService, BehaviourActionService)
+		result.createService(IBehaviourScheme, BehaviourSchemeOneShot)
+		result.createService(IBehaviour, Behaviour)
 
 		result.runAndTrack(new BehaviourInstaller)
 
@@ -92,8 +92,8 @@ class BehaviourFactory implements IBehaviourFactory {
 		val result = context.createChild("Context for Behaviour: " + name) => [
 			declareModifiable(KEY_BEHAVIOURS)
 			declareModifiable(KEY_NAME)
-			declareModifiable(IActionScheme)
-			declareModifiable(IActionMapping)
+			declareModifiable(IBehaviourScheme)
+			declareModifiable(IBehaviourMapping)
 		]
 
 		LOGGER.info("Add properties to Context...")

@@ -1,7 +1,7 @@
 package ru.agentlab.maia.agent
 
 import org.eclipse.e4.core.contexts.IEclipseContext
-import ru.agentlab.maia.behaviour.IBehaviourActionService
+import ru.agentlab.maia.behaviour.IBehaviour
 
 interface IScheduler extends Runnable {
 	/** 
@@ -19,7 +19,7 @@ interface IScheduler extends Runnable {
 	 * Moves a behaviour from the ready queue to the sleeping queue.
 	 * @param behaviour
 	 */
-	def void block(IBehaviourActionService behaviour)
+	def void block(IBehaviour behaviour)
 
 	def void blockAll()
 
@@ -27,7 +27,7 @@ interface IScheduler extends Runnable {
 	 * Moves a behaviour from the sleeping queue to the ready queue.
 	 * @param behaviour
 	 */
-	def void restart(IBehaviourActionService behaviour)
+	def void restart(IBehaviour behaviour)
 
 	/** 
 	 * Restarts all behaviours. This method simply calls IBehaviour.restart() on
@@ -45,7 +45,7 @@ interface IScheduler extends Runnable {
 	 * Removes a specified behaviour from the scheduler
 	 * @param behaviour
 	 */
-	def void remove(IBehaviourActionService behaviour)
+	def void remove(IBehaviour behaviour)
 
 	def void removeAll()
 
