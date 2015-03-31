@@ -34,10 +34,10 @@ class AgentExample {
 	@PostConstruct
 	def void setup() {
 		LOGGER.info("Setup of: [{}] agent", agentName)
-		behaviourFactory.createTicker(context, "first", 1000) => [
+		behaviourFactory.createTicker("first", 1000) => [
 			addContributor(BehaviourExample)
 		]
-		behaviourFactory.createFromAnnotation(context, "first2", BehaviourExample) => [
+		behaviourFactory.createFromAnnotation("first2", BehaviourExample) => [
 			addContributor(BehaviourExample)
 		]
 //		behaviourFactory.createTicker(context, "second", 1000) => [

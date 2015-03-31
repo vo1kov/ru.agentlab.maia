@@ -8,10 +8,9 @@ import org.eclipse.e4.core.di.annotations.Optional
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.Action
 import ru.agentlab.maia.ActionDone
+import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.context.IContributionService
-import ru.agentlab.maia.agent.IScheduler
-import org.eclipse.e4.core.contexts.RunAndTrack
 
 class Behaviour implements IBehaviour {
 

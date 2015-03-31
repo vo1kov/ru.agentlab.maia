@@ -3,26 +3,41 @@ package ru.agentlab.maia.internal.platform
 import java.util.ArrayList
 import java.util.List
 import javax.annotation.PostConstruct
+import javax.inject.Inject
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
-import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
+import ru.agentlab.maia.agent.IAgentIdFactory
 import ru.agentlab.maia.agent.ISchedulerFactory
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.container.IContainerFactory
+import ru.agentlab.maia.container.IContainerIdFactory
 import ru.agentlab.maia.context.IContextFactory
-import ru.agentlab.maia.internal.MaiaActivator
+import ru.agentlab.maia.context.IContributionService
+import ru.agentlab.maia.internal.agent.AgentFactory
+import ru.agentlab.maia.internal.agent.AgentIdFactory
+import ru.agentlab.maia.internal.agent.SchedulerFactory
+import ru.agentlab.maia.internal.behaviour.BehaviourFactory
+import ru.agentlab.maia.internal.container.ContainerFactory
+import ru.agentlab.maia.internal.container.ContainerIdFactory
+import ru.agentlab.maia.internal.messaging.MessageFactory
+import ru.agentlab.maia.internal.messaging.MessageQueueFactory
+import ru.agentlab.maia.internal.naming.AgentNameGenerator
+import ru.agentlab.maia.internal.naming.ContainerNameGenerator
 import ru.agentlab.maia.messaging.IMessageDeliveryService
 import ru.agentlab.maia.messaging.IMessageDeliveryServiceFactory
 import ru.agentlab.maia.messaging.IMessageFactory
 import ru.agentlab.maia.messaging.IMessageQueueFactory
-import ru.agentlab.maia.naming.INameGenerator
+import ru.agentlab.maia.naming.IAgentNameGenerator
+import ru.agentlab.maia.naming.IBehaviourNameGenerator
+import ru.agentlab.maia.naming.IContainerNameGenerator
 import ru.agentlab.maia.naming.IPlatformNameGenerator
 import ru.agentlab.maia.platform.IPlatformFactory
 import ru.agentlab.maia.platform.IPlatformId
 import ru.agentlab.maia.platform.IPlatformIdFactory
 import ru.agentlab.maia.service.IServiceManagementService
+import ru.agentlab.maia.internal.naming.BehaviourNameGenerator
 
 /**
  * Factory for creating new Platforms.
@@ -32,6 +47,21 @@ import ru.agentlab.maia.service.IServiceManagementService
 class PlatformFactory implements IPlatformFactory {
 
 	val static LOGGER = LoggerFactory.getLogger(PlatformFactory)
+
+	@Inject
+	IEclipseContext context
+
+	@Inject
+	IPlatformNameGenerator platformNameGenerator
+
+	@Inject
+	IServiceManagementService serviceManagementService
+
+	@Inject
+	IPlatformIdFactory platformIdFactory
+
+	@Inject
+	IMessageDeliveryServiceFactory messageDeliveryServiceFactory
 
 	/**
 	 * <p>Create Platform-Context with default set of platform-specific services.</p>
@@ -64,33 +94,48 @@ class PlatformFactory implements IPlatformFactory {
 	 * {@link IPlatformNameGenerator IPlatformNameGenerator} will be used for 
 	 * generating platform name.
 	 */
-	override createDefault(IEclipseContext root, String id) {
+	override createDefault(String id) {
 		LOGGER.info("Try to create new Default Platform...")
-		LOGGER.debug("	root context: [{}]", root)
+		LOGGER.debug("	home context: [{}]", context)
 		LOGGER.debug("	platform Id: [{}]", id)
 
-		val context = internalCreateEmpty(root, id)
+		val result = internalCreateEmpty(id)
 
 		LOGGER.info("Create Platform-specific Services...")
-		val mtsFactory = context.parent.get(IMessageDeliveryServiceFactory)
-		ContextInjectionFactory.invoke(mtsFactory, PostConstruct, context, null)
-		val mts = mtsFactory.create(context)
-		context.get(IServiceManagementService) => [
-			if (it != null) {
-				copyService(context.parent, context, IMessageFactory)
-				copyService(context.parent, context, IAgentFactory)
-				copyService(context.parent, context, IContainerFactory)
-				copyService(context.parent, context, IBehaviourFactory)
-				copyService(context.parent, context, ISchedulerFactory)
-				copyService(context.parent, context, IMessageQueueFactory)
-				addService(context, IMessageDeliveryService, mts)
-			} else {
-				LOGGER.warn("Context [{}] have no [{}] service", it, IServiceManagementService.name)
-			}
+		result => [
+			// platform layer
+			createService(IContainerNameGenerator, ContainerNameGenerator)
+			createService(IContainerIdFactory, ContainerIdFactory)
+			createService(IContainerFactory, ContainerFactory)
+			
+			// container layer
+			createService(IAgentNameGenerator, AgentNameGenerator)
+			createService(IAgentIdFactory, AgentIdFactory)
+			createService(ISchedulerFactory, SchedulerFactory)
+			createService(IMessageQueueFactory, MessageQueueFactory)
+			createService(IMessageFactory, MessageFactory)
+			createService(IAgentFactory, AgentFactory)
+			
+			// agent layer
+			createService(IBehaviourNameGenerator, BehaviourNameGenerator)
+			createService(IBehaviourFactory, BehaviourFactory)
+			
+		]
+		
+		serviceManagementService => [
+			ContextInjectionFactory.invoke(messageDeliveryServiceFactory, PostConstruct, result, null)
+			val mts = messageDeliveryServiceFactory.create(result)
+			addService(result, IMessageDeliveryService, mts)
 		]
 
 		LOGGER.info("Platform successfully created!")
-		return context
+		return result
+	}
+
+	def private <T> void createService(IEclipseContext ctx, Class<T> serviceClass, Class<? extends T> implementationClass) {
+		val service = ContextInjectionFactory.make(implementationClass, ctx)
+		ContextInjectionFactory.invoke(service, PostConstruct, ctx, null)
+		serviceManagementService.addService(ctx, serviceClass, service)
 	}
 
 	/**
@@ -107,64 +152,51 @@ class PlatformFactory implements IPlatformFactory {
 	 * {@link IPlatformNameGenerator IPlatformNameGenerator} will be used for 
 	 * generating platform name.
 	 */
-	override IEclipseContext createEmpty(IEclipseContext root, String id) {
+	override IEclipseContext createEmpty(String id) {
 		LOGGER.info("Try to create new Empty Platform...")
-		LOGGER.debug("	root context: [{}]", root)
+		LOGGER.debug("	home context: [{}]", context)
 		LOGGER.debug("	platform Id: [{}]", id)
 
-		val context = internalCreateEmpty(root, id)
+		val context = internalCreateEmpty(id)
 
 		LOGGER.info("Platform successfully created!")
 		return context
 	}
 
-	private def internalCreateEmpty(IEclipseContext root, String id) {
-		val rootContext = if (root != null) {
-				root
-			} else {
-				LOGGER.warn("Root context is null, get it from OSGI services...")
-				EclipseContextFactory.getServiceContext(MaiaActivator.context)
-			}
-
+	private def internalCreateEmpty(String id) {
 		val name = if (id != null) {
 				id
 			} else {
 				LOGGER.info("Generate Platform Name...")
-				val nameGenerator = rootContext.get(INameGenerator)
-				val n = nameGenerator.generate(rootContext)
-				LOGGER.debug("	Platform Name is [{}]", n)
-				n
+				platformNameGenerator.generate
 			}
 
 		LOGGER.info("Create Platform Context...")
-		val serviceManagementService = rootContext.get(IServiceManagementService)
-		val context = rootContext.createChild("Context for Platform: " + name) => [
+		val result = context.createChild("Context for Platform: " + name) => [
 			declareModifiable(KEY_CONTAINERS)
+			declareModifiable(IContributionService.KEY_CONTRIBUTOR)
 		]
+
 		LOGGER.info("Add properties to Context...")
-		rootContext.get(IServiceManagementService) => [
-			if (it != null) {
-				addService(context, KEY_NAME, name)
-				addService(context, KEY_TYPE, TYPE_PLATFORM)
-			} else {
-			}
+		serviceManagementService => [
+			addService(result, KEY_NAME, name)
+			addService(result, KEY_TYPE, TYPE_PLATFORM)
 		]
 
 		LOGGER.info("Add link for parent Context...")
-		var platforms = rootContext.get(KEY_PLATFORMS) as List<IEclipseContext>
+		var platforms = context.get(KEY_PLATFORMS) as List<IEclipseContext>
 		if (platforms == null) {
-			LOGGER.debug("	Parent Context [{}] have no platforms link, create new list...", rootContext)
+			LOGGER.debug("	Parent Context [{}] have no platforms link, create new list...", context)
 			platforms = new ArrayList<IEclipseContext>
-			rootContext.set(KEY_PLATFORMS, platforms)
+			context.set(KEY_PLATFORMS, platforms)
 		}
-		platforms += context
+		platforms += result
 
 		LOGGER.info("Create Platform ID...")
-		val platformIdFactory = context.parent.get(IPlatformIdFactory)
-		val platformId = platformIdFactory.create(context.get(KEY_NAME) as String)
-		serviceManagementService.addService(context, IPlatformId, platformId)
+		val platformId = platformIdFactory.create(name)
+		serviceManagementService.addService(result, IPlatformId, platformId)
 
-		return context
+		return result
 	}
 
 }

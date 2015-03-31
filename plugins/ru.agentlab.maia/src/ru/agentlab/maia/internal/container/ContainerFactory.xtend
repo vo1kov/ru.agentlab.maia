@@ -2,13 +2,21 @@ package ru.agentlab.maia.internal.container
 
 import java.util.ArrayList
 import java.util.List
-import org.eclipse.e4.core.contexts.EclipseContextFactory
+import javax.inject.Inject
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
+import ru.agentlab.maia.agent.IAgentFactory
+import ru.agentlab.maia.agent.IAgentIdFactory
+import ru.agentlab.maia.agent.ISchedulerFactory
+import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.container.IContainerId
 import ru.agentlab.maia.container.IContainerIdFactory
-import ru.agentlab.maia.internal.MaiaActivator
+import ru.agentlab.maia.context.IContributionService
+import ru.agentlab.maia.messaging.IMessageFactory
+import ru.agentlab.maia.messaging.IMessageQueueFactory
+import ru.agentlab.maia.naming.IAgentNameGenerator
+import ru.agentlab.maia.naming.IBehaviourNameGenerator
 import ru.agentlab.maia.naming.IContainerNameGenerator
 import ru.agentlab.maia.platform.IPlatformId
 import ru.agentlab.maia.service.IServiceManagementService
@@ -17,76 +25,89 @@ class ContainerFactory implements IContainerFactory {
 
 	val static LOGGER = LoggerFactory.getLogger(ContainerFactory)
 
-	override createDefault(IEclipseContext root, String id) {
+	@Inject
+	IEclipseContext context
+
+	@Inject
+	IContainerNameGenerator containerNameGenerator
+
+	@Inject
+	IServiceManagementService serviceManagementService
+
+	@Inject
+	IContainerIdFactory containerIdFactory
+
+	override createDefault(String id) {
 		LOGGER.info("Try to create new Default Container...")
-		LOGGER.debug("	root context: [{}]", root)
+		LOGGER.debug("	home context: [{}]", context)
 		LOGGER.debug("	container Id: [{}]", id)
 
-		val context = internalCreateEmpty(root, id)
+		val result = internalCreateEmpty(id)
+		
+		serviceManagementService=> [
+			// container layer
+			moveService(context, result, IAgentNameGenerator)
+			moveService(context, result, IAgentIdFactory)
+			moveService(context, result, ISchedulerFactory)
+			moveService(context, result, IMessageQueueFactory)
+			moveService(context, result, IMessageFactory)
+			moveService(context, result, IAgentFactory)
+			
+			// agent layer
+			moveService(context, result, IBehaviourNameGenerator)
+			moveService(context, result, IBehaviourFactory)
+		]
 
 		LOGGER.info("Container successfully created!")
-		return context
+		return result
 	}
 
-	override createEmpty(IEclipseContext root, String id) {
+	override createEmpty(String id) {
 		LOGGER.info("Try to create new Empty Container...")
-		LOGGER.debug("	root context: [{}]", root)
+		LOGGER.debug("	home context: [{}]", context)
 		LOGGER.debug("	container Id: [{}]", id)
 
-		val context = internalCreateEmpty(root, id)
+		val result = internalCreateEmpty(id)
 
 		LOGGER.info("Container successfully created!")
-		return context
+		return result
 	}
 
-	private def internalCreateEmpty(IEclipseContext root, String id) {
-		val rootContext = if (root != null) {
-				root
-			} else {
-				LOGGER.warn("Root context is null, get it from OSGI services...")
-				EclipseContextFactory.getServiceContext(MaiaActivator.context)
-			}
-
+	private def internalCreateEmpty(String id) {
 		val name = if (id != null) {
 				id
 			} else {
 				LOGGER.info("Generate Container Name...")
-				val nameGenerator = rootContext.get(IContainerNameGenerator)
-				val n = nameGenerator.generate(rootContext)
-				LOGGER.debug("	Container Name is [{}]", n)
-				n
+				containerNameGenerator.generate
 			}
 
 		LOGGER.info("Create Container Context...")
-		val context = rootContext.createChild("Context for Container: " + name) => [
+		val result = context.createChild("Context for Container: " + name) => [
 			declareModifiable(KEY_AGENTS)
+			declareModifiable(IContributionService.KEY_CONTRIBUTOR)
 		]
 
 		LOGGER.info("Add properties to Context...")
-		rootContext.get(IServiceManagementService) => [
-			if (it != null) {
-				addService(context, KEY_NAME, name)
-				addService(context, KEY_TYPE, TYPE_CONTAINER)
-			} else {
-			}
+		serviceManagementService => [
+			addService(result, KEY_NAME, name)
+			addService(result, KEY_TYPE, TYPE_CONTAINER)
 		]
 
 		LOGGER.info("Add link for parent Context...")
-		var containers = rootContext.get(KEY_CONTAINERS) as List<IEclipseContext>
+		var containers = context.get(KEY_CONTAINERS) as List<IEclipseContext>
 		if (containers == null) {
-			LOGGER.debug("	Parent Context [{}] have no containers link, create new list...", rootContext)
+			LOGGER.debug("	Parent Context [{}] have no containers link, create new list...", context)
 			containers = new ArrayList<IEclipseContext>
-			rootContext.set(KEY_CONTAINERS, containers)
+			context.set(KEY_CONTAINERS, containers)
 		}
-		containers += context
+		containers += result
 
 		LOGGER.info("Create Container ID...")
-		val containerIdFactory = context.get(IContainerIdFactory)
-		val platformId = context.get(IPlatformId)
+		val platformId = result.get(IPlatformId)
 		val containerId = containerIdFactory.create(platformId, name, null)
-		context.set(IContainerId, containerId)
+		serviceManagementService.addService(result, IContainerId, containerId)
 
-		return context
+		return result
 	}
 
 }

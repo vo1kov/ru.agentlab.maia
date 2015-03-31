@@ -71,7 +71,7 @@ interface IContextFactory {
 	 * generating context name.
 	 * @return Context with default set of services
 	 */
-	def IEclipseContext createDefault(IEclipseContext root, String id)
+	def IEclipseContext createDefault(String id)
 
 	/**
 	 * Create Context without any additional services
@@ -81,6 +81,6 @@ interface IContextFactory {
 	 * generating context name.
 	 * @return Context without any additional services
 	 */
-	def IEclipseContext createEmpty(IEclipseContext root, String id)
+	def IEclipseContext createEmpty(String id)
 
 }

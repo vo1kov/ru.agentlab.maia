@@ -2,7 +2,7 @@ package ru.agentlab.maia.internal.agent
 
 import java.util.ArrayList
 import java.util.List
-import org.eclipse.e4.core.contexts.EclipseContextFactory
+import javax.inject.Inject
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
@@ -10,12 +10,14 @@ import ru.agentlab.maia.agent.IAgentId
 import ru.agentlab.maia.agent.IAgentIdFactory
 import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.agent.ISchedulerFactory
+import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.container.IContainerId
 import ru.agentlab.maia.context.IContextFactory
-import ru.agentlab.maia.internal.MaiaActivator
+import ru.agentlab.maia.context.IContributionService
 import ru.agentlab.maia.messaging.IMessageQueue
 import ru.agentlab.maia.messaging.IMessageQueueFactory
 import ru.agentlab.maia.naming.IAgentNameGenerator
+import ru.agentlab.maia.naming.IBehaviourNameGenerator
 import ru.agentlab.maia.service.IServiceManagementService
 
 /**
@@ -26,6 +28,24 @@ import ru.agentlab.maia.service.IServiceManagementService
 class AgentFactory implements IAgentFactory {
 
 	val static LOGGER = LoggerFactory.getLogger(AgentFactory)
+
+	@Inject
+	IEclipseContext context
+
+	@Inject
+	IAgentNameGenerator agentNameGenerator
+
+	@Inject
+	ISchedulerFactory schedulerFactory
+
+	@Inject
+	IAgentIdFactory agentIdFactory
+
+	@Inject
+	IMessageQueueFactory messageQueueFactory
+
+	@Inject
+	IServiceManagementService serviceManagementService
 
 	/**
 	 * <p>Create Agent-Context with default set of agent-specific services.</p>
@@ -42,34 +62,30 @@ class AgentFactory implements IAgentFactory {
 	 * {@link IContextFactory#TYPE_AGENT AGENT} value</li>
 	 * <li>{@link IAgentId IAgentId} - Id of agent</li>
 	 * </ul>
-	 * @param root - parent context where agent will be created
 	 * @param id - unique id of agent. If <code>null</code>, then 
 	 * {@link IAgentNameGenerator IAgentNameGenerator} will be used for generating agent name.
 	 */
-	override createDefault(IEclipseContext root, String id) {
+	override createDefault(String id) {
 		LOGGER.info("Try to create new Default Agent...")
-		LOGGER.debug("	root context: [{}]", root)
+		LOGGER.debug("	home context: [{}]", context)
 		LOGGER.debug("	agent Id: [{}]", id)
 
-		val context = internalCreateEmpty(root, id)
-
-		val schedulerFactory = context.get(ISchedulerFactory)
-		val scheduler = schedulerFactory.create(context)
-
-		val messageQueueProvider = context.get(IMessageQueueFactory)
-		val messageQueue = messageQueueProvider.get
+		val result = internalCreateEmpty(id)
 
 		LOGGER.info("Create Agent-specific Services...")
-		context.get(IServiceManagementService) => [
-			if (it != null) {
-				addService(context, IScheduler, scheduler)
-				addService(context, IMessageQueue, messageQueue)
-			} else {
-			}
+		serviceManagementService => [
+			// agent layer
+			moveService(context, result, IBehaviourNameGenerator)
+			moveService(context, result, IBehaviourFactory)
+
+			val scheduler = schedulerFactory.create
+			addService(result, IScheduler, scheduler)
+			val messageQueue = messageQueueFactory.get
+			addService(result, IMessageQueue, messageQueue)
 		]
 
 		LOGGER.info("Agent successfully created!")
-		return context
+		return result
 	}
 
 	/**
@@ -81,70 +97,56 @@ class AgentFactory implements IAgentFactory {
 	 * {@link IContextFactory#TYPE_AGENT AGENT} value</li>
 	 * <li>{@link IAgentId IAgentId} - Id of agent</li>
 	 * </ul>
-	 * @param root - parent context where agent will be created
 	 * @param id - unique id of agent. If <code>null</code>, then 
 	 * {@link IAgentNameGenerator IAgentNameGenerator} will be used for generating agent name.
 	 */
-	override createEmpty(IEclipseContext root, String id) {
+	override createEmpty(String id) {
 		LOGGER.info("Try to create new Empty Agent...")
-		LOGGER.debug("	root context: [{}]", root)
+		LOGGER.debug("	home context: [{}]", context)
 		LOGGER.debug("	agent Id: [{}]", id)
 
-		val context = internalCreateEmpty(root, id)
+		val result = internalCreateEmpty(id)
 
 		LOGGER.info("Empty Agent successfully created!")
-		return context
+		return result
 	}
 
-	private def internalCreateEmpty(IEclipseContext root, String id) {
-		val rootContext = if (root != null) {
-				root
-			} else {
-				LOGGER.warn("Root context is null, get it from OSGI services...")
-				EclipseContextFactory.getServiceContext(MaiaActivator.context)
-			}
-
+	private def internalCreateEmpty(String id) {
 		val name = if (id != null) {
 				id
 			} else {
 				LOGGER.info("Generate Agent Name...")
-				val nameGenerator = rootContext.get(IAgentNameGenerator)
-				val n = nameGenerator.generate(rootContext)
-				LOGGER.debug("	Agent Name is [{}]", n)
-				n
+				agentNameGenerator.generate
 			}
 
 		LOGGER.info("Create Agent Context...")
-		val context = rootContext.createChild("Context for Agent: " + name) => [
+		val result = context.createChild("Context for Agent: " + name) => [
 			declareModifiable(KEY_BEHAVIOURS)
+			declareModifiable(IContributionService.KEY_CONTRIBUTOR)
 		]
 
 		LOGGER.info("Add properties to Context...")
-		rootContext.get(IServiceManagementService) => [
-			if (it != null) {
-				addService(context, KEY_NAME, name)
-				addService(context, KEY_TYPE, TYPE_AGENT)
-			} else {
-			}
+		serviceManagementService => [
+			addService(result, KEY_NAME, name)
+			addService(result, KEY_TYPE, TYPE_AGENT)
 		]
 
 		LOGGER.info("Add link for parent Context...")
-		var agents = rootContext.get(KEY_AGENTS) as List<IEclipseContext>
+		var agents = context.get(KEY_AGENTS) as List<IEclipseContext>
 		if (agents == null) {
-			LOGGER.debug("	Parent Context [{}] have no agents link, create new list...", rootContext)
+			LOGGER.debug("	Parent Context [{}] have no agents link, create new list...", context)
 			agents = new ArrayList<IEclipseContext>
-			rootContext.set(KEY_AGENTS, agents)
+			context.set(KEY_AGENTS, agents)
 		}
-		agents += context
+		agents += result
 
 		LOGGER.info("Create Agent ID...")
 		// TODO: fix if parent is not container
-		val agentIdFactory = context.get(IAgentIdFactory)
-		val containerId = context.get(IContainerId)
+		val containerId = result.get(IContainerId)
 		val agentId = agentIdFactory.create(containerId, name)
-		context.set(IAgentId, agentId)
+		result.set(IAgentId, agentId)
 
-		context
+		return result
 	}
 
 }

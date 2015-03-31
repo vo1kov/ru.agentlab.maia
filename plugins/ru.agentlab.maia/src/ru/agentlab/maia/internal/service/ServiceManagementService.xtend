@@ -1,5 +1,6 @@
 package ru.agentlab.maia.internal.service
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.service.IServiceManagementService
@@ -15,6 +16,7 @@ class ServiceManagementService implements IServiceManagementService {
 			LOGGER.debug("	Copy [{}] Service from [{}] to [{}] context...", serviceClass.simpleName, fromContext,
 				toContext)
 			toContext.set(serviceClass, service)
+			return service
 		} else {
 			throw new IllegalStateException("Context [" + fromContext + "] have no [" + serviceClass + "] service")
 		}
@@ -26,6 +28,7 @@ class ServiceManagementService implements IServiceManagementService {
 		if (service != null) {
 			LOGGER.debug("	Copy [{}] Service from [{}] to [{}] context...", serviceName, fromContext, toContext)
 			toContext.set(serviceName, service)
+			return service
 		} else {
 			throw new IllegalStateException("Context [" + fromContext + "] have no [" + serviceName + "] service")
 		}
@@ -33,13 +36,15 @@ class ServiceManagementService implements IServiceManagementService {
 
 	override <T> moveService(IEclipseContext fromContext, IEclipseContext toContext,
 		Class<T> serviceClass) throws IllegalStateException {
-		fromContext.copyService(toContext, serviceClass)
+		val service = fromContext.copyService(toContext, serviceClass)
+		ContextInjectionFactory.inject(service, toContext)
 		fromContext.removeService(serviceClass)
 	}
 
 	override moveService(IEclipseContext fromContext, IEclipseContext toContext,
 		String serviceName) throws IllegalStateException {
-		fromContext.copyService(toContext, serviceName)
+		val service = fromContext.copyService(toContext, serviceName)
+		ContextInjectionFactory.inject(service, toContext)
 		fromContext.removeService(serviceName)
 	}
 

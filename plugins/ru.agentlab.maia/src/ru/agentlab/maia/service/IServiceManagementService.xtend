@@ -20,10 +20,10 @@ interface IServiceManagementService {
 	 * @param <T> - type of service
 	 * @throws IllegalStateException when <code>fromContext</code> have no service to copy.
 	 */
-	def <T> void copyService(IEclipseContext fromContext, IEclipseContext toContext, Class<T> serviceClass) 
+	def <T> T copyService(IEclipseContext fromContext, IEclipseContext toContext, Class<T> serviceClass) 
 		throws IllegalStateException
 		
-	def void copyService(IEclipseContext fromContext, IEclipseContext toContext, String serviceName) 
+	def Object copyService(IEclipseContext fromContext, IEclipseContext toContext, String serviceName) 
 		throws IllegalStateException
 
 	/**

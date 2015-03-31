@@ -7,10 +7,10 @@ class ContainerIdFactory implements IContainerIdFactory{
 	
 	override create(IPlatformId platformId, String name, String address) {
 		return new ContainerId => [
-			platformId.containerIds += it
-			it.platformId = platformId
-			it.name = name
-			it.address = address
+//			platformId.containerIds += it
+//			it.platformId = platformId
+//			it.name = name
+//			it.address = address
 		]
 	}
 	
