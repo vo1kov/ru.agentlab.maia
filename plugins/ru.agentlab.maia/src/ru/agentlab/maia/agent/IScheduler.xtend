@@ -1,5 +1,6 @@
 package ru.agentlab.maia.agent
 
+import org.eclipse.e4.core.contexts.IEclipseContext
 import ru.agentlab.maia.behaviour.IBehaviour
 
 interface IScheduler extends Runnable {
@@ -10,8 +11,8 @@ interface IScheduler extends Runnable {
 	 * available.
 	 * @param behaviour
 	 */
-	def void add(IBehaviour behaviour)
-	
+	def void add(IEclipseContext context)
+
 	def void start()
 
 	/** 
@@ -19,7 +20,7 @@ interface IScheduler extends Runnable {
 	 * @param behaviour
 	 */
 	def void block(IBehaviour behaviour)
-	
+
 	def void blockAll()
 
 	/** 
@@ -45,5 +46,7 @@ interface IScheduler extends Runnable {
 	 * @param behaviour
 	 */
 	def void remove(IBehaviour behaviour)
+	
+	def void removeAll()
 
 }
