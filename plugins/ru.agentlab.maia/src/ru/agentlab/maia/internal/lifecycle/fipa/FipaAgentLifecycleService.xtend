@@ -6,17 +6,27 @@ import ru.agentlab.maia.lifecycle.IllegalAgentStateException
 import ru.agentlab.maia.lifecycle.fipa.IFipaAgentLifecycleService
 
 class FipaAgentLifecycleService implements IFipaAgentLifecycleService {
-
+	
 	override invoke(IEclipseContext context) throws IllegalAgentStateException {
 		val currentState = context.state
 		if (currentState != null) {
 			throw new IllegalAgentStateException("Agent already initiated. Use resume() instead")
 		}
-		context => [
+		context.changeState(State.ACTIVE)
+		context.runAndTrack [
 			val scheduler = get(IScheduler)
 			if (scheduler != null) {
-				scheduler.start
-				changeState(State.ACTIVE)
+				val state = get(KEY_STATE)
+				switch (state) {
+					case State.ACTIVE.toString: {
+						scheduler.start
+					}
+					case State.SUSPENDED.toString: {
+						scheduler.start
+						scheduler.blockAll
+					}
+				}
+				return true
 			} else {
 				throw new IllegalAgentStateException("Context have no scheduler. Can't invoke")
 			}
