@@ -4,6 +4,8 @@ import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
+import ru.agentlab.maia.agent.IScheduler
+import ru.agentlab.maia.agent.ISchedulerFactory
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.context.IContributionService
@@ -37,58 +39,57 @@ class Activator implements BundleActivator {
 		val behaviourFactory = context.getService(context.getServiceReference(IBehaviourFactory))
 		val agentLyfecycleService = context.getService(context.getServiceReference(IFipaAgentLifecycleService))
 		val contributionService = context.getService(context.getServiceReference(IContributionService))
+		val schedulerFactory = context.getService(context.getServiceReference(ISchedulerFactory))
 
 		LOGGER.info("CREATE platform")
 		val platform1 = platformFactory.createDefault(null, "Platform1")
 
-		LOGGER.info("CREATE ams agent")
-		val amsAgnet = agentFactory.createDefault(platform1, "ams") => [
-			agentLyfecycleService.invoke(it)
-		]
+//		LOGGER.info("CREATE ams agent")
+//		val amsAgnet = agentFactory.createDefault(platform1, "ams") => [
+//			agentLyfecycleService.invoke(it)
+//		]
 
 		LOGGER.info("CREATE container1")
 		val container1 = containerFactory.createDefault(platform1, "Container1")
 		
-		LOGGER.info("CREATE some container")
-		val containerN = containerFactory.createDefault(platform1, null)
-		
-		LOGGER.info("CREATE agentN")
-		val agentN = agentFactory.createDefault(container1, "AgentN")
-
 		LOGGER.info("CREATE agent1")
 		val agent1 = agentFactory.createDefault(container1, "Agent1")
 		contributionService.addContributor(agent1, AgentExample)
 
-		LOGGER.info("CREATE agent2")
-		val agent2 = agentFactory.createDefault(null, "Agent2")
+//		LOGGER.info("CREATE agent2")
+//		val agent2 = agentFactory.createDefault(null, "Agent2")
 
 		LOGGER.info("INVOKE agent1")
 		agentLyfecycleService.invoke(agent1)
-//		
+//		LOGGER.info("INVOKE agent2")
+//		agentLyfecycleService.invoke(agent2)
+		
+		Thread.sleep(5000)
+		
+		LOGGER.info("Change Scheduler")
+		val sch = schedulerFactory.create(agent1)
+		
 //		val port = Integer.parseInt(System.getProperty("port", "8899"))
 //		if(port == 8888){
-//			behaviourFactory.createDefault(agent2, "beh", BehaviourExample2)
-//			
-		Thread.sleep(5000)
-		LOGGER.info("INVOKE agent2")
-		agentLyfecycleService.invoke(agent2)
+//			val behaviour = behaviourFactory.createOneShot(agent1, "beh")
+//			contributionService.addContributor(behaviour, BehaviourExample2)
 //		}
 //		
-		Thread.sleep(3000)
-		LOGGER.info("SUSPEND agent1")
-		agentLyfecycleService.suspend(agent1)
-
-		Thread.sleep(3000)
-		LOGGER.info("RESUME agent1")
-		agentLyfecycleService.resume(agent1)
-
-		Thread.sleep(3000)
-		LOGGER.info("SUSPEND agent2")
-		agentLyfecycleService.suspend(agent2)
-
-		Thread.sleep(3000)
-		LOGGER.info("RESUME agent2")
-		agentLyfecycleService.resume(agent2)
+//		Thread.sleep(3000)
+//		LOGGER.info("SUSPEND agent1")
+//		agentLyfecycleService.suspend(agent1)
+//
+//		Thread.sleep(3000)
+//		LOGGER.info("RESUME agent1")
+//		agentLyfecycleService.resume(agent1)
+//
+//		Thread.sleep(3000)
+//		LOGGER.info("SUSPEND agent2")
+//		agentLyfecycleService.suspend(agent2)
+//
+//		Thread.sleep(3000)
+//		LOGGER.info("RESUME agent2")
+//		agentLyfecycleService.resume(agent2)
 	}
 
 	/*

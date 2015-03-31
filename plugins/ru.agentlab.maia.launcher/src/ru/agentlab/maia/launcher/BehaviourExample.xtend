@@ -8,6 +8,7 @@ import org.eclipse.e4.core.internal.contexts.EclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.Action
 import ru.agentlab.maia.ActionTicker
+import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.context.IContextFactory
 
@@ -21,6 +22,9 @@ class BehaviourExample {
 
 	@Inject
 	IEclipseContext context
+	
+	@Inject
+	IScheduler sch
 
 	@PostConstruct
 	def void init() {
@@ -38,6 +42,7 @@ class BehaviourExample {
 	@ActionTicker(period=500, fixedPeriod=false)
 	def void action() {
 		LOGGER.info("Behaviour [{}] timestamp [{}]", behName, System.currentTimeMillis)
+		LOGGER.info("{}", sch.hashCode)
 	}
 
 }
