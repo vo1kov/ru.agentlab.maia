@@ -16,8 +16,8 @@ import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMappingFactory
 import ru.agentlab.maia.context.IContextFactory
 import ru.agentlab.maia.context.IContributionService
 import ru.agentlab.maia.launcher.task.DumpAgentNameTask
-import ru.agentlab.maia.lifecycle.ILifecycleState
 import ru.agentlab.maia.launcher.task.SendTestMessageTask
+import ru.agentlab.maia.lifecycle.ILifecycleState
 
 class AgentExample {
 
