@@ -2,8 +2,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>ru.agentlab.maia</artifactId>
-	<packaging>eclipse-plugin</packaging>
+	<artifactId>ru.agentlab.maia.test.unit</artifactId>
+	<packaging>eclipse-test-plugin</packaging>
 
 	<parent>
 		<groupId>ru.agentlab.maia</groupId>

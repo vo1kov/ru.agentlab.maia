@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Lo
+Bundle-Name: Logging Support
 Bundle-SymbolicName: ru.agentlab.maia.logging
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.0.1.qualifier
 Fragment-Host: org.apache.log4j;bundle-version="1.2.15.v201012070815"
-Bundle-RequiredExecutionEnvironment: JRE-1.1
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
