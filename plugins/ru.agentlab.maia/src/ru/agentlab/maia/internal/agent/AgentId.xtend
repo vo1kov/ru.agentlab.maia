@@ -20,4 +20,16 @@ class AgentId implements IAgentId {
 
 	val List<IAgentId> resolvers = new ArrayList<IAgentId>
 
+	override toString() {
+		name
+	}
+
+	override equals(Object obj) {
+		if (obj instanceof AgentId) {
+			return name == obj.name
+		} else {
+			return false
+		}
+	}
+
 }
