@@ -3,11 +3,15 @@ package ru.agentlab.maia.internal.messaging.netty
 import io.netty.channel.ChannelInitializer
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.SocketChannel
+import io.netty.handler.codec.base64.Base64Decoder
+import io.netty.handler.codec.base64.Base64Encoder
 import javax.annotation.PostConstruct
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import ru.agentlab.maia.messaging.IMessageDeliveryServiceFactory
 import ru.agentlab.maia.messaging.netty.INettyMessageDeliveryService
+import io.netty.handler.codec.http.HttpServerCodec
+import io.netty.handler.codec.http.HttpClientCodec
 
 class NettyMessageDeliveryServiceFactory implements IMessageDeliveryServiceFactory {
 
@@ -17,12 +21,20 @@ class NettyMessageDeliveryServiceFactory implements IMessageDeliveryServiceFacto
 			set(INettyMessageDeliveryService.KEY_WORKER_GROUP, new NioEventLoopGroup)
 			set(INettyMessageDeliveryService.KEY_CLIENT_HANDLER, new ChannelInitializer<SocketChannel>() { // (4)
 				override public void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline.addLast(new LoggingHandler)
+					ch.pipeline => [
+						addLast(new LoggingHandler)
+//						addLast(new Base64Encoder)
+						addLast(new HttpClientCodec)
+					]
 				}
 			})
 			set(INettyMessageDeliveryService.KEY_SERVER_HANDLER, new ChannelInitializer<SocketChannel>() { // (4)
 				override public void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline.addLast(new LoggingHandler)
+					ch.pipeline => [
+						addLast(new LoggingHandler)
+						addLast(new HttpServerCodec)
+//						addLast(new Base64Decoder)
+					]
 				}
 			})
 			val portString = System.getProperty("port", "8888")
