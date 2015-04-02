@@ -1,5 +1,7 @@
 package ru.agentlab.maia.context
 
+import org.eclipse.e4.core.contexts.IEclipseContext
+
 /**
  * Service for add Contributors in context.
  * 
@@ -13,11 +15,21 @@ interface IContributionService {
 	val static String KEY_CONTRIBUTOR = "context.contributor"
 
 	/**
-	 * Add new Contributor in context
+	 * Add new Contributor in context.
+	 * 
+	 * @param contributorClass - class of contributor to be created.
+	 * @return Newly created contributor
+	 */
+	def Object addContributor(Class<?> contributorClass)
+
+	/**
+	 * Add new Contributor in context.
+	 * 
 	 * @param context - context where new contributor will be created. This context will 
 	 * be used for injecting objects. 
 	 * @param contributorClass - class of contributor to be created.
+	 * @return Newly created contributor
 	 */
-	def void addContributor(Class<?> contributorClass)
+	def Object addContributor(IEclipseContext context, Class<?> contributorClass)
 
 }
