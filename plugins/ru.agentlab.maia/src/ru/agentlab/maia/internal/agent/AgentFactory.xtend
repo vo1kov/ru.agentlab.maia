@@ -2,6 +2,7 @@ package ru.agentlab.maia.internal.agent
 
 import java.util.ArrayList
 import java.util.List
+import java.util.concurrent.ConcurrentLinkedDeque
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
@@ -24,6 +25,7 @@ import ru.agentlab.maia.internal.messaging.MessageQueue
 import ru.agentlab.maia.internal.naming.BehaviourNameGenerator
 import ru.agentlab.maia.lifecycle.ILifecycleScheme
 import ru.agentlab.maia.lifecycle.ILifecycleService
+import ru.agentlab.maia.messaging.IMessage
 import ru.agentlab.maia.messaging.IMessageQueue
 import ru.agentlab.maia.naming.IAgentNameGenerator
 import ru.agentlab.maia.naming.IBehaviourNameGenerator
@@ -49,6 +51,9 @@ class AgentFactory implements IAgentFactory {
 
 	@Inject
 	IServiceManagementService serviceManagementService
+
+	@Inject
+	AgentRegistryLocal agentRegistryLocal
 
 	/**
 	 * <p>Create Agent-Context with default set of agent-specific services.</p>
@@ -89,6 +94,8 @@ class AgentFactory implements IAgentFactory {
 			createService(IMessageQueue, MessageQueue)
 
 			createService(IContributionService, ContributionService)
+
+			serviceManagementService.addService(it, "agent.messageQueue", new ConcurrentLinkedDeque<IMessage>)
 
 			val service = ContextInjectionFactory.make(AgentFipaLifecycleListener, it)
 			set(AgentFipaLifecycleListener, service)
@@ -162,6 +169,8 @@ class AgentFactory implements IAgentFactory {
 		val containerId = result.get(IContainerId)
 		val agentId = agentIdFactory.create(containerId, name)
 		result.set(IAgentId, agentId)
+
+		agentRegistryLocal.put(agentId, result)
 
 		return result
 	}
