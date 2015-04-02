@@ -43,6 +43,8 @@
 <plugin id="org.eclipse.e4.core.contexts.source"/>
 <plugin id="org.eclipse.e4.core.di"/>
 <plugin id="org.eclipse.e4.core.di.source"/>
+<plugin id="org.eclipse.equinox.console"/>
+<plugin id="org.eclipse.equinox.console.source"/>
 <plugin id="org.eclipse.osgi"/>
 <plugin id="org.eclipse.osgi.source"/>
 <plugin id="org.eclipse.xtend.lib"/>
