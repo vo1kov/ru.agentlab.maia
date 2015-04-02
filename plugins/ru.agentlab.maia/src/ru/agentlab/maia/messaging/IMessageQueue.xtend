@@ -18,7 +18,6 @@
  */
 package ru.agentlab.maia.messaging
 
-import java.util.LinkedList
 import ru.agentlab.maia.messaging.matching.IMessageTemplate
 
 /** 
@@ -39,20 +38,6 @@ interface IMessageQueue {
 	def void addLast(IMessage msg)
 
 	/** 
-	 * Return the maximum size of this queue.
-	 * This queue may remove old messages to prevent
-	 * exeding the maximum size.
-	 */
-	def int getMaxSize()
-
-	/** 
-	 * Set the maximum size of this queue.
-	 * This queue may remove old messages to prevent
-	 * exeding the maximum size.
-	 */
-	def void setMaxSize(int newSize)
-
-	/** 
 	 * Return true when this queue contains no messages.
 	 */
 	def boolean isEmpty()
@@ -62,11 +47,6 @@ interface IMessageQueue {
 	 * specified message template.
 	 */
 	def IMessage receive(IMessageTemplate pattern)
-
-	/** 
-	 * Copy all messages to a given list.
-	 */
-	def void copyTo(LinkedList<IMessage> list)
 
 	/** 
 	 * @return the number of messages
