@@ -17,7 +17,11 @@ import ru.agentlab.maia.context.IContributionService
 import ru.agentlab.maia.internal.container.ContainerFactory
 import ru.agentlab.maia.internal.container.ContainerIdFactory
 import ru.agentlab.maia.internal.context.ContributionService
+import ru.agentlab.maia.internal.io.ClientFactory
+import ru.agentlab.maia.internal.io.ServerFactory
 import ru.agentlab.maia.internal.naming.ContainerNameGenerator
+import ru.agentlab.maia.io.IClientFactory
+import ru.agentlab.maia.io.IServerFactory
 import ru.agentlab.maia.messaging.IMessageDeliveryService
 import ru.agentlab.maia.messaging.IMessageDeliveryServiceFactory
 import ru.agentlab.maia.messaging.IMessageFactory
@@ -94,6 +98,9 @@ class PlatformFactory implements IPlatformFactory {
 		LOGGER.info("Create Platform-specific Services...")
 		result => [
 			// platform layer
+			createService(IClientFactory, ClientFactory)
+			createService(IServerFactory, ServerFactory)
+
 			createService(IContainerNameGenerator, ContainerNameGenerator)
 			createService(IContainerIdFactory, ContainerIdFactory)
 			createService(IContainerFactory, ContainerFactory)
