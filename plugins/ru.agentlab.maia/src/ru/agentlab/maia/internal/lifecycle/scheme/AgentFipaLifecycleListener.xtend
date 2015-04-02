@@ -1,9 +1,9 @@
-package ru.agentlab.maia.internal.lifecycle.fipa
+package ru.agentlab.maia.internal.lifecycle.scheme
 
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.eclipse.e4.core.contexts.RunAndTrack
 import ru.agentlab.maia.agent.IScheduler
-import ru.agentlab.maia.lifecycle.ILifecycleTransition
+import ru.agentlab.maia.lifecycle.scheme.ILifecycleTransition
 
 class AgentFipaLifecycleListener extends RunAndTrack {
 
@@ -11,16 +11,16 @@ class AgentFipaLifecycleListener extends RunAndTrack {
 		val state = context.get(ILifecycleTransition)
 		val scheduler = context.get(IScheduler)
 		switch (state) {
-			case FipaLifecycleSchema.TRANSITION_INVOKE: {
+			case FipaLifecycleScheme.TRANSITION_INVOKE: {
 				scheduler.start
 			}
-			case FipaLifecycleSchema.TRANSITION_SUSPEND: {
+			case FipaLifecycleScheme.TRANSITION_SUSPEND: {
 				scheduler.blockAll
 			}
-			case FipaLifecycleSchema.TRANSITION_RESUME: {
+			case FipaLifecycleScheme.TRANSITION_RESUME: {
 				scheduler.restartAll
 			}
-			case FipaLifecycleSchema.TRANSITION_DELETE: {
+			case FipaLifecycleScheme.TRANSITION_DELETE: {
 				scheduler.removeAll
 			}
 		}

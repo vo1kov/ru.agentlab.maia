@@ -1,5 +1,9 @@
 package ru.agentlab.maia.lifecycle
 
+import ru.agentlab.maia.lifecycle.scheme.ILifecycleScheme
+import ru.agentlab.maia.lifecycle.scheme.ILifecycleState
+import ru.agentlab.maia.lifecycle.scheme.ILifecycleTransition
+
 interface ILifecycleService {
 
 	def ILifecycleScheme getSchema()

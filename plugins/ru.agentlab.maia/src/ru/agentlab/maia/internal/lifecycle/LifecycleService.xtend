@@ -6,10 +6,10 @@ import org.eclipse.e4.core.contexts.IEclipseContext
 import org.eclipse.xtend.lib.annotations.AccessorType
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.lifecycle.ILifecycleScheme
 import ru.agentlab.maia.lifecycle.ILifecycleService
-import ru.agentlab.maia.lifecycle.ILifecycleState
-import ru.agentlab.maia.lifecycle.ILifecycleTransition
+import ru.agentlab.maia.lifecycle.scheme.ILifecycleScheme
+import ru.agentlab.maia.lifecycle.scheme.ILifecycleState
+import ru.agentlab.maia.lifecycle.scheme.ILifecycleTransition
 
 import static extension org.eclipse.xtend.lib.annotations.AccessorType.*
 

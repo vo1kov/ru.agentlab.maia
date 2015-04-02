@@ -1,4 +1,6 @@
-package ru.agentlab.maia.lifecycle
+package ru.agentlab.maia.lifecycle.scheme
+
+import ru.agentlab.maia.lifecycle.scheme.ILifecycleState
 
 interface ILifecycleTransition {
 
