@@ -6,6 +6,7 @@ import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
+import ru.agentlab.maia.internal.agent.AgentRegistryLocal
 import ru.agentlab.maia.internal.messaging.netty.NettyMessageDeliveryServiceFactory
 import ru.agentlab.maia.internal.naming.PlatformNameGenerator
 import ru.agentlab.maia.internal.platform.PlatformFactory
@@ -39,6 +40,8 @@ class MaiaActivator implements BundleActivator {
 			createService(context, IPlatformIdFactory, PlatformIdFactory)
 			createService(context, IPlatformNameGenerator, PlatformNameGenerator)
 			createService(context, IPlatformFactory, PlatformFactory)
+			
+			createService(context, AgentRegistryLocal, AgentRegistryLocal)
 		]
 	}
 
