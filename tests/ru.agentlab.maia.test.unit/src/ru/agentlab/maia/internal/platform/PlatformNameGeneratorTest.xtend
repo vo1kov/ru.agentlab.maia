@@ -3,7 +3,11 @@ package ru.agentlab.maia.internal.platform
 import java.util.ArrayList
 import java.util.HashSet
 import java.util.regex.Pattern
+import org.eclipse.e4.core.contexts.EclipseContextFactory
+import org.eclipse.e4.core.contexts.IEclipseContext
+import org.junit.BeforeClass
 import org.junit.Test
+import ru.agentlab.maia.internal.naming.PlatformNameGenerator
 
 import static org.junit.Assert.*
 
@@ -12,6 +16,12 @@ class PlatformNameGeneratorTest {
 	val static UUID_PATTERN = "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
 
 	val generator = new PlatformNameGenerator
+	var static IEclipseContext context
+
+	@BeforeClass
+	def static void init() {
+		context = EclipseContextFactory.create("Test context")
+	}
 
 	@Test
 	def void generate_notEmpty_test() {
