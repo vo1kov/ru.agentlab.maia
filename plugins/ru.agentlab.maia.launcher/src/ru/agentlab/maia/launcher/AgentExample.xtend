@@ -17,6 +17,7 @@ import ru.agentlab.maia.context.IContextFactory
 import ru.agentlab.maia.context.IContributionService
 import ru.agentlab.maia.launcher.task.DumpAgentNameTask
 import ru.agentlab.maia.lifecycle.ILifecycleState
+import ru.agentlab.maia.launcher.task.SendTestMessageTask
 
 class AgentExample {
 
@@ -30,10 +31,10 @@ class AgentExample {
 
 	@Inject
 	extension IBehaviourFactory
-	
+
 	@Inject
 	BehaviourSchemeOneShot oneShotScheme
-	
+
 	@Inject
 	BehaviourSchemeCyclic cyclicScheme
 
@@ -44,13 +45,24 @@ class AgentExample {
 			get(IContributionService).addContributor(BehaviourExample)
 		]
 		createDefault("second") => [ beh |
-			beh.modify(IBehaviourScheme, cyclicScheme)
+			beh.modify(IBehaviourScheme, oneShotScheme)
 			val mapping = beh.get(IBehaviourTaskMappingFactory).create => [
-//				val task = ContextInjectionFactory.make(DumpAgentNameTask, beh)
-//				put(BehaviourSchemeCyclic.STATE_MAIN, task)
+				val task = ContextInjectionFactory.make(DumpAgentNameTask, beh)
+				put(BehaviourSchemeOneShot.STATE_MAIN, task)
 			]
 			beh.modify(IBehaviourTaskMapping, mapping)
 		]
+		val port = Integer.parseInt(System.getProperty("port", "8899"))
+		if (port == 8888) {
+			createDefault("send") => [ beh |
+				beh.modify(IBehaviourScheme, oneShotScheme)
+				val mapping = beh.get(IBehaviourTaskMappingFactory).create => [
+					val task = ContextInjectionFactory.make(SendTestMessageTask, beh)
+					put(BehaviourSchemeOneShot.STATE_MAIN, task)
+				]
+				beh.modify(IBehaviourTaskMapping, mapping)
+			]
+		}
 //		createFromAnnotation("first2", BehaviourExample) => [
 //			get(IContributionService).addContributor(BehaviourExample)
 //		]
