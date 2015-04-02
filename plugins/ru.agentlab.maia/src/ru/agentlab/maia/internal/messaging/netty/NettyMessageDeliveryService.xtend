@@ -15,13 +15,13 @@ import javax.inject.Inject
 import javax.inject.Named
 import org.eclipse.e4.core.di.annotations.Optional
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.internal.agent.AgentRegistryLocal
 import ru.agentlab.maia.io.IClientFactory
 import ru.agentlab.maia.io.IServerFactory
 import ru.agentlab.maia.messaging.IMessage
 import ru.agentlab.maia.messaging.IMessageDeliveryEventListener
 import ru.agentlab.maia.messaging.IMessageQueue
 import ru.agentlab.maia.messaging.netty.INettyMessageDeliveryService
+import ru.agentlab.maia.internal.agent.LocalAgentRegistry
 
 class NettyMessageDeliveryService implements INettyMessageDeliveryService {
 
@@ -47,7 +47,7 @@ class NettyMessageDeliveryService implements INettyMessageDeliveryService {
 	IServerFactory serverFactory
 
 	@Inject
-	AgentRegistryLocal agentRegistryLocal
+	LocalAgentRegistry agentRegistryLocal
 
 	@PostConstruct
 	def void init() {

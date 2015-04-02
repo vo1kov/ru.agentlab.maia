@@ -4,7 +4,7 @@ import java.util.concurrent.ConcurrentHashMap
 import org.eclipse.e4.core.contexts.IEclipseContext
 import ru.agentlab.maia.agent.IAgentId
 
-class AgentRegistryGlobal {
+class GlobalAgentRegistry {
 
 	var agents = new ConcurrentHashMap<IAgentId, IEclipseContext>
 

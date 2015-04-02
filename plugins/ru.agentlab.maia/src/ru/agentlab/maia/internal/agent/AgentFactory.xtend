@@ -19,17 +19,17 @@ import ru.agentlab.maia.context.IContributionService
 import ru.agentlab.maia.internal.behaviour.BehaviourFactory
 import ru.agentlab.maia.internal.context.ContributionService
 import ru.agentlab.maia.internal.lifecycle.LifecycleService
-import ru.agentlab.maia.internal.lifecycle.fipa.AgentFipaLifecycleListener
-import ru.agentlab.maia.internal.lifecycle.fipa.FipaLifecycleSchema
-import ru.agentlab.maia.internal.messaging.MessageQueue
+import ru.agentlab.maia.internal.lifecycle.scheme.AgentFipaLifecycleListener
+import ru.agentlab.maia.internal.messaging.ArrayBlockingMessageQueue
 import ru.agentlab.maia.internal.naming.BehaviourNameGenerator
-import ru.agentlab.maia.lifecycle.ILifecycleScheme
 import ru.agentlab.maia.lifecycle.ILifecycleService
+import ru.agentlab.maia.lifecycle.scheme.ILifecycleScheme
 import ru.agentlab.maia.messaging.IMessage
 import ru.agentlab.maia.messaging.IMessageQueue
 import ru.agentlab.maia.naming.IAgentNameGenerator
 import ru.agentlab.maia.naming.IBehaviourNameGenerator
 import ru.agentlab.maia.service.IServiceManagementService
+import ru.agentlab.maia.internal.lifecycle.scheme.FipaLifecycleScheme
 
 /**
  * Factory for creating Agent-Contexts
@@ -53,7 +53,7 @@ class AgentFactory implements IAgentFactory {
 	IServiceManagementService serviceManagementService
 
 	@Inject
-	AgentRegistryLocal agentRegistryLocal
+	LocalAgentRegistry agentRegistryLocal
 
 	/**
 	 * <p>Create Agent-Context with default set of agent-specific services.</p>
@@ -87,11 +87,11 @@ class AgentFactory implements IAgentFactory {
 			createService(IBehaviourNameGenerator, BehaviourNameGenerator)
 			createService(IBehaviourFactory, BehaviourFactory)
 
-			createService(ILifecycleScheme, FipaLifecycleSchema)
+			createService(ILifecycleScheme, FipaLifecycleScheme)
 			createService(ILifecycleService, LifecycleService)
 
 			createService(IScheduler, Scheduler)
-			createService(IMessageQueue, MessageQueue)
+			createService(IMessageQueue, ArrayBlockingMessageQueue)
 
 			createService(IContributionService, ContributionService)
 

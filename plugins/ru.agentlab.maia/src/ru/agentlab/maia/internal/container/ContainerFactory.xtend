@@ -21,8 +21,8 @@ import ru.agentlab.maia.internal.agent.AgentFactory
 import ru.agentlab.maia.internal.agent.AgentIdFactory
 import ru.agentlab.maia.internal.agent.SchedulerFactory
 import ru.agentlab.maia.internal.context.ContributionService
-import ru.agentlab.maia.internal.messaging.MessageFactory
-import ru.agentlab.maia.internal.messaging.MessageQueueFactory
+import ru.agentlab.maia.internal.messaging.AclMessageFactory
+import ru.agentlab.maia.internal.messaging.ArrayBlockingMessageQueueFactory
 import ru.agentlab.maia.internal.naming.AgentNameGenerator
 import ru.agentlab.maia.messaging.IMessageFactory
 import ru.agentlab.maia.messaging.IMessageQueueFactory
@@ -59,8 +59,8 @@ class ContainerFactory implements IContainerFactory {
 			createService(IAgentNameGenerator, AgentNameGenerator)
 			createService(IAgentIdFactory, AgentIdFactory)
 			createService(ISchedulerFactory, SchedulerFactory)
-			createService(IMessageQueueFactory, MessageQueueFactory)
-			createService(IMessageFactory, MessageFactory)
+			createService(IMessageQueueFactory, ArrayBlockingMessageQueueFactory)
+			createService(IMessageFactory, AclMessageFactory)
 			createService(IAgentFactory, AgentFactory)
 			createService(IContributionService, ContributionService)
 
