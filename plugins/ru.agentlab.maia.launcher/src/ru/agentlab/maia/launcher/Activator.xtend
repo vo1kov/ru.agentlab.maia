@@ -5,7 +5,7 @@ import org.osgi.framework.BundleContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.container.IContainerFactory
-import ru.agentlab.maia.context.IContributionService
+import ru.agentlab.maia.initializer.IInitializerService
 import ru.agentlab.maia.lifecycle.ILifecycleService
 import ru.agentlab.maia.platform.IPlatformFactory
 
@@ -37,7 +37,7 @@ class Activator implements BundleActivator {
 						LOGGER.info("CREATE agent1")
 						createDefault("Agent1") => [
 							LOGGER.info("ADD contributor for agent1")
-							get(IContributionService).addContributor(AgentExample)
+							get(IInitializerService).addInitializer(AgentExample)
 							LOGGER.info("INVOKE agent1")
 							get(ILifecycleService).invokeTransition = "INVOKE"
 						]

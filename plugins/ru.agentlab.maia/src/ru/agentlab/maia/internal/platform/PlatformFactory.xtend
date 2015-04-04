@@ -13,10 +13,10 @@ import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.container.IContainerIdFactory
 import ru.agentlab.maia.context.IContextFactory
-import ru.agentlab.maia.context.IContributionService
+import ru.agentlab.maia.initializer.IInitializerService
 import ru.agentlab.maia.internal.container.ContainerFactory
 import ru.agentlab.maia.internal.container.ContainerIdFactory
-import ru.agentlab.maia.internal.context.ContributionService
+import ru.agentlab.maia.internal.initializer.InitializerService
 import ru.agentlab.maia.internal.io.ClientFactory
 import ru.agentlab.maia.internal.io.ServerFactory
 import ru.agentlab.maia.internal.naming.ContainerNameGenerator
@@ -104,7 +104,7 @@ class PlatformFactory implements IPlatformFactory {
 			createService(IContainerNameGenerator, ContainerNameGenerator)
 			createService(IContainerIdFactory, ContainerIdFactory)
 			createService(IContainerFactory, ContainerFactory)
-			createService(IContributionService, ContributionService)
+			createService(IInitializerService, InitializerService)
 		]
 
 		serviceManagementService => [

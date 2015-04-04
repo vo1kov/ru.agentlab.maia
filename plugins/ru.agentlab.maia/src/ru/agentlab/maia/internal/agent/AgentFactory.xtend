@@ -15,11 +15,12 @@ import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.container.IContainerId
 import ru.agentlab.maia.context.IContextFactory
-import ru.agentlab.maia.context.IContributionService
+import ru.agentlab.maia.initializer.IInitializerService
 import ru.agentlab.maia.internal.behaviour.BehaviourFactory
-import ru.agentlab.maia.internal.context.ContributionService
+import ru.agentlab.maia.internal.initializer.InitializerService
 import ru.agentlab.maia.internal.lifecycle.LifecycleService
 import ru.agentlab.maia.internal.lifecycle.scheme.AgentFipaLifecycleListener
+import ru.agentlab.maia.internal.lifecycle.scheme.FipaLifecycleScheme
 import ru.agentlab.maia.internal.messaging.ArrayBlockingMessageQueue
 import ru.agentlab.maia.internal.naming.BehaviourNameGenerator
 import ru.agentlab.maia.lifecycle.ILifecycleService
@@ -29,7 +30,6 @@ import ru.agentlab.maia.messaging.IMessageQueue
 import ru.agentlab.maia.naming.IAgentNameGenerator
 import ru.agentlab.maia.naming.IBehaviourNameGenerator
 import ru.agentlab.maia.service.IServiceManagementService
-import ru.agentlab.maia.internal.lifecycle.scheme.FipaLifecycleScheme
 
 /**
  * Factory for creating Agent-Contexts
@@ -93,7 +93,7 @@ class AgentFactory implements IAgentFactory {
 			createService(IScheduler, Scheduler)
 			createService(IMessageQueue, ArrayBlockingMessageQueue)
 
-			createService(IContributionService, ContributionService)
+			createService(IInitializerService, InitializerService)
 
 			serviceManagementService.addService(it, "agent.messageQueue", new ConcurrentLinkedDeque<IMessage>)
 

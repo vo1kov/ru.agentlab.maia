@@ -27,7 +27,7 @@ import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMapping
 import ru.agentlab.maia.context.IContextFactory
-import ru.agentlab.maia.context.IContributionService
+import ru.agentlab.maia.initializer.IInitializerService
 
 /** 
  * Name: Scheduler
@@ -87,7 +87,7 @@ class Scheduler extends Thread implements IScheduler {
 	}
 
 	def Object getContributor(IEclipseContext context) {
-		return context.get(IContributionService.KEY_CONTRIBUTOR)
+		return context.get(IInitializerService.KEY_INITIALIZER)
 	}
 
 	override void run() {

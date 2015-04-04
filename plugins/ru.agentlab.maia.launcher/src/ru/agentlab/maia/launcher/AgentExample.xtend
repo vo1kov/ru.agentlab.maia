@@ -14,7 +14,7 @@ import ru.agentlab.maia.behaviour.sheme.IBehaviourScheme
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMapping
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMappingFactory
 import ru.agentlab.maia.context.IContextFactory
-import ru.agentlab.maia.context.IContributionService
+import ru.agentlab.maia.initializer.IInitializerService
 import ru.agentlab.maia.launcher.task.DumpAgentNameTask
 import ru.agentlab.maia.launcher.task.SendTestMessageTask
 import ru.agentlab.maia.lifecycle.scheme.ILifecycleState
@@ -42,7 +42,7 @@ class AgentExample {
 	def void setup() {
 		LOGGER.info("Setup of: [{}] agent", agentName)
 		createDefault("first") => [
-			get(IContributionService).addContributor(BehaviourExample)
+			get(IInitializerService).addInitializer(BehaviourExample)
 		]
 		createDefault("second") => [ beh |
 			beh.modify(IBehaviourScheme, oneShotScheme)

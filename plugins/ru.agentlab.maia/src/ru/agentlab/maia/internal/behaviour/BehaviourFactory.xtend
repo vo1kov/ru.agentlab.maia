@@ -13,8 +13,8 @@ import ru.agentlab.maia.behaviour.sheme.BehaviourSchemeOneShot
 import ru.agentlab.maia.behaviour.sheme.IBehaviourScheme
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMapping
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMappingFactory
-import ru.agentlab.maia.context.IContributionService
-import ru.agentlab.maia.internal.context.ContributionService
+import ru.agentlab.maia.initializer.IInitializerService
+import ru.agentlab.maia.internal.initializer.InitializerService
 import ru.agentlab.maia.naming.IBehaviourNameGenerator
 import ru.agentlab.maia.service.IServiceManagementService
 
@@ -27,7 +27,7 @@ class BehaviourFactory implements IBehaviourFactory {
 
 	@Inject
 	IBehaviourNameGenerator behaviourNameGenerator
-	
+
 	@Inject
 	BehaviourSchemeOneShot behaviourSchemeOneShot
 
@@ -118,7 +118,7 @@ class BehaviourFactory implements IBehaviourFactory {
 		}
 		behaviours += result
 
-		result.createService(IContributionService, ContributionService)
+		result.createService(IInitializerService, InitializerService)
 		return result
 	}
 
