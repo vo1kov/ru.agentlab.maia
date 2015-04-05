@@ -1,10 +1,13 @@
-package ru.agentlab.maia.behaviour.sheme
+package ru.agentlab.maia.internal.behaviour.scheme
 
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.List
 import javax.annotation.PostConstruct
 import org.eclipse.xtend.lib.annotations.Accessors
+import ru.agentlab.maia.behaviour.sheme.IBehaviourScheme
+import ru.agentlab.maia.behaviour.sheme.IBehaviourState
+import ru.agentlab.maia.behaviour.sheme.IBehaviourTransition
 
 @Accessors
 abstract class BehaviourScheme implements IBehaviourScheme {
@@ -32,7 +35,7 @@ abstract class BehaviourScheme implements IBehaviourScheme {
 	def protected void init() {
 		initialState = STATE_INITIAL
 		finalState = STATE_FINAL
-		
+
 		states += STATE_INITIAL
 		states += STATE_FINAL
 		states += STATE_UNHANDLED_EXCEPTION

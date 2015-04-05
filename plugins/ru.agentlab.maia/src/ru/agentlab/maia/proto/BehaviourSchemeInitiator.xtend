@@ -1,10 +1,10 @@
 package ru.agentlab.maia.proto
 
-import ru.agentlab.maia.behaviour.sheme.BehaviourScheme
-import ru.agentlab.maia.behaviour.sheme.BehaviourStateFinal
-import ru.agentlab.maia.behaviour.sheme.BehaviourStateImplement
-import ru.agentlab.maia.behaviour.sheme.BehaviourTransitionDefault
-import ru.agentlab.maia.behaviour.sheme.BehaviourTransitionException
+import ru.agentlab.maia.internal.behaviour.scheme.BehaviourScheme
+import ru.agentlab.maia.internal.behaviour.scheme.BehaviourStateFinal
+import ru.agentlab.maia.internal.behaviour.scheme.BehaviourStateImplement
+import ru.agentlab.maia.internal.behaviour.scheme.BehaviourTransitionDefault
+import ru.agentlab.maia.internal.behaviour.scheme.BehaviourTransitionException
 
 class BehaviourSchemeInitiator extends BehaviourScheme {
 

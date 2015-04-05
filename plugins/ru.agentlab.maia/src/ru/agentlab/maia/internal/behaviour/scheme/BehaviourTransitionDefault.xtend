@@ -1,4 +1,6 @@
-package ru.agentlab.maia.behaviour.sheme
+package ru.agentlab.maia.internal.behaviour.scheme
+
+import ru.agentlab.maia.behaviour.sheme.IBehaviourState
 
 class BehaviourTransitionDefault extends BehaviourTransition {
 

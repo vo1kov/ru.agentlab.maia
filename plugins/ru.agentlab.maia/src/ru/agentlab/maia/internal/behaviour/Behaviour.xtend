@@ -6,18 +6,18 @@ import org.eclipse.e4.core.contexts.IEclipseContext
 import ru.agentlab.maia.Action
 import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.behaviour.IBehaviour
-import ru.agentlab.maia.behaviour.sheme.BehaviourScheme
 import ru.agentlab.maia.behaviour.sheme.BehaviourSchemeException
-import ru.agentlab.maia.behaviour.sheme.BehaviourStateEmpty
-import ru.agentlab.maia.behaviour.sheme.BehaviourStateFinal
-import ru.agentlab.maia.behaviour.sheme.BehaviourStateImplement
-import ru.agentlab.maia.behaviour.sheme.BehaviourTaskMappingException
-import ru.agentlab.maia.behaviour.sheme.BehaviourTransitionDefault
-import ru.agentlab.maia.behaviour.sheme.BehaviourTransitionException
-import ru.agentlab.maia.behaviour.sheme.BehaviourTransitionStatus
 import ru.agentlab.maia.behaviour.sheme.IBehaviourScheme
 import ru.agentlab.maia.behaviour.sheme.IBehaviourState
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMapping
+import ru.agentlab.maia.internal.behaviour.scheme.BehaviourScheme
+import ru.agentlab.maia.internal.behaviour.scheme.BehaviourStateEmpty
+import ru.agentlab.maia.internal.behaviour.scheme.BehaviourStateFinal
+import ru.agentlab.maia.internal.behaviour.scheme.BehaviourStateImplement
+import ru.agentlab.maia.internal.behaviour.scheme.BehaviourTaskMappingException
+import ru.agentlab.maia.internal.behaviour.scheme.BehaviourTransitionDefault
+import ru.agentlab.maia.internal.behaviour.scheme.BehaviourTransitionException
+import ru.agentlab.maia.internal.behaviour.scheme.BehaviourTransitionStatus
 
 class Behaviour implements IBehaviour {
 

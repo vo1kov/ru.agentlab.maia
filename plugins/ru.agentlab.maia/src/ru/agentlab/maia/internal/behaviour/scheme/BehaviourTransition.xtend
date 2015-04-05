@@ -1,6 +1,8 @@
-package ru.agentlab.maia.behaviour.sheme
+package ru.agentlab.maia.internal.behaviour.scheme
 
 import org.eclipse.xtend.lib.annotations.Accessors
+import ru.agentlab.maia.behaviour.sheme.IBehaviourState
+import ru.agentlab.maia.behaviour.sheme.IBehaviourTransition
 
 @Accessors
 abstract class BehaviourTransition implements IBehaviourTransition {

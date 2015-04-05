@@ -1,4 +1,4 @@
-package ru.agentlab.maia.behaviour.sheme
+package ru.agentlab.maia.internal.behaviour.scheme
 
 class BehaviourTaskMappingException extends Exception {
 	

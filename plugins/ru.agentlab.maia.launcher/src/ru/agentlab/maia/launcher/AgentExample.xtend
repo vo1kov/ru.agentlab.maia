@@ -8,13 +8,13 @@ import org.eclipse.e4.core.di.annotations.Optional
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentId
 import ru.agentlab.maia.behaviour.IBehaviourFactory
-import ru.agentlab.maia.behaviour.sheme.BehaviourSchemeCyclic
-import ru.agentlab.maia.behaviour.sheme.BehaviourSchemeOneShot
 import ru.agentlab.maia.behaviour.sheme.IBehaviourScheme
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMapping
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMappingFactory
 import ru.agentlab.maia.context.IContextFactory
 import ru.agentlab.maia.initializer.IInitializerService
+import ru.agentlab.maia.internal.behaviour.scheme.impl.BehaviourSchemeCyclic
+import ru.agentlab.maia.internal.behaviour.scheme.impl.BehaviourSchemeOneShot
 import ru.agentlab.maia.launcher.task.DumpAgentNameTask
 import ru.agentlab.maia.launcher.task.SendTestMessageTask
 import ru.agentlab.maia.lifecycle.scheme.ILifecycleState

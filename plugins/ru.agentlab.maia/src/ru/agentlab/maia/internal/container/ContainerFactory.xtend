@@ -10,9 +10,6 @@ import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.agent.IAgentIdFactory
 import ru.agentlab.maia.agent.ISchedulerFactory
-import ru.agentlab.maia.behaviour.sheme.BehaviourSchemeCyclic
-import ru.agentlab.maia.behaviour.sheme.BehaviourSchemeOneShot
-import ru.agentlab.maia.behaviour.sheme.BehaviourSchemeTicker
 import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.container.IContainerId
 import ru.agentlab.maia.container.IContainerIdFactory
@@ -20,6 +17,9 @@ import ru.agentlab.maia.initializer.IInitializerService
 import ru.agentlab.maia.internal.agent.AgentFactory
 import ru.agentlab.maia.internal.agent.AgentIdFactory
 import ru.agentlab.maia.internal.agent.SchedulerFactory
+import ru.agentlab.maia.internal.behaviour.scheme.impl.BehaviourSchemeCyclic
+import ru.agentlab.maia.internal.behaviour.scheme.impl.BehaviourSchemeOneShot
+import ru.agentlab.maia.internal.behaviour.scheme.impl.BehaviourSchemeTicker
 import ru.agentlab.maia.internal.initializer.InitializerService
 import ru.agentlab.maia.internal.messaging.AclMessageFactory
 import ru.agentlab.maia.internal.messaging.ArrayBlockingMessageQueueFactory

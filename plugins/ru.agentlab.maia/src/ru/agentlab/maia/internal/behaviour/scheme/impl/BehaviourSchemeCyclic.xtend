@@ -1,4 +1,9 @@
-package ru.agentlab.maia.behaviour.sheme
+package ru.agentlab.maia.internal.behaviour.scheme.impl
+
+import ru.agentlab.maia.internal.behaviour.scheme.BehaviourScheme
+import ru.agentlab.maia.internal.behaviour.scheme.BehaviourStateEmpty
+import ru.agentlab.maia.internal.behaviour.scheme.BehaviourTransitionDefault
+import ru.agentlab.maia.internal.behaviour.scheme.BehaviourTransitionException
 
 class BehaviourSchemeCyclic extends BehaviourScheme {
 
