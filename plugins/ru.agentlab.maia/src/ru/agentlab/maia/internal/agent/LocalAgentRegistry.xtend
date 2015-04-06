@@ -2,7 +2,9 @@ package ru.agentlab.maia.internal.agent
 
 import java.util.concurrent.ConcurrentHashMap
 import org.eclipse.e4.core.contexts.IEclipseContext
+import org.eclipse.xtend2.lib.StringConcatenation
 import ru.agentlab.maia.agent.IAgentId
+import ru.agentlab.maia.context.IContextFactory
 
 class LocalAgentRegistry {
 
@@ -30,6 +32,17 @@ class LocalAgentRegistry {
 
 	def boolean contains(IAgentId key) {
 		agents.containsKey(key)
+	}
+
+	override toString() {
+		val StringConcatenation sb = ''''''
+		agents.forEach [ id, ctx |
+			sb.newLine
+			sb.append("			[")
+			sb.append(ctx.get(IContextFactory.KEY_NAME))
+			sb.append("]")
+		]
+		sb.toString
 	}
 
 }
