@@ -20,7 +20,7 @@ interface IInitializerService {
 	 * @param InitializerClass - class of Initializer to be created.
 	 * @return Newly created Initializer
 	 */
-	def Object addInitializer(Class<?> InitializerClass)
+	def Object addInitializer(Class<?> initializerClass)
 
 	/**
 	 * Add new Initializer in context.
@@ -30,6 +30,6 @@ interface IInitializerService {
 	 * @param InitializerClass - class of Initializer to be created.
 	 * @return Newly created Initializer
 	 */
-	def Object addInitializer(IEclipseContext context, Class<?> InitializerClass)
+	def Object addInitializer(IEclipseContext context, Class<?> initializerClass)
 
 }
