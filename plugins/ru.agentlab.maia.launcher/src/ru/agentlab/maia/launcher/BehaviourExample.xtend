@@ -6,6 +6,7 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.behaviour.sheme.IBehaviourScheme
+import ru.agentlab.maia.behaviour.sheme.IBehaviourSchemeRegistry
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMapping
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMappingFactory
 import ru.agentlab.maia.internal.behaviour.scheme.impl.BehaviourSchemeOneShot
@@ -22,10 +23,15 @@ class BehaviourExample {
 	IBehaviourTaskMappingFactory behaviourTaskMappingFactory
 
 	@Inject
-	BehaviourSchemeOneShot oneShotScheme
+	IBehaviourSchemeRegistry behaviourSchemeRegistry
 
 	@PostConstruct
 	def void init() {
+
+		val BehaviourSchemeOneShot oneShotScheme = behaviourSchemeRegistry.schemes.findFirst [
+			it instanceof BehaviourSchemeOneShot
+		] as BehaviourSchemeOneShot
+
 		LOGGER.info("Modify action scheme...")
 		context.modify(IBehaviourScheme, oneShotScheme)
 		LOGGER.info("Modify scheme mapping...")
