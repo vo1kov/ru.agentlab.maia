@@ -15,15 +15,16 @@ class ContextDumpTask {
 
 	@Action
 	def void action() {
-		var c = context
-		while (c != null) {
-			LOGGER.info("Context [{}] consist of:", c)
-			(c as EclipseContext).localData.forEach [ p1, p2 |
-				if (p1 != "org.eclipse.e4.core.internal.contexts.ContextObjectSupplier" && p1 != "debugString") {
-					LOGGER.info("	[{}] -> [{}]", p1, p2)
-				}
+		var cc = context
+		while (cc != null) {
+			val c = cc
+			println("Context [" + c + "] consist of:")
+			(c as EclipseContext).localData.keySet.sortWith [ a, b |
+				a.compareTo(b)
+			].forEach [ p1 |
+				println("	[" + p1 + "] -> [" + (c as EclipseContext).localData.get(p1) + "]")
 			]
-			c = c.parent
+			cc = c.parent
 		}
 	}
 
