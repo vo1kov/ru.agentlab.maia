@@ -3,7 +3,6 @@ package ru.agentlab.maia.internal.behaviour.scheme
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.List
-import javax.annotation.PostConstruct
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.behaviour.sheme.IBehaviourScheme
 import ru.agentlab.maia.behaviour.sheme.IBehaviourState
@@ -31,7 +30,10 @@ abstract class BehaviourScheme implements IBehaviourScheme {
 
 	IBehaviourState finalState
 
-	@PostConstruct
+	new() {
+		init
+	}
+
 	def protected void init() {
 		initialState = STATE_INITIAL
 		finalState = STATE_FINAL

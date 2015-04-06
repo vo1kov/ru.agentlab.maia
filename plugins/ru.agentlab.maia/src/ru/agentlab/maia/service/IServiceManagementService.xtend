@@ -51,6 +51,8 @@ interface IServiceManagementService {
 	
 	def void addService(IEclipseContext context, String serviceName, Object service)
 
+	def <T> T createService(IEclipseContext context, Class<T> serviceClass)
+	
 	/**
 	 * Remove Service to context.
 	 * 

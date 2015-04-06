@@ -2,9 +2,7 @@ package ru.agentlab.maia.internal.platform
 
 import java.util.ArrayList
 import java.util.List
-import javax.annotation.PostConstruct
 import javax.inject.Inject
-import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
@@ -14,12 +12,6 @@ import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.container.IContainerIdFactory
 import ru.agentlab.maia.context.IContextFactory
 import ru.agentlab.maia.initializer.IInitializerService
-import ru.agentlab.maia.internal.container.ContainerFactory
-import ru.agentlab.maia.internal.container.ContainerIdFactory
-import ru.agentlab.maia.internal.initializer.InitializerService
-import ru.agentlab.maia.internal.io.ClientFactory
-import ru.agentlab.maia.internal.io.ServerFactory
-import ru.agentlab.maia.internal.naming.ContainerNameGenerator
 import ru.agentlab.maia.io.IClientFactory
 import ru.agentlab.maia.io.IServerFactory
 import ru.agentlab.maia.messaging.IMessageDeliveryService
@@ -53,9 +45,6 @@ class PlatformFactory implements IPlatformFactory {
 
 	@Inject
 	IPlatformIdFactory platformIdFactory
-
-	@Inject
-	IMessageDeliveryServiceFactory messageDeliveryServiceFactory
 
 	/**
 	 * <p>Create Platform-Context with default set of platform-specific services.</p>
@@ -96,32 +85,22 @@ class PlatformFactory implements IPlatformFactory {
 		val result = internalCreateEmpty(id)
 
 		LOGGER.info("Create Platform-specific Services...")
-		result => [
-			// platform layer
-			createService(IClientFactory, ClientFactory)
-			createService(IServerFactory, ServerFactory)
-
-			createService(IContainerNameGenerator, ContainerNameGenerator)
-			createService(IContainerIdFactory, ContainerIdFactory)
-			createService(IContainerFactory, ContainerFactory)
-			createService(IInitializerService, InitializerService)
-		]
-
 		serviceManagementService => [
-			ContextInjectionFactory.invoke(messageDeliveryServiceFactory, PostConstruct, result, null)
-			val mts = messageDeliveryServiceFactory.create(result)
+			createService(result, IClientFactory)
+			createService(result, IServerFactory)
+
+			createService(result, IContainerNameGenerator)
+			createService(result, IContainerIdFactory)
+			createService(result, IContainerFactory)
+			createService(result, IInitializerService)
+
+			val fac = createService(result, IMessageDeliveryServiceFactory)
+			val mts = fac.create(result)
 			addService(result, IMessageDeliveryService, mts)
 		]
 
 		LOGGER.info("Platform successfully created!")
 		return result
-	}
-
-	def private <T> void createService(IEclipseContext ctx, Class<T> serviceClass,
-		Class<? extends T> implementationClass) {
-		val service = ContextInjectionFactory.make(implementationClass, ctx)
-		ContextInjectionFactory.invoke(service, PostConstruct, ctx, null)
-		serviceManagementService.addService(ctx, serviceClass, service)
 	}
 
 	/**

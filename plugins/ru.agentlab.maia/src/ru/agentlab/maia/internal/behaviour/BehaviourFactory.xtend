@@ -2,19 +2,16 @@ package ru.agentlab.maia.internal.behaviour
 
 import java.util.ArrayList
 import java.util.List
-import javax.annotation.PostConstruct
 import javax.inject.Inject
-import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.behaviour.sheme.IBehaviourScheme
+import ru.agentlab.maia.behaviour.sheme.IBehaviourSchemeRegistry
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMapping
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMappingFactory
 import ru.agentlab.maia.initializer.IInitializerService
-import ru.agentlab.maia.internal.behaviour.scheme.impl.BehaviourSchemeOneShot
-import ru.agentlab.maia.internal.initializer.InitializerService
 import ru.agentlab.maia.naming.IBehaviourNameGenerator
 import ru.agentlab.maia.service.IServiceManagementService
 
@@ -29,34 +26,11 @@ class BehaviourFactory implements IBehaviourFactory {
 	IBehaviourNameGenerator behaviourNameGenerator
 
 	@Inject
-	BehaviourSchemeOneShot behaviourSchemeOneShot
-
-	@Inject
 	IServiceManagementService serviceManagementService
 
-//	def private getTickerProperties(Class<?> contributorClass) {
-//		for (method : contributorClass.methods) {
-//			for (annotation : method.annotations) {
-//				if (annotation instanceof ActionTicker) {
-//					return EclipseContextFactory.create => [
-//						set("period", annotation.period)
-//						set("fixedPeriod", annotation.fixedPeriod)
-//						it.parent = null
-//					]
-//				}
-//			}
-//		}
-//	}
-//	def private String getBehaviourType(Class<?> contributorClass) {
-//		for (method : contributorClass.methods) {
-//			for (annotation : method.annotations) {
-//				if (annotation instanceof Action) {
-//					return annotation.type
-//				}
-//			}
-//		}
-//		return null
-//	}
+	@Inject
+	IBehaviourSchemeRegistry behaviourSchemeRegistry
+
 	override createDefault(String id) {
 		LOGGER.info("Try to create new Default Behaviour...")
 		LOGGER.debug("	home context: [{}]", context)
@@ -65,10 +39,11 @@ class BehaviourFactory implements IBehaviourFactory {
 		val result = internalCreateEmpty(id)
 
 		LOGGER.info("Create Behaviour instance...")
-		result => [
-			serviceManagementService.addService(it, IBehaviourScheme, behaviourSchemeOneShot)
-			createService(IBehaviourTaskMappingFactory, BehaviourTaskMappingFactory)
-			createService(IBehaviour, Behaviour)
+		serviceManagementService => [
+			addService(result, IBehaviourScheme.name, behaviourSchemeRegistry.defaultScheme)
+			createService(result, IBehaviourTaskMappingFactory)
+			createService(result, IBehaviour)
+			createService(result, IInitializerService)
 		]
 
 		result.runAndTrack(new BehaviourInstaller)
@@ -98,7 +73,6 @@ class BehaviourFactory implements IBehaviourFactory {
 
 		LOGGER.info("Create Behaviour Context...")
 		val result = context.createChild("Context for Behaviour: " + name) => [
-			declareModifiable(KEY_BEHAVIOURS)
 			declareModifiable(KEY_NAME)
 			declareModifiable(IBehaviourScheme)
 			declareModifiable(IBehaviourTaskMapping)
@@ -117,16 +91,7 @@ class BehaviourFactory implements IBehaviourFactory {
 			context.set(KEY_BEHAVIOURS, behaviours)
 		}
 		behaviours += result
-
-		result.createService(IInitializerService, InitializerService)
 		return result
-	}
-
-	def private <T> void createService(IEclipseContext ctx, Class<T> serviceClass,
-		Class<? extends T> implementationClass) {
-		val service = ContextInjectionFactory.make(implementationClass, ctx)
-		ContextInjectionFactory.invoke(service, PostConstruct, ctx, null)
-		serviceManagementService.addService(ctx, serviceClass, service)
 	}
 
 }

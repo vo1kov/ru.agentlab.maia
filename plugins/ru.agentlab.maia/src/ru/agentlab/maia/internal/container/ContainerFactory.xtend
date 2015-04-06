@@ -2,9 +2,7 @@ package ru.agentlab.maia.internal.container
 
 import java.util.ArrayList
 import java.util.List
-import javax.annotation.PostConstruct
 import javax.inject.Inject
-import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
@@ -14,16 +12,6 @@ import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.container.IContainerId
 import ru.agentlab.maia.container.IContainerIdFactory
 import ru.agentlab.maia.initializer.IInitializerService
-import ru.agentlab.maia.internal.agent.AgentFactory
-import ru.agentlab.maia.internal.agent.AgentIdFactory
-import ru.agentlab.maia.internal.agent.SchedulerFactory
-import ru.agentlab.maia.internal.behaviour.scheme.impl.BehaviourSchemeCyclic
-import ru.agentlab.maia.internal.behaviour.scheme.impl.BehaviourSchemeOneShot
-import ru.agentlab.maia.internal.behaviour.scheme.impl.BehaviourSchemeTicker
-import ru.agentlab.maia.internal.initializer.InitializerService
-import ru.agentlab.maia.internal.messaging.AclMessageFactory
-import ru.agentlab.maia.internal.messaging.ArrayBlockingMessageQueueFactory
-import ru.agentlab.maia.internal.naming.AgentNameGenerator
 import ru.agentlab.maia.messaging.IMessageFactory
 import ru.agentlab.maia.messaging.IMessageQueueFactory
 import ru.agentlab.maia.naming.IAgentNameGenerator
@@ -54,30 +42,18 @@ class ContainerFactory implements IContainerFactory {
 
 		val result = internalCreateEmpty(id)
 
-		result => [
-			// container layer
-			createService(IAgentNameGenerator, AgentNameGenerator)
-			createService(IAgentIdFactory, AgentIdFactory)
-			createService(ISchedulerFactory, SchedulerFactory)
-			createService(IMessageQueueFactory, ArrayBlockingMessageQueueFactory)
-			createService(IMessageFactory, AclMessageFactory)
-			createService(IAgentFactory, AgentFactory)
-			createService(IInitializerService, InitializerService)
-
-			createService(BehaviourSchemeOneShot, BehaviourSchemeOneShot)
-			createService(BehaviourSchemeCyclic, BehaviourSchemeCyclic)
-			createService(BehaviourSchemeTicker, BehaviourSchemeTicker)
+		serviceManagementService => [
+			createService(result, IAgentNameGenerator)
+			createService(result, IAgentIdFactory)
+			createService(result, ISchedulerFactory)
+			createService(result, IMessageQueueFactory)
+			createService(result, IMessageFactory)
+			createService(result, IAgentFactory)
+			createService(result, IInitializerService)
 		]
 
 		LOGGER.info("Container successfully created!")
 		return result
-	}
-
-	def private <T> void createService(IEclipseContext ctx, Class<T> serviceClass,
-		Class<? extends T> implementationClass) {
-		val service = ContextInjectionFactory.make(implementationClass, ctx)
-		ContextInjectionFactory.invoke(service, PostConstruct, ctx, null)
-		serviceManagementService.addService(ctx, serviceClass, service)
 	}
 
 	override createEmpty(String id) {
@@ -88,6 +64,12 @@ class ContainerFactory implements IContainerFactory {
 		val result = internalCreateEmpty(id)
 
 		LOGGER.info("Container successfully created!")
+		return result
+	}
+
+	def IEclipseContext createInternalContext(IEclipseContext ctx, String name) {
+		LOGGER.info("Create Internal Container Context...")
+		val result = ctx.createChild("Internal context for Container: " + name)
 		return result
 	}
 

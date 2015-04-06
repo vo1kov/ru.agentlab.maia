@@ -2,7 +2,6 @@ package ru.agentlab.maia.internal.agent
 
 import java.util.ArrayList
 import java.util.List
-import java.util.concurrent.ConcurrentLinkedDeque
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
@@ -16,16 +15,9 @@ import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.container.IContainerId
 import ru.agentlab.maia.context.IContextFactory
 import ru.agentlab.maia.initializer.IInitializerService
-import ru.agentlab.maia.internal.behaviour.BehaviourFactory
-import ru.agentlab.maia.internal.initializer.InitializerService
-import ru.agentlab.maia.internal.lifecycle.LifecycleService
 import ru.agentlab.maia.internal.lifecycle.scheme.AgentFipaLifecycleListener
-import ru.agentlab.maia.internal.lifecycle.scheme.FipaLifecycleScheme
-import ru.agentlab.maia.internal.messaging.ArrayBlockingMessageQueue
-import ru.agentlab.maia.internal.naming.BehaviourNameGenerator
 import ru.agentlab.maia.lifecycle.ILifecycleService
 import ru.agentlab.maia.lifecycle.scheme.ILifecycleScheme
-import ru.agentlab.maia.messaging.IMessage
 import ru.agentlab.maia.messaging.IMessageQueue
 import ru.agentlab.maia.naming.IAgentNameGenerator
 import ru.agentlab.maia.naming.IBehaviourNameGenerator
@@ -82,21 +74,17 @@ class AgentFactory implements IAgentFactory {
 
 		LOGGER.info("Create Agent-specific Services...")
 
+		serviceManagementService => [
+			createService(result, IBehaviourNameGenerator)
+			createService(result, IBehaviourFactory)
+			createService(result, ILifecycleScheme)
+			createService(result, ILifecycleService)
+			createService(result, IScheduler)
+			createService(result, IMessageQueue)
+			createService(result, IInitializerService)
+		]
+
 		result => [
-			// agent layer
-			createService(IBehaviourNameGenerator, BehaviourNameGenerator)
-			createService(IBehaviourFactory, BehaviourFactory)
-
-			createService(ILifecycleScheme, FipaLifecycleScheme)
-			createService(ILifecycleService, LifecycleService)
-
-			createService(IScheduler, Scheduler)
-			createService(IMessageQueue, ArrayBlockingMessageQueue)
-
-			createService(IInitializerService, InitializerService)
-
-			serviceManagementService.addService(it, "agent.messageQueue", new ConcurrentLinkedDeque<IMessage>)
-
 			val service = ContextInjectionFactory.make(AgentFipaLifecycleListener, it)
 			set(AgentFipaLifecycleListener, service)
 			ContextInjectionFactory.invoke(service, PostConstruct, it, null)
@@ -105,13 +93,6 @@ class AgentFactory implements IAgentFactory {
 
 		LOGGER.info("Agent successfully created!")
 		return result
-	}
-
-	def private <T> void createService(IEclipseContext ctx, Class<T> serviceClass,
-		Class<? extends T> implementationClass) {
-		val service = ContextInjectionFactory.make(implementationClass, ctx)
-		ContextInjectionFactory.invoke(service, PostConstruct, ctx, null)
-		serviceManagementService.addService(ctx, serviceClass, service)
 	}
 
 	/**

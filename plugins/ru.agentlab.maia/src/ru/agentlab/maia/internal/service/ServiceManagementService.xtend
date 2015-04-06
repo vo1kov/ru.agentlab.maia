@@ -1,8 +1,10 @@
 package ru.agentlab.maia.internal.service
 
+import javax.annotation.PostConstruct
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
+import ru.agentlab.maia.context.IProfile
 import ru.agentlab.maia.service.IServiceManagementService
 
 class ServiceManagementService implements IServiceManagementService {
@@ -66,6 +68,15 @@ class ServiceManagementService implements IServiceManagementService {
 	override removeService(IEclipseContext context, String serviceName) {
 		LOGGER.debug("	Remove [{}] Service from [{}] context...", serviceName, context)
 		context.remove(serviceName)
+	}
+
+	override <T> createService(IEclipseContext context, Class<T> serviceClass) {
+		val profile = context.get(IProfile)
+		val implementationClass = profile.get(serviceClass)
+		val service = ContextInjectionFactory.make(implementationClass, context)
+		ContextInjectionFactory.invoke(service, PostConstruct, context, null)
+		addService(context, serviceClass, service)
+		return service
 	}
 
 }
