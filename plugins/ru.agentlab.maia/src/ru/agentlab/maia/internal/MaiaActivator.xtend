@@ -66,6 +66,7 @@ import ru.agentlab.maia.naming.IPlatformNameGenerator
 import ru.agentlab.maia.platform.IPlatformFactory
 import ru.agentlab.maia.platform.IPlatformIdFactory
 import ru.agentlab.maia.service.IServiceManagementService
+import org.osgi.service.event.EventAdmin
 
 class MaiaActivator implements BundleActivator {
 
@@ -176,6 +177,10 @@ class MaiaActivator implements BundleActivator {
 	 */
 	override void stop(BundleContext bundleContext) throws Exception {
 		MaiaActivator.context = null
+	}
+	
+	def static EventAdmin getEventAdmin(){
+		
 	}
 
 }

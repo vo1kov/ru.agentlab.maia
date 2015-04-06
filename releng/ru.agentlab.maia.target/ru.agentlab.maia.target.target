@@ -45,7 +45,11 @@
 <plugin id="org.eclipse.e4.core.di.source"/>
 <plugin id="org.eclipse.equinox.console"/>
 <plugin id="org.eclipse.equinox.console.source"/>
+<plugin id="org.eclipse.equinox.event"/>
+<plugin id="org.eclipse.equinox.event.source"/>
 <plugin id="org.eclipse.osgi"/>
+<plugin id="org.eclipse.osgi.services"/>
+<plugin id="org.eclipse.osgi.services.source"/>
 <plugin id="org.eclipse.osgi.source"/>
 <plugin id="org.eclipse.xtend.lib"/>
 <plugin id="org.eclipse.xtend.lib.macro"/>
