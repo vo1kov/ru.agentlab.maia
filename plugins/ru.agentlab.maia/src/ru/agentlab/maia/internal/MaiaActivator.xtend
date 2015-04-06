@@ -6,13 +6,16 @@ import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
+import org.osgi.service.event.EventAdmin
 import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.agent.IAgentIdFactory
 import ru.agentlab.maia.agent.IScheduler
 import ru.agentlab.maia.agent.ISchedulerFactory
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.behaviour.IBehaviourFactory
+import ru.agentlab.maia.behaviour.sheme.IBehaviourPropertyMapping
 import ru.agentlab.maia.behaviour.sheme.IBehaviourSchemeRegistry
+import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMapping
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMappingFactory
 import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.container.IContainerIdFactory
@@ -25,7 +28,10 @@ import ru.agentlab.maia.internal.agent.Scheduler
 import ru.agentlab.maia.internal.agent.SchedulerFactory
 import ru.agentlab.maia.internal.behaviour.Behaviour
 import ru.agentlab.maia.internal.behaviour.BehaviourFactory
+import ru.agentlab.maia.internal.behaviour.BehaviourPropertyMapping
+import ru.agentlab.maia.internal.behaviour.BehaviourTaskMapping
 import ru.agentlab.maia.internal.behaviour.BehaviourTaskMappingFactory
+import ru.agentlab.maia.internal.behaviour.PropertyIndex
 import ru.agentlab.maia.internal.behaviour.scheme.BehaviourSchemeRegistry
 import ru.agentlab.maia.internal.behaviour.scheme.impl.BehaviourSchemeCyclic
 import ru.agentlab.maia.internal.behaviour.scheme.impl.BehaviourSchemeOneShot
@@ -66,7 +72,6 @@ import ru.agentlab.maia.naming.IPlatformNameGenerator
 import ru.agentlab.maia.platform.IPlatformFactory
 import ru.agentlab.maia.platform.IPlatformIdFactory
 import ru.agentlab.maia.service.IServiceManagementService
-import org.osgi.service.event.EventAdmin
 
 class MaiaActivator implements BundleActivator {
 
@@ -99,6 +104,9 @@ class MaiaActivator implements BundleActivator {
 			set(IAgentFactory, AgentFactory)
 			set(IInitializerService, InitializerService)
 
+			set(IBehaviourPropertyMapping, BehaviourPropertyMapping)
+			set(PropertyIndex, PropertyIndex)
+
 			set(IBehaviourNameGenerator, BehaviourNameGenerator)
 			set(IBehaviourFactory, BehaviourFactory)
 
@@ -111,6 +119,7 @@ class MaiaActivator implements BundleActivator {
 			set(IInitializerService, InitializerService)
 
 			set(IBehaviourTaskMappingFactory, BehaviourTaskMappingFactory)
+			set(IBehaviourTaskMapping, BehaviourTaskMapping)
 			set(IBehaviour, Behaviour)
 		]
 	}
@@ -178,9 +187,8 @@ class MaiaActivator implements BundleActivator {
 	override void stop(BundleContext bundleContext) throws Exception {
 		MaiaActivator.context = null
 	}
-	
-	def static EventAdmin getEventAdmin(){
-		
+
+	def static EventAdmin getEventAdmin() {
 	}
 
 }
