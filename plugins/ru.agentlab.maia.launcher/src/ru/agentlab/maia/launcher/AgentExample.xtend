@@ -9,11 +9,11 @@ import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentId
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.behaviour.sheme.IBehaviourScheme
+import ru.agentlab.maia.behaviour.sheme.IBehaviourSchemeRegistry
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMapping
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMappingFactory
 import ru.agentlab.maia.context.IContextFactory
 import ru.agentlab.maia.initializer.IInitializerService
-import ru.agentlab.maia.internal.behaviour.scheme.impl.BehaviourSchemeCyclic
 import ru.agentlab.maia.internal.behaviour.scheme.impl.BehaviourSchemeOneShot
 import ru.agentlab.maia.launcher.task.DumpAgentNameTask
 import ru.agentlab.maia.launcher.task.SendTestMessageTask
@@ -33,19 +33,21 @@ class AgentExample {
 	extension IBehaviourFactory
 
 	@Inject
-	BehaviourSchemeOneShot oneShotScheme
-
-	@Inject
-	BehaviourSchemeCyclic cyclicScheme
+	IBehaviourSchemeRegistry behaviourSchemeRegistry
 
 	@PostConstruct
 	def void setup() {
 		LOGGER.info("Setup of: [{}] agent", agentName)
+
+		val BehaviourSchemeOneShot oneShotScheme = behaviourSchemeRegistry.schemes.findFirst [
+			it instanceof BehaviourSchemeOneShot
+		] as BehaviourSchemeOneShot
+
 		createDefault("first") => [
-			get(IInitializerService).addInitializer(BehaviourExample)
+			val initService = get(IInitializerService)
+			initService.addInitializer(BehaviourExample)
 		]
 		createDefault("second") => [ beh |
-			beh.modify(IBehaviourScheme, oneShotScheme)
 			val mapping = beh.get(IBehaviourTaskMappingFactory).create => [
 				val task = ContextInjectionFactory.make(DumpAgentNameTask, beh)
 				put(BehaviourSchemeOneShot.STATE_MAIN, task)
@@ -63,6 +65,8 @@ class AgentExample {
 				beh.modify(IBehaviourTaskMapping, mapping)
 			]
 		}
+
+
 //		createFromAnnotation("first2", BehaviourExample) => [
 //			get(IContributionService).addContributor(BehaviourExample)
 //		]
