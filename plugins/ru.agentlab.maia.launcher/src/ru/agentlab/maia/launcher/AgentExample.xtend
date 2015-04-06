@@ -47,24 +47,24 @@ class AgentExample {
 			val initService = get(IInitializerService)
 			initService.addInitializer(BehaviourExample)
 		]
-		createDefault("second") => [ beh |
-			val mapping = beh.get(IBehaviourTaskMappingFactory).create => [
-				val task = ContextInjectionFactory.make(DumpAgentNameTask, beh)
-				put(BehaviourSchemeOneShot.STATE_MAIN, task)
-			]
-			beh.modify(IBehaviourTaskMapping, mapping)
-		]
-		val port = Integer.parseInt(System.getProperty("port", "8899"))
-		if (port == 8888) {
-			createDefault("send") => [ beh |
-				beh.modify(IBehaviourScheme, oneShotScheme)
-				val mapping = beh.get(IBehaviourTaskMappingFactory).create => [
-					val task = ContextInjectionFactory.make(SendTestMessageTask, beh)
-					put(BehaviourSchemeOneShot.STATE_MAIN, task)
-				]
-				beh.modify(IBehaviourTaskMapping, mapping)
-			]
-		}
+//		createDefault("second") => [ beh |
+//			val mapping = beh.get(IBehaviourTaskMappingFactory).create => [
+//				val task = ContextInjectionFactory.make(DumpAgentNameTask, beh)
+//				put(BehaviourSchemeOneShot.STATE_MAIN, task)
+//			]
+//			beh.modify(IBehaviourTaskMapping, mapping)
+//		]
+//		val port = Integer.parseInt(System.getProperty("port", "8899"))
+//		if (port == 8888) {
+//			createDefault("send") => [ beh |
+//				beh.modify(IBehaviourScheme, oneShotScheme)
+//				val mapping = beh.get(IBehaviourTaskMappingFactory).create => [
+//					val task = ContextInjectionFactory.make(SendTestMessageTask, beh)
+//					put(BehaviourSchemeOneShot.STATE_MAIN, task)
+//				]
+//				beh.modify(IBehaviourTaskMapping, mapping)
+//			]
+//		}
 
 
 //		createFromAnnotation("first2", BehaviourExample) => [
