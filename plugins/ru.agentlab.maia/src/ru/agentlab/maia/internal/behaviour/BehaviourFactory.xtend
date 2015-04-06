@@ -7,6 +7,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.behaviour.IBehaviourFactory
+import ru.agentlab.maia.behaviour.sheme.IBehaviourPropertyMapping
 import ru.agentlab.maia.behaviour.sheme.IBehaviourScheme
 import ru.agentlab.maia.behaviour.sheme.IBehaviourSchemeRegistry
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMapping
@@ -41,7 +42,10 @@ class BehaviourFactory implements IBehaviourFactory {
 		LOGGER.info("Create Behaviour instance...")
 		serviceManagementService => [
 			addService(result, IBehaviourScheme.name, behaviourSchemeRegistry.defaultScheme)
+			createService(result, IBehaviourTaskMapping)
 			createService(result, IBehaviourTaskMappingFactory)
+			createService(result, PropertyIndex)
+			createService(result, IBehaviourPropertyMapping)
 			createService(result, IBehaviour)
 			createService(result, IInitializerService)
 		]
