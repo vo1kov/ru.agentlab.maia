@@ -1,11 +1,11 @@
 package ru.agentlab.maia.internal.behaviour.scheme.impl
 
-import ru.agentlab.maia.behaviour.task.TaskDelay
 import ru.agentlab.maia.internal.behaviour.scheme.BehaviourScheme
 import ru.agentlab.maia.internal.behaviour.scheme.BehaviourStateFinal
 import ru.agentlab.maia.internal.behaviour.scheme.BehaviourStateImplement
 import ru.agentlab.maia.internal.behaviour.scheme.BehaviourTransitionDefault
 import ru.agentlab.maia.internal.behaviour.scheme.BehaviourTransitionException
+import ru.agentlab.maia.behaviour.task.SleepTask
 
 class BehaviourSchemeTicker extends BehaviourScheme {
 
@@ -33,7 +33,7 @@ class BehaviourSchemeTicker extends BehaviourScheme {
 		transitions += TRANSITION_FINISH
 		transitions += TRANSITION_FINISH2
 
-		defaultMapping.put(STATE_WAIT, TaskDelay)
+		defaultMapping.put(STATE_WAIT, SleepTask)
 	}
 
 }
