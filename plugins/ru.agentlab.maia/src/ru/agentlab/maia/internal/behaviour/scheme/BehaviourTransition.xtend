@@ -28,7 +28,7 @@ abstract class BehaviourTransition implements IBehaviourTransition {
 	}
 
 	override toString() {
-		'''[«fromState»] -> [«toState»]'''
+		'''(«fromState» -> «toState»)'''
 	}
 
 }
