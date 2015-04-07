@@ -29,13 +29,13 @@ class Activator implements BundleActivator {
 		val platformFactory = context.getService(context.getServiceReference(IPlatformFactory))
 
 		LOGGER.info("CREATE platform")
-		platformFactory.createDefault("Platform1") => [
+		platformFactory.createDefault(null) => [
 			get(IContainerFactory) => [
 				LOGGER.info("CREATE container1")
-				createDefault("Container1") => [
+				createDefault(null) => [
 					get(IAgentFactory) => [
 						LOGGER.info("CREATE agent1")
-						createDefault("Agent1") => [
+						createDefault(null) => [
 							LOGGER.info("ADD contributor for agent1")
 							get(IInitializerService).addInitializer(AgentExample)
 							LOGGER.info("INVOKE agent1")

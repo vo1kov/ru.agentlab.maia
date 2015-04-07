@@ -72,6 +72,7 @@ import ru.agentlab.maia.naming.IPlatformNameGenerator
 import ru.agentlab.maia.platform.IPlatformFactory
 import ru.agentlab.maia.platform.IPlatformIdFactory
 import ru.agentlab.maia.service.IServiceManagementService
+import ru.agentlab.maia.internal.naming.UuidNameGenerator
 
 class MaiaActivator implements BundleActivator {
 
@@ -86,7 +87,7 @@ class MaiaActivator implements BundleActivator {
 			set(IClientFactory, ClientFactory)
 			set(IServerFactory, ServerFactory)
 
-			set(IContainerNameGenerator, ContainerNameGenerator)
+			set(IContainerNameGenerator, UuidNameGenerator)
 			set(IContainerIdFactory, ContainerIdFactory)
 			set(IContainerFactory, ContainerFactory)
 			set(IInitializerService, InitializerService)
@@ -96,7 +97,7 @@ class MaiaActivator implements BundleActivator {
 
 			set(IPlatformIdFactory, PlatformIdFactory)
 			set(IMessageQueueFactory, ArrayBlockingMessageQueueFactory)
-			set(IAgentNameGenerator, AgentNameGenerator)
+			set(IAgentNameGenerator, UuidNameGenerator)
 			set(IAgentIdFactory, AgentIdFactory)
 			set(ISchedulerFactory, SchedulerFactory)
 			set(IMessageQueueFactory, ArrayBlockingMessageQueueFactory)
@@ -107,7 +108,7 @@ class MaiaActivator implements BundleActivator {
 			set(IBehaviourPropertyMapping, BehaviourPropertyMapping)
 			set(PropertyIndex, PropertyIndex)
 
-			set(IBehaviourNameGenerator, BehaviourNameGenerator)
+			set(IBehaviourNameGenerator, UuidNameGenerator)
 			set(IBehaviourFactory, BehaviourFactory)
 
 			set(ILifecycleScheme, FipaLifecycleScheme)
@@ -155,7 +156,7 @@ class MaiaActivator implements BundleActivator {
 			createService(context, IServiceManagementService, ServiceManagementService)
 //			createService(context, IMessageDeliveryServiceFactory, NettyMessageDeliveryServiceFactory)
 			createService(context, IPlatformIdFactory, PlatformIdFactory)
-			createService(context, IPlatformNameGenerator, PlatformNameGenerator)
+			createService(context, IPlatformNameGenerator, UuidNameGenerator)
 			createService(context, IPlatformFactory, PlatformFactory)
 
 			createService(context, LocalAgentRegistry, LocalAgentRegistry)

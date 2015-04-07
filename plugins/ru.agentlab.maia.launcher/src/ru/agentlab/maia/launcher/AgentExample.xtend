@@ -43,7 +43,7 @@ class AgentExample {
 			it instanceof BehaviourSchemeOneShot
 		] as BehaviourSchemeOneShot
 
-		createDefault("first") => [
+		createDefault(null) => [
 			val initService = get(IInitializerService)
 			initService.addInitializer(BehaviourExample)
 		]
