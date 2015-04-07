@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Scheduler
+Bundle-SymbolicName: org.maia.behaviour.scheduler
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ org.eclipse.e4.core.contexts;bundle-version="1.3.100",
+ org.eclipse.e4.core.di;bundle-version="1.4.0",
+ org.maia.task.scheduler;bundle-version="1.0.0"
+Export-Package: org.maia.behaviour.scheduler
+
