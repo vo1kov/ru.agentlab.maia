@@ -7,7 +7,6 @@ import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.behaviour.sheme.IBehaviourPropertyMapping
 import ru.agentlab.maia.behaviour.sheme.IBehaviourScheme
-import ru.agentlab.maia.behaviour.sheme.IBehaviourSchemeRegistry
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMapping
 import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMappingFactory
 import ru.agentlab.maia.internal.behaviour.BehaviourPropertyMapping
@@ -15,8 +14,8 @@ import ru.agentlab.maia.internal.behaviour.scheme.BehaviourScheme
 import ru.agentlab.maia.internal.behaviour.scheme.BehaviourStateImplement
 import ru.agentlab.maia.internal.behaviour.scheme.BehaviourTransitionDefault
 import ru.agentlab.maia.internal.behaviour.scheme.BehaviourTransitionEvent
-import ru.agentlab.maia.launcher.task.IncrementTask
 import ru.agentlab.maia.launcher.task.ContextDumpTask
+import ru.agentlab.maia.launcher.task.IncrementTask
 
 class BehaviourExample {
 
@@ -28,20 +27,12 @@ class BehaviourExample {
 	@Inject
 	IBehaviourTaskMappingFactory behaviourTaskMappingFactory
 
-	@Inject
-	IBehaviourSchemeRegistry behaviourSchemeRegistry
-
 	@PostConstruct
 	def void init() {
-
-//		val BehaviourSchemeOneShot oneShotScheme = behaviourSchemeRegistry.schemes.findFirst [
-//			it instanceof BehaviourSchemeOneShot
-//		] as BehaviourSchemeOneShot
-//
 		LOGGER.info("Modify action scheme...")
 		context.modify(IBehaviourScheme, new CustomScheme)
 
-		LOGGER.info("Modify scheme mapping...")
+		LOGGER.info("Modify task mapping...")
 		val task1 = ContextInjectionFactory.make(IncrementTask, context)
 		val task2 = ContextInjectionFactory.make(IncrementTask, context)
 		val task3 = ContextInjectionFactory.make(ContextDumpTask, context)
@@ -52,7 +43,7 @@ class BehaviourExample {
 		]
 		context.modify(IBehaviourTaskMapping, mapping)
 
-		LOGGER.info("Modify scheme property mapping...")
+		LOGGER.info("Modify property mapping...")
 		val propertyMapping = ContextInjectionFactory.make(BehaviourPropertyMapping, context) => [
 			link(task1, "i2", task2, "i")
 			put(task1, "i", 20)
@@ -72,13 +63,13 @@ class CustomScheme extends BehaviourScheme {
 	val public static STATE_MAIN = new BehaviourStateImplement("MAIN")
 
 	val public static STATE_MAIN2 = new BehaviourStateImplement("MAIN2")
-	
+
 	val public static STATE_MAIN3 = new BehaviourStateImplement("MAIN3")
 
 	val public static TRANSITION_START = new BehaviourTransitionDefault("START", STATE_INITIAL, STATE_MAIN)
 
 	val public static TRANSITION_EVENT = new BehaviourTransitionEvent("START2", STATE_MAIN, STATE_MAIN2)
-	
+
 	val public static TRANSITION_EVENT2 = new BehaviourTransitionEvent("START2", STATE_MAIN2, STATE_MAIN3)
 
 	val public static TRANSITION_FINISH = new BehaviourTransitionDefault("FINISH", STATE_MAIN3, STATE_FINAL)
