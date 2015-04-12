@@ -13,17 +13,17 @@ class AnnotatedContextAction implements IMaiaContextAction {
 	@Inject
 	IMaiaContextInjector injector
 
-	override beforeAction() {
+	override beforeRun() {
 	}
 
-	override action() {
+	override run() {
 		val task = context.get(KEY_TASK)
 		if (task != null) {
 			return injector.invoke(task, Action, context)
 		}
 	}
 
-	override afterAction() {
+	override afterRun() {
 	}
 
 }

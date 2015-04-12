@@ -9,10 +9,10 @@ class RunnableContextAction implements IMaiaContextAction {
 	@Inject
 	IMaiaContext context
 
-	override beforeAction() {
+	override beforeRun() {
 	}
 
-	override action() {
+	override run() {
 		val task = context.get(KEY_TASK)
 		if (task instanceof Runnable) {
 			task.run
@@ -20,7 +20,7 @@ class RunnableContextAction implements IMaiaContextAction {
 		return null
 	}
 
-	override afterAction() {
+	override afterRun() {
 	}
 
 }

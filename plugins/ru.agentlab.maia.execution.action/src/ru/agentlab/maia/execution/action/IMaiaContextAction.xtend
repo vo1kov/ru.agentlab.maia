@@ -6,10 +6,10 @@ interface IMaiaContextAction {
 	
 	val static String KEY_RESULT = "result"
 	
-	def void beforeAction()
+	def void beforeRun()
 	
-	def Object action()
+	def Object run()
 	
-	def void afterAction()
+	def void afterRun()
 	
 }
