@@ -5,15 +5,6 @@ import javax.inject.Inject
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.behaviour.sheme.IBehaviourPropertyMapping
-import ru.agentlab.maia.behaviour.sheme.IBehaviourScheme
-import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMapping
-import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMappingFactory
-import ru.agentlab.maia.internal.behaviour.BehaviourPropertyMapping
-import ru.agentlab.maia.internal.behaviour.scheme.BehaviourScheme
-import ru.agentlab.maia.internal.behaviour.scheme.BehaviourStateImplement
-import ru.agentlab.maia.internal.behaviour.scheme.BehaviourTransitionDefault
-import ru.agentlab.maia.internal.behaviour.scheme.BehaviourTransitionEvent
 import ru.agentlab.maia.launcher.task.ContextDumpTask
 import ru.agentlab.maia.launcher.task.IncrementTask
 

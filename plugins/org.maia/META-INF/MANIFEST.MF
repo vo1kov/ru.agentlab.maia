@@ -1,32 +1,22 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Maia
-Bundle-SymbolicName: org.maia
+Bundle-SymbolicName: ru.agentlab.maia
 Bundle-Version: 0.0.1.qualifier
-Bundle-Activator: org.maia.internal.MaiaActivator
+Bundle-Activator: ru.agentlab.maia.internal.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Import-Package: org.eclipse.osgi.util;version="1.1.0",
- org.osgi.framework;version="1.3.0",
- org.osgi.service.event;version="1.3.0"
+Import-Package: org.osgi.framework;version="1.3.0"
 Bundle-ActivationPolicy: lazy
-Export-Package: org.maia,
- org.maia.initializer,
- org.maia.internal,
- org.maia.naming,
- org.maia.service
+Export-Package: 
+ ru.agentlab.maia,
+ ru.agentlab.maia.execution,
+ ru.agentlab.maia.initializer,
+ ru.agentlab.maia.injector,
+ ru.agentlab.maia.naming,
+ ru.agentlab.maia.profile
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  javax.inject;bundle-version="1.0.0",
- org.eclipse.e4.core.contexts;bundle-version="1.3.100",
- org.slf4j.api;bundle-version="1.7.2",
- org.eclipse.e4.core.di;bundle-version="1.4.0",
- io.netty;bundle-version="[4.0.0,4.1.0)",
- org.maia.behaviour.scheduler;bundle-version="1.0.0",
- org.maia.lifecycle;bundle-version="1.0.0",
- org.maia.messaging;bundle-version="1.0.0",
- org.maia.task.scheduler;bundle-version="1.0.0",
- org.maia.event;bundle-version="1.0.0",
- org.maia.messaging.queue;bundle-version="1.0.0",
- org.maia.task.scheduler.scheme;bundle-version="1.0.0"
+ org.slf4j.api;bundle-version="1.7.2"

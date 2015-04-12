@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.maia.messaging.queue.arrayblocking</name>
+	<name>ru.agentlab.maia.io.queue.arrayblocking</name>
 	<comment></comment>
 	<projects>
 	</projects>

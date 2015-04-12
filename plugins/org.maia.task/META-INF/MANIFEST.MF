@@ -1,12 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Task
-Bundle-SymbolicName: org.maia.task
+Bundle-SymbolicName: ru.agentlab.maia.execution.action
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro
-Export-Package: org.maia.task
+Export-Package: org.maia.task,
+ ru.agentlab.maia.execution.action
 

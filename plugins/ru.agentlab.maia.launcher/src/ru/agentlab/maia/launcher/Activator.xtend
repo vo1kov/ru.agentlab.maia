@@ -3,11 +3,11 @@ package ru.agentlab.maia.launcher
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import org.slf4j.LoggerFactory
+import ru.agentlab.maia.IMaiaContextFactory
 import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.container.IContainerFactory
-import ru.agentlab.maia.initializer.IInitializerService
-import ru.agentlab.maia.lifecycle.ILifecycleService
-import ru.agentlab.maia.platform.IPlatformFactory
+import ru.agentlab.maia.IMaiaContextServiceManager
+import ru.agentlab.maia.initializer.IMaiaContextInitializerService
 
 class Activator implements BundleActivator {
 
@@ -26,28 +26,47 @@ class Activator implements BundleActivator {
 	override void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext
 
-		val platformFactory = context.getService(context.getServiceReference(IPlatformFactory))
+		val serviceManagerRef = context.getServiceReference(IMaiaContextServiceManager)
+		val serviceManager = context.getService(serviceManagerRef)
 
-		LOGGER.info("CREATE platform")
-		platformFactory.createDefault(null) => [
-			get(IContainerFactory) => [
-				LOGGER.info("CREATE container1")
-				createDefault(null) => [
-					get(IAgentFactory) => [
-						LOGGER.info("CREATE agent1")
-						createDefault(null) => [
-							LOGGER.info("ADD contributor for agent1")
-							get(IInitializerService).addInitializer(AgentExample)
-							LOGGER.info("INVOKE agent1")
-							get(ILifecycleService).invokeTransition = "INVOKE"
-						]
-					]
-				]
-				LOGGER.info("CREATE container2")
-				createDefault("Container2")
-			]
-		]
+		val contextFactoryRef = context.getServiceReference(IMaiaContextFactory)
+		val contextFactory = context.getService(contextFactoryRef)
+		val osgiContext = contextFactory.createOsgiContext(bundleContext)
 
+		LOGGER.info("CREATE AGENT FACTORY...")
+		val agentFactory = serviceManager.getService(osgiContext, IAgentFactory)
+
+		LOGGER.info("CREATE CONTAINER FACTORY...")
+		val containerFactory = serviceManager.getService(osgiContext, IContainerFactory)
+
+		LOGGER.info("CREATE CONTAINER...")
+		val container = containerFactory.createContainer(null)
+		LOGGER.info(container.dump)
+
+		LOGGER.info("CREATE AGENT...")
+		val agent = agentFactory.createAgent(container)
+		LOGGER.info(agent.dump)
+		agent.get(IMaiaContextInitializerService).addInitializer(agent, AgentExample)
+		LOGGER.info(agent.dump)
+
+//		platformFactory.createDefault(null) => [
+//			get(IContainerFactory) => [
+//				LOGGER.info("CREATE container1")
+//				createDefault(null) => [
+//					get(IAgentFactory) => [
+//						LOGGER.info("CREATE agent1")
+//						createDefault(null) => [
+//							LOGGER.info("ADD contributor for agent1")
+//							get(IInitializerService).addInitializer(AgentExample)
+//							LOGGER.info("INVOKE agent1")
+//							get(ILifecycleService).invokeTransition = "INVOKE"
+//						]
+//					]
+//				]
+//				LOGGER.info("CREATE container2")
+//				createDefault("Container2")
+//			]
+//		]
 //		LOGGER.info("CREATE agent2")
 //		val agent2 = agentFactory.createDefault(null, "Agent2")
 //		LOGGER.info("INVOKE agent2")

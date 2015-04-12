@@ -1,8 +1,8 @@
 package ru.agentlab.maia.launcher.task
 
-import ru.agentlab.maia.Action
-import ru.agentlab.maia.TaskOutput
-import ru.agentlab.maia.TaskInput
+import org.maia.task.Action
+import org.maia.task.TaskInput
+import org.maia.task.TaskOutput
 
 class IncrementTask {
 	

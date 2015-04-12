@@ -3,6 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: MAIA Unit Tests
 Bundle-SymbolicName: ru.agentlab.maia.test.unit
 Bundle-Version: 0.0.1.qualifier
-Fragment-Host: org.maia
+Fragment-Host: ru.agentlab.maia
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit;bundle-version="4.11.0"

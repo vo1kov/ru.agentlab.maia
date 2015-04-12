@@ -6,9 +6,6 @@ import javax.inject.Named
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.eclipse.e4.core.internal.contexts.EclipseContext
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.Action
-import ru.agentlab.maia.agent.IAgentIdFactory
-import ru.agentlab.maia.context.IContextFactory
 import ru.agentlab.maia.messaging.IMessageDeliveryService
 import ru.agentlab.maia.messaging.IMessageFactory
 

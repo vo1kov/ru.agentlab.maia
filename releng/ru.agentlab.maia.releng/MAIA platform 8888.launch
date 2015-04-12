@@ -10,7 +10,7 @@
 <booleanAttribute key="default" value="true"/>
 <booleanAttribute key="default_auto_start" value="true"/>
 <intAttribute key="default_start_level" value="4"/>
-<stringAttribute key="deselected_workspace_plugins" value="com.tilab.jade,com.tilab.jade.lang.acl,com.tilab.jade.lang.acl.codec,com.tilab.jade.lang.acl.codec.leap,com.tilab.jade.lang.acl.stringaclcodec,com.tilab.jade.mtp,com.tilab.jade.proto,ds,ru.agentlab.maia.test.func,ru.agentlab.maia.test.unit"/>
+<stringAttribute key="deselected_workspace_plugins" value="com.tilab.jade,io.netty,ru.agentlab.maia.behaviour.scheme,ru.agentlab.maia.behaviour.scheme.lib,ru.agentlab.maia.behaviour.scheme.task,ru.agentlab.maia.behaviour.scheme.task.lib,ru.agentlab.maia.behaviour.sequence,ru.agentlab.maia.event,ru.agentlab.maia.event.osgi,ru.agentlab.maia.io,ru.agentlab.maia.io.messaging,ru.agentlab.maia.io.messaging.acl,ru.agentlab.maia.io.messaging.netty,ru.agentlab.maia.io.queue,ru.agentlab.maia.io.queue.arrayblocking,ru.agentlab.maia.io.queue.linkedblocking,ru.agentlab.maia.protocol,ru.agentlab.maia.protocol.lib"/>
 <booleanAttribute key="includeOptional" value="false"/>
 <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
@@ -23,5 +23,5 @@
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
 <booleanAttribute key="useDefaultConfigArea" value="true"/>
-<stringAttribute key="workspace_bundles" value="io.netty@default:default,ru.agentlab.maia.launcher@5:default,ru.agentlab.maia.logging@default:false,ru.agentlab.maia@default:default,test@default:default"/>
+<stringAttribute key="workspace_bundles" value="jxse.test@default:default,ru.agentlab.maia.agent.sequence@default:default,ru.agentlab.maia.agent@default:default,ru.agentlab.maia.behaviour@default:default,ru.agentlab.maia.container@default:default,ru.agentlab.maia.injection.e4@default:default,ru.agentlab.maia.launcher@5:default,ru.agentlab.maia.lifecycle.fipa@default:default,ru.agentlab.maia.lifecycle@default:default,ru.agentlab.maia.logging@default:false,ru.agentlab.maia.naming.uuid@default:default,ru.agentlab.maia@default:default"/>
 </launchConfiguration>

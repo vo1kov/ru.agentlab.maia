@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.maia.messaging.netty</name>
+	<name>ru.agentlab.maia.io.messaging.netty</name>
 	<comment></comment>
 	<projects>
 	</projects>

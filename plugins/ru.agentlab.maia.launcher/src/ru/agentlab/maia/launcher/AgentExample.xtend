@@ -3,50 +3,38 @@ package ru.agentlab.maia.launcher
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import javax.inject.Named
-import org.eclipse.e4.core.contexts.ContextInjectionFactory
-import org.eclipse.e4.core.di.annotations.Optional
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.agent.IAgentId
-import ru.agentlab.maia.behaviour.IBehaviourFactory
-import ru.agentlab.maia.behaviour.sheme.IBehaviourScheme
-import ru.agentlab.maia.behaviour.sheme.IBehaviourSchemeRegistry
-import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMapping
-import ru.agentlab.maia.behaviour.sheme.IBehaviourTaskMappingFactory
-import ru.agentlab.maia.context.IContextFactory
-import ru.agentlab.maia.initializer.IInitializerService
-import ru.agentlab.maia.internal.behaviour.scheme.impl.BehaviourSchemeOneShot
-import ru.agentlab.maia.launcher.task.DumpAgentNameTask
-import ru.agentlab.maia.launcher.task.SendTestMessageTask
-import ru.agentlab.maia.lifecycle.scheme.ILifecycleState
+import ru.agentlab.maia.naming.IMaiaContextNameFactory
 
 class AgentExample {
 
 	val static LOGGER = LoggerFactory.getLogger(AgentExample)
 
-	@Inject @Named(IContextFactory.KEY_NAME)
+	@Inject @Named(IMaiaContextNameFactory.KEY_NAME)
 	String agentName
 
-	@Inject
-	IAgentId agentId
+//	@Inject
+//	extension IBehaviourFactory
 
-	@Inject
-	extension IBehaviourFactory
-
-	@Inject
-	IBehaviourSchemeRegistry behaviourSchemeRegistry
+//	@Inject
+//	IBehaviourSchemeRegistry behaviourSchemeRegistry
 
 	@PostConstruct
 	def void setup() {
 		LOGGER.info("Setup of: [{}] agent", agentName)
 
-		val BehaviourSchemeOneShot oneShotScheme = behaviourSchemeRegistry.schemes.findFirst [
-			it instanceof BehaviourSchemeOneShot
-		] as BehaviourSchemeOneShot
-
-		createDefault(null) => [
-			val initService = get(IInitializerService)
-			initService.addInitializer(BehaviourExample)
-		]
+//		val BehaviourSchemeOneShot oneShotScheme = behaviourSchemeRegistry.schemes.findFirst [
+//			it instanceof BehaviourSchemeOneShot
+//		] as BehaviourSchemeOneShot
+//
+//		createDefault(null) => [
+//			val initService = get(IInitializerService)
+//			initService.addInitializer(BehaviourExample)
+//		]
+		
+		
+		
+		
 //		createDefault("second") => [ beh |
 //			val mapping = beh.get(IBehaviourTaskMappingFactory).create => [
 //				val task = ContextInjectionFactory.make(DumpAgentNameTask, beh)
@@ -65,19 +53,13 @@ class AgentExample {
 //				beh.modify(IBehaviourTaskMapping, mapping)
 //			]
 //		}
-
-
 //		createFromAnnotation("first2", BehaviourExample) => [
 //			get(IContributionService).addContributor(BehaviourExample)
 //		]
 //		behaviourFactory.createTicker(context, "second", 1000) => [
 //			addContributor(BehaviourExample)
 //		]
-		LOGGER.info("Agent ID: [{}] ", agentId.name)
+//		LOGGER.info("Agent ID: [{}] ", agentId.name)
 	}
 
-	@Inject @Optional
-	def void onStateChange(ILifecycleState state) {
-		LOGGER.info("State changed: [{}]", state)
-	}
 }

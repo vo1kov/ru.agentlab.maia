@@ -4,8 +4,8 @@ import java.util.ArrayList
 import java.util.List
 import java.util.Properties
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.maia.messaging.IMessage
-import org.maia.messaging.IMessageEnvelope
+import ru.agentlab.maia.messaging.IMessage
+import ru.agentlab.maia.messaging.IMessageEnvelope
 
 @Accessors
 class AclMessage implements IMessage {

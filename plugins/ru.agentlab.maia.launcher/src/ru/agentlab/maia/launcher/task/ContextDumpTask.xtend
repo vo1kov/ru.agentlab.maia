@@ -3,8 +3,8 @@ package ru.agentlab.maia.launcher.task
 import javax.inject.Inject
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.eclipse.e4.core.internal.contexts.EclipseContext
+import org.maia.task.Action
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.Action
 
 class ContextDumpTask {
 

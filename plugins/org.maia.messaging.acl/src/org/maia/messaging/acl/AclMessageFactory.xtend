@@ -1,7 +1,7 @@
 package org.maia.messaging.acl
 
-import org.maia.messaging.IMessage
-import org.maia.messaging.IMessageFactory
+import ru.agentlab.maia.messaging.IMessage
+import ru.agentlab.maia.messaging.IMessageFactory
 
 class AclMessageFactory implements IMessageFactory {
 
