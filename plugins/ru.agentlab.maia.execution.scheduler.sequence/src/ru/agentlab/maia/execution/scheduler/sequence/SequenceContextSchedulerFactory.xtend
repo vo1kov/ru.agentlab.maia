@@ -3,10 +3,9 @@ package ru.agentlab.maia.execution.scheduler.sequence
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import ru.agentlab.maia.IMaiaContext
-import ru.agentlab.maia.agent.IAgentScheduler
-import ru.agentlab.maia.injector.IMaiaContextInjector
 import ru.agentlab.maia.execution.scheduler.IScheduler
 import ru.agentlab.maia.execution.scheduler.ISchedulerFactory
+import ru.agentlab.maia.injector.IMaiaContextInjector
 
 class SequenceContextSchedulerFactory implements ISchedulerFactory {
 
@@ -26,7 +25,7 @@ class SequenceContextSchedulerFactory implements ISchedulerFactory {
 				this.context
 			}
 
-		val oldScheduler = context.get(IAgentScheduler)
+		val oldScheduler = context.get(IScheduler)
 		if (oldScheduler != null) {
 			oldScheduler.removeAll
 		}

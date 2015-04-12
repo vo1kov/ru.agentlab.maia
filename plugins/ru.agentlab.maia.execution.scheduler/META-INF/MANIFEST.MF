@@ -11,7 +11,5 @@ Require-Bundle: com.google.guava,
  javax.inject;bundle-version="1.0.0",
  ru.agentlab.maia;bundle-version="0.0.1",
  ru.agentlab.maia.execution.action;bundle-version="1.0.0"
-Export-Package: ru.agentlab.maia.execution.scheduler,
- ru.agentlab.maia.execution.scheduler.scheme,
- ru.agentlab.maia.execution.scheduler.scheme.internal
+Export-Package: ru.agentlab.maia.execution.scheduler
 

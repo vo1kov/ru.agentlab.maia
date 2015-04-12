@@ -8,7 +8,7 @@ import ru.agentlab.maia.execution.scheduler.scheme.ISchedulingScheme
 import ru.agentlab.maia.execution.scheduler.scheme.ISchedulingState
 import ru.agentlab.maia.execution.scheduler.scheme.ISchedulingStateMapping
 
-class Scheduler implements IScheduler {
+class SchemeScheduler implements IScheduler {
 
 	@Inject
 	IMaiaContext context
@@ -49,6 +49,34 @@ class Scheduler implements IScheduler {
 			val nextContext = stateMapping.get(nextState)
 			return getNextAction(nextContext)
 		}
+	}
+	
+	override add(IMaiaContext context) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override block(IMaiaContext context) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override blockAll() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override restart(IMaiaContext context) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override restartAll() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override remove(IMaiaContext context) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override removeAll() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 }
