@@ -1,6 +1,6 @@
 # Dirs With Binaries #
 /plugins/*/bin/
-/plugins/*/lib/
+/plugins/*/libs/
 /plugins/*/target/
 /plugins/*/xtend-gen/
 /plugins/*/src-gen/
