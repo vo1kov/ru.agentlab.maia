@@ -41,7 +41,9 @@ class MaiaExecutorService implements IMaiaExecutorService {
 						}
 					}
 					if (action != null) {
+						action.beforeRun
 						action.run
+						action.afterRun
 					}
 				}
 			}
