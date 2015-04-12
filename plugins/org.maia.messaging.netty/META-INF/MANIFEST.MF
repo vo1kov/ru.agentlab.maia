@@ -17,5 +17,5 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.io;bundle-version="1.0.0",
  ru.agentlab.maia;bundle-version="0.0.1",
  ru.agentlab.maia.io.messaging;bundle-version="1.0.0",
- ru.agentlab.maia.agent2;bundle-version="1.0.0"
+ ru.agentlab.maia.agent;bundle-version="1.0.0"
 

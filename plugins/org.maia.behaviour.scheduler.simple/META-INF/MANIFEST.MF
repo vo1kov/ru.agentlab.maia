@@ -11,7 +11,7 @@ Require-Bundle: com.google.guava,
  javax.inject;bundle-version="1.0.0",
  org.slf4j.api;bundle-version="1.7.2",
  ru.agentlab.maia;bundle-version="0.0.1",
- ru.agentlab.maia.agent2;bundle-version="1.0.0",
+ ru.agentlab.maia.agent;bundle-version="1.0.0",
  ru.agentlab.maia.behaviour;bundle-version="1.0.0",
  ru.agentlab.maia.execution.scheduler;bundle-version="1.0.0"
 Bundle-Activator: ru.agentlab.maia.execution.scheduler.sequence.internal.Activator
