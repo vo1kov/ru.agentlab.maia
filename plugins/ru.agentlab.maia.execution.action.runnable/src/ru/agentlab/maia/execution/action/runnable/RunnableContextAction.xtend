@@ -1,7 +1,7 @@
 package ru.agentlab.maia.execution.action.runnable
 
 import javax.inject.Inject
-import ru.agentlab.maia.IMaiaContext
+import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.action.IMaiaContextAction
 
 class RunnableContextAction implements IMaiaContextAction {

@@ -16,6 +16,6 @@ Require-Bundle: com.google.guava,
  org.eclipse.e4.core.di;bundle-version="1.4.0",
  ru.agentlab.maia;bundle-version="0.0.1",
  org.slf4j.api;bundle-version="1.7.2",
- ru.agentlab.maia.agent;bundle-version="1.0.0",
- ru.agentlab.maia.container;bundle-version="1.0.0"
+ ru.agentlab.maia.context.agent;bundle-version="1.0.0",
+ ru.agentlab.maia.context.container;bundle-version="1.0.0"
 

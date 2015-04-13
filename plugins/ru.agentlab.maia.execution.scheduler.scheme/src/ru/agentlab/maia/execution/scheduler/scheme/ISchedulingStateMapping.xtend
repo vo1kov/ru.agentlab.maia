@@ -1,14 +1,14 @@
 package ru.agentlab.maia.execution.scheduler.scheme
 
-import ru.agentlab.maia.IMaiaContext
+import ru.agentlab.maia.context.IMaiaContext
 
 interface ISchedulingStateMapping {
 
 	def void put(ISchedulingState state, IMaiaContext context)
 
 	def IMaiaContext get(ISchedulingState state)
-	
-		/** 
+
+	/** 
 	 * Add a behaviour at the end of the behaviours queue. This can never change
 	 * the index of the current behaviour. If the behaviours queue was empty
 	 * notifies the embedded thread of the owner agent that a behaviour is now
@@ -50,6 +50,5 @@ interface ISchedulingStateMapping {
 	def void remove(IMaiaContext behaviour)
 
 	def void removeAll()
-	
 
 }

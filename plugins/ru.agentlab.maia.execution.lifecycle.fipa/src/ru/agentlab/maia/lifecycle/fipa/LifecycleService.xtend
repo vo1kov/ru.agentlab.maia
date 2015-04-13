@@ -2,7 +2,6 @@ package ru.agentlab.maia.lifecycle.fipa
 
 import javax.annotation.PostConstruct
 import javax.inject.Inject
-import org.eclipse.e4.core.contexts.IEclipseContext
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.lifecycle.ILifecycleScheme

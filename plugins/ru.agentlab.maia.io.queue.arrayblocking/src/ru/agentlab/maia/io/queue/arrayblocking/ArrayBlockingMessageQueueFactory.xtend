@@ -1,7 +1,7 @@
 package ru.agentlab.maia.io.queue.arrayblocking
 
 import javax.annotation.PostConstruct
-import ru.agentlab.maia.IMaiaContext
+import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.injector.IMaiaContextInjector
 import ru.agentlab.maia.messaging.queue.IMessageQueue
 import ru.agentlab.maia.messaging.queue.IMessageQueueFactory

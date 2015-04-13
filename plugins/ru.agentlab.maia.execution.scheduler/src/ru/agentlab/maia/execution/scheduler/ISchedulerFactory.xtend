@@ -1,6 +1,6 @@
 package ru.agentlab.maia.execution.scheduler
 
-import ru.agentlab.maia.IMaiaContext
+import ru.agentlab.maia.context.IMaiaContext
 
 interface ISchedulerFactory {
 

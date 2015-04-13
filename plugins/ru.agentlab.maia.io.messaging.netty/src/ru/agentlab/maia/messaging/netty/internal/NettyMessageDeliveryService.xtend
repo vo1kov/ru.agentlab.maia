@@ -21,7 +21,6 @@ import ru.agentlab.maia.messaging.IMessage
 import ru.agentlab.maia.messaging.IMessageDeliveryEventListener
 import ru.agentlab.maia.messaging.netty.INettyMessageDeliveryService
 import ru.agentlab.maia.messaging.queue.IMessageQueue
-import ru.agentlab.maia.agent.IAgentRegistry
 
 class NettyMessageDeliveryService implements INettyMessageDeliveryService {
 

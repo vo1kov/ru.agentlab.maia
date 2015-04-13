@@ -1,7 +1,7 @@
 package ru.agentlab.maia.naming.uuid
 
 import java.util.UUID
-import ru.agentlab.maia.naming.IMaiaContextNameFactory
+import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
 
 class UuidNameGenerator implements IMaiaContextNameFactory {
 

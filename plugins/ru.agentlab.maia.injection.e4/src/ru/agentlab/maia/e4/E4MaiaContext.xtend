@@ -3,7 +3,7 @@ package ru.agentlab.maia.e4
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.eclipse.e4.core.internal.contexts.EclipseContext
 import org.eclipse.xtend2.lib.StringConcatenation
-import ru.agentlab.maia.IMaiaContext
+import ru.agentlab.maia.context.IMaiaContext
 
 class E4MaiaContext implements IMaiaContext {
 

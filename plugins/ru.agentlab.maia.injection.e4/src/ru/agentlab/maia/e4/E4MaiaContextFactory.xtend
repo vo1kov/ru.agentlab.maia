@@ -3,8 +3,8 @@ package ru.agentlab.maia.e4
 import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.osgi.framework.BundleContext
-import ru.agentlab.maia.IMaiaContext
-import ru.agentlab.maia.IMaiaContextFactory
+import ru.agentlab.maia.context.IMaiaContext
+import ru.agentlab.maia.context.IMaiaContextFactory
 import ru.agentlab.maia.injector.IMaiaContextInjector
 
 class E4MaiaContextFactory implements IMaiaContextFactory {

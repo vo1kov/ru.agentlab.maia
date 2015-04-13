@@ -2,7 +2,7 @@ package ru.agentlab.maia.execution.scheduler.sequence
 
 import java.util.concurrent.ConcurrentLinkedDeque
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.IMaiaContext
+import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.scheduler.IScheduler
 
 class SequenceContextScheduler implements IScheduler {

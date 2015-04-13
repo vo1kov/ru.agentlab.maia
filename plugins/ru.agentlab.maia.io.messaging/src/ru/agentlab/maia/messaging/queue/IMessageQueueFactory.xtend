@@ -1,6 +1,6 @@
 package ru.agentlab.maia.messaging.queue
 
-import ru.agentlab.maia.IMaiaContext
+import ru.agentlab.maia.context.IMaiaContext
 
 /**
  * Factory for creating <code>IMessageQueue</code> objects.

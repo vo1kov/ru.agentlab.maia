@@ -3,8 +3,8 @@ package ru.agentlab.maia.e4
 import java.lang.annotation.Annotation
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
-import ru.agentlab.maia.IMaiaContext
-import ru.agentlab.maia.IMaiaContextListener
+import ru.agentlab.maia.context.IMaiaContext
+import ru.agentlab.maia.context.IMaiaContextListener
 import ru.agentlab.maia.injector.IMaiaContextInjector
 
 class E4MaiaContextInjector implements IMaiaContextInjector {

@@ -2,7 +2,7 @@ package ru.agentlab.maia.execution.scheduler.sequence
 
 import javax.annotation.PostConstruct
 import javax.inject.Inject
-import ru.agentlab.maia.IMaiaContext
+import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.scheduler.IScheduler
 import ru.agentlab.maia.execution.scheduler.ISchedulerFactory
 import ru.agentlab.maia.injector.IMaiaContextInjector

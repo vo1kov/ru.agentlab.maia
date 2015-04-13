@@ -1,6 +1,6 @@
 package ru.agentlab.maia.lifecycle
 
-import ru.agentlab.maia.IMaiaContext
+import ru.agentlab.maia.context.IMaiaContext
 
 interface ILifecycleServiceFactory {
 

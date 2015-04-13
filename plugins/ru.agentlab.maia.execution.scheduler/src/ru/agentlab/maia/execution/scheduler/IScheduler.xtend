@@ -1,11 +1,11 @@
 package ru.agentlab.maia.execution.scheduler
 
-import ru.agentlab.maia.IMaiaContext
+import ru.agentlab.maia.context.IMaiaContext
 
 interface IScheduler {
 
 	def IMaiaContext getNextContext()
-	
+
 	def void add(IMaiaContext context)
 
 	/**
@@ -30,12 +30,12 @@ interface IScheduler {
 	 * contexts? Some ready context can be a ParallelIContext with some of its
 	 * children blocked. These children must be restarted too.
 	 */
-	def void restartAll() 
+	def void restartAll()
 
 	/** 
 	 * Removes a specified context from the scheduler
 	 */
-	def void remove(IMaiaContext context) 
+	def void remove(IMaiaContext context)
 
 	/** 
 	 * Removes a specified context from the scheduler

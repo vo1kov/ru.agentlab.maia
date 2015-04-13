@@ -2,7 +2,7 @@ package ru.agentlab.maia.lifecycle.fipa
 
 import javax.annotation.PostConstruct
 import javax.inject.Inject
-import org.eclipse.e4.core.contexts.IEclipseContext
+import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.lifecycle.ILifecycleScheme
 import ru.agentlab.maia.lifecycle.ILifecycleState
 
@@ -27,11 +27,11 @@ class FipaLifecycleScheme extends LifecycleScheme {
 	val public static TRANSITION_DELETE = new LifecycleTransition("DELETE", STATE_ACTIVE, STATE_DELETED)
 
 	@Inject
-	IEclipseContext context
+	IMaiaContext context
 
 	@PostConstruct
 	def void init() {
-		context.declareModifiable(ILifecycleScheme)
+		context.set(ILifecycleScheme, null)
 
 		states += STATE_UNKNOWN
 		states += STATE_INITIATED

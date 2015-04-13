@@ -3,14 +3,13 @@ package ru.agentlab.maia.behaviour.internal
 import java.util.UUID
 import javax.inject.Inject
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.IMaiaContext
-import ru.agentlab.maia.IMaiaContextFactory
-import ru.agentlab.maia.IMaiaContextServiceManager
 import ru.agentlab.maia.behaviour.IBehaviourFactory
-import ru.agentlab.maia.initializer.IMaiaContextInitializerService
-import ru.agentlab.maia.lifecycle.ILifecycleServiceFactory
-import ru.agentlab.maia.naming.IMaiaContextNameFactory
+import ru.agentlab.maia.context.IMaiaContext
+import ru.agentlab.maia.context.IMaiaContextFactory
+import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
+import ru.agentlab.maia.context.service.IMaiaContextServiceManager
 import ru.agentlab.maia.execution.scheduler.ISchedulerFactory
+import ru.agentlab.maia.lifecycle.ILifecycleServiceFactory
 
 class BehaviourFactory implements IBehaviourFactory {
 
@@ -24,8 +23,8 @@ class BehaviourFactory implements IBehaviourFactory {
 
 //	@Inject
 //	IMaiaContextNameFactory contextNameFactory
-	@Inject
-	IMaiaContextServiceManager contextServiceManager
+//	@Inject
+//	IMaiaContextServiceManager contextServiceManager
 
 	override createBehaviour() {
 		LOGGER.info("Try to create new Default Container...")
@@ -40,20 +39,20 @@ class BehaviourFactory implements IBehaviourFactory {
 			set(IMaiaContextNameFactory.KEY_NAME, name)
 		]
 
-		contextServiceManager => [
-			LOGGER.debug("	add agent scheduler...")
-			getService(context, ISchedulerFactory) => [
-				createScheduler(behaviour)
-			]
-
-			LOGGER.debug("	add lifecycle service...")
-			getService(context, ILifecycleServiceFactory) => [
-				createLifecycle(behaviour)
-			]
-
-			LOGGER.debug("	add initializer service...")
-			getService(behaviour, IMaiaContextInitializerService)
-		]
+//		contextServiceManager => [
+//			LOGGER.debug("	add agent scheduler...")
+//			getService(context, ISchedulerFactory) => [
+//				createScheduler(behaviour)
+//			]
+//
+//			LOGGER.debug("	add lifecycle service...")
+//			getService(context, ILifecycleServiceFactory) => [
+//				createLifecycle(behaviour)
+//			]
+//
+//			LOGGER.debug("	add initializer service...")
+//			getService(behaviour, IMaiaContextInitializerService)
+//		]
 
 		LOGGER.info("Container successfully created!")
 		return behaviour

@@ -2,11 +2,11 @@ package ru.agentlab.maia.lifecycle.fipa
 
 import javax.annotation.PostConstruct
 import javax.inject.Inject
-import ru.agentlab.maia.IMaiaContext
+import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.injector.IMaiaContextInjector
+import ru.agentlab.maia.lifecycle.ILifecycleScheme
 import ru.agentlab.maia.lifecycle.ILifecycleService
 import ru.agentlab.maia.lifecycle.ILifecycleServiceFactory
-import ru.agentlab.maia.lifecycle.ILifecycleScheme
 
 class FipaLifecycleServiceFactory implements ILifecycleServiceFactory {
 
@@ -24,7 +24,7 @@ class FipaLifecycleServiceFactory implements ILifecycleServiceFactory {
 			}
 
 		context.set(ILifecycleScheme, new FipaLifecycleScheme)
-		
+
 		val lifecycleService = injector.make(LifecycleService, context)
 		injector.invoke(lifecycleService, PostConstruct, context, null)
 		context.set(ILifecycleService, lifecycleService)

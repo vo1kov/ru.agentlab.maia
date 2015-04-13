@@ -1,7 +1,7 @@
 package ru.agentlab.maia.execution
 
 import javax.inject.Inject
-import ru.agentlab.maia.IMaiaContext
+import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.action.IMaiaContextAction
 import ru.agentlab.maia.execution.pool.IMaiaExecutorPool
 import ru.agentlab.maia.execution.scheduler.IScheduler
@@ -48,7 +48,7 @@ class MaiaExecutorService implements IMaiaExecutorService {
 				}
 			}
 		)
-		// TODO: add this runnable to pool after execution
+	// TODO: add this runnable to pool after execution
 	}
 
 }

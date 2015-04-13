@@ -1,7 +1,7 @@
 package ru.agentlab.maia.execution.scheduler.scheme.internal
 
 import javax.inject.Inject
-import ru.agentlab.maia.IMaiaContext
+import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.action.IMaiaContextAction
 import ru.agentlab.maia.execution.scheduler.IScheduler
 import ru.agentlab.maia.execution.scheduler.scheme.ISchedulingScheme
@@ -50,31 +50,31 @@ class SchemeScheduler implements IScheduler {
 			return getNextAction(nextContext)
 		}
 	}
-	
+
 	override add(IMaiaContext context) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+
 	override block(IMaiaContext context) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+
 	override blockAll() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+
 	override restart(IMaiaContext context) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+
 	override restartAll() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+
 	override remove(IMaiaContext context) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+
 	override removeAll() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
