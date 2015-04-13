@@ -1,4 +1,4 @@
-package ru.agentlab.maia.context.initializer.internal
+package ru.agentlab.maia.context.initializer
 
 import javax.annotation.PostConstruct
 import javax.inject.Inject

@@ -9,6 +9,6 @@ import ru.agentlab.maia.context.IMaiaContext
  */
 interface IAgentFactory {
 
-	def IMaiaContext createAgent(IMaiaContext context)
+	def IMaiaContext createAgent(IMaiaContext parentContext)
 
 }

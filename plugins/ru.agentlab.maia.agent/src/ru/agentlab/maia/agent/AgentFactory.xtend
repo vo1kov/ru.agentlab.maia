@@ -6,12 +6,10 @@ import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.IMaiaContextFactory
 import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
 import ru.agentlab.maia.context.service.Create
-import ru.agentlab.maia.execution.scheduler.IScheduler
-import ru.agentlab.maia.injector.IMaiaContextInjector
 import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
 
 /**
- * Factory for creating Agent-Contexts
+ * Factory for creating Agent contexts
  * 
  * @author <a href='shishkin_dimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
@@ -27,7 +25,7 @@ class AgentFactory implements IAgentFactory {
 
 	@Inject
 	IMaiaContextServiceManagementService contextServiceManagementService
-	
+
 	@Inject
 	MaiaAgentProfile agentProfile
 
@@ -48,42 +46,40 @@ class AgentFactory implements IAgentFactory {
 	 * {@link IAgentNameGenerator IAgentNameGenerator} will be used for generating agent name.
 	 */
 	@Create
-	override createAgent(IMaiaContext parent) {
-		val context = if (parent != null) {
-				parent
+	override createAgent(IMaiaContext parentContext) {
+		val context = if (parentContext != null) {
+				parentContext
 			} else {
 				this.context
 			}
 		LOGGER.info("Create new Agent...")
 		LOGGER.debug("	home context: [{}]", context)
 
-		LOGGER.info("Generate name...")
-		var String generatedName = ""
-		val namingService = agentProfile.getImplementation(IMaiaContextNameFactory)
-		if (namingService != null) {
-			val injector = context.get(IMaiaContextInjector)
-			val nF = injector.make(namingService, context)
-			generatedName = nF.createName
+		LOGGER.info("Create Agent Name...")
+		val namingService = contextServiceManagementService.createService(agentProfile, parentContext,
+			IMaiaContextNameFactory)
+		if (namingService == null) {
+			throw new IllegalStateException("Agent Profile have no required IMaiaContextNameFactory")
 		}
-		val id = generatedName // UUID.randomUUID.toString // contextNameFactory.createName
-		LOGGER.debug("	generated name: [{}]", id)
+		val name = namingService.createName
+		LOGGER.debug("	generated name: [{}]", name)
 
 		LOGGER.info("Create new context...")
-		val agent = contextFactory.createChild(context, "Context for Agent: " + id) => [
-			set(IMaiaContextNameFactory.KEY_NAME, id)
+		val agentContext = contextFactory.createChild(context, "Context for Agent: " + name) => [
+			set(IMaiaContextNameFactory.KEY_NAME, name)
 		]
 
 		LOGGER.info("Create Agent specific services...")
-		contextServiceManagementService => [ manager | 
+		contextServiceManagementService => [ manager |
 			agentProfile.implementationKeySet.forEach [
-				manager.createService(agentProfile, agent, it)
+				manager.createService(agentProfile, agentContext, it)
 			]
 			agentProfile.factoryKeySet.forEach [
-				manager.createServiceFromFactory(agentProfile, context, agent, it)
+				manager.createServiceFromFactory(agentProfile, context, agentContext, it)
 			]
 		]
 		LOGGER.info("Agent successfully created!")
-		return agent
+		return agentContext
 	}
 
 }

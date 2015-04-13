@@ -1,11 +1,9 @@
-package ru.agentlab.maia.e4.internal
+package ru.agentlab.maia.context.service.internal
 
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
-import ru.agentlab.maia.context.IMaiaContextFactory
-import ru.agentlab.maia.e4.E4MaiaContextFactory
-import ru.agentlab.maia.e4.E4MaiaContextInjector
-import ru.agentlab.maia.injector.IMaiaContextInjector
+import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
+import ru.agentlab.maia.context.service.MaiaContextServiceManagementService
 
 class Activator implements BundleActivator {
 
@@ -18,15 +16,13 @@ class Activator implements BundleActivator {
 	override start(BundleContext context) throws Exception {
 		Activator.context = context
 		context => [
-			registerService(IMaiaContextFactory, new E4MaiaContextFactory, null)
-			registerService(IMaiaContextInjector, new E4MaiaContextInjector, null)
+			registerService(IMaiaContextServiceManagementService, new MaiaContextServiceManagementService, null)
 		]
 	}
 
 	override stop(BundleContext context) throws Exception {
 		context => [
-			unregister(IMaiaContextFactory)
-			unregister(IMaiaContextInjector)
+			unregister(IMaiaContextServiceManagementService)
 		]
 		Activator.context = null
 	}

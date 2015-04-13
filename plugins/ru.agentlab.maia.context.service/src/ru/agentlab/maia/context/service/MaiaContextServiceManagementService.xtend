@@ -1,4 +1,4 @@
-package ru.agentlab.maia.context.service.internal
+package ru.agentlab.maia.context.service
 
 import javax.annotation.PostConstruct
 import org.slf4j.LoggerFactory

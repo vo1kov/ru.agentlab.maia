@@ -4,6 +4,6 @@ import ru.agentlab.maia.context.IMaiaContext
 
 interface IContainerFactory {
 
-	def IMaiaContext createContainer(IMaiaContext parent)
+	def IMaiaContext createContainer(IMaiaContext parentContext)
 
 }

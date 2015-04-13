@@ -8,6 +8,8 @@ import ru.agentlab.maia.container.MaiaContainerProfile
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
 import ru.agentlab.maia.naming.uuid.UuidNameGenerator
+import ru.agentlab.maia.context.initializer.IMaiaContextInitializerService
+import ru.agentlab.maia.context.initializer.MaiaContextInitializerService
 
 class Activator implements BundleActivator {
 
@@ -22,9 +24,11 @@ class Activator implements BundleActivator {
 		val containerProfile = new MaiaContainerProfile => [
 			putImplementation(IMaiaContextNameFactory, UuidNameGenerator)
 			putFactory(IMaiaContext, AgentFactory)
+			putImplementation(IMaiaContextInitializerService, MaiaContextInitializerService)
 		]
 		val agentProfile = new MaiaAgentProfile => [
 			putImplementation(IMaiaContextNameFactory, UuidNameGenerator)
+			putImplementation(IMaiaContextInitializerService, MaiaContextInitializerService)
 		]
 		context => [
 			registerService(MaiaContainerProfile, containerProfile, null)

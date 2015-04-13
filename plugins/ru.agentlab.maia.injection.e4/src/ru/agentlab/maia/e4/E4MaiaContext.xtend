@@ -70,11 +70,11 @@ class E4MaiaContext implements IMaiaContext {
 		result.newLine
 		var current = this
 		while (current != null) {
-			result.append("[" + current + "] consist of:")
+			result.append("[" + current + "] contains:")
 			result.newLine
 			val list = (current.context as EclipseContext).localData.keySet.filter [
 				it != "org.eclipse.e4.core.internal.contexts.ContextObjectSupplier" &&
-				it != "ru.agentlab.maia.IMaiaContext" && 
+				it != "ru.agentlab.maia.context.IMaiaContext" && 
 				it != "debugString" &&
 				it != "parentContext"
 			].sortWith [ a, b |

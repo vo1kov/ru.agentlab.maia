@@ -1,6 +1,5 @@
 package ru.agentlab.maia.container
 
-import java.util.UUID
 import javax.inject.Inject
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
@@ -9,6 +8,11 @@ import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
 import ru.agentlab.maia.context.service.Create
 import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
 
+/**
+ * Factory for creating Container contexts
+ * 
+ * @author <a href='shishkin_dimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
+ */
 class ContainerFactory implements IContainerFactory {
 
 	val static LOGGER = LoggerFactory.getLogger(ContainerFactory)
@@ -20,41 +24,46 @@ class ContainerFactory implements IContainerFactory {
 	IMaiaContextFactory contextFactory
 
 	@Inject
-	IMaiaContextServiceManagementService contextServiceManager
-	
+	IMaiaContextServiceManagementService contextServiceManagementService
+
 	@Inject
-	MaiaContainerProfile agentProfile
+	MaiaContainerProfile containerProfile
 
 	@Create
-	override createContainer(IMaiaContext parent) {
-		val context = if (parent != null) {
-				parent
+	override createContainer(IMaiaContext parentContext) {
+		val context = if (parentContext != null) {
+				parentContext
 			} else {
 				this.context
 			}
 		LOGGER.info("Try to create new Default Container...")
 		LOGGER.debug("	home context: [{}]", context)
 
-		LOGGER.info("Generate Container Name...")
-		val name = UUID.randomUUID.toString // contextNameFactory.createName
+		LOGGER.info("Create Container Name...")
+		val namingService = contextServiceManagementService.createService(containerProfile, parentContext,
+			IMaiaContextNameFactory)
+		if (namingService == null) {
+			throw new IllegalStateException("Agent Profile have no required IMaiaContextNameFactory")
+		}
+		val name = namingService.createName
 		LOGGER.debug("	generated name: [{}]", name)
 
 		LOGGER.info("Create Container Context...")
-		val container = contextFactory.createChild(context, "Context for Container: " + name) => [
+		val containerContext = contextFactory.createChild(context, "Context for Container: " + name) => [
 			set(IMaiaContextNameFactory.KEY_NAME, name)
 		]
-		
+
 		LOGGER.info("Create Container specific services...")
-		contextServiceManager => [ manager | 
-			agentProfile.implementationKeySet.forEach [
-				manager.createService(agentProfile, container, it)
+		contextServiceManagementService => [ manager |
+			containerProfile.implementationKeySet.forEach [
+				manager.createService(containerProfile, containerContext, it)
 			]
-			agentProfile.factoryKeySet.forEach [
-				manager.createServiceFromFactory(agentProfile, context, container, it)
+			containerProfile.factoryKeySet.forEach [
+				manager.createServiceFromFactory(containerProfile, context, containerContext, it)
 			]
 		]
 		LOGGER.info("Container successfully created!")
-		return container
+		return containerContext
 	}
 
 }
