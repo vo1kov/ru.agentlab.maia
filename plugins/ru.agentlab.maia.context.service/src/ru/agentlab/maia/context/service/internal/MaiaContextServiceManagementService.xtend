@@ -3,13 +3,14 @@ package ru.agentlab.maia.context.service.internal
 import javax.annotation.PostConstruct
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.context.service.IMaiaContextServiceManager
+import ru.agentlab.maia.context.service.Create
 import ru.agentlab.maia.injector.IMaiaContextInjector
 import ru.agentlab.maia.profile.IMaiaProfile
+import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
 
-class MaiaContextServiceManager implements IMaiaContextServiceManager {
+class MaiaContextServiceManagementService implements IMaiaContextServiceManagementService {
 
-	val static LOGGER = LoggerFactory.getLogger(MaiaContextServiceManager)
+	val static LOGGER = LoggerFactory.getLogger(MaiaContextServiceManagementService)
 
 	override <T> copyService(IMaiaContext fromContext, IMaiaContext toContext,
 		Class<T> serviceClass) throws IllegalStateException{
@@ -72,38 +73,62 @@ class MaiaContextServiceManager implements IMaiaContextServiceManager {
 		context.remove(serviceName)
 	}
 
-	override <T> createService(IMaiaContext context, Class<T> serviceClass) {
-		val injector = context.get(IMaiaContextInjector)
-		val profile = context.get(IMaiaProfile)
-		val implementationClass = profile.get(serviceClass)
-		val service = injector.make(implementationClass, context)
-		injector.invoke(service, PostConstruct, context, null)
-		addService(context, serviceClass, service)
-		return service
+//	override <T> createService(IMaiaContext context, Class<T> serviceClass) {
+//		val injector = context.get(IMaiaContextInjector)
+//		val profile = context.get(IMaiaProfile)
+//		val implementationClass = profile.get(serviceClass)
+//		val service = injector.make(implementationClass, context)
+//		injector.invoke(service, PostConstruct, context, null)
+//		addService(context, serviceClass, service)
+//		return service
+//	}
+//	override <T> getService(IMaiaContext context, Class<T> serviceClass) {
+//		var result = context.get(serviceClass)
+//		if (result != null) {
+//			return result
+//		} else {
+//			val injector = context.get(IMaiaContextInjector)
+//			if (injector == null) {
+//				throw new IllegalStateException("Context have no injector")
+//			}
+//			val profile = context.get(IMaiaProfile)
+//			if (profile == null) {
+//				throw new IllegalStateException("Context have no profile")
+//			}
+//			val implClass = profile.get(serviceClass)
+//			if (implClass == null) {
+//				throw new IllegalStateException("Profile have no [" + serviceClass + "] implementation")
+//			}
+//			result = injector.make(implClass, context)
+//			injector.invoke(result, PostConstruct, context, null)
+//			context.set(serviceClass, result)
+//		}
+//		return result
+//	}
+	override <T> T createService(IMaiaProfile profile, IMaiaContext serviceContext, Class<T> clazz) {
+		val serviceClass = profile.getImplementation(clazz)
+		if (serviceClass != null) {
+			val injector = serviceContext.get(IMaiaContextInjector)
+			val service = injector.make(serviceClass, serviceContext)
+			injector.invoke(service, PostConstruct, serviceContext, null)
+			serviceContext.set(serviceClass, service)
+			return service
+		}
 	}
 
-	override <T> getService(IMaiaContext context, Class<T> serviceClass) {
-		var result = context.get(serviceClass)
-		if (result != null) {
-			return result
-		} else {
-			val injector = context.get(IMaiaContextInjector)
-			if (injector == null) {
-				throw new IllegalStateException("Context have no injector")
+	override <T> T createServiceFromFactory(IMaiaProfile profile, IMaiaContext factoryContext,
+		IMaiaContext serviceContext, Class<T> clazz) {
+		val injector = factoryContext.get(IMaiaContextInjector)
+		val factoryClass = profile.getFactory(clazz)
+		var factory = factoryContext.get(factoryClass)
+		if (factory == null) {
+			if (factoryClass != null) {
+				factory = injector.make(factoryClass, factoryContext)
+				injector.invoke(factory, PostConstruct, factoryContext, null)
+				factoryContext.set(factoryClass.name, factory)
 			}
-			val profile = context.get(IMaiaProfile)
-			if (profile == null) {
-				throw new IllegalStateException("Context have no profile")
-			}
-			val implClass = profile.get(serviceClass)
-			if (implClass == null) {
-				throw new IllegalStateException("Profile have no [" + serviceClass + "] implementation")
-			}
-			result = injector.make(implClass, context)
-			injector.invoke(result, PostConstruct, context, null)
-			context.set(serviceClass, result)
 		}
-		return result
+		return injector.invoke(factory, Create, serviceContext) as T
 	}
 
 }

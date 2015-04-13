@@ -9,6 +9,8 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  org.slf4j.api;bundle-version="1.7.2",
- ru.agentlab.maia.context;bundle-version="1.0.0"
+ ru.agentlab.maia.context;bundle-version="1.0.0",
+ ru.agentlab.maia.profile;bundle-version="1.0.0",
+ ru.agentlab.maia.context.injection;bundle-version="1.0.0"
 Export-Package: ru.agentlab.maia.context.service
 

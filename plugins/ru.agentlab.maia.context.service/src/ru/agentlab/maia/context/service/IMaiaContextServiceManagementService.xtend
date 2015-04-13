@@ -1,11 +1,11 @@
 package ru.agentlab.maia.context.service
 
 import ru.agentlab.maia.context.IMaiaContext
+import ru.agentlab.maia.profile.IMaiaProfile
 
-interface IMaiaContextServiceManager {
+interface IMaiaContextServiceManagementService {
 
-	def <T> T getService(IMaiaContext context, Class<T> serviceClass)
-
+//	def <T> T getService(IMaiaContext context, Class<T> serviceClass)
 	/**
 	 * Copy Service from another context.
 	 * 
@@ -46,7 +46,7 @@ interface IMaiaContextServiceManager {
 
 	def void addService(IMaiaContext context, String serviceName, Object service)
 
-	def <T> T createService(IMaiaContext context, Class<T> serviceClass)
+//	def <T> T createService(IMaiaContext context, Class<T> serviceClass)
 
 	/**
 	 * Remove Service to context.
@@ -57,5 +57,10 @@ interface IMaiaContextServiceManager {
 	def <T> void removeService(IMaiaContext context, Class<T> serviceClass)
 
 	def void removeService(IMaiaContext context, String serviceName)
+
+	def <T> T createService(IMaiaProfile profile, IMaiaContext serviceContext, Class<T> clazz)
+
+	def <T> T createServiceFromFactory(IMaiaProfile profile, IMaiaContext factoryContext, IMaiaContext serviceContext,
+		Class<T> clazz)
 
 }

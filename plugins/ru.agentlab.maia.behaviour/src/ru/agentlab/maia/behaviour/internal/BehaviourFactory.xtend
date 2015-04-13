@@ -7,9 +7,9 @@ import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.IMaiaContextFactory
 import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
-import ru.agentlab.maia.context.service.IMaiaContextServiceManager
 import ru.agentlab.maia.execution.scheduler.ISchedulerFactory
 import ru.agentlab.maia.lifecycle.ILifecycleServiceFactory
+import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
 
 class BehaviourFactory implements IBehaviourFactory {
 

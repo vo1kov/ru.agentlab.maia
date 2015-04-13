@@ -1,6 +1,5 @@
 package ru.agentlab.maia.agent
 
-import javax.annotation.PostConstruct
 import javax.inject.Inject
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
@@ -9,6 +8,7 @@ import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
 import ru.agentlab.maia.context.service.Create
 import ru.agentlab.maia.execution.scheduler.IScheduler
 import ru.agentlab.maia.injector.IMaiaContextInjector
+import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
 
 /**
  * Factory for creating Agent-Contexts
@@ -25,8 +25,9 @@ class AgentFactory implements IAgentFactory {
 	@Inject
 	IMaiaContextFactory contextFactory
 
-//	@Inject
-//	IMaiaContextServiceManager contextServiceManager
+	@Inject
+	IMaiaContextServiceManagementService contextServiceManagementService
+	
 	@Inject
 	MaiaAgentProfile agentProfile
 
@@ -72,53 +73,17 @@ class AgentFactory implements IAgentFactory {
 			set(IMaiaContextNameFactory.KEY_NAME, id)
 		]
 
-		LOGGER.info("Add Agent-specific services...")
-		agentProfile.implementationKeySet.forEach [
-			agent.createService(it)
+		LOGGER.info("Create Agent specific services...")
+		contextServiceManagementService => [ manager | 
+			agentProfile.implementationKeySet.forEach [
+				manager.createService(agentProfile, agent, it)
+			]
+			agentProfile.factoryKeySet.forEach [
+				manager.createServiceFromFactory(agentProfile, context, agent, it)
+			]
 		]
-		agentProfile.factoryKeySet.forEach [
-			context.createServiceFromFactory(agent, it)
-		]
-//		contextServiceManager => [
-//			LOGGER.debug("	add agent scheduler...")
-//			getService(context, ISchedulerFactory) => [
-//				createScheduler(agent)
-//			]
-//
-//			LOGGER.debug("	add lifecycle service...")
-//			getService(context, ILifecycleServiceFactory) => [
-//				createLifecycle(agent)
-//			]
-//
-//			LOGGER.debug("	add initializer service...")
-//			getService(agent, IMaiaContextInitializerService)
-//		]
 		LOGGER.info("Agent successfully created!")
 		return agent
 	}
 
-	def <T> T createService(IMaiaContext agent, Class<T> clazz) {
-		val serviceClass = agentProfile.getImplementation(clazz)
-		if (serviceClass != null) {
-			val injector = context.get(IMaiaContextInjector)
-			val service = injector.make(serviceClass, context)
-			injector.invoke(service, PostConstruct, context, null)
-			agent.set(serviceClass, service)
-			return service
-		}
-	}
-
-	def <T> T createServiceFromFactory(IMaiaContext factoryContext, IMaiaContext serviceContext, Class<T> clazz) {
-		val injector = factoryContext.get(IMaiaContextInjector)
-		val factoryClass = agentProfile.getFactory(clazz)
-		var factory = factoryContext.get(factoryClass)
-		if (factory == null) {
-			if (factoryClass != null) {
-				factory = injector.make(factoryClass, context)
-				injector.invoke(factory, PostConstruct, context, null)
-				factoryContext.set(factoryClass.name, factory)
-			}
-		}
-		return injector.invoke(factory, Create, context) as T
-	}
 }

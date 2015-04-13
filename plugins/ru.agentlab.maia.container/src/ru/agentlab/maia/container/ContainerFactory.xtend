@@ -7,7 +7,7 @@ import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.IMaiaContextFactory
 import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
 import ru.agentlab.maia.context.service.Create
-import ru.agentlab.maia.context.service.IMaiaContextServiceManager
+import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
 
 class ContainerFactory implements IContainerFactory {
 
@@ -20,7 +20,10 @@ class ContainerFactory implements IContainerFactory {
 	IMaiaContextFactory contextFactory
 
 	@Inject
-	IMaiaContextServiceManager contextServiceManager
+	IMaiaContextServiceManagementService contextServiceManager
+	
+	@Inject
+	MaiaContainerProfile agentProfile
 
 	@Create
 	override createContainer(IMaiaContext parent) {
@@ -40,16 +43,16 @@ class ContainerFactory implements IContainerFactory {
 		val container = contextFactory.createChild(context, "Context for Container: " + name) => [
 			set(IMaiaContextNameFactory.KEY_NAME, name)
 		]
-
-//		contextServiceManager => [
-//			LOGGER.debug("	add lifecycle service...")
-//			getService(context, ILifecycleServiceFactory) => [
-//				createLifecycle(container)
-//			]
-//
-//			LOGGER.debug("	add initializer service...")
-//			getService(container, IMaiaContextInitializerService)
-//		]
+		
+		LOGGER.info("Create Container specific services...")
+		contextServiceManager => [ manager | 
+			agentProfile.implementationKeySet.forEach [
+				manager.createService(agentProfile, container, it)
+			]
+			agentProfile.factoryKeySet.forEach [
+				manager.createServiceFromFactory(agentProfile, context, container, it)
+			]
+		]
 		LOGGER.info("Container successfully created!")
 		return container
 	}
