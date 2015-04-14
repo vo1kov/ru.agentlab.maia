@@ -3,15 +3,15 @@ package ru.agentlab.maia.execution.lifecycle
 import org.eclipse.xtend.lib.annotations.Accessors
 
 @Accessors
-class LifecycleTransition implements ILifecycleTransition {
+class LifecycleTransition implements IMaiaContextLifecycleTransition {
 
 	var String name
 
-	var ILifecycleState fromState
+	var IMaiaContextLifecycleState fromState
 
-	var ILifecycleState toState
+	var IMaiaContextLifecycleState toState
 
-	new(String name, ILifecycleState fromState, ILifecycleState toState) {
+	new(String name, IMaiaContextLifecycleState fromState, IMaiaContextLifecycleState toState) {
 		this.name = name
 		this.fromState = fromState
 		this.toState = toState

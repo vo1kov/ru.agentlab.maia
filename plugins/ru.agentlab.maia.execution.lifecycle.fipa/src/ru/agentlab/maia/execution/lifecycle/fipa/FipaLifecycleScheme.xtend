@@ -3,15 +3,15 @@ package ru.agentlab.maia.execution.lifecycle.fipa
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.execution.lifecycle.ILifecycleState
+import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleScheme
+import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleState
 import ru.agentlab.maia.execution.lifecycle.LifecycleScheme
 import ru.agentlab.maia.execution.lifecycle.LifecycleState
 import ru.agentlab.maia.execution.lifecycle.LifecycleTransition
-import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleScheme
 
 class FipaLifecycleScheme extends LifecycleScheme {
 
-	val public static STATE_UNKNOWN = ILifecycleState.STATE_UNKNOWN
+	val public static STATE_UNKNOWN = IMaiaContextLifecycleState.STATE_UNKNOWN
 
 	val public static STATE_ACTIVE = new LifecycleState("ACTIVE")
 

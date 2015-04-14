@@ -3,7 +3,7 @@ package ru.agentlab.maia.execution.lifecycle
 import org.eclipse.xtend.lib.annotations.Accessors
 
 @Accessors
-class LifecycleState implements ILifecycleState {
+class LifecycleState implements IMaiaContextLifecycleState {
 
 	var String name
 

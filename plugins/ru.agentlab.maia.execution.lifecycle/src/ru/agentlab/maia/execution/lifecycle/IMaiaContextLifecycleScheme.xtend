@@ -4,12 +4,12 @@ import java.util.List
 
 interface IMaiaContextLifecycleScheme {
 
-	def ILifecycleState getInitialState()
+	def IMaiaContextLifecycleState getInitialState()
 
-	def ILifecycleState getFinalState()
+	def IMaiaContextLifecycleState getFinalState()
 
-	def List<ILifecycleState> getStates()
+	def List<IMaiaContextLifecycleState> getStates()
 
-	def List<ILifecycleTransition> getTransitions()
+	def List<IMaiaContextLifecycleTransition> getTransitions()
 
 }

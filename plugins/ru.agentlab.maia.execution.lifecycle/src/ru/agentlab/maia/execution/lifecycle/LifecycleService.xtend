@@ -17,13 +17,13 @@ class LifecycleService implements IMaiaContextLifecycleService {
 	@Inject
 	IMaiaContextLifecycleScheme scheme
 
-	ILifecycleState currentState = ILifecycleState.STATE_UNKNOWN
+	IMaiaContextLifecycleState currentState = IMaiaContextLifecycleState.STATE_UNKNOWN
 
 	@PostConstruct
 	def void init() {
 		context => [
-			context.set(ILifecycleState, scheme.initialState)
-			context.set(ILifecycleTransition, null)
+			context.set(IMaiaContextLifecycleState, scheme.initialState)
+			context.set(IMaiaContextLifecycleTransition, null)
 		]
 	}
 
@@ -38,7 +38,7 @@ class LifecycleService implements IMaiaContextLifecycleService {
 		}
 	}
 
-	override void setState(ILifecycleState state) {
+	override void setState(IMaiaContextLifecycleState state) {
 		LOGGER.info("Try to set new State [{}]...", state)
 		val transition = scheme.transitions.findFirst[toState == state]
 		if (transition != null) {
@@ -56,7 +56,7 @@ class LifecycleService implements IMaiaContextLifecycleService {
 		}
 	}
 
-	override invokeTransition(ILifecycleTransition transition) throws IllegalStateException {
+	override invokeTransition(IMaiaContextLifecycleTransition transition) throws IllegalStateException {
 		LOGGER.info("Try to invoke transition [{}]...", transition)
 		val schemaTransition = scheme.transitions.findFirst[it == transition]
 		if (schemaTransition != null) {

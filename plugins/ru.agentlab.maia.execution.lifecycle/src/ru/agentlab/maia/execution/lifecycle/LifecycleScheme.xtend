@@ -7,12 +7,12 @@ import org.eclipse.xtend.lib.annotations.Accessors
 @Accessors
 class LifecycleScheme implements IMaiaContextLifecycleScheme {
 
-	val List<ILifecycleState> states = new ArrayList<ILifecycleState>
+	val List<IMaiaContextLifecycleState> states = new ArrayList<IMaiaContextLifecycleState>
 
-	val List<ILifecycleTransition> transitions = new ArrayList<ILifecycleTransition>
+	val List<IMaiaContextLifecycleTransition> transitions = new ArrayList<IMaiaContextLifecycleTransition>
 
-	ILifecycleState initialState
+	IMaiaContextLifecycleState initialState
 
-	ILifecycleState finalState
+	IMaiaContextLifecycleState finalState
 
 }

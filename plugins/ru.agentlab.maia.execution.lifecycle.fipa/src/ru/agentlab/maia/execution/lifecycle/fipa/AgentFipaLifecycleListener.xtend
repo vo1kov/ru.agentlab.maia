@@ -1,11 +1,11 @@
 package ru.agentlab.maia.execution.lifecycle.fipa
 
-import ru.agentlab.maia.execution.lifecycle.ILifecycleTransition
+import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleTransition
 
 class AgentFipaLifecycleListener extends RunAndTrack {
 
 	override changed(IEclipseContext context) {
-		val state = context.get(ILifecycleTransition)
+		val state = context.get(IMaiaContextLifecycleTransition)
 		val scheduler = context.get(IAgentScheduler)
 		switch (state) {
 			case FipaLifecycleScheme.TRANSITION_INVOKE: {

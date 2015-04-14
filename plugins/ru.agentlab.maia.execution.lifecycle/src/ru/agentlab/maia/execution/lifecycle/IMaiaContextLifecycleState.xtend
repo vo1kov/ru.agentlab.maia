@@ -1,8 +1,8 @@
 package ru.agentlab.maia.execution.lifecycle
 
-interface ILifecycleState {
+interface IMaiaContextLifecycleState {
 
-	val static public ILifecycleState STATE_UNKNOWN = new ILifecycleState {
+	val static public IMaiaContextLifecycleState STATE_UNKNOWN = new IMaiaContextLifecycleState {
 
 		override getName() {
 			"UNKNOWN"
