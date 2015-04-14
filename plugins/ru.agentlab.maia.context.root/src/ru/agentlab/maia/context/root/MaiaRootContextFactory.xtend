@@ -1,8 +1,8 @@
 package ru.agentlab.maia.context.root
 
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.agent.MaiaAgentProfile
 import ru.agentlab.maia.context.IMaiaContextFactory
+import ru.agentlab.maia.context.agent.MaiaAgentProfile
 import ru.agentlab.maia.context.behaviour.MaiaBehaviourProfile
 import ru.agentlab.maia.context.container.MaiaContainerProfile
 import ru.agentlab.maia.context.root.internal.Activator

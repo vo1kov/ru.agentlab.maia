@@ -2,10 +2,10 @@ package ru.agentlab.maia.profile.defaults.internal
 
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
-import ru.agentlab.maia.agent.AgentFactory
-import ru.agentlab.maia.agent.IAgentFactory
-import ru.agentlab.maia.agent.MaiaAgentProfile
 import ru.agentlab.maia.context.IMaiaContextFactory
+import ru.agentlab.maia.context.agent.AgentFactory
+import ru.agentlab.maia.context.agent.IAgentFactory
+import ru.agentlab.maia.context.agent.MaiaAgentProfile
 import ru.agentlab.maia.context.behaviour.BehaviourFactory
 import ru.agentlab.maia.context.behaviour.IBehaviourFactory
 import ru.agentlab.maia.context.behaviour.MaiaBehaviourProfile

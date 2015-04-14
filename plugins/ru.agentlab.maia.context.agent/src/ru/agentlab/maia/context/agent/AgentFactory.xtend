@@ -1,4 +1,4 @@
-package ru.agentlab.maia.agent
+package ru.agentlab.maia.context.agent
 
 import javax.inject.Inject
 import org.slf4j.LoggerFactory
