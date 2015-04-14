@@ -28,6 +28,10 @@ class SequenceContextScheduler implements IMaiaUnboundedContextScheduler {
 	def void init(){
 		conext.set(KEY_CURRENT_CONTEXT, null)
 	}
+	
+	override IMaiaContext getCurrentContext(){
+		return conext.get(KEY_CURRENT_CONTEXT) as IMaiaContext
+	}
 
 	/**
 	 * Add a context at the end of the contexts queue.

@@ -22,11 +22,13 @@ class SchemeScheduler implements IMaiaBoundedContextScheduler {
 		conext.set(KEY_CURRENT_CONTEXT, null)
 	}
 
+	override IMaiaContext getCurrentContext() {
+		return conext.get(KEY_CURRENT_CONTEXT) as IMaiaContext
+	}
+
 	override getNextContext() {
-		val currentState = scheme.currentState
-		val currentResult = if (currentState != null) {
-				val currentContext = stateMapping.get(currentState)
-				currentContext?.get(IMaiaContextAction.KEY_RESULT)
+		val currentResult = if (currentContext != null) {
+				currentContext.get(IMaiaContextAction.KEY_RESULT)
 			} else {
 				null
 			}
