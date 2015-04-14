@@ -12,7 +12,7 @@ interface IMaiaContextInitializerService {
 	/**
 	 * Key for store Initializer in Context
 	 */
-	val static String KEY_INITIALIZER = "ru.agentlab.maia.context.initializer"
+	val static String KEY_INITIALIZER = "ru.agentlab.maia.context.initializer|object.value"
 
 	/**
 	 * Add new Initializer in context.

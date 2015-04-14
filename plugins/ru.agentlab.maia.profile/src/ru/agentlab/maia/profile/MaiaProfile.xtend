@@ -33,20 +33,20 @@ class MaiaProfile implements IMaiaProfile {
 		factories.remove(interf)
 	}
 
-	override toString() {
-		val StringConcatenation sb = ''''''
-		implementations.keySet.sortWith [ a, b |
-			a.name.compareTo(b.name)
-		].forEach [ p1 |
-			sb.newLine
-			sb.append("			[")
-			sb.append(p1)
-			sb.append(", ")
-			sb.append(implementations.get(p1))
-			sb.append("]")
-		]
-		sb.toString
-	}
+//	override toString() {
+//		val StringConcatenation sb = ''''''
+//		implementations.keySet.sortWith [ a, b |
+//			a.name.compareTo(b.name)
+//		].forEach [ p1 |
+//			sb.newLine
+//			sb.append("			[")
+//			sb.append(p1)
+//			sb.append(", ")
+//			sb.append(implementations.get(p1))
+//			sb.append("]")
+//		]
+//		sb.toString
+//	}
 
 	override getFactoryKeySet() {
 		return factories.keySet

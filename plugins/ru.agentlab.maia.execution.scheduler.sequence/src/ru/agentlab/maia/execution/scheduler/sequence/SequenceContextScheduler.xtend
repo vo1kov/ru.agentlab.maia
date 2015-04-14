@@ -1,6 +1,8 @@
 package ru.agentlab.maia.execution.scheduler.sequence
 
 import java.util.concurrent.ConcurrentLinkedDeque
+import javax.annotation.PostConstruct
+import javax.inject.Inject
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.scheduler.unbounded.IMaiaUnboundedContextScheduler
@@ -18,6 +20,14 @@ class SequenceContextScheduler implements IMaiaUnboundedContextScheduler {
 	private transient Object contextsLock = new Object
 
 	private int currentIndex = 0
+	
+	@Inject
+	IMaiaContext conext
+	
+	@PostConstruct
+	def void init(){
+		conext.set(KEY_CURRENT_CONTEXT, null)
+	}
 
 	/**
 	 * Add a context at the end of the contexts queue.

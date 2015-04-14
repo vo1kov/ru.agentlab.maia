@@ -1,6 +1,7 @@
 package ru.agentlab.maia.execution.scheduler.scheme
 
 import java.util.concurrent.ConcurrentHashMap
+import javax.annotation.PostConstruct
 import javax.inject.Inject
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.action.IMaiaContextAction
@@ -8,10 +9,18 @@ import ru.agentlab.maia.execution.scheduler.bounded.IMaiaBoundedContextScheduler
 
 class SchemeScheduler implements IMaiaBoundedContextScheduler {
 
+	val stateMapping = new ConcurrentHashMap<String, IMaiaContext>
+
 	@Inject
 	IMaiaExecutorSchedulerScheme scheme
 
-	val stateMapping = new ConcurrentHashMap<String, IMaiaContext>
+	@Inject
+	IMaiaContext conext
+
+	@PostConstruct
+	def void init() {
+		conext.set(KEY_CURRENT_CONTEXT, null)
+	}
 
 	override getNextContext() {
 		val currentState = scheme.currentState

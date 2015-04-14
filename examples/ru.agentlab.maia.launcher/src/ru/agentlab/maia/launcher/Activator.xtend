@@ -28,21 +28,21 @@ class Activator implements BundleActivator {
 
 		val rootContextRef = context.getServiceReference(IMaiaContext)
 		val rootContext = context.getService(rootContextRef)
-		LOGGER.info(rootContext.dump)
+//		LOGGER.info(rootContext.dump)
 
 		LOGGER.info("CREATE CONTAINER...")
 		val container = rootContext.get(IMaiaContextContainerFactory).createContainer(null)
-		LOGGER.info(container.dump)
+//		LOGGER.info(container.dump)
 
 		LOGGER.info("CREATE AGENT...")
 		val agent = container.get(IMaiaContextAgentFactory).createAgent(null) => [
 			get(IMaiaContextInitializerService).addInitializer(it, AgentExample)
 		]
-		LOGGER.info(agent.dump)
+//		LOGGER.info(agent.dump)
 		
-		LOGGER.info("CREATE AGENT2...")
-		val agent2 = container.get(IMaiaContextAgentFactory).createAgent(null)
-		LOGGER.info(agent2.dump)
+//		LOGGER.info("CREATE AGENT2...")
+//		val agent2 = container.get(IMaiaContextAgentFactory).createAgent(null)
+//		LOGGER.info(agent2.dump)
 
 		LOGGER.info("CREATE BEHAVIOUR...")
 		val behaviour = agent.get(IMaiaContextBehaviourFactory).createBehaviour(null)
