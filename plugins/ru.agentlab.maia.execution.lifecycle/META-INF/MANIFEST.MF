@@ -13,5 +13,6 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.context;bundle-version="1.0.0",
  ru.agentlab.maia.context.injector;bundle-version="1.0.0",
  ru.agentlab.maia.event;bundle-version="1.0.0"
-Export-Package: ru.agentlab.maia.execution.lifecycle
+Export-Package: ru.agentlab.maia.execution.lifecycle,
+ ru.agentlab.maia.execution.lifecycle.event
 

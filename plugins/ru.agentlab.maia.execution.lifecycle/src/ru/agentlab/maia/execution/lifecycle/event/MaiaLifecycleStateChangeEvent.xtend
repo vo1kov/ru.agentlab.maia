@@ -6,13 +6,13 @@ import ru.agentlab.maia.event.IMaiaEvent
 import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleState
 
 @Accessors
-class LifecycleStateChangeEvent implements IMaiaEvent {
+class MaiaLifecycleStateChangeEvent implements IMaiaEvent {
 
-	val static public String KEY_FROM_STATE = "from.state"
+	val static protected String KEY_FROM_STATE = "from.state"
 
-	val static public String KEY_TO_STATE = "to.state"
+	val static protected String KEY_TO_STATE = "to.state"
 
-	val String topic = "ru/agentlab/maia/execution/lifecycle/event/StateChange"
+	val public static String TOPIC = "ru/agentlab/maia/execution/lifecycle/event/StateChange"
 
 	val data = new HashMap<String, Object>
 
@@ -29,6 +29,10 @@ class LifecycleStateChangeEvent implements IMaiaEvent {
 
 	def IMaiaContextLifecycleState getToState() {
 		return data.get(KEY_TO_STATE) as IMaiaContextLifecycleState
+	}
+	
+	override getTopic() {
+		return TOPIC
 	}
 
 }

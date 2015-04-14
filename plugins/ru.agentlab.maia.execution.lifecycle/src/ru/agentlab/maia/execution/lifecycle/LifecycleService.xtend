@@ -6,7 +6,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.event.IMaiaEventBroker
-import ru.agentlab.maia.execution.lifecycle.event.LifecycleStateChangeEvent
+import ru.agentlab.maia.execution.lifecycle.event.MaiaLifecycleStateChangeEvent
 
 class LifecycleService implements IMaiaContextLifecycleService {
 
@@ -56,7 +56,7 @@ class LifecycleService implements IMaiaContextLifecycleService {
 	def void internalTransit(IMaiaContextLifecycleTransition transition) {
 		if (currentState == transition.fromState) {
 			context.set(IMaiaContextLifecycleState, transition.toState)
-			eventBroker.post(new LifecycleStateChangeEvent(transition.fromState, transition.toState))
+			eventBroker.post(new MaiaLifecycleStateChangeEvent(transition.fromState, transition.toState))
 		} else {
 			throw new IllegalStateException(
 				"Can't invoke [" + transition + "] Transition from current state [" + currentState + "]")
