@@ -28,6 +28,8 @@ import ru.agentlab.maia.execution.lifecycle.LifecycleService
 import ru.agentlab.maia.execution.pool.IMaiaExecutorPool
 import ru.agentlab.maia.execution.pool.cached.MaiaCachedExecutorPool
 import ru.agentlab.maia.lifecycle.fipa.FipaLifecycleScheme
+import ru.agentlab.maia.context.injector.IMaiaContextInjector
+import ru.agentlab.maia.context.injector.e4.E4MaiaContextInjector
 
 class Activator implements BundleActivator {
 
@@ -41,9 +43,10 @@ class Activator implements BundleActivator {
 		Activator.context = context
 
 		val rootProfile = new MaiaRootContextProfile => [
-			putImplementation(IEventBroker, OsgiEventAdminBroker)
-			putImplementation(IMaiaContextFactory, E4MaiaContextFactory)
-			putImplementation(IMaiaContextServiceManagementService, MaiaContextServiceManagementService)
+//			putImplementation(IEventBroker, OsgiEventAdminBroker)
+//			putImplementation(IMaiaContextFactory, E4MaiaContextFactory)
+//			putImplementation(IMaiaContextInjector, E4MaiaContextInjector)
+//			putImplementation(IMaiaContextServiceManagementService, MaiaContextServiceManagementService)
 			putImplementation(IMaiaContextNameFactory, UuidNameGenerator)
 			putImplementation(IContainerFactory, ContainerFactory)
 			putImplementation(IMaiaExecutorPool, MaiaCachedExecutorPool)

@@ -3,10 +3,10 @@ package ru.agentlab.maia.launcher
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.agent.IAgentFactory
-import ru.agentlab.maia.behaviour.IBehaviourFactory
-import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.context.IMaiaContext
+import ru.agentlab.maia.context.agent.IAgentFactory
+import ru.agentlab.maia.context.behaviour.IBehaviourFactory
+import ru.agentlab.maia.context.container.IContainerFactory
 
 class Activator implements BundleActivator {
 

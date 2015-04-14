@@ -8,6 +8,8 @@ import ru.agentlab.maia.context.container.MaiaContainerProfile
 import ru.agentlab.maia.context.root.internal.Activator
 import ru.agentlab.maia.context.service.Create
 import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
+import ru.agentlab.maia.event.IEventBroker
+import ru.agentlab.maia.context.injector.IMaiaContextInjector
 
 /**
  * Factory for creating Agent-Contexts
@@ -24,9 +26,13 @@ class MaiaRootContextFactory {
 		val contextFactory = Activator.getService(IMaiaContextFactory)
 		val rootProfile = Activator.getService(MaiaRootContextProfile)
 		val contextServiceManagementService = Activator.getService(IMaiaContextServiceManagementService)
+		val broker = Activator.getService(IEventBroker)
 		val rootContext = contextFactory.createContext("Maia Root context") => [
-//			set(IMaiaContextFactory, contextFactory)
-//			set(IMaiaContextServiceManagementService, contextServiceManagementService)
+			set(IEventBroker, broker)
+			set(IMaiaContextFactory, contextFactory)
+			set(IMaiaContextInjector, Activator.getService(IMaiaContextInjector))
+			set(IMaiaContextServiceManagementService, contextServiceManagementService)
+			
 			set(MaiaRootContextProfile, rootProfile)
 			set(MaiaContainerProfile, Activator.getService(MaiaContainerProfile))
 			set(MaiaAgentProfile, Activator.getService(MaiaAgentProfile))

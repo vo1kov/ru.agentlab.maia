@@ -15,7 +15,6 @@ class Activator implements BundleActivator {
 
 	override start(BundleContext context) throws Exception {
 		Activator.context = context
-		println("ROOT")
 		context => [
 			val factory = new MaiaRootContextFactory
 			val rootContext = factory.createRootContext

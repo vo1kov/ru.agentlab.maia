@@ -10,13 +10,14 @@ import ru.agentlab.maia.event.IEventBroker
 
 class E4MaiaContext implements IMaiaContext {
 
-	@Inject
-	IEventBroker broker
+	var IEventBroker broker
 
 	package IEclipseContext context
 
-	new(IEclipseContext context) {
+	@Inject
+	new(IEclipseContext context, IEventBroker broker) {
 		this.context = context
+		this.broker = broker
 	}
 
 	override getParent() {

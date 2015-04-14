@@ -6,6 +6,7 @@ import ru.agentlab.maia.context.IMaiaContextFactory
 import ru.agentlab.maia.context.injector.IMaiaContextInjector
 import ru.agentlab.maia.context.injector.e4.E4MaiaContextFactory
 import ru.agentlab.maia.context.injector.e4.E4MaiaContextInjector
+import ru.agentlab.maia.event.IEventBroker
 
 class Activator implements BundleActivator {
 
@@ -18,8 +19,8 @@ class Activator implements BundleActivator {
 	override start(BundleContext context) throws Exception {
 		Activator.context = context
 		context => [
-			registerService(IMaiaContextFactory, new E4MaiaContextFactory, null)
-			registerService(IMaiaContextInjector, new E4MaiaContextInjector, null)
+			registerService(IMaiaContextFactory, new E4MaiaContextFactory(eventBroker), null)
+			registerService(IMaiaContextInjector, new E4MaiaContextInjector(eventBroker), null)
 		]
 	}
 
@@ -29,6 +30,16 @@ class Activator implements BundleActivator {
 			unregister(IMaiaContextInjector)
 		]
 		Activator.context = null
+	}
+
+	def static IEventBroker getEventBroker() {
+		val ref = Activator.context.getServiceReference(IEventBroker)
+		if (ref != null) {
+			return Activator.context.getService(ref)
+		}
+		else {
+			throw new IllegalStateException("IEventBroker is not registered")
+		}
 	}
 
 	def private void unregister(BundleContext context, Class<?> clazz) {

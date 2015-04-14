@@ -17,7 +17,8 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.context.injector;bundle-version="1.0.0",
  ru.agentlab.maia.context.naming;bundle-version="1.0.0",
  ru.agentlab.maia.context.service;bundle-version="1.0.0",
- ru.agentlab.maia.profile;bundle-version="1.0.0"
+ ru.agentlab.maia.profile;bundle-version="1.0.0",
+ ru.agentlab.maia.event;bundle-version="1.0.0"
 Import-Package: org.osgi.framework;version="1.8.0"
 Bundle-Activator: ru.agentlab.maia.context.root.internal.Activator
 Export-Package: ru.agentlab.maia.context.root

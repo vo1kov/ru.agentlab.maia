@@ -11,8 +11,12 @@ import ru.agentlab.maia.event.IEventBroker
 
 class E4MaiaContextFactory implements IMaiaContextFactory {
 
+	var IEventBroker broker
+
 	@Inject
-	IEventBroker broker
+	new(IEventBroker broker) {
+		this.broker = broker
+	}
 
 	/**
 	 * <p>Create new E4 context.</p>
@@ -22,11 +26,11 @@ class E4MaiaContextFactory implements IMaiaContextFactory {
 	 * </ul>
 	 */
 	override createContext(String id) {
-		val result = new E4MaiaContext(EclipseContextFactory.create(id))
+		val result = new E4MaiaContext(EclipseContextFactory.create(id), broker)
 		broker.post(EVENT_NEW_CONTEXT, result)
 		return result => [
 			set(IMaiaContext, it)
-			set(IMaiaContextInjector, new E4MaiaContextInjector)
+			set(IMaiaContextInjector, new E4MaiaContextInjector(broker))
 		]
 	}
 
@@ -39,12 +43,12 @@ class E4MaiaContextFactory implements IMaiaContextFactory {
 	 * </ul>
 	 */
 	override createChild(IMaiaContext parent, String name) {
-		val result = new E4MaiaContext(parent.get(IEclipseContext).createChild(name))
+		val result = new E4MaiaContext(parent.get(IEclipseContext).createChild(name), broker)
 		broker.post(EVENT_NEW_CONTEXT, result)
 		return result => [
 			set(IMaiaContext, it)
 			if (get(IMaiaContextInjector) == null) {
-				parent.set(IMaiaContextInjector, new E4MaiaContextInjector)
+				parent.set(IMaiaContextInjector, new E4MaiaContextInjector(broker))
 			}
 		]
 	}
@@ -54,11 +58,11 @@ class E4MaiaContextFactory implements IMaiaContextFactory {
 	 */
 	@Deprecated
 	override createOsgiContext(BundleContext bundleContext) {
-		val result = new E4MaiaContext(EclipseContextFactory.getServiceContext(bundleContext))
+		val result = new E4MaiaContext(EclipseContextFactory.getServiceContext(bundleContext), broker)
 		broker.post(EVENT_NEW_CONTEXT, result)
 		return result => [
 			set(IMaiaContext, it)
-			set(IMaiaContextInjector, new E4MaiaContextInjector)
+			set(IMaiaContextInjector, new E4MaiaContextInjector(broker))
 		]
 	}
 
