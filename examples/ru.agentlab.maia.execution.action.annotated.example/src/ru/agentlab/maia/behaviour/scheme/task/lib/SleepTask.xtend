@@ -2,15 +2,15 @@ package ru.agentlab.maia.behaviour.scheme.task.lib
 
 import javax.inject.Inject
 import ru.agentlab.maia.execution.action.annotated.Action
-import ru.agentlab.maia.execution.scheduler.IScheduler
+import ru.agentlab.maia.execution.scheduler.IMaiaContextScheduler
 
 class SleepTask {
 
 	@Inject
-	IScheduler scheduler
+	IMaiaContextScheduler scheduler
 
 	@Inject
-	IScheduler behaviour
+	IMaiaContextScheduler behaviour
 
 	@Action
 	def void action() {

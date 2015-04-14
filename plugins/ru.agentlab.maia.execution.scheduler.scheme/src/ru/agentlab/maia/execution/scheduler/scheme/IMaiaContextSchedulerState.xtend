@@ -1,6 +1,6 @@
 package ru.agentlab.maia.execution.scheduler.scheme
 
-interface ISchedulingState {
+interface IMaiaContextSchedulerState {
 
 	def String getName()
 

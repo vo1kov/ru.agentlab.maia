@@ -1,14 +1,14 @@
 package ru.agentlab.maia.launcher.task
 
-import org.maia.task.Action
-import org.maia.task.TaskInput
-import org.maia.task.TaskOutput
+import ru.agentlab.maia.execution.action.annotated.Action
+import ru.agentlab.maia.execution.action.annotated.TaskInput
+import ru.agentlab.maia.execution.action.annotated.TaskOutput
 
 class IncrementTask {
-	
+
 	@TaskInput
 	public int i
-	
+
 	@TaskOutput
 	public int i2
 
@@ -18,5 +18,5 @@ class IncrementTask {
 		println("	" + this + "::i = " + i)
 		println("	" + this + "::i2 = " + i2)
 	}
-	
+
 }

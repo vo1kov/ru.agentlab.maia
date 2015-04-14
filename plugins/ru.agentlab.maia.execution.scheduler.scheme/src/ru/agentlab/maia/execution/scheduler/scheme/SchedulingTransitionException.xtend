@@ -1,22 +1,21 @@
-package ru.agentlab.maia.execution.scheduler.scheme.internal
+package ru.agentlab.maia.execution.scheduler.scheme
 
 import org.eclipse.xtend.lib.annotations.AccessorType
 import org.eclipse.xtend.lib.annotations.Accessors
 
 import static extension org.eclipse.xtend.lib.annotations.AccessorType.*
-import ru.agentlab.maia.execution.scheduler.scheme.ISchedulingState
 
 @Accessors(AccessorType.PUBLIC_GETTER)
-class ExceptionSchedulingTransition extends SchedulingTransition {
+class SchedulingTransitionException extends SchedulingTransition {
 
 	Class<? extends Throwable> throwable
 
-	new(Class<? extends Throwable> throwable, String name, ISchedulingState fromState, ISchedulingState toState) {
+	new(Class<? extends Throwable> throwable, String name, IMaiaContextSchedulerState fromState, IMaiaContextSchedulerState toState) {
 		super(name, fromState, toState)
 		this.throwable = throwable
 	}
 
-	new(Class<? extends Throwable> throwable, ISchedulingState fromState, ISchedulingState toState) {
+	new(Class<? extends Throwable> throwable, IMaiaContextSchedulerState fromState, IMaiaContextSchedulerState toState) {
 		super(throwable.class.name, fromState, toState)
 		this.throwable = throwable
 	}

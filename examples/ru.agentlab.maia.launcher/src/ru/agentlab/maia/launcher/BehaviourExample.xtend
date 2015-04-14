@@ -2,9 +2,8 @@ package ru.agentlab.maia.launcher
 
 import javax.annotation.PostConstruct
 import javax.inject.Inject
-import org.eclipse.e4.core.contexts.ContextInjectionFactory
-import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
+import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.launcher.task.ContextDumpTask
 import ru.agentlab.maia.launcher.task.IncrementTask
 
@@ -13,15 +12,12 @@ class BehaviourExample {
 	val static LOGGER = LoggerFactory.getLogger(BehaviourExample)
 
 	@Inject
-	IEclipseContext context
-
-	@Inject
-	IBehaviourTaskMappingFactory behaviourTaskMappingFactory
+	IMaiaContext context
 
 	@PostConstruct
 	def void init() {
 		LOGGER.info("Modify action scheme...")
-		context.modify(IBehaviourScheme, new CustomScheme)
+		context.set(IBehaviourScheme, new CustomScheme)
 
 		LOGGER.info("Modify task mapping...")
 		val task1 = ContextInjectionFactory.make(IncrementTask, context)

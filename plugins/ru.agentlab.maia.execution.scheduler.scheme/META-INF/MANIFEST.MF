@@ -4,8 +4,7 @@ Bundle-Name: Scheme
 Bundle-SymbolicName: ru.agentlab.maia.execution.scheduler.scheme
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: ru.agentlab.maia.execution.scheduler.scheme,
- ru.agentlab.maia.execution.scheduler.scheme.internal
+Export-Package: ru.agentlab.maia.execution.scheduler.scheme
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,

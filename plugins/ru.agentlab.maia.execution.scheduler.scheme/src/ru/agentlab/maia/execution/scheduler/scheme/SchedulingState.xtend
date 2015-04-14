@@ -1,10 +1,9 @@
-package ru.agentlab.maia.execution.scheduler.scheme.internal
+package ru.agentlab.maia.execution.scheduler.scheme
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.execution.scheduler.scheme.ISchedulingState
 
 @Accessors
-class SchedulingState implements ISchedulingState {
+class SchedulingState implements IMaiaContextSchedulerState {
 
 	var String name
 

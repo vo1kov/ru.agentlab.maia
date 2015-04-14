@@ -3,9 +3,9 @@ package ru.agentlab.maia.execution.scheduler.sequence
 import java.util.concurrent.ConcurrentLinkedDeque
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.execution.scheduler.IScheduler
+import ru.agentlab.maia.execution.scheduler.unbounded.IMaiaUnboundedContextScheduler
 
-class SequenceContextScheduler implements IScheduler {
+class SequenceContextScheduler implements IMaiaUnboundedContextScheduler {
 
 	val static LOGGER = LoggerFactory.getLogger(SequenceContextScheduler)
 
@@ -32,78 +32,59 @@ class SequenceContextScheduler implements IScheduler {
 		doNotify
 	}
 
-//	override Object action(IMaiaContext context) {
-//		var int size
+//	/**
+//	 * Moves a context from the ready queue to the sleeping queue. 
+//	 */
+//	override void block(IMaiaContext context) {
+//		LOGGER.info("Try to block [{}] Context...", context)
 //		synchronized (contextsLock) {
-//			size = readyContexts.size
-//			if (size > 0) {
-//				val context = readyContexts.get(currentIndex)
-//				currentIndex = (currentIndex + 1) % readyContexts.size()
-//				context.action()
-////					if (context.isDone) {
-////						removeFromReady(context)
-////					}
+//			if (context.removeFromReady) {
+//				blockedContexts += context
 //			}
-//			size = readyContexts.size
 //		}
-//		if (size == 0) {
-//			doWait
-//		}
-//		return null
 //	}
-	/**
-	 * Moves a context from the ready queue to the sleeping queue. 
-	 */
-	override void block(IMaiaContext context) {
-		LOGGER.info("Try to block [{}] Context...", context)
-		synchronized (contextsLock) {
-			if (context.removeFromReady) {
-				blockedContexts += context
-			}
-		}
-	}
-
-	override void blockAll() {
-		LOGGER.info("Try to block all...")
-		synchronized (contextsLock) {
-			blockedContexts += readyContexts
-			readyContexts.clear
-			currentIndex = 0
-		}
-	}
-
-	/**
-	 * Moves a context from the sleeping queue to the ready queue.
-	 */
-	override void restart(IMaiaContext context) {
-		LOGGER.info("Try to remove [{}] Context...", context)
-		synchronized (contextsLock) {
-			if (context.removeFromBlocked) {
-				readyContexts += context
-			}
-			doNotify
-		}
-	}
-
-	/** 
-	 * Restarts all contexts. This method simply calls IContext.restart() on
-	 * every context. The IContext.restart() method then notifies the agent
-	 * (with the Agent.notifyRestarted() method), causing Scheduler.restart() to
-	 * be called (this also moves contexts from the blocked queue to the ready
-	 * queue --> we must copy all contexts into a temporary buffer to avoid
-	 * concurrent modification exceptions). Why not restarting only blocked
-	 * contexts? Some ready context can be a ParallelIContext with some of its
-	 * children blocked. These children must be restarted too.
-	 */
-	override void restartAll() {
-		LOGGER.info("Try to restart all...")
-		synchronized (contextsLock) {
-			readyContexts += blockedContexts
-			blockedContexts.clear
-			currentIndex = 0
-			doNotify
-		}
-	}
+//
+//	override void blockAll() {
+//		LOGGER.info("Try to block all...")
+//		synchronized (contextsLock) {
+//			blockedContexts += readyContexts
+//			readyContexts.clear
+//			currentIndex = 0
+//		}
+//	}
+//
+//	/**
+//	 * Moves a context from the sleeping queue to the ready queue.
+//	 */
+//	override void restart(IMaiaContext context) {
+//		LOGGER.info("Try to remove [{}] Context...", context)
+//		synchronized (contextsLock) {
+//			if (context.removeFromBlocked) {
+//				readyContexts += context
+//			}
+//			doNotify
+//		}
+//	}
+//
+//	/** 
+//	 * Restarts all contexts. This method simply calls IContext.restart() on
+//	 * every context. The IContext.restart() method then notifies the agent
+//	 * (with the Agent.notifyRestarted() method), causing Scheduler.restart() to
+//	 * be called (this also moves contexts from the blocked queue to the ready
+//	 * queue --> we must copy all contexts into a temporary buffer to avoid
+//	 * concurrent modification exceptions). Why not restarting only blocked
+//	 * contexts? Some ready context can be a ParallelIContext with some of its
+//	 * children blocked. These children must be restarted too.
+//	 */
+//	override void restartAll() {
+//		LOGGER.info("Try to restart all...")
+//		synchronized (contextsLock) {
+//			readyContexts += blockedContexts
+//			blockedContexts.clear
+//			currentIndex = 0
+//			doNotify
+//		}
+//	}
 
 	/** 
 	 * Removes a specified context from the scheduler

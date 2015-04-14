@@ -2,8 +2,8 @@ package ru.agentlab.maia.launcher.task
 
 import java.util.UUID
 import javax.inject.Inject
-import org.maia.task.Action
 import org.slf4j.LoggerFactory
+import ru.agentlab.maia.execution.action.annotated.Action
 import ru.agentlab.maia.launcher.BehaviourExample2
 import ru.agentlab.maia.messaging.IMessageDeliveryService
 import ru.agentlab.maia.messaging.IMessageFactory

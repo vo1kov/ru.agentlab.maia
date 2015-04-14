@@ -4,10 +4,11 @@ import javax.annotation.PostConstruct
 import javax.inject.Inject
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.injector.IMaiaContextInjector
-import ru.agentlab.maia.execution.scheduler.IScheduler
-import ru.agentlab.maia.execution.scheduler.ISchedulerFactory
+import ru.agentlab.maia.execution.scheduler.IMaiaContextScheduler
+import ru.agentlab.maia.execution.scheduler.IMaiaContextSchedulerFactory
+import ru.agentlab.maia.execution.scheduler.unbounded.IMaiaUnboundedContextScheduler
 
-class SequenceContextSchedulerFactory implements ISchedulerFactory {
+class SequenceContextSchedulerFactory implements IMaiaContextSchedulerFactory {
 
 	@Inject
 	IMaiaContext context
@@ -25,14 +26,14 @@ class SequenceContextSchedulerFactory implements ISchedulerFactory {
 				this.context
 			}
 
-		val oldScheduler = context.get(IScheduler)
+		val oldScheduler = context.get(IMaiaUnboundedContextScheduler)
 		if (oldScheduler != null) {
 			oldScheduler.removeAll
 		}
 
 		val newScheduler = injector.make(SequenceContextScheduler, context)
 		injector.invoke(newScheduler, PostConstruct, context, null)
-		context.set(IScheduler, newScheduler)
+		context.set(IMaiaContextScheduler, newScheduler)
 		return newScheduler
 	}
 
