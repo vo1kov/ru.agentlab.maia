@@ -1,4 +1,4 @@
-package ru.agentlab.maia.container
+package ru.agentlab.maia.context.container
 
 import ru.agentlab.maia.context.IMaiaContext
 

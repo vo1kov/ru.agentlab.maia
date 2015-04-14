@@ -3,8 +3,8 @@ package ru.agentlab.maia.context.root
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.MaiaAgentProfile
 import ru.agentlab.maia.behaviour.MaiaBehaviourProfile
-import ru.agentlab.maia.container.MaiaContainerProfile
 import ru.agentlab.maia.context.IMaiaContextFactory
+import ru.agentlab.maia.context.container.MaiaContainerProfile
 import ru.agentlab.maia.context.root.internal.Activator
 import ru.agentlab.maia.context.service.Create
 import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
@@ -27,7 +27,6 @@ class MaiaRootContextFactory {
 		val rootContext = contextFactory.createContext("Maia Root context") => [
 //			set(IMaiaContextFactory, contextFactory)
 //			set(IMaiaContextServiceManagementService, contextServiceManagementService)
-
 			set(MaiaRootContextProfile, rootProfile)
 			set(MaiaContainerProfile, Activator.getService(MaiaContainerProfile))
 			set(MaiaAgentProfile, Activator.getService(MaiaAgentProfile))

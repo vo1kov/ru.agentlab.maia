@@ -8,10 +8,10 @@ import ru.agentlab.maia.agent.MaiaAgentProfile
 import ru.agentlab.maia.behaviour.BehaviourFactory
 import ru.agentlab.maia.behaviour.IBehaviourFactory
 import ru.agentlab.maia.behaviour.MaiaBehaviourProfile
-import ru.agentlab.maia.container.ContainerFactory
-import ru.agentlab.maia.container.IContainerFactory
-import ru.agentlab.maia.container.MaiaContainerProfile
 import ru.agentlab.maia.context.IMaiaContextFactory
+import ru.agentlab.maia.context.container.ContainerFactory
+import ru.agentlab.maia.context.container.IContainerFactory
+import ru.agentlab.maia.context.container.MaiaContainerProfile
 import ru.agentlab.maia.context.initializer.IMaiaContextInitializerService
 import ru.agentlab.maia.context.initializer.MaiaContextInitializerService
 import ru.agentlab.maia.context.injector.e4.E4MaiaContextFactory
