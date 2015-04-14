@@ -3,10 +3,8 @@ package ru.agentlab.maia.context.service
 import javax.annotation.PostConstruct
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.context.service.Create
 import ru.agentlab.maia.injector.IMaiaContextInjector
 import ru.agentlab.maia.profile.IMaiaProfile
-import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
 
 class MaiaContextServiceManagementService implements IMaiaContextServiceManagementService {
 
@@ -118,6 +116,9 @@ class MaiaContextServiceManagementService implements IMaiaContextServiceManageme
 
 	override <T> T createServiceFromFactory(IMaiaProfile profile, IMaiaContext factoryContext,
 		IMaiaContext serviceContext, Class<T> clazz) {
+		if (clazz == null) {
+			return null
+		}
 		val injector = factoryContext.get(IMaiaContextInjector)
 		val factoryClass = profile.getFactory(clazz)
 		var factory = factoryContext.get(factoryClass)

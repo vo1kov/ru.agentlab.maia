@@ -49,11 +49,11 @@ class MaiaProfile implements IMaiaProfile {
 	}
 
 	override getFactoryKeySet() {
-		return implementations.keySet
+		return factories.keySet
 	}
 
 	override getImplementationKeySet() {
-		return factories.keySet
+		return implementations.keySet
 	}
 
 }

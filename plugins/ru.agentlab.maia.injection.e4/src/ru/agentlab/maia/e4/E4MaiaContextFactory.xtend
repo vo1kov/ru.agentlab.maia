@@ -41,6 +41,12 @@ class E4MaiaContextFactory implements IMaiaContextFactory {
 	}
 
 	override createOsgiContext(BundleContext bundleContext) {
+		bundleContext.bundles.forEach [
+			println("bundle: " + it)
+			registeredServices?.forEach [
+				println("	" + it)
+			]
+		]
 		return new E4MaiaContext(EclipseContextFactory.getServiceContext(bundleContext)) => [
 			set(IMaiaContext, it)
 			set(IMaiaContextInjector, new E4MaiaContextInjector)

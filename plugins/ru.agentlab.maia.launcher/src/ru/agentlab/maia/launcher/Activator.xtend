@@ -4,10 +4,9 @@ import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
-import ru.agentlab.maia.container.IContainerFactory
+import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.IMaiaContextFactory
 import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
-import ru.agentlab.maia.agent.MaiaAgentProfile
 
 class Activator implements BundleActivator {
 
@@ -32,15 +31,13 @@ class Activator implements BundleActivator {
 		val contextFactoryRef = context.getServiceReference(IMaiaContextFactory)
 		val contextFactory = context.getService(contextFactoryRef)
 		
-		val agentProfileRef = context.getServiceReference(MaiaAgentProfile)
-		val agentProfile = context.getService(agentProfileRef)
+		val rootContextRef = context.getServiceReference(IMaiaContext)
+		val rootContext = context.getService(rootContextRef)
 		 
-		val osgiContext = contextFactory.createOsgiContext(context)
-		
 		LOGGER.info("CREATE AGENT FACTORY...")
-		val agentFactory = serviceManager.createService(agentProfile, osgiContext, IAgentFactory)
-		println(agentFactory)
-		LOGGER.info(osgiContext.dump)
+//		val agentFactory = serviceManager.createService(agentProfile, rootContext, IAgentFactory)
+//		println(agentFactory)
+		LOGGER.info(rootContext.dump)
 		
 		
 //

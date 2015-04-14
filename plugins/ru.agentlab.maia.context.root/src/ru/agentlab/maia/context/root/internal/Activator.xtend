@@ -1,10 +1,9 @@
-package ru.agentlab.maia.event.osgi.internal
+package ru.agentlab.maia.context.root.internal
 
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
-import org.osgi.service.event.EventAdmin
-import ru.agentlab.maia.event.IEventBroker
-import ru.agentlab.maia.event.osgi.OsgiEventAdminBroker
+import ru.agentlab.maia.context.IMaiaContext
+import ru.agentlab.maia.context.root.MaiaRootContextFactory
 
 class Activator implements BundleActivator {
 
@@ -16,14 +15,17 @@ class Activator implements BundleActivator {
 
 	override start(BundleContext context) throws Exception {
 		Activator.context = context
+		println("ROOT")
 		context => [
-			registerService(IEventBroker, new OsgiEventAdminBroker, null)
+			val factory = new MaiaRootContextFactory
+			val rootContext = factory.createRootContext
+			registerService(IMaiaContext, rootContext, null)
 		]
 	}
 
 	override stop(BundleContext context) throws Exception {
 		context => [
-			unregister(IEventBroker)
+			unregister(IMaiaContext)
 		]
 		Activator.context = null
 	}
@@ -35,10 +37,10 @@ class Activator implements BundleActivator {
 		}
 	}
 
-	def static EventAdmin getEventAdmin() {
-		val ref = Activator.context.getServiceReference(EventAdmin)
+	def static <T> T getService(Class<T> clazz) {
+		val ref = context.getServiceReference(clazz)
 		if (ref != null) {
-			return Activator.context.getService(ref)
+			return context.getService(ref)
 		}
 	}
 
