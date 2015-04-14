@@ -14,11 +14,6 @@ interface IMaiaContextFactory {
 	val public static String EVENT_NEW_CONTEXT = "ru/agentlab/maia/context/NewContext"
 
 	/**
-	 * Key for store context name
-	 */
-	val static String KEY_NAME = "context.name"
-
-	/**
 	 * Create Context with default set of services. Set of services depends of
 	 * implementation
 	 * @param root - parent context where platform will be created
