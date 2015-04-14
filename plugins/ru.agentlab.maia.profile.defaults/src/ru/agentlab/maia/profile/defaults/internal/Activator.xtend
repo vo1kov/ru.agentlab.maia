@@ -2,6 +2,7 @@ package ru.agentlab.maia.profile.defaults.internal
 
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
+import ru.agentlab.maia.behaviour.scheme.lib.BehaviourSchemeOneShot
 import ru.agentlab.maia.context.agent.AgentFactory
 import ru.agentlab.maia.context.agent.IAgentFactory
 import ru.agentlab.maia.context.agent.MaiaAgentProfile
@@ -19,9 +20,13 @@ import ru.agentlab.maia.context.root.MaiaRootContextProfile
 import ru.agentlab.maia.execution.lifecycle.ILifecycleScheme
 import ru.agentlab.maia.execution.lifecycle.ILifecycleService
 import ru.agentlab.maia.execution.lifecycle.LifecycleService
+import ru.agentlab.maia.execution.lifecycle.fipa.FipaLifecycleScheme
 import ru.agentlab.maia.execution.pool.IMaiaExecutorPool
 import ru.agentlab.maia.execution.pool.cached.MaiaCachedExecutorPool
-import ru.agentlab.maia.lifecycle.fipa.FipaLifecycleScheme
+import ru.agentlab.maia.execution.scheduler.IMaiaContextScheduler
+import ru.agentlab.maia.execution.scheduler.scheme.IMaiaContextSchedulerScheme
+import ru.agentlab.maia.execution.scheduler.scheme.SchemeScheduler
+import ru.agentlab.maia.execution.scheduler.sequence.SequenceContextScheduler
 
 class Activator implements BundleActivator {
 
@@ -53,6 +58,7 @@ class Activator implements BundleActivator {
 			putImplementation(IBehaviourFactory, BehaviourFactory)
 			putImplementation(ILifecycleScheme, FipaLifecycleScheme)
 			putImplementation(ILifecycleService, LifecycleService)
+			putImplementation(IMaiaContextScheduler, SequenceContextScheduler)
 			putImplementation(IMaiaContextInitializerService, MaiaContextInitializerService)
 		]
 
@@ -60,6 +66,8 @@ class Activator implements BundleActivator {
 			putImplementation(IMaiaContextNameFactory, UuidNameGenerator)
 			putImplementation(ILifecycleScheme, FipaLifecycleScheme)
 			putImplementation(ILifecycleService, LifecycleService)
+			putImplementation(IMaiaContextSchedulerScheme, BehaviourSchemeOneShot)
+			putImplementation(IMaiaContextScheduler, SchemeScheduler)
 			putImplementation(IMaiaContextInitializerService, MaiaContextInitializerService)
 		]
 

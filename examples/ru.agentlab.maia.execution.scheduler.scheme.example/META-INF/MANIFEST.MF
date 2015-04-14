@@ -11,4 +11,5 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.execution.action.annotated.example;bundle-version="1.0.0",
  ru.agentlab.maia.execution.scheduler;bundle-version="1.0.0",
  ru.agentlab.maia.execution.scheduler.scheme;bundle-version="1.0.0"
+Export-Package: ru.agentlab.maia.behaviour.scheme.lib
 

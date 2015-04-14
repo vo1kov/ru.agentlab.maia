@@ -4,7 +4,7 @@ Bundle-Name: Lifecycle
 Bundle-SymbolicName: ru.agentlab.maia.execution.lifecycle.fipa
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: ru.agentlab.maia.lifecycle.fipa
+Export-Package: ru.agentlab.maia.execution.lifecycle.fipa
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,

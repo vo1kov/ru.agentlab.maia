@@ -1,4 +1,4 @@
-package ru.agentlab.maia.lifecycle.fipa
+package ru.agentlab.maia.execution.lifecycle.fipa
 
 import ru.agentlab.maia.execution.lifecycle.ILifecycleTransition
 

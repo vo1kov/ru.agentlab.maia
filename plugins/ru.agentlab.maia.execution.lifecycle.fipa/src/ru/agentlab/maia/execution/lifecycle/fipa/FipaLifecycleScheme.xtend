@@ -1,4 +1,4 @@
-package ru.agentlab.maia.lifecycle.fipa
+package ru.agentlab.maia.execution.lifecycle.fipa
 
 import javax.annotation.PostConstruct
 import javax.inject.Inject
