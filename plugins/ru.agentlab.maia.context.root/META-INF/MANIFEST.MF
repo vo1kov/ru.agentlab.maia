@@ -14,7 +14,7 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.context.agent;bundle-version="1.0.0",
  ru.agentlab.maia.context.behaviour;bundle-version="1.0.0",
  ru.agentlab.maia.context.container;bundle-version="1.0.0",
- ru.agentlab.maia.context.injection;bundle-version="1.0.0",
+ ru.agentlab.maia.context.injector;bundle-version="1.0.0",
  ru.agentlab.maia.context.naming;bundle-version="1.0.0",
  ru.agentlab.maia.context.service;bundle-version="1.0.0",
  ru.agentlab.maia.profile;bundle-version="1.0.0"

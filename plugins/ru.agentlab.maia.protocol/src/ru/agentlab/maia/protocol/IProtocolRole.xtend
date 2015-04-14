@@ -1,7 +1,5 @@
 package ru.agentlab.maia.protocol
 
-import ru.agentlab.maia.behaviour.scheme.IContextSchedulerScheme
-
 interface IProtocolRole {
 
 	enum Cardinality {

@@ -1,7 +1,7 @@
 package ru.agentlab.maia.behaviour.scheme.task.lib
 
 import javax.inject.Inject
-import org.maia.task.Action
+import ru.agentlab.maia.execution.action.annotated.Action
 import ru.agentlab.maia.execution.scheduler.IScheduler
 
 class SleepTask {

@@ -1,8 +1,8 @@
 package ru.agentlab.maia.behaviour.scheme.task.lib
 
 import javax.inject.Inject
-import org.maia.task.Action
-import org.maia.task.TaskInput
+import ru.agentlab.maia.execution.action.annotated.Action
+import ru.agentlab.maia.execution.action.annotated.TaskInput
 import ru.agentlab.maia.messaging.IMessage
 import ru.agentlab.maia.messaging.IMessageDeliveryService
 

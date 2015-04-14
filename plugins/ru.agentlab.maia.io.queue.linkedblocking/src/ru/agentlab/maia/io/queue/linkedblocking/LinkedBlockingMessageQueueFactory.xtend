@@ -2,7 +2,7 @@ package ru.agentlab.maia.io.queue.linkedblocking
 
 import javax.annotation.PostConstruct
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.injector.IMaiaContextInjector
+import ru.agentlab.maia.context.injector.IMaiaContextInjector
 import ru.agentlab.maia.messaging.queue.IMessageQueue
 import ru.agentlab.maia.messaging.queue.IMessageQueueFactory
 

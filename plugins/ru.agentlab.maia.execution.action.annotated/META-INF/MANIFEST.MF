@@ -12,5 +12,5 @@ Require-Bundle: com.google.guava,
  javax.inject;bundle-version="1.0.0",
  ru.agentlab.maia.context;bundle-version="1.0.0",
  ru.agentlab.maia.execution.action;bundle-version="1.0.0",
- ru.agentlab.maia.context.injection;bundle-version="1.0.0"
+ ru.agentlab.maia.context.injector;bundle-version="1.0.0"
 

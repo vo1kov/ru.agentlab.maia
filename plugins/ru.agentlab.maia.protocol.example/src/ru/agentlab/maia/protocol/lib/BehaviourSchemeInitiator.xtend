@@ -1,11 +1,5 @@
 package ru.agentlab.maia.protocol.lib
 
-import ru.agentlab.maia.behaviour.scheme.internal.BehaviourStateFinal
-import ru.agentlab.maia.behaviour.scheme.internal.BehaviourStateImplement
-import ru.agentlab.maia.behaviour.scheme.internal.ContextSchedulerScheme
-import ru.agentlab.maia.behaviour.scheme.internal.ContextSchedulerTransitionException
-import ru.agentlab.maia.behaviour.scheme.internal.ContextSchedulerTransitionDefault
-
 class BehaviourSchemeInitiator extends ContextSchedulerScheme {
 
 	val public static STATE_MAIN = new BehaviourStateImplement("MAIN")

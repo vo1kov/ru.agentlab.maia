@@ -8,6 +8,5 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro
-Export-Package: org.maia.task,
- ru.agentlab.maia.execution.action
+Export-Package: ru.agentlab.maia.execution.action
 

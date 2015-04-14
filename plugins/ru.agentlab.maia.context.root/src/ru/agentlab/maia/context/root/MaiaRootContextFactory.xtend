@@ -25,8 +25,8 @@ class MaiaRootContextFactory {
 		val rootProfile = Activator.getService(MaiaRootContextProfile)
 		val contextServiceManagementService = Activator.getService(IMaiaContextServiceManagementService)
 		val rootContext = contextFactory.createContext("Maia Root context") => [
-			set(IMaiaContextFactory, contextFactory)
-			set(IMaiaContextServiceManagementService, contextServiceManagementService)
+//			set(IMaiaContextFactory, contextFactory)
+//			set(IMaiaContextServiceManagementService, contextServiceManagementService)
 
 			set(MaiaRootContextProfile, rootProfile)
 			set(MaiaContainerProfile, Activator.getService(MaiaContainerProfile))

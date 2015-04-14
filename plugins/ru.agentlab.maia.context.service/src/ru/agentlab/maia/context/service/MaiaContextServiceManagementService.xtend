@@ -3,7 +3,7 @@ package ru.agentlab.maia.context.service
 import javax.annotation.PostConstruct
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.injector.IMaiaContextInjector
+import ru.agentlab.maia.context.injector.IMaiaContextInjector
 import ru.agentlab.maia.profile.IMaiaProfile
 
 class MaiaContextServiceManagementService implements IMaiaContextServiceManagementService {

@@ -2,8 +2,8 @@ package ru.agentlab.maia.execution.action.annotated
 
 import javax.inject.Inject
 import ru.agentlab.maia.context.IMaiaContext
+import ru.agentlab.maia.context.injector.IMaiaContextInjector
 import ru.agentlab.maia.execution.action.IMaiaContextAction
-import ru.agentlab.maia.injector.IMaiaContextInjector
 
 class AnnotatedContextAction implements IMaiaContextAction {
 

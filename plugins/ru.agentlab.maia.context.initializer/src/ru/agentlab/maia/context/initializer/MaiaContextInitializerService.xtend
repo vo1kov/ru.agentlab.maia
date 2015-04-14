@@ -4,8 +4,7 @@ import javax.annotation.PostConstruct
 import javax.inject.Inject
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.context.initializer.IMaiaContextInitializerService
-import ru.agentlab.maia.injector.IMaiaContextInjector
+import ru.agentlab.maia.context.injector.IMaiaContextInjector
 
 class MaiaContextInitializerService implements IMaiaContextInitializerService {
 
