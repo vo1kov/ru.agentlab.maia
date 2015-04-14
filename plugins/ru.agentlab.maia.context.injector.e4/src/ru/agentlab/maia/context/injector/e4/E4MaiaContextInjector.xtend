@@ -7,14 +7,14 @@ import org.eclipse.e4.core.contexts.IEclipseContext
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.IMaiaContextListener
 import ru.agentlab.maia.context.injector.IMaiaContextInjector
-import ru.agentlab.maia.event.IEventBroker
+import ru.agentlab.maia.event.IMaiaEventBroker
 
 class E4MaiaContextInjector implements IMaiaContextInjector {
 
-	var IEventBroker broker
+	var IMaiaEventBroker broker
 
 	@Inject
-	new(IEventBroker broker) {
+	new(IMaiaEventBroker broker) {
 		this.broker = broker
 	}
 

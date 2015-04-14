@@ -6,7 +6,7 @@ import ru.agentlab.maia.context.IMaiaContextFactory
 import ru.agentlab.maia.context.injector.IMaiaContextInjector
 import ru.agentlab.maia.context.injector.e4.E4MaiaContextFactory
 import ru.agentlab.maia.context.injector.e4.E4MaiaContextInjector
-import ru.agentlab.maia.event.IEventBroker
+import ru.agentlab.maia.event.IMaiaEventBroker
 
 class Activator implements BundleActivator {
 
@@ -32,8 +32,8 @@ class Activator implements BundleActivator {
 		Activator.context = null
 	}
 
-	def static IEventBroker getEventBroker() {
-		val ref = Activator.context.getServiceReference(IEventBroker)
+	def static IMaiaEventBroker getEventBroker() {
+		val ref = Activator.context.getServiceReference(IMaiaEventBroker)
 		if (ref != null) {
 			return Activator.context.getService(ref)
 		}

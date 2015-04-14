@@ -20,7 +20,7 @@ import java.util.Map
  * </pre>
  * @noimplement This interface is not intended to be implemented by clients.
  */
-interface IEventBroker {
+interface IMaiaEventBroker {
 	/** 
 	 * The name of the default event attribute used to pass data.
 	 */
@@ -63,7 +63,7 @@ interface IEventBroker {
 	 * @return <code>true</code> if this operation was performed successfully; <code>false</code>
 	 * otherwise
 	 */
-	def boolean subscribe(String topic, IEventHandler IEventHandler)
+	def boolean subscribe(String topic, IMaiaEventHandler handler)
 
 	/** 
 	 * Subscribe for events on the given topic.
@@ -78,7 +78,7 @@ interface IEventBroker {
 	 * @return <code>true</code> if this operation was performed successfully; <code>false</code>
 	 * otherwise
 	 */
-	def boolean subscribe(String topic, String filter, IEventHandler IEventHandler, boolean headless)
+	def boolean subscribe(String topic, String filter, IMaiaEventHandler handler, boolean headless)
 
 	/** 
 	 * Unsubscribe handler previously registered using {@link #subscribe(String, IEventHandler)}.
@@ -86,6 +86,6 @@ interface IEventBroker {
 	 * @return <code>true</code> if this operation was performed successfully; <code>false</code>
 	 * otherwise
 	 */
-	def boolean unsubscribe(IEventHandler IEventHandler)
+	def boolean unsubscribe(IMaiaEventHandler handler)
 
 }

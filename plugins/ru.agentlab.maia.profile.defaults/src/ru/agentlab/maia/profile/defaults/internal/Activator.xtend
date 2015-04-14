@@ -20,8 +20,6 @@ import ru.agentlab.maia.context.naming.uuid.UuidNameGenerator
 import ru.agentlab.maia.context.root.MaiaRootContextProfile
 import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
 import ru.agentlab.maia.context.service.MaiaContextServiceManagementService
-import ru.agentlab.maia.event.IEventBroker
-import ru.agentlab.maia.event.osgi.OsgiEventAdminBroker
 import ru.agentlab.maia.execution.lifecycle.ILifecycleScheme
 import ru.agentlab.maia.execution.lifecycle.ILifecycleService
 import ru.agentlab.maia.execution.lifecycle.LifecycleService
@@ -30,6 +28,8 @@ import ru.agentlab.maia.execution.pool.cached.MaiaCachedExecutorPool
 import ru.agentlab.maia.lifecycle.fipa.FipaLifecycleScheme
 import ru.agentlab.maia.context.injector.IMaiaContextInjector
 import ru.agentlab.maia.context.injector.e4.E4MaiaContextInjector
+import ru.agentlab.maia.event.IMaiaEventBroker
+import ru.agentlab.maia.event.osgi.OsgiEventAdminMaiaBroker
 
 class Activator implements BundleActivator {
 

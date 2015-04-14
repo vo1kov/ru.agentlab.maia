@@ -6,16 +6,16 @@ import org.eclipse.e4.core.contexts.IEclipseContext
 import org.eclipse.e4.core.internal.contexts.EclipseContext
 import org.eclipse.xtend2.lib.StringConcatenation
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.event.IEventBroker
+import ru.agentlab.maia.event.IMaiaEventBroker
 
 class E4MaiaContext implements IMaiaContext {
 
-	var IEventBroker broker
+	var IMaiaEventBroker broker
 
 	package IEclipseContext context
 
 	@Inject
-	new(IEclipseContext context, IEventBroker broker) {
+	new(IEclipseContext context, IMaiaEventBroker broker) {
 		this.context = context
 		this.broker = broker
 	}

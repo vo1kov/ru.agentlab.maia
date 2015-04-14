@@ -3,8 +3,8 @@ package ru.agentlab.maia.event.osgi.internal
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import org.osgi.service.event.EventAdmin
-import ru.agentlab.maia.event.IEventBroker
-import ru.agentlab.maia.event.osgi.OsgiEventAdminBroker
+import ru.agentlab.maia.event.IMaiaEventBroker
+import ru.agentlab.maia.event.osgi.OsgiEventAdminMaiaBroker
 
 class Activator implements BundleActivator {
 
@@ -17,13 +17,13 @@ class Activator implements BundleActivator {
 	override start(BundleContext context) throws Exception {
 		Activator.context = context
 		context => [
-			registerService(IEventBroker, new OsgiEventAdminBroker, null)
+			registerService(IMaiaEventBroker, new OsgiEventAdminMaiaBroker, null)
 		]
 	}
 
 	override stop(BundleContext context) throws Exception {
 		context => [
-			unregister(IEventBroker)
+			unregister(IMaiaEventBroker)
 		]
 		Activator.context = null
 	}

@@ -9,11 +9,11 @@ import org.osgi.framework.ServiceRegistration
 import org.osgi.service.event.Event
 import org.osgi.service.event.EventConstants
 import org.osgi.service.event.EventHandler
-import ru.agentlab.maia.event.IEventBroker
-import ru.agentlab.maia.event.IEventHandler
 import ru.agentlab.maia.event.osgi.internal.Activator
+import ru.agentlab.maia.event.IMaiaEventBroker
+import ru.agentlab.maia.event.IMaiaEventHandler
 
-class OsgiEventAdminBroker implements IEventBroker {
+class OsgiEventAdminMaiaBroker implements IMaiaEventBroker {
 
 	Map<EventHandler, ServiceRegistration<?>> registrations = new HashMap<EventHandler, ServiceRegistration<?>>()
 
@@ -90,15 +90,15 @@ class OsgiEventAdminBroker implements IEventBroker {
 		registrations.clear()
 	}
 	
-	override subscribe(String topic, IEventHandler IEventHandler) {
+	override subscribe(String topic, IMaiaEventHandler handler) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override subscribe(String topic, String filter, IEventHandler IEventHandler, boolean headless) {
+	override subscribe(String topic, String filter, IMaiaEventHandler handler, boolean headless) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override unsubscribe(IEventHandler IEventHandler) {
+	override unsubscribe(IMaiaEventHandler handler) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
