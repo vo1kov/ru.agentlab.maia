@@ -1,7 +1,6 @@
 package ru.agentlab.maia.profile
 
 import java.util.LinkedHashMap
-import org.eclipse.xtend2.lib.StringConcatenation
 
 class MaiaProfile implements IMaiaProfile {
 
@@ -47,7 +46,6 @@ class MaiaProfile implements IMaiaProfile {
 //		]
 //		sb.toString
 //	}
-
 	override getFactoryKeySet() {
 		return factories.keySet
 	}

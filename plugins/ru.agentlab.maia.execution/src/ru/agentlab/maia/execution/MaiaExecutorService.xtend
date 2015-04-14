@@ -25,7 +25,7 @@ class MaiaExecutorService implements IMaiaExecutorService {
 					var currentContext = context
 					var action = currentContext.get(IMaiaContextAction)
 					while (currentContext != null && action == null) {
-						val scheduler = currentContext.get(ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler)
+						val scheduler = currentContext.get(IMaiaExecutorScheduler)
 						synchronized (scheduler) {
 							// get next context via scheduler that have no its own Executor service
 							currentContext = scheduler.nextContext
