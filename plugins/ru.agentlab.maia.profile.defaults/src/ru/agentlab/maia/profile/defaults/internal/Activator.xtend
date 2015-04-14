@@ -5,10 +5,10 @@ import org.osgi.framework.BundleContext
 import ru.agentlab.maia.agent.AgentFactory
 import ru.agentlab.maia.agent.IAgentFactory
 import ru.agentlab.maia.agent.MaiaAgentProfile
-import ru.agentlab.maia.behaviour.BehaviourFactory
-import ru.agentlab.maia.behaviour.IBehaviourFactory
-import ru.agentlab.maia.behaviour.MaiaBehaviourProfile
 import ru.agentlab.maia.context.IMaiaContextFactory
+import ru.agentlab.maia.context.behaviour.BehaviourFactory
+import ru.agentlab.maia.context.behaviour.IBehaviourFactory
+import ru.agentlab.maia.context.behaviour.MaiaBehaviourProfile
 import ru.agentlab.maia.context.container.ContainerFactory
 import ru.agentlab.maia.context.container.IContainerFactory
 import ru.agentlab.maia.context.container.MaiaContainerProfile
