@@ -2,7 +2,7 @@ package ru.agentlab.maia.execution.scheduler.scheme
 
 import java.util.List
 
-interface IMaiaContextSchedulerScheme {
+interface IMaiaExecutorSchedulerScheme {
 	
 	def String getName()
 

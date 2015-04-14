@@ -3,11 +3,11 @@ package ru.agentlab.maia.execution.lifecycle.fipa
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.execution.lifecycle.ILifecycleScheme
 import ru.agentlab.maia.execution.lifecycle.ILifecycleState
 import ru.agentlab.maia.execution.lifecycle.LifecycleScheme
 import ru.agentlab.maia.execution.lifecycle.LifecycleState
 import ru.agentlab.maia.execution.lifecycle.LifecycleTransition
+import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleScheme
 
 class FipaLifecycleScheme extends LifecycleScheme {
 
@@ -34,7 +34,7 @@ class FipaLifecycleScheme extends LifecycleScheme {
 
 	@PostConstruct
 	def void init() {
-		context.set(ILifecycleScheme, null)
+		context.set(IMaiaContextLifecycleScheme, null)
 
 		states += STATE_UNKNOWN
 		states += STATE_INITIATED

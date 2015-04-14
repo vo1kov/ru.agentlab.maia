@@ -13,7 +13,7 @@ import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
  * 
  * @author <a href='shishkin_dimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
-class ContainerFactory implements IContainerFactory {
+class ContainerFactory implements IMaiaContextContainerFactory {
 
 	val static LOGGER = LoggerFactory.getLogger(ContainerFactory)
 

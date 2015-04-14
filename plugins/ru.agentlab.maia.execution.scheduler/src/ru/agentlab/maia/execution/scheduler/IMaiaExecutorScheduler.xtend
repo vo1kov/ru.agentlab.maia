@@ -2,7 +2,7 @@ package ru.agentlab.maia.execution.scheduler
 
 import ru.agentlab.maia.context.IMaiaContext
 
-interface IMaiaContextScheduler {
+interface IMaiaExecutorScheduler {
 
 	def IMaiaContext getNextContext()
 	

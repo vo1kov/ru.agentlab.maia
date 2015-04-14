@@ -6,7 +6,7 @@ import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 
 @Accessors
-abstract class SchedulingScheme implements IMaiaContextSchedulerScheme {
+abstract class SchedulingScheme implements IMaiaExecutorSchedulerScheme {
 
 	val public static STATE_INITIAL = new SchedulingState("INITIAL")
 

@@ -7,7 +7,7 @@ import ru.agentlab.maia.context.IMaiaContext
  * 
  * @author <a href='shishkin_dimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
-interface IAgentFactory {
+interface IMaiaContextAgentFactory {
 
 	def IMaiaContext createAgent(IMaiaContext parentContext)
 

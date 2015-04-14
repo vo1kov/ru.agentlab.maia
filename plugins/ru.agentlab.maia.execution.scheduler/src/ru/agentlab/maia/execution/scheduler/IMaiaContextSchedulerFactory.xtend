@@ -4,6 +4,6 @@ import ru.agentlab.maia.context.IMaiaContext
 
 interface IMaiaContextSchedulerFactory {
 
-	def IMaiaContextScheduler createScheduler(IMaiaContext context)
+	def IMaiaExecutorScheduler createScheduler(IMaiaContext context)
 
 }

@@ -4,7 +4,7 @@ import javax.inject.Inject
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.action.IMaiaContextAction
 import ru.agentlab.maia.execution.pool.IMaiaExecutorPool
-import ru.agentlab.maia.execution.scheduler.IMaiaContextScheduler
+import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
 
 class MaiaExecutorService implements IMaiaExecutorService {
 
@@ -25,7 +25,7 @@ class MaiaExecutorService implements IMaiaExecutorService {
 					var currentContext = context
 					var action = currentContext.get(IMaiaContextAction)
 					while (currentContext != null && action == null) {
-						val scheduler = currentContext.get(IMaiaContextScheduler)
+						val scheduler = currentContext.get(ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler)
 						synchronized (scheduler) {
 							// get next context via scheduler that have no its own Executor service
 							currentContext = scheduler.nextContext

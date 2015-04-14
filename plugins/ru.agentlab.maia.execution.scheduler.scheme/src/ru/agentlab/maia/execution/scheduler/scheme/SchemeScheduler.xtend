@@ -9,7 +9,7 @@ import ru.agentlab.maia.execution.scheduler.bounded.IMaiaBoundedContextScheduler
 class SchemeScheduler implements IMaiaBoundedContextScheduler {
 
 	@Inject
-	IMaiaContextSchedulerScheme scheme
+	IMaiaExecutorSchedulerScheme scheme
 
 	val stateMapping = new ConcurrentHashMap<String, IMaiaContext>
 

@@ -7,7 +7,7 @@ import ru.agentlab.maia.context.IMaiaContextFactory
 import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
 import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
 
-class BehaviourFactory implements IBehaviourFactory {
+class BehaviourFactory implements IMaiaContextBehaviourFactory {
 
 	val static LOGGER = LoggerFactory.getLogger(BehaviourFactory)
 

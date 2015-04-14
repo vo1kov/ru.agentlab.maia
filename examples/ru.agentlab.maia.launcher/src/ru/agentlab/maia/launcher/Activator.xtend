@@ -4,10 +4,10 @@ import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.context.agent.IAgentFactory
-import ru.agentlab.maia.context.behaviour.IBehaviourFactory
-import ru.agentlab.maia.context.container.IContainerFactory
 import ru.agentlab.maia.context.initializer.IMaiaContextInitializerService
+import ru.agentlab.maia.context.agent.IMaiaContextAgentFactory
+import ru.agentlab.maia.context.container.IMaiaContextContainerFactory
+import ru.agentlab.maia.context.behaviour.IMaiaContextBehaviourFactory
 
 class Activator implements BundleActivator {
 
@@ -31,21 +31,21 @@ class Activator implements BundleActivator {
 		LOGGER.info(rootContext.dump)
 
 		LOGGER.info("CREATE CONTAINER...")
-		val container = rootContext.get(IContainerFactory).createContainer(null)
+		val container = rootContext.get(IMaiaContextContainerFactory).createContainer(null)
 		LOGGER.info(container.dump)
 
 		LOGGER.info("CREATE AGENT...")
-		val agent = container.get(IAgentFactory).createAgent(null) => [
+		val agent = container.get(IMaiaContextAgentFactory).createAgent(null) => [
 			get(IMaiaContextInitializerService).addInitializer(it, AgentExample)
 		]
 		LOGGER.info(agent.dump)
 		
 		LOGGER.info("CREATE AGENT2...")
-		val agent2 = container.get(IAgentFactory).createAgent(null)
+		val agent2 = container.get(IMaiaContextAgentFactory).createAgent(null)
 		LOGGER.info(agent2.dump)
 
 		LOGGER.info("CREATE BEHAVIOUR...")
-		val behaviour = agent.get(IBehaviourFactory).createBehaviour(null)
+		val behaviour = agent.get(IMaiaContextBehaviourFactory).createBehaviour(null)
 		LOGGER.info(behaviour.dump)
 
 //

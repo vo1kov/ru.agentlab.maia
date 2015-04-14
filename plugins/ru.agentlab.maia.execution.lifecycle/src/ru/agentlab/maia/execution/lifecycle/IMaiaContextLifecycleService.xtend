@@ -1,8 +1,8 @@
 package ru.agentlab.maia.execution.lifecycle
 
-interface ILifecycleService {
+interface IMaiaContextLifecycleService {
 
-	def ILifecycleScheme getScheme()
+	def IMaiaContextLifecycleScheme getScheme()
 
 	def ILifecycleState getCurrentState()
 

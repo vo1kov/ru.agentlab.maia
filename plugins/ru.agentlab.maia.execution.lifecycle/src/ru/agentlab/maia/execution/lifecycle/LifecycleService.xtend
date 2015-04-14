@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
 
 @Accessors
-class LifecycleService implements ILifecycleService {
+class LifecycleService implements IMaiaContextLifecycleService {
 
 	val static LOGGER = LoggerFactory.getLogger(LifecycleService)
 
@@ -15,7 +15,7 @@ class LifecycleService implements ILifecycleService {
 	IMaiaContext context
 	
 	@Inject
-	ILifecycleScheme scheme
+	IMaiaContextLifecycleScheme scheme
 
 	ILifecycleState currentState = ILifecycleState.STATE_UNKNOWN
 

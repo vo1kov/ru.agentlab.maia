@@ -5,7 +5,7 @@ import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 
 @Accessors
-class LifecycleScheme implements ILifecycleScheme {
+class LifecycleScheme implements IMaiaContextLifecycleScheme {
 
 	val List<ILifecycleState> states = new ArrayList<ILifecycleState>
 
