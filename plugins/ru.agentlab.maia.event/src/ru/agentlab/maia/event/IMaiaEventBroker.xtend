@@ -38,7 +38,7 @@ interface IMaiaEventBroker {
 	 * @return <code>true</code> if this operation was performed successfully; <code>false</code>
 	 * otherwise
 	 */
-	def boolean send(String topic, Object data)
+	def boolean send(IMaiaEvent event)
 
 	/** 
 	 * Publish event asynchronously (this method returns immediately).
@@ -51,7 +51,7 @@ interface IMaiaEventBroker {
 	 * @return <code>true</code> if this operation was performed successfully; <code>false</code>
 	 * otherwise
 	 */
-	def boolean post(String topic, Object data)
+	def boolean post(IMaiaEvent event)
 
 	/** 
 	 * Subscribe for events on the given topic.
@@ -65,20 +65,20 @@ interface IMaiaEventBroker {
 	 */
 	def boolean subscribe(String topic, IMaiaEventHandler handler)
 
-	/** 
-	 * Subscribe for events on the given topic.
-	 * <p>
-	 * The handler will be called on the UI thread if "headless" is set to <code>true</code>.
-	 * </p>
-	 * @param topictopic of interest
-	 * @param filterthe LDAP event filter
-	 * @param IEventHandlerobject to call when an event of interest arrives
-	 * @param headless<code>true</code> if handing of the events does not require UI; <code>false</code>
-	 * otherwise
-	 * @return <code>true</code> if this operation was performed successfully; <code>false</code>
-	 * otherwise
-	 */
-	def boolean subscribe(String topic, String filter, IMaiaEventHandler handler, boolean headless)
+//	/** 
+//	 * Subscribe for events on the given topic.
+//	 * <p>
+//	 * The handler will be called on the UI thread if "headless" is set to <code>true</code>.
+//	 * </p>
+//	 * @param topictopic of interest
+//	 * @param filterthe LDAP event filter
+//	 * @param IEventHandlerobject to call when an event of interest arrives
+//	 * @param headless<code>true</code> if handing of the events does not require UI; <code>false</code>
+//	 * otherwise
+//	 * @return <code>true</code> if this operation was performed successfully; <code>false</code>
+//	 * otherwise
+//	 */
+//	def boolean subscribe(String topic, String filter, IMaiaEventHandler handler, boolean headless)
 
 	/** 
 	 * Unsubscribe handler previously registered using {@link #subscribe(String, IEventHandler)}.

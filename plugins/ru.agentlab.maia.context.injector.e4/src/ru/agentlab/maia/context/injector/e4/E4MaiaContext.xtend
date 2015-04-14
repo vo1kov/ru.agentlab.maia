@@ -1,11 +1,13 @@
 package ru.agentlab.maia.context.injector.e4
 
-import java.util.HashMap
 import javax.inject.Inject
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.eclipse.e4.core.internal.contexts.EclipseContext
 import org.eclipse.xtend2.lib.StringConcatenation
 import ru.agentlab.maia.context.IMaiaContext
+import ru.agentlab.maia.context.event.MaiaContextChangeObjectEvent
+import ru.agentlab.maia.context.event.MaiaContextRemoveObjectEvent
+import ru.agentlab.maia.context.event.MaiaContextSetObjectEvent
 import ru.agentlab.maia.event.IMaiaEventBroker
 
 class E4MaiaContext implements IMaiaContext {
@@ -53,37 +55,39 @@ class E4MaiaContext implements IMaiaContext {
 	}
 
 	override remove(String name) {
+		val old = context.getLocal(name)
 		context.remove(name)
-		broker.post(TOPIC_REMOVE, name)
+		if (old != null) {
+			broker.post(new MaiaContextRemoveObjectEvent(old))
+		}
 	}
 
 	override remove(Class<?> clazz) {
+		val old = context.getLocal(clazz)
 		context.remove(clazz)
-		broker.post(TOPIC_REMOVE, clazz.name)
+		if (old != null) {
+			broker.post(new MaiaContextRemoveObjectEvent(old))
+		}
 	}
 
 	override set(String name, Object value) {
 		val old = context.getLocal(name)
 		context.set(name, value)
-		val eventProperty = new HashMap<String, Object> => [
-			put("old", old)
-			put("new", value)
-		]
-		broker.post(TOPIC_SET, eventProperty)
+		if (old == null) {
+			broker.post(new MaiaContextSetObjectEvent(value))
+		} else {
+			broker.post(new MaiaContextChangeObjectEvent(old, value))
+		}
 	}
 
 	override <T> set(Class<T> clazz, T value) {
 		val old = context.getLocal(clazz)
 		context.set(clazz, value)
-		val eventProperty = new HashMap<String, Object> => [
-			put("old", old)
-			put("new", value)
-		]
-		broker.post(TOPIC_SET, eventProperty)
-	}
-
-	override toString() {
-		context.toString()
+		if (old == null) {
+			broker.post(new MaiaContextSetObjectEvent(value))
+		} else {
+			broker.post(new MaiaContextChangeObjectEvent(old, value))
+		}
 	}
 
 	override String dump() {

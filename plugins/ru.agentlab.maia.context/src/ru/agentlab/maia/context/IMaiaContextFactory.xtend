@@ -11,8 +11,6 @@ import org.osgi.framework.BundleContext
  */
 interface IMaiaContextFactory {
 
-	val public static String EVENT_NEW_CONTEXT = "ru/agentlab/maia/context/NewContext"
-
 	/**
 	 * Create Context with default set of services. Set of services depends of
 	 * implementation

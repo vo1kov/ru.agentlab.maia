@@ -7,7 +7,9 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro
+ org.eclipse.xtend.lib.macro,
+ ru.agentlab.maia.event;bundle-version="1.0.0"
 Import-Package: org.osgi.framework;version="1.8.0"
-Export-Package: ru.agentlab.maia.context
+Export-Package: ru.agentlab.maia.context,
+ ru.agentlab.maia.context.event
 

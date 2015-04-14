@@ -2,10 +2,6 @@ package ru.agentlab.maia.context
 
 interface IMaiaContext {
 	
-	val public static String TOPIC_REMOVE = "ru/agentlab/maia/context/RemoveObject"
-	
-	val public static String TOPIC_SET = "ru/agentlab/maia/context/SetObject"
-	
 	def public IMaiaContext getParent()
 
 	/**

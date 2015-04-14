@@ -8,10 +8,6 @@ interface IMaiaContextLifecycleService {
 
 	def void invokeTransition(IMaiaContextLifecycleTransition transition) throws IllegalStateException
 
-	def void invokeTransition(String transition) throws IllegalStateException
-
-	def void setState(String state) throws IllegalStateException
-
 	def void setState(IMaiaContextLifecycleState state) throws IllegalStateException
 
 }

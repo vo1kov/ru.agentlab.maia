@@ -2,7 +2,6 @@ package ru.agentlab.maia.context.injector
 
 import java.lang.annotation.Annotation
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.context.IMaiaContextListener
 
 interface IMaiaContextInjector {
 
@@ -19,9 +18,5 @@ interface IMaiaContextInjector {
 	def Object invoke(Object object, Class<? extends Annotation> ann, IMaiaContext context, Object defaultValue)
 
 	def void inject(Object service, IMaiaContext toContext)
-
-	def void addListener(IMaiaContext context, String key, IMaiaContextListener listener)
-
-	def void addListener(IMaiaContext context, Class<?> key, IMaiaContextListener listener)
 
 }
