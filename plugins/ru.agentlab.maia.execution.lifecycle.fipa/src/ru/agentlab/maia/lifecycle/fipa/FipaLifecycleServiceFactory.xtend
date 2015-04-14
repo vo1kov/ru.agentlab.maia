@@ -7,6 +7,7 @@ import ru.agentlab.maia.injector.IMaiaContextInjector
 import ru.agentlab.maia.lifecycle.ILifecycleScheme
 import ru.agentlab.maia.lifecycle.ILifecycleService
 import ru.agentlab.maia.lifecycle.ILifecycleServiceFactory
+import ru.agentlab.maia.context.service.Create
 
 class FipaLifecycleServiceFactory implements ILifecycleServiceFactory {
 
@@ -15,7 +16,8 @@ class FipaLifecycleServiceFactory implements ILifecycleServiceFactory {
 
 	@Inject
 	IMaiaContextInjector injector
-
+	
+	@Create
 	override createLifecycle(IMaiaContext ctx) {
 		val context = if (ctx != null) {
 				ctx

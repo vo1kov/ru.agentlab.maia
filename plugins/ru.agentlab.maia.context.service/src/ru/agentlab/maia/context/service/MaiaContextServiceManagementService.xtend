@@ -109,7 +109,7 @@ class MaiaContextServiceManagementService implements IMaiaContextServiceManageme
 			val injector = serviceContext.get(IMaiaContextInjector)
 			val service = injector.make(serviceClass, serviceContext)
 			injector.invoke(service, PostConstruct, serviceContext, null)
-			serviceContext.set(serviceClass, service)
+			serviceContext.set(clazz, service)
 			return service
 		}
 	}

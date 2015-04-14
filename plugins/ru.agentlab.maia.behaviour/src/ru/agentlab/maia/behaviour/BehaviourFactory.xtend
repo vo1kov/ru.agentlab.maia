@@ -33,8 +33,7 @@ class BehaviourFactory implements IBehaviourFactory {
 		LOGGER.debug("	home context: [{}]", context)
 
 		LOGGER.info("Create Behaviour Name...")
-		val namingService = contextServiceManagementService.createService(behaviourProfile, parentContext,
-			IMaiaContextNameFactory)
+		val namingService = context.get(IMaiaContextNameFactory)
 		if (namingService == null) {
 			throw new IllegalStateException("Behaviour Profile have no required IMaiaContextNameFactory")
 		}

@@ -36,12 +36,11 @@ class ContainerFactory implements IContainerFactory {
 			} else {
 				this.context
 			}
-		LOGGER.info("Try to create new Default Container...")
+		LOGGER.info("Create new Container...")
 		LOGGER.debug("	home context: [{}]", context)
 
 		LOGGER.info("Create Container Name...")
-		val namingService = contextServiceManagementService.createService(containerProfile, parentContext,
-			IMaiaContextNameFactory)
+		val namingService = context.get(IMaiaContextNameFactory)
 		if (namingService == null) {
 			throw new IllegalStateException("Agent Profile have no required IMaiaContextNameFactory")
 		}

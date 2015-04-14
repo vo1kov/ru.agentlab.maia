@@ -56,8 +56,7 @@ class AgentFactory implements IAgentFactory {
 		LOGGER.debug("	home context: [{}]", context)
 
 		LOGGER.info("Create Agent Name...")
-		val namingService = contextServiceManagementService.createService(agentProfile, parentContext,
-			IMaiaContextNameFactory)
+		val namingService = context.get(IMaiaContextNameFactory)
 		if (namingService == null) {
 			throw new IllegalStateException("Agent Profile have no required IMaiaContextNameFactory")
 		}

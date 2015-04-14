@@ -5,6 +5,9 @@ import javax.inject.Inject
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.lifecycle.ILifecycleScheme
 import ru.agentlab.maia.lifecycle.ILifecycleState
+import ru.agentlab.maia.lifecycle.LifecycleScheme
+import ru.agentlab.maia.lifecycle.LifecycleState
+import ru.agentlab.maia.lifecycle.LifecycleTransition
 
 class FipaLifecycleScheme extends LifecycleScheme {
 

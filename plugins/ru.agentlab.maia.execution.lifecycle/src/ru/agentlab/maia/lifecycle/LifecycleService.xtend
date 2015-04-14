@@ -1,13 +1,10 @@
-package ru.agentlab.maia.lifecycle.fipa
+package ru.agentlab.maia.lifecycle
 
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.lifecycle.ILifecycleScheme
-import ru.agentlab.maia.lifecycle.ILifecycleService
-import ru.agentlab.maia.lifecycle.ILifecycleState
-import ru.agentlab.maia.lifecycle.ILifecycleTransition
+import ru.agentlab.maia.context.IMaiaContext
 
 @Accessors
 class LifecycleService implements ILifecycleService {
@@ -15,8 +12,8 @@ class LifecycleService implements ILifecycleService {
 	val static LOGGER = LoggerFactory.getLogger(LifecycleService)
 
 	@Inject
-	IEclipseContext context
-
+	IMaiaContext context
+	
 	@Inject
 	ILifecycleScheme scheme
 
@@ -25,9 +22,8 @@ class LifecycleService implements ILifecycleService {
 	@PostConstruct
 	def void init() {
 		context => [
-			declareModifiable(ILifecycleState)
-			declareModifiable(ILifecycleTransition)
-			modify(ILifecycleState, currentState)
+			context.set(ILifecycleState, scheme.initialState)
+			context.set(ILifecycleTransition, null)
 		]
 	}
 
@@ -48,8 +44,8 @@ class LifecycleService implements ILifecycleService {
 		if (transition != null) {
 			if (currentState == transition.fromState) {
 				// can change state
-				context.modify(ILifecycleState, transition.toState)
-				context.modify(ILifecycleTransition, transition)
+//				context.modify(ILifecycleState, transition.toState)
+//				context.modify(ILifecycleTransition, transition)
 			} else {
 				throw new IllegalStateException(
 					"Target state [" + state.name + "] is not reachable from current state [" + currentState + "]")
@@ -66,8 +62,8 @@ class LifecycleService implements ILifecycleService {
 		if (schemaTransition != null) {
 			if (currentState == schemaTransition.fromState) {
 				// can change state
-				context.modify(ILifecycleState, schemaTransition.toState)
-				context.modify(ILifecycleTransition, schemaTransition)
+//				context.modify(ILifecycleState, schemaTransition.toState)
+//				context.modify(ILifecycleTransition, schemaTransition)
 			} else {
 				throw new IllegalStateException(
 					"Can't invoke [" + transition + "] Transition from current state [" + currentState + "]")

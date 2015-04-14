@@ -4,9 +4,9 @@ import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.agent.IAgentFactory
+import ru.agentlab.maia.behaviour.IBehaviourFactory
+import ru.agentlab.maia.container.IContainerFactory
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.context.IMaiaContextFactory
-import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
 
 class Activator implements BundleActivator {
 
@@ -25,35 +25,32 @@ class Activator implements BundleActivator {
 	override void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext
 
-		val serviceManagerRef = context.getServiceReference(IMaiaContextServiceManagementService)
-		val serviceManager = context.getService(serviceManagerRef)
-
-		val contextFactoryRef = context.getServiceReference(IMaiaContextFactory)
-		val contextFactory = context.getService(contextFactoryRef)
-		
 		val rootContextRef = context.getServiceReference(IMaiaContext)
 		val rootContext = context.getService(rootContextRef)
-		 
-		LOGGER.info("CREATE AGENT FACTORY...")
-//		val agentFactory = serviceManager.createService(agentProfile, rootContext, IAgentFactory)
-//		println(agentFactory)
 		LOGGER.info(rootContext.dump)
-		
-		
+
+		LOGGER.info("CREATE CONTAINER...")
+		val container = rootContext.get(IContainerFactory).createContainer(null)
+		LOGGER.info(container.dump)
+
+		LOGGER.info("CREATE AGENT...")
+		val agent = container.get(IAgentFactory).createAgent(null)
+		LOGGER.info(agent.dump)
+
+		LOGGER.info("CREATE BEHAVIOUR...")
+		val behaviour = agent.get(IBehaviourFactory).createBehaviour(null)
+		LOGGER.info(behaviour.dump)
+
 //
 //		LOGGER.info("CREATE CONTAINER FACTORY...")
 //		val containerFactory = serviceManager.createService(osgiContext, IContainerFactory)
 //
-//		LOGGER.info("CREATE CONTAINER...")
-//		val container = containerFactory.createContainer(null)
-//		LOGGER.info(container.dump)
 //
 //		LOGGER.info("CREATE AGENT...")
 //		val agent = agentFactory.createAgent(container)
 //		LOGGER.info(agent.dump)
 //		agent.get(IMaiaContextInitializerService).addInitializer(agent, AgentExample)
 //		LOGGER.info(agent.dump)
-
 //		platformFactory.createDefault(null) => [
 //			get(IContainerFactory) => [
 //				LOGGER.info("CREATE container1")

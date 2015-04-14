@@ -1,4 +1,4 @@
-package ru.agentlab.maia.lifecycle.fipa
+package ru.agentlab.maia.lifecycle
 
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.lifecycle.ILifecycleState

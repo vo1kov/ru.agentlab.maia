@@ -1,4 +1,4 @@
-package ru.agentlab.maia.lifecycle.fipa
+package ru.agentlab.maia.lifecycle
 
 import java.util.ArrayList
 import java.util.List
