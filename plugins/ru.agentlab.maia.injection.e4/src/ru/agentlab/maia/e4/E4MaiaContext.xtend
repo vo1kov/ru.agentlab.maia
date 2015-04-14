@@ -1,11 +1,17 @@
 package ru.agentlab.maia.e4
 
+import java.util.HashMap
+import javax.inject.Inject
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.eclipse.e4.core.internal.contexts.EclipseContext
 import org.eclipse.xtend2.lib.StringConcatenation
 import ru.agentlab.maia.context.IMaiaContext
+import ru.agentlab.maia.event.IEventBroker
 
 class E4MaiaContext implements IMaiaContext {
+
+	@Inject
+	IEventBroker broker
 
 	package IEclipseContext context
 
@@ -47,18 +53,32 @@ class E4MaiaContext implements IMaiaContext {
 
 	override remove(String name) {
 		context.remove(name)
+		broker.post(TOPIC_REMOVE, name)
 	}
 
 	override remove(Class<?> clazz) {
 		context.remove(clazz)
+		broker.post(TOPIC_REMOVE, clazz.name)
 	}
 
 	override set(String name, Object value) {
+		val old = context.getLocal(name)
 		context.set(name, value)
+		val eventProperty = new HashMap<String, Object> => [
+			put("old", old)
+			put("new", value)
+		]
+		broker.post(TOPIC_SET, eventProperty)
 	}
 
 	override <T> set(Class<T> clazz, T value) {
+		val old = context.getLocal(clazz)
 		context.set(clazz, value)
+		val eventProperty = new HashMap<String, Object> => [
+			put("old", old)
+			put("new", value)
+		]
+		broker.post(TOPIC_SET, eventProperty)
 	}
 
 	override toString() {
@@ -74,9 +94,7 @@ class E4MaiaContext implements IMaiaContext {
 			result.newLine
 			val list = (current.context as EclipseContext).localData.keySet.filter [
 				it != "org.eclipse.e4.core.internal.contexts.ContextObjectSupplier" &&
-				it != "ru.agentlab.maia.context.IMaiaContext" && 
-				it != "debugString" &&
-				it != "parentContext"
+					it != "ru.agentlab.maia.context.IMaiaContext" && it != "debugString" && it != "parentContext"
 			].sortWith [ a, b |
 				a.compareTo(b)
 			]

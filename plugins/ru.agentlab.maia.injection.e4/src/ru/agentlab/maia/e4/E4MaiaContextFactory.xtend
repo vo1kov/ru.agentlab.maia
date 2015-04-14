@@ -5,9 +5,14 @@ import org.eclipse.e4.core.contexts.IEclipseContext
 import org.osgi.framework.BundleContext
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.IMaiaContextFactory
+import ru.agentlab.maia.event.IEventBroker
 import ru.agentlab.maia.injector.IMaiaContextInjector
+import javax.inject.Inject
 
 class E4MaiaContextFactory implements IMaiaContextFactory {
+
+	@Inject
+	IEventBroker broker
 
 	/**
 	 * <p>Create new E4 context.</p>
@@ -17,7 +22,9 @@ class E4MaiaContextFactory implements IMaiaContextFactory {
 	 * </ul>
 	 */
 	override createContext(String id) {
-		return new E4MaiaContext(EclipseContextFactory.create(id)) => [
+		val result = new E4MaiaContext(EclipseContextFactory.create(id))
+		broker.post(EVENT_NEW_CONTEXT, result)
+		return result => [
 			set(IMaiaContext, it)
 			set(IMaiaContextInjector, new E4MaiaContextInjector)
 		]
@@ -32,7 +39,9 @@ class E4MaiaContextFactory implements IMaiaContextFactory {
 	 * </ul>
 	 */
 	override createChild(IMaiaContext parent, String name) {
-		return new E4MaiaContext(parent.get(IEclipseContext).createChild(name)) => [
+		val result = new E4MaiaContext(parent.get(IEclipseContext).createChild(name))
+		broker.post(EVENT_NEW_CONTEXT, result)
+		return result => [
 			set(IMaiaContext, it)
 			if (get(IMaiaContextInjector) == null) {
 				parent.set(IMaiaContextInjector, new E4MaiaContextInjector)
@@ -40,14 +49,14 @@ class E4MaiaContextFactory implements IMaiaContextFactory {
 		]
 	}
 
+	/**
+	 * 
+	 */
+	@Deprecated
 	override createOsgiContext(BundleContext bundleContext) {
-		bundleContext.bundles.forEach [
-			println("bundle: " + it)
-			registeredServices?.forEach [
-				println("	" + it)
-			]
-		]
-		return new E4MaiaContext(EclipseContextFactory.getServiceContext(bundleContext)) => [
+		val result = new E4MaiaContext(EclipseContextFactory.getServiceContext(bundleContext))
+		broker.post(EVENT_NEW_CONTEXT, result)
+		return result => [
 			set(IMaiaContext, it)
 			set(IMaiaContextInjector, new E4MaiaContextInjector)
 		]

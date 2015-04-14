@@ -11,6 +11,8 @@ import org.osgi.framework.BundleContext
  */
 interface IMaiaContextFactory {
 
+	val public static String EVENT_NEW_CONTEXT = "ru/agentlab/maia/context/NewContext"
+
 	/**
 	 * Key for store context name
 	 */
