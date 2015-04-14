@@ -2,7 +2,6 @@ package ru.agentlab.maia.profile.defaults.internal
 
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
-import ru.agentlab.maia.context.IMaiaContextFactory
 import ru.agentlab.maia.context.agent.AgentFactory
 import ru.agentlab.maia.context.agent.IAgentFactory
 import ru.agentlab.maia.context.agent.MaiaAgentProfile
@@ -14,22 +13,15 @@ import ru.agentlab.maia.context.container.IContainerFactory
 import ru.agentlab.maia.context.container.MaiaContainerProfile
 import ru.agentlab.maia.context.initializer.IMaiaContextInitializerService
 import ru.agentlab.maia.context.initializer.MaiaContextInitializerService
-import ru.agentlab.maia.context.injector.e4.E4MaiaContextFactory
 import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
 import ru.agentlab.maia.context.naming.uuid.UuidNameGenerator
 import ru.agentlab.maia.context.root.MaiaRootContextProfile
-import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
-import ru.agentlab.maia.context.service.MaiaContextServiceManagementService
 import ru.agentlab.maia.execution.lifecycle.ILifecycleScheme
 import ru.agentlab.maia.execution.lifecycle.ILifecycleService
 import ru.agentlab.maia.execution.lifecycle.LifecycleService
 import ru.agentlab.maia.execution.pool.IMaiaExecutorPool
 import ru.agentlab.maia.execution.pool.cached.MaiaCachedExecutorPool
 import ru.agentlab.maia.lifecycle.fipa.FipaLifecycleScheme
-import ru.agentlab.maia.context.injector.IMaiaContextInjector
-import ru.agentlab.maia.context.injector.e4.E4MaiaContextInjector
-import ru.agentlab.maia.event.IMaiaEventBroker
-import ru.agentlab.maia.event.osgi.OsgiEventAdminMaiaBroker
 
 class Activator implements BundleActivator {
 
@@ -43,10 +35,6 @@ class Activator implements BundleActivator {
 		Activator.context = context
 
 		val rootProfile = new MaiaRootContextProfile => [
-//			putImplementation(IEventBroker, OsgiEventAdminBroker)
-//			putImplementation(IMaiaContextFactory, E4MaiaContextFactory)
-//			putImplementation(IMaiaContextInjector, E4MaiaContextInjector)
-//			putImplementation(IMaiaContextServiceManagementService, MaiaContextServiceManagementService)
 			putImplementation(IMaiaContextNameFactory, UuidNameGenerator)
 			putImplementation(IContainerFactory, ContainerFactory)
 			putImplementation(IMaiaExecutorPool, MaiaCachedExecutorPool)

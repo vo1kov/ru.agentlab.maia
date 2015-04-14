@@ -4,7 +4,7 @@ import javax.annotation.PostConstruct
 import javax.inject.Inject
 import javax.inject.Named
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.naming.IMaiaContextNameFactory
+import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
 
 class AgentExample {
 
@@ -15,10 +15,8 @@ class AgentExample {
 
 //	@Inject
 //	extension IBehaviourFactory
-
 //	@Inject
 //	IBehaviourSchemeRegistry behaviourSchemeRegistry
-
 	@PostConstruct
 	def void setup() {
 		LOGGER.info("Setup of: [{}] agent", agentName)
@@ -31,10 +29,6 @@ class AgentExample {
 //			val initService = get(IInitializerService)
 //			initService.addInitializer(BehaviourExample)
 //		]
-		
-		
-		
-		
 //		createDefault("second") => [ beh |
 //			val mapping = beh.get(IBehaviourTaskMappingFactory).create => [
 //				val task = ContextInjectionFactory.make(DumpAgentNameTask, beh)

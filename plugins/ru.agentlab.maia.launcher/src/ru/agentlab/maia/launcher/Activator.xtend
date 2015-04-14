@@ -7,6 +7,7 @@ import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.agent.IAgentFactory
 import ru.agentlab.maia.context.behaviour.IBehaviourFactory
 import ru.agentlab.maia.context.container.IContainerFactory
+import ru.agentlab.maia.context.initializer.IMaiaContextInitializerService
 
 class Activator implements BundleActivator {
 
@@ -34,8 +35,14 @@ class Activator implements BundleActivator {
 		LOGGER.info(container.dump)
 
 		LOGGER.info("CREATE AGENT...")
-		val agent = container.get(IAgentFactory).createAgent(null)
+		val agent = container.get(IAgentFactory).createAgent(null) => [
+			get(IMaiaContextInitializerService).addInitializer(it, AgentExample)
+		]
 		LOGGER.info(agent.dump)
+		
+		LOGGER.info("CREATE AGENT2...")
+		val agent2 = container.get(IAgentFactory).createAgent(null)
+		LOGGER.info(agent2.dump)
 
 		LOGGER.info("CREATE BEHAVIOUR...")
 		val behaviour = agent.get(IBehaviourFactory).createBehaviour(null)
