@@ -24,7 +24,7 @@ class LifecycleService implements IMaiaContextLifecycleService {
 
 	@PostConstruct
 	def void init() {
-		val old = context.get(IMaiaContextLifecycleState)
+		val old = context.getLocal(IMaiaContextLifecycleState)
 		if (old == null) {
 			context.set(IMaiaContextLifecycleState, scheme.initialState)
 		}

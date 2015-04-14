@@ -60,15 +60,19 @@ class FipaLifecycleScheme extends LifecycleScheme {
 			val to = event.toState
 			if (from == TRANSITION_INVOKE.fromState && to == TRANSITION_INVOKE.toState) {
 				// invoke
+				println("INVOKE")
 //				scheduler.start
 			} else if (from == TRANSITION_SUSPEND.fromState && to == TRANSITION_SUSPEND.toState) {
 				// suspend
+				println("SUSPEND")
 				scheduler.remove(context)
 			} else if (from == TRANSITION_RESUME.fromState && to == TRANSITION_RESUME.toState) {
 				// resume
+				println("RESUME")
 //				scheduler.restartAll
 			} else if (from == TRANSITION_DELETE.fromState && to == TRANSITION_DELETE.toState) {
 				// delete
+				println("DELETE")
 //				scheduler.removeAll
 			}
 		])

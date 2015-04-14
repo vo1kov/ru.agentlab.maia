@@ -55,11 +55,9 @@ class OsgiEventAdminMaiaBroker implements IMaiaEventBroker {
 		var d = new Hashtable<String, Object>() => [
 			put(EventConstants.EVENT_TOPIC, #[topic])
 		]
-		if (handler instanceof OsgiEventHandler) {
-			val osgiHandler = handler.handler
-			val registration = bundleContext.registerService(EventHandler, osgiHandler, d)
-			registrations.put(handler, registration)
-		}
+
+		val registration = bundleContext.registerService(EventHandler, new OsgiEventHandler(handler), d)
+		registrations.put(handler, registration)
 		return true
 	}
 
