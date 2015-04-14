@@ -1,4 +1,4 @@
-package ru.agentlab.maia.e4
+package ru.agentlab.maia.context.injector.e4
 
 import javax.inject.Inject
 import org.eclipse.e4.core.contexts.EclipseContextFactory

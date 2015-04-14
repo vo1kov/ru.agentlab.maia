@@ -1,11 +1,11 @@
-package ru.agentlab.maia.e4.internal
+package ru.agentlab.maia.context.injector.e4.internal
 
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import ru.agentlab.maia.context.IMaiaContextFactory
 import ru.agentlab.maia.context.injector.IMaiaContextInjector
-import ru.agentlab.maia.e4.E4MaiaContextFactory
-import ru.agentlab.maia.e4.E4MaiaContextInjector
+import ru.agentlab.maia.context.injector.e4.E4MaiaContextFactory
+import ru.agentlab.maia.context.injector.e4.E4MaiaContextInjector
 
 class Activator implements BundleActivator {
 

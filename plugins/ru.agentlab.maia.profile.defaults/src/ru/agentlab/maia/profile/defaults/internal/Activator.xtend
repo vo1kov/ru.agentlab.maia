@@ -14,12 +14,12 @@ import ru.agentlab.maia.container.MaiaContainerProfile
 import ru.agentlab.maia.context.IMaiaContextFactory
 import ru.agentlab.maia.context.initializer.IMaiaContextInitializerService
 import ru.agentlab.maia.context.initializer.MaiaContextInitializerService
+import ru.agentlab.maia.context.injector.e4.E4MaiaContextFactory
 import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
 import ru.agentlab.maia.context.naming.uuid.UuidNameGenerator
 import ru.agentlab.maia.context.root.MaiaRootContextProfile
 import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
 import ru.agentlab.maia.context.service.MaiaContextServiceManagementService
-import ru.agentlab.maia.e4.E4MaiaContextFactory
 import ru.agentlab.maia.event.IEventBroker
 import ru.agentlab.maia.event.osgi.OsgiEventAdminBroker
 import ru.agentlab.maia.execution.pool.IMaiaExecutorPool

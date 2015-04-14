@@ -1,4 +1,4 @@
-package ru.agentlab.maia.e4
+package ru.agentlab.maia.context.injector.e4
 
 import java.util.HashMap
 import javax.inject.Inject
