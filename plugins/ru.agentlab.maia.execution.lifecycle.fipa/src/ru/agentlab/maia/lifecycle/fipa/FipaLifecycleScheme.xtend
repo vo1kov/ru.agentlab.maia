@@ -3,11 +3,11 @@ package ru.agentlab.maia.lifecycle.fipa
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.lifecycle.ILifecycleScheme
-import ru.agentlab.maia.lifecycle.ILifecycleState
-import ru.agentlab.maia.lifecycle.LifecycleScheme
-import ru.agentlab.maia.lifecycle.LifecycleState
-import ru.agentlab.maia.lifecycle.LifecycleTransition
+import ru.agentlab.maia.execution.lifecycle.ILifecycleScheme
+import ru.agentlab.maia.execution.lifecycle.ILifecycleState
+import ru.agentlab.maia.execution.lifecycle.LifecycleScheme
+import ru.agentlab.maia.execution.lifecycle.LifecycleState
+import ru.agentlab.maia.execution.lifecycle.LifecycleTransition
 
 class FipaLifecycleScheme extends LifecycleScheme {
 

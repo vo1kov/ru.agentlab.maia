@@ -1,4 +1,4 @@
-package ru.agentlab.maia.lifecycle
+package ru.agentlab.maia.execution.lifecycle
 
 import java.util.List
 

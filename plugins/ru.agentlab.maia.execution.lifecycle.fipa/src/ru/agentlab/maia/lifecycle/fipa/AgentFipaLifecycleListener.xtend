@@ -1,6 +1,6 @@
 package ru.agentlab.maia.lifecycle.fipa
 
-import ru.agentlab.maia.lifecycle.ILifecycleTransition
+import ru.agentlab.maia.execution.lifecycle.ILifecycleTransition
 
 class AgentFipaLifecycleListener extends RunAndTrack {
 

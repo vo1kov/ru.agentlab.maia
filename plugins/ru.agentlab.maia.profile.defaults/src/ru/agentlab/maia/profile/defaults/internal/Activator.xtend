@@ -22,11 +22,11 @@ import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
 import ru.agentlab.maia.context.service.MaiaContextServiceManagementService
 import ru.agentlab.maia.event.IEventBroker
 import ru.agentlab.maia.event.osgi.OsgiEventAdminBroker
+import ru.agentlab.maia.execution.lifecycle.ILifecycleScheme
+import ru.agentlab.maia.execution.lifecycle.ILifecycleService
+import ru.agentlab.maia.execution.lifecycle.LifecycleService
 import ru.agentlab.maia.execution.pool.IMaiaExecutorPool
 import ru.agentlab.maia.execution.pool.cached.MaiaCachedExecutorPool
-import ru.agentlab.maia.lifecycle.ILifecycleScheme
-import ru.agentlab.maia.lifecycle.ILifecycleService
-import ru.agentlab.maia.lifecycle.LifecycleService
 import ru.agentlab.maia.lifecycle.fipa.FipaLifecycleScheme
 
 class Activator implements BundleActivator {

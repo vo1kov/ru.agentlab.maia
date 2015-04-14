@@ -1,8 +1,6 @@
-package ru.agentlab.maia.lifecycle
+package ru.agentlab.maia.execution.lifecycle
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.lifecycle.ILifecycleState
-import ru.agentlab.maia.lifecycle.ILifecycleTransition
 
 @Accessors
 class LifecycleTransition implements ILifecycleTransition {
