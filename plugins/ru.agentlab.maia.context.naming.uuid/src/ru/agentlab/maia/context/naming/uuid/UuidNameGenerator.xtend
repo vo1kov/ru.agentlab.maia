@@ -1,4 +1,4 @@
-package ru.agentlab.maia.naming.uuid
+package ru.agentlab.maia.context.naming.uuid
 
 import java.util.UUID
 import ru.agentlab.maia.context.naming.IMaiaContextNameFactory

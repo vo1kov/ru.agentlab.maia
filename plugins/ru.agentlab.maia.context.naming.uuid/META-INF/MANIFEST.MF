@@ -9,5 +9,5 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  ru.agentlab.maia.context.naming;bundle-version="1.0.0"
-Export-Package: ru.agentlab.maia.naming.uuid
+Export-Package: ru.agentlab.maia.context.naming.uuid
 
