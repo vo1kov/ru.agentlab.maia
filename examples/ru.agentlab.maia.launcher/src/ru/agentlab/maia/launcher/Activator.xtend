@@ -5,9 +5,9 @@ import org.osgi.framework.BundleContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.initializer.IMaiaContextInitializerService
-import ru.agentlab.maia.context.agent.IMaiaContextAgentFactory
-import ru.agentlab.maia.context.container.IMaiaContextContainerFactory
-import ru.agentlab.maia.context.behaviour.IMaiaContextBehaviourFactory
+import ru.agentlab.maia.context.typing.agent.IMaiaContextAgentFactory
+import ru.agentlab.maia.context.typing.behaviour.IMaiaContextBehaviourFactory
+import ru.agentlab.maia.context.typing.container.IMaiaContextContainerFactory
 import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleService
 import ru.agentlab.maia.execution.lifecycle.fipa.FipaLifecycleScheme
 
@@ -31,22 +31,18 @@ class Activator implements BundleActivator {
 		val rootContextRef = context.getServiceReference(IMaiaContext)
 		val rootContext = context.getService(rootContextRef)
 //		LOGGER.info(rootContext.dump)
-
 		LOGGER.info("CREATE CONTAINER...")
 		val container = rootContext.get(IMaiaContextContainerFactory).createContainer(null)
 //		LOGGER.info(container.dump)
-
 		LOGGER.info("CREATE AGENT...")
 		val agent = container.get(IMaiaContextAgentFactory).createAgent(null) => [
 			get(IMaiaContextInitializerService).addInitializer(it, AgentExample)
 			get(IMaiaContextLifecycleService).state = FipaLifecycleScheme.STATE_ACTIVE
 		]
 //		LOGGER.info(agent.dump)
-		
 //		LOGGER.info("CREATE AGENT2...")
 //		val agent2 = container.get(IMaiaContextAgentFactory).createAgent(null)
 //		LOGGER.info(agent2.dump)
-
 		LOGGER.info("CREATE BEHAVIOUR...")
 		val behaviour = agent.get(IMaiaContextBehaviourFactory).createBehaviour(null)
 		LOGGER.info(behaviour.dump)

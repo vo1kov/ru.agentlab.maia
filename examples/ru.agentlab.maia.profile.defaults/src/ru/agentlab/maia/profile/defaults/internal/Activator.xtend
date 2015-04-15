@@ -3,30 +3,32 @@ package ru.agentlab.maia.profile.defaults.internal
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import ru.agentlab.maia.behaviour.scheme.lib.BehaviourSchemeOneShot
-import ru.agentlab.maia.context.agent.AgentFactory
-import ru.agentlab.maia.context.agent.MaiaAgentProfile
-import ru.agentlab.maia.context.behaviour.BehaviourFactory
-import ru.agentlab.maia.context.behaviour.MaiaBehaviourProfile
-import ru.agentlab.maia.context.container.ContainerFactory
-import ru.agentlab.maia.context.container.MaiaContainerProfile
 import ru.agentlab.maia.context.initializer.IMaiaContextInitializerService
 import ru.agentlab.maia.context.initializer.MaiaContextInitializerService
 import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
 import ru.agentlab.maia.context.naming.uuid.UuidNameGenerator
-import ru.agentlab.maia.context.root.MaiaRootContextProfile
+import ru.agentlab.maia.context.typing.agent.AgentFactory
+import ru.agentlab.maia.context.typing.agent.IMaiaContextAgentFactory
+import ru.agentlab.maia.context.typing.agent.MaiaAgentProfile
+import ru.agentlab.maia.context.typing.behaviour.BehaviourFactory
+import ru.agentlab.maia.context.typing.behaviour.IMaiaContextBehaviourFactory
+import ru.agentlab.maia.context.typing.behaviour.MaiaBehaviourProfile
+import ru.agentlab.maia.context.typing.container.ContainerFactory
+import ru.agentlab.maia.context.typing.container.IMaiaContextContainerFactory
+import ru.agentlab.maia.context.typing.container.MaiaContainerProfile
+import ru.agentlab.maia.context.typing.root.MaiaRootContextProfile
+import ru.agentlab.maia.execution.IMaiaExecutorService
+import ru.agentlab.maia.execution.MaiaExecutorService
+import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleScheme
+import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleService
 import ru.agentlab.maia.execution.lifecycle.LifecycleService
 import ru.agentlab.maia.execution.lifecycle.fipa.FipaLifecycleScheme
 import ru.agentlab.maia.execution.pool.IMaiaExecutorPool
 import ru.agentlab.maia.execution.pool.cached.MaiaCachedExecutorPool
-import ru.agentlab.maia.execution.scheduler.scheme.SchemeScheduler
-import ru.agentlab.maia.execution.scheduler.sequence.SequenceContextScheduler
-import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleScheme
-import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleService
 import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
 import ru.agentlab.maia.execution.scheduler.scheme.IMaiaExecutorSchedulerScheme
-import ru.agentlab.maia.context.agent.IMaiaContextAgentFactory
-import ru.agentlab.maia.context.container.IMaiaContextContainerFactory
-import ru.agentlab.maia.context.behaviour.IMaiaContextBehaviourFactory
+import ru.agentlab.maia.execution.scheduler.scheme.SchemeScheduler
+import ru.agentlab.maia.execution.scheduler.sequence.SequenceContextScheduler
 
 class Activator implements BundleActivator {
 
@@ -48,8 +50,8 @@ class Activator implements BundleActivator {
 		val containerProfile = new MaiaContainerProfile => [
 			putImplementation(IMaiaContextNameFactory, UuidNameGenerator)
 			putImplementation(IMaiaContextAgentFactory, AgentFactory)
-			putImplementation(IMaiaContextLifecycleScheme, FipaLifecycleScheme)
-			putImplementation(IMaiaContextLifecycleService, LifecycleService)
+//			putImplementation(IMaiaContextLifecycleScheme, FipaLifecycleScheme)
+//			putImplementation(IMaiaContextLifecycleService, LifecycleService)
 			putImplementation(IMaiaContextInitializerService, MaiaContextInitializerService)
 		]
 
@@ -59,11 +61,12 @@ class Activator implements BundleActivator {
 			putImplementation(IMaiaContextLifecycleScheme, FipaLifecycleScheme)
 			putImplementation(IMaiaContextLifecycleService, LifecycleService)
 			putImplementation(IMaiaExecutorScheduler, SequenceContextScheduler)
+			putImplementation(IMaiaExecutorService, MaiaExecutorService)
 			putImplementation(IMaiaContextInitializerService, MaiaContextInitializerService)
 		]
 
 		val behaviourProfile = new MaiaBehaviourProfile => [
-			putImplementation(IMaiaContextNameFactory, UuidNameGenerator)
+//			putImplementation(IMaiaContextNameFactory, UuidNameGenerator)
 			putImplementation(IMaiaContextLifecycleScheme, FipaLifecycleScheme)
 			putImplementation(IMaiaContextLifecycleService, LifecycleService)
 			putImplementation(IMaiaExecutorSchedulerScheme, BehaviourSchemeOneShot)
