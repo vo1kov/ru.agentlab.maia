@@ -12,7 +12,7 @@ import ru.agentlab.maia.event.IMaiaEventBroker
 import ru.agentlab.maia.event.IMaiaEventHandler
 import ru.agentlab.maia.event.osgi.internal.Activator
 
-class OsgiEventAdminMaiaBroker implements IMaiaEventBroker {
+class OsgiEventBroker implements IMaiaEventBroker {
 
 	Map<IMaiaEventHandler, ServiceRegistration<?>> registrations = new HashMap<IMaiaEventHandler, ServiceRegistration<?>>()
 

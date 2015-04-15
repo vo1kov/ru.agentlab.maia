@@ -4,7 +4,7 @@ import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import org.osgi.service.event.EventAdmin
 import ru.agentlab.maia.event.IMaiaEventBroker
-import ru.agentlab.maia.event.osgi.OsgiEventAdminMaiaBroker
+import ru.agentlab.maia.event.osgi.OsgiEventBroker
 
 class Activator implements BundleActivator {
 
@@ -17,7 +17,7 @@ class Activator implements BundleActivator {
 	override start(BundleContext context) throws Exception {
 		Activator.context = context
 		context => [
-			registerService(IMaiaEventBroker, new OsgiEventAdminMaiaBroker, null)
+			registerService(IMaiaEventBroker, new OsgiEventBroker, null)
 		]
 	}
 
