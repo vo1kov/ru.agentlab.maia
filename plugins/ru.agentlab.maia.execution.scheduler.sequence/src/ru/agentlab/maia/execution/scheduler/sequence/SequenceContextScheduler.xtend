@@ -20,16 +20,16 @@ class SequenceContextScheduler implements IMaiaUnboundedContextScheduler {
 	private transient Object contextsLock = new Object
 
 	private int currentIndex = 0
-	
+
 	@Inject
 	IMaiaContext conext
-	
+
 	@PostConstruct
-	def void init(){
+	def void init() {
 		conext.set(KEY_CURRENT_CONTEXT, null)
 	}
-	
-	override IMaiaContext getCurrentContext(){
+
+	override IMaiaContext getCurrentContext() {
 		return conext.get(KEY_CURRENT_CONTEXT) as IMaiaContext
 	}
 
@@ -99,7 +99,6 @@ class SequenceContextScheduler implements IMaiaUnboundedContextScheduler {
 //			doNotify
 //		}
 //	}
-
 	/** 
 	 * Removes a specified context from the scheduler
 	 */
@@ -168,9 +167,13 @@ class SequenceContextScheduler implements IMaiaUnboundedContextScheduler {
 //			suspendLock.wait
 //		}
 //	}
-	override getNextContext() {
-		currentIndex = (currentIndex + 1) % readyContexts.size()
-		return readyContexts.get(currentIndex)
+	override synchronized getNextContext() {
+		if (readyContexts.empty) {
+			return null
+		} else {
+			currentIndex = (currentIndex + 1) % readyContexts.size()
+			return readyContexts.get(currentIndex)
+		}
 	}
 
 }
