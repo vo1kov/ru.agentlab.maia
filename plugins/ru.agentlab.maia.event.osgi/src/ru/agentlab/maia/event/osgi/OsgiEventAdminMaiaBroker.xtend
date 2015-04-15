@@ -5,7 +5,6 @@ import java.util.Hashtable
 import java.util.Map
 import javax.annotation.PreDestroy
 import org.osgi.framework.ServiceRegistration
-import org.osgi.service.event.Event
 import org.osgi.service.event.EventConstants
 import org.osgi.service.event.EventHandler
 import ru.agentlab.maia.event.IMaiaEvent
@@ -18,7 +17,7 @@ class OsgiEventAdminMaiaBroker implements IMaiaEventBroker {
 	Map<IMaiaEventHandler, ServiceRegistration<?>> registrations = new HashMap<IMaiaEventHandler, ServiceRegistration<?>>()
 
 	override boolean send(IMaiaEvent e) {
-		var event = new Event(e.topic, e.data)
+		var event = new OsgiEvent(e)
 		var eventAdmin = Activator.getEventAdmin()
 		if (eventAdmin == null) {
 			// logger.error(NLS.bind(ServiceMessages.NO_EVENT_ADMIN,
@@ -30,7 +29,7 @@ class OsgiEventAdminMaiaBroker implements IMaiaEventBroker {
 	}
 
 	override boolean post(IMaiaEvent e) {
-		var event = new Event(e.topic, e.data)
+		var event = new OsgiEvent(e)
 		var eventAdmin = Activator.getEventAdmin()
 		if (eventAdmin == null) {
 			// logger.error(NLS.bind(ServiceMessages.NO_EVENT_ADMIN,

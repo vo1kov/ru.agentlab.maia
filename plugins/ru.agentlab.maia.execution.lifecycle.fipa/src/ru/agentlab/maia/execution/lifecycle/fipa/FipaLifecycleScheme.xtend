@@ -55,8 +55,11 @@ class FipaLifecycleScheme extends LifecycleScheme {
 		val scheduler = context.parent.get(IMaiaExecutorScheduler)
 
 		eventBroker.subscribe(MaiaLifecycleStateChangeEvent.TOPIC, [
+			println("event " + it)
 			val event = it as MaiaLifecycleStateChangeEvent
+			println("event " + it)
 			val from = event.fromState
+			println("event " + it)
 			val to = event.toState
 			if (from == TRANSITION_INVOKE.fromState && to == TRANSITION_INVOKE.toState) {
 				// invoke

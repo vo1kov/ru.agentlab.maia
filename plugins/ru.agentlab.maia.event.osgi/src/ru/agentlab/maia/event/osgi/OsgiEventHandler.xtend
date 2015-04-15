@@ -14,16 +14,12 @@ class OsgiEventHandler implements EventHandler {
 		this.handler = handler
 	}
 
-//	override handle(IMaiaEvent event) {
-//		if (event instanceof OsgiEvent) {
-//			val osgiEvent = event.getOsgiEvent
-//			handler.handleEvent(osgiEvent)
-//		} else {
-//			throw new IllegalStateException("Non OSGI event is not supported with installed Broker")
-//		}
-//	}
 	override handleEvent(Event event) {
-		handler.handle(new OsgiEvent(event))
+		if (event instanceof OsgiEvent) {
+			handler.handle(event.event)
+		} else {
+			throw new IllegalStateException
+		}
 	}
 
 }
