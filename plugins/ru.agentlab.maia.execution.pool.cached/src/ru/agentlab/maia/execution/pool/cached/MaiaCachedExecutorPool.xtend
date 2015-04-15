@@ -11,5 +11,9 @@ class MaiaCachedExecutorPool implements IMaiaExecutorPool {
 	override submit(Runnable r) {
 		return exe.submit(r)
 	}
+	
+	override isFixedSize() {
+		return false
+	}
 
 }

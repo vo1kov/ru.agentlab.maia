@@ -12,4 +12,7 @@ class MaiaFixedExecutorPool implements IMaiaExecutorPool {
 		return exe.submit(r)
 	}
 
+	override isFixedSize() {
+		return true
+	}
 }

@@ -20,7 +20,11 @@ class MaiaExecutorService implements IMaiaExecutorService {
 
 	@PostConstruct
 	def void init() {
-		context.set(IMaiaExecutorRunnable, new MaiaExecutorRunnable(context))
+		if(pool.isFixedSize) {
+			context.set(IMaiaExecutorRunnable, new MaiaExecutorFixedRunnable(context))
+		} else {
+			context.set(IMaiaExecutorRunnable, new MaiaExecutorUnfixedRunnable(context))
+		}
 	}
 
 	def Runnable getRunnable() {
