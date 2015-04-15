@@ -5,6 +5,7 @@ import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.action.IMaiaContextAction
 import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
 import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
+import ru.agentlab.maia.context.typing.IMaiaContextTyping
 
 class MaiaExecutorRunnable implements IMaiaExecutorRunnable {
 
@@ -17,8 +18,9 @@ class MaiaExecutorRunnable implements IMaiaExecutorRunnable {
 	}
 
 	override run() {
-		val contextType = context.get(IMaiaContextNameFactory.KEY_NAME) as String
-		Thread.currentThread.name = context.get(IMaiaContextNameFactory.KEY_NAME) as String
+		val contextType = context.get(IMaiaContextTyping.KEY_TYPE) as String
+		val contextName = context.get(IMaiaContextNameFactory.KEY_NAME) as String
+		Thread.currentThread.name = contextType + ": " + contextName
 		LOGGER.debug("Start Executor Runnable...")
 		var currentContext = context
 		var action = currentContext.get(IMaiaContextAction)

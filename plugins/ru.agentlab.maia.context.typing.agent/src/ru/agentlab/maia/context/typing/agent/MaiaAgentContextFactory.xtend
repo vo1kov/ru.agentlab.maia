@@ -7,18 +7,17 @@ import ru.agentlab.maia.context.IMaiaContextFactory
 import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
 import ru.agentlab.maia.context.service.Create
 import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
+import ru.agentlab.maia.context.typing.IMaiaContextTyping
 
 /**
  * Factory for creating Agent contexts
  * 
  * @author <a href='shishkin_dimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
-class AgentFactory implements IMaiaContextAgentFactory {
+class MaiaAgentContextFactory implements IMaiaAgentContextFactory {
 
-	val static LOGGER = LoggerFactory.getLogger(AgentFactory)
+	val static LOGGER = LoggerFactory.getLogger(MaiaAgentContextFactory)
 
-	val static String KEY_TYPE = "ru.agentlab.maia.context.typing|type.value"
-	
 	@Inject
 	IMaiaContext context
 
@@ -68,7 +67,7 @@ class AgentFactory implements IMaiaContextAgentFactory {
 		LOGGER.info("Create new context...")
 		val agentContext = contextFactory.createChild(context, "Context for Agent: " + name) => [
 			set(IMaiaContextNameFactory.KEY_NAME, name)
-			set(KEY_TYPE, "AGENT")
+			set(IMaiaContextTyping.KEY_TYPE, "Agent")
 		]
 
 		LOGGER.info("Create Agent specific services...")

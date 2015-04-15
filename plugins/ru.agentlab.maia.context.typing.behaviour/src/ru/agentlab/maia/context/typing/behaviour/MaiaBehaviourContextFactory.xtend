@@ -6,10 +6,11 @@ import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.IMaiaContextFactory
 import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
 import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
+import ru.agentlab.maia.context.typing.IMaiaContextTyping
 
-class BehaviourFactory implements IMaiaContextBehaviourFactory {
+class MaiaBehaviourContextFactory implements IMaiaBehaviourContextFactory {
 
-	val static LOGGER = LoggerFactory.getLogger(BehaviourFactory)
+	val static LOGGER = LoggerFactory.getLogger(MaiaBehaviourContextFactory)
 
 	@Inject
 	IMaiaContext context
@@ -43,6 +44,7 @@ class BehaviourFactory implements IMaiaContextBehaviourFactory {
 		LOGGER.info("Create Behaviour Context...")
 		val behaviourContext = contextFactory.createChild(context, "Context for Behaviour: " + name) => [
 			set(IMaiaContextNameFactory.KEY_NAME, name)
+			set(IMaiaContextTyping.KEY_TYPE, "Behaviour")
 		]
 
 		LOGGER.info("Create Behaviour specific services...")

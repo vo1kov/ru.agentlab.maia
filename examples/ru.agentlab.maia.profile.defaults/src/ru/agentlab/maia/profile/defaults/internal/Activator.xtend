@@ -7,14 +7,8 @@ import ru.agentlab.maia.context.initializer.IMaiaContextInitializerService
 import ru.agentlab.maia.context.initializer.MaiaContextInitializerService
 import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
 import ru.agentlab.maia.context.naming.uuid.UuidNameGenerator
-import ru.agentlab.maia.context.typing.agent.AgentFactory
-import ru.agentlab.maia.context.typing.agent.IMaiaContextAgentFactory
 import ru.agentlab.maia.context.typing.agent.MaiaAgentProfile
-import ru.agentlab.maia.context.typing.behaviour.BehaviourFactory
-import ru.agentlab.maia.context.typing.behaviour.IMaiaContextBehaviourFactory
 import ru.agentlab.maia.context.typing.behaviour.MaiaBehaviourProfile
-import ru.agentlab.maia.context.typing.container.ContainerFactory
-import ru.agentlab.maia.context.typing.container.IMaiaContextContainerFactory
 import ru.agentlab.maia.context.typing.container.MaiaContainerProfile
 import ru.agentlab.maia.context.typing.root.MaiaRootContextProfile
 import ru.agentlab.maia.execution.IMaiaExecutorService
@@ -29,6 +23,12 @@ import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
 import ru.agentlab.maia.execution.scheduler.scheme.IMaiaExecutorSchedulerScheme
 import ru.agentlab.maia.execution.scheduler.scheme.SchemeScheduler
 import ru.agentlab.maia.execution.scheduler.sequence.SequenceContextScheduler
+import ru.agentlab.maia.context.typing.agent.IMaiaAgentContextFactory
+import ru.agentlab.maia.context.typing.agent.MaiaAgentContextFactory
+import ru.agentlab.maia.context.typing.behaviour.IMaiaBehaviourContextFactory
+import ru.agentlab.maia.context.typing.behaviour.MaiaBehaviourContextFactory
+import ru.agentlab.maia.context.typing.container.IMaiaContainerContextFactory
+import ru.agentlab.maia.context.typing.container.MaiaContainerContextFactory
 
 class Activator implements BundleActivator {
 
@@ -43,13 +43,13 @@ class Activator implements BundleActivator {
 
 		val rootProfile = new MaiaRootContextProfile => [
 			putImplementation(IMaiaContextNameFactory, UuidNameGenerator)
-			putImplementation(IMaiaContextContainerFactory, ContainerFactory)
+			putImplementation(IMaiaContainerContextFactory, MaiaContainerContextFactory)
 			putImplementation(IMaiaExecutorPool, MaiaCachedExecutorPool)
 		]
 
 		val containerProfile = new MaiaContainerProfile => [
 			putImplementation(IMaiaContextNameFactory, UuidNameGenerator)
-			putImplementation(IMaiaContextAgentFactory, AgentFactory)
+			putImplementation(IMaiaAgentContextFactory, MaiaAgentContextFactory)
 //			putImplementation(IMaiaContextLifecycleScheme, FipaLifecycleScheme)
 //			putImplementation(IMaiaContextLifecycleService, LifecycleService)
 			putImplementation(IMaiaContextInitializerService, MaiaContextInitializerService)
@@ -57,7 +57,7 @@ class Activator implements BundleActivator {
 
 		val agentProfile = new MaiaAgentProfile => [
 			putImplementation(IMaiaContextNameFactory, UuidNameGenerator)
-			putImplementation(IMaiaContextBehaviourFactory, BehaviourFactory)
+			putImplementation(IMaiaBehaviourContextFactory, MaiaBehaviourContextFactory)
 			putImplementation(IMaiaContextLifecycleScheme, FipaLifecycleScheme)
 			putImplementation(IMaiaContextLifecycleService, LifecycleService)
 			putImplementation(IMaiaExecutorScheduler, SequenceContextScheduler)
