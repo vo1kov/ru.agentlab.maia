@@ -1,5 +1,7 @@
 package ru.agentlab.maia.context.injector.e4
 
+import java.util.ArrayList
+import java.util.Collection
 import javax.inject.Inject
 import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
@@ -51,6 +53,13 @@ class E4MaiaContextFactory implements IMaiaContextFactory {
 			if (get(IMaiaContextInjector) == null) {
 				parent.set(IMaiaContextInjector, new E4MaiaContextInjector(broker))
 			}
+			set(IMaiaContext.KEY_PARENT_CONTEXT, parent)
+			var childs = parent.getLocal(IMaiaContext.KEY_CHILD_CONTEXTS) as Collection<IMaiaContext>
+			if (childs == null) {
+				childs = new ArrayList<IMaiaContext>
+			}
+			childs += it
+			parent.set(IMaiaContext.KEY_CHILD_CONTEXTS, childs)
 		]
 	}
 

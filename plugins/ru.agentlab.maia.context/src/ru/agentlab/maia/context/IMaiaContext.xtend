@@ -1,8 +1,16 @@
 package ru.agentlab.maia.context
 
+import java.util.Collection
+
 interface IMaiaContext {
 	
+	val public static String KEY_PARENT_CONTEXT = "ru.agentlab.maia.context|parent.context"
+
+	val public static String KEY_CHILD_CONTEXTS = "ru.agentlab.maia.context|child.context"
+	
 	def public IMaiaContext getParent()
+
+	def public Collection<IMaiaContext> getChilds()
 
 	/**
 	 * Returns the context value associated with the given name. Returns <code>null</code> if no
@@ -94,7 +102,7 @@ interface IMaiaContext {
 	 * @see #set(String, Object)
 	 */
 	def <T> void set(Class<T> clazz, T value);
-	
+
 	def String dump()
 
 }

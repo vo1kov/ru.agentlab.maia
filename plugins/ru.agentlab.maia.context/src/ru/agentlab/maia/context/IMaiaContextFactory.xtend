@@ -31,7 +31,8 @@ interface IMaiaContextFactory {
 	 * @return Context without any additional services
 	 */
 	def IMaiaContext createChild(IMaiaContext parent, String name)
-
+	
+	@Deprecated
 	def IMaiaContext createOsgiContext(BundleContext bundleContext)
 
 }

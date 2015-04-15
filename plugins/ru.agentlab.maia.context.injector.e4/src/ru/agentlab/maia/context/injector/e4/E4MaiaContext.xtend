@@ -1,5 +1,6 @@
 package ru.agentlab.maia.context.injector.e4
 
+import java.util.Collection
 import javax.inject.Inject
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.eclipse.e4.core.internal.contexts.EclipseContext
@@ -23,7 +24,11 @@ class E4MaiaContext implements IMaiaContext {
 	}
 
 	override getParent() {
-		return context.parent?.get(IMaiaContext)
+		return get(KEY_PARENT_CONTEXT) as IMaiaContext
+	}
+
+	override getChilds() {
+		return get(KEY_CHILD_CONTEXTS) as Collection<IMaiaContext>
 	}
 
 	override get(String name) {
@@ -89,7 +94,7 @@ class E4MaiaContext implements IMaiaContext {
 			broker.post(new MaiaContextChangeObjectEvent(old, value))
 		}
 	}
-	
+
 	override toString() {
 		context.toString
 	}
@@ -103,7 +108,9 @@ class E4MaiaContext implements IMaiaContext {
 			result.newLine
 			val list = (current.context as EclipseContext).localData.keySet.filter [
 				it != "org.eclipse.e4.core.internal.contexts.ContextObjectSupplier" &&
-					it != "ru.agentlab.maia.context.IMaiaContext" && it != "debugString" && it != "parentContext"
+//				it != "ru.agentlab.maia.context.IMaiaContext" && 
+				it != "debugString" && 
+				it != "parentContext"
 			].sortWith [ a, b |
 				a.compareTo(b)
 			]
