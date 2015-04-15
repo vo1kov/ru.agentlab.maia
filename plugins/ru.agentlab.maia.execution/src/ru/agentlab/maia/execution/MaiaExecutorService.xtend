@@ -1,10 +1,11 @@
 package ru.agentlab.maia.execution
 
+import javax.annotation.PostConstruct
 import javax.inject.Inject
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.execution.action.IMaiaContextAction
+import ru.agentlab.maia.event.IMaiaEventBroker
+import ru.agentlab.maia.execution.event.MaiaExecutorSubmitEvent
 import ru.agentlab.maia.execution.pool.IMaiaExecutorPool
-import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
 
 class MaiaExecutorService implements IMaiaExecutorService {
 
@@ -14,40 +15,25 @@ class MaiaExecutorService implements IMaiaExecutorService {
 	@Inject
 	IMaiaExecutorPool pool
 
+	@Inject
+	IMaiaEventBroker eventBroker
+
+	@PostConstruct
+	def void init() {
+		context.set(IMaiaExecutorRunnable, new MaiaExecutorRunnable(context))
+	}
+
+	def Runnable getRunnable() {
+		context.get(IMaiaExecutorRunnable)
+	}
+
 	override void submitThread() {
 		if (pool == null) {
 			throw new IllegalStateException("Executor Pool is null")
 		}
-		pool.submit(
-			new Runnable {
-				override run() {
-					// test home context
-					var currentContext = context
-					var action = currentContext.get(IMaiaContextAction)
-					while (currentContext != null && action == null) {
-						val scheduler = currentContext.get(IMaiaExecutorScheduler)
-						synchronized (scheduler) {
-							// get next context via scheduler that have no its own Executor service
-							currentContext = scheduler.nextContext
-							var executor = currentContext.get(IMaiaExecutorService)
-							// find context without it's own executor 
-							while (executor != null) {
+		pool.submit(runnable)
+		eventBroker.post(new MaiaExecutorSubmitEvent(context))
 
-								// TODO: fix possible infinite loop
-								currentContext = scheduler.nextContext
-								executor = currentContext.get(IMaiaExecutorService)
-							}
-							action = currentContext.get(IMaiaContextAction)
-						}
-					}
-					if (action != null) {
-						action.beforeRun
-						action.run
-						action.afterRun
-					}
-				}
-			}
-		)
 	// TODO: add this runnable to pool after execution
 	}
 
