@@ -5,13 +5,18 @@ import javax.inject.Inject
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.event.IMaiaEventBroker
 import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleScheme
+import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleState
+import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleTransition
 import ru.agentlab.maia.execution.lifecycle.LifecycleScheme
 import ru.agentlab.maia.execution.lifecycle.LifecycleState
 import ru.agentlab.maia.execution.lifecycle.LifecycleTransition
 import ru.agentlab.maia.execution.lifecycle.event.MaiaLifecycleStateChangeEvent
 import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
+import org.slf4j.LoggerFactory
 
 class FipaLifecycleScheme extends LifecycleScheme {
+	
+	val static LOGGER = LoggerFactory.getLogger(FipaLifecycleScheme)
 
 	val public static STATE_ACTIVE = new LifecycleState("ACTIVE")
 
@@ -55,30 +60,34 @@ class FipaLifecycleScheme extends LifecycleScheme {
 		val scheduler = context.parent.get(IMaiaExecutorScheduler)
 
 		eventBroker.subscribe(MaiaLifecycleStateChangeEvent.TOPIC, [
-			println("event " + it)
 			val event = it as MaiaLifecycleStateChangeEvent
-			println("event " + it)
 			val from = event.fromState
-			println("event " + it)
 			val to = event.toState
-			if (from == TRANSITION_INVOKE.fromState && to == TRANSITION_INVOKE.toState) {
-				// invoke
-				println("INVOKE")
-//				scheduler.start
-			} else if (from == TRANSITION_SUSPEND.fromState && to == TRANSITION_SUSPEND.toState) {
-				// suspend
-				println("SUSPEND")
-				scheduler.remove(context)
-			} else if (from == TRANSITION_RESUME.fromState && to == TRANSITION_RESUME.toState) {
-				// resume
-				println("RESUME")
-//				scheduler.restartAll
-			} else if (from == TRANSITION_DELETE.fromState && to == TRANSITION_DELETE.toState) {
-				// delete
-				println("DELETE")
-//				scheduler.removeAll
+			if (context == event.context) {
+				if (TRANSITION_INVOKE.isTransition(from, to)) {
+					// invoke
+					LOGGER.info("INVOKE")
+				// scheduler.start
+				} else if (TRANSITION_SUSPEND.isTransition(from, to)) {
+					// suspend
+					LOGGER.info("SUSPEND")
+					scheduler.remove(context)
+				} else if (TRANSITION_RESUME.isTransition(from, to)) {
+					// resume
+					LOGGER.info("RESUME")
+				// scheduler.restartAll
+				} else if (TRANSITION_DELETE.isTransition(from, to)) {
+					// delete
+					LOGGER.info("DELETE")
+				// scheduler.removeAll
+				}
 			}
 		])
+	}
+
+	def boolean isTransition(IMaiaContextLifecycleTransition transition, IMaiaContextLifecycleState fromState,
+		IMaiaContextLifecycleState toState) {
+		fromState == transition.fromState && toState == transition.toState
 	}
 
 }

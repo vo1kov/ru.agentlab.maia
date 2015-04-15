@@ -4,9 +4,12 @@ import java.util.HashMap
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.event.IMaiaEvent
 import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleState
+import ru.agentlab.maia.context.IMaiaContext
 
 @Accessors
 class MaiaLifecycleStateChangeEvent implements IMaiaEvent {
+	
+	val static protected String KEY_CONTEXT = "context"
 
 	val static protected String KEY_FROM_STATE = "from.state"
 
@@ -16,8 +19,9 @@ class MaiaLifecycleStateChangeEvent implements IMaiaEvent {
 
 	val data = new HashMap<String, Object>
 
-	new(IMaiaContextLifecycleState fromState, IMaiaContextLifecycleState toState) {
+	new(IMaiaContext context, IMaiaContextLifecycleState fromState, IMaiaContextLifecycleState toState) {
 		data => [
+			put(KEY_CONTEXT, context)
 			put(KEY_FROM_STATE, fromState)
 			put(KEY_TO_STATE, toState)
 		]
@@ -29,6 +33,10 @@ class MaiaLifecycleStateChangeEvent implements IMaiaEvent {
 
 	def IMaiaContextLifecycleState getToState() {
 		return data.get(KEY_TO_STATE) as IMaiaContextLifecycleState
+	}
+
+	def IMaiaContext getContext() {
+		return data.get(KEY_CONTEXT) as IMaiaContext
 	}
 	
 	override getTopic() {

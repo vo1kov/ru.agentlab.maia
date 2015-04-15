@@ -56,7 +56,7 @@ class LifecycleService implements IMaiaContextLifecycleService {
 	def void internalTransit(IMaiaContextLifecycleTransition transition) {
 		if (currentState == transition.fromState) {
 			context.set(IMaiaContextLifecycleState, transition.toState)
-			eventBroker.post(new MaiaLifecycleStateChangeEvent(transition.fromState, transition.toState))
+			eventBroker.post(new MaiaLifecycleStateChangeEvent(context, transition.fromState, transition.toState))
 		} else {
 			throw new IllegalStateException(
 				"Can't invoke [" + transition + "] Transition from current state [" + currentState + "]")
