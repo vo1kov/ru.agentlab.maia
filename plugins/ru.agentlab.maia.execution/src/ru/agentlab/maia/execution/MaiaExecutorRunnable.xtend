@@ -11,7 +11,7 @@ class MaiaExecutorRunnable implements IMaiaExecutorRunnable {
 
 	val static LOGGER = LoggerFactory.getLogger(MaiaExecutorRunnable)
 
-	IMaiaContext context
+	var IMaiaContext context
 
 	new(IMaiaContext context) {
 		this.context = context
@@ -21,19 +21,22 @@ class MaiaExecutorRunnable implements IMaiaExecutorRunnable {
 		val contextType = context.get(IMaiaContextTyping.KEY_TYPE) as String
 		val contextName = context.get(IMaiaContextNameFactory.KEY_NAME) as String
 		Thread.currentThread.name = contextType + ": " + contextName
+		
 		LOGGER.debug("Start Executor Runnable...")
 		var currentContext = context
+		LOGGER.debug("Current Context: [{}]", currentContext)
 		var action = currentContext.get(IMaiaContextAction)
-		LOGGER.debug("Test current context action...")
-		LOGGER.debug("	Current action [{}]", action)
+		LOGGER.debug("	current action [{}]", action)
 		while (currentContext != null && action == null) {
+			
+//			Thread.sleep(20000)
+			
 			val scheduler = currentContext.get(IMaiaExecutorScheduler)
-			LOGGER.debug("Get context Scheduler...")
-			LOGGER.debug("	Current Scheduler [{}]", scheduler)
+			LOGGER.debug("	current scheduler [{}]", scheduler)
 //			synchronized (scheduler) {
-				// get next context via scheduler that have no its own Executor service
-				currentContext = scheduler.nextContext
-				LOGGER.debug("	Current context: [{}]...", currentContext)
+			// get next context via scheduler that have no its own Executor service
+			currentContext = scheduler.nextContext
+			LOGGER.debug("Current Context: [{}]", currentContext)
 //				var executor = currentContext.get(IMaiaExecutorService)
 //				// find context without it's own executor 
 //				while (executor != null) {
@@ -42,8 +45,8 @@ class MaiaExecutorRunnable implements IMaiaExecutorRunnable {
 //					currentContext = scheduler.nextContext
 //					executor = currentContext.get(IMaiaExecutorService)
 //				}
-				action = currentContext.get(IMaiaContextAction)
-				LOGGER.debug("	Current action: [{}]...", action)
+			action = currentContext.get(IMaiaContextAction)
+			LOGGER.debug("	current action [{}]", action)
 //			}
 		}
 		if (action != null) {
