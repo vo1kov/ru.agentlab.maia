@@ -10,6 +10,7 @@ import ru.agentlab.maia.context.typing.behaviour.MaiaBehaviourProfile
 import ru.agentlab.maia.context.typing.container.MaiaContainerProfile
 import ru.agentlab.maia.context.typing.root.internal.Activator
 import ru.agentlab.maia.event.IMaiaEventBroker
+import ru.agentlab.maia.context.typing.IMaiaContextTyping
 
 /**
  * Factory for creating Agent-Contexts
@@ -27,7 +28,7 @@ class MaiaRootContextFactory {
 		val rootProfile = Activator.getService(MaiaRootContextProfile)
 		val contextServiceManagementService = Activator.getService(IMaiaContextServiceManagementService)
 		val broker = Activator.getService(IMaiaEventBroker)
-		val rootContext = contextFactory.createContext("Maia Root context") => [
+		val rootContext = contextFactory.createContext("MAIA Root context") => [
 			set(IMaiaEventBroker, broker)
 			set(IMaiaContextFactory, contextFactory)
 			set(IMaiaContextInjector, Activator.getService(IMaiaContextInjector))
@@ -37,6 +38,7 @@ class MaiaRootContextFactory {
 			set(MaiaContainerProfile, Activator.getService(MaiaContainerProfile))
 			set(MaiaAgentProfile, Activator.getService(MaiaAgentProfile))
 			set(MaiaBehaviourProfile, Activator.getService(MaiaBehaviourProfile))
+			set(IMaiaContextTyping.KEY_TYPE, "MAIA Root")
 		]
 
 		LOGGER.info("Create Root context specific services...")

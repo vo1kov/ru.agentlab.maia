@@ -65,9 +65,9 @@ class MaiaAgentContextFactory implements IMaiaAgentContextFactory {
 		LOGGER.debug("	generated name: [{}]", name)
 
 		LOGGER.info("Create new context...")
-		val agentContext = contextFactory.createChild(context, "Context for Agent: " + name) => [
+		val agentContext = contextFactory.createChild(context, "MAIA Agent context: " + name) => [
 			set(IMaiaContextNameFactory.KEY_NAME, name)
-			set(IMaiaContextTyping.KEY_TYPE, "Agent")
+			set(IMaiaContextTyping.KEY_TYPE, "MAIA Agent")
 		]
 
 		LOGGER.info("Create Agent specific services...")

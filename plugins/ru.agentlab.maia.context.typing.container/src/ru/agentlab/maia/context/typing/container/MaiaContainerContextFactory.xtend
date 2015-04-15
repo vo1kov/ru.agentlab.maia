@@ -49,9 +49,9 @@ class MaiaContainerContextFactory implements IMaiaContainerContextFactory {
 		LOGGER.debug("	generated name: [{}]", name)
 
 		LOGGER.info("Create Container Context...")
-		val containerContext = contextFactory.createChild(context, "Context for Container: " + name) => [
+		val containerContext = contextFactory.createChild(context, "MAIA Container context: " + name) => [
 			set(IMaiaContextNameFactory.KEY_NAME, name)
-			set(IMaiaContextTyping.KEY_TYPE, "Container")
+			set(IMaiaContextTyping.KEY_TYPE, "MAIA Container")
 		]
 
 		LOGGER.info("Create Container specific services...")
