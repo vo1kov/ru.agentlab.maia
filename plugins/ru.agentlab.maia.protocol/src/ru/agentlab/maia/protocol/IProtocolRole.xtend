@@ -1,5 +1,7 @@
 package ru.agentlab.maia.protocol
 
+import ru.agentlab.maia.execution.scheduler.scheme.IMaiaExecutorSchedulerScheme
+
 interface IProtocolRole {
 
 	enum Cardinality {
@@ -11,9 +13,9 @@ interface IProtocolRole {
 
 	def void setName(String name)
 
-	def IContextSchedulerScheme getBehaviourScheme()
+	def IMaiaExecutorSchedulerScheme getSchedulerScheme()
 
-	def void setBehaviourScheme(IContextSchedulerScheme scheme)
+	def void setSchedulerScheme(IMaiaExecutorSchedulerScheme scheme)
 
 	def Cardinality getCardinality()
 

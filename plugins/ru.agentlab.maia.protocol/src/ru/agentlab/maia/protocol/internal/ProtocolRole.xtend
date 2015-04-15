@@ -1,6 +1,7 @@
 package ru.agentlab.maia.protocol.internal
 
 import org.eclipse.xtend.lib.annotations.Accessors
+import ru.agentlab.maia.execution.scheduler.scheme.IMaiaExecutorSchedulerScheme
 import ru.agentlab.maia.protocol.IProtocolRole
 
 @Accessors
@@ -8,13 +9,13 @@ class ProtocolRole implements IProtocolRole {
 
 	String name
 
-	IContextSchedulerScheme behaviourScheme
+	IMaiaExecutorSchedulerScheme schedulerScheme
 
 	Cardinality cardinality = Cardinality.SINGLE
 
-	new(String name, IContextSchedulerScheme behaviourScheme, Cardinality cardinality) {
+	new(String name, IMaiaExecutorSchedulerScheme schedulerScheme, Cardinality cardinality) {
 		this.name = name
-		this.behaviourScheme = behaviourScheme
+		this.schedulerScheme = schedulerScheme
 		this.cardinality = cardinality
 	}
 
