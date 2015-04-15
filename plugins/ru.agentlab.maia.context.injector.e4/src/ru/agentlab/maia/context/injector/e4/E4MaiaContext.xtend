@@ -89,6 +89,10 @@ class E4MaiaContext implements IMaiaContext {
 			broker.post(new MaiaContextChangeObjectEvent(old, value))
 		}
 	}
+	
+	override toString() {
+		context.toString
+	}
 
 	override String dump() {
 		var StringConcatenation result = ''''''
