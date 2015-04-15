@@ -13,6 +13,7 @@ import ru.agentlab.maia.execution.lifecycle.LifecycleTransition
 import ru.agentlab.maia.execution.lifecycle.event.MaiaLifecycleStateChangeEvent
 import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
 import org.slf4j.LoggerFactory
+import ru.agentlab.maia.execution.IMaiaExecutorService
 
 class FipaLifecycleScheme extends LifecycleScheme {
 	
@@ -67,6 +68,8 @@ class FipaLifecycleScheme extends LifecycleScheme {
 				if (TRANSITION_INVOKE.isTransition(from, to)) {
 					// invoke
 					LOGGER.info("INVOKE")
+					val exeService = context.get(IMaiaExecutorService)
+					exeService.submitThread
 				// scheduler.start
 				} else if (TRANSITION_SUSPEND.isTransition(from, to)) {
 					// suspend
