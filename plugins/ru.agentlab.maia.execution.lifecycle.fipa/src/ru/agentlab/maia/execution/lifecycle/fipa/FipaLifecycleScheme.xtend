@@ -2,8 +2,10 @@ package ru.agentlab.maia.execution.lifecycle.fipa
 
 import javax.annotation.PostConstruct
 import javax.inject.Inject
+import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.event.IMaiaEventBroker
+import ru.agentlab.maia.execution.IMaiaExecutorService
 import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleScheme
 import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleState
 import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleTransition
@@ -11,12 +13,9 @@ import ru.agentlab.maia.execution.lifecycle.LifecycleScheme
 import ru.agentlab.maia.execution.lifecycle.LifecycleState
 import ru.agentlab.maia.execution.lifecycle.LifecycleTransition
 import ru.agentlab.maia.execution.lifecycle.event.MaiaLifecycleStateChangeEvent
-import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
-import org.slf4j.LoggerFactory
-import ru.agentlab.maia.execution.IMaiaExecutorService
 
 class FipaLifecycleScheme extends LifecycleScheme {
-	
+
 	val static LOGGER = LoggerFactory.getLogger(FipaLifecycleScheme)
 
 	val public static STATE_ACTIVE = new LifecycleState("ACTIVE")
@@ -58,8 +57,7 @@ class FipaLifecycleScheme extends LifecycleScheme {
 		transitions += TRANSITION_RESUME
 		transitions += TRANSITION_DELETE
 
-		val scheduler = context.parent.get(IMaiaExecutorScheduler)
-
+//		val scheduler = context.parent.get(IMaiaExecutorScheduler)
 		eventBroker.subscribe(MaiaLifecycleStateChangeEvent.TOPIC, [
 			val event = it as MaiaLifecycleStateChangeEvent
 			val from = event.fromState
@@ -74,7 +72,7 @@ class FipaLifecycleScheme extends LifecycleScheme {
 				} else if (TRANSITION_SUSPEND.isTransition(from, to)) {
 					// suspend
 					LOGGER.info("SUSPEND")
-					scheduler.remove(context)
+//					scheduler.remove(context)
 				} else if (TRANSITION_RESUME.isTransition(from, to)) {
 					// resume
 					LOGGER.info("RESUME")

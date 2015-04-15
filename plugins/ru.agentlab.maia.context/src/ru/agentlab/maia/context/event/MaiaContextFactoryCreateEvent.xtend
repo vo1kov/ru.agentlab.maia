@@ -22,8 +22,8 @@ class MaiaContextFactoryCreateEvent implements IMaiaEvent {
 		return TOPIC
 	}
 
-	def Object getContext() {
-		return data.get(KEY_CONTEXT)
+	def IMaiaContext getContext() {
+		return data.get(KEY_CONTEXT) as IMaiaContext
 	}
 
 }

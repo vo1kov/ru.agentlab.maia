@@ -1,5 +1,6 @@
 package ru.agentlab.maia.context.injector.e4
 
+import java.util.ArrayList
 import java.util.Collection
 import javax.inject.Inject
 import org.eclipse.e4.core.contexts.IEclipseContext
@@ -28,7 +29,12 @@ class E4MaiaContext implements IMaiaContext {
 	}
 
 	override getChilds() {
-		return get(KEY_CHILD_CONTEXTS) as Collection<IMaiaContext>
+		var result = getLocal(KEY_CHILD_CONTEXTS) as Collection<IMaiaContext>
+		if (result == null) {
+			result = new ArrayList<IMaiaContext>
+			set(KEY_CHILD_CONTEXTS, result)
+		}
+		return result
 	}
 
 	override get(String name) {
@@ -79,7 +85,7 @@ class E4MaiaContext implements IMaiaContext {
 		val old = context.getLocal(name)
 		context.set(name, value)
 		if (old == null) {
-			broker.post(new MaiaContextSetObjectEvent(value))
+			broker.post(new MaiaContextSetObjectEvent(this, value))
 		} else {
 			broker.post(new MaiaContextChangeObjectEvent(old, value))
 		}
@@ -89,7 +95,7 @@ class E4MaiaContext implements IMaiaContext {
 		val old = context.getLocal(clazz)
 		context.set(clazz, value)
 		if (old == null) {
-			broker.post(new MaiaContextSetObjectEvent(value))
+			broker.post(new MaiaContextSetObjectEvent(this, value))
 		} else {
 			broker.post(new MaiaContextChangeObjectEvent(old, value))
 		}
@@ -107,10 +113,8 @@ class E4MaiaContext implements IMaiaContext {
 			result.append("[" + current + "] contains:")
 			result.newLine
 			val list = (current.context as EclipseContext).localData.keySet.filter [
-				it != "org.eclipse.e4.core.internal.contexts.ContextObjectSupplier" &&
-//				it != "ru.agentlab.maia.context.IMaiaContext" && 
-				it != "debugString" && 
-				it != "parentContext"
+				it != "org.eclipse.e4.core.internal.contexts.ContextObjectSupplier" && //				it != "ru.agentlab.maia.context.IMaiaContext" && 
+				it != "debugString" && it != "parentContext"
 			].sortWith [ a, b |
 				a.compareTo(b)
 			]

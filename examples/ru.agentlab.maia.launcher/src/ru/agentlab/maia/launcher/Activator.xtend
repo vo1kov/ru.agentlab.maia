@@ -41,15 +41,18 @@ class Activator implements BundleActivator {
 		]
 		LOGGER.info(agent.dump)
 		
-		LOGGER.info("CREATE AGENT2...")
-		val agent2 = container.get(IMaiaAgentContextFactory).createAgent(null) => [
-			get(IMaiaContextLifecycleService).state = FipaLifecycleScheme.STATE_ACTIVE
-		]
-		LOGGER.info(agent2.dump)
+//		LOGGER.info("CREATE AGENT2...")
+//		val agent2 = container.get(IMaiaAgentContextFactory).createAgent(null) => [
+//			get(IMaiaContextLifecycleService).state = FipaLifecycleScheme.STATE_ACTIVE
+//		]
+//		LOGGER.info(agent2.dump)
 		
 		LOGGER.info("CREATE BEHAVIOUR...")
 		val behaviour = agent.get(IMaiaBehaviourContextFactory).createBehaviour(null)
-		LOGGER.info(behaviour.dump)
+		
+		LOGGER.info("CREATE BEHAVIOUR2...")
+		val behaviour2 = agent.get(IMaiaBehaviourContextFactory).createBehaviour(null)
+//		LOGGER.info(behaviour.dump)
 
 //
 //		LOGGER.info("CREATE CONTAINER FACTORY...")

@@ -54,5 +54,9 @@ class SchemeScheduler implements IMaiaBoundedContextScheduler {
 	override synchronized removeAll() {
 		stateMapping.clear
 	}
+	
+	override synchronized isEmpty() {
+		return stateMapping.empty
+	}
 
 }

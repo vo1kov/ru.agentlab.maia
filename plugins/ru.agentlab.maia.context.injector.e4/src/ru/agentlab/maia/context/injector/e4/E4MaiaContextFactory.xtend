@@ -11,6 +11,7 @@ import ru.agentlab.maia.context.IMaiaContextFactory
 import ru.agentlab.maia.context.event.MaiaContextFactoryCreateEvent
 import ru.agentlab.maia.context.injector.IMaiaContextInjector
 import ru.agentlab.maia.event.IMaiaEventBroker
+import ru.agentlab.maia.context.event.MaiaContextFactoryCreateChildEvent
 
 class E4MaiaContextFactory implements IMaiaContextFactory {
 
@@ -47,7 +48,7 @@ class E4MaiaContextFactory implements IMaiaContextFactory {
 	 */
 	override createChild(IMaiaContext parent, String name) {
 		val result = new E4MaiaContext(parent.get(IEclipseContext).createChild(name), broker)
-		broker.post(new MaiaContextFactoryCreateEvent(result))
+		broker.post(new MaiaContextFactoryCreateChildEvent(parent, result))
 		return result => [
 			set(IMaiaContext, it)
 			if (get(IMaiaContextInjector) == null) {

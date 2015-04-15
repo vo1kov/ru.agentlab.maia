@@ -5,20 +5,20 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.event.IMaiaEvent
 
-class MaiaContextSetObjectEvent implements IMaiaEvent {
+class MaiaContextFactoryCreateChildEvent implements IMaiaEvent {
 
+	val protected static String KEY_PARENT_CONTEXT = "context.parent"
+	
 	val protected static String KEY_CONTEXT = "context"
 
-	val protected static String KEY_OBJECT = "object"
-
-	val public static String TOPIC = "ru/agentlab/maia/context/SetObject"
+	val public static String TOPIC = "ru/agentlab/maia/context/factory/CreateChild"
 
 	@Accessors
 	val data = new HashMap<String, Object>
 
-	new(IMaiaContext context, Object object) {
+	new(IMaiaContext parentContext, IMaiaContext context) {
+		data.put(KEY_PARENT_CONTEXT, parentContext)
 		data.put(KEY_CONTEXT, context)
-		data.put(KEY_OBJECT, object)
 	}
 
 	override getTopic() {
@@ -29,8 +29,8 @@ class MaiaContextSetObjectEvent implements IMaiaEvent {
 		return data.get(KEY_CONTEXT) as IMaiaContext
 	}
 
-	def Object getObject() {
-		return data.get(KEY_OBJECT)
+	def IMaiaContext getParentContext() {
+		return data.get(KEY_PARENT_CONTEXT) as IMaiaContext
 	}
-
+	
 }
