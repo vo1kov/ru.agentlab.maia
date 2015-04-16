@@ -70,7 +70,7 @@ class Activator implements BundleActivator {
 			putImplementation(IMaiaContextLifecycleScheme, FipaLifecycleScheme)
 			putImplementation(IMaiaContextLifecycleService, LifecycleService)
 			putImplementation(IMaiaExecutorSchedulerScheme, BehaviourSchemeOneShot)
-			putImplementation(IMaiaExecutorScheduler, SchemeScheduler)
+//			putImplementation(IMaiaExecutorScheduler, SchemeScheduler)
 			putImplementation(IMaiaContextInitializerService, MaiaContextInitializerService)
 		]
 

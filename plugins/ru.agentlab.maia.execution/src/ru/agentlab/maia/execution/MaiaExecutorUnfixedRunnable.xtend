@@ -5,7 +5,6 @@ import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
 import ru.agentlab.maia.context.typing.IMaiaContextTyping
 import ru.agentlab.maia.execution.action.IMaiaContextAction
-import ru.agentlab.maia.execution.node.IMaiaExecutorNode
 import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
 
 class MaiaExecutorUnfixedRunnable implements IMaiaExecutorRunnable {
@@ -20,14 +19,13 @@ class MaiaExecutorUnfixedRunnable implements IMaiaExecutorRunnable {
 		this.context = context
 	}
 
-	def IMaiaContextAction getAction(IMaiaExecutorNode node) {
-		LOGGER.debug("Current Node: [{}]", node)
-		if (node instanceof IMaiaContextAction) {
-			LOGGER.debug("	current node is IMaiaContextAction")
-			return node
-		} else if (node instanceof IMaiaExecutorScheduler) {
-			LOGGER.debug("	current node is IMaiaExecutorScheduler")
-			return getAction(node.nextContext)
+	def IMaiaContextAction getAction(IMaiaExecutorScheduler scheduler) {
+		LOGGER.debug("Current Node: [{}]", scheduler)
+		val next = scheduler.nextContext
+		if (next instanceof IMaiaContextAction) {
+			return next
+		} else if (next instanceof IMaiaExecutorScheduler) {
+			return getAction(next)
 		}
 	}
 
@@ -39,19 +37,25 @@ class MaiaExecutorUnfixedRunnable implements IMaiaExecutorRunnable {
 		while (true) {
 			try {
 				LOGGER.debug("Start execution loop...")
-				val currentNode = context.get(IMaiaExecutorNode)
-				currentNode.getAction => [
+				var action = context.get(IMaiaContextAction)
+				if (action == null) {
+					val scheduler = context.get(IMaiaExecutorScheduler)
+					if (scheduler != null) {
+						action = scheduler.getAction
+					}
+				}
+				action => [
 					if (it != null) {
 						beforeRun
 						run
 						afterRun
 					}
 				]
-				Thread.sleep(20000)
+				Thread.sleep(2000)
 			} catch (Exception e) {
 				LOGGER.error("Some exception", e)
 			}
 		}
 	}
-	
+
 }

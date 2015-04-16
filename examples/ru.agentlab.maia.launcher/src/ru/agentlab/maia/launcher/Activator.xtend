@@ -10,6 +10,12 @@ import ru.agentlab.maia.execution.lifecycle.fipa.FipaLifecycleScheme
 import ru.agentlab.maia.context.typing.agent.IMaiaAgentContextFactory
 import ru.agentlab.maia.context.typing.behaviour.IMaiaBehaviourContextFactory
 import ru.agentlab.maia.context.typing.container.IMaiaContainerContextFactory
+import ru.agentlab.maia.execution.node.IMaiaExecutorNode
+import ru.agentlab.maia.execution.action.IMaiaContextAction
+import ru.agentlab.maia.launcher.task.ContextDumpTask
+import ru.agentlab.maia.context.injector.IMaiaContextInjector
+import ru.agentlab.maia.execution.action.annotated.AnnotatedContextAction
+import javax.annotation.PostConstruct
 
 class Activator implements BundleActivator {
 
@@ -48,10 +54,17 @@ class Activator implements BundleActivator {
 //		LOGGER.info(agent2.dump)
 		
 		LOGGER.info("CREATE BEHAVIOUR...")
-		val behaviour = agent.get(IMaiaBehaviourContextFactory).createBehaviour(null)
+		val behaviour = agent.get(IMaiaBehaviourContextFactory).createBehaviour(null) => [
+			val inject = get(IMaiaContextInjector)
+			set(IMaiaContextAction.KEY_TASK, inject.make(ContextDumpTask, it))
+			val task = inject.make(AnnotatedContextAction, it)
+			inject.invoke(task, PostConstruct, it, null)
+			set(IMaiaContextAction, task)
+//			get(IMaia)
+		]
 		
-		LOGGER.info("CREATE BEHAVIOUR2...")
-		val behaviour2 = agent.get(IMaiaBehaviourContextFactory).createBehaviour(null)
+//		LOGGER.info("CREATE BEHAVIOUR2...")
+//		val behaviour2 = agent.get(IMaiaBehaviourContextFactory).createBehaviour(null)
 //		LOGGER.info(behaviour.dump)
 
 //

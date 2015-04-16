@@ -17,43 +17,37 @@ class MaiaExecutorFixedRunnable implements IMaiaExecutorRunnable {
 		this.context = context
 	}
 
+	def IMaiaContextAction getAction(IMaiaExecutorScheduler scheduler) {
+		LOGGER.debug("Current Node: [{}]", scheduler)
+		val next = scheduler.nextContext
+		if (next instanceof IMaiaContextAction) {
+			return next
+		} else if (next instanceof IMaiaExecutorScheduler) {
+			return getAction(next)
+		}
+	}
+
 	override run() {
+		val contextType = context.get(IMaiaContextTyping.KEY_TYPE) as String
+		val contextName = context.get(IMaiaContextNameFactory.KEY_NAME) as String
+		Thread.currentThread.name = contextType + ": " + contextName
 		try {
-			val contextType = context.get(IMaiaContextTyping.KEY_TYPE) as String
-			val contextName = context.get(IMaiaContextNameFactory.KEY_NAME) as String
-			Thread.currentThread.name = contextType + ": " + contextName
-
-			LOGGER.debug("Start Executor Runnable...")
-			var currentContext = context
-			LOGGER.debug("Current Context: [{}]", currentContext)
-			var action = currentContext.get(IMaiaContextAction)
-			LOGGER.debug("	current action [{}]", action)
-			while (currentContext != null && action == null) {
-
-//			Thread.sleep(20000)
-				val scheduler = currentContext.get(IMaiaExecutorScheduler)
-				LOGGER.debug("	current scheduler [{}]", scheduler)
-//			synchronized (scheduler) {
-				// get next context via scheduler that have no its own Executor service
-				currentContext = scheduler.nextContext
-				LOGGER.debug("Current Context: [{}]", currentContext)
-//				var executor = currentContext.get(IMaiaExecutorService)
-//				// find context without it's own executor 
-//				while (executor != null) {
-//
-//					// TODO: fix possible infinite loop
-//					currentContext = scheduler.nextContext
-//					executor = currentContext.get(IMaiaExecutorService)
-//				}
-				action = currentContext?.get(IMaiaContextAction)
-				LOGGER.debug("	current action [{}]", action)
-//			}
+			LOGGER.debug("Start execution loop...")
+			var action = context.get(IMaiaContextAction)
+			if (action == null) {
+				val scheduler = context.get(IMaiaExecutorScheduler)
+				if (scheduler != null) {
+					action = scheduler.getAction
+				}
 			}
-			if (action != null) {
-				action.beforeRun
-				action.run
-				action.afterRun
-			}
+			action => [
+				if (it != null) {
+					beforeRun
+					run
+					afterRun
+				}
+			]
+			Thread.sleep(2000)
 		} catch (Exception e) {
 			LOGGER.error("Some exception", e)
 		}

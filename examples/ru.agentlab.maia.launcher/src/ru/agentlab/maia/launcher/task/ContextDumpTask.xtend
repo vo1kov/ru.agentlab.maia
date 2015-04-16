@@ -14,6 +14,7 @@ class ContextDumpTask {
 
 	@Action
 	def void action() {
+		println(context)
 		LOGGER.info(context.dump)
 	}
 

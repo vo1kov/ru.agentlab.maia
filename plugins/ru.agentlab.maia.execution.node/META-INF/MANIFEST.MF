@@ -8,6 +8,7 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro
+ org.eclipse.xtend.lib.macro,
+ ru.agentlab.maia.context;bundle-version="1.0.0"
 Export-Package: ru.agentlab.maia.execution.node
 

@@ -5,8 +5,8 @@ import javax.annotation.PostConstruct
 import javax.inject.Inject
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.event.IMaiaEventBroker
 import ru.agentlab.maia.execution.node.IMaiaExecutorNode
+import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
 import ru.agentlab.maia.execution.scheduler.unbounded.IMaiaUnboundedContextScheduler
 
 class SequenceContextScheduler implements IMaiaUnboundedContextScheduler {
@@ -20,13 +20,16 @@ class SequenceContextScheduler implements IMaiaUnboundedContextScheduler {
 	@Inject
 	IMaiaContext context
 
-	@Inject
-	IMaiaEventBroker eventBroker
-
+//	@Inject
+//	IMaiaEventBroker eventBroker
 	@PostConstruct
 	def void init() {
 		context.set(KEY_CURRENT_CONTEXT, null)
-		context.set(ChildContextListener, new ChildContextListener(context, this, eventBroker))
+		val parentScheduler = context.parent.get(IMaiaExecutorScheduler)
+		if (parentScheduler != null) {
+			LOGGER.info("Add node [{}] to scheduler [{}]...", this, parentScheduler)
+			parentScheduler?.add(this)
+		}
 	}
 
 	override synchronized IMaiaExecutorNode getCurrentContext() {
@@ -40,6 +43,7 @@ class SequenceContextScheduler implements IMaiaUnboundedContextScheduler {
 	 * the owner agent that a context is now available.
 	 */
 	override synchronized void add(IMaiaExecutorNode context) {
+		LOGGER.info("Add node [{}]", context)
 		readyContexts += context
 	}
 
