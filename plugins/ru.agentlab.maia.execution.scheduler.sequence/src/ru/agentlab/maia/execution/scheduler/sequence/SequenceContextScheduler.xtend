@@ -3,6 +3,7 @@ package ru.agentlab.maia.execution.scheduler.sequence
 import java.util.LinkedList
 import javax.annotation.PostConstruct
 import javax.inject.Inject
+import org.eclipse.xtend.lib.annotations.Accessors
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.node.IMaiaExecutorNode
@@ -20,15 +21,18 @@ class SequenceContextScheduler implements IMaiaUnboundedContextScheduler {
 	@Inject
 	IMaiaContext context
 
+	@Accessors
+	var IMaiaExecutorScheduler parentNode
+
 //	@Inject
 //	IMaiaEventBroker eventBroker
 	@PostConstruct
 	def void init() {
 		context.set(KEY_CURRENT_CONTEXT, null)
-		val parentScheduler = context.parent.get(IMaiaExecutorScheduler)
-		if (parentScheduler != null) {
-			LOGGER.info("Add node [{}] to scheduler [{}]...", this, parentScheduler)
-			parentScheduler?.add(this)
+		parentNode = context.parent.get(IMaiaExecutorScheduler)
+		if (parentNode != null) {
+			LOGGER.info("Add node [{}] to scheduler [{}]...", this, parentNode)
+			parentNode.add(this)
 		}
 	}
 

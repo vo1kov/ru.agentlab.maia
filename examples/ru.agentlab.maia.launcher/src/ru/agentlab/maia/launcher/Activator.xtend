@@ -5,17 +5,11 @@ import org.osgi.framework.BundleContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.initializer.IMaiaContextInitializerService
-import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleService
-import ru.agentlab.maia.execution.lifecycle.fipa.FipaLifecycleScheme
 import ru.agentlab.maia.context.typing.agent.IMaiaAgentContextFactory
 import ru.agentlab.maia.context.typing.behaviour.IMaiaBehaviourContextFactory
 import ru.agentlab.maia.context.typing.container.IMaiaContainerContextFactory
-import ru.agentlab.maia.execution.node.IMaiaExecutorNode
-import ru.agentlab.maia.launcher.task.ContextDumpTask
-import ru.agentlab.maia.context.injector.IMaiaContextInjector
-import ru.agentlab.maia.execution.action.annotated.AnnotatedContextAction
-import javax.annotation.PostConstruct
-import ru.agentlab.maia.execution.action.IMaiaExecutorAction
+import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleService
+import ru.agentlab.maia.execution.lifecycle.fipa.FipaLifecycleScheme
 
 class Activator implements BundleActivator {
 
@@ -43,30 +37,33 @@ class Activator implements BundleActivator {
 		LOGGER.info("CREATE AGENT...")
 		val agent = container.get(IMaiaAgentContextFactory).createAgent(null) => [
 			get(IMaiaContextInitializerService).addInitializer(it, AgentExample)
-			get(IMaiaContextLifecycleService).state = FipaLifecycleScheme.STATE_ACTIVE
 		]
 		LOGGER.info(agent.dump)
-		
+
 //		LOGGER.info("CREATE AGENT2...")
 //		val agent2 = container.get(IMaiaAgentContextFactory).createAgent(null) => [
 //			get(IMaiaContextLifecycleService).state = FipaLifecycleScheme.STATE_ACTIVE
 //		]
 //		LOGGER.info(agent2.dump)
-		
 		LOGGER.info("CREATE BEHAVIOUR...")
 		val behaviour = agent.get(IMaiaBehaviourContextFactory).createBehaviour(null) => [
-			val inject = get(IMaiaContextInjector)
-			set(IMaiaExecutorAction.KEY_TASK, inject.make(ContextDumpTask, it))
-			val task = inject.make(AnnotatedContextAction, it)
-			inject.invoke(task, PostConstruct, it, null)
-			set(IMaiaExecutorAction, task)
-//			get(IMaia)
+//			val inject = get(IMaiaContextInjector)
+//			set(IMaiaExecutorAction.KEY_TASK, inject.make(ContextDumpTask, it))
+//			val task = inject.make(AnnotatedContextAction, it)
+//			inject.invoke(task, PostConstruct, it, null)
+//			set(IMaiaExecutorAction, task)
 		]
-		
+
+		LOGGER.info("CREATE BEHAVIOUR_2...")
+		agent.get(IMaiaBehaviourContextFactory).createBehaviour(null)
+
+		agent => [
+			get(IMaiaContextLifecycleService).state = FipaLifecycleScheme.STATE_ACTIVE
+
+		]
 //		LOGGER.info("CREATE BEHAVIOUR2...")
 //		val behaviour2 = agent.get(IMaiaBehaviourContextFactory).createBehaviour(null)
 //		LOGGER.info(behaviour.dump)
-
 //
 //		LOGGER.info("CREATE CONTAINER FACTORY...")
 //		val containerFactory = serviceManager.createService(osgiContext, IContainerFactory)

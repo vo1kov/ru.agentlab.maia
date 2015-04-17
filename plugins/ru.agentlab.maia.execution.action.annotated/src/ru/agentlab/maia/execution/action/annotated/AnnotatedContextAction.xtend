@@ -2,11 +2,12 @@ package ru.agentlab.maia.execution.action.annotated
 
 import javax.annotation.PostConstruct
 import javax.inject.Inject
+import org.eclipse.xtend.lib.annotations.Accessors
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.injector.IMaiaContextInjector
-import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
 import ru.agentlab.maia.execution.action.IMaiaExecutorAction
+import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
 
 class AnnotatedContextAction implements IMaiaExecutorAction {
 
@@ -18,12 +19,15 @@ class AnnotatedContextAction implements IMaiaExecutorAction {
 	@Inject
 	IMaiaContextInjector injector
 
+	@Accessors
+	var IMaiaExecutorScheduler parentNode
+
 	@PostConstruct
 	def void init() {
-		val parentScheduler = context.parent.get(IMaiaExecutorScheduler)
-		if (parentScheduler != null) {
-			LOGGER.info("Add node [{}] to scheduler [{}]...", this, parentScheduler)
-			parentScheduler?.add(this)
+		parentNode = context.parent.get(IMaiaExecutorScheduler)
+		if (parentNode != null) {
+			LOGGER.info("Add node [{}] to scheduler [{}]...", this, parentNode)
+			parentNode.add(this)
 		}
 	}
 
@@ -38,6 +42,7 @@ class AnnotatedContextAction implements IMaiaExecutorAction {
 	}
 
 	override afterRun() {
+		parentNode.remove(this)
 	}
-	
+
 }

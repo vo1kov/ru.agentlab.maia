@@ -1,13 +1,18 @@
 package ru.agentlab.maia.execution.action.runnable
 
 import javax.inject.Inject
+import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.action.IMaiaExecutorAction
+import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
 
 class RunnableContextAction implements IMaiaExecutorAction {
 
 	@Inject
 	IMaiaContext context
+
+	@Accessors
+	var IMaiaExecutorScheduler parentNode
 
 	override beforeRun() {
 	}
