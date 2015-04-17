@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Task
+Bundle-SymbolicName: ru.agentlab.maia.context.typing.task
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ org.slf4j.api;bundle-version="1.7.2",
+ javax.inject;bundle-version="1.0.0",
+ ru.agentlab.maia.context;bundle-version="1.0.0",
+ ru.agentlab.maia.context.service;bundle-version="1.0.0",
+ ru.agentlab.maia.profile;bundle-version="1.0.0",
+ ru.agentlab.maia.context.naming;bundle-version="1.0.0",
+ ru.agentlab.maia.context.typing;bundle-version="1.0.0"
+
