@@ -1,8 +1,8 @@
 package ru.agentlab.maia.execution.action.jade
 
-import ru.agentlab.maia.execution.action.IMaiaContextAction
+import ru.agentlab.maia.execution.action.IMaiaExecutorAction
 
-class JadeContextAction implements IMaiaContextAction {
+class JadeContextAction implements IMaiaExecutorAction {
 
 //	@Inject
 //	IMaiaContext context

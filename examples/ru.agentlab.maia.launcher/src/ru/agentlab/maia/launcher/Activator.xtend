@@ -11,11 +11,11 @@ import ru.agentlab.maia.context.typing.agent.IMaiaAgentContextFactory
 import ru.agentlab.maia.context.typing.behaviour.IMaiaBehaviourContextFactory
 import ru.agentlab.maia.context.typing.container.IMaiaContainerContextFactory
 import ru.agentlab.maia.execution.node.IMaiaExecutorNode
-import ru.agentlab.maia.execution.action.IMaiaContextAction
 import ru.agentlab.maia.launcher.task.ContextDumpTask
 import ru.agentlab.maia.context.injector.IMaiaContextInjector
 import ru.agentlab.maia.execution.action.annotated.AnnotatedContextAction
 import javax.annotation.PostConstruct
+import ru.agentlab.maia.execution.action.IMaiaExecutorAction
 
 class Activator implements BundleActivator {
 
@@ -56,10 +56,10 @@ class Activator implements BundleActivator {
 		LOGGER.info("CREATE BEHAVIOUR...")
 		val behaviour = agent.get(IMaiaBehaviourContextFactory).createBehaviour(null) => [
 			val inject = get(IMaiaContextInjector)
-			set(IMaiaContextAction.KEY_TASK, inject.make(ContextDumpTask, it))
+			set(IMaiaExecutorAction.KEY_TASK, inject.make(ContextDumpTask, it))
 			val task = inject.make(AnnotatedContextAction, it)
 			inject.invoke(task, PostConstruct, it, null)
-			set(IMaiaContextAction, task)
+			set(IMaiaExecutorAction, task)
 //			get(IMaia)
 		]
 		

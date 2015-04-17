@@ -4,8 +4,8 @@ import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
 import ru.agentlab.maia.context.typing.IMaiaContextTyping
-import ru.agentlab.maia.execution.action.IMaiaContextAction
 import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
+import ru.agentlab.maia.execution.action.IMaiaExecutorAction
 
 class MaiaExecutorFixedRunnable implements IMaiaExecutorRunnable {
 
@@ -17,10 +17,10 @@ class MaiaExecutorFixedRunnable implements IMaiaExecutorRunnable {
 		this.context = context
 	}
 
-	def IMaiaContextAction getAction(IMaiaExecutorScheduler scheduler) {
+	def IMaiaExecutorAction getAction(IMaiaExecutorScheduler scheduler) {
 		LOGGER.debug("Current Node: [{}]", scheduler)
 		val next = scheduler.nextContext
-		if (next instanceof IMaiaContextAction) {
+		if (next instanceof IMaiaExecutorAction) {
 			return next
 		} else if (next instanceof IMaiaExecutorScheduler) {
 			return getAction(next)
@@ -33,7 +33,7 @@ class MaiaExecutorFixedRunnable implements IMaiaExecutorRunnable {
 		Thread.currentThread.name = contextType + ": " + contextName
 		try {
 			LOGGER.debug("Start execution loop...")
-			var action = context.get(IMaiaContextAction)
+			var action = context.get(IMaiaExecutorAction)
 			if (action == null) {
 				val scheduler = context.get(IMaiaExecutorScheduler)
 				if (scheduler != null) {

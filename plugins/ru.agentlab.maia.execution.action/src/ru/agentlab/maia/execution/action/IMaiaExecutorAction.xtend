@@ -2,7 +2,7 @@ package ru.agentlab.maia.execution.action
 
 import ru.agentlab.maia.execution.node.IMaiaExecutorNode
 
-interface IMaiaContextAction extends IMaiaExecutorNode {
+interface IMaiaExecutorAction extends IMaiaExecutorNode {
 
 	val static String KEY_TASK = "task"
 
