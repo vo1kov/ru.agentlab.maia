@@ -4,7 +4,7 @@ import javax.annotation.PostConstruct
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.injector.IMaiaContextInjector
-import ru.agentlab.maia.profile.IMaiaProfile
+import ru.agentlab.maia.context.profile.IMaiaProfile
 
 class MaiaContextServiceManagementService implements IMaiaContextServiceManagementService {
 

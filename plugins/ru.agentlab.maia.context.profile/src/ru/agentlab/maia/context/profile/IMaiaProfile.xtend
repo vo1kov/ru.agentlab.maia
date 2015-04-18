@@ -1,4 +1,4 @@
-package ru.agentlab.maia.profile
+package ru.agentlab.maia.context.profile
 
 import java.util.Collection
 

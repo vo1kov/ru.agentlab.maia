@@ -5,12 +5,12 @@ import ru.agentlab.maia.context.IMaiaContextFactory
 import ru.agentlab.maia.context.injector.IMaiaContextInjector
 import ru.agentlab.maia.context.service.Create
 import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
+import ru.agentlab.maia.context.typing.IMaiaContextTyping
 import ru.agentlab.maia.context.typing.agent.MaiaAgentProfile
 import ru.agentlab.maia.context.typing.behaviour.MaiaBehaviourProfile
 import ru.agentlab.maia.context.typing.container.MaiaContainerProfile
 import ru.agentlab.maia.context.typing.root.internal.Activator
 import ru.agentlab.maia.event.IMaiaEventBroker
-import ru.agentlab.maia.context.typing.IMaiaContextTyping
 
 /**
  * Factory for creating Agent-Contexts

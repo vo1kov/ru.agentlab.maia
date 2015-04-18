@@ -1,12 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Profile
-Bundle-SymbolicName: ru.agentlab.maia.profile
+Bundle-SymbolicName: ru.agentlab.maia.context.profile
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro
-Export-Package: ru.agentlab.maia.profile
+Export-Package: ru.agentlab.maia.context.profile
 

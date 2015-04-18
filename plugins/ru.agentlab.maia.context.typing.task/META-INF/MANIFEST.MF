@@ -12,7 +12,7 @@ Require-Bundle: com.google.guava,
  javax.inject;bundle-version="1.0.0",
  ru.agentlab.maia.context;bundle-version="1.0.0",
  ru.agentlab.maia.context.service;bundle-version="1.0.0",
- ru.agentlab.maia.profile;bundle-version="1.0.0",
+ ru.agentlab.maia.context.profile;bundle-version="1.0.0",
  ru.agentlab.maia.context.naming;bundle-version="1.0.0",
  ru.agentlab.maia.context.typing;bundle-version="1.0.0"
 
