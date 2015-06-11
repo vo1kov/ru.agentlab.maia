@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Log
+Bundle-SymbolicName: ru.agentlab.maia.context.injector.e4.log
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.aspectj.runtime,
+ ru.agentlab.maia.context;bundle-version="1.0.0",
+ org.slf4j.api;bundle-version="1.7.2",
+ ru.agentlab.maia.context.injector.e4;bundle-version="1.0.0",
+ org.eclipse.equinox.weaving.aspectj;bundle-version="1.0.400"
+Export-Package: ru.agentlab.maia.context.injector.e4.log;aspects=ContextLog
+Eclipse-SupplementBundle: ru.agentlab.maia.context.injector.e4
