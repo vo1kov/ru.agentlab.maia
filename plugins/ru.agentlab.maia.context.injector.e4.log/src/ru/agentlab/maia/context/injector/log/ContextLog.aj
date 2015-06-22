@@ -1,11 +1,10 @@
-package ru.agentlab.maia.context.injector.e4.log;
+package ru.agentlab.maia.context.injector.log;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ru.agentlab.maia.context.IMaiaContextFactory;
 import ru.agentlab.maia.context.IMaiaContext;
-import ru.agentlab.maia.context.injector.e4.E4MaiaContext;
 
 public aspect ContextLog {
 	
@@ -15,7 +14,7 @@ public aspect ContextLog {
 	}
 	
 
-	before() : execution(* E4MaiaContext.dump(..)) {
+	before() : execution(* IMaiaContext+.dump(..)) {
 		System.err.println("Before DUMP");
 	}
 	

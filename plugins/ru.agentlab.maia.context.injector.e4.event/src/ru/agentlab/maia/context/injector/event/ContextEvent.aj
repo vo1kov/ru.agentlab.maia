@@ -1,4 +1,4 @@
-package ru.agentlab.maia.context.injector.e4.event;
+package ru.agentlab.maia.context.injector.event;
 
 import ru.agentlab.maia.context.IMaiaContextFactory;
 import ru.agentlab.maia.context.IMaiaContext;
