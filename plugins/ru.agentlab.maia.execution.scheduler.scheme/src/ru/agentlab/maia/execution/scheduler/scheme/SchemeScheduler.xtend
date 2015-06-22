@@ -15,11 +15,15 @@ class SchemeScheduler implements IMaiaBoundedContextScheduler {
 
 	val stateMapping = new ConcurrentHashMap<String, IMaiaExecutorNode>
 
-	@Inject
 	IMaiaExecutorSchedulerScheme scheme
-
-	@Inject
+	
 	IMaiaContext context
+	
+	@Inject
+	new(IMaiaContext context, IMaiaExecutorSchedulerScheme scheme){
+		this.context = context
+		this.scheme = scheme
+	}
 
 	@PostConstruct
 	def void init() {
