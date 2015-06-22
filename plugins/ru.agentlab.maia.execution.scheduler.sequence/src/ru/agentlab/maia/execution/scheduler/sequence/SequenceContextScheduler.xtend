@@ -13,15 +13,17 @@ class SequenceContextScheduler implements IMaiaUnboundedContextScheduler {
 
 	val static LOGGER = LoggerFactory.getLogger(SequenceContextScheduler)
 
-	val readyContexts = new LinkedList<IMaiaExecutorNode>
+	val protected readyContexts = new LinkedList<IMaiaExecutorNode>
 
-	private int currentIndex = 0
+	private int currentIndex = -1
 
-	@Inject
 	IMaiaContext context
 
-//	@Inject
-//	IMaiaEventBroker eventBroker
+	@Inject
+	new(IMaiaContext context) {
+		this.context = context
+	}
+
 	@PostConstruct
 	def void init() {
 		context.set(KEY_CURRENT_CONTEXT, null)
@@ -33,7 +35,12 @@ class SequenceContextScheduler implements IMaiaUnboundedContextScheduler {
 	}
 
 	override synchronized IMaiaExecutorNode getCurrentContext() {
-		return context.get(KEY_CURRENT_CONTEXT) as IMaiaExecutorNode
+		val result = context.getLocal(KEY_CURRENT_CONTEXT)
+		if (result != null) {
+			return result as IMaiaExecutorNode
+		} else {
+			return null
+		}
 	}
 
 	/**
@@ -43,8 +50,10 @@ class SequenceContextScheduler implements IMaiaUnboundedContextScheduler {
 	 * the owner agent that a context is now available.
 	 */
 	override synchronized void add(IMaiaExecutorNode context) {
-		LOGGER.info("Add node [{}]", context)
-		readyContexts += context
+//		LOGGER.info("Add node [{}]", context)
+		if (!readyContexts.contains(context)) {
+			readyContexts += context
+		}
 	}
 
 	/** 
