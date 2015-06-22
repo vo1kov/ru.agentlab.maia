@@ -15,12 +15,12 @@ import ru.agentlab.maia.context.event.MaiaContextFactoryCreateChildEvent
 
 class E4MaiaContextFactory implements IMaiaContextFactory {
 
-	var IMaiaEventBroker broker
-
-	@Inject
-	new(IMaiaEventBroker broker) {
-		this.broker = broker
-	}
+//	var IMaiaEventBroker broker
+//
+//	@Inject
+//	new(IMaiaEventBroker broker) {
+//		this.broker = broker
+//	}
 
 	/**
 	 * <p>Create new E4 context.</p>
@@ -30,11 +30,11 @@ class E4MaiaContextFactory implements IMaiaContextFactory {
 	 * </ul>
 	 */
 	override createContext(String id) {
-		val result = new E4MaiaContext(EclipseContextFactory.create(id), broker)
-		broker.post(new MaiaContextFactoryCreateEvent(result))
+		val result = new E4MaiaContext(EclipseContextFactory.create(id))
+//		broker.post(new MaiaContextFactoryCreateEvent(result))
 		return result => [
 			set(IMaiaContext, it)
-			set(IMaiaContextInjector, new E4MaiaContextInjector(broker))
+			set(IMaiaContextInjector, new E4MaiaContextInjector)
 		]
 	}
 
@@ -47,12 +47,12 @@ class E4MaiaContextFactory implements IMaiaContextFactory {
 	 * </ul>
 	 */
 	override createChild(IMaiaContext parent, String name) {
-		val result = new E4MaiaContext(parent.get(IEclipseContext).createChild(name), broker)
-		broker.post(new MaiaContextFactoryCreateChildEvent(parent, result))
+		val result = new E4MaiaContext(parent.get(IEclipseContext).createChild(name))
+//		broker.post(new MaiaContextFactoryCreateChildEvent(parent, result))
 		return result => [
 			set(IMaiaContext, it)
 			if (get(IMaiaContextInjector) == null) {
-				parent.set(IMaiaContextInjector, new E4MaiaContextInjector(broker))
+				parent.set(IMaiaContextInjector, new E4MaiaContextInjector)
 			}
 			set(IMaiaContext.KEY_PARENT_CONTEXT, parent)
 			var childs = parent.getLocal(IMaiaContext.KEY_CHILD_CONTEXTS) as Collection<IMaiaContext>
@@ -69,11 +69,11 @@ class E4MaiaContextFactory implements IMaiaContextFactory {
 	 */
 	@Deprecated
 	override createOsgiContext(BundleContext bundleContext) {
-		val result = new E4MaiaContext(EclipseContextFactory.getServiceContext(bundleContext), broker)
-		broker.post(new MaiaContextFactoryCreateEvent(result))
+		val result = new E4MaiaContext(EclipseContextFactory.getServiceContext(bundleContext))
+//		broker.post(new MaiaContextFactoryCreateEvent(result))
 		return result => [
 			set(IMaiaContext, it)
-			set(IMaiaContextInjector, new E4MaiaContextInjector(broker))
+			set(IMaiaContextInjector, new E4MaiaContextInjector)
 		]
 	}
 

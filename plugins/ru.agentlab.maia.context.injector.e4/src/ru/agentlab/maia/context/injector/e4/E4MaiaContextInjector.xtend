@@ -13,34 +13,34 @@ import ru.agentlab.maia.event.IMaiaEventBroker
 
 class E4MaiaContextInjector implements IMaiaContextInjector {
 
-	var IMaiaEventBroker broker
+//	var IMaiaEventBroker broker
 
-	@Inject
-	new(IMaiaEventBroker broker) {
-		this.broker = broker
-	}
+//	@Inject
+//	new(IMaiaEventBroker broker) {
+//		this.broker = broker
+//	}
 
 	override <T> make(Class<T> contributorClass, IMaiaContext context) {
 		val result = ContextInjectionFactory.make(contributorClass, context.get(IEclipseContext))
-		broker.post(new MaiaContextInjectorMakeEvent(contributorClass, result))
+//		broker.post(new MaiaContextInjectorMakeEvent(contributorClass, result))
 		return result
 	}
 
 	override invoke(Object object, Class<? extends Annotation> ann, IMaiaContext context) {
 		val result = ContextInjectionFactory.invoke(object, ann, context.get(IEclipseContext))
-		broker.post(new MaiaContextInjectorInvokeEvent(object, ann))
+//		broker.post(new MaiaContextInjectorInvokeEvent(object, ann))
 		return result
 	}
 
 	override invoke(Object object, Class<? extends Annotation> ann, IMaiaContext context, Object defaultValue) {
 		val result = ContextInjectionFactory.invoke(object, ann, context.get(IEclipseContext), defaultValue)
-		broker.post(new MaiaContextInjectorInvokeEvent(object, ann))
+//		broker.post(new MaiaContextInjectorInvokeEvent(object, ann))
 		return result
 	}
 
 	override inject(Object service, IMaiaContext context) {
 		ContextInjectionFactory.inject(service, context.get(IEclipseContext))
-		broker.post(new MaiaContextInjectorInjectEvent(service))
+//		broker.post(new MaiaContextInjectorInjectEvent(service))
 	}
 
 }
