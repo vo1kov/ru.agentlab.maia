@@ -6,39 +6,51 @@ import org.mockito.Mock
 import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.action.IMaiaContextAction
+import ru.agentlab.maia.execution.scheduler.scheme.IMaiaExecutorSchedulerScheme
 import ru.agentlab.maia.execution.scheduler.scheme.SchemeScheduler
 
 import static org.junit.Assert.*
-import ru.agentlab.maia.context.injector.e4.E4MaiaContext
+import static org.mockito.Mockito.*
 
 @RunWith(MockitoJUnitRunner)
 class SchemeSchedulerTest {
 
-//	@Mock
-//	IMaiaContext rootContext
 	@Mock
-	IMaiaContextAction firstChildContext
+	IMaiaContext context
 
 	@Mock
-	IMaiaContextAction secondChildContext
+	IMaiaExecutorSchedulerScheme scheme
 
-	SchemeScheduler scheduler = new SchemeScheduler
-	
-	val c = new E4MaiaContext
+	@Mock
+	IMaiaContextAction action1
+
+	@Mock
+	IMaiaContextAction action2
+
+	SchemeScheduler scheduler = new SchemeScheduler(context, scheme)
 
 	@Test
 	def void test() {
-		val rootContextRef = Activator.context.getServiceReference(IMaiaContext)
-		val rootContext = Activator.context.getService(rootContextRef)
-		scheduler.add(firstChildContext)
-		scheduler.add(secondChildContext)
-//		when(scheduler.c).thenReturn(cList)
-		assertEquals(firstChildContext, scheduler.currentContext)
-		assertEquals(secondChildContext, scheduler.nextContext)
-		assertEquals(firstChildContext, scheduler.nextContext)
-		assertEquals(secondChildContext, scheduler.nextContext)
-		assertEquals(firstChildContext, scheduler.nextContext)
-
+		scheduler => [
+			add(action1)
+			add(action2)
+			println(nextContext)
+			println(nextContext)
+			println(nextContext)
+			println(nextContext)
+			println(nextContext)
+			println(nextContext)
+		]
+//		val rootContextRef = Activator.context.getServiceReference(IMaiaContext)
+//		val rootContext = Activator.context.getService(rootContextRef)
+//		scheduler.add(firstChildContext)
+//		scheduler.add(secondChildContext)
+////		when(scheduler.c).thenReturn(cList)
+//		assertEquals(firstChildContext, scheduler.currentContext)
+//		assertEquals(secondChildContext, scheduler.nextContext)
+//		assertEquals(firstChildContext, scheduler.nextContext)
+//		assertEquals(secondChildContext, scheduler.nextContext)
+//		assertEquals(firstChildContext, scheduler.nextContext)
 //		val cList = new ArrayList<IMaiaContext> => [
 //			add(firstChildContext)
 //			add(secondChildContext)
