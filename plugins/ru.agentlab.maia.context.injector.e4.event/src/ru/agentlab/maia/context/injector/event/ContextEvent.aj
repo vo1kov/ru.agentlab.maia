@@ -1,13 +1,11 @@
 package ru.agentlab.maia.context.injector.event;
 
-import ru.agentlab.maia.context.IMaiaContextFactory;
-import ru.agentlab.maia.context.IMaiaContext;
+import ru.agentlab.maia.context.pointcut.AbstaractContextInjectorAspect;
 
-public aspect ContextEvent {
+public aspect ContextEvent extends AbstaractContextInjectorAspect {
 
-	before() : execution(IMaiaContext IMaiaContextFactory+.createChild(..)) {
+	before() : onChildCreate() {
 		System.err.println("Before createChild Context");
 	}
-	
 
 }
