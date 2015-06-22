@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Event
+Bundle-SymbolicName: ru.agentlab.maia.context.injector.event
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.aspectj.runtime,
+ ru.agentlab.maia.context;bundle-version="1.0.0",
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ ru.agentlab.maia.event;bundle-version="1.0.0",
+ ru.agentlab.maia.context.injector
+Export-Package: ru.agentlab.maia.context.injector.event;aspects=ContextEvent
+Eclipse-SupplementBundle: ru.agentlab.maia.context.injector.*
+
