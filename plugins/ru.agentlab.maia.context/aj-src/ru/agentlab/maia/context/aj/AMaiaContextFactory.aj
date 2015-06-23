@@ -9,7 +9,7 @@ import ru.agentlab.maia.context.IMaiaContextFactory;
  * @author Shishkin Dmitriy
  *
  */
-public abstract aspect AbstractContextFactoryAspect {
+public abstract aspect AMaiaContextFactory {
 
 	/**
 	 * When actual IMaiaContextFactory object is created

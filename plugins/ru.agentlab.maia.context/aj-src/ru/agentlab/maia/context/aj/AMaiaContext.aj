@@ -8,7 +8,7 @@ import ru.agentlab.maia.context.IMaiaContext;
  * @author Shishkin Dmitriy
  *
  */
-public aspect AbstractContextAspect {
+public abstract aspect AMaiaContext {
 
 	/**
 	 * When actual IMaiaContext object is created
