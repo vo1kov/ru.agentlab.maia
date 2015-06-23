@@ -101,6 +101,11 @@ interface IMaiaContext {
 	 */
 	def <T> void set(Class<T> clazz, T value);
 
+	/**
+	 * For internal temporal usage only.
+	 * Do not use in production.
+	 */
+	@Deprecated
 	def String dump()
 
 }
