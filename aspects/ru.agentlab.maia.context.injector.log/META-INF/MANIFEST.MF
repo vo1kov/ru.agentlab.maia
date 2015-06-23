@@ -9,5 +9,5 @@ Require-Bundle: org.aspectj.runtime,
  org.slf4j.api;bundle-version="1.7.2",
  ru.agentlab.maia.context.injector.e4;bundle-version="1.0.0",
  org.eclipse.equinox.weaving.aspectj;bundle-version="1.0.400"
-Export-Package: ru.agentlab.maia.context.injector.log;aspects=ContextLog
+Export-Package: ru.agentlab.maia.context.injector.log;aspects=AMaiaContextInjectorLog
 Eclipse-SupplementBundle: ru.agentlab.maia.context.injector.*
