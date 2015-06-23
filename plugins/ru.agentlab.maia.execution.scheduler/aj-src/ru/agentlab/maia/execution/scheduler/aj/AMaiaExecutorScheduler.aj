@@ -1,8 +1,8 @@
-package ru.agentlab.maia.execution.scheduler.pointcut;
+package ru.agentlab.maia.execution.scheduler.aj;
 
 import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler;
 
-public aspect SchdulerPointcuts {
+public abstract aspect AMaiaExecutorScheduler {
 
 	pointcut add() : 
 		execution(* IMaiaExecutorScheduler+.add(..));
