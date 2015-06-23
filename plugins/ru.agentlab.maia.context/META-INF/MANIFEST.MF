@@ -12,5 +12,5 @@ Require-Bundle: com.google.guava,
  org.aspectj.runtime;resolution:=optional
 Import-Package: org.osgi.framework;version="1.8.0"
 Export-Package: ru.agentlab.maia.context,
- ru.agentlab.maia.context.pointcut
+ ru.agentlab.maia.context.aj
 
