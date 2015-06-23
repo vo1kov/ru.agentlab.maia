@@ -11,7 +11,7 @@ import ru.agentlab.maia.context.IMaiaContext;
 public abstract aspect AMaiaContext {
 
 	/**
-	 * When actual IMaiaContext object is created
+	 * When actual {@link IMaiaContext} object is created
 	 */
 	public pointcut onConstruct() : 
 		execution(IMaiaContext+.new(..));
