@@ -62,19 +62,11 @@ class E4MaiaContext implements IMaiaContext {
 	}
 
 	override remove(String name) {
-		val old = context.getLocal(name)
 		context.remove(name)
-//		if (old != null) {
-//			broker.post(new MaiaContextRemoveObjectEvent(old))
-//		}
 	}
 
 	override remove(Class<?> clazz) {
-		val old = context.getLocal(clazz)
 		context.remove(clazz)
-//		if (old != null) {
-//			broker.post(new MaiaContextRemoveObjectEvent(old))
-//		}
 	}
 
 	override set(String name, Object value) {
