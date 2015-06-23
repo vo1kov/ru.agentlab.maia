@@ -10,14 +10,11 @@ import ru.agentlab.maia.context.IMaiaContext
 
 class E4MaiaContext implements IMaiaContext {
 
-//	var IMaiaEventBroker broker
-
 	package IEclipseContext context
 
 	@Inject
 	new(IEclipseContext context) {
 		this.context = context
-//		this.broker = broker
 	}
 
 	override getParent() {
@@ -70,29 +67,18 @@ class E4MaiaContext implements IMaiaContext {
 	}
 
 	override set(String name, Object value) {
-		val old = context.getLocal(name)
 		context.set(name, value)
-//		if (old == null) {
-//			broker.post(new MaiaContextSetObjectEvent(this, value))
-//		} else {
-//			broker.post(new MaiaContextChangeObjectEvent(old, value))
-//		}
 	}
 
 	override <T> set(Class<T> clazz, T value) {
-		val old = context.getLocal(clazz)
 		context.set(clazz, value)
-//		if (old == null) {
-//			broker.post(new MaiaContextSetObjectEvent(this, value))
-//		} else {
-//			broker.post(new MaiaContextChangeObjectEvent(old, value))
-//		}
 	}
 
 	override toString() {
 		context.toString
 	}
 
+	@Deprecated
 	override String dump() {
 		var StringConcatenation result = ''''''
 		result.newLine
@@ -101,7 +87,7 @@ class E4MaiaContext implements IMaiaContext {
 			result.append("[" + current + "] contains:")
 			result.newLine
 			val list = (current.context as EclipseContext).localData.keySet.filter [
-				it != "org.eclipse.e4.core.internal.contexts.ContextObjectSupplier" && //				it != "ru.agentlab.maia.context.IMaiaContext" && 
+				it != "org.eclipse.e4.core.internal.contexts.ContextObjectSupplier" && // it != "ru.agentlab.maia.context.IMaiaContext" && 
 				it != "debugString" && it != "parentContext"
 			].sortWith [ a, b |
 				a.compareTo(b)
