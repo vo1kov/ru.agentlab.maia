@@ -5,6 +5,12 @@
 /plugins/*/xtend-gen/
 /plugins/*/src-gen/
 /plugins/*/classes/
+/aspects/*/bin/
+/aspects/*/libs/
+/aspects/*/target/
+/aspects/*/xtend-gen/
+/aspects/*/src-gen/
+/aspects/*/classes/
 /tests/*/bin/
 /tests/*/lib/
 /tests/*/target/

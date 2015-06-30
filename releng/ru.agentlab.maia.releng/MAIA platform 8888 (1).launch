@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.pde.ui.EquinoxLauncher">
+<booleanAttribute key="append.args" value="true"/>
+<booleanAttribute key="automaticAdd" value="true"/>
+<booleanAttribute key="automaticValidate" value="true"/>
+<stringAttribute key="bootstrap" value=""/>
+<stringAttribute key="checked" value="[NONE]"/>
+<booleanAttribute key="clearConfig" value="true"/>
+<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/MAIA platform 8888 (1)"/>
+<booleanAttribute key="default" value="true"/>
+<booleanAttribute key="default_auto_start" value="true"/>
+<intAttribute key="default_start_level" value="4"/>
+<stringAttribute key="deselected_workspace_plugins" value="io.netty,io.sip.test,ru.agentlab.maia.execution.action.runnable,ru.agentlab.maia.execution.scheduler.scheme.test,ru.agentlab.maia.io,ru.agentlab.maia.io.messaging.acl,ru.agentlab.maia.io.messaging.netty,ru.agentlab.maia.io.queue,ru.agentlab.maia.io.queue.arrayblocking,ru.agentlab.maia.io.queue.linkedblocking,ru.agentlab.maia.protocol,ru.agentlab.maia.protocol.example,ru.agentlab.maia.test.func"/>
+<booleanAttribute key="includeOptional" value="false"/>
+<booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -console"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.requiredJavaVersion=1.6 -Xms40m -Xmx512m -Declipse.ignoreApp=true -Dosgi.noShutdown=true -Dport=8888 -Dosgi.framework.extensions=org.eclipse.equinox.weaving.hook -Daj.weaving.verbose=true -Dorg.aspectj.weaver.showWeaveInfo=true -Dorg.aspectj.osgi.verbose=true"/>
+<stringAttribute key="pde.version" value="3.3"/>
+<booleanAttribute key="show_selected_only" value="false"/>
+<stringAttribute key="target_bundles" value="com.google.guava@default:default,javax.annotation@default:default,javax.inject@default:default,org.apache.felix.gogo.command@2:default,org.apache.felix.gogo.runtime@1:default,org.apache.felix.gogo.shell@default:default,org.apache.log4j@default:default,org.aspectj.runtime@default:default,org.aspectj.weaver@default:default,org.eclipse.e4.core.contexts@default:default,org.eclipse.e4.core.di@default:default,org.eclipse.equinox.console@default:default,org.eclipse.equinox.event@default:default,org.eclipse.equinox.weaving.aspectj@2:default,org.eclipse.equinox.weaving.caching.j9@default:default,org.eclipse.equinox.weaving.caching@default:default,org.eclipse.equinox.weaving.hook@default:false,org.eclipse.osgi.services@default:default,org.eclipse.osgi@-1:true,org.eclipse.xtend.lib.macro@default:default,org.eclipse.xtend.lib@default:default,org.eclipse.xtext.xbase.lib@default:default,org.hamcrest.core@default:default,org.junit@default:default,org.slf4j.api@default:default,org.slf4j.impl.log4j12@default:false"/>
+<booleanAttribute key="tracing" value="false"/>
+<booleanAttribute key="useCustomFeatures" value="false"/>
+<booleanAttribute key="useDefaultConfigArea" value="true"/>
+<stringAttribute key="workspace_bundles" value="ru.agentlab.maia.context.initializer@default:default,ru.agentlab.maia.context.injector.e4.event@default:default,ru.agentlab.maia.context.injector.e4.log@default:false,ru.agentlab.maia.context.injector.e4@default:default,ru.agentlab.maia.context.injector@default:default,ru.agentlab.maia.context.naming.uuid@default:default,ru.agentlab.maia.context.naming@default:default,ru.agentlab.maia.context.service@default:default,ru.agentlab.maia.context.typing.agent@default:default,ru.agentlab.maia.context.typing.behaviour@default:default,ru.agentlab.maia.context.typing.container@default:default,ru.agentlab.maia.context.typing.root@5:default,ru.agentlab.maia.context.typing@default:default,ru.agentlab.maia.context@default:default,ru.agentlab.maia.event.osgi@3:default,ru.agentlab.maia.event@default:default,ru.agentlab.maia.execution.action.annotated.example@default:default,ru.agentlab.maia.execution.action.annotated@default:default,ru.agentlab.maia.execution.action.jade@default:default,ru.agentlab.maia.execution.action@default:default,ru.agentlab.maia.execution.lifecycle.fipa@default:default,ru.agentlab.maia.execution.lifecycle@default:default,ru.agentlab.maia.execution.node@default:default,ru.agentlab.maia.execution.pool.cached@default:default,ru.agentlab.maia.execution.pool.fixed@default:default,ru.agentlab.maia.execution.pool.single@default:default,ru.agentlab.maia.execution.pool@default:default,ru.agentlab.maia.execution.scheduler.scheme.example@default:default,ru.agentlab.maia.execution.scheduler.scheme@default:default,ru.agentlab.maia.execution.scheduler.sequence@default:default,ru.agentlab.maia.execution.scheduler@default:default,ru.agentlab.maia.execution@default:default,ru.agentlab.maia.io.messaging@default:default,ru.agentlab.maia.launcher@6:default,ru.agentlab.maia.logging@default:false,ru.agentlab.maia.profile.defaults@default:default,ru.agentlab.maia.profile@default:default,ru.agentlab.maia.test.unit@default:false,ru.agentlab.maia@default:default"/>
+</launchConfiguration>

@@ -19,8 +19,8 @@ class Activator implements BundleActivator {
 	override start(BundleContext context) throws Exception {
 		Activator.context = context
 		context => [
-			registerService(IMaiaContextFactory, new E4MaiaContextFactory(eventBroker), null)
-			registerService(IMaiaContextInjector, new E4MaiaContextInjector(eventBroker), null)
+			registerService(IMaiaContextFactory, new E4MaiaContextFactory, null)
+			registerService(IMaiaContextInjector, new E4MaiaContextInjector, null)
 		]
 	}
 

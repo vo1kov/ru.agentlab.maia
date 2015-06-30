@@ -24,8 +24,8 @@ interface IMaiaContextFactory {
 
 	/**
 	 * Create Context without any additional services
-	 * @param root - parent context where platform will be created
-	 * @param id - unique id of context. If <code>null</code>, then some implementation of 
+	 * @param parent - parent context where platform will be created
+	 * @param name - unique id of context. If <code>null</code>, then some implementation of 
 	 * {@link INameGenerator INameGenerator} will be used for 
 	 * generating context name.
 	 * @return Context without any additional services
