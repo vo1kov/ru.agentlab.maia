@@ -6,8 +6,8 @@ import io.netty.channel.ChannelHandler
 import io.netty.channel.ChannelOption
 import io.netty.channel.EventLoopGroup
 import javax.inject.Inject
-import org.eclipse.e4.core.contexts.IEclipseContext
 import org.slf4j.LoggerFactory
+import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.io.IClientFactory
 
 class ClientFactory implements IClientFactory {
@@ -15,7 +15,7 @@ class ClientFactory implements IClientFactory {
 	val static LOGGER = LoggerFactory.getLogger(ClientFactory)
 
 	@Inject
-	IEclipseContext context
+	IMaiaContext context
 
 	override createClient(Class<? extends Channel> channelClass, ChannelHandler handler) {
 		LOGGER.info("Create Client...")

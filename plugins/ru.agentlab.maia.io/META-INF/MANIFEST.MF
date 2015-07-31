@@ -11,7 +11,6 @@ Require-Bundle: com.google.guava,
  io.netty;bundle-version="4.0.26",
  javax.inject;bundle-version="1.0.0",
  org.slf4j.api;bundle-version="1.7.2",
- org.eclipse.e4.core.contexts;bundle-version="1.3.100",
- org.eclipse.e4.core.di;bundle-version="1.4.0"
+ ru.agentlab.maia.context;bundle-version="1.0.0"
 Export-Package: ru.agentlab.maia.io
 
