@@ -19,13 +19,7 @@ class SequenceContextSchedulerFactory implements IMaiaContextSchedulerFactory {
 	/**
 	 * Remove all behaviours from old scheduler and add new Scheduler to context
 	 */
-	override createScheduler(IMaiaContext ctx) {
-		val context = if (ctx != null) {
-				ctx
-			} else {
-				this.context
-			}
-
+	override createScheduler() {
 		val oldScheduler = context.get(IMaiaUnboundedContextScheduler)
 		if (oldScheduler != null) {
 			oldScheduler.removeAll
