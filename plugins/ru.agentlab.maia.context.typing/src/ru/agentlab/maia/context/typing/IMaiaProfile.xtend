@@ -1,4 +1,4 @@
-package ru.agentlab.maia.context.profile
+package ru.agentlab.maia.context.typing
 
 import java.util.Collection
 
