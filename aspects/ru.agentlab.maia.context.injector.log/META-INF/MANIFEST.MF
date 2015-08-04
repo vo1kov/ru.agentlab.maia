@@ -7,6 +7,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.aspectj.runtime,
  ru.agentlab.maia.context;bundle-version="1.0.0",
  org.slf4j.api;bundle-version="1.7.2",
- ru.agentlab.maia.context.injector.e4;bundle-version="1.0.0"
+ ru.agentlab.maia.context.e4;bundle-version="1.0.0"
 Export-Package: ru.agentlab.maia.context.injector.log;aspects=AMaiaContextInjectorLog
 Eclipse-SupplementBundle: ru.agentlab.maia.context.injector.*
