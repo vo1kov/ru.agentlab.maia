@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+svg {
+  float: left;
+  border-bottom: solid 1px #ccc;
+  border-right: solid 1px #ccc;
+  margin-right: -1px;
+  margin-bottom: -1px;
+}
+
+</style>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+
+var tasks = [
+{
+	"id" : "ru.beeline.iot.CheckNotNull",
+	"inputs" : [ 
+		{
+			"id" : "input",
+			"type" : "java.lang.Object",
+			"required" : true
+		}
+	],
+	"outputs" : [ 
+		{
+			"id" : "result",
+			"type" : "boolean"
+		}
+	]
+},
+{
+	"id" : "ru.beeline.iot.gateway.zipato.CreateBootstrapBehaviour",
+	"exceptions" : [
+		{
+			"id" : "NullPointerException",
+			"type" : "java.lang.NullPointerException"
+		}
+	],
+	"inputs" : [ 
+		{
+			"id" : "eventLoop",
+			"label" : "Event Loop",
+			"type" : "io.netty.channel.EventLoopGroup",
+			"required" : true
+		}, 
+		{
+			"id" : "channel",
+			"type" : "java.lang.Class<? extends io.netty.channel.Channel>"
+		}, 
+		{
+			"id" : "options",
+			"type" : "java.util.Map<io.netty.channel.ChannelOption<java.lang.Object>, java.lang.Object>"
+		}, 
+		{
+			"id" : "handler",
+			"type" : "io.netty.channel.ChannelHandler"
+		}
+	],
+	"outputs" : [ 
+		{
+			"id" : "bootstrap",
+			"type" : "io.netty.bootstrap.Bootstrap"
+		}
+	]
+}
+]
+
+var proto = {
+	"id" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol",
+	"exceptions" : [
+		{
+			"id" : "NullPointerException",
+			"type" : "java.lang.NullPointerException"
+		}
+	],
+	"inputs" : [
+		{
+			"id" : "login",
+			"type" : "java.lang.String"
+		},
+		{
+			"id" : "password",
+			"type" : "java.lang.String"
+		}
+	],
+	"outputs" : [
+		{
+			"id" : "success",
+			"type" : "boolean"
+		}
+	],
+	"states" : [
+		{	
+	"x" : 200,
+	"y" : 200,
+			"id" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6",
+			"label" : "Create Bootstrap",
+			"ref" : "ru.beeline.iot.gateway.zipato.CreateBootstrapBehaviour"
+		},
+		{	
+	"x" : 100,
+	"y" : 100,
+			"id" : "2da4cfe4-9da7-4940-830d-bbed1e895568",
+			"label" : "Check Not Null",
+			"ref" : "ru.beeline.iot.CheckNotNull"
+		}
+	],
+	"dataflow" : [
+		["login@self", "eventLoop@719b2a8a-4119-453b-a39d-62e9ce2d6cc6"],
+		["bootstrap@719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "input@2da4cfe4-9da7-4940-830d-bbed1e895568"],
+		["output@2da4cfe4-9da7-4940-830d-bbed1e895568", "success@self"]
+	],
+	"workflow" : [
+		["self", "719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "2da4cfe4-9da7-4940-830d-bbed1e895568", "self"],
+		["NullPointerException@719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "NullPointerException@self"]
+	]
+}
+var dict = {};
+dict["boolean"] = "#ff0000";
+dict["java.lang.Object"] = "#a1a1a1";
+
+function getTypeColor(type) {
+	var color = dict[type];
+	
+	if(typeof color != 'undefined'){
+		console.log("from cache " + color);
+		return color;
+	} else {
+		color = "#" + Math.floor(Math.random()*16777215).toString(16);
+		dict[type] = color;
+		console.log("generated " + color);
+		return color;
+	}
+}
+ 
+var width = 1040,
+    height = 525,
+    radius = 40;
+	
+var titleH = 40;
+var paramH = 15;
+
+var drag = d3.behavior.drag()
+    .origin(function(d) { return d; })
+    .on("drag", dragmove);
+	
+var base = 	d3.select("body").append("div").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+	
+var svg = base
+	.append("g");
+
+var g = svg.selectAll(".node").data(proto.states)
+	.enter().append("g")
+	.attr("class", "node")
+    .attr("x", function(d) { return d.x; })
+    .attr("y", function(d) { return d.y; })
+    .attr("cursor", "move")
+	.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"})
+    .call(drag);
+
+var colors = d3.scale.category10()
+	.domain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+	
+function find(array, value) {
+  for (var i = 0; i < array.length; i++) {
+    if (array[i].id == value) return array[i];
+  }
+  return undefined;
+}
+
+var rect = g.append("rect")
+    .attr("width", function(d) { return radius * 3; })
+    .attr("height", function(d) { 
+	var task = find(tasks, d.ref);
+	return task.inputs.length * paramH + titleH + task.outputs.length * paramH; })
+    .attr("style", "fill:" + d3.hsl(colors(2)).brighter(1.5) + ";stroke-width:1;stroke:rgb(32,32,32)")
+    .attr("rx", 10)
+    .attr("ry", 10);
+	
+var text = g.append("text")
+    .attr("width", function(d) { return radius * 3; })
+    .attr("style", "fill:rgb(32,32,32);")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .attr("alignment-baseline", "baseline")
+    .attr("x", radius * 3/ 2)
+    .attr("y", radius / 2)
+    .attr("text-overflow", "ellipsis")
+    .text(function(d) { return d.label; });
+
+var outputContainer = g.append("g")
+	.attr("transform", function(d) { return "translate(0," + titleH + ")"});
+	
+var inputContainer = g.append("g")
+	.attr("transform", 
+	function(d) {
+		var task = find(tasks, d.ref);
+		return "translate(0, " + (task.outputs.length * paramH + titleH) + ")"}
+	);	
+var inputGroup = inputContainer.selectAll(".input")
+	.data(function(d, i) {
+	var task = find(tasks, d.ref);
+	return task.inputs; })
+	.enter().append("g")
+	.attr("class", "input")
+	.attr("transform", function(d, i) { return "translate(0," + (i * paramH) + ")" });
+
+var outputGroup = outputContainer.selectAll(".output")
+	.data(function(d, i) { 
+	var task = find(tasks, d.ref);
+	return task.outputs; })
+	.enter().append("g")
+	.attr("class", "output")
+	.attr("transform", function(d, i) { return "translate(" + radius * 3 + "," + (i * paramH) + ")" });
+	
+var inputCircle = inputGroup.append("circle")
+	.attr("r", 5)
+    .attr("cursor", "pointer")
+	.attr("style", function(d, i) { return "fill:" + d3.hsl(getTypeColor(d.type)).brighter(1.1) + ";stroke-width:1;stroke:rgb(32,32,32)";});
+	
+var inputText = inputGroup.append("text")
+	.text(function(d) { return d.id; })
+	.attr("x", 10)	
+    .attr("text-anchor", "start")
+    .attr("alignment-baseline", "middle")
+	.attr("style", "font-size:12;");
+	
+var outputCircle = outputGroup.append("circle")
+	.attr("r", 5)
+    .attr("cursor", "pointer")
+	.attr("style", function(d, i) { return "fill:" + d3.hsl(getTypeColor(d.type)).brighter(1.1) + ";stroke-width:1;stroke:rgb(32,32,32)";});;
+
+var outputText = outputGroup.append("text")
+	.text(function(d) { return d.id; })
+	.attr("x", -10)	
+    .attr("text-anchor", "end ")
+    .attr("alignment-baseline", "middle")
+	.attr("style", "font-size:12;");
+	
+function dragmove(d) {
+	d.x = d3.event.x;
+	d.y = d3.event.y;
+	d3.select(this)
+		.attr("transform", "translate(" + d.x + "," + d.y + ")");
+}
+
+ function zoom() {
+        svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+    }
+
+
+    // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
+    var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
+//base.call(zoomListener);
+</script>
