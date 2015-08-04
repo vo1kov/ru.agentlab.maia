@@ -1,11 +1,9 @@
 package ru.agentlab.maia.context.typing.root
 
-import org.slf4j.LoggerFactory
+import javax.annotation.PostConstruct
+import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.IMaiaContextFactory
-import ru.agentlab.maia.context.injector.IMaiaContextInjector
-import ru.agentlab.maia.context.service.Create
-import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
-import ru.agentlab.maia.context.typing.IMaiaContextTyping
+import ru.agentlab.maia.context.IMaiaContextInjector
 import ru.agentlab.maia.context.typing.agent.MaiaAgentProfile
 import ru.agentlab.maia.context.typing.behaviour.MaiaBehaviourProfile
 import ru.agentlab.maia.context.typing.container.MaiaContainerProfile
@@ -19,39 +17,32 @@ import ru.agentlab.maia.event.IMaiaEventBroker
  */
 class MaiaRootContextFactory {
 
-	val static LOGGER = LoggerFactory.getLogger(MaiaRootContextFactory)
-
-	@Create
 	def createRootContext() {
-		LOGGER.info("Create new Root context...")
 		val contextFactory = Activator.getService(IMaiaContextFactory)
 		val rootProfile = Activator.getService(MaiaRootContextProfile)
-		val contextServiceManagementService = Activator.getService(IMaiaContextServiceManagementService)
 		val broker = Activator.getService(IMaiaEventBroker)
+		val injector = Activator.getService(IMaiaContextInjector)
 		val rootContext = contextFactory.createContext("root") => [
 			set(IMaiaEventBroker, broker)
 			set(IMaiaContextFactory, contextFactory)
-			set(IMaiaContextInjector, Activator.getService(IMaiaContextInjector))
-			set(IMaiaContextServiceManagementService, contextServiceManagementService)
-
+			set(IMaiaContextInjector, injector)
 			set(MaiaRootContextProfile, rootProfile)
 			set(MaiaContainerProfile, Activator.getService(MaiaContainerProfile))
 			set(MaiaAgentProfile, Activator.getService(MaiaAgentProfile))
 			set(MaiaBehaviourProfile, Activator.getService(MaiaBehaviourProfile))
-			set(IMaiaContextTyping.KEY_TYPE, "root")
+			set(IMaiaContext.KEY_TYPE, "root")
+
+			rootProfile.implementationKeySet.forEach [ serviceInterface |
+				val serviceClass = rootProfile.getImplementation(serviceInterface)
+				if (serviceClass != null) {
+					val serviceObj = injector.make(serviceClass, it)
+					injector.invoke(serviceObj, PostConstruct, it, null)
+					set(serviceInterface.name, serviceObj)
+				}
+			]
+
 		]
 
-		LOGGER.info("Create Root context specific services...")
-		contextServiceManagementService => [ manager |
-			rootProfile.implementationKeySet.forEach [
-				manager.createService(rootProfile, rootContext, it)
-			]
-			rootProfile.factoryKeySet.forEach [
-				manager.createServiceFromFactory(rootProfile, rootContext, rootContext, it)
-			]
-		]
-
-		LOGGER.info("Root context successfully created!")
 		return rootContext
 	}
 

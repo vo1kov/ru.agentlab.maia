@@ -1,6 +1,6 @@
 package ru.agentlab.maia.context.typing.container
 
-import ru.agentlab.maia.context.profile.MaiaProfile
+import ru.agentlab.maia.context.typing.MaiaProfile
 
 class MaiaContainerProfile extends MaiaProfile {
 }

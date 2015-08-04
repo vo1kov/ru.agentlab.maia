@@ -1,63 +1,37 @@
 package ru.agentlab.maia.context.typing.behaviour
 
+import javax.annotation.PostConstruct
 import javax.inject.Inject
-import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.IMaiaContextFactory
-import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
-import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
-import ru.agentlab.maia.context.typing.IMaiaContextTyping
+import ru.agentlab.maia.context.IMaiaContextInjector
 
 class MaiaBehaviourContextFactory implements IMaiaBehaviourContextFactory {
-
-	val static LOGGER = LoggerFactory.getLogger(MaiaBehaviourContextFactory)
 
 	@Inject
 	IMaiaContext context
 
 	@Inject
+	IMaiaContextInjector injector
+
+	@Inject
 	IMaiaContextFactory contextFactory
 
 	@Inject
-	MaiaBehaviourProfile behaviourProfile
+	MaiaBehaviourProfile profile
 
-	@Inject
-	IMaiaContextServiceManagementService contextServiceManagementService
-
-	override createBehaviour(IMaiaContext parentContext) {
-		val context = if (parentContext != null) {
-				parentContext
-			} else {
-				this.context
-			}
-		LOGGER.info("Create new Behaviour...")
-		LOGGER.debug("	home context: [{}]", context)
-
-		LOGGER.info("Create Behaviour Name...")
-		val namingService = context.get(IMaiaContextNameFactory)
-		if (namingService == null) {
-			throw new IllegalStateException("Behaviour Profile have no required IMaiaContextNameFactory")
-		}
-		val name = namingService.createName
-		LOGGER.debug("	generated name: [{}]", name)
-
-		LOGGER.info("Create Behaviour Context...")
-		val behaviourContext = contextFactory.createChild(context, "MAIA Behaviour context: " + name) => [
-			set(IMaiaContextNameFactory.KEY_NAME, name)
-			set(IMaiaContextTyping.KEY_TYPE, "behaviour")
-		]
-
-		LOGGER.info("Create Behaviour specific services...")
-		contextServiceManagementService => [ manager |
-			behaviourProfile.implementationKeySet.forEach [
-				manager.createService(behaviourProfile, behaviourContext, it)
-			]
-			behaviourProfile.factoryKeySet.forEach [
-				manager.createServiceFromFactory(behaviourProfile, context, behaviourContext, it)
+	override createBehaviour() {
+		return contextFactory.createChild(context, "MAIA Behaviour context") => [
+			set(IMaiaContext.KEY_TYPE, TYPE)
+			profile.implementationKeySet.forEach [ serviceInterface |
+				val serviceClass = profile.getImplementation(serviceInterface)
+				if (serviceClass != null) {
+					val serviceObj = injector.make(serviceClass, it)
+					injector.invoke(serviceObj, PostConstruct, it, null)
+					set(serviceInterface.name, serviceObj)
+				}
 			]
 		]
-		LOGGER.info("Behaviour successfully created!")
-		return behaviourContext
 	}
 
 }

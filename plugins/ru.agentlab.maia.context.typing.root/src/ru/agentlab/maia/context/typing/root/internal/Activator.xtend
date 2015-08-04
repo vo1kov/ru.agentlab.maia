@@ -23,9 +23,7 @@ class Activator implements BundleActivator {
 	}
 
 	override stop(BundleContext context) throws Exception {
-		context => [
-			unregister(IMaiaContext)
-		]
+		context.unregister(IMaiaContext)
 		Activator.context = null
 	}
 

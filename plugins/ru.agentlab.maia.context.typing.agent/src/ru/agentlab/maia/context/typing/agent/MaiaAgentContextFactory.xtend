@@ -1,13 +1,10 @@
 package ru.agentlab.maia.context.typing.agent
 
+import javax.annotation.PostConstruct
 import javax.inject.Inject
-import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.IMaiaContextFactory
-import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
-import ru.agentlab.maia.context.service.Create
-import ru.agentlab.maia.context.service.IMaiaContextServiceManagementService
-import ru.agentlab.maia.context.typing.IMaiaContextTyping
+import ru.agentlab.maia.context.IMaiaContextInjector
 
 /**
  * Factory for creating Agent contexts
@@ -16,8 +13,6 @@ import ru.agentlab.maia.context.typing.IMaiaContextTyping
  */
 class MaiaAgentContextFactory implements IMaiaAgentContextFactory {
 
-	val static LOGGER = LoggerFactory.getLogger(MaiaAgentContextFactory)
-
 	@Inject
 	IMaiaContext context
 
@@ -25,62 +20,24 @@ class MaiaAgentContextFactory implements IMaiaAgentContextFactory {
 	IMaiaContextFactory contextFactory
 
 	@Inject
-	IMaiaContextServiceManagementService contextServiceManagementService
+	IMaiaContextInjector injector
 
 	@Inject
-	MaiaAgentProfile agentProfile
+	MaiaAgentProfile profile
 
-	/**
-	 * <p>Create Agent-Context with default set of agent-specific services.</p>
-	 * <p>That implementation of factory create Context with following services:</p>
-	 * <ul>
-	 * <li>{@link IScheduler IScheduler} - allow agent and all its childs schedules behaviours
-	 * and control agent lifecycle</li>
-	 * <li>{@link IMessageQueue IMessageQueue} - allow agent and all its childs receives messages</li>
-	 * </ul>
-	 * <p>Agent-Context will contain properties:</p>
-	 * <ul>
-	 * <li><code>context.name</code> - name of context, contains agent name</li>
-	 * {@link IContextFactory#TYPE_AGENT AGENT} value</li>
-	 * <li>{@link IAgentId IAgentId} - Id of agent</li>
-	 * </ul>
-	 * {@link IAgentNameGenerator IAgentNameGenerator} will be used for generating agent name.
-	 */
-	@Create
-	override createAgent(IMaiaContext parentContext) {
-		val context = if (parentContext != null) {
-				parentContext
-			} else {
-				this.context
-			}
-		LOGGER.info("Create new Agent...")
-		LOGGER.debug("	home context: [{}]", context)
+	override createAgent() {
 
-		LOGGER.info("Create Agent Name...")
-		val namingService = context.get(IMaiaContextNameFactory)
-		if (namingService == null) {
-			throw new IllegalStateException("Agent Profile have no required IMaiaContextNameFactory")
-		}
-		val name = namingService.createName
-		LOGGER.debug("	generated name: [{}]", name)
-
-		LOGGER.info("Create new context...")
-		val agentContext = contextFactory.createChild(context, "MAIA Agent context: " + name) => [
-			set(IMaiaContextNameFactory.KEY_NAME, name)
-			set(IMaiaContextTyping.KEY_TYPE, "agent")
-		]
-
-		LOGGER.info("Create Agent specific services...")
-		contextServiceManagementService => [ manager |
-			agentProfile.implementationKeySet.forEach [
-				manager.createService(agentProfile, agentContext, it)
-			]
-			agentProfile.factoryKeySet.forEach [
-				manager.createServiceFromFactory(agentProfile, context, agentContext, it)
+		return contextFactory.createChild(context, "MAIA Agent context") => [
+			set(IMaiaContext.KEY_TYPE, TYPE)
+			profile.implementationKeySet.forEach [ serviceInterface |
+				val serviceClass = profile.getImplementation(serviceInterface)
+				if (serviceClass != null) {
+					val serviceObj = injector.make(serviceClass, it)
+					injector.invoke(serviceObj, PostConstruct, it, null)
+					set(serviceInterface.name, serviceObj)
+				}
 			]
 		]
-		LOGGER.info("Agent successfully created!")
-		return agentContext
 	}
 
 }

@@ -5,20 +5,14 @@ Bundle-SymbolicName: ru.agentlab.maia.context.typing.root
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
- org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- org.slf4j.api;bundle-version="1.7.2",
  javax.inject;bundle-version="1.0.0",
  ru.agentlab.maia.context;bundle-version="1.0.0",
- ru.agentlab.maia.context.injector;bundle-version="1.0.0",
- ru.agentlab.maia.context.naming;bundle-version="1.0.0",
- ru.agentlab.maia.context.service;bundle-version="1.0.0",
  ru.agentlab.maia.context.typing;bundle-version="1.0.0",
  ru.agentlab.maia.context.typing.agent;bundle-version="1.0.0",
  ru.agentlab.maia.context.typing.behaviour;bundle-version="1.0.0",
  ru.agentlab.maia.context.typing.container;bundle-version="1.0.0",
- ru.agentlab.maia.context.profile;bundle-version="1.0.0",
  ru.agentlab.maia.event;bundle-version="1.0.0"
 Import-Package: org.osgi.framework;version="1.8.0"
 Bundle-Activator: ru.agentlab.maia.context.typing.root.internal.Activator
