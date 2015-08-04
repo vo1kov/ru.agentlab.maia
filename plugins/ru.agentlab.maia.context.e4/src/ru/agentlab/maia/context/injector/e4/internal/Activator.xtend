@@ -3,7 +3,7 @@ package ru.agentlab.maia.context.injector.e4.internal
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import ru.agentlab.maia.context.IMaiaContextFactory
-import ru.agentlab.maia.context.injector.IMaiaContextInjector
+import ru.agentlab.maia.context.IMaiaContextInjector
 import ru.agentlab.maia.context.injector.e4.E4MaiaContextFactory
 import ru.agentlab.maia.context.injector.e4.E4MaiaContextInjector
 import ru.agentlab.maia.event.IMaiaEventBroker
@@ -36,8 +36,7 @@ class Activator implements BundleActivator {
 		val ref = Activator.context.getServiceReference(IMaiaEventBroker)
 		if (ref != null) {
 			return Activator.context.getService(ref)
-		}
-		else {
+		} else {
 			throw new IllegalStateException("IEventBroker is not registered")
 		}
 	}

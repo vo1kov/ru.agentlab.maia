@@ -4,7 +4,7 @@ import java.lang.annotation.Annotation
 import org.eclipse.e4.core.contexts.ContextInjectionFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.context.injector.IMaiaContextInjector
+import ru.agentlab.maia.context.IMaiaContextInjector
 
 class E4MaiaContextInjector implements IMaiaContextInjector {
 
