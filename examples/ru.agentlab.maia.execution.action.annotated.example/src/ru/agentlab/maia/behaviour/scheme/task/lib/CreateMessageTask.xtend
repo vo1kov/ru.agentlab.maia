@@ -1,7 +1,6 @@
 package ru.agentlab.maia.behaviour.scheme.task.lib
 
 import javax.inject.Inject
-import org.eclipse.e4.core.di.annotations.Optional
 import ru.agentlab.maia.execution.action.annotated.Action
 import ru.agentlab.maia.execution.action.annotated.TaskInput
 import ru.agentlab.maia.execution.action.annotated.TaskOutput
@@ -13,10 +12,10 @@ class CreateMessageTask {
 	@Inject
 	IMessageFactory messageFactory
 
-	@TaskInput @Optional
+	@TaskInput
 	String language
 
-	@TaskInput @Optional
+	@TaskInput
 	String sender
 
 	@Action @TaskOutput
