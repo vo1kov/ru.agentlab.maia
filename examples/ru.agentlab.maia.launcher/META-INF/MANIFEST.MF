@@ -17,14 +17,10 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.context.typing.agent;bundle-version="1.0.0",
  ru.agentlab.maia.context.typing.behaviour;bundle-version="1.0.0",
  ru.agentlab.maia.context.typing.container;bundle-version="1.0.0",
- ru.agentlab.maia.context.injector;bundle-version="1.0.0",
  ru.agentlab.maia.context.initializer;bundle-version="1.0.0",
- ru.agentlab.maia.context.naming;bundle-version="1.0.0",
- ru.agentlab.maia.context.service;bundle-version="1.0.0",
  ru.agentlab.maia.execution.action;bundle-version="1.0.0",
  ru.agentlab.maia.execution.action.annotated;bundle-version="1.0.0",
  ru.agentlab.maia.execution.lifecycle;bundle-version="1.0.0",
  ru.agentlab.maia.execution.lifecycle.fipa;bundle-version="1.0.0",
- ru.agentlab.maia.io.messaging;bundle-version="1.0.0",
- ru.agentlab.maia.context.profile;bundle-version="1.0.0"
+ ru.agentlab.maia.io.messaging;bundle-version="1.0.0"
 

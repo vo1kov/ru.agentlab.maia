@@ -1,26 +1,21 @@
 package ru.agentlab.maia.launcher
 
 import javax.annotation.PostConstruct
-import javax.inject.Inject
-import javax.inject.Named
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
 
 class AgentExample {
 
 	val static LOGGER = LoggerFactory.getLogger(AgentExample)
 
-	@Inject @Named(IMaiaContextNameFactory.KEY_NAME)
-	String agentName
-
+//	@Inject @Named(IMaiaContextNameFactory.KEY_NAME)
+//	String agentName
 //	@Inject
 //	extension IBehaviourFactory
 //	@Inject
 //	IBehaviourSchemeRegistry behaviourSchemeRegistry
 	@PostConstruct
 	def void setup() {
-		LOGGER.info("Setup of: [{}] agent", agentName)
-
+//		LOGGER.info("Setup of: [{}] agent", agentName)
 //		val BehaviourSchemeOneShot oneShotScheme = behaviourSchemeRegistry.schemes.findFirst [
 //			it instanceof BehaviourSchemeOneShot
 //		] as BehaviourSchemeOneShot

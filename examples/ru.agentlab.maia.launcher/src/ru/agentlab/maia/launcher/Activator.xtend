@@ -27,25 +27,25 @@ class Activator implements BundleActivator {
 	 */
 	override void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext
-		for(ref : context.getAllServiceReferences(null, null)){
+		for (ref : context.getAllServiceReferences(null, null)) {
 			println(ref)
 		}
 		val rootContextRef = context.getServiceReference(IMaiaContext)
 		val rootContext = context.getService(rootContextRef)
 //		LOGGER.info(rootContext.dump)
 		LOGGER.info("CREATE CONTAINER...")
-		val container = rootContext.get(IMaiaContainerContextFactory).createContainer(null)
-		val container2 = rootContext.get(IMaiaContainerContextFactory).createContainer(null)
-		val container3 = rootContext.get(IMaiaContainerContextFactory).createContainer(null)
+		val container = rootContext.get(IMaiaContainerContextFactory).createContainer
+		val container2 = rootContext.get(IMaiaContainerContextFactory).createContainer
+		val container3 = rootContext.get(IMaiaContainerContextFactory).createContainer
 //		LOGGER.info(container.dump)
 		LOGGER.info("CREATE AGENT...")
-		val agent = container.get(IMaiaAgentContextFactory).createAgent(null) => [
-			get(IMaiaContextInitializerService).addInitializer(it, AgentExample)
+		val agent = container.get(IMaiaAgentContextFactory).createAgent => [
+			get(IMaiaContextInitializerService).addInitializer(AgentExample)
 		]
-		container.get(IMaiaAgentContextFactory).createAgent(null)
-		container.get(IMaiaAgentContextFactory).createAgent(null)
-		container.get(IMaiaAgentContextFactory).createAgent(null)
-		container.get(IMaiaAgentContextFactory).createAgent(null)
+		container.get(IMaiaAgentContextFactory).createAgent
+		container.get(IMaiaAgentContextFactory).createAgent
+		container.get(IMaiaAgentContextFactory).createAgent
+		container.get(IMaiaAgentContextFactory).createAgent
 		LOGGER.info(agent.dump)
 
 //		LOGGER.info("CREATE AGENT2...")
@@ -54,7 +54,7 @@ class Activator implements BundleActivator {
 //		]
 //		LOGGER.info(agent2.dump)
 		LOGGER.info("CREATE BEHAVIOUR...")
-		val behaviour = agent.get(IMaiaBehaviourContextFactory).createBehaviour(null) => [
+		val behaviour = agent.get(IMaiaBehaviourContextFactory).createBehaviour => [
 //			val inject = get(IMaiaContextInjector)
 //			set(IMaiaExecutorAction.KEY_TASK, inject.make(ContextDumpTask, it))
 //			val task = inject.make(AnnotatedContextAction, it)
@@ -63,7 +63,7 @@ class Activator implements BundleActivator {
 		]
 
 		LOGGER.info("CREATE BEHAVIOUR_2...")
-		agent.get(IMaiaBehaviourContextFactory).createBehaviour(null)
+		agent.get(IMaiaBehaviourContextFactory).createBehaviour
 
 		agent => [
 			get(IMaiaContextLifecycleService).state = FipaLifecycleScheme.STATE_ACTIVE
