@@ -16,7 +16,7 @@ class WsContextServicesListHandler extends ChannelHandlerAdapter {
 				val context = JsonPath.read(msg, "$.parameters[0].context") as String
 				val rootContext = Activator.rootContext
 				val found = rootContext.findContext(context)
-				println(found)
+//				println(found)
 				if (found != null) {
 					ctx.writeAndFlush(new TextWebSocketFrame('''
 						{

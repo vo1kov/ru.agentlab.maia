@@ -27,9 +27,9 @@ class Activator implements BundleActivator {
 	 */
 	override void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext
-		for (ref : context.getAllServiceReferences(null, null)) {
-			println(ref)
-		}
+//		for (ref : context.getAllServiceReferences(null, null)) {
+//			println(ref)
+//		}
 		val rootContextRef = context.getServiceReference(IMaiaContext)
 		val rootContext = context.getService(rootContextRef)
 //		LOGGER.info(rootContext.dump)

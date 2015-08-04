@@ -13,7 +13,6 @@ Require-Bundle: com.google.guava,
  io.netty;bundle-version="4.0.26",
  ru.agentlab.maia.context;bundle-version="1.0.0",
  ru.agentlab.maia.event;bundle-version="1.0.0",
- ru.agentlab.maia.context.event;bundle-version="1.0.0",
  org.slf4j.api;bundle-version="1.7.2"
 Bundle-ClassPath: .,
  libs/json-path-1.2.0.jar,
