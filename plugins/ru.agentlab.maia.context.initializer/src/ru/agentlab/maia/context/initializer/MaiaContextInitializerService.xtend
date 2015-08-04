@@ -13,12 +13,7 @@ class MaiaContextInitializerService implements IMaiaContextInitializerService {
 	@Inject
 	IMaiaContext context
 
-	override addInitializer(IMaiaContext ctx, Class<?> contributorClass) {
-		val context = if (ctx != null) {
-				ctx
-			} else {
-				this.context
-			}
+	override addInitializer(Class<?> contributorClass) {
 		LOGGER.info("Create Initializer...")
 		if (contributorClass == null) {
 			throw new NullPointerException("Contributor class is null")

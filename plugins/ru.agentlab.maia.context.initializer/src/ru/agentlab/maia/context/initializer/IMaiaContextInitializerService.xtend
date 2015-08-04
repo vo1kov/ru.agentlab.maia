@@ -1,7 +1,5 @@
 package ru.agentlab.maia.context.initializer
 
-import ru.agentlab.maia.context.IMaiaContext
-
 /**
  * Service for add Initializer in context.
  * 
@@ -20,6 +18,6 @@ interface IMaiaContextInitializerService {
 	 * @param InitializerClass - class of Initializer to be created.
 	 * @return Newly created Initializer
 	 */
-	def Object addInitializer(IMaiaContext context, Class<?> InitializerClass)
+	def Object addInitializer(Class<?> InitializerClass)
 
 }
