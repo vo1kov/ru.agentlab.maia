@@ -10,7 +10,6 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib.macro,
  javax.inject;bundle-version="1.0.0",
  ru.agentlab.maia.context;bundle-version="1.0.0",
- ru.agentlab.maia.context.injector;bundle-version="1.0.0",
  ru.agentlab.maia.event;bundle-version="1.0.0"
 Export-Package: ru.agentlab.maia.execution.lifecycle,
  ru.agentlab.maia.execution.lifecycle.event
