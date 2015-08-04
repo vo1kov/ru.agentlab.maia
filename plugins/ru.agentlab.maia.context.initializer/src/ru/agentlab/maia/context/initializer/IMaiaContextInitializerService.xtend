@@ -18,6 +18,6 @@ interface IMaiaContextInitializerService {
 	 * @param InitializerClass - class of Initializer to be created.
 	 * @return Newly created Initializer
 	 */
-	def Object addInitializer(Class<?> InitializerClass)
+	def <T> T addInitializer(Class<T> InitializerClass)
 
 }
