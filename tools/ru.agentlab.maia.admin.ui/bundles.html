@@ -1,27 +1,17 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<style>
-
-body {
-  font: 10px sans-serif;
-}
-
-.chord {
-  fill-opacity: .67;
-}
-
-</style>
 <body>
     <link type="text/css" rel="stylesheet" href="css/semantic.min.css"/>
     <link type="text/css" rel="stylesheet" href="css/style2.css"/>
+    <link type="text/css" rel="stylesheet" href="css/bundles.css"/>
+	
 	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="js/semantic.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+	<script type="text/javascript" src="js/d3.min.js"></script>
     <script type="text/javascript" src="js/maia.js"></script>
     <script type="text/javascript" src="js/socket.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 
-<div class="ui top secondary pointing menu">
+	<div class="ui inverted fixed menu">
 		<p class="header item">MAIA</p>
 		<div class="ui dropdown item">
 			<i class="laptop icon"></i>
@@ -36,13 +26,12 @@ body {
 			  <a class="item">Connect...</a>
 			</div>
 		  </div>
-		<a class="active red item" href="bundles.html">
-			<i class="plug icon"></i>Bundles
-		</a>
+		<a class="active item" href="bundles.html"><i class="plug icon"></i>Bundles</a>
 		<a class="item" href="threads.html"><i class="tasks icon"></i>Threads</a>
 		<a class="item" href="contexts.html"><i class="grid layout icon"></i>Contexts</a>
-		<a class="item"><i class="file text outline icon"></i>Logs</a>
-		<a class="item"><i class="download icon"></i>Backups</a>
+		<a class="item"><i class="file text outline icon"></i></a>
+		<a class="item"><i class="line chart icon"></i></a>
+		<a class="item"><i class="download icon"></i></a>
 		 
 		  <div class="right menu">
 			 
@@ -80,80 +69,211 @@ body {
 		
 	</div>
 	
+    <div class="ui main container">
+		<div class="ui main vertical loading center aligned segment" id="body">
+			<h2>Bundles dependencies</h2>
+		</div>
+		<div class="ui vertical loading segment">
+			<div class="ui text container">
+				<h2 class="ui header centered">Bundles list</h2>
+				<table class="ui compact very basic selectable celled small table">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>State</th>
+							<th>Bundle</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="ui inverted vertical center aligned footer segment">
+		<img class="ui centered tiny circular image" src="images/Calendar_Wiki_Maya_Calendar_001.jpg"></img>
+		<div class="ui horizontal inverted small divided list">
+			<div class="item">
+				<p>Multi-Agent Industrial Automation</p>
+			</div>
+			<div class="item">
+				<p>2015</p>
+			</div>
+		</div>
+	</div>
+
 <script>
 
 var outerRadius = 1000 / 2,
-    innerRadius = 250;
+    innerRadius = 200;
 
 var fill = d3.scale.category20c();
 
 var chord = d3.layout.chord()
-    .padding(.01)
+    .padding(.02)
     .sortSubgroups(d3.descending)
     .sortChords(d3.descending);
 
 var arc = d3.svg.arc()
     .innerRadius(innerRadius)
-    .outerRadius(innerRadius + 60);
+    .outerRadius(innerRadius + 50);
 
-var svg = d3.select("body").append("svg")
-    .attr("width", outerRadius * 4)
-    .attr("height", outerRadius * 2)
-  .append("g")
-    .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");
- 
+var svg = d3.select("#body")
+	.append("svg")
+		.attr("width", outerRadius * 2)
+		.attr("height", outerRadius * 2)
+	.append("g")
+		.attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");
+		
 
 function updateBundles(imports){
-	imports.sort();
-  var indexByName = d3.map(),
-      nameByIndex = d3.map(),
-      matrix = [],
-      n = 0;
-
-  // Returns the Flare package name for the given class name.
-  function name(n) {
-    return n;//name.substring(0, name.lastIndexOf(".")).substring(6);
-  }
-
-  // Compute a unique index for each package name.
-  imports.forEach(function(d) {
-    if (!indexByName.has(d = name(d.name))) {
-      nameByIndex.set(n, d);
-      indexByName.set(d, n++);
-    }
-  });
-
-  // Construct a square matrix counting package imports.
-  imports.forEach(function(d) {
-    var source = indexByName.get(name(d.name)),
-        row = matrix[source];
-    if (!row) {
-     row = matrix[source] = [];
-     for (var i = -1; ++i < n;) row[i] = 0;
-    }
-    d.imports.forEach(function(d) { row[indexByName.get(name(d))]++; });
-  });
-
-  chord.matrix(matrix);
-  
-  function showImports(d){
-	g.filter(function(l) { return l != d; })
-		.style("opacity", 0.1);
-	var n = [];
 	
-	links.filter(function(l) {
-		var result = l.source.index != d.index;
-		if (!result){
-			n.push(l.target.index);
+	var indexByName = d3.map(),
+		nameByIndex = d3.map(),
+		stateByIndex = d3.map(),
+		unresolved = d3.map(),
+		matrix = [],
+		n = 0;
+
+	dispatch.on("bundle_update.bundles", function(event) {
+		var bundle = event.bundle;
+		imports.forEach(function(d) {
+			if (d.id == bundle){
+				console.log(d);
+				switch (event.type){
+					case "started" :
+						d.state = "active";
+						break;
+					case "stopped" : 
+						d.state = "resolved";
+						break;
+					default : 
+						console.log("!!qwert");
+						break;
+				}
+				console.log(d);
+				stateByIndex.set(bundle, d.state);
+				//d.state
+			}
+		})
+		updateBundles(imports);
+	});
+	
+	imports.sort(function(a,b){return a.id - b.id;});
+	
+	// Compute a unique index for each package name.
+	imports.forEach(function(d) {
+		if (!indexByName.has(d.name)) {
+			nameByIndex.set(n, d.name);
+			stateByIndex.set(n, d.state);
+			indexByName.set(d.name, n++);
 		}
-		return result; 
-		}).style("opacity", 0.01);
-	//console.log(n);
-	if (n.length > 0){
-		g.filter(function(l) { return n.indexOf(l.index) > -1; })
-			.style("opacity", 0.8);
-	}
-  }
+	});
+
+	// Construct a square matrix counting package imports.
+	imports.forEach(function(im) {
+		var source = indexByName.get(im.name),
+		row = matrix[source];
+		if (!row) {
+			row = matrix[source] = [];
+			for (var i = -1; ++i < n;) row[i] = 0;
+		}
+		im.imports.forEach(function(d) {
+			var r = indexByName.get(d);
+			if (typeof(r) === 'undefined'){
+				console.log(im);
+				if (!unresolved.get(im.name)) {
+					unresolved.set(im.name, []);
+				}
+				var un = unresolved.get(im.name);
+				un.push(d);
+				//unresolved.set(im, un);
+			}
+			row[indexByName.get(d)]++;
+		});
+	});
+	
+	
+	var table = d3.select("table").select("tbody")
+		.selectAll("tr")
+		.data(imports)
+		.enter();
+		
+	var row = table.append("tr")
+		.classed("error", function(d){return d.state === 'installed' ? true : null;})
+			
+	row.append("td")
+		.text(function(d){return d.id;})
+		
+	row.append("td")
+		.append("div")
+			.attr("class", function(d){
+				switch (d.state){
+					case "active" : return "ui blue label"; break;
+					case "installed" : return "ui red label"; break;
+					case "resolved" : return "ui label"; break;
+				}
+			})
+			//.classed("ui", true)
+			//.classed("label", true)
+			.text(function(d){return d.state.toUpperCase();})
+		
+	row.append("td")
+		.text(function(d){return d.name;})
+	
+	row.filter(function(d){return d.state != 'installed';})
+		.append("td");
+	
+	var unrTD = row.filter(function(d){return d.state === 'installed';})
+		.append("td");
+	
+	//console.log(unresolved);
+			
+	unrTD
+		.html(function(d){
+			var res = "";
+			var und = unresolved.get(d.name);
+			if (und){
+				for (var i = 0; i < und.length; i ++){
+					res += "<div class='item'>";
+					res += unresolved.get(d.name)[i];
+					res += "</div>";
+				}
+				return "<h4>Unresolved dependencies:</h4>" + 
+				"<div class = 'ui bulleted list'>" + 
+				res + 
+				"</div>";
+			}})
+		//.text("Unresolved dependencies:");
+		
+	//unrTD.append("div")
+		//.classed("ui bulleted list", true)
+		//.append("div")
+		//.classed("item", true)
+		//.text(function(d){return unresolved.get(d);});
+	
+
+	chord.matrix(matrix);
+  
+	function showImports(d){
+		g.filter(function(l) { return l != d; })
+			.style("opacity", 0.1);
+		var n = [];
+		
+		links.filter(function(l) {
+			var result = l.source.index != d.index;
+			if (!result){
+				n.push(l.target.index);
+			}
+			return result; 
+			}).style("opacity", 0.01);
+		//console.log(n);
+		if (n.length > 0){
+			g.filter(function(l) { return n.indexOf(l.index) > -1; })
+				.style("opacity", 1);
+		}
+	  }
   
   
   function showExports(d){
@@ -171,7 +291,7 @@ function updateBundles(imports){
 	//console.log(n);
 	if (n.length > 0){
 		g.filter(function(l) { return n.indexOf(l.index) > -1; })
-			.style("opacity", 0.8);
+			.style("opacity", 1);
 	}
   }
   
@@ -194,80 +314,87 @@ function updateBundles(imports){
 	//console.log(n);
 	if (n.length > 0){
 		g.filter(function(l) { return n.indexOf(l.index) > -1; })
-			.style("opacity", 0.8);
+			.style("opacity", 1);
 	}
   }
   
-  $(document)
-	.on("mousedown", "svg", function(e) {
-		e.stopPropagation();
-		e.stopImmediatePropagation();
-		e.preventDefault();
-		return false;})
-	.on("contextmenu", "svg", function(e) {
-		e.stopPropagation();
-		e.stopImmediatePropagation();
-		e.preventDefault();
-		return false;})
-	;
+	$(document)
+		.on("mousedown", "svg", function(e) {
+			e.stopPropagation();
+			e.stopImmediatePropagation();
+			e.preventDefault();
+			return false;})
+		.on("contextmenu", "svg", function(e) {
+			e.stopPropagation();
+			e.stopImmediatePropagation();
+			e.preventDefault();
+			return false;});
 
 	//var mouseDownCount = 0;
 	
-  var g = svg.selectAll(".bundle")
-      .data(chord.groups)
-    .enter().append("g")
-      .attr("class", "bundle")
-	  .on("mousedown", function(d){
-		switch (d3.event.buttons){
-			case 1 :
-				showImports(d);
-				break;
-			case 2 :
-				showExports(d);
-				break;
-			case 3 :
-			case 4 :
-				showImportExports(d);
-				break;
-			default :
-				break;
-		}
-	  })
-	  .on("mouseup", function(d){
-		g.style("opacity", 1);
-		links.style("opacity", 1);
-	  });
+	var g = svg.selectAll(".bundle")
+		.data(chord.groups)
+		.enter()
+		.append("g")
+		.attr("class", function(d){return stateByIndex.get(d.index);})
+		.classed("bundle", true)
+		.on("mousedown", function(d){
+			switch (d3.event.buttons){
+				case 1 :
+					showImports(d);
+					break;
+				case 2 :
+					showExports(d);
+					break;
+				case 3 :
+				case 4 :
+					showImportExports(d);
+					break;
+				default :
+					break;
+			}
+		})
+		.on("mouseup", function(d){
+			g.style("opacity", 1);
+			links.style("opacity", 1);
+		});
 	
 	var h = {};
 	
-  var nodes = g.append("path")
-      .style("fill", function(d) { return fill(2); })
-      .style("stroke", function(d) { return fill(2); })
-      .attr("d", arc);
+	var nodes = g.append("path")
+		.classed("node", true)
+		.attr("d", arc);
 
-  g.append("text")
-      .each(function(d) { d.angle = (d.startAngle + d.endAngle) / 2; })
-      .attr("dy", ".35em")
-	  //.style("opacity", 1)
-	  .style("font-size", 10)
-      .attr("transform", function(d) {
-        return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
-            + "translate(" + (innerRadius + 65) + ")"
-            + (d.angle > Math.PI ? "rotate(180)" : "");
-      })
-      .style("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
-      .text(function(d) { return nameByIndex.get(d.index); });
+	g.append("text")
+		.each(function(d) { d.angle = (d.startAngle + d.endAngle) / 2; })
+		.attr("dy", ".35em")
+		.attr("transform", function(d) {
+			return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
+				+ "translate(" + (innerRadius + 65) + ")"
+				+ (d.angle > Math.PI ? "rotate(180)" : "");
+			})
+		.style("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
+		.text(function(d) { return nameByIndex.get(d.index); });
 
-  var links = svg.selectAll(".chord")
-      .data(chord.chords)
-    .enter().append("path")
-      .attr("class", "chord")
-      .style("stroke", function(d) { return fill(2); })
-      .style("fill", function(d) { return fill(2); })
-      .attr("d", d3.svg.chord().radius(innerRadius));
+	var links = svg
+		.selectAll(".import")
+			.data(chord.chords)
+			.enter()
+		.append("path")
+			.attr("class", function(d){return stateByIndex.get(d.source.index).toLowerCase();})
+			.classed("import", true)
+			.attr("d", d3.svg.chord().radius(innerRadius));
+	
+	d3.selectAll(".loading").classed("loading", false);
 }
 
 d3.select(self.frameElement).style("height", outerRadius * 2 + "px");
 
-</script>
+	</script>
+	
+	<script>
+		$(document).ready(function() {
+			$('.ui.dropdown').dropdown();
+		});
+	</script>
 </body>

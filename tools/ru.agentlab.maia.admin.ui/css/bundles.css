@@ -1,0 +1,100 @@
+.bundle > text {
+	font-size : 10px;
+}
+
+.bundle {
+	cursor:pointer;
+}
+
+.bundle.installed > .node {
+	fill : #db2828;
+	stroke : #db2828;
+	fill-opacity: .33;
+	stroke-opacity: .33;
+}
+
+.bundle.installed > text {
+	fill : #db2828;
+	font-weight:bold;
+	font-size : 12px;
+}
+
+.import.installed {
+	fill : #db2828;
+	stroke : #db2828;
+	fill-opacity: .33;
+	stroke-opacity: .33;
+}
+
+.bundle.resolved > .node {
+	fill : #2185d0;
+	stroke : #2185d0;
+	fill-opacity: .1;
+	stroke-opacity: .1;
+}
+
+.bundle.resolved > text {
+	fill : #2185d0;
+	fill-opacity: .33;
+}
+
+.import.resolved {
+	fill : #2185d0;
+	stroke : #2185d0;
+	fill-opacity: .12;
+	stroke-opacity: .12;
+}
+
+.bundle.starting > .node  {
+	fill : #16ab39;
+	stroke : #16ab39;
+	fill-opacity: .5;
+	stroke-opacity: .5;
+}
+
+.bundle.starting > text {
+	fill : #16ab39;
+}
+
+.import.starting  {
+	fill : #16ab39;
+	stroke : #2185d0;
+	fill-opacity: .5;
+	stroke-opacity: .5;
+}
+
+.bundle.active > .node  {
+	fill : #2185d0;
+	fill-opacity: .5;
+	stroke : #2185d0;
+	stroke-opacity: .5;
+}
+
+.bundle.active > text  {
+	fill : #2185d0;
+}
+
+.import.active  {
+	fill : #2185d0;
+	fill-opacity: .5;
+	stroke : #2185d0;
+	stroke-opacity: .5;
+}
+
+.bundle.stopping > .node {
+	fill : #a5673f;
+	stroke : #a5673f;
+	fill-opacity: .5;
+	stroke-opacity: .5;
+}
+
+.bundle.stopping > text {
+	fill : #a5673f;
+}
+
+.import.stopping {
+	fill : #a5673f;
+	stroke : #2185d0;
+	fill-opacity: .5;
+	stroke-opacity: .5;
+}

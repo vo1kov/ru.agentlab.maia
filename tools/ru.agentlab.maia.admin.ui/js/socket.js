@@ -3,6 +3,7 @@ var socket = new WebSocket("ws://localhost:9091/websocket");
 socket.onopen = function() {
 	socket.send(JSON.stringify({"command" : "context-list"}));
 	socket.send(JSON.stringify({"command" : "bundles"}));
+	socket.send(JSON.stringify({"command" : "bundles-subscribe"}));
 };
 
 socket.onclose = function(event) {
@@ -35,6 +36,9 @@ socket.onmessage = function(event) {
 			console.log(data);
 			updateBundles(data.content);
 			break;
+		case "bundles-subscribe" :
+			console.log(data);
+			dispatch.bundle_update(data.content);
 		default :
 			break;
 	}

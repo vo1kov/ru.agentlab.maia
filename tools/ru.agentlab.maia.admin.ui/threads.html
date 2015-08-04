@@ -19,9 +19,8 @@ body {
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
     <script type="text/javascript" src="js/maia.js"></script>
     <script type="text/javascript" src="js/socket.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 
-<div class="ui top secondary pointing menu">
+	<div class="ui inverted fixed menu">
 		<p class="header item">MAIA</p>
 		<div class="ui dropdown item">
 			<i class="laptop icon"></i>
@@ -37,10 +36,11 @@ body {
 			</div>
 		  </div>
 		<a class="item" href="bundles.html"><i class="plug icon"></i>Bundles</a>
-		<a class="active green item" href="threads.html"><i class="tasks icon"></i>Threads</a>
+		<a class="active item" href="threads.html"><i class="tasks icon"></i>Threads</a>
 		<a class="item" href="contexts.html"><i class="grid layout icon"></i>Contexts</a>
-		<a class="item"><i class="file text outline icon"></i>Logs</a>
-		<a class="item"><i class="download icon"></i>Backups</a>
+		<a class="item"><i class="file text outline icon"></i></a>
+		<a class="item"><i class="line chart icon"></i></a>
+		<a class="item"><i class="download icon"></i></a>
 		 
 		  <div class="right menu">
 			 
@@ -76,111 +76,17 @@ body {
 			  </div>
 		  </div>
 		
+	</div>	
+	
+	<div class="ui main container">
+		<div class="ui main vertical center aligned segment" id="body">
+			<h2>Threads</h2>
+		</div>
 	</div>
+	
 	
 <script>
 
-var outerRadius = 1960 / 2,
-    innerRadius = 630;
-
-var fill = d3.scale.category20c();
-
-var chord = d3.layout.chord()
-    .padding(.04)
-    .sortSubgroups(d3.descending)
-    .sortChords(d3.descending);
-
-var arc = d3.svg.arc()
-    .innerRadius(innerRadius)
-    .outerRadius(innerRadius + 60);
-
-var svg = d3.select("body").append("svg")
-    .attr("width", outerRadius * 4)
-    .attr("height", outerRadius * 2)
-  .append("g")
-    .attr("transform", "translate(" + outerRadius*1.5 + "," + outerRadius + ")");
- 
-
-function updateBundles(imports){
-	imports.sort();
-  var indexByName = d3.map(),
-      nameByIndex = d3.map(),
-      matrix = [],
-      n = 0;
-
-  // Returns the Flare package name for the given class name.
-  function name(n) {
-    return n;//name.substring(0, name.lastIndexOf(".")).substring(6);
-  }
-
-  // Compute a unique index for each package name.
-  imports.forEach(function(d) {
-    if (!indexByName.has(d = name(d.name))) {
-      nameByIndex.set(n, d);
-      indexByName.set(d, n++);
-    }
-  });
-
-  // Construct a square matrix counting package imports.
-  imports.forEach(function(d) {
-    var source = indexByName.get(name(d.name)),
-        row = matrix[source];
-    if (!row) {
-     row = matrix[source] = [];
-     for (var i = -1; ++i < n;) row[i] = 0;
-    }
-    d.imports.forEach(function(d) { row[indexByName.get(name(d))]++; });
-  });
-
-  chord.matrix(matrix);
-
-  var g = svg.selectAll(".group")
-      .data(chord.groups)
-    .enter().append("g")
-      .attr("class", "group")
-	  .on("mousedown", function(d){
-		console.log(this);
-		h = d;
-		g.filter(function(l) { return l != d; })
-			.style("opacity", 0.1);
-		links.filter(function(l) {
-				return l.source.index != d.index && l.target.index != d.index; 
-			})
-			.style("opacity", 0.03);
-	  })
-	  .on("mouseup", function(d){
-		g.style("opacity", 1);
-		links.style("opacity", 1);
-	  });
-	
-	var h = {};
-	
-  var nodes = g.append("path")
-      .style("fill", function(d) { return fill(d.index); })
-      .style("stroke", function(d) { return fill(d.index); })
-      .attr("d", arc);
-
-  g.append("text")
-      .each(function(d) { d.angle = (d.startAngle + d.endAngle) / 2; })
-      .attr("dy", ".35em")
-      .attr("transform", function(d) {
-        return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
-            + "translate(" + (innerRadius + 26) + ")"
-            + (d.angle > Math.PI ? "rotate(180)" : "");
-      })
-      .style("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
-      .text(function(d) { return nameByIndex.get(d.index); });
-
-  var links = svg.selectAll(".chord")
-      .data(chord.chords)
-    .enter().append("path")
-      .attr("class", "chord")
-      .style("stroke", function(d) { return d3.rgb(fill(d.source.index)).darker(); })
-      .style("fill", function(d) { return fill(d.source.index); })
-      .attr("d", d3.svg.chord().radius(innerRadius));
-}
-
-d3.select(self.frameElement).style("height", outerRadius * 2 + "px");
 
 </script>
 </body>

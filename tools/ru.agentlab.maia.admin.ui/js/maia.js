@@ -14,6 +14,7 @@ dispatch = d3.dispatch(
 	"service_hover_start",
 	"service_hover_inprogress",
 	"service_hover_end",
+	"bundle_update",
 	"filter_change");
 
 maia.root = {};
