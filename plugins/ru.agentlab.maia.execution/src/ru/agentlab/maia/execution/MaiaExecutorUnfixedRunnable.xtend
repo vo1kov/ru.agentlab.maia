@@ -2,7 +2,6 @@ package ru.agentlab.maia.execution
 
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.context.typing.IMaiaContextTyping
 import ru.agentlab.maia.execution.action.IMaiaExecutorAction
 import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
 
@@ -41,7 +40,7 @@ class MaiaExecutorUnfixedRunnable implements IMaiaExecutorRunnable {
 	}
 
 	override run() {
-		val contextType = context.get(IMaiaContextTyping.KEY_TYPE) as String
+		val contextType = context.get(IMaiaContext.KEY_TYPE) as String
 		Thread.currentThread.name = contextType + ": " + context.uuid
 
 		while (true) {
