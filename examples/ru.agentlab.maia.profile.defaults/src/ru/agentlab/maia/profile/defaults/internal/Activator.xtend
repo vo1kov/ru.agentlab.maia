@@ -5,8 +5,6 @@ import org.osgi.framework.BundleContext
 import ru.agentlab.maia.behaviour.scheme.lib.BehaviourSchemeOneShot
 import ru.agentlab.maia.context.initializer.IMaiaContextInitializerService
 import ru.agentlab.maia.context.initializer.MaiaContextInitializerService
-import ru.agentlab.maia.context.naming.IMaiaContextNameFactory
-import ru.agentlab.maia.context.naming.uuid.UuidNameGenerator
 import ru.agentlab.maia.context.typing.agent.IMaiaAgentContextFactory
 import ru.agentlab.maia.context.typing.agent.MaiaAgentContextFactory
 import ru.agentlab.maia.context.typing.agent.MaiaAgentProfile
@@ -42,21 +40,21 @@ class Activator implements BundleActivator {
 		Activator.context = context
 
 		val rootProfile = new MaiaRootContextProfile => [
-			putImplementation(IMaiaContextNameFactory, UuidNameGenerator)
+//			putImplementation(IMaiaContextNameFactory, UuidNameGenerator)
 			putImplementation(IMaiaContainerContextFactory, MaiaContainerContextFactory)
 			putImplementation(IMaiaExecutorPool, MaiaCachedExecutorPool)
 		]
 
 		val containerProfile = new MaiaContainerProfile => [
-			putImplementation(IMaiaContextNameFactory, UuidNameGenerator)
+//			putImplementation(IMaiaContextNameFactory, UuidNameGenerator)
 			putImplementation(IMaiaAgentContextFactory, MaiaAgentContextFactory)
-			putImplementation(IMaiaContextLifecycleScheme, FipaLifecycleScheme)
-			putImplementation(IMaiaContextLifecycleService, LifecycleService)
+//			putImplementation(IMaiaContextLifecycleScheme, FipaLifecycleScheme)
+//			putImplementation(IMaiaContextLifecycleService, LifecycleService)
 			putImplementation(IMaiaContextInitializerService, MaiaContextInitializerService)
 		]
 
 		val agentProfile = new MaiaAgentProfile => [
-			putImplementation(IMaiaContextNameFactory, UuidNameGenerator)
+//			putImplementation(IMaiaContextNameFactory, UuidNameGenerator)
 			putImplementation(IMaiaBehaviourContextFactory, MaiaBehaviourContextFactory)
 			putImplementation(IMaiaContextLifecycleScheme, FipaLifecycleScheme)
 			putImplementation(IMaiaContextLifecycleService, LifecycleService)
