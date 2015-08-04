@@ -28,7 +28,7 @@ class MaiaRootContextFactory {
 		val rootProfile = Activator.getService(MaiaRootContextProfile)
 		val contextServiceManagementService = Activator.getService(IMaiaContextServiceManagementService)
 		val broker = Activator.getService(IMaiaEventBroker)
-		val rootContext = contextFactory.createContext("MAIA Root context") => [
+		val rootContext = contextFactory.createContext("root") => [
 			set(IMaiaEventBroker, broker)
 			set(IMaiaContextFactory, contextFactory)
 			set(IMaiaContextInjector, Activator.getService(IMaiaContextInjector))
@@ -38,7 +38,7 @@ class MaiaRootContextFactory {
 			set(MaiaContainerProfile, Activator.getService(MaiaContainerProfile))
 			set(MaiaAgentProfile, Activator.getService(MaiaAgentProfile))
 			set(MaiaBehaviourProfile, Activator.getService(MaiaBehaviourProfile))
-			set(IMaiaContextTyping.KEY_TYPE, "MAIA Root")
+			set(IMaiaContextTyping.KEY_TYPE, "root")
 		]
 
 		LOGGER.info("Create Root context specific services...")

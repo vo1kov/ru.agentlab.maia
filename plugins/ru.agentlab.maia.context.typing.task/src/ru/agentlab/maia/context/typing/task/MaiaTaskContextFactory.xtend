@@ -62,7 +62,7 @@ class MaiaTaskContextFactory implements IMaiaTaskContextFactory {
 		LOGGER.info("Create new context...")
 		val agentContext = contextFactory.createChild(context, "MAIA Task context: " + name) => [
 			set(IMaiaContextNameFactory.KEY_NAME, name)
-			set(IMaiaContextTyping.KEY_TYPE, "MAIA Task")
+			set(IMaiaContextTyping.KEY_TYPE, "task")
 		]
 
 		LOGGER.info("Create Task specific services...")

@@ -44,7 +44,7 @@ class MaiaBehaviourContextFactory implements IMaiaBehaviourContextFactory {
 		LOGGER.info("Create Behaviour Context...")
 		val behaviourContext = contextFactory.createChild(context, "MAIA Behaviour context: " + name) => [
 			set(IMaiaContextNameFactory.KEY_NAME, name)
-			set(IMaiaContextTyping.KEY_TYPE, "MAIA Behaviour")
+			set(IMaiaContextTyping.KEY_TYPE, "behaviour")
 		]
 
 		LOGGER.info("Create Behaviour specific services...")
