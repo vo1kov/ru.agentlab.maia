@@ -7,7 +7,7 @@ package ru.agentlab.maia.context.naming
  */
 interface IMaiaContextNameFactory {
 	
-	val static String KEY_NAME = "ru.agentlab.maia.context.naming|name.value"
+	val static String KEY_NAME = "ru.agentlab.maia.context.naming._name"
 
 	/**
 	 * Generate new name.
