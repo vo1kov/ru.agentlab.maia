@@ -2,7 +2,7 @@ package ru.agentlab.maia.execution.pool.cached
 
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import ru.agentlab.maia.execution.pool.IMaiaExecutorPool
+import ru.agentlab.maia.execution.IMaiaExecutorPool
 
 class MaiaCachedExecutorPool implements IMaiaExecutorPool {
 

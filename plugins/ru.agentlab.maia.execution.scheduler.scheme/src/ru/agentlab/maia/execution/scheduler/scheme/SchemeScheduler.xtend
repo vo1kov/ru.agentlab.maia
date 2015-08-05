@@ -6,11 +6,11 @@ import javax.inject.Inject
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.execution.node.IMaiaExecutorNode
-import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
-import ru.agentlab.maia.execution.scheduler.bounded.IMaiaBoundedContextScheduler
+import ru.agentlab.maia.execution.IMaiaExecutorNode
+import ru.agentlab.maia.execution.IMaiaExecutorScheduler
+import ru.agentlab.maia.execution.scheduler.bounded.IMaiaBoundedExecutorScheduler
 
-class SchemeScheduler implements IMaiaBoundedContextScheduler {
+class SchemeScheduler implements IMaiaBoundedExecutorScheduler {
 
 	val static LOGGER = LoggerFactory.getLogger(SchemeScheduler)
 

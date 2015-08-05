@@ -1,8 +1,8 @@
 package ru.agentlab.maia.execution.scheduler.scheme
 
-import ru.agentlab.maia.execution.scheduler.IMaiaContextSchedulerFactory
+import ru.agentlab.maia.execution.IMaiaExecutorSchedulerFactory
 
-class SchemeSchedulerFactory implements IMaiaContextSchedulerFactory {
+class SchemeSchedulerFactory implements IMaiaExecutorSchedulerFactory {
 
 	override createScheduler() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")

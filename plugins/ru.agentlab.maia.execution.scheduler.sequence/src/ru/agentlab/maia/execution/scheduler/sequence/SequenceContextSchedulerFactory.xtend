@@ -4,11 +4,11 @@ import javax.annotation.PostConstruct
 import javax.inject.Inject
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.IMaiaContextInjector
-import ru.agentlab.maia.execution.scheduler.IMaiaContextSchedulerFactory
-import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
-import ru.agentlab.maia.execution.scheduler.unbounded.IMaiaUnboundedContextScheduler
+import ru.agentlab.maia.execution.IMaiaExecutorScheduler
+import ru.agentlab.maia.execution.IMaiaExecutorSchedulerFactory
+import ru.agentlab.maia.execution.scheduler.unbounded.IMaiaUnboundedExecutorScheduler
 
-class SequenceContextSchedulerFactory implements IMaiaContextSchedulerFactory {
+class SequenceContextSchedulerFactory implements IMaiaExecutorSchedulerFactory {
 
 	@Inject
 	IMaiaContext context
@@ -20,7 +20,7 @@ class SequenceContextSchedulerFactory implements IMaiaContextSchedulerFactory {
 	 * Remove all behaviours from old scheduler and add new Scheduler to context
 	 */
 	override createScheduler() {
-		val oldScheduler = context.get(IMaiaUnboundedContextScheduler)
+		val oldScheduler = context.get(IMaiaUnboundedExecutorScheduler)
 		if (oldScheduler != null) {
 			oldScheduler.removeAll
 		}
