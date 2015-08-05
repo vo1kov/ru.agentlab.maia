@@ -45,8 +45,8 @@ class NettyMessageDeliveryService implements INettyMessageDeliveryService {
 	@Inject
 	IServerFactory serverFactory
 
-	@Inject
-	IAgentRegistry agentRegistryLocal
+//	@Inject
+//	IAgentRegistry agentRegistryLocal
 
 	@PostConstruct
 	def void init() {
@@ -67,17 +67,17 @@ class NettyMessageDeliveryService implements INettyMessageDeliveryService {
 		LOGGER.info("Try to send [{}] message...", message)
 		message.receivers.forEach [
 			LOGGER.info("Try to find [{}] agent in local...", it)
-			val agent = agentRegistryLocal.get(it)
-			if (agent != null) {
-				LOGGER.info("	Agent [{}] have found in local", it)
-				val queue = agent.get(IMessageQueue)
-				queue.addLast(message)
-			} else {
-				LOGGER.info("	Agent [{}] have not found in local", it)
-				LOGGER.info("Try to find [{}] agent in platform...", it)
-
-				LOGGER.info("	Agent [{}] have found in platform", it)
-			}
+//			val agent = agentRegistryLocal.get(it)
+//			if (agent != null) {
+//				LOGGER.info("	Agent [{}] have found in local", it)
+//				val queue = agent.get(IMessageQueue)
+//				queue.addLast(message)
+//			} else {
+//				LOGGER.info("	Agent [{}] have not found in local", it)
+//				LOGGER.info("Try to find [{}] agent in platform...", it)
+//
+//				LOGGER.info("	Agent [{}] have found in platform", it)
+//			}
 //			val address = addresses.get(0)
 //			new InetSocketAddress(address)
 			clientBootstrap.connect("127.0.0.1", 8899) => [ future |

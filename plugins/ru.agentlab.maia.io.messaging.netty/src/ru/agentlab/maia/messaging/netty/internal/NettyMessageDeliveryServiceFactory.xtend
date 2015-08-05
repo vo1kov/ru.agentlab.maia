@@ -10,6 +10,7 @@ import javax.inject.Inject
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.messaging.IMessageDeliveryServiceFactory
 import ru.agentlab.maia.messaging.netty.INettyMessageDeliveryService
+import ru.agentlab.maia.context.IMaiaContextInjector
 
 class NettyMessageDeliveryServiceFactory implements IMessageDeliveryServiceFactory {
 
@@ -46,7 +47,7 @@ class NettyMessageDeliveryServiceFactory implements IMessageDeliveryServiceFacto
 			set(INettyMessageDeliveryService.KEY_PORT, port)
 		]
 
-		val service = injector.make(NettyMessageDeliveryService, context)
+		val service = injector.make(NettyMessageDeliveryService)
 		injector.invoke(service, PostConstruct, null)
 		return service
 	}
