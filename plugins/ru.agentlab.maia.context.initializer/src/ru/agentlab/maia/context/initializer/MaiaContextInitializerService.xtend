@@ -20,7 +20,7 @@ class MaiaContextInitializerService implements IMaiaContextInitializerService {
 		}
 		val injector = context.get(IMaiaContextInjector)
 		val initializer = injector.make(contributorClass)
-		context.set(initializer.class.name, initializer)
+//		context.set(initializer.class.name, initializer)
 		injector.invoke(initializer, PostConstruct, null)
 		return initializer
 	}
