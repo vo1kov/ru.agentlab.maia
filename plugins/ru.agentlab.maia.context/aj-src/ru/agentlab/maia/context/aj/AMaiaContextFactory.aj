@@ -18,23 +18,6 @@ public abstract aspect AMaiaContextFactory {
 		execution(IMaiaContextFactory+.new(..));
 
 	/**
-	 * When {@link IMaiaContextFactory} begin to create new child
-	 * {@link IMaiaContext}
-	 * 
-	 * @param factory
-	 *            - factory that create new context
-	 * @param parent
-	 *            - parent context for newly created context
-	 * @param name
-	 *            - name for new context
-	 */
-	public pointcut onCreateChildContext(IMaiaContextFactory factory,
-			IMaiaContext parent, String name) : 
-		execution(IMaiaContext IMaiaContextFactory+.createChild(IMaiaContext, String)) && 
-		target(factory) && 
-		args(parent, name);
-
-	/**
 	 * When {@link IMaiaContextFactory} begin to create new {@link IMaiaContext}
 	 * 
 	 * @param factory
@@ -42,9 +25,9 @@ public abstract aspect AMaiaContextFactory {
 	 * @param name
 	 *            - name for new context
 	 */
-	public pointcut onCreateContext(IMaiaContextFactory factory, String name) : 
-		execution(IMaiaContext IMaiaContextFactory+.createContext(String)) && 
+	public pointcut onCreateContext(IMaiaContextFactory factory) : 
+		execution(IMaiaContext IMaiaContextFactory+.createContext()) && 
 		target(factory) && 
-		args(name);
+		args();
 
 }
