@@ -19,9 +19,9 @@ class MaiaContextInitializerService implements IMaiaContextInitializerService {
 			throw new NullPointerException("Service class is null")
 		}
 		val injector = context.get(IMaiaContextInjector)
-		val initializer = injector.make(contributorClass, context)
+		val initializer = injector.make(contributorClass)
 		context.set(initializer.class.name, initializer)
-		injector.invoke(initializer, PostConstruct, context, null)
+		injector.invoke(initializer, PostConstruct, null)
 		return initializer
 	}
 

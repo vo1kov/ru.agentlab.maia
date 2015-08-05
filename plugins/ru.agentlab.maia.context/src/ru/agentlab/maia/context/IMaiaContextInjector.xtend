@@ -1,16 +1,15 @@
 package ru.agentlab.maia.context
 
 import java.lang.annotation.Annotation
-import ru.agentlab.maia.context.IMaiaContext
 
 interface IMaiaContextInjector {
 
-	def <T> T make(Class<T> contributorClass, IMaiaContext context)
+	def <T> T make(Class<T> contributorClass)
 
-	def Object invoke(Object object, Class<? extends Annotation> ann, IMaiaContext context)
+	def Object invoke(Object object, Class<? extends Annotation> ann)
 
-	def Object invoke(Object object, Class<? extends Annotation> ann, IMaiaContext context, Object defaultValue)
+	def Object invoke(Object object, Class<? extends Annotation> ann, Object defaultValue)
 
-	def void inject(Object service, IMaiaContext toContext)
+	def void inject(Object service)
 
 }

@@ -8,22 +8,28 @@ import ru.agentlab.maia.context.IMaiaContextInjector
 
 class E4MaiaContextInjector implements IMaiaContextInjector {
 
-	override <T> make(Class<T> contributorClass, IMaiaContext context) {
+	IMaiaContext context
+	
+	new(IMaiaContext context){
+		this.context = context
+	}
+	
+	override <T> make(Class<T> contributorClass) {
 		val result = ContextInjectionFactory.make(contributorClass, context.get(IEclipseContext))
 		return result
 	}
 
-	override invoke(Object object, Class<? extends Annotation> ann, IMaiaContext context) {
+	override invoke(Object object, Class<? extends Annotation> ann) {
 		val result = ContextInjectionFactory.invoke(object, ann, context.get(IEclipseContext))
 		return result
 	}
 
-	override invoke(Object object, Class<? extends Annotation> ann, IMaiaContext context, Object defaultValue) {
+	override invoke(Object object, Class<? extends Annotation> ann, Object defaultValue) {
 		val result = ContextInjectionFactory.invoke(object, ann, context.get(IEclipseContext), defaultValue)
 		return result
 	}
 
-	override inject(Object service, IMaiaContext context) {
+	override inject(Object service) {
 		ContextInjectionFactory.inject(service, context.get(IEclipseContext))
 	}
 

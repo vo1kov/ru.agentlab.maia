@@ -2,65 +2,43 @@ package ru.agentlab.maia.context.injector.e4
 
 import java.util.ArrayList
 import java.util.Collection
-import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.e4.core.contexts.IEclipseContext
-import org.osgi.framework.BundleContext
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.IMaiaContextFactory
 import ru.agentlab.maia.context.IMaiaContextInjector
+import ru.agentlab.maia.context.initializer.IMaiaContextInitializerService
+import ru.agentlab.maia.context.initializer.MaiaContextInitializerService
 
 class E4MaiaContextFactory implements IMaiaContextFactory {
 
-	/**
-	 * <p>Create new E4 context.</p>
-	 * <p>Register:</p>
-	 * <ul>
-	 * <li><code>IMaiaContext</code></li>
-	 * </ul>
-	 */
-	override createContext(String id) {
-		val result = new E4MaiaContext(EclipseContextFactory.create(id))
-		return result => [
-			set(IMaiaContext, it)
-			set(IMaiaContextInjector, new E4MaiaContextInjector)
-		]
+	IMaiaContext context
+
+	new(IMaiaContext context) {
+		this.context = context
 	}
 
-	/**
-	 * <p>Create E4 child context.</p>
-	 * <p>Register:</p>
-	 * <ul>
-	 * <li><code>IMaiaContext</code></li>
-	 * <li><code>IMaiaContextInjector</code></li> - if parent context have not any.
-	 * </ul>
-	 */
-	override createChild(IMaiaContext parent, String name) {
-		val result = new E4MaiaContext(parent.get(IEclipseContext).createChild(name))
-		return result => [
-			set(IMaiaContext, it)
-			if (get(IMaiaContextInjector) == null) {
-				parent.set(IMaiaContextInjector, new E4MaiaContextInjector)
-			}
-			set(IMaiaContext.KEY_PARENT_CONTEXT, parent)
-			var childs = parent.getLocal(IMaiaContext.KEY_CHILD_CONTEXTS) as Collection<IMaiaContext>
-			if (childs == null) {
-				childs = new ArrayList<IMaiaContext>
-			}
-			childs += it
-			parent.set(IMaiaContext.KEY_CHILD_CONTEXTS, childs)
-		]
+	override createContext() {
+		val child = new E4MaiaContext(context.get(IEclipseContext).createChild)
+		child.init
+		child.set(IMaiaContext.KEY_PARENT_CONTEXT, context)
+		context.registerChild(child)
+		return child
 	}
 
-	/**
-	 * 
-	 */
-	@Deprecated
-	override createOsgiContext(BundleContext bundleContext) {
-		val result = new E4MaiaContext(EclipseContextFactory.getServiceContext(bundleContext))
-		return result => [
-			set(IMaiaContext, it)
-			set(IMaiaContextInjector, new E4MaiaContextInjector)
-		]
+	def void registerChild(IMaiaContext parent, IMaiaContext child) {
+		var childs = parent.getLocal(IMaiaContext.KEY_CHILD_CONTEXTS) as Collection<IMaiaContext>
+		if (childs == null) {
+			childs = new ArrayList<IMaiaContext>
+		}
+		childs += child
+		context.set(IMaiaContext.KEY_CHILD_CONTEXTS, childs)
+	}
+
+	def void init(E4MaiaContext context) {
+		context.set(IMaiaContext, context)
+		context.set(IMaiaContextInjector, new E4MaiaContextInjector(context))
+		context.set(IMaiaContextFactory, new E4MaiaContextFactory(context))
+		context.set(IMaiaContextInitializerService, new MaiaContextInitializerService(context))
 	}
 
 }
