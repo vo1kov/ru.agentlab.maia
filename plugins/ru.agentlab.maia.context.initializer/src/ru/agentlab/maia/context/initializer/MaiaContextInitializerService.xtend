@@ -7,16 +7,20 @@ import ru.agentlab.maia.context.IMaiaContextInjector
 
 class MaiaContextInitializerService implements IMaiaContextInitializerService {
 
-	@Inject
 	IMaiaContext context
+	
+	@Inject
+	new(IMaiaContext context){
+		this.context = context
+	}
 
-	override <T> addInitializer(Class<T> contributorClass) {
+	override <T> initService(Class<T> contributorClass) {
 		if (contributorClass == null) {
-			throw new NullPointerException("Contributor class is null")
+			throw new NullPointerException("Service class is null")
 		}
 		val injector = context.get(IMaiaContextInjector)
 		val initializer = injector.make(contributorClass, context)
-		context.set(IMaiaContextInitializerService.KEY_INITIALIZER, initializer)
+		context.set(initializer.class.name, initializer)
 		injector.invoke(initializer, PostConstruct, context, null)
 		return initializer
 	}
