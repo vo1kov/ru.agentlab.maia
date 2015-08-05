@@ -1,7 +1,5 @@
 package ru.agentlab.maia.context
 
-import org.osgi.framework.BundleContext
-
 /**
  * <p>Factory for creating Contexts.</p>
  * <p>Contexts represent platform, container, agent and behaviour objects. Context 
@@ -11,28 +9,10 @@ import org.osgi.framework.BundleContext
  */
 interface IMaiaContextFactory {
 
-//	/**
-//	 * Create Context with default set of services. Set of services depends of
-//	 * implementation
-//	 * @param root - parent context where platform will be created
-//	 * @param id - unique id of context. If <code>null</code>, then some implementation of 
-//	 * {@link INameGenerator INameGenerator} will be used for 
-//	 * generating context name.
-//	 * @return Context with default set of services
-//	 */
-//	def IMaiaContext createContext(String name)
-
 	/**
 	 * Create Context without any additional services
-	 * @param parent - parent context where platform will be created
-	 * @param name - unique id of context. If <code>null</code>, then some implementation of 
-	 * {@link INameGenerator INameGenerator} will be used for 
-	 * generating context name.
 	 * @return Context without any additional services
 	 */
 	def IMaiaContext createContext()
-	
-//	@Deprecated
-//	def IMaiaContext createOsgiContext(BundleContext bundleContext)
 
 }
