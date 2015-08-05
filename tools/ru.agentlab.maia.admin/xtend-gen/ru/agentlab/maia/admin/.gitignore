@@ -23,3 +23,5 @@
 /WebSocketServerHandler.java
 /WsAdminServer.java
 /.HandlerTracker.java._trace
+/.MaiaAdminBootstrap.java._trace
+/.MaiaAdminChannelHandlerTracker.java._trace

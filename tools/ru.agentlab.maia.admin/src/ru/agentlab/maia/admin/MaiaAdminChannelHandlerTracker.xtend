@@ -6,7 +6,7 @@ import org.osgi.util.tracker.ServiceTracker
 import org.osgi.framework.ServiceReference
 import io.netty.channel.ChannelPipeline
 
-class HandlerTracker extends ServiceTracker<ChannelHandler, ChannelHandler> {
+class MaiaAdminChannelHandlerTracker extends ServiceTracker<ChannelHandler, ChannelHandler> {
 
 	ChannelPipeline pipeline
 

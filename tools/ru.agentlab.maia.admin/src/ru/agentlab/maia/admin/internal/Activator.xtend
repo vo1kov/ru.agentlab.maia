@@ -1,11 +1,19 @@
 package ru.agentlab.maia.admin.internal
 
+import io.netty.channel.nio.NioEventLoopGroup
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
+import ru.agentlab.maia.admin.MaiaAdminBootstrap
 
 class Activator implements BundleActivator {
 
 	public static BundleContext context
+
+	val port = 9091
+
+	val bossGroup = new NioEventLoopGroup
+
+	val workerGroup = new NioEventLoopGroup
 
 	def static package BundleContext getContext() {
 		return context
@@ -17,8 +25,10 @@ class Activator implements BundleActivator {
 	 */
 	override void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
-		println("start admin service " + 9091)
-		(new ru.agentlab.maia.admin.WsAdminServer).main
+
+		val serverBootstrap = new MaiaAdminBootstrap(bossGroup, workerGroup)
+		serverBootstrap.bind(port)
+		println("Start admin service on " + port + " port")
 	}
 
 	/*
@@ -27,6 +37,9 @@ class Activator implements BundleActivator {
 	 */
 	override void stop(BundleContext bundleContext) throws Exception {
 		Activator.context = null
+		
+		bossGroup.shutdownGracefully
+		workerGroup.shutdownGracefully
 	}
 
 }
