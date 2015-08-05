@@ -9,22 +9,9 @@ import ru.agentlab.maia.context.aj.AMaiaContextFactory;
 
 public aspect AMaiaContextFactoryLog extends AMaiaContextFactory {
 
-	before(IMaiaContextFactory factory, IMaiaContext parent, String name) : 
-		onCreateChildContext(factory, parent, name) {
+	after(IMaiaContextFactory factory) returning (IMaiaContext result): 
+		onCreateContext(factory) {
 		Logger logger = LoggerFactory.getLogger(factory.getClass());
-		logger.info("Try to create [" + name + "] context with [" + parent
-				+ "] parent...");
-	}
-	
-	after(IMaiaContextFactory factory, String name) returning: 
-		onCreateChildContext(factory, *, name) {
-		Logger logger = LoggerFactory.getLogger(factory.getClass());
-		logger.info("Context [" + name + "] successfully created");
-	}
-
-	after(IMaiaContextFactory factory, String name) returning: 
-		onCreateContext(factory, name) {
-		Logger logger = LoggerFactory.getLogger(factory.getClass());
-		logger.info("Context [" + name + "] successfully created");
+		logger.info("Context [" + result.getUuid() + "] successfully created");
 	}
 }
