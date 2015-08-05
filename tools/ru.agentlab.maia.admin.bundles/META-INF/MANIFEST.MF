@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Bundles
+Bundle-SymbolicName: ru.agentlab.maia.admin.bundles
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ com.jayway.jsonpath;bundle-version="1.0.0",
+ io.netty;bundle-version="4.0.26"
+Import-Package: org.eclipse.osgi.util;version="1.1.0",
+ org.osgi.framework;version="1.8.0"
+Export-Package: ru.agentlab.maia.admin.bundles
+Bundle-Activator: ru.agentlab.maia.admin.bundles.internal.Activator
+

@@ -9,16 +9,16 @@ import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.netty.handler.codec.http.HttpObjectAggregator
 import io.netty.handler.codec.http.HttpServerCodec
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler
-import ru.agentlab.maia.admin.command.BundleHandler
-import ru.agentlab.maia.admin.command.WsContextListHandler
-import ru.agentlab.maia.admin.command.WsContextServicesListHandler
-import ru.agentlab.maia.admin.command.WsSubscribeBundleHandler
+import ru.agentlab.maia.admin.internal.Activator
 
 class WsAdminServer {
 
 	val port = 9091
 
+	HandlerTracker handlerTracker
+
 	def void main() {
+
 		val bossGroup = new NioEventLoopGroup
 		val workerGroup = new NioEventLoopGroup
 		try {
@@ -29,18 +29,13 @@ class WsAdminServer {
 
 				override public void initChannel(SocketChannel ch) throws Exception {
 					ch.pipeline => [
-//						addLast(new HttpServerCodec)
-//						addLast(new HttpObjectAggregator(1024 * 1024))
-//						addLast(new ContextListHandler)
-//						addLast(new ContextHandler)
 						addLast(new HttpServerCodec)
-						addLast(new HttpObjectAggregator(65536))
+						addLast(new HttpObjectAggregator(1024 * 1024))
 						addLast(new WebSocketServerCompressionHandler)
 						addLast(new WebSocketServerHandler)
-						addLast(new WsContextListHandler)
-						addLast(new BundleHandler)
-						addLast(new WsSubscribeBundleHandler)
-						addLast(new WsContextServicesListHandler)
+
+						handlerTracker = new HandlerTracker(Activator.context, it)
+
 					]
 				}
 
@@ -48,17 +43,12 @@ class WsAdminServer {
 			b.option(ChannelOption.SO_BACKLOG, 128)
 			b.childOption(ChannelOption.SO_KEEPALIVE, true)
 
-			val f = b.bind(port).sync
+			b.bind(port)
 
-			//f.channel.closeFuture.sync
 		} finally {
-			//workerGroup.shutdownGracefully()
-			//bossGroup.shutdownGracefully()
+			// workerGroup.shutdownGracefully()
+			// bossGroup.shutdownGracefully()
 		}
-	}
-
-	def static void main(String[] args) {
-		(new AdminServer).main
 	}
 
 }
