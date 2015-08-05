@@ -10,8 +10,8 @@ class ArrayBlockingMessageQueueFactory implements IMessageQueueFactory {
 
 	override createMessageQueue(IMaiaContext context) {
 		val injector = context.get(IMaiaContextInjector)
-		val result = injector.make(ArrayBlockingMessageQueue, context)
-		injector.invoke(result, PostConstruct, context, null)
+		val result = injector.make(ArrayBlockingMessageQueue)
+		injector.invoke(result, PostConstruct, null)
 		context.set(IMessageQueue, result)
 		return result
 	}

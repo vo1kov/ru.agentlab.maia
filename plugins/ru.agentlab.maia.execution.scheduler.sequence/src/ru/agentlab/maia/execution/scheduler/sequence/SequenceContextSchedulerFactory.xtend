@@ -25,8 +25,8 @@ class SequenceContextSchedulerFactory implements IMaiaContextSchedulerFactory {
 			oldScheduler.removeAll
 		}
 
-		val newScheduler = injector.make(SequenceContextScheduler, context)
-		injector.invoke(newScheduler, PostConstruct, context, null)
+		val newScheduler = injector.make(SequenceContextScheduler)
+		injector.invoke(newScheduler, PostConstruct, null)
 		context.set(IMaiaExecutorScheduler, newScheduler)
 		return newScheduler
 	}
