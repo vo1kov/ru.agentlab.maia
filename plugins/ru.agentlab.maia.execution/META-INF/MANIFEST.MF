@@ -11,10 +11,8 @@ Require-Bundle: com.google.guava,
  javax.inject;bundle-version="1.0.0",
  org.slf4j.api;bundle-version="1.7.2",
  ru.agentlab.maia.context;bundle-version="1.0.0",
- ru.agentlab.maia.event;bundle-version="1.0.0",
  ru.agentlab.maia.execution.action;bundle-version="1.0.0",
  ru.agentlab.maia.execution.pool;bundle-version="1.0.0",
  ru.agentlab.maia.execution.scheduler;bundle-version="1.0.0"
-Export-Package: ru.agentlab.maia.execution,
- ru.agentlab.maia.execution.event
+Export-Package: ru.agentlab.maia.execution
 
