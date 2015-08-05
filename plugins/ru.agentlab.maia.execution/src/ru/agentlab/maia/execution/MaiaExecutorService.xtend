@@ -3,7 +3,6 @@ package ru.agentlab.maia.execution
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.execution.pool.IMaiaExecutorPool
 
 class MaiaExecutorService implements IMaiaExecutorService {
 

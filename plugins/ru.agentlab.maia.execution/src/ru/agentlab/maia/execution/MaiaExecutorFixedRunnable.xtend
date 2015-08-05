@@ -1,14 +1,10 @@
 package ru.agentlab.maia.execution
 
-import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.execution.action.IMaiaExecutorAction
-import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
 
 class MaiaExecutorFixedRunnable implements IMaiaExecutorRunnable {
 
-	val static LOGGER = LoggerFactory.getLogger(MaiaExecutorFixedRunnable)
-
+//	val static LOGGER = LoggerFactory.getLogger(MaiaExecutorFixedRunnable)
 	var IMaiaContext context
 
 	new(IMaiaContext context) {
@@ -16,7 +12,7 @@ class MaiaExecutorFixedRunnable implements IMaiaExecutorRunnable {
 	}
 
 	def IMaiaExecutorAction getAction(IMaiaExecutorScheduler scheduler) {
-		LOGGER.debug("Current Node: [{}]", scheduler)
+//		LOGGER.debug("Current Node: [{}]", scheduler)
 		val next = scheduler.nextContext
 		if (next instanceof IMaiaExecutorAction) {
 			return next
@@ -29,7 +25,7 @@ class MaiaExecutorFixedRunnable implements IMaiaExecutorRunnable {
 		val contextType = context.get(IMaiaContext.KEY_TYPE) as String
 		Thread.currentThread.name = contextType + ": " + context.uuid
 		try {
-			LOGGER.debug("Start execution loop...")
+//			LOGGER.debug("Start execution loop...")
 			var action = context.get(IMaiaExecutorAction)
 			if (action == null) {
 				val scheduler = context.get(IMaiaExecutorScheduler)
@@ -46,7 +42,7 @@ class MaiaExecutorFixedRunnable implements IMaiaExecutorRunnable {
 			]
 			Thread.sleep(2000)
 		} catch (Exception e) {
-			LOGGER.error("Some exception", e)
+//			LOGGER.error("Some exception", e)
 		}
 	}
 }

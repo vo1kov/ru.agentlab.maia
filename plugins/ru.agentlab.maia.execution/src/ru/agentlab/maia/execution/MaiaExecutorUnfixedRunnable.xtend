@@ -1,14 +1,10 @@
 package ru.agentlab.maia.execution
 
-import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.execution.action.IMaiaExecutorAction
-import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
 
 class MaiaExecutorUnfixedRunnable implements IMaiaExecutorRunnable {
 
-	val static LOGGER = LoggerFactory.getLogger(MaiaExecutorFixedRunnable)
-
+//	val static LOGGER = LoggerFactory.getLogger(MaiaExecutorFixedRunnable)
 	var IMaiaContext context
 
 	val Object lock = new Object
@@ -18,9 +14,9 @@ class MaiaExecutorUnfixedRunnable implements IMaiaExecutorRunnable {
 	}
 
 	def IMaiaExecutorAction getAction(IMaiaExecutorScheduler scheduler) {
-		LOGGER.debug("Current scheduler: [{}]", scheduler)
+//		LOGGER.debug("Current scheduler: [{}]", scheduler)
 		if (scheduler.isEmpty) {
-			LOGGER.debug("	scheduler is empty")
+//			LOGGER.debug("	scheduler is empty")
 			val parentScheduler = scheduler.parentNode as IMaiaExecutorScheduler
 			if (parentScheduler != null) {
 				parentScheduler.remove(scheduler)
@@ -30,7 +26,7 @@ class MaiaExecutorUnfixedRunnable implements IMaiaExecutorRunnable {
 			}
 		} else {
 			val next = scheduler.nextContext
-			LOGGER.debug("	next node: [{}]", next)
+//			LOGGER.debug("	next node: [{}]", next)
 			if (next instanceof IMaiaExecutorAction) {
 				return next
 			} else if (next instanceof IMaiaExecutorScheduler) {
@@ -45,22 +41,22 @@ class MaiaExecutorUnfixedRunnable implements IMaiaExecutorRunnable {
 
 		while (true) {
 			try {
-				LOGGER.debug("Start execution loop...")
+//				LOGGER.debug("Start execution loop...")
 				var action = context.get(IMaiaExecutorAction)
-				LOGGER.debug("	current action [{}]...", action)
+//				LOGGER.debug("	current action [{}]...", action)
 				if (action == null) {
 					val scheduler = context.get(IMaiaExecutorScheduler)
-					LOGGER.debug("	current scheduler [{}]...", scheduler)
+//					LOGGER.debug("	current scheduler [{}]...", scheduler)
 					if (scheduler != null) {
 						action = scheduler.getAction
 						if (action != null) {
 							action.act
 						} else {
-							LOGGER.debug("Root scheduler is empty... Wait...")
+//							LOGGER.debug("Root scheduler is empty... Wait...")
 							lock()
 						}
 					} else {
-						LOGGER.debug("Root scheduler is empty... Wait...")
+//						LOGGER.debug("Root scheduler is empty... Wait...")
 						lock()
 					}
 				} else {
@@ -68,7 +64,7 @@ class MaiaExecutorUnfixedRunnable implements IMaiaExecutorRunnable {
 				}
 				Thread.sleep(2000)
 			} catch (Exception e) {
-				LOGGER.error("Some exception", e)
+//				LOGGER.error("Some exception", e)
 			}
 		}
 	}
