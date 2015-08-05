@@ -34,15 +34,19 @@ class MaiaExecutorUnfixedRunnable implements IMaiaExecutorRunnable {
 			}
 		}
 	}
-
-	override run() {
+	
+	def renameThread(){
 		val contextType = context.get(IMaiaContext.KEY_TYPE) as String
 		Thread.currentThread.name = contextType + ": " + context.uuid
+	}
+
+	override run() {
+		renameThread
 
 		while (true) {
 			try {
 //				LOGGER.debug("Start execution loop...")
-				var action = context.get(IMaiaExecutorAction)
+				var action = context.getLocal(IMaiaExecutorAction)
 //				LOGGER.debug("	current action [{}]...", action)
 				if (action == null) {
 					val scheduler = context.get(IMaiaExecutorScheduler)
