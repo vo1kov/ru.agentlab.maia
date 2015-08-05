@@ -37,8 +37,8 @@ class FipaLifecycleScheme extends LifecycleScheme {
 	@Inject
 	IMaiaContext context
 
-	@Inject
-	IMaiaEventBroker eventBroker
+//	@Inject
+//	IMaiaEventBroker eventBroker
 
 	@PostConstruct
 	def void init() {
@@ -58,32 +58,32 @@ class FipaLifecycleScheme extends LifecycleScheme {
 		transitions += TRANSITION_DELETE
 
 //		val scheduler = context.parent.get(IMaiaExecutorScheduler)
-		eventBroker.subscribe(MaiaLifecycleStateChangeEvent.TOPIC, [
-			val event = it as MaiaLifecycleStateChangeEvent
-			val from = event.fromState
-			val to = event.toState
-			if (context == event.context) {
-				if (TRANSITION_INVOKE.isTransition(from, to)) {
-					// invoke
-					LOGGER.info("INVOKE")
-					val exeService = context.get(IMaiaExecutorService)
-					exeService.submitThread
-				// scheduler.start
-				} else if (TRANSITION_SUSPEND.isTransition(from, to)) {
-					// suspend
-					LOGGER.info("SUSPEND")
-//					scheduler.remove(context)
-				} else if (TRANSITION_RESUME.isTransition(from, to)) {
-					// resume
-					LOGGER.info("RESUME")
-				// scheduler.restartAll
-				} else if (TRANSITION_DELETE.isTransition(from, to)) {
-					// delete
-					LOGGER.info("DELETE")
-				// scheduler.removeAll
-				}
-			}
-		])
+//		eventBroker.subscribe(MaiaLifecycleStateChangeEvent.TOPIC, [
+//			val event = it as MaiaLifecycleStateChangeEvent
+//			val from = event.fromState
+//			val to = event.toState
+//			if (context == event.context) {
+//				if (TRANSITION_INVOKE.isTransition(from, to)) {
+//					// invoke
+//					LOGGER.info("INVOKE")
+//					val exeService = context.get(IMaiaExecutorService)
+//					exeService.submitThread
+//				// scheduler.start
+//				} else if (TRANSITION_SUSPEND.isTransition(from, to)) {
+//					// suspend
+//					LOGGER.info("SUSPEND")
+////					scheduler.remove(context)
+//				} else if (TRANSITION_RESUME.isTransition(from, to)) {
+//					// resume
+//					LOGGER.info("RESUME")
+//				// scheduler.restartAll
+//				} else if (TRANSITION_DELETE.isTransition(from, to)) {
+//					// delete
+//					LOGGER.info("DELETE")
+//				// scheduler.removeAll
+//				}
+//			}
+//		])
 	}
 
 	def boolean isTransition(IMaiaContextLifecycleTransition transition, IMaiaContextLifecycleState fromState,

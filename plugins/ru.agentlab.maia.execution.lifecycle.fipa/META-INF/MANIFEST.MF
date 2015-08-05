@@ -12,10 +12,8 @@ Require-Bundle: com.google.guava,
  org.slf4j.api;bundle-version="1.7.2",
  javax.inject;bundle-version="1.0.0",
  ru.agentlab.maia.context;bundle-version="1.0.0",
- ru.agentlab.maia.context.typing.agent;bundle-version="1.0.0",
  ru.agentlab.maia.execution.lifecycle;bundle-version="1.0.0",
  ru.agentlab.maia.execution;bundle-version="1.0.0",
- ru.agentlab.maia.execution.scheduler;bundle-version="1.0.0",
- ru.agentlab.maia.event;bundle-version="1.0.0"
+ ru.agentlab.maia.execution.scheduler;bundle-version="1.0.0"
 Import-Package: org.osgi.framework;version="1.8.0"
 
