@@ -1,6 +1,6 @@
 package ru.agentlab.maia.execution
 
-interface IMaiaContextSchedulerFactory {
+interface IMaiaExecutorSchedulerFactory {
 
 	def IMaiaExecutorScheduler createScheduler()
 

@@ -12,8 +12,6 @@ class MaiaExecutorService implements IMaiaExecutorService {
 	@Inject
 	IMaiaExecutorPool pool
 
-//	@Inject
-//	IMaiaEventBroker eventBroker
 	@PostConstruct
 	def void init() {
 		if (pool.isFixedSize) {
@@ -32,7 +30,6 @@ class MaiaExecutorService implements IMaiaExecutorService {
 			throw new IllegalStateException("Executor Pool is null")
 		}
 		pool.submit(runnable)
-//		eventBroker.post(new MaiaExecutorSubmitEvent(context))
 	// TODO: add this runnable to pool after execution
 	}
 
