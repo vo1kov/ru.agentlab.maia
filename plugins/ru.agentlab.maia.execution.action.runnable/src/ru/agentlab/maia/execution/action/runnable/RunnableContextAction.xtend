@@ -3,8 +3,8 @@ package ru.agentlab.maia.execution.action.runnable
 import javax.inject.Inject
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.execution.action.IMaiaExecutorAction
-import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
+import ru.agentlab.maia.execution.IMaiaExecutorAction
+import ru.agentlab.maia.execution.IMaiaExecutorScheduler
 
 class RunnableContextAction implements IMaiaExecutorAction {
 

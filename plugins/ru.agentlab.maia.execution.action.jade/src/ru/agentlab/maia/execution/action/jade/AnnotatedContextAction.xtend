@@ -1,8 +1,8 @@
 package ru.agentlab.maia.execution.action.jade
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.execution.action.IMaiaExecutorAction
-import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
+import ru.agentlab.maia.execution.IMaiaExecutorAction
+import ru.agentlab.maia.execution.IMaiaExecutorScheduler
 
 class JadeContextAction implements IMaiaExecutorAction {
 
