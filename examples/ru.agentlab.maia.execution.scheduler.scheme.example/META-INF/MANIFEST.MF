@@ -9,7 +9,7 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  ru.agentlab.maia.execution.action.annotated.example;bundle-version="1.0.0",
- ru.agentlab.maia.execution.scheduler;bundle-version="1.0.0",
+ ru.agentlab.maia.execution;bundle-version="1.0.0",
  ru.agentlab.maia.execution.scheduler.scheme;bundle-version="1.0.0"
 Export-Package: ru.agentlab.maia.behaviour.scheme.lib
 

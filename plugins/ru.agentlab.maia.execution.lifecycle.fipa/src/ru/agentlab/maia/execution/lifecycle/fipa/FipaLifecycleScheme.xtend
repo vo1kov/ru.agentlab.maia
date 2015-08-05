@@ -4,15 +4,12 @@ import javax.annotation.PostConstruct
 import javax.inject.Inject
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.event.IMaiaEventBroker
-import ru.agentlab.maia.execution.IMaiaExecutorService
 import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleScheme
 import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleState
 import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleTransition
 import ru.agentlab.maia.execution.lifecycle.LifecycleScheme
 import ru.agentlab.maia.execution.lifecycle.LifecycleState
 import ru.agentlab.maia.execution.lifecycle.LifecycleTransition
-import ru.agentlab.maia.execution.lifecycle.event.MaiaLifecycleStateChangeEvent
 
 class FipaLifecycleScheme extends LifecycleScheme {
 
