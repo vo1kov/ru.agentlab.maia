@@ -48,4 +48,12 @@ class TestContext implements IMaiaContext {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
+	override getUuid() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override getKeySet() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
 }
