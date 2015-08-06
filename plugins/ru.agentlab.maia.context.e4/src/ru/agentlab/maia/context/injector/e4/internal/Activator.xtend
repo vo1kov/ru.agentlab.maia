@@ -27,7 +27,6 @@ class Activator implements BundleActivator {
 	override start(BundleContext ctx) throws Exception {
 		context = ctx
 		val maiaContext = new E4MaiaContext(EclipseContextFactory.create) => [
-			set(IMaiaContext.KEY_TYPE, "root")
 			set(IMaiaContext, it)
 			set(IMaiaContextInjector, new E4MaiaContextInjector(it))
 			set(IMaiaContextFactory, new E4MaiaContextFactory(it))
