@@ -19,6 +19,10 @@ interface IMaiaServiceDeployer {
 	 */
 	def <T> T deploy(Class<T> serviceClass) throws MaiaDeploymentException
 	
+	def <T> T deploy(Class<T> serviceClass, String key) throws MaiaDeploymentException
+	
+	def <T> T deploy(Class<? extends T> serviceClass, Class<T> interf) throws MaiaDeploymentException
+	
 	/**
 	 * Inject context to service object and register it to context
 	 * 

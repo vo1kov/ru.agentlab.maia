@@ -39,5 +39,29 @@ class MaiaServiceDeployer implements IMaiaServiceDeployer {
 			throw new MaiaDeploymentException(e)
 		}
 	}
+	
+	override <T> deploy(Class<T> serviceClass, String key) throws MaiaDeploymentException {
+		val injector = context.get(IMaiaContextInjector)
+		try {
+			val service = injector.make(serviceClass)
+			injector.invoke(service, PostConstruct, null)
+			context.set(key, service)
+			return service
+		} catch (MaiaInjectionException e) {
+			throw new MaiaDeploymentException(e)
+		}
+	}
+	
+	override <T> deploy(Class<? extends T> serviceClass, Class<T> interf) throws MaiaDeploymentException {
+		val injector = context.get(IMaiaContextInjector)
+		try {
+			val service = injector.make(serviceClass)
+			injector.invoke(service, PostConstruct, null)
+			context.set(interf, service)
+			return service
+		} catch (MaiaInjectionException e) {
+			throw new MaiaDeploymentException(e)
+		}
+	}
 
 }
