@@ -4,9 +4,9 @@ interface IMaiaExecutorScheduler extends IMaiaExecutorNode {
 
 	val static public String KEY_CURRENT_CONTEXT = "ru.agentlab.maia.execution.scheduler|current.context"
 
-	def IMaiaExecutorNode getCurrentContext()
+	def IMaiaExecutorNode getCurrentNode()
 
-	def IMaiaExecutorNode getNextContext()
+	def IMaiaExecutorNode getNextNode()
 
 	def void remove(IMaiaExecutorNode context)
 
