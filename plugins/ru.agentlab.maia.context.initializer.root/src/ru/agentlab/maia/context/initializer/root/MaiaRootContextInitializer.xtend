@@ -1,10 +1,10 @@
 package ru.agentlab.maia.context.initializer.root
 
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.context.initializer.IMaiaContextInitializerService
-import ru.agentlab.maia.execution.lifecycle.fipa.FipaLifecycleScheme
 
 class MaiaRootContextInitializer {
 
@@ -29,6 +29,8 @@ class MaiaRootContextInitializer {
 //			injector.invoke(maiaExecutorService, PostConstruct, it)
 //
 			set(IMaiaContext.KEY_TYPE, "root")
+			set(ExecutorService, Executors.newFixedThreadPool(2))
+			
 //			set(IMaiaContextLifecycleScheme, lifecycleScheme)
 //			set(IMaiaContextLifecycleService, lifecycleService)
 //			set(IMaiaExecutorScheduler, sequenceContextScheduler)
