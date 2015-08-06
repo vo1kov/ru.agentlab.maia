@@ -8,8 +8,8 @@ import org.osgi.framework.ServiceRegistration
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.IMaiaContextFactory
 import ru.agentlab.maia.context.IMaiaContextInjector
-import ru.agentlab.maia.context.initializer.IMaiaContextInitializerService
-import ru.agentlab.maia.context.initializer.MaiaContextInitializerService
+import ru.agentlab.maia.context.IMaiaServiceDeployer
+import ru.agentlab.maia.context.MaiaServiceDeployer
 import ru.agentlab.maia.context.injector.e4.E4MaiaContext
 import ru.agentlab.maia.context.injector.e4.E4MaiaContextFactory
 import ru.agentlab.maia.context.injector.e4.E4MaiaContextInjector
@@ -30,7 +30,7 @@ class Activator implements BundleActivator {
 			set(IMaiaContext, it)
 			set(IMaiaContextInjector, new E4MaiaContextInjector(it))
 			set(IMaiaContextFactory, new E4MaiaContextFactory(it))
-			set(IMaiaContextInitializerService, new MaiaContextInitializerService(it))
+			set(IMaiaServiceDeployer, new MaiaServiceDeployer(it))
 		]
 		registrations += context.registerService(IMaiaContext, maiaContext, null)
 	}

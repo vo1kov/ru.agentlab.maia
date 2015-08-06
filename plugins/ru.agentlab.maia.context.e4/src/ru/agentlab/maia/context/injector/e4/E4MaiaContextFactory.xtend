@@ -6,8 +6,8 @@ import org.eclipse.e4.core.contexts.IEclipseContext
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.IMaiaContextFactory
 import ru.agentlab.maia.context.IMaiaContextInjector
-import ru.agentlab.maia.context.initializer.IMaiaContextInitializerService
-import ru.agentlab.maia.context.initializer.MaiaContextInitializerService
+import ru.agentlab.maia.context.IMaiaServiceDeployer
+import ru.agentlab.maia.context.MaiaServiceDeployer
 
 class E4MaiaContextFactory implements IMaiaContextFactory {
 
@@ -18,14 +18,18 @@ class E4MaiaContextFactory implements IMaiaContextFactory {
 	}
 
 	override createContext() {
-		val child = new E4MaiaContext(context.get(IEclipseContext).createChild)
-		child.init
-		child.set(IMaiaContext.KEY_PARENT_CONTEXT, context)
-		context.registerChild(child)
-		return child
+		val childContext = new E4MaiaContext(context.get(IEclipseContext).createChild)
+		init(childContext)
+		registerParent(childContext, context)
+		registerChild(context, childContext)
+		return childContext
 	}
 
-	def void registerChild(IMaiaContext parent, IMaiaContext child) {
+	def protected void registerParent(IMaiaContext context, IMaiaContext parent) {
+		context.set(IMaiaContext.KEY_PARENT_CONTEXT, parent)
+	}
+
+	def protected void registerChild(IMaiaContext parent, IMaiaContext child) {
 		var childs = parent.getLocal(IMaiaContext.KEY_CHILD_CONTEXTS) as Collection<IMaiaContext>
 		if (childs == null) {
 			childs = new ArrayList<IMaiaContext>
@@ -34,11 +38,11 @@ class E4MaiaContextFactory implements IMaiaContextFactory {
 		context.set(IMaiaContext.KEY_CHILD_CONTEXTS, childs)
 	}
 
-	def void init(E4MaiaContext context) {
+	def protected void init(E4MaiaContext context) {
 		context.set(IMaiaContext, context)
 		context.set(IMaiaContextInjector, new E4MaiaContextInjector(context))
 		context.set(IMaiaContextFactory, new E4MaiaContextFactory(context))
-		context.set(IMaiaContextInitializerService, new MaiaContextInitializerService(context))
+		context.set(IMaiaServiceDeployer, new MaiaServiceDeployer(context))
 	}
 
 }

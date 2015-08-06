@@ -7,13 +7,15 @@ import java.util.UUID
 import javax.inject.Inject
 import org.eclipse.e4.core.contexts.IEclipseContext
 import org.eclipse.e4.core.internal.contexts.EclipseContext
+import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.context.IMaiaContext
 
 class E4MaiaContext implements IMaiaContext {
 
 	package IEclipseContext context
-
-	var String uuid
+	
+	@Accessors
+	val String uuid
 
 	@Inject
 	new(IEclipseContext context) {
@@ -83,15 +85,9 @@ class E4MaiaContext implements IMaiaContext {
 	}
 
 	override String dump() {
-		val list = (context as EclipseContext).localData.keySet
-//		.filter [
-//			it != "org.eclipse.e4.core.internal.contexts.ContextObjectSupplier" && // it != "ru.agentlab.maia.context.IMaiaContext" && 
-//			it != "debugString" && it != "parentContext"
-//		]
-		.sortWith [ a, b |
+		val list = (context as EclipseContext).localData.keySet.sortWith [ a, b |
 			a.compareTo(b)
 		]
-		// val instr = Instrumentation.
 		val res = '''
 			{
 				"name" : "«this.toString»",
@@ -100,8 +96,9 @@ class E4MaiaContext implements IMaiaContext {
 						«val value = (context as EclipseContext).localData.get(p1)»
 						{
 							"key" : "«p1»",
-							"value" : "«IF value != null»«value.class.name + "@" + Integer.toHexString(System.identityHashCode(value))»«ENDIF»"
-«««							"type" : "«value?.class?.name»"«IF value != null && !value.class.isPrimitive && value.class != String»,
+							"value" : "«IF value != null»«value.class.name + "@" + Integer.toHexString(System.identityHashCode(value))»«ENDIF»",
+							"type" : "«value?.class?.name»"
+«««							«IF value != null && !value.class.isPrimitive && value.class != String»,
 «««								"fields" : [
 «««									«FOR field : value.class.declaredFields SEPARATOR ","»
 «««										{
@@ -118,41 +115,12 @@ class E4MaiaContext implements IMaiaContext {
 				]
 			}
 		'''
-		println(res)
-//		var StringConcatenation result = ''''''
-//		result.newLine
-//		var current = this
-//		while (current != null) {
-//			result.append(
-//			'''
-//				
-//			''')
-//			result.newLine
-//
-//			for (p1 : list) {
-//				
-//				result.append(
-//				'''
-//					
-//				''')
-//			}
-//			result.append(
-//			'''
-//					]
-//				}
-//			''')
-//			current = current.parent  as E4MaiaContext
-//		}
+		//println(res)
 		return res.toString
 	}
 
 	override Set<String> getKeySet() {
-		val Set<String> result = (context as EclipseContext).localData.keySet
-		return result
-	}
-
-	override getUuid() {
-		return uuid
+		return (context as EclipseContext).localData.keySet
 	}
 
 }
