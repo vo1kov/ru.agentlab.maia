@@ -3,7 +3,6 @@ package ru.agentlab.maia.execution.scheduler.sequence
 import java.util.LinkedList
 import javax.annotation.PostConstruct
 import javax.inject.Inject
-import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.IMaiaExecutorNode
 import ru.agentlab.maia.execution.IMaiaExecutorScheduler
@@ -11,7 +10,6 @@ import ru.agentlab.maia.execution.scheduler.unbounded.IMaiaUnboundedExecutorSche
 
 class SequenceContextScheduler implements IMaiaUnboundedExecutorScheduler {
 
-//	val static LOGGER = LoggerFactory.getLogger(SequenceContextScheduler)
 	val readyContexts = new LinkedList<IMaiaExecutorNode>
 
 	private int currentIndex = 0
@@ -19,22 +17,22 @@ class SequenceContextScheduler implements IMaiaUnboundedExecutorScheduler {
 	@Inject
 	IMaiaContext context
 
-	@Accessors
-	var IMaiaExecutorScheduler parentNode
+	var IMaiaExecutorScheduler parentScheduler
 
-//	@Inject
-//	IMaiaEventBroker eventBroker
 	@PostConstruct
 	def void init() {
-		context.set(KEY_CURRENT_CONTEXT, null)
-		parentNode = context.parent.get(IMaiaExecutorScheduler)
-		if (parentNode != null) {
-//			LOGGER.info("Add node [{}] to scheduler [{}]...", this, parentNode)
-			parentNode.add(this)
+		val oldScheduler = context.getLocal(IMaiaExecutorScheduler)
+		if (oldScheduler != null) {
+			oldScheduler.removeAll
 		}
+		context.set(KEY_CURRENT_CONTEXT, null)
+		parentScheduler = context.parent.get(IMaiaExecutorScheduler)
+//		if (parentScheduler != null) {
+//			parentScheduler.add(this)
+//		}
 	}
 
-	override synchronized IMaiaExecutorNode getCurrentContext() {
+	override synchronized IMaiaExecutorNode getCurrentNode() {
 		return context.get(KEY_CURRENT_CONTEXT) as IMaiaExecutorNode
 	}
 
@@ -44,25 +42,31 @@ class SequenceContextScheduler implements IMaiaUnboundedExecutorScheduler {
 	 * If the contexts queue was empty notifies the embedded thread of
 	 * the owner agent that a context is now available.
 	 */
-	override synchronized void add(IMaiaExecutorNode context) {
-//		LOGGER.info("Add node [{}]", context)
-		readyContexts += context
+	override synchronized void add(IMaiaExecutorNode node) {
+		if (!readyContexts.contains(node)) {
+			readyContexts += node
+			if (parentScheduler != null) {
+				parentScheduler.add(this)
+			}
+		}
 	}
 
 	/** 
-	 * Removes a specified context from the scheduler
+	 * Removes a specified node from the scheduler
 	 */
-	override synchronized void remove(IMaiaExecutorNode context) {
-//		LOGGER.info("Try to remove [{}] Context...", context)
-		val index = readyContexts.indexOf(context)
+	override synchronized void remove(IMaiaExecutorNode node) {
+		val index = readyContexts.indexOf(node)
 		if (index != -1) {
-//			LOGGER.debug("Scheduler removeFromReady " + context)
-			val result = readyContexts.remove(context)
-//			LOGGER.debug("Scheduler removeFromReady result " + result)
+			readyContexts.remove(node)
 			if (index < currentIndex) {
 				currentIndex = currentIndex - 1
 			} else if (index == currentIndex && currentIndex == readyContexts.size())
 				currentIndex = 0
+			if (empty) {
+				if (parentScheduler != null) {
+					parentScheduler.remove(this)
+				}
+			}
 		}
 	}
 
@@ -70,12 +74,11 @@ class SequenceContextScheduler implements IMaiaUnboundedExecutorScheduler {
 	 * Removes a specified context from the scheduler
 	 */
 	override synchronized void removeAll() {
-//		LOGGER.info("Try to remove all...")
 		readyContexts.clear
 		currentIndex = 0
 	}
 
-	override synchronized getNextContext() {
+	override synchronized getNextNode() {
 		if (readyContexts.empty) {
 			return null
 		} else {
