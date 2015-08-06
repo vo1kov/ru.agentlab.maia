@@ -31,12 +31,12 @@ class SchemeSchedulerTest {
 		scheduler => [
 			add(action1)
 			add(action2)
-			println(nextContext)
-			println(nextContext)
-			println(nextContext)
-			println(nextContext)
-			println(nextContext)
-			println(nextContext)
+			println(nextNode)
+			println(nextNode)
+			println(nextNode)
+			println(nextNode)
+			println(nextNode)
+			println(nextNode)
 		]
 //		val rootContextRef = Activator.context.getServiceReference(IMaiaContext)
 //		val rootContext = Activator.context.getService(rootContextRef)
