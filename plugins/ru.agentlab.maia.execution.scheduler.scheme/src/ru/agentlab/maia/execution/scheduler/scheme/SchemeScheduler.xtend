@@ -35,12 +35,12 @@ class SchemeScheduler implements IMaiaBoundedExecutorScheduler {
 		}
 	}
 
-	override IMaiaExecutorNode getCurrentContext() {
+	override IMaiaExecutorNode getCurrentNode() {
 		return context.get(KEY_CURRENT_CONTEXT) as IMaiaExecutorNode
 	}
 
-	override getNextContext() {
-		val currentResult = if (currentContext != null) {
+	override getNextNode() {
+		val currentResult = if (currentNode != null) {
 //				currentContext.get(IMaiaContextAction.KEY_RESULT)
 			} else {
 				null
