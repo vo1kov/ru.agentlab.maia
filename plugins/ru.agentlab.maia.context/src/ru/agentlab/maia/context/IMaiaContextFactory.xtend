@@ -9,7 +9,9 @@ interface IMaiaContextFactory {
 
 	/**
 	 * Create Context without any additional services
-	 * @return Context without any additional services
+	 * 
+	 * @return 
+	 * 		Context without any additional services
 	 */
 	def IMaiaContext createContext()
 
