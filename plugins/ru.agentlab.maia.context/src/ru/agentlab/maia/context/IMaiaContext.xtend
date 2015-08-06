@@ -3,18 +3,23 @@ package ru.agentlab.maia.context
 import java.util.Collection
 import java.util.Set
 
+/**
+ * Storage for services and objects
+ * 
+ * @author <a href='shishkin_dimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
+ */
 interface IMaiaContext {
-	
+
 	val public static String KEY_TYPE = "ru.agentlab.maia.context._type"
-	
+
 	val public static String KEY_PARENT_CONTEXT = "ru.agentlab.maia.context._parent"
 
 	val public static String KEY_CHILD_CONTEXTS = "ru.agentlab.maia.context._child"
-	
+
 	def public IMaiaContext getParent()
 
 	def public Collection<IMaiaContext> getChilds()
-	
+
 	def String getUuid()
 
 	/**
@@ -25,19 +30,24 @@ interface IMaiaContext {
 	 * If the value associated with this name is an {@link ContextFunction}, this method will
 	 * evaluate {@link ContextFunction#compute(IEclipseContext, String)}.
 	 * </p>
-	 * @param name the name of the value to return
-	 * @return an object corresponding to the given name, or <code>null</code>
+	 * @param 
+	 * 		name the name of the value to return
+	 * @return 
+	 * 		an object corresponding to the given name, or <code>null</code>
 	 */
 	def Object get(String name)
 
 	/**
 	 * Returns the context value associated with the given class.
-	 * @param clazz the class that needs to be found in the context
-	 * @return an object corresponding to the given class, or <code>null</code>
+	 * 
+	 * @param 
+	 * 		clazz the class that needs to be found in the context
+	 * @return 
+	 * 		an object corresponding to the given class, or <code>null</code>
 	 * @see #get(String)
 	 */
 	def <T> T get(Class<T> clazz)
-	
+
 	def Set<String> getKeySet()
 
 	/**
@@ -50,8 +60,10 @@ interface IMaiaContext {
 	 * If the value associated with this name is an {@link ContextFunction}, this method will
 	 * evaluate {@link ContextFunction#compute(IEclipseContext, String)}.
 	 * </p>
-	 * @param name the name of the value to return
-	 * @return an object corresponding to the given name, or <code>null</code>
+	 * @param 
+	 * 		name - the name of the value to return
+	 * @return 
+	 * 		an object corresponding to the given name, or <code>null</code>
 	 */
 	def Object getLocal(String name);
 
