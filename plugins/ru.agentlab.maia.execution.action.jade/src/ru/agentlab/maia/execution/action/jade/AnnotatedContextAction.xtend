@@ -9,18 +9,7 @@ class JadeContextAction implements IMaiaExecutorAction {
 	@Accessors
 	var IMaiaExecutorScheduler parentNode
 
-//	@Inject
-//	IMaiaContext context
-//
-//	@Inject
-//	IMaiaContextInjector injector
-	override beforeRun() {
-	}
-
 	override run() {
-	}
-
-	override afterRun() {
 	}
 
 }

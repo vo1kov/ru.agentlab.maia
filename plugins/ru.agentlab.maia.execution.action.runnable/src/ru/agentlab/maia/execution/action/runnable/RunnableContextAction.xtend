@@ -14,18 +14,12 @@ class RunnableContextAction implements IMaiaExecutorAction {
 	@Accessors
 	var IMaiaExecutorScheduler parentNode
 
-	override beforeRun() {
-	}
-
 	override run() {
 		val task = context.get(KEY_TASK)
 		if (task instanceof Runnable) {
 			task.run
 		}
 		return null
-	}
-
-	override afterRun() {
 	}
 
 }
