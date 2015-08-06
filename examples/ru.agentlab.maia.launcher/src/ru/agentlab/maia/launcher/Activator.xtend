@@ -5,13 +5,10 @@ import org.osgi.framework.BundleContext
 import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.IMaiaContextFactory
-import ru.agentlab.maia.context.initializer.IMaiaContextInitializerService
+import ru.agentlab.maia.context.IMaiaServiceDeployer
 import ru.agentlab.maia.context.typing.agent.MaiaAgentContextInitializer
-import ru.agentlab.maia.context.typing.behaviour.IMaiaBehaviourContextFactory
-import ru.agentlab.maia.context.typing.container.MaiaContainerContextInitializer
-import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleService
-import ru.agentlab.maia.execution.lifecycle.fipa.FipaLifecycleScheme
 import ru.agentlab.maia.context.typing.behaviour.MaiaBehaviourContextInitializer
+import ru.agentlab.maia.context.typing.container.MaiaContainerContextInitializer
 
 class Activator implements BundleActivator {
 
@@ -25,19 +22,19 @@ class Activator implements BundleActivator {
 
 	def IMaiaContext createContainer(IMaiaContext parent) {
 		return parent.get(IMaiaContextFactory).createContext => [
-			get(IMaiaContextInitializerService).initService(MaiaContainerContextInitializer)
+			get(IMaiaServiceDeployer).deploy(MaiaContainerContextInitializer)
 		]
 	}
 
 	def IMaiaContext createAgent(IMaiaContext parent) {
 		return parent.get(IMaiaContextFactory).createContext => [
-			get(IMaiaContextInitializerService).initService(MaiaAgentContextInitializer)
+			get(IMaiaServiceDeployer).deploy(MaiaAgentContextInitializer)
 		]
 	}
 
 	def IMaiaContext createBehaviour(IMaiaContext parent) {
 		return parent.get(IMaiaContextFactory).createContext => [
-			get(IMaiaContextInitializerService).initService(MaiaBehaviourContextInitializer)
+			get(IMaiaServiceDeployer).deploy(MaiaBehaviourContextInitializer)
 		]
 	}
 
@@ -57,20 +54,21 @@ class Activator implements BundleActivator {
 
 		LOGGER.info("CREATE AGENT...")
 		val agent = container.createAgent => [
-			get(IMaiaContextInitializerService).initService(AgentExample)
+			get(IMaiaServiceDeployer).deploy(AgentExample)
 		]
 		container.createAgent
 		container.createAgent
 		container.createAgent
 		container.createAgent
 
-//		LOGGER.info("CREATE BEHAVIOUR...")
-//		val behaviour = agent.createBehaviour
-//		agent.createBehaviour
-//		agent.createBehaviour
-//		agent.createBehaviour
-//		LOGGER.info("CREATE BEHAVIOUR_2...")
-//		val behaviour2 = agent.createBehaviour
+		LOGGER.info("CREATE BEHAVIOUR...")
+		val behaviour = agent.createBehaviour
+//		behaviour.set(IMaiaExecutorAction, AnnotatedContextAction)
+		agent.createBehaviour
+		agent.createBehaviour
+		agent.createBehaviour
+		LOGGER.info("CREATE BEHAVIOUR_2...")
+		val behaviour2 = agent.createBehaviour
 
 //		agent => [
 //			get(IMaiaContextLifecycleService).state = FipaLifecycleScheme.STATE_ACTIVE

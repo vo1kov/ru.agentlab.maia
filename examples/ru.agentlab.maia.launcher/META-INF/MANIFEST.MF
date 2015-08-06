@@ -17,7 +17,7 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.context.initializer.agent;bundle-version="1.0.0",
  ru.agentlab.maia.context.initializer.behaviour;bundle-version="1.0.0",
  ru.agentlab.maia.context.initializer.container;bundle-version="1.0.0",
- ru.agentlab.maia.context.initializer;bundle-version="1.0.0",
  ru.agentlab.maia.execution.lifecycle;bundle-version="1.0.0",
- ru.agentlab.maia.execution.lifecycle.fipa;bundle-version="1.0.0"
+ ru.agentlab.maia.execution.lifecycle.fipa;bundle-version="1.0.0",
+ ru.agentlab.maia.execution;bundle-version="1.0.0"
 
