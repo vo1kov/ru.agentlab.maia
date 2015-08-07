@@ -7,6 +7,7 @@ import ru.agentlab.maia.execution.action.annotated.AnnotatedContextAction
 import ru.agentlab.maia.context.modifier.MaiaExtension
 import ru.agentlab.maia.context.modifier.MaiaRootContextModifier
 import ru.agentlab.maia.execution.IMaiaExecutorAction
+import ru.agentlab.maia.execution.IMaiaExecutorTask
 
 class Activator implements BundleActivator {
 
@@ -30,31 +31,33 @@ class Activator implements BundleActivator {
 			deploy(MaiaRootContextModifier)
 		]
 		
-		root.createBehaviour => [
+		val container = root.createContainer
+		val container2 = root.createContainer
+		val container3 = root.createContainer
+
+		val agent = container.createAgent => [
+			deploy(AgentExample)
+		]
+		container.createAgent
+		container.createAgent
+		container.createAgent
+		container.createAgent
+
+		val behaviour = agent.createBehaviour => [
+			deploy(new AnnotatedContextAction(PrintlnAction), IMaiaExecutorAction)
+		]
+		agent.createBehaviour => [
+			deploy(new AnnotatedContextAction(PrintlnAction), IMaiaExecutorAction)
+		]
+		agent.createBehaviour => [
+			deploy(new AnnotatedContextAction(PrintlnAction), IMaiaExecutorAction)
+		]
+		agent.createBehaviour => [
 			deploy(new AnnotatedContextAction(PrintlnAction), IMaiaExecutorAction)
 		]
 		
-//		val container = root.createContainer
-//		val container2 = root.createContainer
-//		val container3 = root.createContainer
-//
-//		val agent = container.createAgent => [
-//			deploy(AgentExample)
-//		]
-//		container.createAgent
-//		container.createAgent
-//		container.createAgent
-//		container.createAgent
-//
-//		val behaviour = agent.createBehaviour
-//		agent.createBehaviour
-//		agent.createBehaviour
-//		agent.createBehaviour
-//
-//		val behaviour2 = agent.createBehaviour => [
-//			deploy(new AnnotatedContextAction(PrintlnAction))
-//		]
-
+		container.get(IMaiaExecutorTask).start
+		
 //		agent => [
 //			get(IMaiaContextLifecycleService).state = FipaLifecycleScheme.STATE_ACTIVE
 //

@@ -14,10 +14,9 @@ Require-Bundle: com.google.guava,
  javax.inject;bundle-version="1.0.0",
  org.slf4j.api;bundle-version="1.7.2",
  ru.agentlab.maia.context;bundle-version="1.0.0",
- ru.agentlab.maia.context.initializer.agent;bundle-version="1.0.0",
- ru.agentlab.maia.context.initializer.behaviour;bundle-version="1.0.0",
- ru.agentlab.maia.context.initializer.container;bundle-version="1.0.0",
+ ru.agentlab.maia.context.modifier.mas.default;bundle-version="1.0.0",
  ru.agentlab.maia.execution.lifecycle;bundle-version="1.0.0",
  ru.agentlab.maia.execution.lifecycle.fipa;bundle-version="1.0.0",
- ru.agentlab.maia.execution;bundle-version="1.0.0"
+ ru.agentlab.maia.execution;bundle-version="1.0.0",
+ ru.agentlab.maia.execution.action.annotated;bundle-version="1.0.0"
 
