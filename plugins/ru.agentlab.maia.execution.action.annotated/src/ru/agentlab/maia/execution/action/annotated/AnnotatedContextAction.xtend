@@ -46,6 +46,7 @@ class AnnotatedContextAction extends MaiaAbstractExecutorAction {
 		// Inject inputs 
 		val result = injector.invoke(task, Action)
 		// Extract outputs
+		parentScheduler.remove(this)
 		return result
 	}
 
