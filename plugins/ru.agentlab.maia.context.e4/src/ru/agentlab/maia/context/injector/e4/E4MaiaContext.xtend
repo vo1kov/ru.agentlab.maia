@@ -81,7 +81,7 @@ class E4MaiaContext implements IMaiaContext {
 	}
 
 	override toString() {
-		context.toString
+		uuid
 	}
 
 	override Set<String> getKeySet() {
