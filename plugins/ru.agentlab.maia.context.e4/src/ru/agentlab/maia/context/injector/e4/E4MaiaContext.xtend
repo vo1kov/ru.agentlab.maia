@@ -13,7 +13,7 @@ import ru.agentlab.maia.context.IMaiaContext
 class E4MaiaContext implements IMaiaContext {
 
 	package IEclipseContext context
-	
+
 	@Accessors
 	val String uuid
 
@@ -82,41 +82,6 @@ class E4MaiaContext implements IMaiaContext {
 
 	override toString() {
 		context.toString
-	}
-
-	override String dump() {
-		val list = (context as EclipseContext).localData.keySet.sortWith [ a, b |
-			a.compareTo(b)
-		]
-		val res = '''
-			{
-				"name" : "«this.toString»",
-				"services" : [
-					«FOR p1 : list SEPARATOR ","»
-						«val value = (context as EclipseContext).localData.get(p1)»
-						{
-							"key" : "«p1»",
-							"value" : "«IF value != null»«value.class.name + "@" + Integer.toHexString(System.identityHashCode(value))»«ENDIF»",
-							"type" : "«value?.class?.name»"
-«««							«IF value != null && !value.class.isPrimitive && value.class != String»,
-«««								"fields" : [
-«««									«FOR field : value.class.declaredFields SEPARATOR ","»
-«««										{
-«««											"name" : "«field.name»",
-«««											«field.setAccessible(true)»
-«««											«val fieldValue = field.get(value)»
-«««											"value" : "«IF fieldValue != null»«fieldValue.class.name + "@" + Integer.toHexString(System.identityHashCode(fieldValue))»«ELSE»null«ENDIF»"
-«««										}
-«««									«ENDFOR»
-«««								]
-«««							«ENDIF»
-						}
-					«ENDFOR»
-				]
-			}
-		'''
-		//println(res)
-		return res.toString
 	}
 
 	override Set<String> getKeySet() {

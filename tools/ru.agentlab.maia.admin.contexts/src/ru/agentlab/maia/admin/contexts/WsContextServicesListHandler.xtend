@@ -34,6 +34,41 @@ class WsContextServicesListHandler extends ChannelHandlerAdapter {
 			ctx.fireChannelRead(msg)
 		}
 	}
+	
+	def String dump(IMaiaContext context) {
+		val list = context.keySet.sortWith [ a, b |
+			a.compareTo(b)
+		]
+		val res = '''
+			{
+				"name" : "«this.toString»",
+				"services" : [
+					«FOR p1 : list SEPARATOR ","»
+						«val value = context.get(p1)»
+						{
+							"key" : "«p1»",
+							"value" : "«IF value != null»«value.class.name + "@" + Integer.toHexString(System.identityHashCode(value))»«ENDIF»",
+							"type" : "«value?.class?.name»"
+«««							«IF value != null && !value.class.isPrimitive && value.class != String»,
+«««								"fields" : [
+«««									«FOR field : value.class.declaredFields SEPARATOR ","»
+«««										{
+«««											"name" : "«field.name»",
+«««											«field.setAccessible(true)»
+«««											«val fieldValue = field.get(value)»
+«««											"value" : "«IF fieldValue != null»«fieldValue.class.name + "@" + Integer.toHexString(System.identityHashCode(fieldValue))»«ELSE»null«ENDIF»"
+«««										}
+«««									«ENDFOR»
+«««								]
+«««							«ENDIF»
+						}
+					«ENDFOR»
+				]
+			}
+		'''
+		println(res)
+		return res.toString
+	}
 
 	def IMaiaContext findContext(IMaiaContext context, String id) {
 		if (context.uuid.equalsIgnoreCase(id)) {

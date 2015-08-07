@@ -122,6 +122,4 @@ interface IMaiaContext {
 	 */
 	def <T> void set(Class<T> clazz, T value);
 
-	def String dump()
-
 }
