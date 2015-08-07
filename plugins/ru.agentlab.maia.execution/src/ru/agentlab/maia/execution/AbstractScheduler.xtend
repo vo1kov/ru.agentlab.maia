@@ -1,6 +1,6 @@
 package ru.agentlab.maia.execution
 
-import java.util.LinkedList
+import java.util.ArrayList
 import java.util.List
 import javax.annotation.PostConstruct
 import javax.inject.Inject
@@ -19,18 +19,18 @@ abstract class AbstractScheduler implements IMaiaExecutorScheduler {
 
 	@Inject
 	protected IMaiaContext context
-	
+
 	/**
 	 * Queue of available nodes.
 	 */
-	protected List<IMaiaExecutorNode> nodes = new LinkedList<IMaiaExecutorNode>
+	protected List<IMaiaExecutorNode> nodes = new ArrayList<IMaiaExecutorNode>
 
 	/**
 	 * <p>Scheduler in context hierarchy</p>
 	 * <p>Can be <code>null</code>.</p>
 	 */
 	protected IMaiaExecutorScheduler parentScheduler = null
-	
+
 	/**
 	 * Initialization of scheduler.
 	 * Clear previous scheduler in context if exists.
