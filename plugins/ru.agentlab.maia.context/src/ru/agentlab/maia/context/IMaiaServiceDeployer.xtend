@@ -4,6 +4,8 @@ import ru.agentlab.maia.context.exception.MaiaDeploymentException
 
 /**
  * Service for deploying services to context.
+ * 
+ * @author <a href='shishkin_dimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
 interface IMaiaServiceDeployer {
 
@@ -18,7 +20,7 @@ interface IMaiaServiceDeployer {
 	 * 		MaiaDeploymentException when creating or registering falls
 	 */
 	def <T> T deploy(Class<T> serviceClass) throws MaiaDeploymentException
-	
+
 	/**
 	 * Create new service instance and register it to context with specified key
 	 * 
@@ -32,7 +34,7 @@ interface IMaiaServiceDeployer {
 	 * 		MaiaDeploymentException when creating or registering falls
 	 */
 	def <T> T deploy(Class<T> serviceClass, String key) throws MaiaDeploymentException
-	
+
 	/**
 	 * Create new service instance and register it to context with specified key
 	 * 

@@ -4,7 +4,9 @@ import java.lang.annotation.Annotation
 import ru.agentlab.maia.context.exception.MaiaInjectionException
 
 /**
- * Injector for context.
+ * Service for injection context to objects.
+ * 
+ * @author <a href='shishkin_dimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
 interface IMaiaContextInjector {
 

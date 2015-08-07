@@ -4,7 +4,7 @@ import java.util.Collection
 import java.util.Set
 
 /**
- * Storage for services and objects
+ * Storage for services and objects.
  * 
  * @author <a href='shishkin_dimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
