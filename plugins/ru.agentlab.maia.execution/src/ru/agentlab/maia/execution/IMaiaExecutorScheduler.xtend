@@ -8,12 +8,12 @@ interface IMaiaExecutorScheduler extends IMaiaExecutorNode {
 
 	def IMaiaExecutorNode getNextNode()
 
-	def void remove(IMaiaExecutorNode context)
+	def void remove(IMaiaExecutorNode node)
 
 	def void removeAll()
 
 	def boolean isEmpty()
 
-	def void add(IMaiaExecutorNode context)
+	def void add(IMaiaExecutorNode node)
 
 }
