@@ -18,10 +18,34 @@ interface IMaiaServiceDeployer {
 	 * 		MaiaDeploymentException when creating or registering falls
 	 */
 	def <T> T deploy(Class<T> serviceClass) throws MaiaDeploymentException
-
+	
+	/**
+	 * Create new service instance and register it to context with specified key
+	 * 
+	 * @param
+	 * 		serviceClass - type of service to be deployed
+	 * @param
+	 * 		key - key for registration in context
+	 * @return 
+	 * 		Deployed service object
+	 * @throws
+	 * 		MaiaDeploymentException when creating or registering falls
+	 */
 	def <T> T deploy(Class<T> serviceClass, String key) throws MaiaDeploymentException
-
-	def <T> T deploy(Class<? extends T> serviceClass, Class<T> interf) throws MaiaDeploymentException
+	
+	/**
+	 * Create new service instance and register it to context with specified key
+	 * 
+	 * @param
+	 * 		serviceClass - type of service to be deployed
+	 * @param
+	 * 		serviceInterface - interface for registration in context
+	 * @return 
+	 * 		Deployed service object
+	 * @throws
+	 * 		MaiaDeploymentException when creating or registering falls
+	 */
+	def <T> T deploy(Class<? extends T> serviceClass, Class<T> serviceInterface) throws MaiaDeploymentException
 
 	/**
 	 * Inject context to service object and register it to context
@@ -35,8 +59,32 @@ interface IMaiaServiceDeployer {
 	 */
 	def Object deploy(Object service) throws MaiaDeploymentException
 
+	/**
+	 * Inject context to service object and register it to context with specified key
+	 * 
+	 * @param
+	 * 		serviceClass - type of service to be deployed
+	 * @param
+	 * 		key - key for registration in context
+	 * @return 
+	 * 		Deployed service object
+	 * @throws
+	 * 		MaiaDeploymentException when creating or registering falls
+	 */
 	def Object deploy(Object service, String key) throws MaiaDeploymentException
 
+	/**
+	 * Inject context to service object and register it to context with specified key
+	 * 
+	 * @param
+	 * 		serviceClass - type of service to be deployed
+	 * @param
+	 * 		serviceInterface - interface for registration in context
+	 * @return 
+	 * 		Deployed service object
+	 * @throws
+	 * 		MaiaDeploymentException when creating or registering falls
+	 */
 	def <T> T deploy(T service, Class<T> interf) throws MaiaDeploymentException
 
 }
