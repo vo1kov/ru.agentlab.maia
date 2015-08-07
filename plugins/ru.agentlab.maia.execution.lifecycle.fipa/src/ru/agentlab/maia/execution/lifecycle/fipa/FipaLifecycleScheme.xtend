@@ -2,7 +2,6 @@ package ru.agentlab.maia.execution.lifecycle.fipa
 
 import javax.annotation.PostConstruct
 import javax.inject.Inject
-import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleScheme
 import ru.agentlab.maia.execution.lifecycle.IMaiaContextLifecycleState
@@ -12,8 +11,6 @@ import ru.agentlab.maia.execution.lifecycle.LifecycleState
 import ru.agentlab.maia.execution.lifecycle.LifecycleTransition
 
 class FipaLifecycleScheme extends LifecycleScheme {
-
-	val static LOGGER = LoggerFactory.getLogger(FipaLifecycleScheme)
 
 	val public static STATE_ACTIVE = new LifecycleState("ACTIVE")
 
@@ -36,7 +33,6 @@ class FipaLifecycleScheme extends LifecycleScheme {
 
 //	@Inject
 //	IMaiaEventBroker eventBroker
-
 	@PostConstruct
 	def void init() {
 		context.set(IMaiaContextLifecycleScheme, null)
