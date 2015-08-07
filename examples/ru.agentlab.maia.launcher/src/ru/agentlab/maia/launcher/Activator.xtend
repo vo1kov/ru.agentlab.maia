@@ -2,40 +2,20 @@ package ru.agentlab.maia.launcher
 
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
-import org.slf4j.LoggerFactory
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.context.IMaiaContextFactory
-import ru.agentlab.maia.context.IMaiaServiceDeployer
-import ru.agentlab.maia.context.typing.agent.MaiaAgentContextInitializer
-import ru.agentlab.maia.context.typing.behaviour.MaiaBehaviourContextInitializer
-import ru.agentlab.maia.context.typing.container.MaiaContainerContextInitializer
+import ru.agentlab.maia.execution.action.annotated.AnnotatedContextAction
+import ru.agentlab.maia.context.modifier.MaiaExtension
+import ru.agentlab.maia.context.modifier.MaiaRootContextModifier
+import ru.agentlab.maia.execution.IMaiaExecutorAction
 
 class Activator implements BundleActivator {
 
-	val static LOGGER = LoggerFactory.getLogger(Activator)
+	extension MaiaExtension = new MaiaExtension
 
 	static BundleContext context
 
 	def static package BundleContext getContext() {
 		return context
-	}
-
-	def IMaiaContext createContainer(IMaiaContext parent) {
-		return parent.get(IMaiaContextFactory).createContext => [
-			get(IMaiaServiceDeployer).deploy(MaiaContainerContextInitializer)
-		]
-	}
-
-	def IMaiaContext createAgent(IMaiaContext parent) {
-		return parent.get(IMaiaContextFactory).createContext => [
-			get(IMaiaServiceDeployer).deploy(MaiaAgentContextInitializer)
-		]
-	}
-
-	def IMaiaContext createBehaviour(IMaiaContext parent) {
-		return parent.get(IMaiaContextFactory).createContext => [
-			get(IMaiaServiceDeployer).deploy(MaiaBehaviourContextInitializer)
-		]
 	}
 
 	/*
@@ -45,30 +25,35 @@ class Activator implements BundleActivator {
 	override void start(BundleContext ctx) throws Exception {
 		context = ctx
 		val rootContextRef = context.getServiceReference(IMaiaContext)
-		val rootContext = context.getService(rootContextRef)
-
-		LOGGER.info("CREATE CONTAINER...")
-		val container = rootContext.createContainer
-		val container2 = rootContext.createContainer
-		val container3 = rootContext.createContainer
-
-		LOGGER.info("CREATE AGENT...")
-		val agent = container.createAgent => [
-			get(IMaiaServiceDeployer).deploy(AgentExample)
+		
+		val root = context.getService(rootContextRef) => [
+			deploy(MaiaRootContextModifier)
 		]
-		container.createAgent
-		container.createAgent
-		container.createAgent
-		container.createAgent
-
-		LOGGER.info("CREATE BEHAVIOUR...")
-		val behaviour = agent.createBehaviour
-//		behaviour.set(IMaiaExecutorAction, AnnotatedContextAction)
-		agent.createBehaviour
-		agent.createBehaviour
-		agent.createBehaviour
-		LOGGER.info("CREATE BEHAVIOUR_2...")
-		val behaviour2 = agent.createBehaviour
+		
+		root.createBehaviour => [
+			deploy(new AnnotatedContextAction(PrintlnAction), IMaiaExecutorAction)
+		]
+		
+//		val container = root.createContainer
+//		val container2 = root.createContainer
+//		val container3 = root.createContainer
+//
+//		val agent = container.createAgent => [
+//			deploy(AgentExample)
+//		]
+//		container.createAgent
+//		container.createAgent
+//		container.createAgent
+//		container.createAgent
+//
+//		val behaviour = agent.createBehaviour
+//		agent.createBehaviour
+//		agent.createBehaviour
+//		agent.createBehaviour
+//
+//		val behaviour2 = agent.createBehaviour => [
+//			deploy(new AnnotatedContextAction(PrintlnAction))
+//		]
 
 //		agent => [
 //			get(IMaiaContextLifecycleService).state = FipaLifecycleScheme.STATE_ACTIVE

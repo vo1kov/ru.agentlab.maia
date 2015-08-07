@@ -14,6 +14,10 @@ class MaiaExtension {
 		context.get(IMaiaServiceDeployer).deploy(service)
 	}
 
+	def <T> T deploy(IMaiaContext context, T service, Class<T> interf) {
+		context.get(IMaiaServiceDeployer).deploy(service, interf)
+	}
+
 	def IMaiaContext createContainer(IMaiaContext parent) {
 		return parent.get(IMaiaContextFactory).createContext => [
 			get(IMaiaServiceDeployer).deploy(MaiaContainerContextModifier)
