@@ -8,10 +8,12 @@ abstract class MaiaAbstractExecutorAction implements IMaiaExecutorAction {
 
 	@Inject
 	IMaiaContext context
+	
+	protected IMaiaExecutorScheduler parentScheduler
 
 	@PostConstruct
 	def void init() {
-		val parentScheduler = context.parent.get(IMaiaExecutorScheduler)
+		parentScheduler = context.parent.get(IMaiaExecutorScheduler)
 		if (parentScheduler != null) {
 			parentScheduler.add(this)
 		}
