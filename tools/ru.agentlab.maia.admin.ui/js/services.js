@@ -253,6 +253,14 @@ var treemap = d3.layout.treemap()
 	.sort(function (a, b) {return d3.ascending(a.parent.children.indexOf(a), b.parent.children.indexOf(b));});
 
 function createServices(context, services){
+	services = services.filter(function(d){
+			return d.key != 'org.eclipse.e4.core.internal.contexts.ContextObjectSupplier' &&
+			d.key != 'ru.agentlab.maia.context._parent' &&
+			d.key != 'parentContext' &&
+			d.key != 'debugString' &&
+			d.key != 'ru.agentlab.maia.context.IMaiaContext' &&
+			d.key != 'ru.agentlab.maia.context._child';
+		}); 
 	//console.log(context[0][0].__data__.dx); 
 	//console.log(services);
 	var ctx = context[0][0].__data__;
@@ -271,7 +279,10 @@ function createServices(context, services){
 	//console.log(layouts);
 	
 	var serviceNodes = layouts.get(ctx.uuid).nodes(reassemble(services));
-	
+		
+	//!(d.name === 'dubugString' ||
+		//	 d.name === 'org.eclipse.e4.core.internal.contexts.ContextObjectSupplier')
+		
 	//console.log(serviceNodes);
 	//serviceNodes.shift();
 	var service = context

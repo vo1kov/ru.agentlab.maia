@@ -8,11 +8,11 @@ socket.onopen = function() {
 
 socket.onclose = function(event) {
 	if (event.wasClean) {
-		alert('Соединение закрыто чисто');
+		//alert('Ð¡Ð¾ÐµÐ´Ð¸Ð½ÐµÐ½Ð¸Ðµ Ð·Ð°ÐºÑ€Ñ‹Ñ‚Ð¾ Ñ‡Ð¸Ñ�Ñ‚Ð¾');
 	} else {
-		alert('Обрыв соединения'); // например, "убит" процесс сервера
+		//alert('ÐžÐ±Ñ€Ñ‹Ð² Ñ�Ð¾ÐµÐ´Ð¸Ð½ÐµÐ½Ð¸Ñ�'); // Ð½Ð°Ð¿Ñ€Ð¸Ð¼ÐµÑ€, "ÑƒÐ±Ð¸Ñ‚" Ð¿Ñ€Ð¾Ñ†ÐµÑ�Ñ� Ñ�ÐµÑ€Ð²ÐµÑ€Ð°
 	}
-	alert('Код: ' + event.code + ' причина: ' + event.reason);
+	//alert('ÐšÐ¾Ð´: ' + event.code + ' Ð¿Ñ€Ð¸Ñ‡Ð¸Ð½Ð°: ' + event.reason);
 };
 
 socket.onmessage = function(event) {
@@ -46,5 +46,5 @@ socket.onmessage = function(event) {
 };
 
 socket.onerror = function(error) {
-	alert("Ошибка " + error.message);
+	alert("ÐžÑˆÐ¸Ð±ÐºÐ° " + error.message);
 };
