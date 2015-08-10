@@ -28,8 +28,8 @@ class MaiaExecutorService implements IMaiaExecutorService {
 
 			override run() {
 				try {
-					root.runAction
 					if (isActive.get) {
+						root.runAction
 						executor.submit(this)
 					}
 				} catch (Exception e) {

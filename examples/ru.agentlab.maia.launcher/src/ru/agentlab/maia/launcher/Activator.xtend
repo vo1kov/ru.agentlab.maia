@@ -57,7 +57,7 @@ class Activator implements BundleActivator {
 		]
 		
 		container.get(IMaiaExecutorService).start
-//		container.get(IMaiaExecutorTask).stop
+//		container.get(IMaiaExecutorService).stop
 		
 //		agent => [
 //			get(IMaiaContextLifecycleService).state = FipaLifecycleScheme.STATE_ACTIVE
