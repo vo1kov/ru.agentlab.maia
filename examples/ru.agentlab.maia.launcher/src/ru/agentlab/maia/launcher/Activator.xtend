@@ -7,7 +7,7 @@ import ru.agentlab.maia.execution.action.annotated.AnnotatedContextAction
 import ru.agentlab.maia.context.modifier.MaiaExtension
 import ru.agentlab.maia.context.modifier.MaiaRootContextModifier
 import ru.agentlab.maia.execution.IMaiaExecutorAction
-import ru.agentlab.maia.execution.IMaiaExecutorTask
+import ru.agentlab.maia.execution.IMaiaExecutorService
 
 class Activator implements BundleActivator {
 
@@ -56,7 +56,8 @@ class Activator implements BundleActivator {
 			deploy(new AnnotatedContextAction(PrintlnAction), IMaiaExecutorAction)
 		]
 		
-		container.get(IMaiaExecutorTask).start
+		container.get(IMaiaExecutorService).start
+//		container.get(IMaiaExecutorTask).stop
 		
 //		agent => [
 //			get(IMaiaContextLifecycleService).state = FipaLifecycleScheme.STATE_ACTIVE

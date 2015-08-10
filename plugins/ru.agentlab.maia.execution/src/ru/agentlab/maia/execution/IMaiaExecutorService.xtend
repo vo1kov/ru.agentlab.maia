@@ -1,7 +1,9 @@
 package ru.agentlab.maia.execution
 
-interface IMaiaExecutorTask {
+interface IMaiaExecutorService {
 	
 	def void start()
+	
+	def void stop()
 	
 }
