@@ -3,17 +3,40 @@
 <style>
 
 svg {
-  float: left;
+  float: center;
   //border-bottom: solid 1px #ccc;
   //border-right: solid 1px #ccc;
   //margin-right: -1px;
   //margin-bottom: -1px;
 }
 
+.link.transition {
+	fill: none;
+	stroke: rgb(32,32,32);
+	stroke-width: 3px;
+}
+	
+.node > rect {
+	fill : lightgray;
+	stroke: gray;
+	rx : 10;
+	ry : 10;
+}
+	
+.parameter > circle {
+	stroke-width:1;
+	stroke:rgb(32,32,32);
+}
+
+.state > rect {
+	stroke-width:1px;
+	stroke: black;
+}
 </style>
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript" src="js/scripts.js"></script>
 <script>
 
 var tasks = [
@@ -65,6 +88,10 @@ var tasks = [
 		{
 			"id" : "bootstrap",
 			"type" : "io.netty.bootstrap.Bootstrap"
+		},
+		{
+			"id" : "bootstrap1",
+			"type" : "io.netty.bootstrap.Bootstrap"
 		}
 	]
 }
@@ -111,39 +138,19 @@ var proto = {
 		}
 	],
 	"dataflow" : [
-		["login@self", "eventLoop@719b2a8a-4119-453b-a39d-62e9ce2d6cc6"],
-		["bootstrap@719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "input@2da4cfe4-9da7-4940-830d-bbed1e895568"],
-		["output@2da4cfe4-9da7-4940-830d-bbed1e895568", "success@self"]
+		["login", "719b2a8a-4119-453b-a39d-62e9ce2d6cc6#eventLoop"],
+		["719b2a8a-4119-453b-a39d-62e9ce2d6cc6#bootstrap", "2da4cfe4-9da7-4940-830d-bbed1e895568#input"],
+		["2da4cfe4-9da7-4940-830d-bbed1e895568#output", "success"]
 	],
 	"workflow" : [
-		["self", "719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "2da4cfe4-9da7-4940-830d-bbed1e895568", "self"],
-		["NullPointerException@719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "NullPointerException@self"]
+		[null, "719b2a8a-4119-453b-a39d-62e9ce2d6cc6"], 
+		["719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "2da4cfe4-9da7-4940-830d-bbed1e895568"],
+		["2da4cfe4-9da7-4940-830d-bbed1e895568", null]
 	]
 }
-var dict = {};
-var hues = [];
-
-
-function getTypeColor(type) {
-	var color = dict[type];
-	
-	if(typeof color != 'undefined'){
-		return color;
-	} else {
-		var hue = Math.floor(Math.random()*360);
-		if (dict.length <= 360 && hues.indexOf(hue) > 0){
-			return getTypeColor(type);
-		} else {
-			hues.push(hue);
-			color = d3.hsl(hue, 0.7, 0.4);
-			dict[type] = color;
-			return color;
-		}
-	}
-}
  
-var width = 1040,
-    height = 525,
+var width = 1200,
+    height = 600,
     radius = 40;
 	
 var titleH = 40;
@@ -152,11 +159,31 @@ var paramH = 15;
 var drag = d3.behavior.drag()
     .origin(function(d) { return d; })
     .on("drag", dragmove);
-	
+
+/***********************************
+ *		SVG
+ ***********************************/
 var svg = d3.select("body").append("div").append("svg")
     .attr("width", width)
     .attr("height", height);
 
+svg.append("defs").selectAll("marker")
+    .data(["arrow", "licensing", "resolved"])
+  .enter().append("marker")
+    .attr("id", function(d) { return d; })
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 10)
+    .attr("refY", 0)
+    .attr("markerWidth", 6)
+    .attr("markerHeight", 4)
+    .attr("orient", "auto")
+	.style("fill", "rgb(32,32,32)")
+  .append("path")
+    .attr("d", "M0,-5L10,0L0,5");
+
+/***********************************
+ *		NODE
+ ***********************************/
 var marginL = 100;
 var marginT = 50;
 var marginR = 100;
@@ -168,50 +195,56 @@ var node = svg
 	.append("g")
 		.classed("node", true)
 		.attr("transform", "translate(" + marginL + ", " + marginT + ")");
-
-node.append("rect")
+		
+var nodeBody = node.append("rect")
 	.attr("width", width - marginL - marginR)
-	.attr("height", height - marginT - marginB)
-	.style("fill", "none")
-	.style("stroke", "lightgray")
-    .attr("rx", 10)
-    .attr("ry", 10);
+	.attr("height", height - marginT - marginB);
+
+function drawParameterCircle(param) {
+	param.attr("r", 5)
+		.style("fill", function(d) { return getTypeColor(d.type);})
+		.attr("cursor", "pointer");
+}
 	
+/***********************************
+ *		NODE INPUTS
+ ***********************************/
 var inputs = node.append("g")
-	.classed("inputs", true)
 	.attr("transform", "translate(0, 80)");
 	
-var input = inputs.selectAll(".input")
+var input = inputs.selectAll("g.input")
 	.data(function(d){return d.inputs;})
 	.enter()
 	.append("g")
 	.classed("input", true)
+	.classed("parameter", true)
 	.attr("transform", function(d, i){return "translate(0, " + i * 20 + ")";});
 
 	input.append("circle")
-		.attr("r", 5)
-		.attr("style", function(d, i) { return "fill:" + d3.hsl(getTypeColor(d.type)).brighter(1.1) + ";stroke-width:1;stroke:rgb(32,32,32)";});;
+		.call(drawParameterCircle);
 
 	input.append("text")
 		.text(function(d){return d.id;})
 		.attr("text-anchor", "end")
 		.attr("alignment-baseline", "middle")
 		.attr("transform", function(d, i){return "translate(-10, 0)";});
-	
+
+/***********************************
+ *		NODE OUTPUTS
+ ***********************************/
 var outputs = node.append("g")
-	.classed("outputs", true)
 	.attr("transform", "translate(" + (width - marginL - marginR) + ", 80)");
 	
-var output = outputs.selectAll(".output")
+var output = outputs.selectAll("g.output")
 	.data(function(d){return d.outputs;})
 	.enter()
 	.append("g")
 	.classed("output", true)
+	.classed("parameter", true)
 	.attr("transform", function(d, i){return "translate(0, " + i * 20 + ")";});
 
 	output.append("circle")
-		.attr("r", 5)
-		.attr("style", function(d, i) { return "fill:" + d3.hsl(getTypeColor(d.type)).brighter(1.1) + ";stroke-width:1;stroke:rgb(32,32,32)";});;
+		.call(drawParameterCircle);
 
 	output.append("text")
 		.text(function(d){return d.id;})
@@ -221,25 +254,43 @@ var output = outputs.selectAll(".output")
 
 var inW = 100;
 
-node.append("circle")
-	.attr("r", 10)
-	.attr("cy", 35);
+/***********************************
+ *		START CIRCLE
+ ***********************************/
+var startCircleR = 10;
+var finishCircleR = 15;
+var circleOffset = 35;
+
+function drawCircle(node){
+	node.attr("r", startCircleR)
+	.attr("cy", circleOffset)
+	.style("fill", "rgb(32,32,32)");
+}
 
 node.append("circle")
-	.attr("r", 15)
-	.style("fill", "white")
-	.style("stroke", "black")
+	.call(drawCircle);
+
+/***********************************
+ *		FINISH CIRCLE
+ ***********************************/
+node.append("circle")
+	.attr("r", finishCircleR)
+	.style("fill", "lightgray")
+	.style("stroke", "rgb(32,32,32)")
+	.style("stroke-width", "2px")
 	.attr("cx", width - marginL - marginR)
-	.attr("cy", 35);
+	.attr("cy", circleOffset);
 	
 node.append("circle")
-	.attr("r", 10)
-	.attr("cx", width - marginL - marginR)
-	.attr("cy", 35);
-
-var g = node.selectAll(".state").data(function(d){return proto.states;})
+	.call(drawCircle)
+	.attr("cx", width - marginL - marginR);
+	
+/***********************************
+ *		STATES
+ ***********************************/
+var g = node.selectAll("g.state").data(function(d){return proto.states;})
 	.enter().append("g")
-	.attr("class", "state")
+	.classed("state", true)
     .attr("x", function(d) { return d.x; })
     .attr("y", function(d) { return d.y; })
     .attr("cursor", "move")
@@ -259,12 +310,65 @@ function find(array, value) {
 var rect = g.append("rect")
     .attr("width", function(d) { return radius * 3; })
     .attr("height", function(d) { 
-	var task = find(tasks, d.ref);
-	return task.inputs.length * paramH + titleH + task.outputs.length * paramH; })
-    .attr("style", "fill:" + d3.hsl(colors(2)).brighter(1.5) + ";stroke-width:1;stroke:rgb(32,32,32)")
+		var task = find(tasks, d.ref);
+		return task.inputs.length * paramH + titleH + task.outputs.length * paramH; })
+    .style("fill", d3.hsl(colors(2)).brighter(1.5))
     .attr("rx", 10)
-    .attr("ry", 10);
-	
+    .attr("ry", 10)
+	.each(function(d){
+		var parentTranslate = d3.transform(this.parentNode.getAttribute('transform')).translate;
+		var x = parentTranslate[0];
+		var y = parentTranslate[1];
+		d.startX = x;
+		d.startY = y + 15;
+		d.finishX = x + parseFloat(this.getAttribute('width'));
+		d.finishY = y + 15;
+	});
+
+/***********************************
+ *		LINKS
+ ***********************************/
+var links = [];
+
+function findState(id){
+	for(var i = 0; i < proto.states.length; i++){
+		if(proto.states[i].id === id){
+			return proto.states[i];
+		}
+	}
+}
+
+proto.workflow.forEach(function(d, i) {
+	var fromID = d[0];
+	var toID = d[1];
+	if(fromID != null){
+		var from = findState(fromID);
+	} else {
+		var from = {finishX:10, finishY:35};
+	}
+	if(toID != null){
+		var to = findState(toID);
+	} else {
+		var to = {startX:1000-15, startY:35};
+	}
+	links.push({source:from, target:to});
+});
+
+var diagonal = d3.svg.diagonal()
+    .source(function(d) { return {"x":d.source.finishY, "y":d.source.finishX}; })            
+    .target(function(d) { return {"x":d.target.startY, "y":d.target.startX}; })
+    .projection(function(d) { return [d.y, d.x]; });
+
+console.log(links);
+
+var link = node.selectAll(".link")
+        .data(links)
+        .enter().append("path")
+		.classed("transition", true)
+		.classed("link", true)
+        .attr("d", diagonal)
+    .attr("marker-end", "url(#arrow)");
+		
 var text = g.append("text")
     .attr("width", function(d) { return radius * 3; })
     .attr("style", "fill:rgb(32,32,32);")
@@ -285,26 +389,28 @@ var inputContainer = g.append("g")
 		var task = find(tasks, d.ref);
 		return "translate(0, " + (task.outputs.length * paramH + titleH) + ")"}
 	);	
-var inputGroup = inputContainer.selectAll(".input")
-	.data(function(d, i) {
-	var task = find(tasks, d.ref);
-	return task.inputs; })
-	.enter().append("g")
-	.attr("class", "input")
-	.attr("transform", function(d, i) { return "translate(0," + (i * paramH) + ")" });
+var inputGroup = inputContainer
+	.selectAll("g.input.parameter")
+		.data(function(d, i) {
+			var task = find(tasks, d.ref);
+			return task.inputs; })
+		.enter()
+	.append("g")
+		.classed("input parameter", true)
+		.attr("transform", function(d, i) { return "translate(0," + (i * paramH) + ")" });
 
-var outputGroup = outputContainer.selectAll(".output")
-	.data(function(d, i) { 
-	var task = find(tasks, d.ref);
-	return task.outputs; })
-	.enter().append("g")
-	.attr("class", "output")
-	.attr("transform", function(d, i) { return "translate(" + radius * 3 + "," + (i * paramH) + ")" });
+var outputGroup = outputContainer
+	.selectAll("g.output.parameter")
+		.data(function(d, i) { 
+			var task = find(tasks, d.ref);
+			return task.outputs; })
+		.enter()
+	.append("g")
+		.classed("output parameter", true)
+		.attr("transform", function(d, i) { return "translate(" + radius * 3 + "," + (i * paramH) + ")" });
 	
 var inputCircle = inputGroup.append("circle")
-	.attr("r", 5)
-    .attr("cursor", "pointer")
-	.attr("style", function(d, i) { return "fill:" + d3.hsl(getTypeColor(d.type)).brighter(1.1) + ";stroke-width:1;stroke:rgb(32,32,32)";});
+	.call(drawParameterCircle);
 	
 var inputText = inputGroup.append("text")
 	.text(function(d) { return d.id; })
@@ -314,9 +420,7 @@ var inputText = inputGroup.append("text")
 	.attr("style", "font-size:12;");
 	
 var outputCircle = outputGroup.append("circle")
-	.attr("r", 5)
-    .attr("cursor", "pointer")
-	.attr("style", function(d, i) { return "fill:" + d3.hsl(getTypeColor(d.type)).brighter(1.1) + ";stroke-width:1;stroke:rgb(32,32,32)";});;
+	.call(drawParameterCircle);
 
 var outputText = outputGroup.append("text")
 	.text(function(d) { return d.id; })
@@ -329,15 +433,21 @@ function dragmove(d) {
 	d.x = d3.event.x;
 	d.y = d3.event.y;
 	d3.select(this)
-		.attr("transform", "translate(" + d.x + "," + d.y + ")");
+		.attr("transform", "translate(" + d.x + "," + d.y + ")")
+	
+	d.startX = d.x;
+	d.startY = d.y + 15;
+	d.finishX = d.x + radius * 3;
+	d.finishY = d.y + 15;
+	
+	link.attr("d", diagonal);
 }
 
- function zoom() {
-        node.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-    }
-
+	function zoom() {
+		node.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+	}
 
     // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
     var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
-//base.call(zoomListener);
+//svg.call(zoomListener);
 </script>
