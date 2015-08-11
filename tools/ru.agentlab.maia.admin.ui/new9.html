@@ -4,10 +4,10 @@
 
 svg {
   float: left;
-  border-bottom: solid 1px #ccc;
-  border-right: solid 1px #ccc;
-  margin-right: -1px;
-  margin-bottom: -1px;
+  //border-bottom: solid 1px #ccc;
+  //border-right: solid 1px #ccc;
+  //margin-right: -1px;
+  //margin-bottom: -1px;
 }
 
 </style>
@@ -96,15 +96,15 @@ var proto = {
 	],
 	"states" : [
 		{	
-	"x" : 200,
-	"y" : 200,
+			"x" : 200,
+			"y" : 200,
 			"id" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6",
 			"label" : "Create Bootstrap",
 			"ref" : "ru.beeline.iot.gateway.zipato.CreateBootstrapBehaviour"
 		},
 		{	
-	"x" : 100,
-	"y" : 100,
+			"x" : 500,
+			"y" : 100,
 			"id" : "2da4cfe4-9da7-4940-830d-bbed1e895568",
 			"label" : "Check Not Null",
 			"ref" : "ru.beeline.iot.CheckNotNull"
@@ -121,20 +121,24 @@ var proto = {
 	]
 }
 var dict = {};
-dict["boolean"] = "#ff0000";
-dict["java.lang.Object"] = "#a1a1a1";
+var hues = [];
+
 
 function getTypeColor(type) {
 	var color = dict[type];
 	
 	if(typeof color != 'undefined'){
-		console.log("from cache " + color);
 		return color;
 	} else {
-		color = "#" + Math.floor(Math.random()*16777215).toString(16);
-		dict[type] = color;
-		console.log("generated " + color);
-		return color;
+		var hue = Math.floor(Math.random()*360);
+		if (dict.length <= 360 && hues.indexOf(hue) > 0){
+			return getTypeColor(type);
+		} else {
+			hues.push(hue);
+			color = d3.hsl(hue, 0.7, 0.4);
+			dict[type] = color;
+			return color;
+		}
 	}
 }
  
@@ -149,16 +153,93 @@ var drag = d3.behavior.drag()
     .origin(function(d) { return d; })
     .on("drag", dragmove);
 	
-var base = 	d3.select("body").append("div").append("svg")
+var svg = d3.select("body").append("div").append("svg")
     .attr("width", width)
     .attr("height", height);
-	
-var svg = base
-	.append("g");
 
-var g = svg.selectAll(".node").data(proto.states)
+var marginL = 100;
+var marginT = 50;
+var marginR = 100;
+var marginB = 50;
+
+var node = svg
+	.selectAll("g.node")
+		.data([proto]).enter()
+	.append("g")
+		.classed("node", true)
+		.attr("transform", "translate(" + marginL + ", " + marginT + ")");
+
+node.append("rect")
+	.attr("width", width - marginL - marginR)
+	.attr("height", height - marginT - marginB)
+	.style("fill", "none")
+	.style("stroke", "lightgray")
+    .attr("rx", 10)
+    .attr("ry", 10);
+	
+var inputs = node.append("g")
+	.classed("inputs", true)
+	.attr("transform", "translate(0, 80)");
+	
+var input = inputs.selectAll(".input")
+	.data(function(d){return d.inputs;})
+	.enter()
+	.append("g")
+	.classed("input", true)
+	.attr("transform", function(d, i){return "translate(0, " + i * 20 + ")";});
+
+	input.append("circle")
+		.attr("r", 5)
+		.attr("style", function(d, i) { return "fill:" + d3.hsl(getTypeColor(d.type)).brighter(1.1) + ";stroke-width:1;stroke:rgb(32,32,32)";});;
+
+	input.append("text")
+		.text(function(d){return d.id;})
+		.attr("text-anchor", "end")
+		.attr("alignment-baseline", "middle")
+		.attr("transform", function(d, i){return "translate(-10, 0)";});
+	
+var outputs = node.append("g")
+	.classed("outputs", true)
+	.attr("transform", "translate(" + (width - marginL - marginR) + ", 80)");
+	
+var output = outputs.selectAll(".output")
+	.data(function(d){return d.outputs;})
+	.enter()
+	.append("g")
+	.classed("output", true)
+	.attr("transform", function(d, i){return "translate(0, " + i * 20 + ")";});
+
+	output.append("circle")
+		.attr("r", 5)
+		.attr("style", function(d, i) { return "fill:" + d3.hsl(getTypeColor(d.type)).brighter(1.1) + ";stroke-width:1;stroke:rgb(32,32,32)";});;
+
+	output.append("text")
+		.text(function(d){return d.id;})
+		.attr("text-anchor", "start")
+		.attr("alignment-baseline", "middle")
+		.attr("transform", function(d, i){return "translate(10, 0)";});
+
+var inW = 100;
+
+node.append("circle")
+	.attr("r", 10)
+	.attr("cy", 35);
+
+node.append("circle")
+	.attr("r", 15)
+	.style("fill", "white")
+	.style("stroke", "black")
+	.attr("cx", width - marginL - marginR)
+	.attr("cy", 35);
+	
+node.append("circle")
+	.attr("r", 10)
+	.attr("cx", width - marginL - marginR)
+	.attr("cy", 35);
+
+var g = node.selectAll(".state").data(function(d){return proto.states;})
 	.enter().append("g")
-	.attr("class", "node")
+	.attr("class", "state")
     .attr("x", function(d) { return d.x; })
     .attr("y", function(d) { return d.y; })
     .attr("cursor", "move")
@@ -252,7 +333,7 @@ function dragmove(d) {
 }
 
  function zoom() {
-        svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        node.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
     }
 
 
