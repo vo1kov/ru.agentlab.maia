@@ -7,5 +7,5 @@ import java.lang.annotation.Target
 
 @Target(#[ElementType.METHOD, ElementType.FIELD])
 @Retention(RetentionPolicy.RUNTIME)
-annotation TaskOutput {
+annotation Output {
 }
