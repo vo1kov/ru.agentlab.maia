@@ -207,8 +207,17 @@ var paramH = 15;
 
 var drag = d3.behavior.drag()
     .origin(function(d) { return d; })
+	//.on("dragend", function(s){console.log(s);})
     .on("drag", dragmove);
 
+var dragParam = d3.behavior.drag()
+    .origin(function(d) { return d; })
+    .on("drag", function(s){console.log(s);})
+	//.on("dragend", function(s){console.log(s);})
+    //.on("dragstart", dragstartParam)
+	;
+    //.on("dragend", function(s){console.log(s);});
+	
 /***********************************
  *		SVG
  ***********************************/
@@ -477,7 +486,8 @@ var outputGroup = outputContainer
 		});
 	
 var inputCircle = inputGroup.append("circle")
-	.call(drawParameterCircle);
+	.call(drawParameterCircle)
+    .call(dragParam);
 	
 var inputText = inputGroup.append("text")
 	.text(function(d) { return d.id; })
@@ -506,31 +516,51 @@ var link2 = node.selectAll(".link2")
 		.style("stroke", function(d) { return getTypeColor(d.source.type);})
     //.attr("marker-end", "url(#arrow)")
 	;
-	
+
+var newLink = {};
+
+function dragstartParam(d){
+	console.log(d);
+	newLink = node.select(".linkNew")
+        .data([{source:{finishX : d.startX, finishY : d.startY}, target:{startX : d.startX, startY : d.startY}}])
+        .enter().append("path")
+		.classed("linkNew", true)
+        .attr("d", diagonal)
+		.style("stroke", function(d) { return getTypeColor(d.source.type);})
+    //.attr("marker-end", "url(#arrow)")
+	;
+}
+
+function dragmoveParam(d){
+	console.log(d3.event);
+	d3.event.stopPropagation();
+}
+
 function dragmove(d) {
+            d3.event.sourceEvent.stopPropagation();
 	var deltaX = d3.event.x - d.x;
 	var deltaY = d3.event.y - d.y;
 	
-	d.x += deltaX;
-	d.y += deltaY;
-	d.startX += deltaX;
-	d.startY += deltaY;
-	d.finishX += deltaX;
-	d.finishY += deltaY;
+	d.x += d3.event.dx;
+	d.y += d3.event.dy;
+	d.startX += d3.event.dx;
+	d.startY += d3.event.dy;
+	d.finishX += d3.event.dx;
+	d.finishY += d3.event.dy;
 	
 	d3.select(this)
 		.attr("transform", "translate(" + d.x + "," + d.y + ")")
 	
 	d3.select(this).selectAll("g.output.parameter")
 		.each(function(d){
-			d.finishX += deltaX;
-			d.finishY += deltaY;
+			d.finishX += d3.event.dx;
+			d.finishY += d3.event.dy;
 		})
 	
 	d3.select(this).selectAll("g.input.parameter")
 		.each(function(d){
-			d.startX += deltaX;
-			d.startY += deltaY;
+			d.startX += d3.event.dx;
+			d.startY += d3.event.dy;
 		})
 		
 	
