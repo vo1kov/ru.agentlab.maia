@@ -22,7 +22,9 @@ var draggingNode = null;
 
 var drag = d3.behavior.drag()
     .origin(function(d) { return d; })
-    .on("drag", dragmove);
+	.on("dragstart", function(d){d3.select(this).style("cursor", "move");})
+    .on("drag", dragmove)
+	.on("dragend", function(d){d3.select(this).style("cursor", null);});
 	
 function getGrandParentCoords(node){
 	var parent = node.parentNode;
@@ -35,7 +37,7 @@ function getGrandParentCoords(node){
 }	
 function getParentCoords(node){
 	var parent = node.parentNode;
-	return [d3.transform(parent.getAttribute('transform')).translate[0], d3.transform(parent.getAttribute('transform')).translate[1]];
+	return d3.transform(parent.getAttribute('transform')).translate;
 }
 	
 /***********************************
@@ -90,6 +92,7 @@ var drag3 = d3.behavior.drag()
     .on("dragstart", function(d) {
 		d3.event.sourceEvent.stopPropagation(); 
 		draggingNode = d;
+		selectedNode = null;
 		//console.log(d3.select(".node"));
 		//console.log(d.type);
 		newData = {source:draggingNode, target:{x : d.x, y : d.y}};
@@ -99,6 +102,8 @@ var drag3 = d3.behavior.drag()
 			.classed("dataflow link new", true)
 			.attr("d", diagonal)
 			.style("stroke", function(s) { return getTypeColor(d.type);})
+			.call(hover)
+			.call(drag2)
 	})
     .on("drag", function(d) {
 		d3.event.sourceEvent.stopPropagation();
@@ -118,7 +123,6 @@ var drag3 = d3.behavior.drag()
 			newLink.remove();
 		}
 		draggingNode = null;
-		//console.log(selectedNode);
 	});
 
 /***********************************
@@ -136,7 +140,9 @@ var nodeStart = node.append("g")
 	});
 
 nodeStart.append("circle")
-	.classed("start", true);
+	.classed("start", true)
+	.call(hover)
+	.call(drag3);
 
 /***********************************
  *		NODE EXECUTION FINISH
@@ -153,7 +159,9 @@ var nodeFinish = node.append("g")
 	});
 	
 nodeFinish.append("circle")
-	.classed("finish outer", true);
+	.classed("finish outer", true)
+	.call(hover)
+	.call(drag3);
 	
 nodeFinish.append("circle")
 	.classed("finish inner", true);
@@ -178,7 +186,9 @@ var nodeException = nodeExceptionsContainer
 			return "translate(0," + (i * paramH) + ")";
 		});
 		
-nodeException.append("circle");	
+nodeException.append("circle")
+	.call(hover)
+	.call(drag3);	
 
 nodeException.append("text")
 	.text(function(d){return d.id;})
@@ -253,6 +263,8 @@ var state = node
 		.classed("ready state", true)
 		.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"})
 		.call(drag)
+	//.on("mousedown", function(d){ })
+	//.on("mouseup", function(d){ d3.select(this).style("cursor", null)})
 	.on("dblclick",function(d){ 
 		console.log(d);
 		d3.select(this).transition()
@@ -300,6 +312,8 @@ state.append("g")
 		.attr("transform", "translate(0, " + titleH / 2 + ")" )
 	.append("circle")
 		.classed("start", true)
+		.call(hover)
+		.call(drag3)
 		.each(function(d) {
 			var coords = getGrandParentCoords(this);
 			d.start = {
@@ -313,6 +327,8 @@ state.append("g")
 		.attr("transform", "translate(" + stateWidth + ", " + titleH / 2 + ")" )
 	.append("circle")
 		.classed("finish", true)
+		.call(hover)
+		.call(drag3)
 		.each(function(d) {
 			var coords = getGrandParentCoords(this);
 			d.finish = {
@@ -336,7 +352,9 @@ var exception = state.append("g")
 			return "translate(0," + (i * paramH) + ")";
 		});
 		
-exception.append("circle");
+exception.append("circle")
+	.call(hover)
+	.call(drag3);
 
 exception.append("text")
 	.text(function(d) { return d.id; })

@@ -2,6 +2,7 @@
 	fill: none;
 	stroke: rgb(32,32,32);
 	stroke-width: 3px;
+	cursor : pointer;
 }
 
 .workflow.link.exception {
@@ -21,7 +22,8 @@
 .dataflow.link {
 	fill: none;
 	stroke: rgb(32,32,32);
-	stroke-width: 2px;
+	stroke-width: 1px;
+	cursor : pointer;
 }
 
 .dataflow.link.new {
@@ -30,7 +32,7 @@
 }
 
 .dataflow.link.hover {
-	stroke-width: 4px;
+	stroke-width: 2px;
 }
 	
 .node > rect {
@@ -69,7 +71,7 @@
 
 	
 .node .exception > circle {
-	r : 5px;
+	r : 10px;
 	fill: rgb(32,32,32);
 }
 
@@ -106,7 +108,7 @@
 	stroke: rgb(32,32,32);
 	rx : 10;
 	ry : 10;
-	cursor : move;
+	//cursor : move;
 }
 
 .state.ready > rect {
