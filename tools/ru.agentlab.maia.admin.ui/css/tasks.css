@@ -1,0 +1,67 @@
+.workflow.link {
+	fill: none;
+	stroke: rgb(32,32,32);
+	stroke-width: 2px;
+	cursor: pointer;
+}
+
+.dataflow.link {
+	fill: none;
+	stroke: rgb(32,32,32);
+	stroke-width: 1px;
+	cursor: pointer;
+}
+	
+.node > rect {
+	fill : none;
+	stroke: gray;
+	rx : 20;
+	ry : 20;
+}
+
+.state > rect {
+	stroke-width:1px;
+	fill : #bbb;
+	stroke: rgb(32,32,32);
+	rx : 10;
+	ry : 10;
+	cursor : move;
+}
+
+.state.ready > rect {
+	fill : rgb(33, 186, 69);
+}
+
+.state.error > rect {
+	fill : rgb(219, 40, 40);
+	cursor : help;
+}
+
+.state > text {
+	fill : rgb(32,32,32);
+	font-weight : bold;
+	text-anchor : middle;
+	alignment-baseline : middle;
+	pointer-events : none;
+}
+	
+.parameter > circle {
+	r : 5px;
+	stroke-width:1;
+	stroke:rgb(32,32,32);
+	cursor : pointer;
+}
+
+.parameter > text {
+	font-size:12px;
+	alignment-baseline : middle;
+	pointer-events : none;
+}
+
+.parameter > text.left.aligned {
+	text-anchor : end;
+}
+
+.parameter > text.right.aligned {
+	text-anchor : start;
+}
