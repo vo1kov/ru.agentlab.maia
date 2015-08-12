@@ -1,27 +1,94 @@
 .workflow.link {
 	fill: none;
 	stroke: rgb(32,32,32);
-	stroke-width: 2px;
-	cursor: pointer;
+	stroke-width: 3px;
+}
+
+.workflow.link.exception {
+	fill: none;
+	stroke: rgb(32,32,32);
+	stroke-width: 1px;
+}
+
+.workflow.link.hover {
+	stroke-width: 4px;
+	stroke-opacity : 1;
 }
 
 .dataflow.link {
 	fill: none;
 	stroke: rgb(32,32,32);
-	stroke-width: 1px;
-	cursor: pointer;
+	stroke-width: 2px;
+}
+.dataflow.link.hover {
+	stroke-width: 4px;
+	stroke-opacity : 1;
 }
 	
 .node > rect {
-	fill : none;
-	stroke: gray;
+	fill : rgb(33, 186, 69);
+	fill-opacity : 0.1;
+	stroke: rgb(32,32,32);
+	stroke-width: 1px;
 	rx : 20;
 	ry : 20;
 }
+	
+.node > text {
+	fill : black;
+	font-size : 18px;
+	font-weight : bold;
+	text-anchor : middle;
+	alignment-baseline : middle;
+	pointer-events : none;
+}
+
+.node circle.start {
+	r : 10px;
+	fill: rgb(32,32,32);
+}
+
+.node circle.finish.outer {
+	r : 15px;
+	fill: lightgray;
+	stroke: rgb(32,32,32);
+	stroke-width: 2px;
+}
+
+.node circle.finish.inner {
+	r : 10px;
+	fill: rgb(32,32,32);
+}
+
+	
+.node .exception > circle {
+	r : 5px;
+	fill: rgb(32,32,32);
+}
+
+.node  .exception > text {
+	font-size:12px;
+	alignment-baseline : middle;
+	pointer-events : none;
+}
+	
+.node  .parameter > circle {
+	r : 5px;
+	stroke-width: 1px;
+	stroke:rgb(32,32,32);
+	cursor : pointer;
+}
+
+.node  .parameter > text {
+	font-size:12px;
+	alignment-baseline : middle;
+	pointer-events : none;
+}
 
 .state > rect {
-	stroke-width:1px;
+	fill-opacity : 0.8;
 	fill : #bbb;
+	stroke-width:1px;
 	stroke: rgb(32,32,32);
 	rx : 10;
 	ry : 10;
@@ -34,34 +101,72 @@
 
 .state.error > rect {
 	fill : rgb(219, 40, 40);
-	cursor : help;
 }
 
 .state > text {
-	fill : rgb(32,32,32);
+	fill : black;
+	font-size : 16px;
 	font-weight : bold;
 	text-anchor : middle;
 	alignment-baseline : middle;
 	pointer-events : none;
 }
-	
-.parameter > circle {
+
+.state > line {
+	shape-rendering:crispEdges;
+	fill: none;
+	stroke : rgb(32,32,32);
+	stroke-width : 1px;
+	pointer-events : none;
+}
+
+.state  circle.start {
 	r : 5px;
-	stroke-width:1;
+	fill : rgb(32,32,32);
+	stroke-width : 1px;
+	stroke : rgb(32,32,32);
+	cursor : pointer;
+}
+
+.state  circle.finish {
+	r : 5px;
+	fill : rgb(32,32,32);
+	stroke-width : 1px;
+	stroke : rgb(32,32,32);
+	cursor : pointer;
+}
+
+.state  .exception > text {
+	font-size : 12px;
+	alignment-baseline : middle;
+	pointer-events : none;
+}
+
+.state  .exception > circle {
+	r : 5px;
+	fill : rgb(32,32,32);
+	stroke-width : 1px;
+	stroke : rgb(32,32,32);
+	cursor : pointer;
+}
+	
+.state  .parameter > circle {
+	r : 5px;
+	stroke-width: 1px;
 	stroke:rgb(32,32,32);
 	cursor : pointer;
 }
 
-.parameter > text {
+.state  .parameter > text {
 	font-size:12px;
 	alignment-baseline : middle;
 	pointer-events : none;
 }
 
-.parameter > text.left.aligned {
+text.left.aligned {
 	text-anchor : end;
 }
 
-.parameter > text.right.aligned {
+text.right.aligned {
 	text-anchor : start;
 }

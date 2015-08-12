@@ -1,5 +1,6 @@
 var proto = {
 	"id" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol",
+	"label" : "ZipatoAuthenticateProtocol",
 	"exceptions" : [
 		{
 			"id" : "NullPointerException",
@@ -14,6 +15,24 @@ var proto = {
 		{
 			"id" : "password",
 			"type" : "java.lang.String"
+		},
+		{
+			"id" : "eventLoop",
+			"label" : "Event Loop",
+			"type" : "io.netty.channel.EventLoopGroup",
+			"required" : true
+		}, 
+		{
+			"id" : "channel",
+			"type" : "java.lang.Class<? extends io.netty.channel.Channel>"
+		}, 
+		{
+			"id" : "options",
+			"type" : "java.util.Map<io.netty.channel.ChannelOption<java.lang.Object>, java.lang.Object>"
+		}, 
+		{
+			"id" : "handler",
+			"type" : "io.netty.channel.ChannelHandler"
 		}
 	],
 	"outputs" : [
@@ -68,10 +87,11 @@ var proto = {
 			"id" : "2da4cfe4-9da7-4940-830d-bbed1e895568",
 			"label" : "Check Not Null",
 			"ref" : "ru.beeline.iot.CheckNotNull",
+			"exceptions" : [],
 			"inputs" : [ 
 				{
 					"id" : "input",
-					"type" : "java.lang.Object",
+					"type" : "io.netty.bootstrap.Bootstrap",
 					"required" : true
 				}
 			],
@@ -88,6 +108,7 @@ var proto = {
 			"id" : "test",
 			"label" : "false",
 			"ref" : "ru.beeline.iot.CheckNotNull",
+			"exceptions" : [],
 			"inputs" : [ ],
 			"outputs" : [ 
 				{
@@ -98,19 +119,19 @@ var proto = {
 		}
 	],
 	"dataflow" : [
-		["login", "719b2a8a-4119-453b-a39d-62e9ce2d6cc6#eventLoop"],
-		["login", "719b2a8a-4119-453b-a39d-62e9ce2d6cc6#options"],
-		["login", "719b2a8a-4119-453b-a39d-62e9ce2d6cc6#channel"],
-		["password", "719b2a8a-4119-453b-a39d-62e9ce2d6cc6#handler"],
+		["this#eventLoop", "719b2a8a-4119-453b-a39d-62e9ce2d6cc6#eventLoop"],
+		["this#options", "719b2a8a-4119-453b-a39d-62e9ce2d6cc6#options"],
+		["this#channel", "719b2a8a-4119-453b-a39d-62e9ce2d6cc6#channel"],
+		["this#handler", "719b2a8a-4119-453b-a39d-62e9ce2d6cc6#handler"],
 		["719b2a8a-4119-453b-a39d-62e9ce2d6cc6#bootstrap", "2da4cfe4-9da7-4940-830d-bbed1e895568#input"],
-		["2da4cfe4-9da7-4940-830d-bbed1e895568#result", "success"],
-		["test#result", "success"]
+		["2da4cfe4-9da7-4940-830d-bbed1e895568#result", "this#success"],
+		["test#result", "this#success"]
 	],
 	"workflow" : [
-		[null, "719b2a8a-4119-453b-a39d-62e9ce2d6cc6"], 
-		["719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "2da4cfe4-9da7-4940-830d-bbed1e895568"],
-		["719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "test"],
-		["2da4cfe4-9da7-4940-830d-bbed1e895568", null],
-		["test", null]
+		["this#start", "719b2a8a-4119-453b-a39d-62e9ce2d6cc6#start"], 
+		["719b2a8a-4119-453b-a39d-62e9ce2d6cc6#finish", "2da4cfe4-9da7-4940-830d-bbed1e895568#start"],
+		["719b2a8a-4119-453b-a39d-62e9ce2d6cc6#NullPointerException", "test#start"],
+		["2da4cfe4-9da7-4940-830d-bbed1e895568#finish", "this#finish"],
+		["test#finish", "this#NullPointerException"]
 	]
 }
