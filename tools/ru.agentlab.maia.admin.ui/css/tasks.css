@@ -68,6 +68,7 @@
 
 .node  .exception > text {
 	font-size:12px;
+	text-anchor : start;
 	alignment-baseline : middle;
 	pointer-events : none;
 }
@@ -83,6 +84,12 @@
 	font-size:12px;
 	alignment-baseline : middle;
 	pointer-events : none;
+}
+.node  .input.parameter > text {
+	text-anchor : end;
+}
+.node  .output.parameter > text {
+	text-anchor : start;
 }
 
 .state > rect {
@@ -138,6 +145,7 @@
 
 .state  .exception > text {
 	font-size : 12px;
+	text-anchor : end;
 	alignment-baseline : middle;
 	pointer-events : none;
 }
@@ -161,6 +169,12 @@
 	font-size:12px;
 	alignment-baseline : middle;
 	pointer-events : none;
+}
+.state  .input.parameter > text {
+	text-anchor : start;
+}
+.state  .output.parameter > text {
+	text-anchor : end;
 }
 
 text.left.aligned {

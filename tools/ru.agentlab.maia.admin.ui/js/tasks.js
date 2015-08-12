@@ -126,23 +126,22 @@ var nodeException = nodeExceptionsContainer
 			return "translate(0," + (i * paramH) + ")";
 		});
 		
-var nodeExceptionCircle = nodeException.append("circle");	
+nodeException.append("circle");	
 
 nodeException.append("text")
 	.text(function(d){return d.id;})
-	.classed("right aligned", true)
-	.attr("transform", function(d, i){return "translate(10, 0)";});
+	.attr("x", 10);
 
 /***********************************
  *		NODE DATA OUTPUTS
  ***********************************/
-var outputs = node
+var nodeOutputs = node
 	.append("g")
 		.classed("data outputs", true)
 		.attr("transform", function(d) { return "translate(" + (width - marginL - marginR) + ", " + (d.exceptions.length * paramH + exeSectorH + 10) + ")";});
 	
-var output = outputs
-	.selectAll("g.output")
+var output = nodeOutputs
+	.selectAll("g.output.parameter")
 		.data(function(d){return d.outputs;})
 		.enter()
 	.append("g")
@@ -158,37 +157,34 @@ output.append("circle")
 
 output.append("text")
 	.text(function(d){return d.id;})
-	.classed("right aligned", true)
-	.attr("transform", function(d, i){return "translate(10, 0)";});
+	.attr("x", 10);
 	
 /***********************************
  *		NODE DATA INPUTS
  ***********************************/
-var inputs = 
+var nodeInputs = 
 	node.append("g")
 		.classed("data inputs", true)
 		.attr("transform", "translate(0, " + exeSectorH + ")");
 	
-var input = 
-	inputs.selectAll("g.input")
+var input = nodeInputs
+	.selectAll("g.input.parameter")
 		.data(function(d){return d.inputs;})
 		.enter()
 	.append("g")
-		.classed("input", true)
-		.classed("parameter", true)
+		.classed("input parameter", true)
 		.attr("transform", function(d, i){
 			d.x = 0;
 			d.y = exeSectorH + i * 20; 
 			return "translate(0, " + i * 20 + ")";
 		});
 
-	input.append("circle")
-		.style("fill", function(d) { return getTypeColor(d.type);});
+input.append("circle")
+	.style("fill", function(d) { return getTypeColor(d.type);});
 
-	input.append("text")
-		.text(function(d){return d.id;})
-		.classed("left aligned", true)
-		.attr("transform", function(d, i){return "translate(-10, 0)";});
+input.append("text")
+	.text(function(d){return d.id;})
+	.attr("x", -10);
 	
 /***********************************
  *		NODE STATES
@@ -221,45 +217,44 @@ var state = node
 		d3.select(this).transition()
 			.duration(1500)
 			.attr("transform", function(d) { return "translate(" + 0 + "," + 0 + ")"})
+			.attr("class", "node")
 			.select("rect")
 				.attr("width", width - marginL - marginR)
 				.attr("height", height - marginT - marginB);
 	});
 
-var rect = state
-	.append("rect")
-		.attr("width", function(d) { return stateWidth; })
-		.attr("height", function(d) { 
-			return (titleH + (d.exceptions.length - 1) * paramH + d.outputs.length * paramH + d.inputs.length * paramH + 25); })
-		.each(function(d){
-			var parentTranslate = d3.transform(this.parentNode.getAttribute('transform')).translate;
-			var x = parentTranslate[0];
-			var y = parentTranslate[1];
-			d.startX = x;
-			d.startY = y + 15;
-			d.finishX = x + parseFloat(this.getAttribute('width'));
-			d.finishY = y + 15;
-		});
+state.append("rect")
+	.attr("width", function(d) { return stateWidth; })
+	.attr("height", function(d) { 
+		return (titleH + (d.exceptions.length - 1) * paramH + d.outputs.length * paramH + d.inputs.length * paramH + 25); })
+	.each(function(d){
+		var parentTranslate = d3.transform(this.parentNode.getAttribute('transform')).translate;
+		var x = parentTranslate[0];
+		var y = parentTranslate[1];
+		d.startX = x;
+		d.startY = y + 15;
+		d.finishX = x + parseFloat(this.getAttribute('width'));
+		d.finishY = y + 15;
+	});
 		
-var stateLabel = state.append("text")
+state.append("text")
     .attr("x", stateWidth / 2)
     .attr("y", titleH / 2)
     .text(function(d) { return d.label; });
 		
-var line = state.append("line")
+state.append("line")
 	.attr("x1", 0 )
 	.attr("y1", titleH )
 	.attr("x2", stateWidth )
 	.attr("y2", titleH );
 	
-var line2 = state.append("line")
+state.append("line")
 	.attr("x1", 0 )
 	.attr("y1", function(d) { return (d.exceptions.length - 1) * paramH + titleH + 20; })
 	.attr("x2", stateWidth )
 	.attr("y2", function(d) { return (d.exceptions.length - 1) * paramH + titleH + 20; });
 	
-var startCircle = state
-	.append("g")
+state.append("g")
 		.classed("execution start", true)
 		.attr("transform", "translate(0, " + titleH / 2 + ")" )
 	.append("circle")
@@ -272,8 +267,7 @@ var startCircle = state
 			}; 
 		});
 		
-var finishCircle = state
-	.append("g")
+state.append("g")
 		.classed("execution finish", true)
 		.attr("transform", "translate(" + stateWidth + ", " + titleH / 2 + ")" )
 	.append("circle")
@@ -286,22 +280,9 @@ var finishCircle = state
 			}; 
 		});
 
-var exceptionsContainer = state
-	.append("g")
+var exception = state.append("g")
 		.classed("execution exceptions", true)
-		.attr("transform", function(d) { return "translate(" + stateWidth + "," + (titleH + 10) + ")"});
-
-var outputContainer = state
-	.append("g")
-		.classed("data outputs", true)
-		.attr("transform", function(d) { return "translate(" + stateWidth + "," + (titleH + (d.exceptions.length - 1) * paramH + 30) + ")"});
-	
-var inputContainer = state
-	.append("g")
-		.classed("data inputs", true)
-		.attr("transform", function(d) { return "translate(0, " + (titleH + (d.exceptions.length - 1) * paramH + d.outputs.length * paramH + 30) + ")"});
-
-var exception = exceptionsContainer
+		.attr("transform", function(d) { return "translate(" + stateWidth + "," + (titleH + 10) + ")"})
 	.selectAll("g.exception")
 		.data(function(d) {return d.exceptions; })
 		.enter()
@@ -314,14 +295,39 @@ var exception = exceptionsContainer
 			return "translate(0," + (i * paramH) + ")";
 		});
 		
-var exceptionCircle = exception.append("circle");
+exception.append("circle");
 
-var exceptionText = exception.append("text")
+exception.append("text")
 	.text(function(d) { return d.id; })
-	.classed("left aligned", true)
 	.attr("x", -10);
-		
-var inputGroup = inputContainer
+	
+var outputGroup = state
+	.append("g")
+		.classed("data outputs", true)
+		.attr("transform", function(d) { return "translate(" + stateWidth + "," + (titleH + (d.exceptions.length - 1) * paramH + 30) + ")"})
+	.selectAll("g.output.parameter")
+		.data(function(d) { return d.outputs; })
+		.enter()
+	.append("g")
+		.classed("output parameter", true)
+		.attr("transform", function(d, i) { 
+			var coords = getGrandParentCoords(this);
+			d.x = 0 + coords[0];
+			d.y = (i * paramH) + coords[1];
+			return "translate(0," + (i * paramH) + ")";
+		});
+	
+outputGroup.append("circle")
+	.style("fill", function(d) { return getTypeColor(d.type);});
+
+outputGroup.append("text")
+	.text(function(d) { return d.id; })
+	.attr("x", -10);
+	
+var inputGroup = state
+	.append("g")
+		.classed("data inputs", true)
+		.attr("transform", function(d) { return "translate(0, " + (titleH + (d.exceptions.length - 1) * paramH + d.outputs.length * paramH + 30) + ")"})
 	.selectAll("g.input.parameter")
 		.data(function(d) {return d.inputs; })
 		.enter()
@@ -334,38 +340,13 @@ var inputGroup = inputContainer
 			return "translate(0," + (i * paramH) + ")";
 		});
 
-var outputGroup = outputContainer
-	.selectAll("g.output.parameter")
-		.data(function(d) { return d.outputs; })
-		.enter()
-	.append("g")
-		.classed("output parameter", true)
-		.attr("transform", function(d, i) { 
-			var parentTranslateX = d3.transform(this.parentNode.getAttribute('transform')).translate[0];
-			var parentTranslateY = d3.transform(this.parentNode.getAttribute('transform')).translate[1];
-			var grandParentTranslateX = d3.transform(this.parentNode.parentNode.getAttribute('transform')).translate[0];
-			var grandParentTranslateY = d3.transform(this.parentNode.parentNode.getAttribute('transform')).translate[1];
-			d.x = 0 + parentTranslateX + grandParentTranslateX;
-			d.y = (i * paramH) + parentTranslateY + grandParentTranslateY;
-			return "translate(0," + (i * paramH) + ")";
-		});
-
-var inputCircle = inputGroup.append("circle")
+inputGroup.append("circle")
 	.style("fill", function(d) { return getTypeColor(d.type);})
     .call(dragParam);
 	
-var inputText = inputGroup.append("text")
+inputGroup.append("text")
 	.text(function(d) { return d.id; })
-	.classed("right aligned", true)
 	.attr("x", 10);
-	
-var outputCircle = outputGroup.append("circle")
-	.style("fill", function(d) { return getTypeColor(d.type);});
-
-var outputText = outputGroup.append("text")
-	.text(function(d) { return d.id; })
-	.classed("left aligned", true)
-	.attr("x", -10);
 
 /***********************************
  *		LINKS
