@@ -19,7 +19,7 @@ abstract class AbstractAction extends AbstractNode implements IAction {
 		this.actionClass = clazz
 	}
 
-	override run() {
+	override final run() {
 		if (actionImpl == null) {
 			actionImpl = injector.make(actionClass)
 			injector.invoke(actionImpl, PostConstruct, null)

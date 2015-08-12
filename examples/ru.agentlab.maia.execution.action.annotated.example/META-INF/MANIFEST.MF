@@ -11,7 +11,6 @@ Require-Bundle: com.google.guava,
  javax.inject;bundle-version="1.0.0",
  ru.agentlab.maia.context.modifier.mas.default;bundle-version="1.0.0",
  ru.agentlab.maia.io.messaging;bundle-version="1.0.0",
- ru.agentlab.maia.execution.action.annotated;bundle-version="1.0.0",
- ru.agentlab.maia.execution;bundle-version="1.0.0"
+ ru.agentlab.maia.execution.action.annotation;bundle-version="1.0.0"
 Export-Package: ru.agentlab.maia.behaviour.scheme.task.lib
 

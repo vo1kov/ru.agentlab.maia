@@ -3,6 +3,9 @@ package ru.agentlab.maia.execution.action.annotated
 import java.lang.reflect.Field
 import java.util.ArrayList
 import ru.agentlab.maia.context.IMaiaContextInjector
+import ru.agentlab.maia.execution.action.annotation.Action
+import ru.agentlab.maia.execution.action.annotation.Input
+import ru.agentlab.maia.execution.action.annotation.Output
 import ru.agentlab.maia.execution.task.AbstractAction
 import ru.agentlab.maia.execution.task.IParameter.Direction
 import ru.agentlab.maia.execution.task.Parameter

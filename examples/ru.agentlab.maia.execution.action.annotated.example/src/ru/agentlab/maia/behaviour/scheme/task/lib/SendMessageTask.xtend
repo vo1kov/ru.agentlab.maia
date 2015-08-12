@@ -1,14 +1,14 @@
 package ru.agentlab.maia.behaviour.scheme.task.lib
 
 import javax.inject.Inject
-import ru.agentlab.maia.execution.action.annotated.Action
-import ru.agentlab.maia.execution.action.annotated.TaskInput
+import ru.agentlab.maia.execution.action.annotation.Action
+import ru.agentlab.maia.execution.action.annotation.Input
 import ru.agentlab.maia.messaging.IMessage
 import ru.agentlab.maia.messaging.IMessageDeliveryService
 
 class SendMessageTask {
 
-	@TaskInput
+	@Input
 	IMessage message
 
 	@Inject
