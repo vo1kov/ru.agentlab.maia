@@ -10,9 +10,12 @@
 	stroke-width: 1px;
 }
 
+.workflow.link.exception.hover {
+	stroke-width: 2px;
+}
+
 .workflow.link.hover {
 	stroke-width: 4px;
-	stroke-opacity : 1;
 }
 
 .dataflow.link {
@@ -20,14 +23,18 @@
 	stroke: rgb(32,32,32);
 	stroke-width: 2px;
 }
+
+.dataflow.link.new {
+	stroke-dasharray : 7 3;
+	stroke-width: 1px;
+}
+
 .dataflow.link.hover {
 	stroke-width: 4px;
-	stroke-opacity : 1;
 }
 	
 .node > rect {
-	fill : rgb(33, 186, 69);
-	fill-opacity : 0.1;
+	fill : #ccc;
 	stroke: rgb(32,32,32);
 	stroke-width: 1px;
 	rx : 20;

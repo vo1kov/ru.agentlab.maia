@@ -16,14 +16,27 @@ var startCircleR = 10,
 var stateWidth = 150,
 	titleH = 30,
 	paramH = 15;
+	
+var selectedNode = null;
+var draggingNode = null;
 
 var drag = d3.behavior.drag()
     .origin(function(d) { return d; })
     .on("drag", dragmove);
-
-var dragParam = d3.behavior.drag()
-    .origin(function(d) { return d; })
-    .on("drag", function(s){console.log(s);});
+	
+function getGrandParentCoords(node){
+	var parent = node.parentNode;
+	var grandparent = node.parentNode.parentNode;
+	var parentTranslateX = d3.transform(parent.getAttribute('transform')).translate[0];
+	var parentTranslateY = d3.transform(parent.getAttribute('transform')).translate[1];
+	var grandParentTranslateX = d3.transform(grandparent.getAttribute('transform')).translate[0];
+	var grandParentTranslateY = d3.transform(grandparent.getAttribute('transform')).translate[1];
+	return [(parentTranslateX + grandParentTranslateX), (parentTranslateY + grandParentTranslateY)];
+}	
+function getParentCoords(node){
+	var parent = node.parentNode;
+	return [d3.transform(parent.getAttribute('transform')).translate[0], d3.transform(parent.getAttribute('transform')).translate[1]];
+}
 	
 /***********************************
  *		SVG
@@ -52,6 +65,7 @@ var svg = d3.select("#body")
 /***********************************
  *		NODE
  ***********************************/
+	
 var node = 
 	svg.selectAll("g.node")
 		.data([proto]).enter()
@@ -68,6 +82,44 @@ var nodeLabel = node.append("text")
     .attr("x", (width - marginL - marginR) / 2)
     .attr("y", titleH / 2)
     .text(function(d) { return d.label; });
+ 	
+var newLink = {};
+var newData = {};
+var drag3 = d3.behavior.drag()
+    .origin(function(d) { return d; })
+    .on("dragstart", function(d) {
+		d3.event.sourceEvent.stopPropagation(); 
+		draggingNode = d;
+		//console.log(d3.select(".node"));
+		//console.log(d.type);
+		newData = {source:draggingNode, target:{x : d.x, y : d.y}};
+		newLink = node
+			.insert("path", "g")
+			.data([newData])
+			.classed("dataflow link new", true)
+			.attr("d", diagonal)
+			.style("stroke", function(s) { return getTypeColor(d.type);})
+	})
+    .on("drag", function(d) {
+		d3.event.sourceEvent.stopPropagation();
+		newData.target.x += d3.event.dx;
+		newData.target.y += d3.event.dy;
+		newLink.attr("d", diagonal);
+	})
+	.on("dragend", function(d) {
+		d3.event.sourceEvent.stopPropagation();
+		if (selectedNode){
+			newData.target = selectedNode;
+			newLink
+				.data([newData])
+				.classed("new", false)
+				.attr("d", diagonal)
+		} else {
+			newLink.remove();
+		}
+		draggingNode = null;
+		//console.log(selectedNode);
+	});
 
 /***********************************
  *		NODE EXECUTION START
@@ -153,7 +205,9 @@ var output = nodeOutputs
 		});
 
 output.append("circle")
-	.style("fill", function(d) { return getTypeColor(d.type);});
+	.style("fill", function(d) { return getTypeColor(d.type);})
+	.call(hover)
+	.call(drag3);
 
 output.append("text")
 	.text(function(d){return d.id;})
@@ -180,7 +234,9 @@ var input = nodeInputs
 		});
 
 input.append("circle")
-	.style("fill", function(d) { return getTypeColor(d.type);});
+	.style("fill", function(d) { return getTypeColor(d.type);})
+	.call(hover)
+	.call(drag3);
 
 input.append("text")
 	.text(function(d){return d.id;})
@@ -189,21 +245,6 @@ input.append("text")
 /***********************************
  *		NODE STATES
  ***********************************/
-	
-function getGrandParentCoords(node){
-	var parent = node.parentNode;
-	var grandparent = node.parentNode.parentNode;
-	var parentTranslateX = d3.transform(parent.getAttribute('transform')).translate[0];
-	var parentTranslateY = d3.transform(parent.getAttribute('transform')).translate[1];
-	var grandParentTranslateX = d3.transform(grandparent.getAttribute('transform')).translate[0];
-	var grandParentTranslateY = d3.transform(grandparent.getAttribute('transform')).translate[1];
-	return [(parentTranslateX + grandParentTranslateX), (parentTranslateY + grandParentTranslateY)];
-}	
-function getParentCoords(node){
-	var parent = node.parentNode;
-	return [d3.transform(parent.getAttribute('transform')).translate[0], d3.transform(parent.getAttribute('transform')).translate[1]];
-}
-
 var state = node
 	.selectAll(".state")
 		.data(function(d){return proto.states;})
@@ -215,7 +256,7 @@ var state = node
 	.on("dblclick",function(d){ 
 		console.log(d);
 		d3.select(this).transition()
-			.duration(1500)
+			.duration(700)
 			.attr("transform", function(d) { return "translate(" + 0 + "," + 0 + ")"})
 			.attr("class", "node")
 			.select("rect")
@@ -300,7 +341,7 @@ exception.append("circle");
 exception.append("text")
 	.text(function(d) { return d.id; })
 	.attr("x", -10);
-	
+
 var outputGroup = state
 	.append("g")
 		.classed("data outputs", true)
@@ -318,7 +359,9 @@ var outputGroup = state
 		});
 	
 outputGroup.append("circle")
-	.style("fill", function(d) { return getTypeColor(d.type);});
+	.style("fill", function(d) { return getTypeColor(d.type);})
+	.call(hover)
+	.call(drag3);
 
 outputGroup.append("text")
 	.text(function(d) { return d.id; })
@@ -342,7 +385,8 @@ var inputGroup = state
 
 inputGroup.append("circle")
 	.style("fill", function(d) { return getTypeColor(d.type);})
-    .call(dragParam);
+	.call(hover)
+	.call(drag3);
 	
 inputGroup.append("text")
 	.text(function(d) { return d.id; })
@@ -422,6 +466,34 @@ proto.dataflow.forEach(function(d, i) {
 	datalinks.push({source:source, target:target});
 });
 
+function hover(d){
+	d.on("mouseover", function(d) { 
+		selectedNode = d;
+		d3.select(this).classed("hover",true);
+	})
+	.on("mouseout", function(d) {
+		selectedNode = null;
+		d3.select(this).classed("hover",false);
+	})
+}
+
+var delta = 0;
+var drag2 = d3.behavior.drag()
+    .origin(function(d) { return d; })
+    .on("dragstart", function(d) { 
+		delta = 0;
+	})
+    .on("drag", function(d) { 
+		delta += d3.event.dx;
+		delta += d3.event.dy;
+	})
+	.on("dragend", function(d) {
+		if(Math.abs(delta) > 20){
+			d3.select(this).remove();
+		} 
+		delta = 0;
+	});
+
 var workflowLink = node
 	.selectAll(".workflow.link")
         .data(workLinks)
@@ -429,11 +501,15 @@ var workflowLink = node
 	.insert("path", "g")
 		.classed("workflow link", true)
         .attr("d", diagonal)
-		.each(function(d){if(d.type === "exception"){d3.select(this).classed("exception", true);}})
+		.each(function(d){
+			if (d.type === "exception"){
+				d3.select(this).classed("exception", true);
+			}
+		})
 		.attr("marker-end", "url(#arrow)")
-		.on("mouseover", function(d) { return d3.select(this).classed("hover",true);})
-		.on("mouseout", function(d) { return d3.select(this).classed("hover",false);});
-
+		.call(hover)
+		.call(drag2);
+	
 var dataflowLink = node
 	.selectAll(".dataflow.link")
         .data(datalinks)
@@ -442,22 +518,8 @@ var dataflowLink = node
 		.classed("dataflow link", true)
 		.attr("d", diagonal)
 		.style("stroke", function(d) { return getTypeColor(d.source.type);})
-		.on("mouseover", function(d) { return d3.select(this).classed("hover",true);})
-		.on("mouseout", function(d) { return d3.select(this).classed("hover",false);});
-
-var newLink = {};
-
-function dragstartParam(d){
-	console.log(d);
-	newLink = node.select(".linkNew")
-        .data([{source:{finishX : d.startX, finishY : d.startY}, target:{startX : d.startX, startY : d.startY}}])
-        .enter().append("path")
-		.classed("linkNew", true)
-        .attr("d", diagonal)
-		.style("stroke", function(d) { return getTypeColor(d.source.type);})
-    //.attr("marker-end", "url(#arrow)")
-	;
-}
+		.call(hover)
+		.call(drag2);
 
 function dragmoveParam(d){
 	console.log(d3.event);
@@ -465,9 +527,7 @@ function dragmoveParam(d){
 }
 
 function dragmove(d) {
-            d3.event.sourceEvent.stopPropagation();
-	var deltaX = d3.event.x - d.x;
-	var deltaY = d3.event.y - d.y;
+	d3.event.sourceEvent.stopPropagation();
 	
 	d.x += d3.event.dx;
 	d.y += d3.event.dy;
@@ -491,8 +551,7 @@ function dragmove(d) {
 			d.y += d3.event.dy;
 		})
 		
-	workflowLink.attr("d", diagonal);
-	dataflowLink.attr("d", diagonal);
+	node.selectAll("path.link").attr("d", diagonal);
 }
 
 	function zoom() {
