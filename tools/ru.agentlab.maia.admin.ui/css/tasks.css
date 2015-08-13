@@ -5,6 +5,11 @@
 	cursor : pointer;
 }
 
+.workflow.link.new {
+	stroke-dasharray : 7 3;
+	stroke-width: 2px;
+}
+
 .workflow.link.exception {
 	fill: none;
 	stroke: rgb(32,32,32);
@@ -55,6 +60,7 @@
 .node circle.start {
 	r : 10px;
 	fill: rgb(32,32,32);
+	cursor : pointer;
 }
 
 .node circle.finish.outer {
@@ -62,13 +68,14 @@
 	fill: lightgray;
 	stroke: rgb(32,32,32);
 	stroke-width: 2px;
+	cursor : pointer;
 }
 
 .node circle.finish.inner {
 	r : 10px;
 	fill: rgb(32,32,32);
+	pointer-events : none;
 }
-
 	
 .node .exception > circle {
 	r : 10px;
@@ -136,20 +143,27 @@
 	pointer-events : none;
 }
 
-.state  circle.start {
+
+.state circle.start {
 	r : 5px;
-	fill : rgb(32,32,32);
-	stroke-width : 1px;
-	stroke : rgb(32,32,32);
+	fill: rgb(32,32,32);
 	cursor : pointer;
 }
 
-.state  circle.finish {
+.state circle.finish.outer {
 	r : 5px;
-	fill : rgb(32,32,32);
-	stroke-width : 1px;
-	stroke : rgb(32,32,32);
+	fill: rgb(32,32,32);
+	//fill: lightgray;
+	//stroke: rgb(32,32,32);
+	//stroke-width: 2px;
 	cursor : pointer;
+}
+
+.state circle.finish.inner {
+	r : 3px;
+	fill: rgb(32,32,32);
+	pointer-events : none;
+	visibility : hidden ;
 }
 
 .state  .exception > text {
