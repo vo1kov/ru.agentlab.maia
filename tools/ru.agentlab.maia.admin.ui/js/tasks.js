@@ -211,7 +211,7 @@ function find(array, id){
 }
 
 function storeCoords(d, i){
-	console.log(i);
+	//console.log(i);
 	var offset = getOffset(this);
 	var local = [0, 0];
 	d.x = offset[0] + local[0];
@@ -219,7 +219,7 @@ function storeCoords(d, i){
 }
 
 function storeCoords2(d, i){
-	console.log(i);
+	//console.log(i);
 	var offset = getOffset(this);
 	var local = [0, i * paramH];
 	d.x = offset[0] + local[0];
@@ -357,7 +357,7 @@ function updateInput(container, isRoot, coords){
 		.call(drag3);
 
 	var inputText = input.append("text")
-		.text(function(d){return d.id;});
+		.text(function(d){return d.label ? d.label : d.id;});
 	
 	if (isRoot){
 		inputText.attr("x", -10);
@@ -531,6 +531,12 @@ proto.dataflow.forEach(function(d, i) {
 	}
 	datalinks.push({source:source, target:target});
 });
+
+function prepare(proto){
+	var result = jQuery.extend(true, {}, proto);
+	result.start = {};
+	result.finish = {};
+}
 
 function hover(d){
 	d.on("mouseover", function(d) { 

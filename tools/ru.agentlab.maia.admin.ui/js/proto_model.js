@@ -2,83 +2,37 @@ var proto = {
 	"id" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol",
 	"label" : "ZipatoAuthenticateProtocol",
 	"exceptions" : [
-		{
-			"id" : "NullPointerException",
-			"type" : "java.lang.NullPointerException"
-		}
+		{ "id" : "NullPointerException", "type" : "java.lang.NullPointerException" }
 	],
 	"inputs" : [
-		{
-			"id" : "login",
-			"type" : "java.lang.String"
-		},
-		{
-			"id" : "password",
-			"type" : "java.lang.String"
-		},
-		{
-			"id" : "eventLoop",
-			"label" : "Event Loop",
-			"type" : "io.netty.channel.EventLoopGroup",
-			"required" : true
-		}, 
-		{
-			"id" : "channel",
-			"type" : "java.lang.Class<? extends io.netty.channel.Channel>"
-		}, 
-		{
-			"id" : "options",
-			"type" : "java.util.Map<io.netty.channel.ChannelOption<java.lang.Object>, java.lang.Object>"
-		}, 
-		{
-			"id" : "handler",
-			"type" : "io.netty.channel.ChannelHandler"
-		}
+		{ "id" : "login", 		"type" : "java.lang.String" },
+		{ "id" : "password", 	"type" : "java.lang.String" },
+		{ "id" : "eventLoop",	"type" : "io.netty.channel.EventLoopGroup" }, 
+		{ "id" : "channel", 	"type" : "java.lang.Class<? extends io.netty.channel.Channel>" }, 
+		{ "id" : "options", 	"type" : "java.util.Map<io.netty.channel.ChannelOption<java.lang.Object>, java.lang.Object>" }, 
+		{ "id" : "handler", 	"type" : "io.netty.channel.ChannelHandler" }
 	],
 	"outputs" : [
-		{
-			"id" : "success",
-			"type" : "boolean"
-		}
+		{ "id" : "success", "type" : "boolean" }
 	],
 	"states" : [
-		{	
+		{
 			"x" : 200,
 			"y" : 200,
 			"id" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6",
 			"label" : "Create Bootstrap",
 			"ref" : "ru.beeline.iot.gateway.zipato.CreateBootstrapBehaviour",
 			"exceptions" : [
-				{
-					"id" : "NullPointerException",
-					"type" : "java.lang.NullPointerException"
-				}
+				{ "id" : "NullPointerException", "type" : "java.lang.NullPointerException" }
 			],
 			"inputs" : [ 
-				{
-					"id" : "eventLoop",
-					"label" : "Event Loop",
-					"type" : "io.netty.channel.EventLoopGroup",
-					"required" : true
-				}, 
-				{
-					"id" : "channel",
-					"type" : "java.lang.Class<? extends io.netty.channel.Channel>"
-				}, 
-				{
-					"id" : "options",
-					"type" : "java.util.Map<io.netty.channel.ChannelOption<java.lang.Object>, java.lang.Object>"
-				}, 
-				{
-					"id" : "handler",
-					"type" : "io.netty.channel.ChannelHandler"
-				}
+				{ "id" : "eventLoop", 	"type" : "io.netty.channel.EventLoopGroup" }, 
+				{ "id" : "channel", 	"type" : "java.lang.Class<? extends io.netty.channel.Channel>" }, 
+				{ "id" : "options", 	"type" : "java.util.Map<io.netty.channel.ChannelOption<java.lang.Object>, java.lang.Object>" }, 
+				{ "id" : "handler", 	"type" : "io.netty.channel.ChannelHandler" }
 			],
 			"outputs" : [ 
-				{
-					"id" : "bootstrap",
-					"type" : "io.netty.bootstrap.Bootstrap"
-				}
+				{ "id" : "bootstrap", "type" : "io.netty.bootstrap.Bootstrap" }
 			]
 		},
 		{	
@@ -89,17 +43,10 @@ var proto = {
 			"ref" : "ru.beeline.iot.CheckNotNull",
 			"exceptions" : [],
 			"inputs" : [ 
-				{
-					"id" : "input",
-					"type" : "io.netty.bootstrap.Bootstrap",
-					"required" : true
-				}
+				{ "id" : "input", "type" : "io.netty.bootstrap.Bootstrap", "required" : true }
 			],
 			"outputs" : [ 
-				{
-					"id" : "result",
-					"type" : "boolean"
-				}
+				{ "id" : "result", "type" : "boolean" }
 			]
 		},
 		{	
@@ -111,10 +58,22 @@ var proto = {
 			"exceptions" : [],
 			"inputs" : [ ],
 			"outputs" : [ 
-				{
-					"id" : "result",
-					"type" : "boolean"
-				}
+				{ "id" : "result", "type" : "boolean" }
+			]
+		},
+		{	
+			"x" : 700,
+			"y" : 200,
+			"id" : "and",
+			"label" : "And",
+			"ref" : "ru.beeline.iot.CheckNotNull",
+			"exceptions" : [],
+			"inputs" : [
+				{ "id" : "first", "type" : "boolean" },
+				{ "id" : "second", "type" : "boolean" }
+			],
+			"outputs" : [ 
+				{ "id" : "result", "type" : "boolean" }
 			]
 		}
 	],
@@ -133,5 +92,47 @@ var proto = {
 		["719b2a8a-4119-453b-a39d-62e9ce2d6cc6#NullPointerException", "test#start"],
 		["2da4cfe4-9da7-4940-830d-bbed1e895568#finish", "this#finish"],
 		["test#finish", "this#NullPointerException"]
+	],
+	"dataflow2" : [
+		{
+			"from" 	: { "node" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol", "parameter" : "eventLoop" },
+			"to" 	: { "node" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "parameter" : "eventLoop" }
+		},{
+			"from" 	: { "node" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol", "parameter" : "options" },
+			"to" 	: { "node" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "parameter" : "options" }
+		},{
+			"from" 	: { "node" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol", "parameter" : "channel" },
+			"to" 	: { "node" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "parameter" : "channel" }
+		},{
+			"from" 	: { "node" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol", "parameter" : "handler" },
+			"to" 	: { "node" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "parameter" : "handler" }
+		},{
+			"from" 	: { "node" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "parameter" : "bootstrap" },
+			"to" 	: { "node" : "2da4cfe4-9da7-4940-830d-bbed1e895568", "parameter" : "input" }
+		},{
+			"from" 	: { "node" : "2da4cfe4-9da7-4940-830d-bbed1e895568", "parameter" : "result" },
+			"to" 	: { "node" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol", "parameter" : "success" }
+		},{
+			"from" 	: { "node" : "test", "parameter" : "result" },
+			"to" 	: { "node" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol", "parameter" : "success" }
+		}
+	],
+	"workflow2" : [
+		{
+			"from" 	: { "node" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol" },
+			"to" 	: { "node" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6" }
+		},{
+			"from" 	: { "node" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6" },
+			"to" 	: { "node" : "2da4cfe4-9da7-4940-830d-bbed1e895568" }
+		},{
+			"from" 	: { "node" : "2da4cfe4-9da7-4940-830d-bbed1e895568", },
+			"to" 	: { "node" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol" }
+		},{
+			"from" 	: { "node" : "test" },
+			"to" 	: { "node" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol", "exception" : "NullPointerException" }
+		},{
+			"from" 	: { "node" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "exception" : "NullPointerException" },
+			"to" 	: { "node" : "test" }
+		}
 	]
 }
