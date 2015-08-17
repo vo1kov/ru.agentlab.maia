@@ -3,11 +3,11 @@ package ru.agentlab.maia.launcher
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.execution.action.annotated.AnnotatedContextAction
 import ru.agentlab.maia.context.modifier.MaiaExtension
 import ru.agentlab.maia.context.modifier.MaiaRootContextModifier
-import ru.agentlab.maia.execution.IMaiaExecutorAction
 import ru.agentlab.maia.execution.IMaiaExecutorService
+import ru.agentlab.maia.execution.action.annotated.AnnotatedAction
+import ru.agentlab.maia.execution.task.IAction
 
 class Activator implements BundleActivator {
 
@@ -26,11 +26,11 @@ class Activator implements BundleActivator {
 	override void start(BundleContext ctx) throws Exception {
 		context = ctx
 		val rootContextRef = context.getServiceReference(IMaiaContext)
-		
+
 		val root = context.getService(rootContextRef) => [
 			deploy(MaiaRootContextModifier)
 		]
-		
+
 		val container = root.createContainer
 		val container2 = root.createContainer
 		val container3 = root.createContainer
@@ -44,22 +44,22 @@ class Activator implements BundleActivator {
 		container.createAgent
 
 		val behaviour = agent.createBehaviour => [
-			deploy(new AnnotatedContextAction(PrintlnAction), IMaiaExecutorAction)
+			deploy(new AnnotatedAction(PrintlnAction), IAction)
 		]
 		agent.createBehaviour => [
-			deploy(new AnnotatedContextAction(PrintlnAction), IMaiaExecutorAction)
+			deploy(new AnnotatedAction(PrintlnAction), IAction)
 		]
 		agent.createBehaviour => [
-			deploy(new AnnotatedContextAction(PrintlnAction), IMaiaExecutorAction)
+			deploy(new AnnotatedAction(PrintlnAction), IAction)
 		]
 		agent.createBehaviour => [
-			deploy(new AnnotatedContextAction(PrintlnAction), IMaiaExecutorAction)
+			deploy(new AnnotatedAction(PrintlnAction), IAction)
 		]
-		
+
 		container.get(IMaiaExecutorService).start
 		Thread.sleep(100)
 		container.get(IMaiaExecutorService).stop
-		
+
 //		agent => [
 //			get(IMaiaContextLifecycleService).state = FipaLifecycleScheme.STATE_ACTIVE
 //
