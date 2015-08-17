@@ -4,7 +4,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.execution.IMaiaExecutorAction
 import ru.agentlab.maia.execution.IMaiaExecutorScheduler
 
-class JadeContextAction implements IMaiaExecutorAction {
+class JadeAction implements IMaiaExecutorAction {
 
 	@Accessors
 	var IMaiaExecutorScheduler parentNode
