@@ -7,5 +7,7 @@ interface IScheduler extends INode {
 	def INode getNext()
 	
 	def List<Link> getLinks()
+	
+	def List<INode> getChilds()
 
 }
