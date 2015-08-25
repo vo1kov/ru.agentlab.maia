@@ -1,10 +1,10 @@
-package ru.agentlab.maia.execution.task
+package ru.agentlab.maia.execution.tree.impl
 
-import java.util.UUID
 import org.eclipse.xtend.lib.annotations.Accessors
+import ru.agentlab.maia.execution.tree.IDataParameter
 
 @Accessors
-class Parameter implements IParameter {
+class DataParameter implements IDataParameter {
 
 	val String name
 
@@ -18,9 +18,9 @@ class Parameter implements IParameter {
 		this.name = name
 		this.type = type
 		this.direction = direction
-		if (direction == Direction.OUTPUT) {
-			key = UUID.randomUUID.toString
-		}
+//		if (direction == Direction.OUTPUT) {
+//			key = UUID.randomUUID.toString
+//		}
 	}
 
 }

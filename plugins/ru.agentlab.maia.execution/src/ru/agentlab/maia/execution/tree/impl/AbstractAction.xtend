@@ -1,11 +1,12 @@
-package ru.agentlab.maia.execution.task
+package ru.agentlab.maia.execution.tree.impl
 
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.context.IMaiaContextInjector
+import ru.agentlab.maia.execution.tree.IExecutionAction
 
-abstract class AbstractAction extends AbstractNode implements IAction {
+abstract class AbstractAction extends AbstractNode implements IExecutionAction {
 
 	@Accessors
 	val Class<?> actionClass

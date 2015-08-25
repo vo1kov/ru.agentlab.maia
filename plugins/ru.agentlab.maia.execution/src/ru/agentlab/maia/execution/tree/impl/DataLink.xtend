@@ -1,0 +1,25 @@
+package ru.agentlab.maia.execution.tree.impl
+
+import java.util.UUID
+import org.eclipse.xtend.lib.annotations.Accessors
+import ru.agentlab.maia.execution.tree.IDataLink
+import ru.agentlab.maia.execution.tree.IDataParameter
+import ru.agentlab.maia.execution.tree.IDataParameter.Direction
+
+@Accessors
+class DataLink implements IDataLink {
+
+	IDataParameter from
+
+	IDataParameter to
+
+	String key
+
+	new(IDataParameter from, IDataParameter to) {
+		this.from = from
+		this.to = to
+		if (from.direction == Direction.INPUT) {
+		}
+		key = UUID.randomUUID.toString
+	}
+}

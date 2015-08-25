@@ -1,6 +1,6 @@
-package ru.agentlab.maia.execution.task
+package ru.agentlab.maia.execution.tree
 
-interface IParameter {
+interface IDataParameter {
 	
 	enum Direction{
 		INPUT, OUTPUT
