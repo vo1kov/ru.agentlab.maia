@@ -27,12 +27,10 @@ abstract class AbstractAction extends AbstractNode implements IExecutionAction {
 		}
 		try {
 			doInject()
-			val result = doRun()
+			doRun()
 			doUninject()
-			return result
 		} catch (Exception e) {
 			e.printStackTrace
-			return null
 		}
 	}
 

@@ -1,9 +1,8 @@
 package ru.agentlab.maia.execution.tree.impl
 
 import java.util.ArrayList
-import java.util.List
-import java.util.concurrent.CopyOnWriteArrayList
 import org.eclipse.xtend.lib.annotations.Accessors
+import ru.agentlab.maia.execution.check.IChildsCheck
 import ru.agentlab.maia.execution.tree.IDataLink
 import ru.agentlab.maia.execution.tree.IDataParameter
 import ru.agentlab.maia.execution.tree.IExecutionNode
@@ -12,30 +11,66 @@ import ru.agentlab.maia.execution.tree.IExecutionScheduler
 abstract class AbstractScheduler extends AbstractNode implements IExecutionScheduler {
 
 	@Accessors
-	val List<IDataLink> links = new ArrayList
+	val protected dataLinks = new ArrayList<IDataLink>
 
 	@Accessors
-	val List<IExecutionNode> childs = new CopyOnWriteArrayList
+	val protected childs = new ArrayList<IExecutionNode>
 
-	val Object lock = new Object
+	@Accessors
+	val protected childChecklist = new ArrayList<IChildsCheck>
 
 	override run() {
-		var IExecutionNode node
-		synchronized (lock) {
-			node = next
+		var IExecutionNode node = null
+		synchronized (this) {
+			node = nextChild
 		}
-		node.run
+		node?.run
 	}
 
-	def void addLink(IDataParameter from, IDataParameter to) {
+	override synchronized notifyChildActivation(IExecutionNode node) {
+		testChilds()
+	}
+
+	override synchronized notifyChildDeactivation(IExecutionNode node) {
+		testChilds()
+	}
+
+	def synchronized void addLink(IDataParameter from, IDataParameter to) {
 		if (from.key != null && from.key.length > 0) {
 			to.key = from.key
 		}
-		links += new DataLink(from, to)
+		dataLinks += new DataLink(from, to)
 	}
 
-	def void addChild(IExecutionNode child) {
+	override synchronized void addChild(IExecutionNode child) {
 		childs += child
+		testChilds()
+	}
+
+	override synchronized isEmpty() {
+		return childs.empty
+	}
+
+	/** 
+	 * Removes all contexts from the nodes queue and removes self from parent scheduler.
+	 */
+	override synchronized void removeAll() {
+		childs.clear
+		testChilds()
+	}
+
+	def private void testChilds() {
+		for (check : childChecklist) {
+			if (!check.test(childs)) {
+				deactivate()
+				return
+			}
+			if (!check.test(childs)) {
+				deactivate()
+				return
+			}
+		}
+		activate()
 	}
 
 }

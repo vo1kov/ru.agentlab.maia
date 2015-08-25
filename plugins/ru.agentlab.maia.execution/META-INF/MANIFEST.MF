@@ -12,8 +12,9 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.context;bundle-version="1.0.0",
  org.aspectj.runtime;resolution:=optional
 Export-Package: ru.agentlab.maia.execution,
+ ru.agentlab.maia.execution.policy,
+ ru.agentlab.maia.execution.policy.impl,
  ru.agentlab.maia.execution.scheduler.aj,
- ru.agentlab.maia.execution.scheduler.bounded,
- ru.agentlab.maia.execution.scheduler.unbounded,
- ru.agentlab.maia.execution.task
+ ru.agentlab.maia.execution.tree,
+ ru.agentlab.maia.execution.tree.impl
 

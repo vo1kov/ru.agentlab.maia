@@ -6,9 +6,9 @@ import ru.agentlab.maia.context.IMaiaContextInjector
 import ru.agentlab.maia.execution.action.annotation.Action
 import ru.agentlab.maia.execution.action.annotation.Input
 import ru.agentlab.maia.execution.action.annotation.Output
-import ru.agentlab.maia.execution.task.AbstractAction
-import ru.agentlab.maia.execution.task.IParameter.Direction
-import ru.agentlab.maia.execution.task.Parameter
+import ru.agentlab.maia.execution.tree.IDataParameter.Direction
+import ru.agentlab.maia.execution.tree.impl.AbstractAction
+import ru.agentlab.maia.execution.tree.impl.DataParameter
 
 class AnnotatedAction extends AbstractAction {
 
@@ -22,11 +22,11 @@ class AnnotatedAction extends AbstractAction {
 		super(clazz)
 		actionClass.declaredFields.filter[isAnnotationPresent(Input)].forEach [
 			inputFields += it
-			addInput(new Parameter(name, type, Direction.INPUT))
+			addInput(new DataParameter(name, type, Direction.INPUT))
 		]
 		actionClass.declaredFields.filter[isAnnotationPresent(Output)].forEach [
 			outputFields += it
-			addOutput(new Parameter(name, type, Direction.OUTPUT))
+			addOutput(new DataParameter(name, type, Direction.OUTPUT))
 		]
 		inputFields.trimToSize
 		outputFields.trimToSize

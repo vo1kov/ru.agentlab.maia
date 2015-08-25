@@ -1,16 +1,16 @@
 package ru.agentlab.maia.execution.scheduler.aj;
 
-import ru.agentlab.maia.execution.IMaiaExecutorScheduler;
+import ru.agentlab.maia.execution.tree.IExecutionScheduler;
 
 public abstract aspect AMaiaExecutorScheduler {
 
 	pointcut add() : 
-		execution(* IMaiaExecutorScheduler+.add(..));
+		execution(* IExecutionScheduler+.add(..));
 
 	pointcut remove() : 
-		execution(* IMaiaExecutorScheduler+.remove(..));
+		execution(* IExecutionScheduler+.remove(..));
 
 	pointcut nextContext() : 
-		execution(* IMaiaExecutorScheduler+.getNextContext(..));
-	
+		execution(* IExecutionScheduler+.getNextContext(..));
+
 }

@@ -30,8 +30,8 @@ class SequenceContextSchedulerAddTest {
 	@Before
 	def void beforeEach() {
 		scheduler = new SequenceContextScheduler(context) => [
-			add(action1)
-			add(action2)
+			addChild(action1)
+			addChild(action2)
 		]
 	}
 

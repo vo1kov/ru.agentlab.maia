@@ -2,42 +2,41 @@ package ru.agentlab.maia.execution.scheduler.sequence
 
 import java.util.ArrayList
 import java.util.List
-import ru.agentlab.maia.execution.AbstractScheduler
-import ru.agentlab.maia.execution.IMaiaExecutorNode
+import org.eclipse.xtend.lib.annotations.Accessors
+import ru.agentlab.maia.execution.tree.IExecutionNode
+import ru.agentlab.maia.execution.tree.impl.AbstractScheduler
 
 class SequenceContextScheduler extends AbstractScheduler {
 
-	private int index = 0
+	int index = -1
 
-	/**
-	 * Queue of available nodes.
-	 */
-	protected List<IMaiaExecutorNode> nodes = new ArrayList<IMaiaExecutorNode>
+	@Accessors
+	var volatile IExecutionNode currentChild
 
-	/**
-	 * <p>Add a context at the end of the nodes queue.</p>
-	 * 
-	 * <p>When you add a node to scheduler first time it try to update parent scheduler and add self
-	 * to parent scheduler.</p>
-	 * 
-	 * @param
-	 * 		node - node to be added from scheduler.
-	 */
-	override synchronized void add(IMaiaExecutorNode node) {
-		if (nodes.empty) {
-			nodes += node
-			ready = true
-		} else {
-			if (!nodes.contains(node)) {
-				nodes += node
-			}
-		}
-	}
-
-	override synchronized IMaiaExecutorNode getCurrentNode() {
-		return nodes.get(index)
-	}
-
+//	boolean ready = false
+//	/**
+//	 * Queue of available nodes.
+//	 */
+//	protected List<IExecutionNode> nodes = new ArrayList<IExecutionNode>
+//	/**
+//	 * <p>Add a context at the end of the nodes queue.</p>
+//	 * 
+//	 * <p>When you add a node to scheduler first time it try to update parent scheduler and add self
+//	 * to parent scheduler.</p>
+//	 * 
+//	 * @param
+//	 * 		node - node to be added from scheduler.
+//	 */
+//	override synchronized void addChild(IExecutionNode node) {
+//		if (nodes.empty) {
+//			nodes += node
+//			ready = true
+//		} else {
+//			if (!nodes.contains(node)) {
+//				nodes += node
+//			}
+//		}
+//	}
 	/**
 	 * <p>Removes a specified node from the nodes queue.</p>
 	 * 
@@ -47,17 +46,14 @@ class SequenceContextScheduler extends AbstractScheduler {
 	 * @param
 	 * 		node - node to be removed from scheduler.
 	 */
-	override synchronized void remove(IMaiaExecutorNode node) {
-		val i = nodes.indexOf(node)
+	override synchronized void removeChild(IExecutionNode node) {
+		val i = childs.indexOf(node)
 		if (i != -1) {
-			nodes.remove(node)
+			childs.remove(node)
 			if (i < index) {
 				index = index - 1
-			} else if (i == index && index == nodes.size()) {
+			} else if (i == index && index == childs.size()) {
 				index = 0
-			}
-			if (empty) {
-				ready = false
 			}
 		}
 	}
@@ -66,22 +62,18 @@ class SequenceContextScheduler extends AbstractScheduler {
 	 * Removes all contexts from the nodes queue and removes self from parent scheduler.
 	 */
 	override synchronized void removeAll() {
-		nodes.clear
+		super.removeAll()
 		index = 0
-		ready = false
 	}
 
-	override synchronized isEmpty() {
-		return nodes.empty
-	}
-
-	override synchronized getNextNode() {
-		if (nodes.empty) {
-			return null
+	override synchronized getNextChild() {
+		if (childs.empty) {
+			currentChild = null
 		} else {
-			index = (index + 1) % nodes.size
-			return nodes.get(index)
+			index = (index + 1) % childs.size
+			currentChild = childs.get(index)
 		}
+		return currentChild
 	}
 
 }

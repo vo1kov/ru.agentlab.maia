@@ -1,15 +1,28 @@
 package ru.agentlab.maia.execution.action.jade
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.execution.IMaiaExecutorAction
-import ru.agentlab.maia.execution.IMaiaExecutorScheduler
+import ru.agentlab.maia.execution.tree.IExecutionScheduler
+import ru.agentlab.maia.execution.tree.impl.AbstractAction
 
-class JadeAction implements IMaiaExecutorAction {
+class JadeAction extends AbstractAction {
 
 	@Accessors
-	var IMaiaExecutorScheduler parentNode
-
-	override run() {
+	var IExecutionScheduler parentNode
+	
+	new(Class<?> clazz) {
+		super(clazz)
+	}
+	
+	override doInject() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override doUninject() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override doRun() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 }

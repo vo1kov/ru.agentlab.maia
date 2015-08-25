@@ -3,18 +3,30 @@ package ru.agentlab.maia.execution.action.runnable
 import javax.inject.Inject
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.execution.IMaiaExecutorAction
-import ru.agentlab.maia.execution.IMaiaExecutorScheduler
+import ru.agentlab.maia.execution.tree.IExecutionScheduler
+import ru.agentlab.maia.execution.tree.impl.AbstractAction
 
-class RunnableContextAction implements IMaiaExecutorAction {
+class RunnableContextAction extends AbstractAction {
 
 	@Inject
 	IMaiaContext context
 
 	@Accessors
-	var IMaiaExecutorScheduler parentNode
+	var IExecutionScheduler parentNode
 
-	override run() {
+	new(Class<?> clazz) {
+		super(clazz)
+	}
+
+	override doInject() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+
+	override doUninject() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+
+	override doRun() {
 		val task = context.get(KEY_TASK)
 		if (task instanceof Runnable) {
 			task.run

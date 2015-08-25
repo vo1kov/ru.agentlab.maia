@@ -41,7 +41,7 @@ class SequenceSchedulerTests {
 	@Test
 	def void testMultipleAdd() {
 		for (i : 0 ..< 5) {
-			scheduler.add(action1)
+			scheduler.addChild(action1)
 		}
 		assertEquals(1, scheduler.readyContexts.size)
 	}
@@ -49,8 +49,8 @@ class SequenceSchedulerTests {
 	@Test
 	def void testOrderAdd() {
 		scheduler => [
-			add(action1)
-			add(action2)
+			addChild(action1)
+			addChild(action2)
 		]
 		scheduler.readyContexts => [
 			println(it)

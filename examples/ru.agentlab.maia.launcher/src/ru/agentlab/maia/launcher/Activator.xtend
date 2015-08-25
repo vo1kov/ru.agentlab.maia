@@ -7,7 +7,7 @@ import ru.agentlab.maia.context.modifier.MaiaExtension
 import ru.agentlab.maia.context.modifier.MaiaRootContextModifier
 import ru.agentlab.maia.execution.IMaiaExecutorService
 import ru.agentlab.maia.execution.action.annotated.AnnotatedAction
-import ru.agentlab.maia.execution.task.IAction
+import ru.agentlab.maia.execution.tree.IExecutionNode
 
 class Activator implements BundleActivator {
 
@@ -31,34 +31,46 @@ class Activator implements BundleActivator {
 			deploy(MaiaRootContextModifier)
 		]
 
-		val container = root.createContainer
-		val container2 = root.createContainer
-		val container3 = root.createContainer
+		val container = root.createContainer => [
+			set("debugString", "container1")
+		]
+		val container2 = root.createContainer => [
+			set("debugString", "container2")
+		]
+		val container3 = root.createContainer => [
+			set("debugString", "container3")
+		]
 
 		val agent = container.createAgent => [
 			deploy(AgentExample)
+			set("debugString", "agent1")
 		]
-		container.createAgent
-		container.createAgent
-		container.createAgent
-		container.createAgent
+//		container.createAgent
+//		container.createAgent
+//		container.createAgent
+//		container.createAgent
 
 		val behaviour = agent.createBehaviour => [
-			deploy(new AnnotatedAction(PrintlnAction), IAction)
+			remove(IExecutionNode)
+			deploy(new AnnotatedAction(PrintlnAction), IExecutionNode)
+			set("debugString", "behaviour1")
 		]
-		agent.createBehaviour => [
-			deploy(new AnnotatedAction(PrintlnAction), IAction)
-		]
-		agent.createBehaviour => [
-			deploy(new AnnotatedAction(PrintlnAction), IAction)
-		]
-		agent.createBehaviour => [
-			deploy(new AnnotatedAction(PrintlnAction), IAction)
-		]
+//		agent.createBehaviour => [
+//			deploy(new AnnotatedAction(PrintlnAction), IExecutionNode)
+//			set("debugString", "behaviour2")
+//		]
+//		agent.createBehaviour => [
+//			deploy(new AnnotatedAction(PrintlnAction), IExecutionNode)
+//			set("debugString", "behaviour3")
+//		]
+//		agent.createBehaviour => [
+//			deploy(new AnnotatedAction(PrintlnAction), IExecutionNode)
+//			set("debugString", "behaviour4")
+//		]
 
 		container.get(IMaiaExecutorService).start
-		Thread.sleep(100)
-		container.get(IMaiaExecutorService).stop
+		//Thread.sleep(100)
+		//container.get(IMaiaExecutorService).stop
 
 //		agent => [
 //			get(IMaiaContextLifecycleService).state = FipaLifecycleScheme.STATE_ACTIVE
