@@ -10,7 +10,6 @@ import ru.agentlab.maia.execution.check.IParametersCheck
 import ru.agentlab.maia.execution.tree.ExecutionNodeState
 import ru.agentlab.maia.execution.tree.IDataInputParameter
 import ru.agentlab.maia.execution.tree.IDataOutputParameter
-import ru.agentlab.maia.execution.tree.IDataParameter
 import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.execution.tree.IExecutionScheduler
 
@@ -114,43 +113,6 @@ abstract class AbstractNode implements IExecutionNode {
 
 	override synchronized getOutputs() {
 		return outputs
-	}
-
-	override addParameter(IDataParameter<?> parameter) {
-		switch (parameter) {
-			IDataInputParameter<?>: {
-				addInput(parameter)
-			}
-			IDataOutputParameter<?>: {
-				addOutput(parameter)
-			}
-			default: {
-				throw new IllegalArgumentException('''Parameter with type «parameter.class» is unsupported''')
-			}
-		}
-	}
-
-	override removeParameter(IDataParameter<?> parameter) {
-		switch (parameter) {
-			IDataInputParameter<?>: {
-				removeInput(parameter)
-			}
-			IDataOutputParameter<?>: {
-				removeOutput(parameter)
-			}
-			default: {
-				throw new IllegalArgumentException('''Parameter with type «parameter.class» is unsupported''')
-			}
-		}
-	}
-
-	override getParameter(String name) {
-		val input = getInput(name)
-		if (input != null) {
-			return input
-		} else {
-			return getOutput(name)
-		}
 	}
 
 }
