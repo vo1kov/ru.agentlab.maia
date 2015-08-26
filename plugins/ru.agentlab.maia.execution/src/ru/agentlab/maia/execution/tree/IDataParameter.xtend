@@ -8,6 +8,10 @@ interface IDataParameter<T> {
 	
 	def void setKey(String key)
 	
+	def T getValue()
+	
+	def void setValue(T value)
+	
 	def <T> Class<T> getType()
 	
 }
