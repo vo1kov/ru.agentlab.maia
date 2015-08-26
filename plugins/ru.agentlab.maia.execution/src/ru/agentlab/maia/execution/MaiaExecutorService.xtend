@@ -20,7 +20,12 @@ class MaiaExecutorService implements IMaiaExecutorService {
 		executor.submit(new Runnable {
 			override run() {
 				if (isActive.get) {
+					println("===========begin============")
+					val begin = System.nanoTime
 					node.run
+					val end = System.nanoTime
+					println("	" + (end-begin) + " ns")
+					println("============end=============")
 					executor.submit(this)
 				}
 			}
