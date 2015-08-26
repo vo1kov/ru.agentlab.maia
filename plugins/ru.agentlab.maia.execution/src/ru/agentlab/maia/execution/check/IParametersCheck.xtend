@@ -4,6 +4,6 @@ import ru.agentlab.maia.execution.tree.IDataParameter
 
 interface IParametersCheck extends ICheck {
 
-	def boolean test(Iterable<IDataParameter> parameters)
+	def boolean test(Iterable<? extends IDataParameter> parameters)
 
 }
