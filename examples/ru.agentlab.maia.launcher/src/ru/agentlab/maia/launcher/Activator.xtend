@@ -8,6 +8,8 @@ import ru.agentlab.maia.context.modifier.MaiaRootContextModifier
 import ru.agentlab.maia.execution.IMaiaExecutorService
 import ru.agentlab.maia.execution.action.annotated.AnnotatedAction
 import ru.agentlab.maia.execution.tree.IExecutionNode
+import ru.agentlab.maia.execution.tree.IExecutionScheduler
+import ru.agentlab.maia.execution.tree.impl.DataInputParameter
 
 class Activator implements BundleActivator {
 
@@ -44,21 +46,32 @@ class Activator implements BundleActivator {
 		val agent = container.createAgent => [
 			deploy(AgentExample)
 			set("debugString", "agent1")
+			get(IExecutionNode).addInput(new DataInputParameter("text", String))
 		]
 //		container.createAgent
 //		container.createAgent
 //		container.createAgent
 //		container.createAgent
-
 		val behaviour = agent.createBehaviour => [
-			remove(IExecutionNode)
-			deploy(new AnnotatedAction(PrintlnAction), IExecutionNode)
 			set("debugString", "behaviour1")
+			val action = new AnnotatedAction(PrintlnAction)
+			deploy(action, IExecutionNode)
+			val input = action.getInput("input")
+			if (input != null) {
+				set("key", "WORKS")
+				input.key = "key"
+			}
 		]
-//		agent.createBehaviour => [
-//			deploy(new AnnotatedAction(PrintlnAction), IExecutionNode)
-//			set("debugString", "behaviour2")
-//		]
+		agent.createBehaviour => [
+			set("debugString", "behaviour2")
+			val action = new AnnotatedAction(PrintlnAction)
+			deploy(action, IExecutionNode)
+			val input = action.getInput("input")
+			if (input != null) {
+				set("key", "WORKS2")
+				input.key = "key"
+			}
+		]
 //		agent.createBehaviour => [
 //			deploy(new AnnotatedAction(PrintlnAction), IExecutionNode)
 //			set("debugString", "behaviour3")
@@ -67,11 +80,9 @@ class Activator implements BundleActivator {
 //			deploy(new AnnotatedAction(PrintlnAction), IExecutionNode)
 //			set("debugString", "behaviour4")
 //		]
-
 		container.get(IMaiaExecutorService).start
-		//Thread.sleep(100)
-		//container.get(IMaiaExecutorService).stop
-
+	// Thread.sleep(100)
+	// container.get(IMaiaExecutorService).stop
 //		agent => [
 //			get(IMaiaContextLifecycleService).state = FipaLifecycleScheme.STATE_ACTIVE
 //
