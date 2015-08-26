@@ -35,7 +35,7 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 		testChilds()
 	}
 
-	def synchronized void addLink(IDataParameter from, IDataParameter to) {
+	def synchronized void addLink(IDataParameter<?> from, IDataParameter<?> to) {
 		if (from.key != null && from.key.length > 0) {
 			to.key = from.key
 		}
@@ -52,10 +52,24 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 	}
 
 	/** 
-	 * Removes all contexts from the nodes queue and removes self from parent scheduler.
+	 * Removes all nodes from the queue.
+	 * That method have side effect - after method execution
+	 * state of this node can change. It depends of checklist.
 	 */
 	override synchronized void removeAll() {
 		childs.clear
+		testChilds()
+	}
+
+	/** 
+	 * Removes specified node from the queue.
+	 * That method have side effect - after method execution
+	 * state of this node can change. It depends of checklist.
+	 * 
+	 * @param node - node to be deleted
+	 */
+	override removeChild(IExecutionNode node) {
+		childs -= node
 		testChilds()
 	}
 

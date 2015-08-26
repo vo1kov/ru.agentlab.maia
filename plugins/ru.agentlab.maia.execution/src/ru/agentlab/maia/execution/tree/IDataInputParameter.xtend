@@ -1,4 +1,4 @@
 package ru.agentlab.maia.execution.tree
 
-interface IDataInputParameter extends IDataParameter {
+interface IDataInputParameter<T> extends IDataParameter<T> {
 }

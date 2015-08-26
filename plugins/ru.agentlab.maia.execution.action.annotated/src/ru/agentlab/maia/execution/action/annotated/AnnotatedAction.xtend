@@ -6,6 +6,8 @@ import ru.agentlab.maia.context.IMaiaContextInjector
 import ru.agentlab.maia.execution.action.annotation.Action
 import ru.agentlab.maia.execution.action.annotation.Input
 import ru.agentlab.maia.execution.action.annotation.Output
+import ru.agentlab.maia.execution.tree.IDataInputParameter
+import ru.agentlab.maia.execution.tree.IDataOutputParameter
 import ru.agentlab.maia.execution.tree.impl.AbstractAction
 import ru.agentlab.maia.execution.tree.impl.DataInputParameter
 import ru.agentlab.maia.execution.tree.impl.DataOutputParameter
@@ -22,14 +24,24 @@ class AnnotatedAction extends AbstractAction {
 		super(clazz)
 		actionClass.declaredFields.filter[isAnnotationPresent(Input)].forEach [
 			inputFields += it
-			addInput(new DataInputParameter(name, type))
+			addInput(createInput(name, it))
 		]
 		actionClass.declaredFields.filter[isAnnotationPresent(Output)].forEach [
 			outputFields += it
-			addOutput(new DataOutputParameter(name, type))
+			addOutput(createOutput(name, it))
 		]
 		inputFields.trimToSize
 		outputFields.trimToSize
+	}
+	
+	def <T> IDataInputParameter<T> createInput(String name, Field field){
+		val c = field.type as Class<T>
+		new DataInputParameter(name, c)
+	}
+	
+	def <T> IDataOutputParameter<T> createOutput(String name, Field field){
+		val c = field.type as Class<T>
+		new DataOutputParameter(name, c)
 	}
 
 	override doInject() {

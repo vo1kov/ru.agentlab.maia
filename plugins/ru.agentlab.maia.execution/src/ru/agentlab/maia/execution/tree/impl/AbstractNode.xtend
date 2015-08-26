@@ -4,7 +4,6 @@ import java.util.ArrayList
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 import javax.inject.Inject
-import org.eclipse.xtend.lib.annotations.AccessorType
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.check.IParametersCheck
@@ -15,23 +14,21 @@ import ru.agentlab.maia.execution.tree.IDataParameter
 import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.execution.tree.IExecutionScheduler
 
-import static extension org.eclipse.xtend.lib.annotations.AccessorType.*
-
 abstract class AbstractNode implements IExecutionNode {
 
-	val protected inputs = new ArrayList<IDataInputParameter>
+	val protected inputs = new ArrayList<IDataInputParameter<?>>
 
-	val protected outputs = new ArrayList<IDataOutputParameter>
+	val protected outputs = new ArrayList<IDataOutputParameter<?>>
 
 	val protected parametersChecklist = new ArrayList<IParametersCheck>
 
 	@Inject
 	protected IMaiaContext context
 
-	@Accessors(AccessorType.PUBLIC_GETTER)
+	@Accessors(PUBLIC_GETTER)
 	IExecutionScheduler parent
 
-	@Accessors(AccessorType.PUBLIC_GETTER)
+	@Accessors(PUBLIC_GETTER)
 	ExecutionNodeState state = ExecutionNodeState.UNKNOWN
 
 	@PostConstruct
@@ -79,12 +76,12 @@ abstract class AbstractNode implements IExecutionNode {
 		activate()
 	}
 
-	override synchronized void addInput(IDataInputParameter input) {
+	override synchronized void addInput(IDataInputParameter<?> input) {
 		inputs += input
 		testPatameters()
 	}
 
-	override synchronized removeInput(IDataInputParameter input) {
+	override synchronized removeInput(IDataInputParameter<?> input) {
 		inputs.remove(input)
 		testPatameters()
 	}
@@ -93,12 +90,12 @@ abstract class AbstractNode implements IExecutionNode {
 		return inputs.findFirst[it.name == name]
 	}
 
-	override synchronized void addOutput(IDataOutputParameter output) {
+	override synchronized void addOutput(IDataOutputParameter<?> output) {
 		outputs += output
 		testPatameters()
 	}
 
-	override synchronized removeOutput(IDataOutputParameter output) {
+	override synchronized removeOutput(IDataOutputParameter<?> output) {
 		outputs.remove(output)
 		testPatameters()
 	}
@@ -111,10 +108,6 @@ abstract class AbstractNode implements IExecutionNode {
 		class.simpleName + " [" + state + "]"
 	}
 
-	override synchronized getParameters() {
-		return outputs + inputs
-	}
-
 	override synchronized getInputs() {
 		return inputs
 	}
@@ -123,12 +116,12 @@ abstract class AbstractNode implements IExecutionNode {
 		return outputs
 	}
 
-	override addParameter(IDataParameter parameter) {
+	override addParameter(IDataParameter<?> parameter) {
 		switch (parameter) {
-			IDataInputParameter: {
+			IDataInputParameter<?>: {
 				addInput(parameter)
 			}
-			IDataOutputParameter: {
+			IDataOutputParameter<?>: {
 				addOutput(parameter)
 			}
 			default: {
@@ -137,12 +130,12 @@ abstract class AbstractNode implements IExecutionNode {
 		}
 	}
 
-	override removeParameter(IDataParameter parameter) {
+	override removeParameter(IDataParameter<?> parameter) {
 		switch (parameter) {
-			IDataInputParameter: {
+			IDataInputParameter<?>: {
 				removeInput(parameter)
 			}
-			IDataOutputParameter: {
+			IDataOutputParameter<?>: {
 				removeOutput(parameter)
 			}
 			default: {

@@ -2,13 +2,13 @@ package ru.agentlab.maia.execution.tree
 
 interface IDataLink {
 
-	def IDataParameter getFrom()
+	def IDataParameter<?> getFrom()
 
-	def void setFrom(IDataParameter from)
+	def void setFrom(IDataParameter<?> from)
 
-	def IDataParameter getTo()
+	def IDataParameter<?> getTo()
 
-	def void setTo(IDataParameter to)
+	def void setTo(IDataParameter<?> to)
 
 	def String getKey()
 

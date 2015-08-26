@@ -4,15 +4,17 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.execution.tree.IDataParameter
 
 @Accessors
-abstract class AbstractParameter implements IDataParameter {
+abstract class AbstractParameter<T> implements IDataParameter<T> {
 
 	val String name
 
-	val Class<?> type
+	val Class<T> type
 
 	var String key
+	
+	var T value
 
-	new(String name, Class<?> type) {
+	new(String name, Class<T> type) {
 		this.name = name
 		this.type = type
 	}

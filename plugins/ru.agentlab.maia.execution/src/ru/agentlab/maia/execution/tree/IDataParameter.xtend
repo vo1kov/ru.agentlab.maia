@@ -1,6 +1,6 @@
 package ru.agentlab.maia.execution.tree
 
-interface IDataParameter {
+interface IDataParameter<T> {
 	
 	def String getName()
 	

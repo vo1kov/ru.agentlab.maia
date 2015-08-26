@@ -8,13 +8,13 @@ import ru.agentlab.maia.execution.tree.IDataParameter
 @Accessors
 class DataLink implements IDataLink {
 
-	IDataParameter from
+	IDataParameter<?> from
 
-	IDataParameter to
+	IDataParameter<?> to
 
 	String key
 
-	new(IDataParameter from, IDataParameter to) {
+	new(IDataParameter<?> from, IDataParameter<?> to) {
 		this.from = from
 		this.to = to
 		key = UUID.randomUUID.toString
