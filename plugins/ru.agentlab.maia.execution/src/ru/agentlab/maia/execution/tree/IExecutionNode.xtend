@@ -3,21 +3,23 @@ package ru.agentlab.maia.execution.tree
 interface IExecutionNode {
 
 	def void run()
-
-	def IDataParameter getInput(String name)
-
-	def void addInput(IDataParameter input)
-
-	def void removeInput(IDataParameter input)
-
-	def IDataParameter getOutput(String name)
-
-	def void addOutput(IDataParameter output)
-
-	def void removeOutput(IDataParameter output)
-	
 	def IExecutionScheduler getParent()
-	
 	def ExecutionNodeState getState()
+
+	def Iterable<? extends IDataParameter> getParameters()
+	def Iterable<IDataInputParameter> getInputs()
+	def Iterable<IDataOutputParameter> getOutputs()
+
+	def void addParameter(IDataParameter parameter)
+	def void addInput(IDataInputParameter input)
+	def void addOutput(IDataOutputParameter output)
+
+	def void removeParameter(IDataParameter parameter)
+	def void removeInput(IDataInputParameter input)
+	def void removeOutput(IDataOutputParameter output)
+
+	def IDataParameter getParameter(String name)
+	def IDataInputParameter getInput(String name)
+	def IDataOutputParameter getOutput(String name)
 
 }
