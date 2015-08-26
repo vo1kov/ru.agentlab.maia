@@ -5,7 +5,7 @@ import ru.agentlab.maia.execution.tree.IDataParameter
 
 class AllParametersHaveKey implements IParametersCheck {
 	
-	override test(Iterable<IDataParameter> parameters) {
+	override test(Iterable<? extends IDataParameter> parameters) {
 		return parameters.findFirst[key == null] == null
 	}
 	
