@@ -59,7 +59,7 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 		testChilds()
 	}
 
-	def private void testChilds() {
+	def protected void testChilds() {
 		for (check : childChecklist) {
 			if (!check.test(childs)) {
 				deactivate()

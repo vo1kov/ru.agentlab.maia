@@ -9,6 +9,8 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.check.IParametersCheck
 import ru.agentlab.maia.execution.tree.ExecutionNodeState
+import ru.agentlab.maia.execution.tree.IDataInputParameter
+import ru.agentlab.maia.execution.tree.IDataOutputParameter
 import ru.agentlab.maia.execution.tree.IDataParameter
 import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.execution.tree.IExecutionScheduler
@@ -17,11 +19,11 @@ import static extension org.eclipse.xtend.lib.annotations.AccessorType.*
 
 abstract class AbstractNode implements IExecutionNode {
 
-	val protected inputs = new ArrayList<IDataParameter>
+	val protected inputs = new ArrayList<IDataInputParameter>
 
-	val protected outputs = new ArrayList<IDataParameter>
+	val protected outputs = new ArrayList<IDataOutputParameter>
 
-	val protected dataChecklist = new ArrayList<IParametersCheck>
+	val protected parametersChecklist = new ArrayList<IParametersCheck>
 
 	@Inject
 	protected IMaiaContext context
@@ -63,8 +65,8 @@ abstract class AbstractNode implements IExecutionNode {
 		}
 	}
 
-	def private void testPatameters() {
-		for (check : dataChecklist) {
+	def protected void testPatameters() {
+		for (check : parametersChecklist) {
 			if (!check.test(inputs)) {
 				deactivate()
 				return
@@ -77,12 +79,12 @@ abstract class AbstractNode implements IExecutionNode {
 		activate()
 	}
 
-	override synchronized void addInput(IDataParameter input) {
+	override synchronized void addInput(IDataInputParameter input) {
 		inputs += input
 		testPatameters()
 	}
 
-	override synchronized removeInput(IDataParameter input) {
+	override synchronized removeInput(IDataInputParameter input) {
 		inputs.remove(input)
 		testPatameters()
 	}
@@ -91,12 +93,12 @@ abstract class AbstractNode implements IExecutionNode {
 		return inputs.findFirst[it.name == name]
 	}
 
-	override synchronized void addOutput(IDataParameter output) {
+	override synchronized void addOutput(IDataOutputParameter output) {
 		outputs += output
 		testPatameters()
 	}
 
-	override synchronized removeOutput(IDataParameter output) {
+	override synchronized removeOutput(IDataOutputParameter output) {
 		outputs.remove(output)
 		testPatameters()
 	}
@@ -105,8 +107,57 @@ abstract class AbstractNode implements IExecutionNode {
 		return outputs.findFirst[it.name == name]
 	}
 
-	override toString() {
+	override synchronized toString() {
 		class.simpleName + " [" + state + "]"
+	}
+
+	override synchronized getParameters() {
+		return outputs + inputs
+	}
+
+	override synchronized getInputs() {
+		return inputs
+	}
+
+	override synchronized getOutputs() {
+		return outputs
+	}
+
+	override addParameter(IDataParameter parameter) {
+		switch (parameter) {
+			IDataInputParameter: {
+				addInput(parameter)
+			}
+			IDataOutputParameter: {
+				addOutput(parameter)
+			}
+			default: {
+				throw new IllegalArgumentException('''Parameter with type «parameter.class» is unsupported''')
+			}
+		}
+	}
+
+	override removeParameter(IDataParameter parameter) {
+		switch (parameter) {
+			IDataInputParameter: {
+				removeInput(parameter)
+			}
+			IDataOutputParameter: {
+				removeOutput(parameter)
+			}
+			default: {
+				throw new IllegalArgumentException('''Parameter with type «parameter.class» is unsupported''')
+			}
+		}
+	}
+
+	override getParameter(String name) {
+		val input = getInput(name)
+		if (input != null) {
+			return input
+		} else {
+			return getOutput(name)
+		}
 	}
 
 }
