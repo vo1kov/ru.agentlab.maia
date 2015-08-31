@@ -6,10 +6,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.runners.MockitoJUnitRunner
-import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.execution.action.IMaiaContextAction
-import ru.agentlab.maia.execution.scheduler.IMaiaExecutorScheduler
 import ru.agentlab.maia.execution.scheduler.sequence.SequenceContextScheduler
+import ru.agentlab.maia.execution.tree.IExecutionAction
+import ru.agentlab.maia.execution.tree.IExecutionScheduler
 
 import static org.junit.Assert.*
 
@@ -17,19 +16,16 @@ import static org.junit.Assert.*
 class SequenceContextSchedulerAddTest {
 
 	@Mock
-	IMaiaContext context
+	IExecutionAction action1
 
 	@Mock
-	IMaiaContextAction action1
+	IExecutionAction action2
 
-	@Mock
-	IMaiaContextAction action2
-
-	IMaiaExecutorScheduler scheduler
+	IExecutionScheduler scheduler
 
 	@Before
 	def void beforeEach() {
-		scheduler = new SequenceContextScheduler(context) => [
+		scheduler = new SequenceContextScheduler => [
 			addChild(action1)
 			addChild(action2)
 		]
@@ -43,34 +39,34 @@ class SequenceContextSchedulerAddTest {
 	@Test
 	def void testActionOrder() {
 		scheduler => [
-			assertEquals(action1, nextContext)
-			assertEquals(action2, nextContext)
-			assertEquals(action1, nextContext)
-			assertEquals(action2, nextContext)
-			assertEquals(action1, nextContext)
-			assertEquals(action2, nextContext)
+			assertEquals(action1, nextChild)
+			assertEquals(action2, nextChild)
+			assertEquals(action1, nextChild)
+			assertEquals(action2, nextChild)
+			assertEquals(action1, nextChild)
+			assertEquals(action2, nextChild)
 		]
 	}
 
 	@Test
 	def void testFirstAction() {
-		assertEquals(action1, scheduler.nextContext)
+		assertEquals(action1, scheduler.nextChild)
 	}
-	
+
 	@Test
 	def void testDuplicateAdd() {
 		scheduler => [
-			add(action1)
-			add(action2)
-			add(action1)
-			add(action2)
-			assertEquals(action1, nextContext)
-			assertEquals(action2, nextContext)
-			assertEquals(action1, nextContext)
-			assertEquals(action2, nextContext)
-			assertEquals(action1, nextContext)
-			assertEquals(action2, nextContext)
+			addChild(action1)
+			addChild(action2)
+			addChild(action1)
+			addChild(action2)
+			assertEquals(action1, nextChild)
+			assertEquals(action2, nextChild)
+			assertEquals(action1, nextChild)
+			assertEquals(action2, nextChild)
+			assertEquals(action1, nextChild)
+			assertEquals(action2, nextChild)
 		]
 	}
-	
+
 }
