@@ -8,16 +8,16 @@ import ru.agentlab.maia.execution.tree.IDataParameter
 import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.execution.tree.IExecutionScheduler
 
+@Accessors(PUBLIC_GETTER)
 abstract class AbstractScheduler extends AbstractNode implements IExecutionScheduler {
 
-	@Accessors
 	val protected dataLinks = new ArrayList<IDataLink>
 
-	@Accessors
 	val protected childs = new ArrayList<IExecutionNode>
 
-	@Accessors
 	val protected childChecklist = new ArrayList<IChildsCheck>
+
+	var protected IExecutionNode currentChild
 
 	override run() {
 		var IExecutionNode node = null
@@ -68,7 +68,7 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 	 * 
 	 * @param node - node to be deleted
 	 */
-	override removeChild(IExecutionNode node) {
+	override synchronized removeChild(IExecutionNode node) {
 		childs -= node
 		testChilds()
 	}

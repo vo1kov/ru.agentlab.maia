@@ -1,15 +1,11 @@
 package ru.agentlab.maia.execution.scheduler.sequence
 
-import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.execution.tree.impl.AbstractScheduler
 
 class SequenceContextScheduler extends AbstractScheduler {
 
 	int index = -1
-
-	@Accessors(PUBLIC_GETTER)
-	var IExecutionNode currentChild
 
 	/**
 	 * <p>Removes a specified node from the nodes queue.</p>
