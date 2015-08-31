@@ -6,23 +6,18 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.runners.MockitoJUnitRunner
-import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.execution.action.IMaiaContextAction
+import ru.agentlab.maia.execution.tree.IExecutionAction
 
 import static org.junit.Assert.*
-import static org.mockito.Mockito.*
 
 @RunWith(MockitoJUnitRunner)
 class SequenceSchedulerTests {
 
 	@Mock
-	IMaiaContext context
+	IExecutionAction action1
 
 	@Mock
-	IMaiaContextAction action1
-
-	@Mock
-	IMaiaContextAction action2
+	IExecutionAction action2
 
 	SequenceContextScheduler scheduler
 
@@ -30,7 +25,7 @@ class SequenceSchedulerTests {
 	def void beforeEach() {
 //		action1 = mock(IMaiaContextAction)
 //		action2 = mock(IMaiaContextAction)
-		scheduler = new SequenceContextScheduler(context)
+		scheduler = new SequenceContextScheduler
 	}
 
 	@After
@@ -43,7 +38,7 @@ class SequenceSchedulerTests {
 		for (i : 0 ..< 5) {
 			scheduler.addChild(action1)
 		}
-		assertEquals(1, scheduler.readyContexts.size)
+		assertEquals(1, scheduler.childs.size)
 	}
 
 	@Test
@@ -52,7 +47,7 @@ class SequenceSchedulerTests {
 			addChild(action1)
 			addChild(action2)
 		]
-		scheduler.readyContexts => [
+		scheduler.childs => [
 			println(it)
 //			assertTrue(action1 + "is NOT before " + action2, indexOf(action1) < indexOf(action2))
 		]
