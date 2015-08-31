@@ -20,11 +20,7 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 	var protected IExecutionNode currentChild
 
 	override run() {
-		var IExecutionNode node = null
-		synchronized (this) {
-			node = nextChild
-		}
-		node?.run
+		nextChild?.run
 	}
 
 	override synchronized notifyChildActivation(IExecutionNode node) {
