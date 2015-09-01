@@ -32,7 +32,8 @@ class SequenceSchedulerNextChildTests {
 
 	@Test
 	def void nextChildBeginsFromFirst() {
-		val childs = getFakeChilds(10)
+		val size = 10
+		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
 
 		val next = scheduler.nextChild
@@ -42,7 +43,8 @@ class SequenceSchedulerNextChildTests {
 
 	@Test
 	def void nextChildChangesCurrenChild() {
-		val childs = getFakeChilds(10)
+		val size = 10
+		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
 
 		for (i : 0 ..< 10) {
@@ -55,12 +57,13 @@ class SequenceSchedulerNextChildTests {
 
 	@Test
 	def void nextChildOverloadFromBegin() {
-		val childs = getFakeChilds(10)
+		val size = 10
+		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
 
-		for (i : 0 ..< 100) {
+		for (i : 0 ..< size * 3) {
 			val next = scheduler.nextChild
-			if (i % 10 == 0) {
+			if (i % size == 0) {
 				assertThat(next, equalTo(childs.get(0)))
 			}
 		}
@@ -68,10 +71,11 @@ class SequenceSchedulerNextChildTests {
 
 	@Test
 	def void nextChildReturnsInOrder() {
-		val childs = getFakeChilds(10)
+		val size = 10
+		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
 
-		for (i : 0 ..< 10) {
+		for (i : 0 ..< size) {
 			val next = scheduler.nextChild
 
 			assertThat(next, equalTo(childs.get(i)))

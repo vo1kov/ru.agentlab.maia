@@ -24,7 +24,9 @@ class SequenceSchedulerRemoveAllTests {
 
 	@Test
 	def void removeAllClearsQueueSize() {
-		when(scheduler.childs).thenReturn(getFakeChilds(10))
+		val size = 10
+		val childs = getFakeChilds(size)
+		when(scheduler.childs).thenReturn(childs)
 
 		scheduler.removeAll
 
@@ -33,9 +35,10 @@ class SequenceSchedulerRemoveAllTests {
 
 	@Test
 	def void removeAllClearsCurrenNode() {
-		val childs = getFakeChilds(10)
+		val size = 10
+		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
-		scheduler.currentChild = childs.get(rnd.nextInt(10))
+		scheduler.currentChild = childs.get(rnd.nextInt(childs.size))
 
 		scheduler.removeAll
 
@@ -44,12 +47,14 @@ class SequenceSchedulerRemoveAllTests {
 
 	@Test
 	def void removeAllStartsSchedulingFromBegin() {
-		val childs = getFakeChilds(10)
+		val size = 10
+		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
-		scheduler.currentChild = childs.get(rnd.nextInt(10))
+		scheduler.currentChild = childs.get(rnd.nextInt(childs.size))
 
 		scheduler.removeAll
-		val newChilds = getFakeChilds(10)
+		val newSize = 10
+		val newChilds = getFakeChilds(newSize)
 		when(scheduler.childs).thenReturn(newChilds)
 
 		assertThat(scheduler.nextChild, equalTo(newChilds.get(0)))
