@@ -25,7 +25,7 @@ class SequenceSchedulerRemoveChildTests {
 	IExecutionScheduler scheduler = new SequenceContextScheduler
 
 	@Test
-	def void removeChildWithUnknownChild() {
+	def void silenceOnUnknownChild() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -36,9 +36,22 @@ class SequenceSchedulerRemoveChildTests {
 		assertThat(scheduler.childs, iterableWithSize(size))
 		assertThat(scheduler.childs, contains(childs.toArray))
 	}
+	
+	@Test
+	def void silenceOnNullParameter() {
+		val size = 10
+		val childs = getFakeChilds(size)
+		when(scheduler.childs).thenReturn(childs)
+		assertThat(scheduler.childs, iterableWithSize(size))
+
+		scheduler.removeChild(null)
+
+		assertThat(scheduler.childs, iterableWithSize(size))
+		assertThat(scheduler.childs, contains(childs.toArray))
+	}
 
 	@Test
-	def void removeChildDecreaseQueueSize() {
+	def void decreaseQueueSize() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -50,7 +63,7 @@ class SequenceSchedulerRemoveChildTests {
 	}
 
 	@Test
-	def void removeAllClearsCurrenNode() {
+	def void clearCurrenNodeWhenLast() {
 		val child = mock(IExecutionNode)
 		val childs = new ArrayList<IExecutionNode> => [
 			add(child)
@@ -65,7 +78,7 @@ class SequenceSchedulerRemoveChildTests {
 	}
 
 	@Test
-	def void removeChildRemoveFromQueue() {
+	def void removeFromQueue() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)

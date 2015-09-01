@@ -22,14 +22,14 @@ class SequenceSchedulerRunTests {
 	IExecutionScheduler scheduler = new SequenceContextScheduler
 
 	@Test
-	def void runDelegatesToEmptyChilds() {
+	def void delegateToEmptyChilds() {
 		when(scheduler.childs).thenReturn(Collections.EMPTY_LIST)
 
 		scheduler.run
 	}
 	
 	@Test
-	def void runDelegatesToSingleChilds() {
+	def void delegateToSingleChilds() {
 		val child = mock(IExecutionNode)
 		when(scheduler.childs).thenReturn(#[child])
 
@@ -39,7 +39,7 @@ class SequenceSchedulerRunTests {
 	}
 
 	@Test
-	def void runDelegatesToMultipleChilds() {
+	def void delegateToMultipleChilds() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)

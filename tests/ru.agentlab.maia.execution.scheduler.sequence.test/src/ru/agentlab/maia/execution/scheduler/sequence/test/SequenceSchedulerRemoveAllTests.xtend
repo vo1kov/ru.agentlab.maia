@@ -23,7 +23,7 @@ class SequenceSchedulerRemoveAllTests {
 	IExecutionScheduler scheduler = new SequenceContextScheduler
 
 	@Test
-	def void removeAllClearsQueueSize() {
+	def void clearQueueSize() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -35,7 +35,7 @@ class SequenceSchedulerRemoveAllTests {
 	}
 
 	@Test
-	def void removeAllClearsCurrenNode() {
+	def void clearCurrenNode() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -50,7 +50,7 @@ class SequenceSchedulerRemoveAllTests {
 	}
 
 	@Test
-	def void removeAllStartsSchedulingFromBegin() {
+	def void startSchedulingFromBegin() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)

@@ -21,7 +21,7 @@ class SequenceSchedulerGetNextChildTests {
 	IExecutionScheduler scheduler = new SequenceContextScheduler
 
 	@Test
-	def void getNextChildWithEmptyQueue() {
+	def void silenceOnEmptyQueue() {
 		val childs = Collections.EMPTY_LIST
 		when(scheduler.childs).thenReturn(childs)
 		assertThat(scheduler.childs, emptyIterable)
@@ -32,7 +32,7 @@ class SequenceSchedulerGetNextChildTests {
 	}
 
 	@Test
-	def void getNextChildBeginsFromFirst() {
+	def void beginFromFirst() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -44,7 +44,7 @@ class SequenceSchedulerGetNextChildTests {
 	}
 
 	@Test
-	def void getNextChildChangesCurrenChild() {
+	def void changeCurrenChild() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -59,7 +59,7 @@ class SequenceSchedulerGetNextChildTests {
 	}
 
 	@Test
-	def void getNextChildOverloadFromBegin() {
+	def void overloadRestartFromBegin() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -74,7 +74,7 @@ class SequenceSchedulerGetNextChildTests {
 	}
 
 	@Test
-	def void getNextChildReturnsInOrder() {
+	def void returnChildsInOrder() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
