@@ -41,6 +41,7 @@ class SequenceSchedulerAddChildTests {
 			scheduler.addChild(action)
 			cache.add(i, action)
 		}
+		assertThat(scheduler.childs, iterableWithSize(size))
 		assertThat(scheduler.childs, contains(cache.toArray))
 	}
 
