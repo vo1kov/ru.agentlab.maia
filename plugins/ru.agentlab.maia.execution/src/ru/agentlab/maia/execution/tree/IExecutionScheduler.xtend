@@ -22,7 +22,7 @@ interface IExecutionScheduler extends IExecutionNode {
 
 	def void notifyChildDeactivation(IExecutionNode node)
 
-	def void removeChild(IExecutionNode node)
+	def IExecutionNode removeChild(IExecutionNode node)
 
 	def void removeAll()
 

@@ -40,6 +40,9 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 	}
 
 	override synchronized void addChild(IExecutionNode child) {
+		if (child == null) {
+			return
+		}
 		if (!getChilds.contains(child)) {
 			getChilds += child
 			testChilds()
@@ -66,15 +69,23 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 	 * state of this node can change. It depends of checklist.
 	 * 
 	 * @param node - node to be deleted
+	 * 
+	 * @return node previously at the scheduler 
 	 */
 	override synchronized removeChild(IExecutionNode node) {
+		if (node == null) {
+			return null
+		}
 		val index = getChilds.indexOf(node)
 		if (index != -1) {
-			getChilds.remove(index)
+			val removed = getChilds.remove(index)
 			testChilds()
-			if(getChilds.length == 0){
+			if (getChilds.length == 0) {
 				currentChild = null
 			}
+			return removed
+		} else {
+			return null
 		}
 	}
 
