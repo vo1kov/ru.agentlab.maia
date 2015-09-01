@@ -21,6 +21,7 @@ class SequenceSchedulerAddChildTests {
 
 	@Test
 	def void addChildsChangeQueueSize() {
+		assertThat(scheduler.childs, emptyIterable)
 		val size = 10
 		for (i : 0 ..< size) {
 			val action = mock(IExecutionNode)
@@ -33,6 +34,7 @@ class SequenceSchedulerAddChildTests {
 	def void addChildsInSameOrder() {
 		val size = 10
 		val cache = new ArrayList<IExecutionNode>
+		assertThat(scheduler.childs, emptyIterable)
 
 		for (i : 0 ..< size) {
 			val action = mock(IExecutionNode)
@@ -46,6 +48,7 @@ class SequenceSchedulerAddChildTests {
 	def void addChildsDuplicatesNotChangeQueue() {
 		val size = 10
 		val cache = new ArrayList<IExecutionNode>
+		assertThat(scheduler.childs, emptyIterable)
 
 		for (i : 0 ..< size) {
 			val action = mock(IExecutionNode)

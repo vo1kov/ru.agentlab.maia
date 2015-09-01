@@ -28,6 +28,7 @@ class SequenceSchedulerRemoveChildTests {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
+		assertThat(scheduler.childs, iterableWithSize(size))
 
 		scheduler.removeChild(mock(IExecutionNode))
 
@@ -52,12 +53,12 @@ class SequenceSchedulerRemoveChildTests {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
-		assertThat(scheduler.childs, iterableWithSize(size))
-
 		val toRemove = childs.get(rnd.nextInt(childs.size))
+		assertThat(toRemove, isIn(scheduler.childs))
+		
 		scheduler.removeChild(toRemove)
 
-		assertThat(scheduler.childs, not(scheduler.childs.contains(toRemove)))
+		assertThat(toRemove, not(isIn(scheduler.childs)))
 	}
 
 }

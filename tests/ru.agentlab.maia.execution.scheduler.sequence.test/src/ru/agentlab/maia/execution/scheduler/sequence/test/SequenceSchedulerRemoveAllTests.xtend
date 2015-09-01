@@ -27,6 +27,7 @@ class SequenceSchedulerRemoveAllTests {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
+		assertThat(scheduler.childs, not(emptyIterable))
 
 		scheduler.removeAll
 
@@ -38,7 +39,10 @@ class SequenceSchedulerRemoveAllTests {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
+		assertThat(scheduler.childs, not(emptyIterable))
 		scheduler.currentChild = childs.get(rnd.nextInt(childs.size))
+		assertThat(scheduler.currentChild, notNullValue)
+		assertThat(scheduler.currentChild, isIn(scheduler.childs))
 
 		scheduler.removeAll
 
@@ -50,7 +54,10 @@ class SequenceSchedulerRemoveAllTests {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
+		assertThat(scheduler.childs, not(emptyIterable))
 		scheduler.currentChild = childs.get(rnd.nextInt(childs.size))
+		assertThat(scheduler.currentChild, notNullValue)
+		assertThat(scheduler.currentChild, isIn(scheduler.childs))
 
 		scheduler.removeAll
 		val newSize = 10

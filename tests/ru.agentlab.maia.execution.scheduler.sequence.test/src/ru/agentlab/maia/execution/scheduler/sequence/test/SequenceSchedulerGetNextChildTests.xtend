@@ -24,6 +24,7 @@ class SequenceSchedulerGetNextChildTests {
 	def void getNextChildWithEmptyQueue() {
 		val childs = Collections.EMPTY_LIST
 		when(scheduler.childs).thenReturn(childs)
+		assertThat(scheduler.childs, emptyIterable)
 
 		val next = scheduler.nextChild
 
@@ -35,6 +36,7 @@ class SequenceSchedulerGetNextChildTests {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
+		assertThat(scheduler.childs, not(emptyIterable))
 
 		val next = scheduler.nextChild
 
@@ -46,6 +48,7 @@ class SequenceSchedulerGetNextChildTests {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
+		assertThat(scheduler.childs, not(emptyIterable))
 
 		for (i : 0 ..< 10) {
 			val next = scheduler.nextChild
@@ -60,6 +63,7 @@ class SequenceSchedulerGetNextChildTests {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
+		assertThat(scheduler.childs, not(emptyIterable))
 
 		for (i : 0 ..< size * 3) {
 			val next = scheduler.nextChild
@@ -74,6 +78,7 @@ class SequenceSchedulerGetNextChildTests {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
+		assertThat(scheduler.childs, not(emptyIterable))
 
 		for (i : 0 ..< size) {
 			val next = scheduler.nextChild
