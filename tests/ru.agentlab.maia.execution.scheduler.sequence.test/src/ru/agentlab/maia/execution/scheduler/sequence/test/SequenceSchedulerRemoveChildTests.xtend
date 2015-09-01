@@ -31,14 +31,27 @@ class SequenceSchedulerRemoveChildTests {
 		when(scheduler.childs).thenReturn(childs)
 		assertThat(scheduler.childs, iterableWithSize(size))
 
-		scheduler.removeChild(mock(IExecutionNode))
+		val removed = scheduler.removeChild(mock(IExecutionNode))
 
+		assertThat(removed, nullValue)
 		assertThat(scheduler.childs, iterableWithSize(size))
 		assertThat(scheduler.childs, contains(childs.toArray))
 	}
 	
 	@Test
-	def void silenceOnNullParameter() {
+	def void returnNullOnUnknownChild() {
+		val size = 10
+		val childs = getFakeChilds(size)
+		when(scheduler.childs).thenReturn(childs)
+		assertThat(scheduler.childs, iterableWithSize(size))
+
+		val removed = scheduler.removeChild(mock(IExecutionNode))
+
+		assertThat(removed, nullValue)
+	}
+	
+	@Test
+	def void silenceOnNullChild() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -49,7 +62,32 @@ class SequenceSchedulerRemoveChildTests {
 		assertThat(scheduler.childs, iterableWithSize(size))
 		assertThat(scheduler.childs, contains(childs.toArray))
 	}
+	
+	@Test
+	def void returnNullOnNullChild() {
+		val size = 10
+		val childs = getFakeChilds(size)
+		when(scheduler.childs).thenReturn(childs)
+		assertThat(scheduler.childs, iterableWithSize(size))
 
+		val removed = scheduler.removeChild(null)
+
+		assertThat(removed, nullValue)
+	}
+	
+	@Test
+	def void returnRemoved() {
+		val size = 10
+		val childs = getFakeChilds(size)
+		when(scheduler.childs).thenReturn(childs)
+		assertThat(scheduler.childs, iterableWithSize(size))
+		
+		val toRemove = childs.get(rnd.nextInt(childs.size))
+		val removed = scheduler.removeChild(toRemove)
+
+		assertThat(removed, equalTo(toRemove))
+	}
+	
 	@Test
 	def void decreaseQueueSize() {
 		val size = 10
@@ -71,6 +109,7 @@ class SequenceSchedulerRemoveChildTests {
 		when(scheduler.childs).thenReturn(childs)
 		assertThat(scheduler.childs, iterableWithSize(1))
 		scheduler.currentChild = child
+		assertThat(scheduler.currentChild, notNullValue)
 
 		scheduler.removeChild(child)
 
