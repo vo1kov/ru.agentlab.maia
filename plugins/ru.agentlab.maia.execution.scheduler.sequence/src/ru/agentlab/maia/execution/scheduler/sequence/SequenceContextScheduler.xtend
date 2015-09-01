@@ -18,15 +18,21 @@ class SequenceContextScheduler extends AbstractScheduler {
 	 * @param
 	 * 		node - node to be removed from scheduler.
 	 */
-	override synchronized void removeChild(IExecutionNode node) {
+	override synchronized removeChild(IExecutionNode node) {
+		if (node == null) {
+			return null
+		}
 		val i = childs.indexOf(node)
 		if (i != UNKNOWN) {
-			super.removeChild(node)
+			val result = super.removeChild(node)
 			if (i < index) {
 				index = index - 1
 			} else if (i == index && index == childs.size()) {
 				index = 0
 			}
+			return result
+		} else {
+			return null
 		}
 	}
 
