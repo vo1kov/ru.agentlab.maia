@@ -47,14 +47,14 @@ abstract class AbstractNode implements IExecutionNode {
 		state = ExecutionNodeState.DELETED
 	}
 
-	def protected void deactivate() {
+	override void deactivate() {
 		if (state != ExecutionNodeState.INACTIVE) {
 			state = ExecutionNodeState.INACTIVE
 			parent?.notifyChildDeactivation(this)
 		}
 	}
 
-	def protected void activate() {
+	override void activate() {
 		if (state != ExecutionNodeState.ACTIVE) {
 			state = ExecutionNodeState.ACTIVE
 			parent?.notifyChildActivation(this)

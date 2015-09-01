@@ -7,6 +7,10 @@ interface IExecutionNode {
 	def IExecutionScheduler getParent()
 
 	def ExecutionNodeState getState()
+	
+	def void deactivate()
+	
+	def void activate()
 
 	def Iterable<IDataInputParameter<?>> getInputs()
 
