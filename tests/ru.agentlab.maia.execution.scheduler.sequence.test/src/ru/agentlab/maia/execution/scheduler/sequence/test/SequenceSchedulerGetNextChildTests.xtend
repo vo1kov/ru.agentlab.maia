@@ -13,7 +13,7 @@ import static org.junit.Assert.*
 import static org.mockito.Mockito.*
 
 @RunWith(MockitoJUnitRunner)
-class SequenceSchedulerNextChildTests {
+class SequenceSchedulerGetNextChildTests {
 
 	extension SequenceSchedulerTestsExtension = new SequenceSchedulerTestsExtension
 
@@ -21,7 +21,7 @@ class SequenceSchedulerNextChildTests {
 	IExecutionScheduler scheduler = new SequenceContextScheduler
 
 	@Test
-	def void nextChildWithEmptyQueue() {
+	def void getNextChildWithEmptyQueue() {
 		val childs = Collections.EMPTY_LIST
 		when(scheduler.childs).thenReturn(childs)
 
@@ -31,7 +31,7 @@ class SequenceSchedulerNextChildTests {
 	}
 
 	@Test
-	def void nextChildBeginsFromFirst() {
+	def void getNextChildBeginsFromFirst() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -42,7 +42,7 @@ class SequenceSchedulerNextChildTests {
 	}
 
 	@Test
-	def void nextChildChangesCurrenChild() {
+	def void getNextChildChangesCurrenChild() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -56,7 +56,7 @@ class SequenceSchedulerNextChildTests {
 	}
 
 	@Test
-	def void nextChildOverloadFromBegin() {
+	def void getNextChildOverloadFromBegin() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -70,7 +70,7 @@ class SequenceSchedulerNextChildTests {
 	}
 
 	@Test
-	def void nextChildReturnsInOrder() {
+	def void getNextChildReturnsInOrder() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
