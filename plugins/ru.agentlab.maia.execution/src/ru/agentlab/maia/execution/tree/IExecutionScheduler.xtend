@@ -1,16 +1,20 @@
 package ru.agentlab.maia.execution.tree
 
+import java.util.List
+
 interface IExecutionScheduler extends IExecutionNode {
 
 	val static public String KEY_CURRENT_CONTEXT = "ru.agentlab.maia.execution.scheduler|current.context"
 
 	def IExecutionNode getCurrentChild()
 
+	def void setCurrentChild(IExecutionNode node)
+
 	def IExecutionNode getNextChild()
 
-	def Iterable<IDataLink> getDataLinks()
+	def List<IDataLink> getDataLinks()
 
-	def Iterable<IExecutionNode> getChilds()
+	def List<IExecutionNode> getChilds()
 
 	def void addChild(IExecutionNode node)
 

@@ -3,6 +3,7 @@ package ru.agentlab.maia.execution.scheduler.sequence.test
 import java.util.ArrayList
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.execution.scheduler.sequence.SequenceContextScheduler
 import ru.agentlab.maia.execution.tree.IExecutionNode
@@ -15,24 +16,23 @@ import static org.mockito.Mockito.*
 @RunWith(MockitoJUnitRunner)
 class SequenceSchedulerAddChildTests {
 
+	@Spy
 	IExecutionScheduler scheduler = new SequenceContextScheduler
 
 	@Test
 	def void addChildsChangeQueueSize() {
-		assertThat(scheduler.childs, emptyIterable)
-		val uniqueCount = 10
-		for (i : 0 ..< uniqueCount) {
+		for (i : 0 ..< 10) {
 			val action = mock(IExecutionNode)
 			scheduler.addChild(action)
 		}
-		assertThat(scheduler.childs, iterableWithSize(uniqueCount))
+		assertThat(scheduler.childs, iterableWithSize(10))
 	}
 
+	@Test
 	def void addChildsInSameOrder() {
 		val cache = new ArrayList<IExecutionNode>
 
-		val uniqueCount = 10
-		for (i : 0 ..< uniqueCount) {
+		for (i : 0 ..< 10) {
 			val action = mock(IExecutionNode)
 			scheduler.addChild(action)
 			cache.add(i, action)
@@ -44,22 +44,19 @@ class SequenceSchedulerAddChildTests {
 	def void addChildsDuplicatesNotChangeQueue() {
 		val cache = new ArrayList<IExecutionNode>
 
-		assertThat(scheduler.childs, emptyIterable)
-		val uniqueCount = 10
-		for (i : 0 ..< uniqueCount) {
+		for (i : 0 ..< 10) {
 			val action = mock(IExecutionNode)
 			scheduler.addChild(action)
 			cache.add(i, action)
 		}
-		assertThat(scheduler.childs, iterableWithSize(uniqueCount))
+		assertThat(scheduler.childs, iterableWithSize(10))
 		assertThat(scheduler.childs, contains(cache.toArray))
 
-		val duplicateCount = 10
-		for (i : 0 ..< duplicateCount) {
-			val action = cache.get(i % uniqueCount)
+		for (i : 0 ..< 10) {
+			val action = cache.get(i)
 			scheduler.addChild(action)
 		}
-		assertThat(scheduler.childs, iterableWithSize(uniqueCount))
+		assertThat(scheduler.childs, iterableWithSize(10))
 		assertThat(scheduler.childs, contains(cache.toArray))
 	}
 

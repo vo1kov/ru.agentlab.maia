@@ -2,61 +2,57 @@ package ru.agentlab.maia.execution.scheduler.sequence.test
 
 import java.util.Random
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.Spy
+import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.execution.scheduler.sequence.SequenceContextScheduler
-import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.execution.tree.IExecutionScheduler
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
 
+@RunWith(MockitoJUnitRunner)
 class SequenceSchedulerRemoveAllTests {
 
 	val rnd = new Random
 
-	IExecutionScheduler scheduler = new SequenceContextScheduler
+	extension SequenceSchedulerTestExtension = new SequenceSchedulerTestExtension
 
-	def private void fillScheduler(IExecutionScheduler scheduler, int count) {
-		for (i : 0 ..< count) {
-			val action = mock(IExecutionNode)
-			scheduler.addChild(action)
-		}
-	}
+	@Spy
+	IExecutionScheduler scheduler = new SequenceContextScheduler
 
 	@Test
 	def void removeAllClearsQueueSize() {
-		scheduler.fillScheduler(10)
-		assertThat(scheduler.childs, iterableWithSize(greaterThan(0)))
+		when(scheduler.childs).thenReturn(getFakeChilds(10))
+
 		scheduler.removeAll
+
 		assertThat(scheduler.childs, emptyIterable)
 	}
 
 	@Test
 	def void removeAllClearsCurrenNode() {
-		scheduler.fillScheduler(10)
-		for (i : 0 ..< rnd.nextInt(10)) {
-			scheduler.nextChild
-		}
-		assertThat(scheduler.currentChild, notNullValue)
+		val childs = getFakeChilds(10)
+		when(scheduler.childs).thenReturn(childs)
+		scheduler.currentChild = childs.get(rnd.nextInt(10))
+
 		scheduler.removeAll
+
 		assertThat(scheduler.currentChild, nullValue)
 	}
-	
+
 	@Test
 	def void removeAllStartsSchedulingFromBegin() {
-		scheduler.fillScheduler(10)
-		for (i : 0 ..< rnd.nextInt(10)) {
-			scheduler.nextChild
-		}
-		assertThat(scheduler.currentChild, notNullValue)
+		val childs = getFakeChilds(10)
+		when(scheduler.childs).thenReturn(childs)
+		scheduler.currentChild = childs.get(rnd.nextInt(10))
+
 		scheduler.removeAll
-		assertThat(scheduler.currentChild, nullValue)
-		assertThat(scheduler.childs, emptyIterable)
-		
-		var IExecutionNode first = mock(IExecutionNode)
-		scheduler.addChild(first)
-		scheduler.fillScheduler(10)
-		assertThat(scheduler.nextChild, equalTo(first))
+		val newChilds = getFakeChilds(10)
+		when(scheduler.childs).thenReturn(newChilds)
+
+		assertThat(scheduler.nextChild, equalTo(newChilds.get(0)))
 	}
 
 }

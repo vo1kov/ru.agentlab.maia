@@ -1,6 +1,7 @@
 package ru.agentlab.maia.execution.tree.impl
 
 import java.util.ArrayList
+import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.execution.check.IChildsCheck
 import ru.agentlab.maia.execution.tree.IDataLink
@@ -8,16 +9,16 @@ import ru.agentlab.maia.execution.tree.IDataParameter
 import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.execution.tree.IExecutionScheduler
 
-@Accessors(PUBLIC_GETTER)
+@Accessors
 abstract class AbstractScheduler extends AbstractNode implements IExecutionScheduler {
 
-	val protected dataLinks = new ArrayList<IDataLink>
+	val dataLinks = new ArrayList<IDataLink>
 
-	val protected childs = new ArrayList<IExecutionNode>
+	val childs = new ArrayList<IExecutionNode>
 
-	val protected childChecklist = new ArrayList<IChildsCheck>
+	val childChecklist = new ArrayList<IChildsCheck>
 
-	var protected IExecutionNode currentChild
+	var IExecutionNode currentChild
 
 	override run() {
 		nextChild?.run
@@ -35,18 +36,18 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 		if (from.key != null && from.key.length > 0) {
 			to.key = from.key
 		}
-		dataLinks += new DataLink(from, to)
+		getDataLinks += new DataLink(from, to)
 	}
 
 	override synchronized void addChild(IExecutionNode child) {
-		if (!childs.contains(child)) {
-			childs += child
+		if (!getChilds.contains(child)) {
+			getChilds += child
 			testChilds()
 		}
 	}
 
 	override synchronized isEmpty() {
-		return childs.empty
+		return getChilds.empty
 	}
 
 	/** 
@@ -55,7 +56,7 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 	 * state of this node can change. It depends of checklist.
 	 */
 	override synchronized void removeAll() {
-		childs.clear
+		getChilds.clear
 		testChilds()
 	}
 
@@ -67,17 +68,17 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 	 * @param node - node to be deleted
 	 */
 	override synchronized removeChild(IExecutionNode node) {
-		childs -= node
+		getChilds -= node
 		testChilds()
 	}
 
 	def protected void testChilds() {
-		for (check : childChecklist) {
-			if (!check.test(childs)) {
+		for (check : getChildChecklist) {
+			if (!check.test(getChilds)) {
 				deactivate()
 				return
 			}
-			if (!check.test(childs)) {
+			if (!check.test(getChilds)) {
 				deactivate()
 				return
 			}
@@ -87,6 +88,14 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 
 	override synchronized IExecutionNode getCurrentChild() {
 		return currentChild
+	}
+
+	override synchronized List<IExecutionNode> getChilds() {
+		return childs
+	}
+
+	override synchronized List<IDataLink> getDataLinks() {
+		return dataLinks
 	}
 
 }
