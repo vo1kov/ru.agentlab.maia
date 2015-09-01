@@ -68,8 +68,14 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 	 * @param node - node to be deleted
 	 */
 	override synchronized removeChild(IExecutionNode node) {
-		getChilds -= node
-		testChilds()
+		val index = getChilds.indexOf(node)
+		if (index != -1) {
+			getChilds.remove(index)
+			testChilds()
+			if(getChilds.length == 0){
+				currentChild = null
+			}
+		}
 	}
 
 	def protected void testChilds() {

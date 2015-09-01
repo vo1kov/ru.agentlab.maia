@@ -1,5 +1,6 @@
 package ru.agentlab.maia.execution.scheduler.sequence.test
 
+import java.util.ArrayList
 import java.util.Random
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -49,13 +50,28 @@ class SequenceSchedulerRemoveChildTests {
 	}
 
 	@Test
+	def void removeAllClearsCurrenNode() {
+		val child = mock(IExecutionNode)
+		val childs = new ArrayList<IExecutionNode> => [
+			add(child)
+		]
+		when(scheduler.childs).thenReturn(childs)
+		assertThat(scheduler.childs, iterableWithSize(1))
+		scheduler.currentChild = child
+
+		scheduler.removeChild(child)
+
+		assertThat(scheduler.currentChild, nullValue)
+	}
+
+	@Test
 	def void removeChildRemoveFromQueue() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
 		val toRemove = childs.get(rnd.nextInt(childs.size))
 		assertThat(toRemove, isIn(scheduler.childs))
-		
+
 		scheduler.removeChild(toRemove)
 
 		assertThat(toRemove, not(isIn(scheduler.childs)))
