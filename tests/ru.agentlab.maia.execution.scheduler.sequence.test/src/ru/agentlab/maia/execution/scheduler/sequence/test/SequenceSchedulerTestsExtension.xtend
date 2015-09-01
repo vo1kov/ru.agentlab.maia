@@ -5,7 +5,7 @@ import ru.agentlab.maia.execution.tree.IExecutionNode
 
 import static org.mockito.Mockito.*
 
-class SequenceSchedulerTestExtension {
+class SequenceSchedulerTestsExtension {
 
 	def ArrayList<IExecutionNode> getFakeChilds(int size) {
 		val childs = new ArrayList<IExecutionNode>
