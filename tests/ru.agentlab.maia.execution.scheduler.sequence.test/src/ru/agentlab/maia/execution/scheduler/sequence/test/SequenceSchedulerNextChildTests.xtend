@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*
 @RunWith(MockitoJUnitRunner)
 class SequenceSchedulerNextChildTests {
 
-	extension SequenceSchedulerTestExtension = new SequenceSchedulerTestExtension
+	extension SequenceSchedulerTestsExtension = new SequenceSchedulerTestsExtension
 
 	@Spy
 	IExecutionScheduler scheduler = new SequenceContextScheduler

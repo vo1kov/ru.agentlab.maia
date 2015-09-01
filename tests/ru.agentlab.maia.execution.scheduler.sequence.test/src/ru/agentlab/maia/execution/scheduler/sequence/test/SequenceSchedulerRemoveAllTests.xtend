@@ -17,7 +17,7 @@ class SequenceSchedulerRemoveAllTests {
 
 	val rnd = new Random
 
-	extension SequenceSchedulerTestExtension = new SequenceSchedulerTestExtension
+	extension SequenceSchedulerTestsExtension = new SequenceSchedulerTestsExtension
 
 	@Spy
 	IExecutionScheduler scheduler = new SequenceContextScheduler
