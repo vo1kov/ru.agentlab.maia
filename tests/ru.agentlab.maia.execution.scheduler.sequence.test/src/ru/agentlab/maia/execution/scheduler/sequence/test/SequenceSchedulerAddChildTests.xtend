@@ -41,7 +41,7 @@ class SequenceSchedulerAddChildTests {
 	}
 
 	@Test
-	def void addDuplicatesNotChangeQueue() {
+	def void addChildsDuplicatesNotChangeQueue() {
 		val cache = new ArrayList<IExecutionNode>
 
 		assertThat(scheduler.childs, emptyIterable)
