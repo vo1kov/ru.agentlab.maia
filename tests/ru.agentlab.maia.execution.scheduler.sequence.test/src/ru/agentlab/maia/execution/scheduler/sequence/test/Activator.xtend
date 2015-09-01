@@ -40,6 +40,7 @@ class Activator implements BundleActivator {
 			run(SequenceSchedulerRemoveChildTests)
 			run(SequenceSchedulerRunTests)
 		]
+		System.exit(0)
 	}
 
 	@Override
