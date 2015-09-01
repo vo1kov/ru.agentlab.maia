@@ -38,6 +38,7 @@ class Activator implements BundleActivator {
 			run(SequenceSchedulerGetNextChildTests)
 			run(SequenceSchedulerRemoveAllTests)
 			run(SequenceSchedulerRemoveChildTests)
+			run(SequenceSchedulerRunTests)
 		]
 	}
 
