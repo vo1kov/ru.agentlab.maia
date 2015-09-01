@@ -5,7 +5,9 @@ import ru.agentlab.maia.execution.tree.impl.AbstractScheduler
 
 class SequenceContextScheduler extends AbstractScheduler {
 
-	int index = -1
+	val static UNKNOWN = -1
+
+	int index = UNKNOWN
 
 	/**
 	 * <p>Removes a specified node from the nodes queue.</p>
@@ -18,7 +20,7 @@ class SequenceContextScheduler extends AbstractScheduler {
 	 */
 	override synchronized void removeChild(IExecutionNode node) {
 		val i = childs.indexOf(node)
-		if (i != -1) {
+		if (i != UNKNOWN) {
 			super.removeChild(node)
 			if (i < index) {
 				index = index - 1
@@ -33,7 +35,8 @@ class SequenceContextScheduler extends AbstractScheduler {
 	 */
 	override synchronized void removeAll() {
 		super.removeAll()
-		index = 0
+		index = UNKNOWN
+		currentChild = null
 	}
 
 	override synchronized getNextChild() {

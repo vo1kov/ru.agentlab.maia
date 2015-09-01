@@ -39,8 +39,10 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 	}
 
 	override synchronized void addChild(IExecutionNode child) {
-		childs += child
-		testChilds()
+		if (!childs.contains(child)) {
+			childs += child
+			testChilds()
+		}
 	}
 
 	override synchronized isEmpty() {
@@ -81,6 +83,10 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 			}
 		}
 		activate()
+	}
+
+	override synchronized IExecutionNode getCurrentChild() {
+		return currentChild
 	}
 
 }

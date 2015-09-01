@@ -12,7 +12,8 @@ Require-Bundle: com.google.guava,
  org.mockito;bundle-version="1.9.5",
  ru.agentlab.maia.context;bundle-version="1.0.0",
  ru.agentlab.maia.execution;bundle-version="1.0.0",
- ru.agentlab.maia.execution.scheduler.sequence;bundle-version="1.0.0"
+ ru.agentlab.maia.execution.scheduler.sequence;bundle-version="1.0.0",
+ org.hamcrest;bundle-version="1.1.0"
 Import-Package: org.osgi.framework;version="1.8.0"
 Bundle-Activator: ru.agentlab.maia.execution.scheduler.sequence.test.Activator
 

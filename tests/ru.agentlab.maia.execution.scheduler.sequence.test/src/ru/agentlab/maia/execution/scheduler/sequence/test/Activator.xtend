@@ -25,7 +25,7 @@ class Activator implements BundleActivator {
 				override testRunFinished(Result result) throws Exception {
 					result => [
 						if (wasSuccessful) {
-							println("SUCCESSFULL")
+							println(result.toString + " SUCCESSFULL")
 						} else {
 							println("FAIL")
 							println(failureCount)
@@ -34,7 +34,9 @@ class Activator implements BundleActivator {
 				}
 
 			})
-			run(SequenceContextSchedulerAddTest)
+			run(SequenceSchedulerAddChildTests)
+			run(SequenceSchedulerNextChildTests)
+			run(SequenceSchedulerRemoveAllTests)
 		]
 	}
 
