@@ -5,8 +5,8 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.execution.scheduler.scheme.IMaiaExecutorSchedulerScheme
-import ru.agentlab.maia.execution.scheduler.scheme.SchemeScheduler
+import ru.agentlab.maia.execution.scheduler.pattern.PatternScheduler
+import ru.agentlab.maia.execution.scheduler.pattern.PatternScheme
 import ru.agentlab.maia.execution.tree.IExecutionAction
 
 @RunWith(MockitoJUnitRunner)
@@ -16,7 +16,7 @@ class SchemeSchedulerTest {
 	IMaiaContext context
 
 	@Mock
-	IMaiaExecutorSchedulerScheme scheme
+	PatternScheme scheme
 
 	@Mock
 	IExecutionAction action1
@@ -24,7 +24,7 @@ class SchemeSchedulerTest {
 	@Mock
 	IExecutionAction action2
 
-	SchemeScheduler scheduler = new SchemeScheduler(context, scheme)
+	PatternScheduler scheduler = new PatternScheduler(context, scheme)
 
 	@Test
 	def void test() {
