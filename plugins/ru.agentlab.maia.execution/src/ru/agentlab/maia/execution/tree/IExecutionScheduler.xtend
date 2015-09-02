@@ -4,8 +4,6 @@ import java.util.List
 
 interface IExecutionScheduler extends IExecutionNode {
 
-	val static public String KEY_CURRENT_CONTEXT = "ru.agentlab.maia.execution.scheduler|current.context"
-
 	def IExecutionNode getCurrent()
 
 	def void setCurrent(IExecutionNode node)

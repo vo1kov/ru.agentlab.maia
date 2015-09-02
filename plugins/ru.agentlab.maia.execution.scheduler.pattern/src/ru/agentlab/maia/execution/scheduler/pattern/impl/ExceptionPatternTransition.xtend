@@ -2,7 +2,6 @@ package ru.agentlab.maia.execution.scheduler.pattern.impl
 
 import org.eclipse.xtend.lib.annotations.AccessorType
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.execution.scheduler.pattern.state.PatternState
 
 import static extension org.eclipse.xtend.lib.annotations.AccessorType.*
 

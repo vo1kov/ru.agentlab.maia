@@ -1,7 +1,6 @@
 package ru.agentlab.maia.execution.scheduler.pattern.impl
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.execution.scheduler.pattern.state.PatternState
 import ru.agentlab.maia.execution.scheduler.pattern.IPatternTransition
 
 @Accessors

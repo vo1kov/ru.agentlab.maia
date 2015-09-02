@@ -5,12 +5,6 @@ import java.util.Collection
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.execution.scheduler.pattern.IPatternScheme
-import ru.agentlab.maia.execution.scheduler.pattern.state.PatternState
-import ru.agentlab.maia.execution.scheduler.pattern.transition.AbstractPatternTransition
-import ru.agentlab.maia.execution.scheduler.pattern.transition.DefaultPatternTransition
-import ru.agentlab.maia.execution.scheduler.pattern.transition.EventPatternTransition
-import ru.agentlab.maia.execution.scheduler.pattern.transition.ExceptionPatternTransition
-import ru.agentlab.maia.execution.scheduler.pattern.transition.StatusPatternTransition
 import ru.agentlab.maia.execution.scheduler.pattern.IPatternState
 
 @Accessors
@@ -49,9 +43,9 @@ class PatternScheme implements IPatternScheme {
 		allTransitions += transitions
 	}
 
-	def protected Collection<PatternState> getStates(){}
+	def protected Collection<PatternState> getStates() {}
 
-	def protected Collection<AbstractPatternTransition> getTransitions(){}
+	def protected Collection<AbstractPatternTransition> getTransitions() {}
 
 	def getName() {
 		this.class.name
@@ -75,7 +69,7 @@ class PatternScheme implements IPatternScheme {
 	def private PatternState getNextExceptionState(Class<? extends Exception> exceptionClass) {
 		val transition = transitions.findFirst [
 			if (it instanceof ExceptionPatternTransition) {
-				return exceptionClass.isAssignableFrom(it.throwable) && fromState == currentState
+				return exceptionClass.isAssignableFrom(it.exception) && fromState == currentState
 			} else {
 				return false
 			}
@@ -86,15 +80,15 @@ class PatternScheme implements IPatternScheme {
 	def private Iterable<AbstractPatternTransition> getPossibleTransitions() {
 		return transitions.filter[fromState == currentState]
 	}
-	
+
 	override addDefaultTransition(IPatternState from, IPatternState to) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+
 	override addExceptionTransition(IPatternState from, IPatternState to, Class<? extends RuntimeException> exc) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+
 	override addEventTransition(IPatternState from, IPatternState to, String topic) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
