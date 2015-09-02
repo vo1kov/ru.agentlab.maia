@@ -92,11 +92,11 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 	def protected void testChilds() {
 		for (check : getChildChecklist) {
 			if (!check.test(getChilds)) {
-				deactivate()
+				block()
 				return
 			}
 			if (!check.test(getChilds)) {
-				deactivate()
+				block()
 				return
 			}
 		}

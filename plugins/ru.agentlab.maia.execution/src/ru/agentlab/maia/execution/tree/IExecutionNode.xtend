@@ -8,7 +8,7 @@ interface IExecutionNode {
 
 	def ExecutionNodeState getState()
 	
-	def void deactivate()
+	def void block()
 	
 	def void activate()
 

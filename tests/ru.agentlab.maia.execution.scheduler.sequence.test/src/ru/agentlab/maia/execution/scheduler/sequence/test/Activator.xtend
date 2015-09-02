@@ -39,6 +39,7 @@ class Activator implements BundleActivator {
 			run(SequenceSchedulerRemoveAllTests)
 			run(SequenceSchedulerRemoveChildTests)
 			run(SequenceSchedulerRunTests)
+			run(SequenceSchedulerDeploymentTests)
 		]
 		System.exit(0)
 	}

@@ -7,7 +7,7 @@ import ru.agentlab.maia.execution.tree.IExecutionScheduler
 class BlockOnFinishPolicy implements ISchedulingFinishPolicy {
 
 	override onEnd(IMaiaContext context, IExecutionScheduler scheduler) {
-		scheduler.deactivate
+		scheduler.block
 	}
 
 }

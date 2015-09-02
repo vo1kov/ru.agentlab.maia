@@ -13,6 +13,7 @@ import ru.agentlab.maia.execution.tree.IDataOutputParameter
 import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.execution.tree.IExecutionScheduler
 
+@Accessors(PUBLIC_GETTER)
 abstract class AbstractNode implements IExecutionNode {
 
 	val protected inputs = new ArrayList<IDataInputParameter<?>>
@@ -22,21 +23,22 @@ abstract class AbstractNode implements IExecutionNode {
 	val protected parametersChecklist = new ArrayList<IParametersCheck>
 
 	@Inject
-	protected IMaiaContext context
+	IMaiaContext context
 
-	@Accessors(PUBLIC_GETTER)
 	IExecutionScheduler parent
 
-	@Accessors(PUBLIC_GETTER)
 	ExecutionNodeState state = ExecutionNodeState.UNKNOWN
 
 	@PostConstruct
 	def void init() {
-		parent = context.parent.get(IExecutionNode) as IExecutionScheduler
-		if (parent != null) {
-			parent.addChild(this)
+		val parentContext = context.parent
+		if (parentContext != null) {
+			parent = parentContext.get(IExecutionNode) as IExecutionScheduler
+			if (parent != null) {
+				parent.addChild(this)
+			}
 		}
-		state = ExecutionNodeState.ADDED
+		state = ExecutionNodeState.INSTALLED
 	}
 
 	@PreDestroy
@@ -44,12 +46,12 @@ abstract class AbstractNode implements IExecutionNode {
 		if (parent != null) {
 			parent.removeChild(this)
 		}
-		state = ExecutionNodeState.DELETED
+		state = ExecutionNodeState.UNKNOWN
 	}
 
-	override void deactivate() {
-		if (state != ExecutionNodeState.INACTIVE) {
-			state = ExecutionNodeState.INACTIVE
+	override void block() {
+		if (state != ExecutionNodeState.BLOCKED) {
+			state = ExecutionNodeState.BLOCKED
 			parent?.notifyChildDeactivation(this)
 		}
 	}
@@ -64,11 +66,11 @@ abstract class AbstractNode implements IExecutionNode {
 	def protected void testPatameters() {
 		for (check : parametersChecklist) {
 			if (!check.test(inputs)) {
-				deactivate()
+				block()
 				return
 			}
 			if (!check.test(outputs)) {
-				deactivate()
+				block()
 				return
 			}
 		}
