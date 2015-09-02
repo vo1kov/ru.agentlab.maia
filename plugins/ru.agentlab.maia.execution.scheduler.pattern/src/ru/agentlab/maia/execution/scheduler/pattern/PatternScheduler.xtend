@@ -1,4 +1,4 @@
-package ru.agentlab.maia.execution.scheduler.scheme
+package ru.agentlab.maia.execution.scheduler.pattern
 
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
@@ -6,16 +6,16 @@ import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.execution.tree.impl.AbstractScheduler
 
-class SchemeScheduler extends AbstractScheduler {
+class PatternScheduler extends AbstractScheduler {
 
 	val stateMapping = new ConcurrentHashMap<String, IExecutionNode>
 
 	IMaiaContext context
 	
-	IMaiaExecutorSchedulerScheme scheme
+	PatternScheme scheme
 
 	@Inject
-	new(IMaiaContext context, IMaiaExecutorSchedulerScheme scheme) {
+	new(IMaiaContext context, PatternScheme scheme) {
 		this.context = context
 		this.scheme = scheme
 	}
