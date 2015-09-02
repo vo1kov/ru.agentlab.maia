@@ -4,7 +4,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.execution.tree.IExecutionNode
 
 @Accessors
-class FsmTransition {
+abstract class AbstractFsmTransition implements IFsmTransition {
 
 	String name
 
