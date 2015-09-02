@@ -10,7 +10,7 @@ interface IExecutionScheduler extends IExecutionNode {
 
 	def void setCurrentChild(IExecutionNode node)
 
-	def IExecutionNode getNextChild()
+	def IExecutionNode getNextChild() throws IllegalSchedulerStateException
 
 	def List<IDataLink> getDataLinks()
 
