@@ -26,7 +26,7 @@ class SequenceSchedulerGetNextChildTests {
 		when(scheduler.childs).thenReturn(childs)
 		assertThat(scheduler.childs, emptyIterable)
 
-		val next = scheduler.nextChild
+		val next = scheduler.schedule
 
 		assertThat(next, nullValue)
 	}
@@ -38,7 +38,7 @@ class SequenceSchedulerGetNextChildTests {
 		when(scheduler.childs).thenReturn(childs)
 		assertThat(scheduler.childs, not(emptyIterable))
 
-		val next = scheduler.nextChild
+		val next = scheduler.schedule
 
 		assertThat(next, equalTo(childs.get(0)))
 	}
@@ -51,8 +51,8 @@ class SequenceSchedulerGetNextChildTests {
 		assertThat(scheduler.childs, not(emptyIterable))
 
 		for (i : 0 ..< 10) {
-			val next = scheduler.nextChild
-			val current = scheduler.currentChild
+			val next = scheduler.schedule
+			val current = scheduler.current
 
 			assertThat(next, equalTo(current))
 		}
@@ -66,7 +66,7 @@ class SequenceSchedulerGetNextChildTests {
 		assertThat(scheduler.childs, not(emptyIterable))
 
 		for (i : 0 ..< size * 3) {
-			val next = scheduler.nextChild
+			val next = scheduler.schedule
 			if (i % size == 0) {
 				assertThat(next, equalTo(childs.get(0)))
 			}
@@ -81,7 +81,7 @@ class SequenceSchedulerGetNextChildTests {
 		assertThat(scheduler.childs, not(emptyIterable))
 
 		for (i : 0 ..< size) {
-			val next = scheduler.nextChild
+			val next = scheduler.schedule
 
 			assertThat(next, equalTo(childs.get(i)))
 		}

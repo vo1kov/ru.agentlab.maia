@@ -11,9 +11,10 @@ import ru.agentlab.maia.execution.scheduler.pattern.transition.DefaultPatternTra
 import ru.agentlab.maia.execution.scheduler.pattern.transition.EventPatternTransition
 import ru.agentlab.maia.execution.scheduler.pattern.transition.ExceptionPatternTransition
 import ru.agentlab.maia.execution.scheduler.pattern.transition.StatusPatternTransition
+import ru.agentlab.maia.execution.scheduler.pattern.IPatternState
 
 @Accessors
-abstract class PatternScheme implements IPatternScheme {
+class PatternScheme implements IPatternScheme {
 
 	val public static STATE_INITIAL = new PatternState("INITIAL")
 
@@ -48,9 +49,9 @@ abstract class PatternScheme implements IPatternScheme {
 		allTransitions += transitions
 	}
 
-	def protected Collection<PatternState> getStates()
+	def protected Collection<PatternState> getStates(){}
 
-	def protected Collection<AbstractPatternTransition> getTransitions()
+	def protected Collection<AbstractPatternTransition> getTransitions(){}
 
 	def getName() {
 		this.class.name
@@ -84,6 +85,18 @@ abstract class PatternScheme implements IPatternScheme {
 
 	def private Iterable<AbstractPatternTransition> getPossibleTransitions() {
 		return transitions.filter[fromState == currentState]
+	}
+	
+	override addDefaultTransition(IPatternState from, IPatternState to) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override addExceptionTransition(IPatternState from, IPatternState to, Class<? extends RuntimeException> exc) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override addEventTransition(IPatternState from, IPatternState to, String topic) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 }

@@ -7,14 +7,11 @@ import ru.agentlab.maia.execution.tree.IExecutionNode
 @Accessors
 abstract class AbstractFsmTransition implements IFsmTransition {
 
-	String name
-
 	IExecutionNode from
 
 	IExecutionNode to
 
-	new(String name, IExecutionNode from, IExecutionNode to) {
-		this.name = name
+	new(IExecutionNode from, IExecutionNode to) {
 		this.from = from
 		this.to = to
 	}

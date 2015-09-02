@@ -63,7 +63,7 @@ class PatternScheduler extends AbstractScheduler implements IPatternScheduler {
 //		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
-	override getNextChild() {
+	override schedule() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 

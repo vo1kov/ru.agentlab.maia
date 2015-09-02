@@ -1,6 +1,8 @@
 package ru.agentlab.maia.execution.scheduler.sequence
 
+import ru.agentlab.maia.execution.tree.ExecutionNodeState
 import ru.agentlab.maia.execution.tree.IExecutionNode
+import ru.agentlab.maia.execution.tree.IllegalSchedulerStateException
 import ru.agentlab.maia.execution.tree.impl.AbstractScheduler
 
 class SequenceContextScheduler extends AbstractScheduler {
@@ -42,17 +44,20 @@ class SequenceContextScheduler extends AbstractScheduler {
 	override synchronized void removeAll() {
 		super.removeAll()
 		index = UNKNOWN
-		currentChild = null
+		current = null
 	}
 
-	override synchronized getNextChild() {
+	override synchronized schedule() throws IllegalSchedulerStateException {
+		if (state != ExecutionNodeState.ACTIVE) {
+			throw new IllegalSchedulerStateException("Only Scheduler in ACTIVE state can schedule.")
+		}
 		if (childs.empty) {
-			currentChild = null
+			current = null
 		} else {
 			index = (index + 1) % childs.size
-			currentChild = childs.get(index)
+			current = childs.get(index)
 		}
-		return currentChild
+		return current
 	}
 
 }

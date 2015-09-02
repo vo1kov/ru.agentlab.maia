@@ -24,7 +24,7 @@ class SequenceSchedulerRunTests {
 	@Test
 	def void invokeNextChild() {
 		scheduler.run
-		verify(scheduler).nextChild
+		verify(scheduler).schedule
 	}
 
 	@Test

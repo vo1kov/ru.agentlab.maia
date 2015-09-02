@@ -18,10 +18,10 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 
 	val childChecklist = new ArrayList<IChildsCheck>
 
-	var IExecutionNode currentChild
+	var IExecutionNode current
 
 	override run() {
-		nextChild?.run
+		schedule?.run
 	}
 
 	override synchronized notifyChildActivation(IExecutionNode node) {
@@ -81,7 +81,7 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 			val removed = getChilds.remove(index)
 			testChilds()
 			if (getChilds.length == 0) {
-				currentChild = null
+				setCurrent = null
 			}
 			return removed
 		} else {
@@ -103,8 +103,8 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 		activate()
 	}
 
-	override synchronized IExecutionNode getCurrentChild() {
-		return currentChild
+	override synchronized IExecutionNode getCurrent() {
+		return current
 	}
 
 	override synchronized List<IExecutionNode> getChilds() {

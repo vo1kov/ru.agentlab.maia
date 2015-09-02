@@ -4,8 +4,11 @@ import ru.agentlab.maia.execution.tree.IExecutionNode
 
 class EventFsmTransition extends AbstractFsmTransition {
 
-	new(String name, IExecutionNode from, IExecutionNode to) {
-		super(name, from, to)
+	String topic
+
+	new(IExecutionNode from, IExecutionNode to, String topic) {
+		super(from, to)
+		this.topic = topic
 	}
 
 }

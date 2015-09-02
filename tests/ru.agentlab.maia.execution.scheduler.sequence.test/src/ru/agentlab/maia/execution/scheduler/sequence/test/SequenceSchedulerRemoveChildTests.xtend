@@ -108,12 +108,12 @@ class SequenceSchedulerRemoveChildTests {
 		]
 		when(scheduler.childs).thenReturn(childs)
 		assertThat(scheduler.childs, iterableWithSize(1))
-		scheduler.currentChild = child
-		assertThat(scheduler.currentChild, notNullValue)
+		scheduler.current = child
+		assertThat(scheduler.current, notNullValue)
 
 		scheduler.removeChild(child)
 
-		assertThat(scheduler.currentChild, nullValue)
+		assertThat(scheduler.current, nullValue)
 	}
 
 	@Test

@@ -6,11 +6,11 @@ interface IExecutionScheduler extends IExecutionNode {
 
 	val static public String KEY_CURRENT_CONTEXT = "ru.agentlab.maia.execution.scheduler|current.context"
 
-	def IExecutionNode getCurrentChild()
+	def IExecutionNode getCurrent()
 
-	def void setCurrentChild(IExecutionNode node)
+	def void setCurrent(IExecutionNode node)
 
-	def IExecutionNode getNextChild() throws IllegalSchedulerStateException
+	def IExecutionNode schedule() throws IllegalSchedulerStateException
 
 	def List<IDataLink> getDataLinks()
 
