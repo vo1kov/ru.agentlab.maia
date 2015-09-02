@@ -5,8 +5,8 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.execution.scheduler.pattern.PatternScheduler
-import ru.agentlab.maia.execution.scheduler.pattern.PatternScheme
+import ru.agentlab.maia.execution.scheduler.pattern.impl.PatternScheduler
+import ru.agentlab.maia.execution.scheduler.pattern.impl.PatternScheme
 import ru.agentlab.maia.execution.tree.IExecutionAction
 
 @RunWith(MockitoJUnitRunner)
