@@ -7,7 +7,7 @@ import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.scheduler.scheme.IMaiaExecutorSchedulerScheme
 import ru.agentlab.maia.execution.scheduler.scheme.SchemeScheduler
-import ru.agentlab.maia.execution.IMaiaExecutorAction
+import ru.agentlab.maia.execution.tree.IExecutionAction
 
 @RunWith(MockitoJUnitRunner)
 class SchemeSchedulerTest {
@@ -19,10 +19,10 @@ class SchemeSchedulerTest {
 	IMaiaExecutorSchedulerScheme scheme
 
 	@Mock
-	IMaiaExecutorAction action1
+	IExecutionAction action1
 
 	@Mock
-	IMaiaExecutorAction action2
+	IExecutionAction action2
 
 	SchemeScheduler scheduler = new SchemeScheduler(context, scheme)
 

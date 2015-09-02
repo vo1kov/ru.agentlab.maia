@@ -2,21 +2,29 @@ package ru.agentlab.maia.execution.scheduler.scheme
 
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
-import ru.agentlab.maia.execution.AbstractScheduler
-import ru.agentlab.maia.execution.IMaiaExecutorNode
+import ru.agentlab.maia.context.IMaiaContext
+import ru.agentlab.maia.execution.tree.IExecutionNode
+import ru.agentlab.maia.execution.tree.impl.AbstractScheduler
 
 class SchemeScheduler extends AbstractScheduler {
 
-	val stateMapping = new ConcurrentHashMap<String, IMaiaExecutorNode>
+	val stateMapping = new ConcurrentHashMap<String, IExecutionNode>
 
-	@Inject
+	IMaiaContext context
+	
 	IMaiaExecutorSchedulerScheme scheme
 
-	override IMaiaExecutorNode getCurrentNode() {
-		return context.get(KEY_CURRENT_CONTEXT) as IMaiaExecutorNode
+	@Inject
+	new(IMaiaContext context, IMaiaExecutorSchedulerScheme scheme) {
+		this.context = context
+		this.scheme = scheme
 	}
 
-	override getNextNode() {
+	def IExecutionNode getCurrentNode() {
+		return context.get(KEY_CURRENT_CONTEXT) as IExecutionNode
+	}
+
+	def getNextNode() {
 		val currentResult = if (currentNode != null) {
 //				currentContext.get(IMaiaContextAction.KEY_RESULT)
 			} else {
@@ -27,7 +35,7 @@ class SchemeScheduler extends AbstractScheduler {
 		return nextContext
 	}
 
-	def synchronized link(IMaiaExecutorNode context, String stateName) {
+	def synchronized link(IExecutionNode context, String stateName) {
 		val state = scheme.allStates.findFirst [
 			name == stateName
 		]
@@ -37,7 +45,7 @@ class SchemeScheduler extends AbstractScheduler {
 		stateMapping.put(stateName, context)
 	}
 
-	override synchronized remove(IMaiaExecutorNode context) {
+	def synchronized remove(IExecutionNode context) {
 		stateMapping.remove(context)
 	}
 
@@ -49,8 +57,12 @@ class SchemeScheduler extends AbstractScheduler {
 		return stateMapping.empty
 	}
 
-	override add(IMaiaExecutorNode context) {
+	def add(IExecutionNode context) {
 //		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+
+	override getNextChild() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 }
