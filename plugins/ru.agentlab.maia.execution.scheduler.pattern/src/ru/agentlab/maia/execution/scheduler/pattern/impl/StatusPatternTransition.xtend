@@ -1,4 +1,4 @@
-package ru.agentlab.maia.execution.scheduler.pattern.transition
+package ru.agentlab.maia.execution.scheduler.pattern.impl
 
 import org.eclipse.xtend.lib.annotations.AccessorType
 import org.eclipse.xtend.lib.annotations.Accessors

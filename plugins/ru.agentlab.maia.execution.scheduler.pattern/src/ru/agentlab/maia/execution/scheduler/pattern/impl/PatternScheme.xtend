@@ -1,9 +1,10 @@
-package ru.agentlab.maia.execution.scheduler.pattern
+package ru.agentlab.maia.execution.scheduler.pattern.impl
 
 import java.util.ArrayList
 import java.util.Collection
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
+import ru.agentlab.maia.execution.scheduler.pattern.IPatternScheme
 import ru.agentlab.maia.execution.scheduler.pattern.state.PatternState
 import ru.agentlab.maia.execution.scheduler.pattern.transition.AbstractPatternTransition
 import ru.agentlab.maia.execution.scheduler.pattern.transition.DefaultPatternTransition
@@ -12,7 +13,7 @@ import ru.agentlab.maia.execution.scheduler.pattern.transition.ExceptionPatternT
 import ru.agentlab.maia.execution.scheduler.pattern.transition.StatusPatternTransition
 
 @Accessors
-abstract class PatternScheme {
+abstract class PatternScheme implements IPatternScheme {
 
 	val public static STATE_INITIAL = new PatternState("INITIAL")
 

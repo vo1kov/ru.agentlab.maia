@@ -1,10 +1,11 @@
-package ru.agentlab.maia.execution.scheduler.pattern.transition
+package ru.agentlab.maia.execution.scheduler.pattern.impl
 
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.execution.scheduler.pattern.state.PatternState
+import ru.agentlab.maia.execution.scheduler.pattern.IPatternTransition
 
 @Accessors
-abstract class AbstractPatternTransition {
+abstract class AbstractPatternTransition implements IPatternTransition {
 
 	var String name
 

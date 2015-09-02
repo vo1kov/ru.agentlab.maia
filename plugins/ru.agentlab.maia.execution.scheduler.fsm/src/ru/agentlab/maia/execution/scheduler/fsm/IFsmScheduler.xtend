@@ -1,5 +1,7 @@
 package ru.agentlab.maia.execution.scheduler.fsm
 
-interface IFsmScheduler {
+import ru.agentlab.maia.execution.tree.IExecutionScheduler
+
+interface IFsmScheduler extends IExecutionScheduler {
 	
 }
