@@ -1,9 +1,9 @@
-package ru.agentlab.maia.execution.scheduler.fsm
+package ru.agentlab.maia.execution.scheduler.fsm.impl
 
 import java.util.ArrayList
 import java.util.List
-import ru.agentlab.maia.execution.scheduler.fsm.transition.DefaultFsmTransition
-import ru.agentlab.maia.execution.scheduler.fsm.transition.IFsmTransition
+import ru.agentlab.maia.execution.scheduler.fsm.IFsmScheduler
+import ru.agentlab.maia.execution.scheduler.fsm.IFsmTransition
 import ru.agentlab.maia.execution.tree.ExecutionNodeState
 import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.execution.tree.IllegalSchedulerStateException

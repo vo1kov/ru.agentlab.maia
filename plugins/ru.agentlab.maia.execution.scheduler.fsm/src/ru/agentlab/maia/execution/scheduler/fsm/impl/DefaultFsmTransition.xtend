@@ -1,4 +1,4 @@
-package ru.agentlab.maia.execution.scheduler.fsm.transition
+package ru.agentlab.maia.execution.scheduler.fsm.impl
 
 import ru.agentlab.maia.execution.tree.IExecutionNode
 
