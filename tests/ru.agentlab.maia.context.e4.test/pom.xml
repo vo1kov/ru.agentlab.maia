@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+	
+	<artifactId>ru.agentlab.maia.context.e4.test</artifactId>
+	<packaging>eclipse-test-plugin</packaging>
+
+	<parent>
+		<groupId>ru.agentlab.maia</groupId>
+		<artifactId>ru.agentlab.maia.releng</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../../releng/ru.agentlab.maia.releng</relativePath>
+	</parent>
+
+	<repositories>
+		<repository>
+			<id>eclipse-luna</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/luna/</url>
+		</repository>
+	</repositories>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.xtend</groupId>
+				<artifactId>xtend-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<failIfNoTests>false</failIfNoTests>
+					<includes>
+						<include>**/*Tests.java</include>
+					</includes>
+					<dependencies>
+						<dependency>
+							<artifactId>org.eclipse.platform</artifactId>
+							<version>0.0.0</version>
+							<type>p2-installable-unit</type>
+						</dependency>
+					</dependencies>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
