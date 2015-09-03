@@ -17,7 +17,22 @@
 				<groupId>org.eclipse.xtend</groupId>
 				<artifactId>xtend-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<failIfNoTests>false</failIfNoTests>
+					<dependencies>
+						<dependency>
+							<artifactId>org.eclipse.platform</artifactId>
+							<version>0.0.0</version>
+							<type>p2-installable-unit</type>
+						</dependency>
+					</dependencies>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
+
 
 </project>
