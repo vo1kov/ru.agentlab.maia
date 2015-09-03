@@ -25,7 +25,7 @@ class SequenceSchedulerRemoveChildTests {
 	IExecutionScheduler scheduler = new SequenceContextScheduler
 
 	@Test
-	def void silenceOnUnknownChild() {
+	def void shouldSilenceOnUnknownChild() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -39,7 +39,7 @@ class SequenceSchedulerRemoveChildTests {
 	}
 	
 	@Test
-	def void returnNullOnUnknownChild() {
+	def void shouldReturnNullOnUnknownChild() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -51,7 +51,7 @@ class SequenceSchedulerRemoveChildTests {
 	}
 	
 	@Test
-	def void silenceOnNullChild() {
+	def void shouldSilenceOnNullChild() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -64,7 +64,7 @@ class SequenceSchedulerRemoveChildTests {
 	}
 	
 	@Test
-	def void returnNullOnNullChild() {
+	def void shouldReturnNullOnNullChild() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -76,7 +76,7 @@ class SequenceSchedulerRemoveChildTests {
 	}
 	
 	@Test
-	def void returnRemoved() {
+	def void shouldReturnRemoved() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -89,7 +89,7 @@ class SequenceSchedulerRemoveChildTests {
 	}
 	
 	@Test
-	def void decreaseQueueSize() {
+	def void shouldDecreaseQueueSize() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -101,7 +101,7 @@ class SequenceSchedulerRemoveChildTests {
 	}
 
 	@Test
-	def void clearCurrenNodeWhenLast() {
+	def void shouldClearCurrenNodeWhenLast() {
 		val child = mock(IExecutionNode)
 		val childs = new ArrayList<IExecutionNode> => [
 			add(child)
@@ -117,7 +117,7 @@ class SequenceSchedulerRemoveChildTests {
 	}
 
 	@Test
-	def void removeFromQueue() {
+	def void shouldRemoveFromQueue() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)

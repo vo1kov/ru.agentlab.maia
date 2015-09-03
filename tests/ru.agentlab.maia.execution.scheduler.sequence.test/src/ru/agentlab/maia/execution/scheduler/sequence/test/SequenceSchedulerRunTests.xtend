@@ -29,20 +29,20 @@ class SequenceSchedulerRunTests {
 	}
 
 	@Test
-	def void invokeNextChild() {
+	def void shouldInvokeNextChild() {
 		scheduler.run
 		verify(scheduler).schedule
 	}
 
 	@Test
-	def void delegateToEmptyChilds() {
+	def void shouldDelegateToEmptyChilds() {
 		when(scheduler.childs).thenReturn(Collections.EMPTY_LIST)
 
 		scheduler.run
 	}
 
 	@Test
-	def void delegateToSingleChilds() {
+	def void shouldDelegateToSingleChilds() {
 		val child = mock(IExecutionNode)
 		when(scheduler.childs).thenReturn(#[child])
 		assertThat(scheduler.childs, iterableWithSize(1))
@@ -53,7 +53,7 @@ class SequenceSchedulerRunTests {
 	}
 
 	@Test @Ignore
-	def void delegateToMultipleChilds() {
+	def void shouldDelegateToMultipleChilds() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)

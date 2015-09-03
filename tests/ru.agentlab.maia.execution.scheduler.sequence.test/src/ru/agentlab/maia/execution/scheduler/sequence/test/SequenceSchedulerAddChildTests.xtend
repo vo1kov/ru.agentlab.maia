@@ -20,7 +20,7 @@ class SequenceSchedulerAddChildTests {
 	IExecutionScheduler scheduler = new SequenceContextScheduler
 
 	@Test
-	def void changeQueueSize() {
+	def void shouldIncreaseQueueSize() {
 		assertThat(scheduler.childs, emptyIterable)
 		val size = 10
 		for (i : 0 ..< size) {
@@ -31,14 +31,14 @@ class SequenceSchedulerAddChildTests {
 	}
 
 	@Test
-	def void silenceOnNull() {
+	def void shouldSilenceOnNull() {
 		val lastSize = scheduler.childs.size
 		scheduler.addChild(null)
 		assertThat(scheduler.childs, iterableWithSize(lastSize))
 	}
 
 	@Test
-	def void addWithSameOrder() {
+	def void shouldAddWithSameOrder() {
 		val size = 10
 		val cache = new ArrayList<IExecutionNode>
 		assertThat(scheduler.childs, emptyIterable)
@@ -53,7 +53,7 @@ class SequenceSchedulerAddChildTests {
 	}
 
 	@Test
-	def void addDuplicatesWithoutChangingQueue() {
+	def void shouldAddDuplicatesWithoutChangingQueue() {
 		val size = 10
 		val cache = new ArrayList<IExecutionNode>
 		assertThat(scheduler.childs, emptyIterable)

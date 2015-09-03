@@ -27,7 +27,7 @@ class SequenceSchedulerGetNextChildTests {
 	}
 
 	@Test
-	def void silenceOnEmptyQueue() {
+	def void shouldSilenceOnEmptyQueue() {
 		val childs = Collections.EMPTY_LIST
 		when(scheduler.childs).thenReturn(childs)
 		assertThat(scheduler.childs, emptyIterable)
@@ -38,7 +38,7 @@ class SequenceSchedulerGetNextChildTests {
 	}
 
 	@Test
-	def void beginFromFirst() {
+	def void shouldBeginFromFirst() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -50,7 +50,7 @@ class SequenceSchedulerGetNextChildTests {
 	}
 
 	@Test
-	def void changeCurrenChild() {
+	def void shouldChangeCurrenChild() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -65,7 +65,7 @@ class SequenceSchedulerGetNextChildTests {
 	}
 
 	@Test
-	def void overloadRestartFromBegin() {
+	def void shouldRestartFromBeginWhenOverload() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
@@ -80,7 +80,7 @@ class SequenceSchedulerGetNextChildTests {
 	}
 
 	@Test
-	def void returnChildsInOrder() {
+	def void shouldReturnChildsInOrder() {
 		val size = 10
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
