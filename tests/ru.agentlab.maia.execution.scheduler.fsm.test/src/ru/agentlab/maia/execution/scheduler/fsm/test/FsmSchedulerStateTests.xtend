@@ -34,7 +34,7 @@ class FsmSchedulerStateTests {
 	IExecutionScheduler scheduler = new FsmScheduler
 	
 	@Test
-	def void shouldBeInstallWhenDeployToContext(){
+	def void shouldBeInstalledWhenDeployToContext(){
 		deployer = new MaiaServiceDeployer(context)
 		when(context.getLocal(IMaiaContextInjector)).thenReturn(injector)
 		when(injector.invoke(scheduler, PostConstruct, null)).thenAnswer [
