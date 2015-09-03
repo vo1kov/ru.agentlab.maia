@@ -26,7 +26,7 @@
 		<module>../../plugins/ru.agentlab.maia.execution.scheduler.sequence</module>
 		
 		<module>../../tests/ru.agentlab.maia.execution.scheduler.fsm.test</module>
-		<module>../../tests/ru.agentlab.maia.execution.scheduler.pattern.test</module>
+<!-- 		<module>../../tests/ru.agentlab.maia.execution.scheduler.pattern.test</module> -->
 		<module>../../tests/ru.agentlab.maia.execution.scheduler.sequence.test</module>
 		
 		<module>../../releng/ru.agentlab.maia.target</module>

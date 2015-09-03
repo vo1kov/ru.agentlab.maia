@@ -30,6 +30,9 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
 					<failIfNoTests>false</failIfNoTests>
+					<includes>
+						<include>**/*Tests.java</include>
+					</includes>
 					<dependencies>
 						<dependency>
 							<artifactId>org.eclipse.platform</artifactId>
