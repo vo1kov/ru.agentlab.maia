@@ -1,7 +1,7 @@
 package ru.agentlab.maia.execution.scheduler.sequence.test
 
 import java.util.Collections
-import org.junit.BeforeClass
+import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,10 +21,10 @@ class SequenceSchedulerRunTests {
 	extension SequenceSchedulerTestsExtension = new SequenceSchedulerTestsExtension
 
 	@Spy
-	static IExecutionScheduler scheduler = new SequenceContextScheduler
-	
-	@BeforeClass
-	def static void init(){
+	IExecutionScheduler scheduler = new SequenceContextScheduler
+
+	@Before
+	def void before() {
 		scheduler.activate
 	}
 

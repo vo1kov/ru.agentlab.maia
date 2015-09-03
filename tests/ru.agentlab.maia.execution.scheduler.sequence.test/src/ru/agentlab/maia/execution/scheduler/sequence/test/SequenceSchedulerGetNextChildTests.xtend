@@ -1,7 +1,7 @@
 package ru.agentlab.maia.execution.scheduler.sequence.test
 
 import java.util.Collections
-import org.junit.BeforeClass
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Spy
@@ -19,10 +19,10 @@ class SequenceSchedulerGetNextChildTests {
 	extension SequenceSchedulerTestsExtension = new SequenceSchedulerTestsExtension
 
 	@Spy
-	static IExecutionScheduler scheduler = new SequenceContextScheduler
+	IExecutionScheduler scheduler = new SequenceContextScheduler
 
-	@BeforeClass
-	def static void init() {
+	@Before
+	def void before() {
 		scheduler.activate
 	}
 
@@ -70,11 +70,12 @@ class SequenceSchedulerGetNextChildTests {
 		val childs = getFakeChilds(size)
 		when(scheduler.childs).thenReturn(childs)
 		assertThat(scheduler.childs, not(emptyIterable))
+		assertThat(scheduler.current, nullValue)
 
 		for (i : 0 ..< size * 3) {
 			val next = scheduler.schedule
 			if (i % size == 0) {
-				assertThat(next, equalTo(childs.get(0)))
+				assertThat(next, equalTo(scheduler.childs.get(0)))
 			}
 		}
 	}
