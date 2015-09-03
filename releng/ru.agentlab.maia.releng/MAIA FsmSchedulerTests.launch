@@ -7,11 +7,11 @@
 <stringAttribute key="bootstrap" value=""/>
 <stringAttribute key="checked" value="[NONE]"/>
 <booleanAttribute key="clearConfig" value="true"/>
-<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/MAIA SequenceSchedulerTests"/>
+<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/MAIA FsmSchedulerTests"/>
 <booleanAttribute key="default" value="true"/>
 <booleanAttribute key="default_auto_start" value="true"/>
 <intAttribute key="default_start_level" value="4"/>
-<stringAttribute key="deselected_workspace_plugins" value="com.jayway.jsonpath,io.netty,ru.agentlab.maia.admin,ru.agentlab.maia.admin.bundles,ru.agentlab.maia.admin.contexts,ru.agentlab.maia.context.e4,ru.agentlab.maia.context.event,ru.agentlab.maia.context.injector.event,ru.agentlab.maia.context.injector.log,ru.agentlab.maia.context.log,ru.agentlab.maia.context.modifier.mas.default,ru.agentlab.maia.event,ru.agentlab.maia.event.osgi,ru.agentlab.maia.execution.action.annotated,ru.agentlab.maia.execution.action.annotated.example,ru.agentlab.maia.execution.action.annotation,ru.agentlab.maia.execution.event,ru.agentlab.maia.execution.scheduler.fsm,ru.agentlab.maia.execution.scheduler.fsm.test,ru.agentlab.maia.execution.scheduler.log,ru.agentlab.maia.execution.scheduler.pattern,ru.agentlab.maia.execution.scheduler.pattern.test,ru.agentlab.maia.execution.scheduler.scheme.example,ru.agentlab.maia.execution.scheduler.sequence.test.unit,ru.agentlab.maia.launcher,ru.agentlab.maia.logging"/>
+<stringAttribute key="deselected_workspace_plugins" value="com.jayway.jsonpath,io.netty,ru.agentlab.maia.admin,ru.agentlab.maia.admin.bundles,ru.agentlab.maia.admin.contexts,ru.agentlab.maia.context.e4,ru.agentlab.maia.context.event,ru.agentlab.maia.context.injector.event,ru.agentlab.maia.context.injector.log,ru.agentlab.maia.context.log,ru.agentlab.maia.context.modifier.mas.default,ru.agentlab.maia.event,ru.agentlab.maia.event.osgi,ru.agentlab.maia.execution.action.annotated,ru.agentlab.maia.execution.action.annotated.example,ru.agentlab.maia.execution.action.annotation,ru.agentlab.maia.execution.event,ru.agentlab.maia.execution.scheduler.log,ru.agentlab.maia.execution.scheduler.pattern,ru.agentlab.maia.execution.scheduler.pattern.test,ru.agentlab.maia.execution.scheduler.scheme.example,ru.agentlab.maia.execution.scheduler.sequence,ru.agentlab.maia.execution.scheduler.sequence.test,ru.agentlab.maia.execution.scheduler.sequence.test.unit,ru.agentlab.maia.launcher,ru.agentlab.maia.logging"/>
 <stringAttribute key="featureDefaultLocation" value="workspace"/>
 <stringAttribute key="featurePluginResolution" value="workspace"/>
 <booleanAttribute key="includeOptional" value="false"/>
@@ -63,5 +63,5 @@
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
 <booleanAttribute key="useDefaultConfigArea" value="true"/>
-<stringAttribute key="workspace_bundles" value="ru.agentlab.maia.context@default:default,ru.agentlab.maia.execution.scheduler.sequence.test@default:default,ru.agentlab.maia.execution.scheduler.sequence@default:default,ru.agentlab.maia.execution@default:default"/>
+<stringAttribute key="workspace_bundles" value="ru.agentlab.maia.context@default:default,ru.agentlab.maia.execution.scheduler.fsm,ru.agentlab.maia.execution.scheduler.fsm.test,ru.agentlab.maia.execution@default:default"/>
 </launchConfiguration>
