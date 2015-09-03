@@ -15,5 +15,4 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.execution.scheduler.sequence;bundle-version="1.0.0",
  org.hamcrest;bundle-version="1.1.0"
 Import-Package: org.osgi.framework;version="1.8.0"
-Bundle-Activator: ru.agentlab.maia.execution.scheduler.sequence.test.Activator
 

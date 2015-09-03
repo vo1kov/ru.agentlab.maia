@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
 	
 	<artifactId>ru.agentlab.maia.execution.scheduler.fsm.test</artifactId>
-	<packaging>eclipse-plugin</packaging>
+	<packaging>eclipse-test-plugin</packaging>
 
 	<parent>
 		<groupId>ru.agentlab.maia</groupId>

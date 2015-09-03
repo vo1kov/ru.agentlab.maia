@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>ru.agentlab.maia.execution.scheduler.sequence.test</artifactId>
-	<packaging>eclipse-plugin</packaging>
+	<packaging>eclipse-test-plugin</packaging>
 
 	<parent>
 		<groupId>ru.agentlab.maia</groupId>
@@ -31,6 +31,9 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
 					<failIfNoTests>false</failIfNoTests>
+					<includes>
+						<include>**/*Tests.java</include>
+					</includes>
 					<dependencies>
 						<dependency>
 							<artifactId>org.eclipse.platform</artifactId>
