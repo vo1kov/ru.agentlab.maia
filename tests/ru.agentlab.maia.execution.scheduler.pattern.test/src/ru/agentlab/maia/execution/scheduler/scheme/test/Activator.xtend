@@ -34,7 +34,7 @@ class Activator implements BundleActivator {
 				}
 
 			})
-			run(SchemeSchedulerTest)
+			run(SchemeSchedulerTests)
 		]
 	}
 

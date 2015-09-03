@@ -10,7 +10,7 @@ import ru.agentlab.maia.execution.scheduler.pattern.impl.PatternScheme
 import ru.agentlab.maia.execution.tree.IExecutionAction
 
 @RunWith(MockitoJUnitRunner)
-class SchemeSchedulerTest {
+class SchemeSchedulerTests {
 
 	@Mock
 	IMaiaContext context
@@ -28,16 +28,18 @@ class SchemeSchedulerTest {
 
 	@Test
 	def void test() {
-		scheduler => [
-			add(action1)
-			add(action2)
-			println(nextNode)
-			println(nextNode)
-			println(nextNode)
-			println(nextNode)
-			println(nextNode)
-			println(nextNode)
-		]
+//		scheduler => [
+//			add(action1)
+//			add(action2)
+//			println(nextNode)
+//			println(nextNode)
+//			println(nextNode)
+//			println(nextNode)
+//			println(nextNode)
+//			println(nextNode)
+//		]
+
+
 //		val rootContextRef = Activator.context.getServiceReference(IMaiaContext)
 //		val rootContext = Activator.context.getService(rootContextRef)
 //		scheduler.add(firstChildContext)
