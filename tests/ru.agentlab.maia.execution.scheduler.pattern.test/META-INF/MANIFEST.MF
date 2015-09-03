@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Test
+Bundle-Name: MAIA Tests for Pattern-based Scheduler
 Bundle-SymbolicName: ru.agentlab.maia.execution.scheduler.pattern.test
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
@@ -17,4 +17,5 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.execution.scheduler.pattern;bundle-version="1.0.0",
  ru.agentlab.maia.execution;bundle-version="1.0.0"
 Import-Package: org.osgi.framework;version="1.8.0"
+Bundle-Vendor: http://www.agentlab.ru/
 

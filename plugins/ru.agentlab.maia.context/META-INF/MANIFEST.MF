@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Context
+Bundle-Name: MAIA Context
 Bundle-SymbolicName: ru.agentlab.maia.context
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
@@ -13,4 +13,5 @@ Import-Package: org.osgi.framework;version="1.8.0"
 Export-Package: ru.agentlab.maia.context,
  ru.agentlab.maia.context.aj,
  ru.agentlab.maia.context.exception
+Bundle-Vendor: http://www.agentlab.ru/
 

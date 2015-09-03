@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Annotated
+Bundle-Name: MAIA Annotated Action Realization
 Bundle-SymbolicName: ru.agentlab.maia.execution.action.annotated
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
@@ -13,4 +13,5 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.context;bundle-version="1.0.0",
  ru.agentlab.maia.execution;bundle-version="1.0.0",
  ru.agentlab.maia.execution.action.annotation;bundle-version="1.0.0"
+Bundle-Vendor: http://www.agentlab.ru/
 

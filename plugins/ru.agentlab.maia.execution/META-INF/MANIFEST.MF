@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Execution
+Bundle-Name: MAIA Execution
 Bundle-SymbolicName: ru.agentlab.maia.execution
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
@@ -17,4 +17,5 @@ Export-Package: ru.agentlab.maia.execution,
  ru.agentlab.maia.execution.scheduler.aj,
  ru.agentlab.maia.execution.tree,
  ru.agentlab.maia.execution.tree.impl
+Bundle-Vendor: http://www.agentlab.ru/
 
