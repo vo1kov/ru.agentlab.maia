@@ -31,13 +31,6 @@
    </requires>
 
    <plugin
-         id="ru.agentlab.maia"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.e4.core.contexts"
          download-size="0"
          install-size="0"
@@ -52,9 +45,17 @@
          unpack="false"/>
 
    <plugin
-         id="io.netty"
+         id="ru.agentlab.maia.context"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="ru.agentlab.maia.context.e4"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>
