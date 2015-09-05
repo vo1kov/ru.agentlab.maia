@@ -12,6 +12,7 @@ import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.IMaiaContextInjector
 import ru.agentlab.maia.context.IMaiaServiceDeployer
 import ru.agentlab.maia.context.MaiaServiceDeployer
+import ru.agentlab.maia.execution.node.AbstractNode
 import ru.agentlab.maia.execution.scheduler.fsm.IFsmScheduler
 import ru.agentlab.maia.execution.scheduler.fsm.impl.FsmScheduler
 import ru.agentlab.maia.execution.tree.IExecutionNode
@@ -20,7 +21,6 @@ import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
 import static ru.agentlab.maia.execution.tree.ExecutionNodeState.*
-import ru.agentlab.maia.execution.node.AbstractNode
 
 @RunWith(MockitoJUnitRunner)
 class FsmSchedulerStateTests {
