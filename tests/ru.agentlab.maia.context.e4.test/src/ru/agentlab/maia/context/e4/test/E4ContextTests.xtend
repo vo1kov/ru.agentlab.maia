@@ -1,6 +1,7 @@
 package ru.agentlab.maia.context.e4.test
 
 import org.eclipse.e4.core.contexts.EclipseContextFactory
+import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -17,6 +18,7 @@ import static org.mockito.Mockito.*
 @RunWith(MockitoJUnitRunner)
 class E4ContextTests extends AbstractContextTests {
 
+	@Accessors
 	IMaiaContext context = spy(new E4MaiaContext(EclipseContextFactory.create))
 
 	@Test @Ignore
