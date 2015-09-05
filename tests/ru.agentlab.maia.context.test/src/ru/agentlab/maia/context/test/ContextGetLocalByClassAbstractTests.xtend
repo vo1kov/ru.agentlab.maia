@@ -30,9 +30,7 @@ abstract class ContextGetLocalByClassAbstractTests extends ContextAbstractTests 
 
 	@Test(expected=NullPointerException)
 	def void shouldThrowWhenNullKey() {
-		val stored = context.getLocal(null as Class<?>)
-
-		assertThat(stored, nullValue)
+		context.getLocal(null as Class<?>)
 	}
 
 }
