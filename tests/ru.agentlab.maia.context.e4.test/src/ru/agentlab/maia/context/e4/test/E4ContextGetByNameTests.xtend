@@ -8,10 +8,10 @@ import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.injector.e4.E4MaiaContext
 
 import static org.mockito.Mockito.*
-import ru.agentlab.maia.context.test.AbstractContextGetByNameTests
+import ru.agentlab.maia.context.test.ContextGetByNameAbstractTests
 
 @RunWith(MockitoJUnitRunner)
-class E4ContextGetByNameTests extends AbstractContextGetByNameTests {
+class E4ContextGetByNameTests extends ContextGetByNameAbstractTests {
 
 	@Accessors
 	IMaiaContext context = spy(new E4MaiaContext(EclipseContextFactory.create))

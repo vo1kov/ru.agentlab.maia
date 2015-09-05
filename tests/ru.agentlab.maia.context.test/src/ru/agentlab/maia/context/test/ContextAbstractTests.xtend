@@ -4,7 +4,7 @@ import ru.agentlab.maia.context.IMaiaContext
 
 import static org.mockito.Mockito.*
 
-abstract class AbstractContextTests {
+abstract class ContextAbstractTests {
 
 	def protected <T> IMaiaContext addParentWithService(IMaiaContext child, T service) {
 		val parent = mock(IMaiaContext)

@@ -6,12 +6,12 @@ import org.junit.runner.RunWith
 import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.injector.e4.E4MaiaContext
-import ru.agentlab.maia.context.test.AbstractContextSetByClassTests
 
 import static org.mockito.Mockito.*
+import ru.agentlab.maia.context.test.ContextSetByClassAbstractTests
 
 @RunWith(MockitoJUnitRunner)
-class E4ContextSetByClassTests extends AbstractContextSetByClassTests {
+class E4ContextSetByClassTests extends ContextSetByClassAbstractTests {
 
 	@Accessors
 	IMaiaContext context = spy(new E4MaiaContext(EclipseContextFactory.create))

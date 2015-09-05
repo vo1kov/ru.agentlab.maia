@@ -6,14 +6,14 @@ import ru.agentlab.maia.context.test.internal.DummyService
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 
-abstract class AbstractContextSetByClassTests extends AbstractContextTests {
+abstract class ContextSetByNameAbstractTests extends ContextAbstractTests {
 
 	@Test
 	def void shouldAddServiceWhenNoInContext() {
 		val service = new DummyService
 		assertThat(context.get(DummyService), nullValue)
-
-		context.set(DummyService, service)
+		
+		context.set(DummyService.name, service)
 
 		assertThat(context.get(DummyService), equalTo(service))
 	}
@@ -22,11 +22,11 @@ abstract class AbstractContextSetByClassTests extends AbstractContextTests {
 	def void shouldChangeServiceWhenInContext() {
 		val serviceOld = new DummyService
 		assertThat(context.get(DummyService), nullValue)
-		context.set(DummyService, serviceOld)
+		context.set(DummyService.name, serviceOld)
 		assertThat(context.get(DummyService), equalTo(serviceOld))
 		val serviceNew = new DummyService
-
-		context.set(DummyService, serviceNew)
+		
+		context.set(DummyService.name, serviceNew)
 
 		assertThat(context.get(DummyService), equalTo(serviceNew))
 	}
@@ -37,8 +37,8 @@ abstract class AbstractContextSetByClassTests extends AbstractContextTests {
 		val parent = context.addParentWithService(parentService)
 		assertThat(context.get(DummyService), equalTo(parentService))
 		val contextService = new DummyService
-
-		context.set(DummyService, contextService)
+		
+		context.set(DummyService.name, contextService)
 
 		assertThat(parent.get(DummyService), equalTo(parentService))
 		assertThat(context.get(DummyService), equalTo(contextService))
@@ -46,19 +46,19 @@ abstract class AbstractContextSetByClassTests extends AbstractContextTests {
 
 	@Test(expected=NullPointerException)
 	def void shouldThrowWhenNullKey() {
-		context.set(null as Class<DummyService>, new DummyService)
+		context.set(null as String, new DummyService)
 	}
 
 	@Test
 	def void shouldNullableServiceWhenNullValue() {
-		context.set(DummyService, null)
+		context.set(DummyService.name, null)
 
-		assertThat(context.get(DummyService), nullValue)
+		assertThat(context.get(DummyService.name), nullValue)
 	}
 
 	@Test
 	def void shouldContainsKeyWhenNullValue() {
-		context.set(DummyService, null)
+		context.set(DummyService.name, null)
 
 		assertThat(context.keySet, containsInAnyOrder(#[DummyService.name]))
 	}

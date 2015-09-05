@@ -6,7 +6,7 @@ import ru.agentlab.maia.context.test.internal.DummyService
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 
-abstract class AbstractContextGetKeySetTests extends AbstractContextTests {
+abstract class ContextGetKeySetAbstractTests extends ContextAbstractTests {
 
 	@Test
 	def void shouldContainKey() {

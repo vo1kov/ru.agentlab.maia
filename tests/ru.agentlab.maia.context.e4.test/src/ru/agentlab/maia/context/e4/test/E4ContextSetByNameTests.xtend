@@ -4,11 +4,11 @@ import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.injector.e4.E4MaiaContext
-import ru.agentlab.maia.context.test.AbstractContextSetByNameTests
 
 import static org.mockito.Mockito.*
+import ru.agentlab.maia.context.test.ContextSetByNameAbstractTests
 
-class E4ContextSetByNameTests extends AbstractContextSetByNameTests {
+class E4ContextSetByNameTests extends ContextSetByNameAbstractTests {
 
 	@Accessors
 	IMaiaContext context = spy(new E4MaiaContext(EclipseContextFactory.create))
