@@ -27,4 +27,12 @@ abstract class AbstractContextGetLocalByNameTests extends AbstractContextTests {
 
 		assertThat(stored, nullValue)
 	}
+
+	@Test(expected=NullPointerException)
+	def void shouldThrowWhenNullKey() {
+		val stored = context.getLocal(null as String)
+
+		assertThat(stored, nullValue)
+	}
+	
 }

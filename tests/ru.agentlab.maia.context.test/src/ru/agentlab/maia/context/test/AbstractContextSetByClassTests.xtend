@@ -12,7 +12,7 @@ abstract class AbstractContextSetByClassTests extends AbstractContextTests {
 	def void shouldAddServiceWhenNoInContext() {
 		val service = new DummyService
 		assertThat(context.get(DummyService), nullValue)
-		
+
 		context.set(DummyService, service)
 
 		assertThat(context.get(DummyService), equalTo(service))
@@ -25,7 +25,7 @@ abstract class AbstractContextSetByClassTests extends AbstractContextTests {
 		context.set(DummyService, serviceOld)
 		assertThat(context.get(DummyService), equalTo(serviceOld))
 		val serviceNew = new DummyService
-		
+
 		context.set(DummyService, serviceNew)
 
 		assertThat(context.get(DummyService), equalTo(serviceNew))
@@ -37,11 +37,30 @@ abstract class AbstractContextSetByClassTests extends AbstractContextTests {
 		val parent = context.addParentWithService(parentService)
 		assertThat(context.get(DummyService), equalTo(parentService))
 		val contextService = new DummyService
-		
+
 		context.set(DummyService, contextService)
 
 		assertThat(parent.get(DummyService), equalTo(parentService))
 		assertThat(context.get(DummyService), equalTo(contextService))
+	}
+
+	@Test(expected=NullPointerException)
+	def void shouldThrowWhenNullKey() {
+		context.set(null as Class<DummyService>, new DummyService)
+	}
+
+	@Test
+	def void shouldNullableServiceWhenNullValue() {
+		context.set(DummyService, null)
+
+		assertThat(context.get(DummyService), nullValue)
+	}
+
+	@Test
+	def void shouldContainsKeyWhenNullValue() {
+		context.set(DummyService, null)
+
+		assertThat(context.keySet, containsInAnyOrder(#[DummyService.name]))
 	}
 
 }

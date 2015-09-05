@@ -28,4 +28,11 @@ abstract class AbstractContextGetByNameTests extends AbstractContextTests {
 		assertThat(stored, equalTo(service))
 	}
 
+	@Test(expected=NullPointerException)
+	def void shouldThrowWhenNullKey() {
+		val stored = context.get(null as String)
+
+		assertThat(stored, nullValue)
+	}
+
 }

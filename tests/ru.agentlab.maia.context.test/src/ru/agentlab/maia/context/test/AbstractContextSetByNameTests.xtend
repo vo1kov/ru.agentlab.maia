@@ -45,4 +45,23 @@ abstract class AbstractContextSetByNameTests extends AbstractContextTests {
 		assertThat(context.get(DummyService), equalTo(contextService))
 	}
 
+	@Test(expected=NullPointerException)
+	def void shouldThrowWhenNullKey() {
+		context.set(null as String, new DummyService)
+	}
+
+	@Test
+	def void shouldNullableServiceWhenNullValue() {
+		context.set(DummyService.name, null)
+
+		assertThat(context.get(DummyService.name), nullValue)
+	}
+
+	@Test
+	def void shouldContainsKeyWhenNullValue() {
+		context.set(DummyService.name, null)
+
+		assertThat(context.keySet, containsInAnyOrder(#[DummyService.name]))
+	}
+
 }
