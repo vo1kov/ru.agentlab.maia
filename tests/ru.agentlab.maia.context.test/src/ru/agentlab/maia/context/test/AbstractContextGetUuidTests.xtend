@@ -5,10 +5,10 @@ import org.junit.Test
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 
-abstract class AbstractContextUuidTests extends AbstractContextTests {
+abstract class AbstractContextGetUuidTests extends AbstractContextTests {
 
 	@Test
-	def void shouldRetrieveServiceWhenInContext() {
+	def void shouldReturnAfterConstruction() {
 		val uuid = context.uuid
 
 		assertThat(uuid, notNullValue)
