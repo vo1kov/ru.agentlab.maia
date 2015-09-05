@@ -10,12 +10,17 @@ import org.eclipse.e4.core.internal.contexts.EclipseContext
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.context.IMaiaContext
 
+@Accessors
 class E4MaiaContext implements IMaiaContext {
 
+	@Accessors(NONE)
 	package IEclipseContext context
 
-	@Accessors
 	val String uuid
+
+	var IMaiaContext parent
+
+	val Collection<IMaiaContext> childs = new ArrayList
 
 	@Inject
 	new(IEclipseContext context) {
@@ -23,31 +28,34 @@ class E4MaiaContext implements IMaiaContext {
 		uuid = UUID.randomUUID.toString
 	}
 
-	override getParent() {
-		return get(KEY_PARENT_CONTEXT) as IMaiaContext
-	}
-
-	override getChilds() {
-		var result = getLocal(KEY_CHILD_CONTEXTS) as Collection<IMaiaContext>
-		if (result == null) {
-			result = new ArrayList<IMaiaContext>
-			set(KEY_CHILD_CONTEXTS, result)
-		}
-		return result
-	}
-
 	override get(String name) {
 		if (IEclipseContext.name.equalsIgnoreCase(name)) {
 			return context
 		}
-		return context.get(name)
+		if (keySet.contains(name)) {
+			return context.getLocal(name)
+		} else {
+			if (getParent != null) {
+				return getParent.get(name)
+			} else {
+				return null
+			}
+		}
 	}
 
 	override <T> get(Class<T> clazz) {
 		if (clazz == IEclipseContext) {
 			return context as T
 		}
-		return context.get(clazz)
+		if (keySet.contains(clazz.name)) {
+			return context.getLocal(clazz)
+		} else {
+			if (getParent != null) {
+				return getParent.get(clazz)
+			} else {
+				return null
+			}
+		}
 	}
 
 	override getLocal(String name) {

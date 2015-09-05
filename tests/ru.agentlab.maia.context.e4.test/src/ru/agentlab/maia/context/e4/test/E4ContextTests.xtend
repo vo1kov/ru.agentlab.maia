@@ -1,6 +1,7 @@
 package ru.agentlab.maia.context.e4.test
 
 import org.eclipse.e4.core.contexts.EclipseContextFactory
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.runners.MockitoJUnitRunner
@@ -18,7 +19,7 @@ class E4ContextTests extends AbstractContextTests {
 
 	IMaiaContext context = spy(new E4MaiaContext(EclipseContextFactory.create))
 
-	@Test
+	@Test @Ignore
 	def void shouldReturnParent() {
 		val parent = new E4MaiaContext(EclipseContextFactory.create)
 		val contextFactory = new E4MaiaContextFactory(parent)
