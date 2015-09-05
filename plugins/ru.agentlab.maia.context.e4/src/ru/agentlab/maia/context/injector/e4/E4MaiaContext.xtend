@@ -29,6 +29,9 @@ class E4MaiaContext implements IMaiaContext {
 	}
 
 	override get(String name) {
+		if (name == null) {
+			throw new NullPointerException
+		}
 		if (IEclipseContext.name.equalsIgnoreCase(name)) {
 			return context
 		}
@@ -44,6 +47,9 @@ class E4MaiaContext implements IMaiaContext {
 	}
 
 	override <T> get(Class<T> clazz) {
+		if (clazz == null) {
+			throw new NullPointerException
+		}
 		if (clazz == IEclipseContext) {
 			return context as T
 		}
@@ -59,6 +65,9 @@ class E4MaiaContext implements IMaiaContext {
 	}
 
 	override getLocal(String name) {
+		if (name == null) {
+			throw new NullPointerException
+		}
 		if (IEclipseContext.name.equalsIgnoreCase(name)) {
 			return context
 		}
@@ -66,6 +75,9 @@ class E4MaiaContext implements IMaiaContext {
 	}
 
 	override <T> getLocal(Class<T> clazz) {
+		if (clazz == null) {
+			throw new NullPointerException
+		}
 		if (clazz == IEclipseContext) {
 			return context as T
 		}
@@ -81,10 +93,16 @@ class E4MaiaContext implements IMaiaContext {
 	}
 
 	override set(String name, Object value) {
+		if (name == null) {
+			throw new NullPointerException
+		}
 		context.set(name, value)
 	}
 
 	override <T> set(Class<T> clazz, T value) {
+		if (clazz == null) {
+			throw new NullPointerException
+		}
 		context.set(clazz, value)
 	}
 
