@@ -85,10 +85,16 @@ class E4MaiaContext implements IMaiaContext {
 	}
 
 	override remove(String name) {
+		if (name == null) {
+			throw new NullPointerException
+		}
 		context.remove(name)
 	}
 
 	override remove(Class<?> clazz) {
+		if (clazz == null) {
+			throw new NullPointerException
+		}
 		context.remove(clazz)
 	}
 
