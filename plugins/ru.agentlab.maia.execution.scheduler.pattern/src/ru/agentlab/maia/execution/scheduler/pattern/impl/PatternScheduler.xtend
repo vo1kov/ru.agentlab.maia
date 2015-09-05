@@ -5,7 +5,7 @@ import javax.inject.Inject
 import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.scheduler.pattern.IPatternScheduler
 import ru.agentlab.maia.execution.tree.IExecutionNode
-import ru.agentlab.maia.execution.tree.impl.AbstractScheduler
+import ru.agentlab.maia.execution.scheduler.AbstractScheduler
 
 class PatternScheduler extends AbstractScheduler implements IPatternScheduler {
 

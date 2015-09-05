@@ -12,10 +12,12 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.context;bundle-version="1.0.0",
  org.aspectj.runtime;resolution:=optional
 Export-Package: ru.agentlab.maia.execution,
+ ru.agentlab.maia.execution.check,
+ ru.agentlab.maia.execution.check.childs,
+ ru.agentlab.maia.execution.check.parameters,
  ru.agentlab.maia.execution.policy,
  ru.agentlab.maia.execution.policy.impl,
  ru.agentlab.maia.execution.scheduler.aj,
- ru.agentlab.maia.execution.tree,
- ru.agentlab.maia.execution.tree.impl
+ ru.agentlab.maia.execution.tree
 Bundle-Vendor: http://www.agentlab.ru/
 

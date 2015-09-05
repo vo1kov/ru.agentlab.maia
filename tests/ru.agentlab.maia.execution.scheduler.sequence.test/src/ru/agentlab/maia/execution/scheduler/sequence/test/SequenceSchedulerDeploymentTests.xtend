@@ -11,6 +11,7 @@ import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.IMaiaContextInjector
 import ru.agentlab.maia.context.IMaiaServiceDeployer
 import ru.agentlab.maia.context.MaiaServiceDeployer
+import ru.agentlab.maia.execution.node.AbstractNode
 import ru.agentlab.maia.execution.scheduler.sequence.SequenceContextScheduler
 import ru.agentlab.maia.execution.tree.ExecutionNodeState
 import ru.agentlab.maia.execution.tree.IExecutionScheduler
@@ -38,7 +39,7 @@ class SequenceSchedulerDeploymentTests {
 		deployer = new MaiaServiceDeployer(context)
 		when(context.getLocal(IMaiaContextInjector)).thenReturn(injector)
 		when(injector.invoke(scheduler, PostConstruct, null)).thenAnswer [
-			(scheduler as SequenceContextScheduler).init
+			(scheduler as AbstractNode).init
 			return null
 		]
 

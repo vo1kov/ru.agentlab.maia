@@ -20,6 +20,7 @@ import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
 import static ru.agentlab.maia.execution.tree.ExecutionNodeState.*
+import ru.agentlab.maia.execution.node.AbstractNode
 
 @RunWith(MockitoJUnitRunner)
 class FsmSchedulerStateTests {
@@ -47,7 +48,7 @@ class FsmSchedulerStateTests {
 		deployer = new MaiaServiceDeployer(context)
 		when(context.getLocal(IMaiaContextInjector)).thenReturn(injector)
 		when(injector.invoke(scheduler, PostConstruct, null)).thenAnswer [
-			(scheduler as FsmScheduler).init
+			(scheduler as AbstractNode).init
 			return null
 		]
 
@@ -59,7 +60,7 @@ class FsmSchedulerStateTests {
 	@Test @Ignore
 	def void shouldBeActiveWhenHaveTransitionChain() {
 		val child = mock(IExecutionNode)
-		(scheduler as FsmScheduler).init
+		(scheduler as AbstractNode).init
 		assertThat(scheduler.state, equalTo(INSTALLED))
 
 		scheduler.addChild(child)
@@ -72,7 +73,7 @@ class FsmSchedulerStateTests {
 	@Test @Ignore
 	def void shouldNotChangeStateWhenAddTransition() {
 		val child = mock(IExecutionNode)
-		(scheduler as FsmScheduler).init
+		(scheduler as AbstractNode).init
 		assertThat(scheduler.state, equalTo(INSTALLED))
 
 		scheduler.addChild(child)
@@ -84,7 +85,7 @@ class FsmSchedulerStateTests {
 	@Test @Ignore
 	def void shouldNotIncreaseStateWhenAddChild() {
 		val child = mock(IExecutionNode)
-		(scheduler as FsmScheduler).init
+		(scheduler as AbstractNode).init
 		assertThat(scheduler.state, equalTo(INSTALLED))
 
 		scheduler.addChild(child)

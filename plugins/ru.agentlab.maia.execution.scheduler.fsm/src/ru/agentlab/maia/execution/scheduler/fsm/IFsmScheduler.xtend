@@ -40,7 +40,7 @@ interface IFsmScheduler extends IExecutionScheduler {
 	 */
 	def ExceptionFsmTransition addExceptionTransition(IExecutionNode from, IExecutionNode to,
 		Class<? extends RuntimeException> exception)
-	
+
 	/**
 	 * Add new Event-based transition to scheduler.
 	 * 

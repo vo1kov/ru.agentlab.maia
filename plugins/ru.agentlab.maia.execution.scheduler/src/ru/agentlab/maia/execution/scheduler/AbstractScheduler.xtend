@@ -1,9 +1,11 @@
-package ru.agentlab.maia.execution.tree.impl
+package ru.agentlab.maia.execution.scheduler
 
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.execution.check.IChildsCheck
+import ru.agentlab.maia.execution.node.AbstractNode
+import ru.agentlab.maia.execution.node.DataLink
 import ru.agentlab.maia.execution.tree.IDataLink
 import ru.agentlab.maia.execution.tree.IDataParameter
 import ru.agentlab.maia.execution.tree.IExecutionNode

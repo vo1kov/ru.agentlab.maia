@@ -3,14 +3,14 @@ package ru.agentlab.maia.execution.action.annotated
 import java.lang.reflect.Field
 import java.util.ArrayList
 import ru.agentlab.maia.context.IMaiaContextInjector
+import ru.agentlab.maia.execution.action.AbstractAction
 import ru.agentlab.maia.execution.action.annotation.Action
 import ru.agentlab.maia.execution.action.annotation.Input
 import ru.agentlab.maia.execution.action.annotation.Output
+import ru.agentlab.maia.execution.node.DataInputParameter
+import ru.agentlab.maia.execution.node.DataOutputParameter
 import ru.agentlab.maia.execution.tree.IDataInputParameter
 import ru.agentlab.maia.execution.tree.IDataOutputParameter
-import ru.agentlab.maia.execution.tree.impl.AbstractAction
-import ru.agentlab.maia.execution.tree.impl.DataInputParameter
-import ru.agentlab.maia.execution.tree.impl.DataOutputParameter
 
 class AnnotatedAction extends AbstractAction {
 

@@ -1,4 +1,4 @@
-package ru.agentlab.maia.execution.tree.impl
+package ru.agentlab.maia.execution.node
 
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.execution.tree.IDataParameter

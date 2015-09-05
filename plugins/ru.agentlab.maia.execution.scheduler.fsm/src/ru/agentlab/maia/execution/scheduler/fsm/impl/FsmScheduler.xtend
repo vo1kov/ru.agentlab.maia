@@ -2,11 +2,11 @@ package ru.agentlab.maia.execution.scheduler.fsm.impl
 
 import java.util.ArrayList
 import java.util.List
+import ru.agentlab.maia.execution.scheduler.AbstractScheduler
 import ru.agentlab.maia.execution.scheduler.fsm.IFsmScheduler
 import ru.agentlab.maia.execution.tree.ExecutionNodeState
 import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.execution.tree.IllegalSchedulerStateException
-import ru.agentlab.maia.execution.tree.impl.AbstractScheduler
 
 class FsmScheduler extends AbstractScheduler implements IFsmScheduler {
 

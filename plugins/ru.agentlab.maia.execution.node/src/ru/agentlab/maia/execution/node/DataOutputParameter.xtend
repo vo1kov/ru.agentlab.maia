@@ -1,4 +1,4 @@
-package ru.agentlab.maia.execution.tree.impl
+package ru.agentlab.maia.execution.node
 
 import java.util.ArrayList
 import java.util.List

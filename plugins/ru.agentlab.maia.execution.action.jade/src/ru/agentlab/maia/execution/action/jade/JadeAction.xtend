@@ -1,8 +1,8 @@
 package ru.agentlab.maia.execution.action.jade
 
 import org.eclipse.xtend.lib.annotations.Accessors
+import ru.agentlab.maia.execution.action.AbstractAction
 import ru.agentlab.maia.execution.tree.IExecutionScheduler
-import ru.agentlab.maia.execution.tree.impl.AbstractAction
 
 class JadeAction extends AbstractAction {
 

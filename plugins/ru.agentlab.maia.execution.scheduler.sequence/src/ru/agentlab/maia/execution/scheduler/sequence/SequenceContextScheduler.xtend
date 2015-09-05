@@ -1,11 +1,12 @@
 package ru.agentlab.maia.execution.scheduler.sequence
 
+import ru.agentlab.maia.execution.scheduler.AbstractScheduler
 import ru.agentlab.maia.execution.tree.ExecutionNodeState
 import ru.agentlab.maia.execution.tree.IExecutionNode
+import ru.agentlab.maia.execution.tree.IExecutionScheduler
 import ru.agentlab.maia.execution.tree.IllegalSchedulerStateException
-import ru.agentlab.maia.execution.tree.impl.AbstractScheduler
 
-class SequenceContextScheduler extends AbstractScheduler {
+class SequenceContextScheduler extends AbstractScheduler implements IExecutionScheduler {
 
 	val static UNKNOWN = -1
 

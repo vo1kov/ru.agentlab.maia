@@ -19,8 +19,11 @@
 		<module>../../plugins/ru.agentlab.maia.event</module>
 		<module>../../plugins/ru.agentlab.maia.event.osgi</module>
 		<module>../../plugins/ru.agentlab.maia.execution</module>
+		<module>../../plugins/ru.agentlab.maia.execution.node</module>
+		<module>../../plugins/ru.agentlab.maia.execution.action</module>
 		<module>../../plugins/ru.agentlab.maia.execution.action.annotated</module>
 		<module>../../plugins/ru.agentlab.maia.execution.action.annotation</module>
+		<module>../../plugins/ru.agentlab.maia.execution.scheduler</module>
 		<module>../../plugins/ru.agentlab.maia.execution.scheduler.fsm</module>
 		<module>../../plugins/ru.agentlab.maia.execution.scheduler.pattern</module>
 		<module>../../plugins/ru.agentlab.maia.execution.scheduler.sequence</module>
