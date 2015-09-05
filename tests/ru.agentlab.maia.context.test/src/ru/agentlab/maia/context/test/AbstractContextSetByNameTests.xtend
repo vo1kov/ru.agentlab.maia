@@ -12,38 +12,37 @@ abstract class AbstractContextSetByNameTests extends AbstractContextTests {
 	@Test
 	def void shouldAddServiceWhenNoInContext() {
 		val service = new DummyService
-		context.set(DummyService, service)
+		assertThat(context.get(DummyService), nullValue)
+		
+		context.set(DummyService.name, service)
 
-		val stored = context.get(DummyService.name)
-
-		assertThat(stored, equalTo(service))
+		assertThat(context.get(DummyService), equalTo(service))
 	}
 
 	@Test
 	def void shouldChangeServiceWhenInContext() {
 		val serviceOld = new DummyService
+		assertThat(context.get(DummyService), nullValue)
+		context.set(DummyService.name, serviceOld)
+		assertThat(context.get(DummyService), equalTo(serviceOld))
 		val serviceNew = new DummyService
-		context.set(DummyService, serviceOld)
-		context.set(DummyService, serviceNew)
+		
+		context.set(DummyService.name, serviceNew)
 
-		val stored = context.get(DummyService.name)
-
-		assertThat(stored, equalTo(serviceNew))
+		assertThat(context.get(DummyService), equalTo(serviceNew))
 	}
 
 	@Test
 	def void shouldAddServiceLocallyWhenInParent() {
 		val parentService = new DummyService
 		val parent = context.addParentWithService(parentService)
-		
+		assertThat(context.get(DummyService), equalTo(parentService))
 		val contextService = new DummyService
-		context.set(DummyService, contextService)
+		
+		context.set(DummyService.name, contextService)
 
-		val storedParentService = parent.get(DummyService.name)
-		val storedContextService = context.get(DummyService.name)
-
-		assertThat(storedParentService, equalTo(parentService))
-		assertThat(storedContextService, equalTo(contextService))
+		assertThat(parent.get(DummyService), equalTo(parentService))
+		assertThat(context.get(DummyService), equalTo(contextService))
 	}
 
 }
