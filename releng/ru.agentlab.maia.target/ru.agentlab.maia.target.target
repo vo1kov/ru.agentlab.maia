@@ -75,14 +75,14 @@
 <plugin id="org.eclipse.equinox.event"/>
 <plugin id="org.eclipse.equinox.event.source"/>
 <plugin id="org.eclipse.equinox.weaving.aspectj" version="1.0.400.weaving-hook-20140821"/>
-<plugin id="org.eclipse.equinox.weaving.aspectj.source" version="1.0.400.weaving-hook-20140821"/>
 <plugin id="org.eclipse.equinox.weaving.aspectj.source" version="1.0.400.v20140529-1734"/>
+<plugin id="org.eclipse.equinox.weaving.aspectj.source" version="1.0.400.weaving-hook-20140821"/>
 <plugin id="org.eclipse.equinox.weaving.caching" version="1.0.400.weaving-hook-20140821"/>
 <plugin id="org.eclipse.equinox.weaving.caching.j9" version="1.0.200.weaving-hook-20140821"/>
 <plugin id="org.eclipse.equinox.weaving.caching.j9.source" version="1.0.200.v20140529-1734"/>
 <plugin id="org.eclipse.equinox.weaving.caching.j9.source" version="1.0.200.weaving-hook-20140821"/>
-<plugin id="org.eclipse.equinox.weaving.caching.source" version="1.0.400.v20140529-1734"/>
 <plugin id="org.eclipse.equinox.weaving.caching.source" version="1.0.400.weaving-hook-20140821"/>
+<plugin id="org.eclipse.equinox.weaving.caching.source" version="1.0.400.v20140529-1734"/>
 <plugin id="org.eclipse.equinox.weaving.hook" version="1.1.100.weaving-hook-20140821"/>
 <plugin id="org.eclipse.equinox.weaving.hook.source" version="1.1.100.weaving-hook-20140821"/>
 <plugin id="org.eclipse.equinox.weaving.hook.source" version="1.1.1.v20140821-1918"/>
