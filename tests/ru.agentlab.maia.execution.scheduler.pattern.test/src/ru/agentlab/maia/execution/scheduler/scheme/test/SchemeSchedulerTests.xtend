@@ -2,30 +2,24 @@ package ru.agentlab.maia.execution.scheduler.scheme.test
 
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
 import org.mockito.runners.MockitoJUnitRunner
-import ru.agentlab.maia.execution.scheduler.pattern.impl.PatternScheduler
-import ru.agentlab.maia.execution.scheduler.pattern.impl.PatternScheme
-import ru.agentlab.maia.execution.tree.IExecutionAction
-import ru.agentlab.maia.memory.IMaiaContext
 
 @RunWith(MockitoJUnitRunner)
 class SchemeSchedulerTests {
 
-	@Mock
-	IMaiaContext context
-
-	@Mock
-	PatternScheme scheme
-
-	@Mock
-	IExecutionAction action1
-
-	@Mock
-	IExecutionAction action2
-
-	PatternScheduler scheduler = new PatternScheduler(context, scheme)
-
+//	@Mock
+//	IMaiaContext context
+//
+//	@Mock
+//	PatternScheme scheme
+//
+//	@Mock
+//	IExecutionAction action1
+//
+//	@Mock
+//	IExecutionAction action2
+//
+//	PatternScheduler scheduler = new PatternScheduler(context, scheme)
 	@Test
 	def void test() {
 //		scheduler => [

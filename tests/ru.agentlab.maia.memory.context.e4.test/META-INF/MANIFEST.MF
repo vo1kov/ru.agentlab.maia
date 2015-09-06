@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: MAIA Tests for Eclipse-E4 Context Realization
-Bundle-SymbolicName: ru.agentlab.maia.context.e4.test
+Bundle-SymbolicName: ru.agentlab.maia.memory.context.e4.test
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: http://www.agentlab.ru/
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
