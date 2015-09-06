@@ -10,7 +10,7 @@ class DummyServiceWithManyConstructors {
 
 	public String stringValue
 
-	public int intValue
+	public Integer intValue
 
 	@Inject
 	new(String s) {
@@ -19,7 +19,7 @@ class DummyServiceWithManyConstructors {
 	}
 
 	@Inject
-	new(int i, String s) {
+	new(Integer i, String s) {
 		this.stringValue = s
 		this.intValue = i
 		secondConstructorCalled = true

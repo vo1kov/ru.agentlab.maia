@@ -7,6 +7,7 @@ import java.lang.reflect.Method
 import java.lang.reflect.Modifier
 import java.lang.reflect.Type
 import java.util.ArrayList
+import java.util.Arrays
 import java.util.Collections
 import java.util.Comparator
 import javax.annotation.PostConstruct
@@ -131,7 +132,7 @@ class MaiaContextInjector implements IMaiaContextInjector {
 		try {
 			result = constructor.newInstance(actualArgs)
 		} catch (IllegalArgumentException e) {
-			throw new MaiaInjectionException(e)
+			throw new MaiaInjectionException(actualArgs.toString + " " + constructor.parameterTypes, e)
 		} catch (InstantiationException e) {
 			throw new MaiaInjectionException("Unable to instantiate " + constructor, e) // $NON-NLS-1$
 		} catch (IllegalAccessException e) {
@@ -148,10 +149,13 @@ class MaiaContextInjector implements IMaiaContextInjector {
 
 	def protected Object[] resolveArgs(Type[] parameterTypes) {
 		val result = newArrayOfSize(parameterTypes.length)
+		Arrays.fill(result, NOT_A_VALUE)
 		for (i : 0 ..< parameterTypes.size) {
 			val type = parameterTypes.get(i)
 			val obj = context.get(type.typeName)
-			result.set(i, obj)
+			if (obj != null) {
+				result.set(i, obj)
+			}
 		}
 		return result
 	}

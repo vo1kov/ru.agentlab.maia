@@ -1,5 +1,7 @@
 package ru.agentlab.maia.memory.injector.test
 
+import java.util.Random
+import java.util.UUID
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
@@ -13,11 +15,16 @@ import ru.agentlab.maia.memory.injector.MaiaContextInjector
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
-import static org.mockito.Matchers.*
 import static org.mockito.Mockito.*
 
 @RunWith(MockitoJUnitRunner)
 class ContextInjectorMakeTests {
+
+	val static random = new Random
+
+	val static INT_VALUE = random.nextInt
+
+	val static STRING_VALUE = UUID.randomUUID.toString
 
 	@Mock
 	IMaiaContext context
@@ -41,10 +48,10 @@ class ContextInjectorMakeTests {
 
 	@Test
 	def void shouldCallBiggestConstructor() {
-		val string = anyString
+		val string = STRING_VALUE
 		when(context.get(String)).thenReturn(string)
 		when(context.get(String.name)).thenReturn(string)
-		val integer = anyInt
+		val integer = INT_VALUE
 		when(context.get(Integer)).thenReturn(integer)
 		when(context.get(Integer.name)).thenReturn(integer)
 
@@ -56,10 +63,10 @@ class ContextInjectorMakeTests {
 
 	@Test
 	def void shouldInjectToBiggestConstructor() {
-		val string = anyString
+		val string = STRING_VALUE
 		when(context.get(String)).thenReturn(string)
 		when(context.get(String.name)).thenReturn(string)
-		val integer = anyInt
+		val integer = INT_VALUE
 		when(context.get(Integer)).thenReturn(integer)
 		when(context.get(Integer.name)).thenReturn(integer)
 
@@ -71,12 +78,12 @@ class ContextInjectorMakeTests {
 
 	@Test
 	def void shouldCreateServiceByBiggestConstructor() {
-		val string = anyString
+		val string = STRING_VALUE
 		when(context.get(String)).thenReturn(string)
 		when(context.get(String.name)).thenReturn(string)
-		val integer = anyInt
-		when(context.get(Integer)).thenReturn(integer)
-		when(context.get(Integer.name)).thenReturn(integer)
+		val intValue = INT_VALUE
+		when(context.get(Integer)).thenReturn(intValue)
+		when(context.get(Integer.name)).thenReturn(intValue)
 
 		val service = injector.make(DummyServiceWithManyConstructors)
 
@@ -85,7 +92,7 @@ class ContextInjectorMakeTests {
 
 	@Test
 	def void shouldCallRelevantConstructor() {
-		val string = anyString
+		val string = STRING_VALUE
 		when(context.get(String)).thenReturn(string)
 		when(context.get(String.name)).thenReturn(string)
 
@@ -97,7 +104,7 @@ class ContextInjectorMakeTests {
 
 	@Test
 	def void shouldCreateServiceByRelevantConstructor() {
-		val string = anyString
+		val string = STRING_VALUE
 		when(context.get(String)).thenReturn(string)
 		when(context.get(String.name)).thenReturn(string)
 
