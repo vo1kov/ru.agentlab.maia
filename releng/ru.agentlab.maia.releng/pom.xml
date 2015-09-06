@@ -37,8 +37,10 @@
 
 		<module>../../tests/ru.agentlab.maia.memory.doubles</module>
 		<module>../../tests/ru.agentlab.maia.memory.context.test</module>
-		<module>../../tests/ru.agentlab.maia.memory.injector.test</module>
+		<module>../../tests/ru.agentlab.maia.memory.context.hashmap.test</module>
+		<module>../../tests/ru.agentlab.maia.memory.context.arraylist.test</module>
 		<module>../../tests/ru.agentlab.maia.memory.context.e4.test</module>
+		<module>../../tests/ru.agentlab.maia.memory.injector.test</module>
 		
 		<module>../../tests/ru.agentlab.maia.execution.scheduler.fsm.test</module>
 		<module>../../tests/ru.agentlab.maia.execution.scheduler.pattern.test</module>
