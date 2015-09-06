@@ -1,4 +1,4 @@
-package ru.agentlab.maia.memory.injector.test
+package ru.agentlab.maia.memory.doubles.constructors
 
 class DummyServiceWithEmptyConstructor {
 

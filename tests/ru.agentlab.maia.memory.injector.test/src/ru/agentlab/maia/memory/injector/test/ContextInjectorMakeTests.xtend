@@ -7,6 +7,8 @@ import org.mockito.Mock
 import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.IMaiaContextInjector
+import ru.agentlab.maia.memory.doubles.constructors.DummyServiceWithEmptyConstructor
+import ru.agentlab.maia.memory.doubles.constructors.DummyServiceWithManyConstructors
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*

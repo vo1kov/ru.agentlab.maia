@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MAIA Service Doubles for Tests
+Bundle-SymbolicName: ru.agentlab.maia.memory.doubles
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: http://www.agentlab.ru/
+Require-Bundle: com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro
+Export-Package: ru.agentlab.maia.memory.doubles,
+ ru.agentlab.maia.memory.doubles.constructors,
+ ru.agentlab.maia.memory.doubles.hierarchy
+
