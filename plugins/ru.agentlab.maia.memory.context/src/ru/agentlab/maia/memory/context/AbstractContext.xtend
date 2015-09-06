@@ -6,6 +6,7 @@ import java.util.Set
 import java.util.UUID
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.memory.IMaiaContext
+import java.util.Collections
 
 /**
  * <p>Abstract {@link IMaiaContext} implementation.</p>
@@ -29,7 +30,7 @@ abstract class AbstractContext implements IMaiaContext {
 	var volatile IMaiaContext parent
 
 	@Accessors
-	val Collection<IMaiaContext> childs = new HashSet
+	val Collection<IMaiaContext> childs = Collections.synchronizedSet(new HashSet)
 
 	override get(String name) {
 		if (name == null) {
