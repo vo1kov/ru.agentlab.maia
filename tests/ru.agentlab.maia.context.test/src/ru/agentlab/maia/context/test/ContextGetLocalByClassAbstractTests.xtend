@@ -5,6 +5,8 @@ import ru.agentlab.maia.context.test.internal.DummyService
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
+import ru.agentlab.maia.context.test.internal.DummyChildService
+import ru.agentlab.maia.context.test.internal.DummyParentService
 
 abstract class ContextGetLocalByClassAbstractTests extends ContextAbstractTests {
 
@@ -31,6 +33,16 @@ abstract class ContextGetLocalByClassAbstractTests extends ContextAbstractTests 
 	@Test(expected=NullPointerException)
 	def void shouldThrowWhenNullKey() {
 		context.getLocal(null as Class<?>)
+	}
+	
+	@Test
+	def void shouldRetrieveServiceFromClassHierarchy(){
+		val service = new DummyChildService
+		context.set(DummyChildService, service)
+
+		val stored = context.getLocal(DummyParentService)
+
+		assertThat(stored, equalTo(service))
 	}
 
 }

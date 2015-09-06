@@ -18,7 +18,13 @@ interface IMaiaContext {
 
 	def public IMaiaContext getParent()
 
+	def public void setParent(IMaiaContext parent)
+	
 	def public Collection<IMaiaContext> getChilds()
+	
+	def public void addChild(IMaiaContext child)
+	
+	def public void removeChild(IMaiaContext child)
 
 	def String getUuid()
 
@@ -112,7 +118,7 @@ interface IMaiaContext {
 	 * @param value the value to be stored, or a {@link ContextFunction} that can return 
 	 * the stored value.
 	 */
-	def void set(String name, Object value);
+	def <T> void set(String name, T value);
 
 	/**
 	 * Sets a value to be associated with a given class in this context. 
