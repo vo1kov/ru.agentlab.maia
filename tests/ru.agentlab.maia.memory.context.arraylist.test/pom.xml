@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
 
 	<artifactId>ru.agentlab.maia.memory.context.arraylist.test</artifactId>
-	<packaging>eclipse-plugin</packaging>
+	<packaging>eclipse-test-plugin</packaging>
 
 	<parent>
 		<groupId>ru.agentlab.maia</groupId>
@@ -11,11 +11,36 @@
 		<relativePath>../../releng/ru.agentlab.maia.releng</relativePath>
 	</parent>
 
+	<repositories>
+		<repository>
+			<id>eclipse-luna</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/luna/</url>
+		</repository>
+	</repositories>
+
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.eclipse.xtend</groupId>
 				<artifactId>xtend-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<failIfNoTests>false</failIfNoTests>
+					<includes>
+						<include>**/*Tests.java</include>
+					</includes>
+					<dependencies>
+						<dependency>
+							<artifactId>org.eclipse.platform</artifactId>
+							<version>0.0.0</version>
+							<type>p2-installable-unit</type>
+						</dependency>
+					</dependencies>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
