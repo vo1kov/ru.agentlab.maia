@@ -27,7 +27,7 @@ abstract class AbstractPatternTransition implements IPatternTransition {
 	}
 
 	override toString() {
-		'''(«fromState» -> «toState»)'''
+		'''(ï¿½fromStateï¿½ -> ï¿½toStateï¿½)'''
 	}
 
 }

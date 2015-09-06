@@ -1,8 +1,8 @@
 package ru.agentlab.maia.execution.check.childs
 
+import ru.agentlab.maia.execution.check.IChildsCheck
 import ru.agentlab.maia.execution.tree.ExecutionNodeState
 import ru.agentlab.maia.execution.tree.IExecutionNode
-import ru.agentlab.maia.execution.check.IChildsCheck
 
 class AllChildsActive implements IChildsCheck {
 

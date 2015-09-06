@@ -10,7 +10,7 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  javax.inject;bundle-version="1.0.0",
- ru.agentlab.maia.context;bundle-version="1.0.0",
+ ru.agentlab.maia.memory;bundle-version="1.0.0",
  ru.agentlab.maia.execution;bundle-version="1.0.0",
  ru.agentlab.maia.execution.action.annotation;bundle-version="1.0.0",
  ru.agentlab.maia.execution.action;bundle-version="1.0.0"

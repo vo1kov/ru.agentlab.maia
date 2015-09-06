@@ -2,9 +2,9 @@ package ru.agentlab.maia.execution.action
 
 import javax.annotation.PostConstruct
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.context.IMaiaContextInjector
 import ru.agentlab.maia.execution.node.AbstractNode
 import ru.agentlab.maia.execution.tree.IExecutionAction
+import ru.agentlab.maia.memory.IMaiaContextInjector
 
 abstract class AbstractAction extends AbstractNode implements IExecutionAction {
 

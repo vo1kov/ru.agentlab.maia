@@ -2,9 +2,9 @@ package ru.agentlab.maia.execution.action.runnable
 
 import javax.inject.Inject
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.action.AbstractAction
 import ru.agentlab.maia.execution.tree.IExecutionScheduler
+import ru.agentlab.maia.memory.IMaiaContext
 
 class RunnableContextAction extends AbstractAction {
 

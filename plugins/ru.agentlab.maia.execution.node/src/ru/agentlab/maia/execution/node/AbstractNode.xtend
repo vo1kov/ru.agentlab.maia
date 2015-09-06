@@ -5,13 +5,13 @@ import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 import javax.inject.Inject
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.check.IParametersCheck
 import ru.agentlab.maia.execution.tree.ExecutionNodeState
 import ru.agentlab.maia.execution.tree.IDataInputParameter
 import ru.agentlab.maia.execution.tree.IDataOutputParameter
 import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.execution.tree.IExecutionScheduler
+import ru.agentlab.maia.memory.IMaiaContext
 
 @Accessors(PUBLIC_GETTER)
 abstract class AbstractNode implements IExecutionNode {

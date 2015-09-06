@@ -2,10 +2,10 @@ package ru.agentlab.maia.execution.scheduler.pattern.impl
 
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
-import ru.agentlab.maia.context.IMaiaContext
+import ru.agentlab.maia.execution.scheduler.AbstractScheduler
 import ru.agentlab.maia.execution.scheduler.pattern.IPatternScheduler
 import ru.agentlab.maia.execution.tree.IExecutionNode
-import ru.agentlab.maia.execution.scheduler.AbstractScheduler
+import ru.agentlab.maia.memory.IMaiaContext
 
 class PatternScheduler extends AbstractScheduler implements IPatternScheduler {
 

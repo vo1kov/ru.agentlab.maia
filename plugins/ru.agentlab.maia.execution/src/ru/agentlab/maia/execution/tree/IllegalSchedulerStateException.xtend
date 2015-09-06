@@ -1,7 +1,5 @@
 package ru.agentlab.maia.execution.tree
 
-import java.lang.IllegalStateException
-
 class IllegalSchedulerStateException extends IllegalStateException {
 	
 	new() {

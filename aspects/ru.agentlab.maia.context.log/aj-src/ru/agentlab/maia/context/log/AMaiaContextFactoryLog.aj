@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import ru.agentlab.maia.context.IMaiaContext;
 import ru.agentlab.maia.context.IMaiaContextFactory;
-import ru.agentlab.maia.context.aj.AMaiaContextFactory;
+import ru.agentlab.maia.memory.aj.AMaiaContextFactory;
 
 public aspect AMaiaContextFactoryLog extends AMaiaContextFactory {
 
