@@ -8,14 +8,12 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
-import ru.agentlab.maia.context.IMaiaContext
-import ru.agentlab.maia.context.IMaiaContextInjector
-import ru.agentlab.maia.context.IMaiaServiceDeployer
-import ru.agentlab.maia.context.MaiaServiceDeployer
 import ru.agentlab.maia.execution.node.AbstractNode
 import ru.agentlab.maia.execution.scheduler.fsm.IFsmScheduler
 import ru.agentlab.maia.execution.scheduler.fsm.impl.FsmScheduler
 import ru.agentlab.maia.execution.tree.IExecutionNode
+import ru.agentlab.maia.memory.IMaiaContext
+import ru.agentlab.maia.memory.IMaiaContextInjector
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
@@ -31,8 +29,6 @@ class FsmSchedulerStateTests {
 	@Mock
 	IMaiaContextInjector injector
 
-	IMaiaServiceDeployer deployer
-
 	@Spy @InjectMocks
 	IFsmScheduler scheduler = new FsmScheduler
 
@@ -45,14 +41,13 @@ class FsmSchedulerStateTests {
 
 	@Test
 	def void shouldBeInstalledWhenDeployToContext() {
-		deployer = new MaiaServiceDeployer(context)
 		when(context.getLocal(IMaiaContextInjector)).thenReturn(injector)
 		when(injector.invoke(scheduler, PostConstruct, null)).thenAnswer [
 			(scheduler as AbstractNode).init
 			return null
 		]
 
-		deployer.deploy(scheduler)
+		injector.deploy(scheduler)
 
 		assertThat(scheduler.state, equalTo(INSTALLED))
 	}

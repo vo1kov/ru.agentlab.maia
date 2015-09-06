@@ -4,10 +4,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.runners.MockitoJUnitRunner
-import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.execution.scheduler.pattern.impl.PatternScheduler
 import ru.agentlab.maia.execution.scheduler.pattern.impl.PatternScheme
 import ru.agentlab.maia.execution.tree.IExecutionAction
+import ru.agentlab.maia.memory.IMaiaContext
 
 @RunWith(MockitoJUnitRunner)
 class SchemeSchedulerTests {
@@ -38,8 +38,6 @@ class SchemeSchedulerTests {
 //			println(nextNode)
 //			println(nextNode)
 //		]
-
-
 //		val rootContextRef = Activator.context.getServiceReference(IMaiaContext)
 //		val rootContext = Activator.context.getService(rootContextRef)
 //		scheduler.add(firstChildContext)
