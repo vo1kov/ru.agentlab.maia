@@ -4,11 +4,11 @@ import org.eclipse.e4.core.contexts.EclipseContextFactory
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.runner.RunWith
 import org.mockito.runners.MockitoJUnitRunner
-import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.injector.e4.E4MaiaContext
+import ru.agentlab.maia.context.test.ContextGetUuidAbstractTests
+import ru.agentlab.maia.memory.IMaiaContext
 
 import static org.mockito.Mockito.*
-import ru.agentlab.maia.context.test.ContextGetUuidAbstractTests
 
 @RunWith(MockitoJUnitRunner)
 class E4ContextGetUuidTests extends ContextGetUuidAbstractTests {
