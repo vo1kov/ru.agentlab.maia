@@ -11,7 +11,6 @@ import ru.agentlab.maia.context.injector.e4.E4MaiaContextInjector
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.IMaiaContextFactory
 import ru.agentlab.maia.memory.IMaiaContextInjector
-import ru.agentlab.maia.memory.IMaiaServiceDeployer
 
 class Activator implements BundleActivator {
 

@@ -7,6 +7,7 @@ import org.eclipse.e4.core.di.InjectionException
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.IMaiaContextInjector
 import ru.agentlab.maia.memory.exception.MaiaInjectionException
+import ru.agentlab.maia.memory.exception.MaiaDeploymentException
 
 class E4MaiaContextInjector implements IMaiaContextInjector {
 
@@ -42,6 +43,30 @@ class E4MaiaContextInjector implements IMaiaContextInjector {
 		} catch (InjectionException e) {
 			throw new MaiaInjectionException(e)
 		}
+	}
+	
+	override <T> deploy(Class<T> serviceClass) throws MaiaDeploymentException {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override <T> deploy(Class<T> serviceClass, String key) throws MaiaDeploymentException {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override <T> deploy(Class<? extends T> serviceClass, Class<T> serviceInterface) throws MaiaDeploymentException {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override deploy(Object service) throws MaiaDeploymentException {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override deploy(Object service, String key) throws MaiaDeploymentException {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override <T> deploy(T service, Class<T> interf) throws MaiaDeploymentException {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 }
