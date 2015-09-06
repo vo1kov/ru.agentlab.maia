@@ -7,7 +7,7 @@ import ru.agentlab.maia.memory.exception.MaiaInjectionException
 /**
  * Service for injection context to objects.
  * 
- * @author <a href='shishkin_dimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
+ * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
 interface IMaiaContextInjector {
 

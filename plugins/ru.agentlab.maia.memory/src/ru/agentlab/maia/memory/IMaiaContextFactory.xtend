@@ -3,7 +3,7 @@ package ru.agentlab.maia.memory
 /**
  * Factory for creating Contexts.
  * 
- * @author <a href='shishkin_dimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
+ * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
 interface IMaiaContextFactory {
 

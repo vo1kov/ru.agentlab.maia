@@ -6,7 +6,7 @@ import java.util.Set
 /**
  * Storage for services and objects.
  * 
- * @author <a href='shishkin_dimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
+ * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
 interface IMaiaContext {
 
