@@ -34,8 +34,6 @@ class FsmSchedulerStateTests {
 
 	@Test
 	def void shouldBeUnknownWhenConstructed() {
-		scheduler = new FsmScheduler
-
 		assertThat(scheduler.state, equalTo(UNKNOWN))
 	}
 
@@ -43,6 +41,10 @@ class FsmSchedulerStateTests {
 	def void shouldBeInstalledWhenDeployToContext() {
 		when(context.getLocal(IMaiaContextInjector)).thenReturn(injector)
 		when(injector.invoke(scheduler, PostConstruct, null)).thenAnswer [
+			(scheduler as AbstractNode).init
+			return null
+		]
+		when(injector.deploy(scheduler)).thenAnswer [
 			(scheduler as AbstractNode).init
 			return null
 		]

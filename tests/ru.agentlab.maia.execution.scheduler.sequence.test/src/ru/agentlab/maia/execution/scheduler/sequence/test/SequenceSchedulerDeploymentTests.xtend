@@ -37,6 +37,10 @@ class SequenceSchedulerDeploymentTests {
 			(scheduler as AbstractNode).init
 			return null
 		]
+		when(injector.deploy(scheduler)).thenAnswer [
+			(scheduler as AbstractNode).init
+			return null
+		]
 
 		injector.deploy(scheduler)
 
