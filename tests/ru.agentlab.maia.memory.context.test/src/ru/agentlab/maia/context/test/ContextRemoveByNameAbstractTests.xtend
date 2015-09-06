@@ -1,7 +1,7 @@
 package ru.agentlab.maia.context.test
 
 import org.junit.Test
-import ru.agentlab.maia.memory.test.DummyService
+import ru.agentlab.maia.memory.doubles.DummyService
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*

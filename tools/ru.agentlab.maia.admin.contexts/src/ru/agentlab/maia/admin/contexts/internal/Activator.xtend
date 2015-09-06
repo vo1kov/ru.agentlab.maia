@@ -8,7 +8,7 @@ import org.osgi.framework.ServiceRegistration
 import ru.agentlab.maia.admin.contexts.WsContextListHandler
 import ru.agentlab.maia.admin.contexts.WsContextServicesListHandler
 import ru.agentlab.maia.admin.contexts.WsContextSubscribeHandler
-import ru.agentlab.maia.context.IMaiaContext
+import ru.agentlab.maia.memory.IMaiaContext
 
 class Activator implements BundleActivator {
 

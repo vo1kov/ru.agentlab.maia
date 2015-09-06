@@ -4,8 +4,8 @@ import com.jayway.jsonpath.JsonPath
 import io.netty.channel.ChannelHandlerAdapter
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame
-import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.admin.contexts.internal.Activator
+import ru.agentlab.maia.memory.IMaiaContext
 
 class WsContextServicesListHandler extends ChannelHandlerAdapter {
 

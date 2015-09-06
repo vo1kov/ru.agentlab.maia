@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
-	<artifactId>ru.agentlab.maia.context.e4</artifactId>
+	<artifactId>ru.agentlab.maia.memory.context.e4</artifactId>
 	<packaging>eclipse-plugin</packaging>
 
 	<parent>

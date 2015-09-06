@@ -2,14 +2,13 @@ package ru.agentlab.maia.launcher
 
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
-import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.context.modifier.MaiaExtension
 import ru.agentlab.maia.context.modifier.MaiaRootContextModifier
 import ru.agentlab.maia.execution.IMaiaExecutorService
 import ru.agentlab.maia.execution.action.annotated.AnnotatedAction
+import ru.agentlab.maia.execution.node.DataInputParameter
 import ru.agentlab.maia.execution.tree.IExecutionNode
-import ru.agentlab.maia.execution.tree.IExecutionScheduler
-import ru.agentlab.maia.execution.tree.impl.DataInputParameter
+import ru.agentlab.maia.memory.IMaiaContext
 
 class Activator implements BundleActivator {
 
