@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>ru.agentlab.maia</groupId>
 		<artifactId>ru.agentlab.maia.releng</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../../releng/ru.agentlab.maia.releng</relativePath>
 	</parent>
 
