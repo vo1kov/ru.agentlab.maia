@@ -18,7 +18,7 @@ class E4MaiaContext implements IMaiaContext {
 
 	val String uuid
 
-	var IMaiaContext parent
+	var volatile IMaiaContext parent
 
 	val Collection<IMaiaContext> childs = new ArrayList
 
@@ -118,6 +118,14 @@ class E4MaiaContext implements IMaiaContext {
 
 	override Set<String> getKeySet() {
 		return (context as EclipseContext).localData.keySet
+	}
+	
+	override addChild(IMaiaContext child) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override removeChild(IMaiaContext child) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 }
