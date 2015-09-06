@@ -2,37 +2,37 @@ package ru.agentlab.maia.context.modifier
 
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.IMaiaContextFactory
-import ru.agentlab.maia.memory.IMaiaServiceDeployer
+import ru.agentlab.maia.memory.IMaiaContextInjector
 
 class MaiaExtension {
 
 	def <T> T deploy(IMaiaContext context, Class<T> serviceClass) {
-		context.get(IMaiaServiceDeployer).deploy(serviceClass)
+		context.get(IMaiaContextInjector).deploy(serviceClass)
 	}
 
 	def Object deploy(IMaiaContext context, Object service) {
-		context.get(IMaiaServiceDeployer).deploy(service)
+		context.get(IMaiaContextInjector).deploy(service)
 	}
 
 	def <T> T deploy(IMaiaContext context, T service, Class<T> interf) {
-		context.get(IMaiaServiceDeployer).deploy(service, interf)
+		context.get(IMaiaContextInjector).deploy(service, interf)
 	}
 
 	def IMaiaContext createContainer(IMaiaContext parent) {
 		return parent.get(IMaiaContextFactory).createContext => [
-			get(IMaiaServiceDeployer).deploy(MaiaContainerContextModifier)
+			get(IMaiaContextInjector).deploy(MaiaContainerContextModifier)
 		]
 	}
 
 	def IMaiaContext createAgent(IMaiaContext parent) {
 		return parent.get(IMaiaContextFactory).createContext => [
-			get(IMaiaServiceDeployer).deploy(MaiaAgentContextModifier)
+			get(IMaiaContextInjector).deploy(MaiaAgentContextModifier)
 		]
 	}
 
 	def IMaiaContext createBehaviour(IMaiaContext parent) {
 		return parent.get(IMaiaContextFactory).createContext => [
-			get(IMaiaServiceDeployer).deploy(MaiaBehaviourContextModifier)
+			get(IMaiaContextInjector).deploy(MaiaBehaviourContextModifier)
 		]
 	}
 

@@ -5,7 +5,7 @@ import javax.inject.Inject
 import ru.agentlab.maia.execution.scheduler.sequence.SequenceContextScheduler
 import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.memory.IMaiaContext
-import ru.agentlab.maia.memory.IMaiaServiceDeployer
+import ru.agentlab.maia.memory.IMaiaContextInjector
 
 class MaiaAgentContextModifier {
 
@@ -16,7 +16,7 @@ class MaiaAgentContextModifier {
 	def void setup() {
 		context => [
 			set(IMaiaContext.KEY_TYPE, "agent")
-			get(IMaiaServiceDeployer) => [
+			get(IMaiaContextInjector) => [
 				deploy(SequenceContextScheduler, IExecutionNode)
 			]
 		]

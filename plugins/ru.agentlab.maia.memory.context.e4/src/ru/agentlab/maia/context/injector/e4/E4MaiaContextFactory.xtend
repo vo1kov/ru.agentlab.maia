@@ -6,7 +6,6 @@ import org.eclipse.e4.core.contexts.IEclipseContext
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.IMaiaContextFactory
 import ru.agentlab.maia.memory.IMaiaContextInjector
-import ru.agentlab.maia.memory.IMaiaServiceDeployer
 
 class E4MaiaContextFactory implements IMaiaContextFactory {
 

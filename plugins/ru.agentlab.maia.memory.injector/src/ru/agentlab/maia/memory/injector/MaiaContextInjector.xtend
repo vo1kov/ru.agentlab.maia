@@ -9,11 +9,14 @@ import java.lang.reflect.Type
 import java.util.ArrayList
 import java.util.Collections
 import java.util.Comparator
+import javax.annotation.PostConstruct
 import javax.inject.Inject
 import ru.agentlab.maia.memory.IMaiaContext
+import ru.agentlab.maia.memory.IMaiaContextInjector
+import ru.agentlab.maia.memory.exception.MaiaDeploymentException
 import ru.agentlab.maia.memory.exception.MaiaInjectionException
 
-class MaiaContextInjector {
+class MaiaContextInjector implements IMaiaContextInjector {
 
 	val public static Object NOT_A_VALUE = new Object()
 
@@ -23,7 +26,7 @@ class MaiaContextInjector {
 		this.context = context
 	}
 
-	def <T> T make(Class<T> clazz) {
+	override <T> T make(Class<T> clazz) {
 		try {
 			val constructors = clazz.declaredConstructors
 
@@ -45,15 +48,15 @@ class MaiaContextInjector {
 					return instance
 				}
 			}
-			throw new InjectionException("Could not find satisfiable constructor in " + clazz.name) // $NON-NLS-1$
+			throw new MaiaInjectionException("Could not find satisfiable constructor in " + clazz.name) // $NON-NLS-1$
 		} catch (NoClassDefFoundError e) {
-			throw new InjectionException(e)
+			throw new MaiaInjectionException(e)
 		} catch (NoSuchMethodError e) {
-			throw new InjectionException(e)
+			throw new MaiaInjectionException(e)
 		}
 	}
 
-	def void invoke(Object object, Class<? extends Annotation> ann) {
+	override invoke(Object object, Class<? extends Annotation> ann) {
 		val method = object.class.declaredMethods.findFirst[isAnnotationPresent(ann)]
 		object.invoke(method)
 	}
@@ -77,11 +80,11 @@ class MaiaContextInjector {
 		try {
 			result = method.invoke(object, actualArgs)
 		} catch (IllegalArgumentException e) {
-			throw new InjectionException(e)
+			throw new MaiaInjectionException(e)
 		} catch (IllegalAccessException e) {
-			throw new InjectionException(e)
+			throw new MaiaInjectionException(e)
 		} catch (InvocationTargetException e) {
-			throw new InjectionException(e)
+			throw new MaiaInjectionException(e)
 		} finally {
 			if (!wasAccessible)
 				method.setAccessible(false)
@@ -90,7 +93,7 @@ class MaiaContextInjector {
 		return result
 	}
 
-	def void inject(Object object) throws MaiaInjectionException {
+	override void inject(Object object) throws MaiaInjectionException {
 	}
 
 	/**
@@ -128,13 +131,13 @@ class MaiaContextInjector {
 		try {
 			result = constructor.newInstance(actualArgs)
 		} catch (IllegalArgumentException e) {
-			throw new InjectionException(e)
+			throw new MaiaInjectionException(e)
 		} catch (InstantiationException e) {
-			throw new InjectionException("Unable to instantiate " + constructor, e) // $NON-NLS-1$
+			throw new MaiaInjectionException("Unable to instantiate " + constructor, e) // $NON-NLS-1$
 		} catch (IllegalAccessException e) {
-			throw new InjectionException(e)
+			throw new MaiaInjectionException(e)
 		} catch (InvocationTargetException e) {
-			throw new InjectionException(e)
+			throw new MaiaInjectionException(e)
 		} finally {
 			if (!wasAccessible)
 				constructor.setAccessible(false)
@@ -160,4 +163,86 @@ class MaiaContextInjector {
 		}
 		return -1
 	}
+
+	/**
+	 * PostConstruct method is invoked before registration service in context.
+	 * Services can remove old services from context in PostConstruct method.
+	 */
+	override <T> deploy(Class<T> serviceClass) throws MaiaDeploymentException {
+		val injector = context.getLocal(IMaiaContextInjector)
+		try {
+			val service = injector.make(serviceClass)
+			injector.invoke(service, PostConstruct, null)
+			context.set(serviceClass, service)
+			return service
+		} catch (MaiaInjectionException e) {
+			throw new MaiaDeploymentException(e)
+		}
+	}
+
+	override deploy(Object service) throws MaiaDeploymentException {
+		val injector = context.getLocal(IMaiaContextInjector)
+		try {
+			injector.inject(service)
+			injector.invoke(service, PostConstruct, null)
+			context.set(service.class.name, service)
+			return service
+		} catch (MaiaInjectionException e) {
+			throw new MaiaDeploymentException(e)
+		}
+	}
+
+	override <T> deploy(Class<T> serviceClass, String key) throws MaiaDeploymentException {
+		val injector = context.getLocal(IMaiaContextInjector)
+		try {
+			val service = injector.make(serviceClass)
+			injector.invoke(service, PostConstruct, null)
+			context.set(key, service)
+			return service
+		} catch (MaiaInjectionException e) {
+			throw new MaiaDeploymentException(e)
+		}
+	}
+
+	override <T> deploy(Class<? extends T> serviceClass, Class<T> interf) throws MaiaDeploymentException {
+		val injector = context.getLocal(IMaiaContextInjector)
+		try {
+			val service = injector.make(serviceClass)
+			injector.invoke(service, PostConstruct, null)
+			context.set(interf, service)
+			return service
+		} catch (MaiaInjectionException e) {
+			throw new MaiaDeploymentException(e)
+		}
+	}
+
+	override deploy(Object service, String key) throws MaiaDeploymentException {
+		val injector = context.getLocal(IMaiaContextInjector)
+		try {
+			injector.inject(service)
+			injector.invoke(service, PostConstruct, null)
+			context.set(key, service)
+			return service
+		} catch (MaiaInjectionException e) {
+			throw new MaiaDeploymentException(e)
+		}
+	}
+
+	override <T> deploy(T service, Class<T> interf) throws MaiaDeploymentException {
+		val injector = context.getLocal(IMaiaContextInjector)
+		try {
+			injector.inject(service)
+			injector.invoke(service, PostConstruct, null)
+			context.set(interf, service)
+			return service
+		} catch (MaiaInjectionException e) {
+			throw new MaiaDeploymentException(e)
+		}
+	}
+
+	override invoke(Object object, Class<? extends Annotation> qualifier,
+		Object defaultValue) throws MaiaInjectionException {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+
 }
