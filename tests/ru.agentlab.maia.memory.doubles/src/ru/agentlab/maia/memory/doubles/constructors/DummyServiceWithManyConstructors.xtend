@@ -1,23 +1,28 @@
 package ru.agentlab.maia.memory.doubles.constructors
 
+import javax.inject.Inject
+
 class DummyServiceWithManyConstructors {
 
-	public String s
+	public boolean firstConstructorCalled = false
 
+	public boolean secondConstructorCalled = false
+
+	public String stringValue
+
+	public int intValue
+
+	@Inject
 	new(String s) {
-		this.s = s
-		firstConstructorCall
+		this.stringValue = s
+		firstConstructorCalled = true
 	}
 
-	new(Integer i, String s) {
-		this.s = s + i.toString
-		secondConstructorCall
-	}
-
-	def void firstConstructorCall() {
-	}
-
-	def void secondConstructorCall() {
+	@Inject
+	new(int i, String s) {
+		this.stringValue = s
+		this.intValue = i
+		secondConstructorCalled = true
 	}
 
 }

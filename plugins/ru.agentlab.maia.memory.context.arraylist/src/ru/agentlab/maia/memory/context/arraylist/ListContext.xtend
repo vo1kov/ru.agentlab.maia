@@ -3,6 +3,7 @@ package ru.agentlab.maia.memory.context.arraylist
 import java.util.ArrayList
 import java.util.LinkedList
 import java.util.List
+import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.context.AbstractContext
 
 /**

@@ -4,11 +4,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.memory.IMaiaContext
-import ru.agentlab.maia.memory.IMaiaContextInjector
 import ru.agentlab.maia.memory.doubles.constructors.DummyServiceWithEmptyConstructor
 import ru.agentlab.maia.memory.doubles.constructors.DummyServiceWithManyConstructors
+import ru.agentlab.maia.memory.injector.MaiaContextInjector
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
@@ -21,14 +22,14 @@ class ContextInjectorMakeTests {
 	@Mock
 	IMaiaContext context
 
-	@InjectMocks
-	IMaiaContextInjector injector
+	@Spy @InjectMocks
+	MaiaContextInjector injector
 
 	@Test
 	def void shouldCallEmptyConstructor() {
 		val service = injector.make(DummyServiceWithEmptyConstructor)
 
-		verify(service).emptyConstructorCall
+		assertThat(service.constructorCalled, equalTo(true))
 	}
 
 	@Test
@@ -49,7 +50,23 @@ class ContextInjectorMakeTests {
 
 		val service = injector.make(DummyServiceWithManyConstructors)
 
-		verify(service).secondConstructorCall
+		assertThat(service.firstConstructorCalled, equalTo(false))
+		assertThat(service.secondConstructorCalled, equalTo(true))
+	}
+
+	@Test
+	def void shouldInjectToBiggestConstructor() {
+		val string = anyString
+		when(context.get(String)).thenReturn(string)
+		when(context.get(String.name)).thenReturn(string)
+		val integer = anyInt
+		when(context.get(Integer)).thenReturn(integer)
+		when(context.get(Integer.name)).thenReturn(integer)
+
+		val service = injector.make(DummyServiceWithManyConstructors)
+
+		assertThat(service.stringValue, equalTo(string))
+		assertThat(service.intValue, equalTo(integer))
 	}
 
 	@Test
@@ -63,7 +80,19 @@ class ContextInjectorMakeTests {
 
 		val service = injector.make(DummyServiceWithManyConstructors)
 
-		assertThat(service, notNullValue)
+		assertThat(service, notNullValue(DummyServiceWithManyConstructors))
+	}
+
+	@Test
+	def void shouldCallRelevantConstructor() {
+		val string = anyString
+		when(context.get(String)).thenReturn(string)
+		when(context.get(String.name)).thenReturn(string)
+
+		val service = injector.make(DummyServiceWithManyConstructors)
+
+		assertThat(service.firstConstructorCalled, equalTo(true))
+		assertThat(service.secondConstructorCalled, equalTo(false))
 	}
 
 	@Test
@@ -74,7 +103,7 @@ class ContextInjectorMakeTests {
 
 		val service = injector.make(DummyServiceWithManyConstructors)
 
-		assertThat(service, notNullValue)
+		assertThat(service, notNullValue(DummyServiceWithManyConstructors))
 	}
 
 }
