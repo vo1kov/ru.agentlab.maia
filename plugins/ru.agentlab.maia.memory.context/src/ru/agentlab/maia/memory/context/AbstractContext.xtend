@@ -7,19 +7,30 @@ import java.util.UUID
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.memory.IMaiaContext
 
-@Accessors
+/**
+ * <p>Abstract {@link IMaiaContext} implementation.</p>
+ * 
+ * <p>Implementation guarantee that:</p>
+ * <ul>
+ * <li>Context can be in hierarchy (have parent and childs);</li>
+ * <li>Context will have unique UUID;</li>
+ * <li>Context redirect service searching to parent if can't find it;</li>
+ * <li>Context disable <code>null</code> keys for storing services;</li>
+ * </ul>
+ * 
+ * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
+ */
 abstract class AbstractContext implements IMaiaContext {
 
+	@Accessors
 	val String uuid = UUID.randomUUID.toString
 
+	@Accessors
 	var volatile IMaiaContext parent
 
+	@Accessors
 	val Collection<IMaiaContext> childs = new HashSet
 
-	/**
-	 * 
-	 * @NotNull
-	 */
 	override get(String name) {
 		if (name == null) {
 			throw new NullPointerException
@@ -98,7 +109,7 @@ abstract class AbstractContext implements IMaiaContext {
 		}
 		doSetLocal(clazz, value)
 	}
-	
+
 	override toString() {
 		uuid
 	}
