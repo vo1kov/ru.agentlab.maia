@@ -50,10 +50,10 @@ class WsSubscribeBundleHandler extends ChannelHandlerAdapter {
 					}
 					ctx.writeAndFlush(new TextWebSocketFrame('''
 						{
-							"command" : "«COMMAND»", 
+							"command" : "Â«COMMANDÂ»", 
 							"content" : {
-								"bundle" : "«event.bundle.bundleId»",
-								"type" : "«e»"
+								"bundle" : "Â«event.bundle.bundleIdÂ»",
+								"type" : "Â«eÂ»"
 							}
 						}
 					'''))

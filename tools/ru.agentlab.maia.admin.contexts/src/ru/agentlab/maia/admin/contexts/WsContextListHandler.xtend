@@ -17,7 +17,7 @@ class WsContextListHandler extends ChannelHandlerAdapter {
 				ctx.writeAndFlush(new TextWebSocketFrame('''
 					{
 						"command" : "context-list", 
-						"content" : «rootContext.serialize»
+						"content" : Â«rootContext.serializeÂ»
 					}
 				'''))
 			}
@@ -31,21 +31,21 @@ class WsContextListHandler extends ChannelHandlerAdapter {
 		if (context.childs.empty) {
 			return '''
 				{
-					"name" : "«context.toString»",
-					"uuid" : "«context.uuid»",
-					"type" : "«context.get(IMaiaContext.KEY_TYPE)»"
+					"name" : "Â«context.toStringÂ»",
+					"uuid" : "Â«context.uuidÂ»",
+					"type" : "Â«context.get(IMaiaContext.KEY_TYPE)Â»"
 				}
 			'''
 		} else {
 			return '''
 				{
-					"name" : "«context.toString»",
-					"uuid" : "«context.uuid»",
-					"type" : "«context.get(IMaiaContext.KEY_TYPE)»",
+					"name" : "Â«context.toStringÂ»",
+					"uuid" : "Â«context.uuidÂ»",
+					"type" : "Â«context.get(IMaiaContext.KEY_TYPE)Â»",
 					"children" : [
-						«FOR child : context.childs SEPARATOR ","»
-							«child.serialize»
-						«ENDFOR»
+						Â«FOR child : context.childs SEPARATOR ","Â»
+							Â«child.serializeÂ»
+						Â«ENDFORÂ»
 					]
 				}
 			'''

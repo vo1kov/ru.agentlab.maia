@@ -6,7 +6,8 @@
       provider-name="http://www.agentlab.ru/">
 
    <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+      SDK for developing MAIA plugins.
+SDK contains only interfaces and some abstract implementations and have no any concrete implementation.
    </description>
 
    <copyright url="http://www.example.com/copyright">
@@ -16,6 +17,18 @@
    <license url="http://www.example.com/license">
       [Enter License Description here.]
    </license>
+
+   <requires>
+      <import plugin="com.google.guava"/>
+      <import plugin="org.eclipse.xtext.xbase.lib"/>
+      <import plugin="org.eclipse.xtend.lib"/>
+      <import plugin="org.eclipse.xtend.lib.macro"/>
+      <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="ru.agentlab.maia.memory" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.osgi"/>
+      <import plugin="ru.agentlab.maia.execution.node" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="ru.agentlab.maia.execution" version="1.0.0" match="greaterOrEqual"/>
+   </requires>
 
    <plugin
          id="ru.agentlab.maia.event"
@@ -33,6 +46,41 @@
 
    <plugin
          id="ru.agentlab.maia.memory"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="ru.agentlab.maia.execution.action"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="ru.agentlab.maia.execution.node"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="ru.agentlab.maia.execution.scheduler"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="ru.agentlab.maia.memory.context"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="ru.agentlab.maia.memory.injector"
          download-size="0"
          install-size="0"
          version="0.0.0"

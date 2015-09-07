@@ -51,12 +51,22 @@
 			<id>aspects</id>
 			<modules>
 				<module>../../aspects/ru.agentlab.maia.execution.event</module>
-				<module>../../aspects/ru.agentlab.maia.execution.scheduler.logs</module>
-
 				<module>../../aspects/ru.agentlab.maia.memory.context.events</module>
-				<module>../../aspects/ru.agentlab.maia.memory.context.logs</module>
 				<module>../../aspects/ru.agentlab.maia.memory.injector.events</module>
+
+				<module>../../aspects/ru.agentlab.maia.execution.scheduler.logs</module>
+				<module>../../aspects/ru.agentlab.maia.memory.context.logs</module>
 				<module>../../aspects/ru.agentlab.maia.memory.injector.logs</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>tools</id>
+			<modules>
+				<module>../../tools/com.jayway.jsonpath</module>
+				<module>../../tools/ru.agentlab.maia.admin</module>
+				<module>../../tools/ru.agentlab.maia.admin.bundles</module>
+				<module>../../tools/ru.agentlab.maia.admin.contexts</module>
+<!-- 				<module>../../tools/ru.agentlab.maia.admin.ui</module> -->
 			</modules>
 		</profile>
 		<profile>
@@ -349,6 +359,7 @@
 										</versionRange>
 										<goals>
 											<goal>test-compile</goal>
+											<goal>compile</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>

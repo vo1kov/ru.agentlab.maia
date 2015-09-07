@@ -19,11 +19,11 @@ class BundleHandler extends ChannelHandlerAdapter {
 			if (COMMAND.equalsIgnoreCase(type)) {
 				ctx.writeAndFlush(new TextWebSocketFrame('''
 					{
-						"command" : "«COMMAND»", 
+						"command" : "Â«COMMANDÂ»", 
 						"content" : [
-							«FOR bundle : Activator.context.bundles SEPARATOR ","»
-								«bundle.serialize»
-							«ENDFOR»
+							Â«FOR bundle : Activator.context.bundles SEPARATOR ","Â»
+								Â«bundle.serializeÂ»
+							Â«ENDFORÂ»
 						]
 					}
 				'''))
@@ -37,16 +37,16 @@ class BundleHandler extends ChannelHandlerAdapter {
 	def String serialize(Bundle bundle) {
 		'''
 			{
-				"name" : "«bundle.symbolicName»",
-				"id" : "«bundle.bundleId»",
-				"state" : "«bundle.stateString»",
+				"name" : "Â«bundle.symbolicNameÂ»",
+				"id" : "Â«bundle.bundleIdÂ»",
+				"state" : "Â«bundle.stateStringÂ»",
 				"imports" : [
-					«val req = bundle.headers.get("Require-Bundle")»
-					«IF req != null»
-						«FOR elem : ManifestElement.parseHeader(Constants.REQUIRE_BUNDLE, req) SEPARATOR ","»
-							"«elem.value»"
-						«ENDFOR»
-					«ENDIF»
+					Â«val req = bundle.headers.get("Require-Bundle")Â»
+					Â«IF req != nullÂ»
+						Â«FOR elem : ManifestElement.parseHeader(Constants.REQUIRE_BUNDLE, req) SEPARATOR ","Â»
+							"Â«elem.valueÂ»"
+						Â«ENDFORÂ»
+					Â«ENDIFÂ»
 				]
 			}
 		'''

@@ -22,9 +22,9 @@ class WsContextServicesListHandler extends ChannelHandlerAdapter {
 						{
 							"command" : "services", 
 							"parameters" : [
-								{"context" : "«context»"}
+								{"context" : "Â«contextÂ»"}
 							],
-							"content" : «found.dump»
+							"content" : Â«found.dumpÂ»
 						}
 					'''))
 				}
@@ -41,28 +41,28 @@ class WsContextServicesListHandler extends ChannelHandlerAdapter {
 		]
 		val res = '''
 			{
-				"name" : "«this.toString»",
+				"name" : "Â«this.toStringÂ»",
 				"services" : [
-					«FOR p1 : list SEPARATOR ","»
-						«val value = context.get(p1)»
+					Â«FOR p1 : list SEPARATOR ","Â»
+						Â«val value = context.get(p1)Â»
 						{
-							"key" : "«p1»",
-							"value" : "«IF value != null»«value.class.name + "@" + Integer.toHexString(System.identityHashCode(value))»«ENDIF»",
-							"type" : "«value?.class?.name»"
-«««							«IF value != null && !value.class.isPrimitive && value.class != String»,
-«««								"fields" : [
-«««									«FOR field : value.class.declaredFields SEPARATOR ","»
-«««										{
-«««											"name" : "«field.name»",
-«««											«field.setAccessible(true)»
-«««											«val fieldValue = field.get(value)»
-«««											"value" : "«IF fieldValue != null»«fieldValue.class.name + "@" + Integer.toHexString(System.identityHashCode(fieldValue))»«ELSE»null«ENDIF»"
-«««										}
-«««									«ENDFOR»
-«««								]
-«««							«ENDIF»
+							"key" : "Â«p1Â»",
+							"value" : "Â«IF value != nullÂ»Â«value.class.name + "@" + Integer.toHexString(System.identityHashCode(value))Â»Â«ENDIFÂ»",
+							"type" : "Â«value?.class?.nameÂ»"
+Â«Â«Â«							Â«IF value != null && !value.class.isPrimitive && value.class != StringÂ»,
+Â«Â«Â«								"fields" : [
+Â«Â«Â«									Â«FOR field : value.class.declaredFields SEPARATOR ","Â»
+Â«Â«Â«										{
+Â«Â«Â«											"name" : "Â«field.nameÂ»",
+Â«Â«Â«											Â«field.setAccessible(true)Â»
+Â«Â«Â«											Â«val fieldValue = field.get(value)Â»
+Â«Â«Â«											"value" : "Â«IF fieldValue != nullÂ»Â«fieldValue.class.name + "@" + Integer.toHexString(System.identityHashCode(fieldValue))Â»Â«ELSEÂ»nullÂ«ENDIFÂ»"
+Â«Â«Â«										}
+Â«Â«Â«									Â«ENDFORÂ»
+Â«Â«Â«								]
+Â«Â«Â«							Â«ENDIFÂ»
 						}
-					«ENDFOR»
+					Â«ENDFORÂ»
 				]
 			}
 		'''
