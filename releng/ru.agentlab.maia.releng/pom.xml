@@ -70,6 +70,20 @@
 			</modules>
 		</profile>
 		<profile>
+			<id>unit-tests</id>
+			<repositories>
+				<repository>
+					<id>eclipse-luna</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/releases/luna/</url>
+				</repository>
+			</repositories>
+			<modules>
+				<module>../../tests/ru.agentlab.maia.memory.doubles</module>
+				<module>../../tests/ru.agentlab.maia.memory.context.arraylist.test.unit</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>functional-tests</id>
 			<repositories>
 				<repository>

@@ -26,9 +26,9 @@ import ru.agentlab.maia.memory.context.AbstractContext
  */
 class ListContext extends AbstractContext {
 
-	val ArrayList<String> keys = new ArrayList
+	val protected ArrayList<String> keys = new ArrayList
 
-	val ArrayList<Object> values = new ArrayList
+	val protected ArrayList<Object> values = new ArrayList
 
 	override synchronized doGetLocal(String name) {
 		val index = keys.indexOf(name)
