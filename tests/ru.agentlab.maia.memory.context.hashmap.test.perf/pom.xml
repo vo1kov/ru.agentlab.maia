@@ -21,6 +21,9 @@
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>-Xms2048m -Xmx4024m</argLine>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

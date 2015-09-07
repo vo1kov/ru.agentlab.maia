@@ -13,30 +13,46 @@ abstract class AbstractContextSetPerformanceTests {
 
 	@Test
 	def void test() {
-		val size = 1000
+		val totalSize = 100_000
+		val bucketSize = 1_00
+		val warmupCount = 5
 		val ctxSizeBefore = context.keySet.size
-		val keys = newArrayOfSize(size)
-		val services = newArrayOfSize(size)
-		val results = newArrayOfSize(size)
-		for (i : 0 ..< size) {
+		val keys = newArrayOfSize(totalSize)
+		val services = newArrayOfSize(totalSize)
+		val results = newArrayOfSize(totalSize / bucketSize)
+
+		for (i : 0 ..< totalSize) {
 			val key = UUID.randomUUID.toString
 			keys.set(i, key)
 			val service = new DummyService
 			services.set(i, service)
 		}
-		for (i : 0 ..< size) {
-			val begin = System.nanoTime
-			context.set(keys.get(i), services.get(i))
-			results.set(i, System.nanoTime - begin)
+		// warm up
+		for (c : 0 ..< warmupCount) {
+
+			// test
+			var index = 0
+			for (i : 0 ..< totalSize / bucketSize) {
+				val begin = System.nanoTime
+				for (j : 0 ..< bucketSize) {
+					context.set(keys.get(index), services.get(index))
+					index++
+				}
+				results.set(i, System.nanoTime - begin)
+			}
+			for (i : 0 ..< totalSize) {
+				context.remove(keys.get(i))
+			}
 		}
+
 		val writer = new PrintWriter('''«this.class.simpleName»_perf2.csv''', "UTF-8")
-		for (i : 0 ..< size) {
+		for (i : 0 ..< totalSize / bucketSize) {
 			writer.println(results.get(i))
 		}
 		writer.close
-		val ctxSizeAfter = context.keySet.size
+//		val ctxSizeAfter = context.keySet.size
 
-		assertThat(ctxSizeAfter - ctxSizeBefore, equalTo(size))
+//		assertThat(ctxSizeAfter - ctxSizeBefore, equalTo(totalSize))
 	}
 
 	def IMaiaContext getContext()
