@@ -2,8 +2,8 @@ package ru.agentlab.maia.context.event
 
 import java.util.HashMap
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.event.IMaiaEvent
+import ru.agentlab.maia.memory.IMaiaContext
 
 class MaiaContextSetObjectEvent implements IMaiaEvent {
 

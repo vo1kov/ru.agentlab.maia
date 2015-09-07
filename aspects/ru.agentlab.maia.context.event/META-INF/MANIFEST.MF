@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Event
-Bundle-SymbolicName: ru.agentlab.maia.context.event
+Bundle-SymbolicName: ru.agentlab.maia.memory.context.events
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.aspectj.runtime,

@@ -1,8 +1,8 @@
 package ru.agentlab.maia.context.event;
 
-import ru.agentlab.maia.context.IMaiaContext;
-import ru.agentlab.maia.context.IMaiaContextFactory;
 import ru.agentlab.maia.event.IMaiaEventBroker;
+import ru.agentlab.maia.memory.IMaiaContext;
+import ru.agentlab.maia.memory.IMaiaContextFactory;
 import ru.agentlab.maia.memory.aj.AMaiaContextFactory;
 
 public aspect AMaiaContextFactoryEvent extends AMaiaContextFactory {
