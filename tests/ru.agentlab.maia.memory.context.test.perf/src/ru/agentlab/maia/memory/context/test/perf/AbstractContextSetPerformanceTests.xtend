@@ -15,16 +15,23 @@ abstract class AbstractContextSetPerformanceTests {
 	def void test() {
 		val size = 1000
 		val ctxSizeBefore = context.keySet.size
-		val writer = new PrintWriter('''«this.class.simpleName»_perf2.csv''', "UTF-8")
+		val keys = newArrayOfSize(size)
+		val services = newArrayOfSize(size)
+		val results = newArrayOfSize(size)
 		for (i : 0 ..< size) {
 			val key = UUID.randomUUID.toString
+			keys.set(i, key)
 			val service = new DummyService
-
+			services.set(i, service)
+		}
+		for (i : 0 ..< size) {
 			val begin = System.nanoTime
-			context.set(key, service)
-			val end = System.nanoTime
-
-			writer.println(end - begin)
+			context.set(keys.get(i), services.get(i))
+			results.set(i, System.nanoTime - begin)
+		}
+		val writer = new PrintWriter('''«this.class.simpleName»_perf2.csv''', "UTF-8")
+		for (i : 0 ..< size) {
+			writer.println(results.get(i))
 		}
 		writer.close
 		val ctxSizeAfter = context.keySet.size
