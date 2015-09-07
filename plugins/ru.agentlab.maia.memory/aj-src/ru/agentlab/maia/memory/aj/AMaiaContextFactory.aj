@@ -1,7 +1,7 @@
-package ru.agentlab.maia.context.aj;
+package ru.agentlab.maia.memory.aj;
 
-import ru.agentlab.maia.context.IMaiaContext;
-import ru.agentlab.maia.context.IMaiaContextFactory;
+import ru.agentlab.maia.memory.IMaiaContext;
+import ru.agentlab.maia.memory.IMaiaContextFactory;
 
 /**
  * Abstract aspect with pointcuts of {@link IMaiaContextFactory} methods

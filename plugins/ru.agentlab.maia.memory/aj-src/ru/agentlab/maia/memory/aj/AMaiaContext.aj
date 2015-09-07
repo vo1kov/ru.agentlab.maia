@@ -1,6 +1,6 @@
-package ru.agentlab.maia.context.aj;
+package ru.agentlab.maia.memory.aj;
 
-import ru.agentlab.maia.context.IMaiaContext;
+import ru.agentlab.maia.memory.IMaiaContext;
 
 /**
  * Abstract aspect with pointcuts of {@link IMaiaContext} methods

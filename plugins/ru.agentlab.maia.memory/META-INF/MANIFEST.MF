@@ -11,8 +11,8 @@ Require-Bundle: com.google.guava,
  org.aspectj.runtime;resolution:=optional,
  javax.inject;bundle-version="1.0.0"
 Import-Package: org.osgi.framework;version="1.8.0"
-Export-Package: ru.agentlab.maia.context.aj,
- ru.agentlab.maia.memory,
+Export-Package: ru.agentlab.maia.memory,
+ ru.agentlab.maia.memory.aj,
  ru.agentlab.maia.memory.exception
 Bundle-Vendor: http://www.agentlab.ru/
 
