@@ -47,6 +47,13 @@
 		</profile>
 		<profile>
 			<id>functional-tests</id>
+			<repositories>
+				<repository>
+					<id>eclipse-luna</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/releases/luna/</url>
+				</repository>
+			</repositories>
 			<modules>
 				<module>../../tests/ru.agentlab.maia.memory.doubles</module>
 				<module>../../tests/ru.agentlab.maia.memory.context.test</module>
@@ -62,6 +69,13 @@
 		</profile>
 		<profile>
 			<id>performance-tests</id>
+			<repositories>
+				<repository>
+					<id>eclipse-luna</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/releases/luna/</url>
+				</repository>
+			</repositories>
 			<modules>
 				<module>../../tests/ru.agentlab.maia.memory.context.test.perf</module>
 				<module>../../tests/ru.agentlab.maia.memory.context.hashmap.test.perf</module>
@@ -82,6 +96,7 @@
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
+		<!-- <aspectSourceDirectory>aj-src</aspectSourceDirectory> -->
 		<plugins>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
@@ -155,6 +170,19 @@
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-surefire-plugin</artifactId>
 					<version>${tycho-version}</version>
+					<configuration>
+						<failIfNoTests>false</failIfNoTests>
+						<includes>
+							<include>**/*Tests.java</include>
+						</includes>
+						<dependencies>
+							<dependency>
+								<artifactId>org.eclipse.platform</artifactId>
+								<version>0.0.0</version>
+								<type>p2-installable-unit</type>
+							</dependency>
+						</dependencies>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
