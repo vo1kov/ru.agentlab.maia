@@ -9,5 +9,6 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- ru.agentlab.maia.memory;bundle-version="1.0.0";visibility:=reexport
+ ru.agentlab.maia.memory;bundle-version="1.0.0";visibility:=reexport,
+ javax.inject;bundle-version="1.0.0"
 

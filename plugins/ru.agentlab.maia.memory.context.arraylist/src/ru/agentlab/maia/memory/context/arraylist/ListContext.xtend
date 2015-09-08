@@ -5,13 +5,16 @@ import java.util.HashSet
 import java.util.LinkedList
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.context.AbstractContext
+import javax.inject.Provider
 
 /**
  * <p>{@link IMaiaContext} realization based on {@link LinkedList} for storing keys and values.</p>
  * 
- * <ul>Main parameters:
- * <li>getLocal() complexity: <b>O(SIZE + 1)</b>;</li>
- * <li>setLocal() complexity: <b>O(SIZE + 1)</b>;</li>
+ * <p>Main parameters:</p>
+ * <ul>
+ * <li><code>getLocal()</code> complexity: 			<b>O(SIZE)</b>;</li>
+ * <li><code>setLocal()</code> complexity: 			<b>O(SIZE)</b>;</li>
+ * <li><code>isContainsLocal()</code> complexity:	<b>O(SIZE)</b>;</li>
  * <li>memory usage: <b>O(8 * SIZE) bytes</b>;</li>
  * </ul>
  * <p>where SIZE - service count.</p>
@@ -52,7 +55,7 @@ class ListContext extends AbstractContext {
 		}
 	}
 
-	override synchronized doSetLocal(String name, Object value) {
+	override synchronized <T> doSetLocal(String name, T value) {
 		val index = keys.indexOf(name)
 		if (index != -1) {
 			values.set(index, value)
@@ -100,4 +103,20 @@ class ListContext extends AbstractContext {
 		return new HashSet<String>(keys)
 	}
 
+	override synchronized isContainsLocal(String name) {
+		return keys.indexOf(name) != -1
+	}
+
+	override synchronized isContainsLocal(Class<?> clazz) {
+		return keys.indexOf(clazz.name) != -1
+	}
+
+	override synchronized <T> doSetLocal(String name, Provider<T> provider) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+
+	override synchronized <T> doSetLocal(Class<T> clazz, Provider<T> provider) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
 }

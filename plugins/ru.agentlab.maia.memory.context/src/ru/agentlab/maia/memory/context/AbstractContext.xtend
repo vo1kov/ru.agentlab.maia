@@ -1,12 +1,13 @@
 package ru.agentlab.maia.memory.context
 
 import java.util.Collection
+import java.util.Collections
 import java.util.HashSet
 import java.util.Set
 import java.util.UUID
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.memory.IMaiaContext
-import java.util.Collections
+import javax.inject.Provider
 
 /**
  * <p>Abstract {@link IMaiaContext} implementation.</p>
@@ -32,6 +33,39 @@ abstract class AbstractContext implements IMaiaContext {
 	@Accessors
 	val Collection<IMaiaContext> childs = Collections.synchronizedSet(new HashSet)
 
+	/**
+	 * <p>Abstract implementation for {@link IMaiaContext#contains(Class) 
+	 * IMaiaContext.contains(Class)}.</p>
+	 * 
+	 * <p>Implementation try to find clazz in own context and if context have
+	 * no value than try to find in parent</p>
+	 */
+	override contains(Class<?> clazz) {
+		val inLocal = isContainsLocal(clazz)
+		if (inLocal) {
+			return this
+		} else {
+			if (parent != null) {
+				return parent.contains(clazz)
+			} else {
+				return null
+			}
+		}
+	}
+
+	override contains(String name) {
+		val inLocal = isContainsLocal(name)
+		if (inLocal) {
+			return this
+		} else {
+			if (parent != null) {
+				return parent.contains(name)
+			} else {
+				return null
+			}
+		}
+	}
+
 	override get(String name) {
 		if (name == null) {
 			throw new NullPointerException
@@ -39,8 +73,8 @@ abstract class AbstractContext implements IMaiaContext {
 		if (keySet.contains(name)) {
 			return doGetLocal(name)
 		} else {
-			if (getParent != null) {
-				return getParent.get(name)
+			if (parent != null) {
+				return parent.get(name)
 			} else {
 				return null
 			}
@@ -54,8 +88,8 @@ abstract class AbstractContext implements IMaiaContext {
 		if (keySet.contains(clazz.name)) {
 			return doGetLocal(clazz)
 		} else {
-			if (getParent != null) {
-				return getParent.get(clazz)
+			if (parent != null) {
+				return parent.get(clazz)
 			} else {
 				return null
 			}
@@ -83,7 +117,7 @@ abstract class AbstractContext implements IMaiaContext {
 		doRemoveLocal(name)
 	}
 
-	override remove(Class<?> clazz) {
+	override <T> remove(Class<T> clazz) {
 		if (clazz == null) {
 			throw new NullPointerException
 		}
@@ -95,7 +129,7 @@ abstract class AbstractContext implements IMaiaContext {
 			throw new NullPointerException
 		}
 		try {
-			val Class<? super T> clazz = Class.forName(name) as Class<? super T>
+			val clazz = Class.forName(name) as Class<T>
 			doSetLocal(clazz, value)
 		} catch (ClassNotFoundException e) {
 			doSetLocal(name, value)
@@ -109,6 +143,20 @@ abstract class AbstractContext implements IMaiaContext {
 			throw new NullPointerException
 		}
 		doSetLocal(clazz, value)
+	}
+	
+	override <T> set(String name, Provider<T> provider) {
+		if (name == null) {
+			throw new NullPointerException
+		}
+		doSetLocal(name, provider)
+	}
+	
+	override <T> set(Class<T> clazz, Provider<T> provider) {
+		if (clazz == null) {
+			throw new NullPointerException
+		}
+		doSetLocal(clazz, provider)
 	}
 
 	override toString() {
@@ -127,18 +175,32 @@ abstract class AbstractContext implements IMaiaContext {
 		childs -= child
 	}
 
-	def Object doGetLocal(String name)
+	override void setParent(IMaiaContext newParent) {
+		parent?.removeChild(this)
+		parent = newParent
+		parent.addChild(this)
+	}
 
-	def <T> T doGetLocal(Class<T> clazz)
+	def protected boolean isContainsLocal(String name)
 
-	def void doSetLocal(String name, Object value)
+	def protected boolean isContainsLocal(Class<?> clazz)
 
-	def <T> void doSetLocal(Class<T> clazz, T value)
+	def protected <T> T doGetLocal(String name)
 
-	def Object doRemoveLocal(String name)
+	def protected <T> T doGetLocal(Class<T> clazz)
 
-	def <T> T doRemoveLocal(Class<T> clazz)
+	def protected <T> void doSetLocal(String name, T value)
 
-	def Set<String> doGetKeySet()
+	def protected <T> void doSetLocal(Class<T> clazz, T value)
+	
+	def protected <T> void doSetLocal(String name, Provider<T> provider)
+	
+	def protected <T> void doSetLocal(Class<T> clazz, Provider<T> provider)
+
+	def protected <T> T doRemoveLocal(String name)
+
+	def protected <T> T doRemoveLocal(Class<T> clazz)
+
+	def protected Set<String> doGetKeySet()
 
 }

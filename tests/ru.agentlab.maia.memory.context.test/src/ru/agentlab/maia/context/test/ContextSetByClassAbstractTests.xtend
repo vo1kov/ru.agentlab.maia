@@ -51,14 +51,14 @@ abstract class ContextSetByClassAbstractTests extends ContextAbstractTests {
 
 	@Test
 	def void shouldNullableServiceWhenNullValue() {
-		context.set(DummyService, null)
+		context.set(DummyService, null as DummyService)
 
 		assertThat(context.get(DummyService), nullValue)
 	}
 
 	@Test
 	def void shouldContainsKeyWhenNullValue() {
-		context.set(DummyService, null)
+		context.set(DummyService, null as DummyService)
 
 		assertThat(context.keySet, containsInAnyOrder(#[DummyService.name]))
 	}

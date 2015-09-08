@@ -1,8 +1,8 @@
 package ru.agentlab.maia.context.modifier
 
 import ru.agentlab.maia.memory.IMaiaContext
-import ru.agentlab.maia.memory.IMaiaContextFactory
 import ru.agentlab.maia.memory.IMaiaContextInjector
+import ru.agentlab.maia.memory.context.hashmap.HashMapContext
 
 class MaiaExtension {
 
@@ -19,19 +19,22 @@ class MaiaExtension {
 	}
 
 	def IMaiaContext createContainer(IMaiaContext parent) {
-		return parent.get(IMaiaContextFactory).createContext => [
+		return new HashMapContext => [
+			it.parent = parent
 			get(IMaiaContextInjector).deploy(MaiaContainerContextModifier)
 		]
 	}
 
 	def IMaiaContext createAgent(IMaiaContext parent) {
-		return parent.get(IMaiaContextFactory).createContext => [
+		return new HashMapContext => [
+			it.parent = parent
 			get(IMaiaContextInjector).deploy(MaiaAgentContextModifier)
 		]
 	}
 
 	def IMaiaContext createBehaviour(IMaiaContext parent) {
-		return parent.get(IMaiaContextFactory).createContext => [
+		return new HashMapContext => [
+			it.parent = parent
 			get(IMaiaContextInjector).deploy(MaiaBehaviourContextModifier)
 		]
 	}

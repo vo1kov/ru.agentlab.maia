@@ -5,6 +5,7 @@ import java.util.HashMap
 import java.util.Map
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.context.AbstractContext
+import javax.inject.Provider
 
 /**
  * <p>{@link IMaiaContext} realization based on {@link HashMap} for storing keys and values.</p>
@@ -12,6 +13,7 @@ import ru.agentlab.maia.memory.context.AbstractContext
  * <ul>Main parameters:
  * <li>getLocal() complexity: <b>O(1)</b>;</li>
  * <li>setLocal() complexity: <b>O(1)</b>;</li>
+ * <li>isContainsLocal() complexity: <b>O(1)</b>;</li>
  * <li>memory usage: <b>O(32 * SIZE + 4 * CAPACITY) bytes</b>;</li>
  * </ul>
  * 
@@ -58,6 +60,22 @@ class HashMapContext extends AbstractContext {
 
 	override doGetKeySet() {
 		map.keySet
+	}
+	
+	override isContainsLocal(String name) {
+		return map.containsKey(name)
+	}
+	
+	override isContainsLocal(Class<?> clazz) {
+		return map.containsKey(clazz.name)
+	}
+	
+	override <T> doSetLocal(String name, Provider<T> provider) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override <T> doSetLocal(Class<T> clazz, Provider<T> provider) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 }
