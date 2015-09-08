@@ -1,42 +1,53 @@
 package ru.agentlab.maia.memory.context.arraylist
 
-import org.junit.Before
+import java.util.ArrayList
+import java.util.Collection
+import java.util.UUID
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 import ru.agentlab.maia.memory.doubles.DummyService
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
-import static org.mockito.Mockito.*
 
+@RunWith(Parameterized)
 class ArrayListContextSetByStringTests {
+
+	val static contextSizes = #[0, 1, 2, 5, 10, 100]
 
 	val ctx = new ListContext
 
-	val keys = spy(ctx.keys)
+	val service = new DummyService
 
-	val values = spy(ctx.values)
+	new(String[] keys, Object[] values) {
+		ctx.keys.addAll(keys)
+		ctx.values.addAll(values)
+	}
 
-	val service = mock(DummyService)
-
-	@Before
-	def void berore() {
-		keys.clear
-		values.clear
+	@Parameterized.Parameters
+	def public static Collection<?> keysAndValues() {
+		val result = new ArrayList
+		contextSizes.forEach [ size |
+			val String[] keys = newArrayOfSize(size)
+			val Object[] values = newArrayOfSize(size)
+			for (i : 0 ..< size) {
+				keys.set(i, UUID.randomUUID.toString)
+				values.set(i, new DummyService)
+			}
+			val Object[] args = newArrayOfSize(2)
+			args.set(0, keys)
+			args.set(1, values)
+			result += args
+		]
+		return result
 	}
 
 	@Test
 	def void shouldKeysAndValuesHaveSameSize() {
 		ctx.set(DummyService.name, service)
 
-		assertThat(keys.size, equalTo(values.size))
-	}
-
-	@Test
-	def void shouldAddNewValueOnlyOnce() {
-		ctx.set(DummyService.name, service)
-
-		verify(keys, times(1)).add(DummyService.name)
-		verify(values, times(1)).add(service)
+		assertThat(ctx.keys.size, equalTo(ctx.values.size))
 	}
 
 }
