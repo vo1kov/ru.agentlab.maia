@@ -20,7 +20,7 @@ interface IMaiaContext {
 	 * Returns parent of context or <code>null</code> if context is a root context.
 	 * </p>
 	 * 
-	 * @return parent of context or <code>null</code> if context have no parent.
+	 * @return 			parent of context or <code>null</code> if context have no parent.
 	 */
 	def IMaiaContext getParent()
 
@@ -30,8 +30,8 @@ interface IMaiaContext {
 	 * be a root context.
 	 * </p>
 	 * 
-	 * @param parent the new parent context. If <code>null</code> then context
-	 * become to be a root context.
+	 * @param parent 	the new parent context. If <code>null</code> then context
+	 * 					become to be a root context.
 	 */
 	def void setParent(IMaiaContext parent)
 	
@@ -40,7 +40,7 @@ interface IMaiaContext {
 	 * Returns collection of context childs. 
 	 * </p>
 	 * 
-	 * @return collection of context childs.
+	 * @return 			collection of context childs.
 	 */
 	def Collection<IMaiaContext> getChilds()
 	
@@ -49,7 +49,7 @@ interface IMaiaContext {
 	 * Register specified context as a child. 
 	 * </p>
 	 * 
-	 * @param child context registering as a child of context.
+	 * @param child 	context registering as a child of context.
 	 */
 	def void addChild(IMaiaContext child)
 
@@ -58,7 +58,7 @@ interface IMaiaContext {
 	 * Deregister specified context from childs. 
 	 * </p>
 	 * 
-	 * @param child context deregistering from child contexts.
+	 * @param child 	context deregistering from child contexts.
 	 */
 	def void removeChild(IMaiaContext child)
 
@@ -67,7 +67,7 @@ interface IMaiaContext {
 	 * Retrieve unique id of context.
 	 * </p>
 	 * 
-	 * @return unique id of context. Can not be null.
+	 * @return 			unique id of context. Can not be null.
 	 */
 	def String getUuid()
 

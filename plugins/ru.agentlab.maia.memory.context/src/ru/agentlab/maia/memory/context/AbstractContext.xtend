@@ -74,7 +74,7 @@ abstract class AbstractContext implements IMaiaContext {
 		if (name == null) {
 			throw new NullPointerException
 		}
-		if (keySet.contains(name)) {
+		if (isContainsLocal(name)) {
 			return doGetLocal(name)
 		} else {
 			if (parent != null) {
@@ -89,7 +89,7 @@ abstract class AbstractContext implements IMaiaContext {
 		if (clazz == null) {
 			throw new NullPointerException
 		}
-		if (keySet.contains(clazz.name)) {
+		if (isContainsLocal(clazz.name)) {
 			return doGetLocal(clazz)
 		} else {
 			if (parent != null) {

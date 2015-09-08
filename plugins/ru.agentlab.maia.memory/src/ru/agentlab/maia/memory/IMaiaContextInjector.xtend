@@ -1,7 +1,7 @@
 package ru.agentlab.maia.memory
 
 import java.lang.annotation.Annotation
-import ru.agentlab.maia.memory.exception.MaiaDeploymentException
+import java.lang.reflect.Method
 import ru.agentlab.maia.memory.exception.MaiaInjectionException
 
 /**
@@ -23,7 +23,8 @@ interface IMaiaContextInjector {
 	 * @param clazz 	the class to be instantiated
 	 * @param T 		type of creating service
 	 * @return 			an instance of the specified class
-	 * @throws MaiaInjectionException if an exception occurred while performing this operation
+	 * @throws 			MaiaInjectionException 
+	 * 					if an exception occurred while performing this operation
 	 */
 	def <T> T make(Class<T> clazz) throws MaiaInjectionException
 
@@ -36,7 +37,8 @@ interface IMaiaContextInjector {
 	 * @param object 	the object to perform injection on
 	 * @param qualifier the annotation tagging method to be called
 	 * @return 			the return value of the method call, might be null
-	 * @throws MaiaInjectionException if an exception occurred while performing this operation
+	 * @throws 			MaiaInjectionException 
+	 * 					if an exception occurred while performing this operation
 	 */
 	def Object invoke(Object object, Class<? extends Annotation> ann) throws MaiaInjectionException
 
@@ -50,10 +52,67 @@ interface IMaiaContextInjector {
 	 * @param qualifier the annotation tagging method to be called
 	 * @param defaultValue a value to be returned if the method cannot be called, might be null
 	 * @return 			the return value of the method call, might be null
-	 * @throws MaiaInjectionException if an exception occurred while performing this operation
+	 * @throws 			MaiaInjectionException 
+	 * 					if an exception occurred while performing this operation
 	 */
 	def Object invoke(Object object, Class<? extends Annotation> qualifier,
 		Object defaultValue) throws MaiaInjectionException
+
+	/**
+	 * <p>
+	 * Call a method, injecting the parameters from the context. 
+	 * </p>
+	 * 
+	 * @param object 	the object to perform injection on
+	 * @param methodName the name of method to be called
+	 * @return 			the return value of the method call, might be null
+	 * @throws 			MaiaInjectionException 
+	 * 					if an exception occurred while performing this operation
+	 */
+	def void invoke(Object object, String methodName)
+
+	/**
+	 * <p>
+	 * Call a method, injecting the parameters from the context. 
+	 * If throws some exception while invoke method, the defaultValue will be returned. 
+	 * </p>
+	 * 
+	 * @param object 	the object to perform injection on
+	 * @param methodName the name of method to be called
+	 * @param defaultValue a value to be returned if the method cannot be called, might be null
+	 * @return 			the return value of the method call, might be null
+	 * @throws 			MaiaInjectionException 
+	 * 					if an exception occurred while performing this operation
+	 */
+	def void invoke(Object object, String methodName, Object defaultValue)
+
+	/**
+	 * <p>
+	 * Call a method, injecting the parameters from the context. 
+	 * </p>
+	 * 
+	 * @param object 	the object to perform injection on
+	 * @param method	the method to be called
+	 * @return 			the return value of the method call, might be null
+	 * @throws 			MaiaInjectionException 
+	 * 					if an exception occurred while performing this operation
+	 */
+	def Object invoke(Object object, Method method)
+
+	/**
+	 * <p>
+	 * Call a method, injecting the parameters from the context. 
+	 * If throws some exception while invoke method, the defaultValue will be returned. 
+	 * </p>
+	 * 
+	 * @param object 	the object to perform injection on
+	 * @param method	the method to be called
+	 * @param defaultValue a value to be returned if the method cannot be called, might be null
+	 * @return 			the return value of the method call, might be null
+	 * @throws 			MaiaInjectionException 
+	 * 					if an exception occurred while performing this operation
+	 */
+	def Object invoke(Object object, Method method, Object defaultValue)
 
 	/**
 	 * <p>
@@ -61,7 +120,8 @@ interface IMaiaContextInjector {
 	 * </p>
 	 * 
 	 * @param object 	the object to perform injection on
-	 * @throws MaiaInjectionException if an exception occurred while performing this operation
+	 * @throws 			MaiaInjectionException 
+	 * 					if an exception occurred while performing this operation
 	 */
 	def void inject(Object object) throws MaiaInjectionException
 
@@ -73,9 +133,10 @@ interface IMaiaContextInjector {
 	 * @param clazz 	type of service to be deployed
 	 * @return 			deployed service object
 	 * @param T 		type of deployed service
-	 * @throws MaiaDeploymentException when creating or registering falls
+	 * @throws 			MaiaInjectionException 
+	 * 					when creating or registering falls
 	 */
-	def <T> T deploy(Class<T> clazz) throws MaiaDeploymentException
+	def <T> T deploy(Class<T> clazz) throws MaiaInjectionException
 
 	/**
 	 * <p>
@@ -86,9 +147,10 @@ interface IMaiaContextInjector {
 	 * @param key 		key for registration in context
 	 * @param T 		type of deployed service
 	 * @return 			deployed service object
-	 * @throws MaiaDeploymentException when creating or registering falls
+	 * @throws 			MaiaInjectionException 
+	 * 					when creating or registering falls
 	 */
-	def <T> T deploy(Class<T> clazz, String key) throws MaiaDeploymentException
+	def <T> T deploy(Class<T> clazz, String key) throws MaiaInjectionException
 
 	/**
 	 * <p>
@@ -99,9 +161,10 @@ interface IMaiaContextInjector {
 	 * @param interf 	interface for registration in context
 	 * @param T 		type of deployed service
 	 * @return 			deployed service object
-	 * @throws MaiaDeploymentException when creating or registering falls
+	 * @throws 			MaiaInjectionException 
+	 * 					when creating or registering falls
 	 */
-	def <T> T deploy(Class<? extends T> clazz, Class<T> interf) throws MaiaDeploymentException
+	def <T> T deploy(Class<? extends T> clazz, Class<T> interf) throws MaiaInjectionException
 
 	/**
 	 * <p>
@@ -111,9 +174,10 @@ interface IMaiaContextInjector {
 	 * @param service 	service object to be deployed
 	 * @param T 		type of deployed service
 	 * @return  		deployed service object
-	 * @throws MaiaDeploymentException when injecting falls
+	 * @throws 			MaiaInjectionException 
+	 * 					when injecting falls
 	 */
-	def <T> T deploy(T service) throws MaiaDeploymentException
+	def <T> T deploy(T service) throws MaiaInjectionException
 
 	/**
 	 * <p>
@@ -124,9 +188,10 @@ interface IMaiaContextInjector {
 	 * @param key 		key for registration in context
 	 * @param T 		type of deployed service
 	 * @return  		deployed service object
-	 * @throws MaiaDeploymentException when creating or registering falls
+	 * @throws 			MaiaInjectionException 
+	 * 					when creating or registering falls
 	 */
-	def <T> T deploy(T service, String key) throws MaiaDeploymentException
+	def <T> T deploy(T service, String key) throws MaiaInjectionException
 
 	/**
 	 * <p>
@@ -137,7 +202,8 @@ interface IMaiaContextInjector {
 	 * @param interf 	interface for registration in context
 	 * @param T 		type of deployed service
 	 * @return 			deployed service object
-	 * @throws MaiaDeploymentException when creating or registering falls
+	 * @throws 			MaiaInjectionException 
+	 * 					when creating or registering falls
 	 */
-	def <T> T deploy(T service, Class<T> interf) throws MaiaDeploymentException
+	def <T> T deploy(T service, Class<T> interf) throws MaiaInjectionException
 }

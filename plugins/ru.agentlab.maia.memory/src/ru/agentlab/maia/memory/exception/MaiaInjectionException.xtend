@@ -1,5 +1,8 @@
 package ru.agentlab.maia.memory.exception
 
+/**
+ * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
+ */
 class MaiaInjectionException extends Exception {
 	
 	new() {

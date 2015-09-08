@@ -14,12 +14,11 @@ import javax.annotation.PostConstruct
 import javax.inject.Inject
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.IMaiaContextInjector
-import ru.agentlab.maia.memory.exception.MaiaDeploymentException
 import ru.agentlab.maia.memory.exception.MaiaInjectionException
 
 class MaiaContextInjector implements IMaiaContextInjector {
 
-	val public static Object NOT_A_VALUE = new Object()
+	val public static Object NOT_A_VALUE = new Object
 
 	IMaiaContext context
 
@@ -62,12 +61,12 @@ class MaiaContextInjector implements IMaiaContextInjector {
 		object.invoke(method)
 	}
 
-	def void invoke(Object object, String methodName) {
+	override void invoke(Object object, String methodName) {
 		val method = object.class.declaredMethods.findFirst[it.name == name]
 		object.invoke(method)
 	}
 
-	def Object invoke(Object object, Method method) {
+	override Object invoke(Object object, Method method) {
 		val actualArgs = resolveArgs(method.parameterTypes)
 		if (actualArgs.unresolved != -1) {
 			return null
@@ -92,6 +91,19 @@ class MaiaContextInjector implements IMaiaContextInjector {
 			clearArray(actualArgs)
 		}
 		return result
+	}
+
+	override invoke(Object object, Class<? extends Annotation> qualifier,
+		Object defaultValue) throws MaiaInjectionException {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+
+	override invoke(Object object, String methodName, Object defaultValue) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+
+	override invoke(Object object, Method method, Object defaultValue) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 	override void inject(Object object) throws MaiaInjectionException {
@@ -152,9 +164,12 @@ class MaiaContextInjector implements IMaiaContextInjector {
 		Arrays.fill(result, NOT_A_VALUE)
 		for (i : 0 ..< parameterTypes.size) {
 			val type = parameterTypes.get(i)
-			val obj = context.get(type.typeName)
-			if (obj != null) {
+			val ctx = context.contains(type.typeName)
+			if (ctx != null) {
+				val obj = ctx.get(type.typeName)
 				result.set(i, obj)
+			} else {
+				return result
 			}
 		}
 		return result
@@ -172,81 +187,46 @@ class MaiaContextInjector implements IMaiaContextInjector {
 	 * PostConstruct method is invoked before registration service in context.
 	 * Services can remove old services from context in PostConstruct method.
 	 */
-	override <T> deploy(Class<T> serviceClass) throws MaiaDeploymentException {
-		val injector = context.getLocal(IMaiaContextInjector)
-		try {
-			val service = injector.make(serviceClass)
-			injector.invoke(service, PostConstruct, null)
-			context.set(serviceClass, service)
-			return service
-		} catch (MaiaInjectionException e) {
-			throw new MaiaDeploymentException(e)
-		}
+	override <T> deploy(Class<T> serviceClass) throws MaiaInjectionException {
+		val service = make(serviceClass)
+		invoke(service, PostConstruct, null)
+		context.set(serviceClass, service)
+		return service
 	}
 
-	override deploy(Object service) throws MaiaDeploymentException {
-		val injector = context.getLocal(IMaiaContextInjector)
-		try {
-			injector.inject(service)
-			injector.invoke(service, PostConstruct, null)
-			context.set(service.class.name, service)
-			return service
-		} catch (MaiaInjectionException e) {
-			throw new MaiaDeploymentException(e)
-		}
+	override deploy(Object service) throws MaiaInjectionException {
+		inject(service)
+		invoke(service, PostConstruct, null)
+		context.set(service.class.name, service)
+		return service
 	}
 
-	override <T> deploy(Class<T> serviceClass, String key) throws MaiaDeploymentException {
-		val injector = context.getLocal(IMaiaContextInjector)
-		try {
-			val service = injector.make(serviceClass)
-			injector.invoke(service, PostConstruct, null)
-			context.set(key, service)
-			return service
-		} catch (MaiaInjectionException e) {
-			throw new MaiaDeploymentException(e)
-		}
+	override <T> deploy(Class<T> serviceClass, String key) throws MaiaInjectionException {
+		val service = make(serviceClass)
+		invoke(service, PostConstruct, null)
+		context.set(key, service)
+		return service
 	}
 
-	override <T> deploy(Class<? extends T> serviceClass, Class<T> interf) throws MaiaDeploymentException {
-		val injector = context.getLocal(IMaiaContextInjector)
-		try {
-			val service = injector.make(serviceClass)
-			injector.invoke(service, PostConstruct, null)
-			context.set(interf, service)
-			return service
-		} catch (MaiaInjectionException e) {
-			throw new MaiaDeploymentException(e)
-		}
+	override <T> deploy(Class<? extends T> serviceClass, Class<T> interf) throws MaiaInjectionException {
+		val service = make(serviceClass)
+		invoke(service, PostConstruct, null)
+		context.set(interf, service)
+		return service
 	}
 
-	override deploy(Object service, String key) throws MaiaDeploymentException {
-		val injector = context.getLocal(IMaiaContextInjector)
-		try {
-			injector.inject(service)
-			injector.invoke(service, PostConstruct, null)
-			context.set(key, service)
-			return service
-		} catch (MaiaInjectionException e) {
-			throw new MaiaDeploymentException(e)
-		}
+	override deploy(Object service, String key) throws MaiaInjectionException {
+		inject(service)
+		invoke(service, PostConstruct, null)
+		context.set(key, service)
+		return service
 	}
 
-	override <T> deploy(T service, Class<T> interf) throws MaiaDeploymentException {
-		val injector = context.getLocal(IMaiaContextInjector)
-		try {
-			injector.inject(service)
-			injector.invoke(service, PostConstruct, null)
-			context.set(interf, service)
-			return service
-		} catch (MaiaInjectionException e) {
-			throw new MaiaDeploymentException(e)
-		}
-	}
-
-	override invoke(Object object, Class<? extends Annotation> qualifier,
-		Object defaultValue) throws MaiaInjectionException {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	override <T> deploy(T service, Class<T> interf) throws MaiaInjectionException {
+		inject(service)
+		invoke(service, PostConstruct, null)
+		context.set(interf, service)
+		return service
 	}
 
 }
