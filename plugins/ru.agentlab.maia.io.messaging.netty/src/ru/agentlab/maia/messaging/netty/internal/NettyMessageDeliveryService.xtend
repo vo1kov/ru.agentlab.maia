@@ -20,7 +20,6 @@ import ru.agentlab.maia.io.IServerFactory
 import ru.agentlab.maia.messaging.IMessage
 import ru.agentlab.maia.messaging.IMessageDeliveryEventListener
 import ru.agentlab.maia.messaging.netty.INettyMessageDeliveryService
-import ru.agentlab.maia.messaging.queue.IMessageQueue
 
 class NettyMessageDeliveryService implements INettyMessageDeliveryService {
 

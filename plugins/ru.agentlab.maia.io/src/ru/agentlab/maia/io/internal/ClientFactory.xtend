@@ -7,8 +7,8 @@ import io.netty.channel.ChannelOption
 import io.netty.channel.EventLoopGroup
 import javax.inject.Inject
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.io.IClientFactory
+import ru.agentlab.maia.memory.IMaiaContext
 
 class ClientFactory implements IClientFactory {
 
