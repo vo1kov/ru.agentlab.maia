@@ -3,7 +3,7 @@ package ru.agentlab.maia.context.injector.log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public aspect AMaiaContextInjectorLog extends AMaiaContextFactory {
+public aspect AMaiaContextInjectorLog {
 
 //	before(IMaiaContextFactory factory) : 
 //		onCreateContext(factory) {
