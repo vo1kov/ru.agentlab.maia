@@ -13,8 +13,8 @@ abstract class AbstractContextSetPerformanceTests {
 
 	@Test
 	def void test() {
-		val totalSize = 100_000
-		val bucketSize = 1_00
+		val totalSize = 10_000
+		val bucketSize = 100
 		val warmupCount = 5
 		val ctxSizeBefore = context.keySet.size
 		val keys = newArrayOfSize(totalSize)
@@ -40,9 +40,9 @@ abstract class AbstractContextSetPerformanceTests {
 				}
 				results.set(i, System.nanoTime - begin)
 			}
-			for (i : 0 ..< totalSize) {
-				context.remove(keys.get(i))
-			}
+//			for (i : 0 ..< totalSize) {
+//				context.remove(keys.get(i))
+//			}
 		}
 
 		val writer = new PrintWriter('''«this.class.simpleName»_perf2.csv''', "UTF-8")
