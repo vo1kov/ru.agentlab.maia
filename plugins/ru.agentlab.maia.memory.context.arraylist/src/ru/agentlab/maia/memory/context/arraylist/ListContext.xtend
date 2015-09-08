@@ -3,9 +3,9 @@ package ru.agentlab.maia.memory.context.arraylist
 import java.util.ArrayList
 import java.util.HashSet
 import java.util.LinkedList
+import javax.inject.Provider
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.context.AbstractContext
-import javax.inject.Provider
 
 /**
  * <p>{@link IMaiaContext} realization based on {@link LinkedList} for storing keys and values.</p>
@@ -28,6 +28,8 @@ import javax.inject.Provider
  * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
 class ListContext extends AbstractContext {
+	
+	val static UNKNOWN = -1
 
 	val protected ArrayList<String> keys = new ArrayList
 
@@ -35,7 +37,7 @@ class ListContext extends AbstractContext {
 
 	override synchronized doGetLocal(String name) {
 		val index = keys.indexOf(name)
-		if (index != -1) {
+		if (index != UNKNOWN) {
 			return values.get(index)
 		} else {
 			return null
@@ -45,7 +47,7 @@ class ListContext extends AbstractContext {
 	override synchronized <T> doGetLocal(Class<T> clazz) {
 		val index = keys.indexOf(clazz.name)
 		try {
-			if (index != -1) {
+			if (index != UNKNOWN) {
 				return values.get(index) as T
 			} else {
 				return null
@@ -57,31 +59,43 @@ class ListContext extends AbstractContext {
 
 	override synchronized <T> doSetLocal(String name, T value) {
 		val index = keys.indexOf(name)
-		if (index != -1) {
+		if (index != UNKNOWN) {
 			values.set(index, value)
 		} else {
-			keys.add(name)
-			values.add(value)
-			keys.trimToSize
-			values.trimToSize
+			putInternal(name, value)
 		}
 	}
 
 	override synchronized <T> doSetLocal(Class<T> clazz, T value) {
 		val index = keys.indexOf(clazz.name)
-		if (index != -1) {
+		if (index != UNKNOWN) {
 			values.set(index, value)
 		} else {
-			keys.add(clazz.name)
-			values.add(value)
-			keys.trimToSize
-			values.trimToSize
+			putInternal(clazz.name, value)
+		}
+	}
+
+	override synchronized <T> doSetLocal(String name, Provider<T> provider) {
+		val index = keys.indexOf(name)
+		if (index != UNKNOWN) {
+			values.set(index, provider)
+		} else {
+			putInternal(name, provider)
+		}
+	}
+
+	override synchronized <T> doSetLocal(Class<T> clazz, Provider<T> provider) {
+		val index = keys.indexOf(clazz.name)
+		if (index != UNKNOWN) {
+			values.set(index, provider)
+		} else {
+			putInternal(clazz.name, provider)
 		}
 	}
 
 	override synchronized doRemoveLocal(String name) {
 		val index = keys.indexOf(name)
-		if (index != -1) {
+		if (index != UNKNOWN) {
 			keys.remove(index)
 			return values.remove(index)
 		} else {
@@ -91,7 +105,7 @@ class ListContext extends AbstractContext {
 
 	override synchronized <T> doRemoveLocal(Class<T> clazz) {
 		val index = keys.indexOf(clazz.name)
-		if (index != -1) {
+		if (index != UNKNOWN) {
 			keys.remove(index)
 			return values.remove(index) as T
 		} else {
@@ -104,19 +118,18 @@ class ListContext extends AbstractContext {
 	}
 
 	override synchronized isContainsLocal(String name) {
-		return keys.indexOf(name) != -1
+		return keys.indexOf(name) != UNKNOWN
 	}
 
 	override synchronized isContainsLocal(Class<?> clazz) {
-		return keys.indexOf(clazz.name) != -1
+		return keys.indexOf(clazz.name) != UNKNOWN
 	}
 
-	override synchronized <T> doSetLocal(String name, Provider<T> provider) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	def private putInternal(String key, Object value) {
+		keys.add(key)
+		values.add(value)
+		keys.trimToSize
+		values.trimToSize
 	}
 
-	override synchronized <T> doSetLocal(Class<T> clazz, Provider<T> provider) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
 }
