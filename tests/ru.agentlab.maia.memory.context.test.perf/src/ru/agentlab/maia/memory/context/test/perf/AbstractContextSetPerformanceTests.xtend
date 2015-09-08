@@ -6,9 +6,6 @@ import org.junit.Test
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.doubles.DummyService
 
-import static org.hamcrest.Matchers.*
-import static org.junit.Assert.*
-
 abstract class AbstractContextSetPerformanceTests {
 
 	@Test
@@ -16,7 +13,6 @@ abstract class AbstractContextSetPerformanceTests {
 		val totalSize = 10_000
 		val bucketSize = 100
 		val warmupCount = 5
-		val ctxSizeBefore = context.keySet.size
 		val keys = newArrayOfSize(totalSize)
 		val services = newArrayOfSize(totalSize)
 		val results = newArrayOfSize(totalSize / bucketSize)
@@ -51,7 +47,6 @@ abstract class AbstractContextSetPerformanceTests {
 		}
 		writer.close
 //		val ctxSizeAfter = context.keySet.size
-
 //		assertThat(ctxSizeAfter - ctxSizeBefore, equalTo(totalSize))
 	}
 
