@@ -10,7 +10,7 @@ abstract class ContextAbstractTests {
 		val parent = mock(IMaiaContext)
 		when(parent.get(service.class)).thenReturn(service)
 		when(parent.get(service.class.name)).thenReturn(service)
-		when(child.parent).thenReturn(parent)
+		child.parent = parent
 		return parent
 	}
 
