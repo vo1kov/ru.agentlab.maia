@@ -5,146 +5,139 @@ import ru.agentlab.maia.memory.exception.MaiaDeploymentException
 import ru.agentlab.maia.memory.exception.MaiaInjectionException
 
 /**
+ * <p>
  * Service for injection context to objects.
+ * </p>
  * 
  * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
 interface IMaiaContextInjector {
 
 	/**
+	 * <p>
 	 * Obtain an instance of the specified class and inject it with the context. 
 	 * Class'es scope dictates if a new instance of the class will be created, 
 	 * or existing instance will be reused. 
+	 * </p>
 	 * 
-	 * @param 
-	 * 		clazz - The class to be instantiated
-	 * @return 
-	 * 		An instance of the specified class
-	 * @throws 
-	 * 		MaiaInjectionException if an exception occurred while performing this operation
+	 * @param clazz 	the class to be instantiated
+	 * @param T 		type of creating service
+	 * @return 			an instance of the specified class
+	 * @throws MaiaInjectionException if an exception occurred while performing this operation
 	 */
 	def <T> T make(Class<T> clazz) throws MaiaInjectionException
 
 	/**
+	 * <p>
 	 * Call a method, injecting the parameters from the context. 
 	 * If no matching method is found on the class, an InjectionException will be thrown. 
+	 * </p>
 	 * 
-	 * @param 
-	 * 		object - The object to perform injection on
-	 * @param 
-	 * 		qualifier - The annotation tagging method to be called
-	 * @return 
-	 * 		The return value of the method call, might be null
-	 * @throws 
-	 * 		MaiaInjectionException if an exception occurred while performing this operation
+	 * @param object 	the object to perform injection on
+	 * @param qualifier the annotation tagging method to be called
+	 * @return 			the return value of the method call, might be null
+	 * @throws MaiaInjectionException if an exception occurred while performing this operation
 	 */
 	def Object invoke(Object object, Class<? extends Annotation> ann) throws MaiaInjectionException
 
 	/**
+	 * <p>
 	 * Call a method, injecting the parameters from the context. 
 	 * If no matching method is found on the class, the defaultValue will be returned. 
+	 * </p>
 	 * 
-	 * @param 
-	 * 		object - The object to perform injection on
-	 * @param 
-	 * 		qualifier - The annotation tagging method to be called
-	 * @param 
-	 * 		defaultValue - A value to be returned if the method cannot be called, might be null
-	 * @return 
-	 * 		The return value of the method call, might be null
-	 * @throws 
-	 * 		MaiaInjectionException if an exception occurred while performing this operation
+	 * @param object 	the object to perform injection on
+	 * @param qualifier the annotation tagging method to be called
+	 * @param defaultValue a value to be returned if the method cannot be called, might be null
+	 * @return 			the return value of the method call, might be null
+	 * @throws MaiaInjectionException if an exception occurred while performing this operation
 	 */
 	def Object invoke(Object object, Class<? extends Annotation> qualifier,
 		Object defaultValue) throws MaiaInjectionException
 
 	/**
+	 * <p>
 	 * Injects a context into a domain object.
+	 * </p>
 	 * 
-	 * @param 
-	 * 		object - The object to perform injection on
-	 * @throws 
-	 * 		MaiaInjectionException if an exception occurred while performing this operation
+	 * @param object 	the object to perform injection on
+	 * @throws MaiaInjectionException if an exception occurred while performing this operation
 	 */
 	def void inject(Object object) throws MaiaInjectionException
 
 	/**
+	 * <p>
 	 * Create new service instance and register it to context
+	 * </p>
 	 * 
-	 * @param
-	 * 		serviceClass - type of service to be deployed
-	 * @return 
-	 * 		Deployed service object
-	 * @throws
-	 * 		MaiaDeploymentException when creating or registering falls
+	 * @param clazz 	type of service to be deployed
+	 * @return 			deployed service object
+	 * @param T 		type of deployed service
+	 * @throws MaiaDeploymentException when creating or registering falls
 	 */
-	def <T> T deploy(Class<T> serviceClass) throws MaiaDeploymentException
+	def <T> T deploy(Class<T> clazz) throws MaiaDeploymentException
 
 	/**
+	 * <p>
 	 * Create new service instance and register it to context with specified key
+	 * </p>
 	 * 
-	 * @param
-	 * 		serviceClass - type of service to be deployed
-	 * @param
-	 * 		key - key for registration in context
-	 * @return 
-	 * 		Deployed service object
-	 * @throws
-	 * 		MaiaDeploymentException when creating or registering falls
+	 * @param clazz 	type of service to be deployed
+	 * @param key 		key for registration in context
+	 * @param T 		type of deployed service
+	 * @return 			deployed service object
+	 * @throws MaiaDeploymentException when creating or registering falls
 	 */
-	def <T> T deploy(Class<T> serviceClass, String key) throws MaiaDeploymentException
+	def <T> T deploy(Class<T> clazz, String key) throws MaiaDeploymentException
 
 	/**
+	 * <p>
 	 * Create new service instance and register it to context with specified key
+	 * </p>
 	 * 
-	 * @param
-	 * 		serviceClass - type of service to be deployed
-	 * @param
-	 * 		serviceInterface - interface for registration in context
-	 * @return 
-	 * 		Deployed service object
-	 * @throws
-	 * 		MaiaDeploymentException when creating or registering falls
+	 * @param clazz 	type of service to be deployed
+	 * @param interf 	interface for registration in context
+	 * @param T 		type of deployed service
+	 * @return 			deployed service object
+	 * @throws MaiaDeploymentException when creating or registering falls
 	 */
-	def <T> T deploy(Class<? extends T> serviceClass, Class<T> serviceInterface) throws MaiaDeploymentException
+	def <T> T deploy(Class<? extends T> clazz, Class<T> interf) throws MaiaDeploymentException
 
 	/**
+	 * <p>
 	 * Inject context to service object and register it to context
+	 * </p>
 	 * 
-	 * @param
-	 * 		service - service object to be deployed
-	 * @return 
-	 * 		Deployed service object
-	 * @throws
-	 * 		MaiaDeploymentException when injecting falls
+	 * @param service 	service object to be deployed
+	 * @param T 		type of deployed service
+	 * @return  		deployed service object
+	 * @throws MaiaDeploymentException when injecting falls
 	 */
-	def Object deploy(Object service) throws MaiaDeploymentException
+	def <T> T deploy(T service) throws MaiaDeploymentException
 
 	/**
+	 * <p>
 	 * Inject context to service object and register it to context with specified key
+	 * </p>
 	 * 
-	 * @param
-	 * 		serviceClass - type of service to be deployed
-	 * @param
-	 * 		key - key for registration in context
-	 * @return 
-	 * 		Deployed service object
-	 * @throws
-	 * 		MaiaDeploymentException when creating or registering falls
+	 * @param service	service object to be deployed
+	 * @param key 		key for registration in context
+	 * @param T 		type of deployed service
+	 * @return  		deployed service object
+	 * @throws MaiaDeploymentException when creating or registering falls
 	 */
-	def Object deploy(Object service, String key) throws MaiaDeploymentException
+	def <T> T deploy(T service, String key) throws MaiaDeploymentException
 
 	/**
+	 * <p>
 	 * Inject context to service object and register it to context with specified key
+	 * </p>
 	 * 
-	 * @param
-	 * 		serviceClass - type of service to be deployed
-	 * @param
-	 * 		serviceInterface - interface for registration in context
-	 * @return 
-	 * 		Deployed service object
-	 * @throws
-	 * 		MaiaDeploymentException when creating or registering falls
+	 * @param service 	service object to be deployed
+	 * @param interf 	interface for registration in context
+	 * @param T 		type of deployed service
+	 * @return 			deployed service object
+	 * @throws MaiaDeploymentException when creating or registering falls
 	 */
 	def <T> T deploy(T service, Class<T> interf) throws MaiaDeploymentException
 }

@@ -5,7 +5,9 @@ import java.util.Set
 import javax.inject.Provider
 
 /**
+ * <p>
  * Context for storage services and objects.
+ * </p>
  * 
  * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
@@ -110,9 +112,9 @@ interface IMaiaContext {
 	 * </p>
 	 * 
 	 * @param clazz		the class that needs to be found in the context
-	 * @return			context containing value for <code>clazz</code> key. It can be self or 
-	 * one of parent context or <code>null</code> if hierarchy of contexts have no 
-	 * value for specified key.
+	 * @return			context containing value for <code>clazz</code> key. 
+	 * 					It can be self or one of parent context or <code>null</code> 
+	 * 					if hierarchy of contexts have no value for specified key.
 	 * 
 	 * @see #contains(String)
 	 */

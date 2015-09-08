@@ -10,9 +10,11 @@ import ru.agentlab.maia.memory.IMaiaContext
 import javax.inject.Provider
 
 /**
- * <p>Abstract {@link IMaiaContext} implementation.</p>
- * 
- * <p>Implementation guarantee that:</p>
+ * <p>
+ * Abstract {@link IMaiaContext} implementation.
+ * </p>
+ * <p>Implementation guarantee that:
+ * </p>
  * <ul>
  * <li>Context can be in hierarchy (have parent and childs);</li>
  * <li>Context will have unique UUID;</li>
@@ -34,11 +36,13 @@ abstract class AbstractContext implements IMaiaContext {
 	val Collection<IMaiaContext> childs = Collections.synchronizedSet(new HashSet)
 
 	/**
-	 * <p>Abstract implementation for {@link IMaiaContext#contains(Class) 
-	 * IMaiaContext.contains(Class)}.</p>
-	 * 
-	 * <p>Implementation try to find clazz in own context and if context have
-	 * no value than try to find in parent</p>
+	 * <p>
+	 * Abstract implementation for {@link IMaiaContext#contains(Class) 
+	 * IMaiaContext.contains(Class)}.
+	 * </p><p>
+	 * Implementation try to find clazz in own context and if context have
+	 * no value than try to find in parent
+	 * </p>
 	 */
 	override contains(Class<?> clazz) {
 		val inLocal = isContainsLocal(clazz)
