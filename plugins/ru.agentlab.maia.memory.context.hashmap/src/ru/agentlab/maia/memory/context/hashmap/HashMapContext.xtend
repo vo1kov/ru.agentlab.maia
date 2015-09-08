@@ -71,11 +71,11 @@ class HashMapContext extends AbstractContext {
 	}
 	
 	override <T> doSetLocal(String name, Provider<T> provider) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		map.put(name, provider)
 	}
 	
 	override <T> doSetLocal(Class<T> clazz, Provider<T> provider) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		map.put(clazz.name, provider)
 	}
 
 }
