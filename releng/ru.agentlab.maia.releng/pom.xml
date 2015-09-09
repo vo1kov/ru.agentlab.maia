@@ -80,6 +80,7 @@
 			</repositories>
 			<modules>
 				<module>../../tests/ru.agentlab.maia.memory.doubles</module>
+				<module>../../tests/ru.agentlab.maia.memory.context.test.unit</module>
 				<module>../../tests/ru.agentlab.maia.memory.context.arraylist.test.unit</module>
 			</modules>
 		</profile>
