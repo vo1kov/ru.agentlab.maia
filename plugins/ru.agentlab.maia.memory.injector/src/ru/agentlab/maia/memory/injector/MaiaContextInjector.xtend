@@ -4,7 +4,6 @@ import java.lang.annotation.Annotation
 import java.lang.reflect.Constructor
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
-import java.lang.reflect.Modifier
 import java.lang.reflect.Type
 import java.util.ArrayList
 import java.util.Arrays
@@ -15,6 +14,7 @@ import javax.inject.Inject
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.IMaiaContextInjector
 import ru.agentlab.maia.memory.exception.MaiaInjectionException
+import java.lang.reflect.Parameter
 
 class MaiaContextInjector implements IMaiaContextInjector {
 
@@ -28,12 +28,13 @@ class MaiaContextInjector implements IMaiaContextInjector {
 
 	override <T> T make(Class<T> clazz) {
 		try {
-			val constructors = clazz.declaredConstructors
+			val constructors = clazz.constructors
 
 			val sortedConstructors = new ArrayList<Constructor<T>>(constructors.length)
 			for (constructor : constructors) {
 				sortedConstructors.add(constructor as Constructor<T>)
 			}
+
 			val Comparator<Constructor<T>> comparator = [ c1, c2 |
 				val l1 = c1.parameterTypes.length
 				val l2 = c2.parameterTypes.length
@@ -42,9 +43,8 @@ class MaiaContextInjector implements IMaiaContextInjector {
 			Collections.sort(sortedConstructors, comparator)
 
 			for (constructor : sortedConstructors) {
-				val instance = constructor.callConstructor
+				val instance = constructor.tryConstruct
 				if (instance != null) {
-					inject(instance)
 					return instance
 				}
 			}
@@ -67,7 +67,7 @@ class MaiaContextInjector implements IMaiaContextInjector {
 	}
 
 	override Object invoke(Object object, Method method) {
-		val actualArgs = resolveArgs(method.parameterTypes)
+		val actualArgs = resolveArgs(method.parameters)
 		if (actualArgs.unresolved != -1) {
 			return null
 		}
@@ -110,6 +110,55 @@ class MaiaContextInjector implements IMaiaContextInjector {
 	}
 
 	/**
+	 * PostConstruct method is invoked before registration service in context.
+	 * Services can remove old services from context in PostConstruct method.
+	 */
+	override <T> deploy(Class<T> serviceClass) throws MaiaInjectionException {
+		val service = make(serviceClass)
+		inject(service)
+		invoke(service, PostConstruct, null)
+		context.set(serviceClass, service)
+		return service
+	}
+
+	override deploy(Object service) throws MaiaInjectionException {
+		inject(service)
+		invoke(service, PostConstruct, null)
+		context.set(service.class.name, service)
+		return service
+	}
+
+	override <T> deploy(Class<T> serviceClass, String key) throws MaiaInjectionException {
+		val service = make(serviceClass)
+		inject(service)
+		invoke(service, PostConstruct, null)
+		context.set(key, service)
+		return service
+	}
+
+	override <T> deploy(Class<? extends T> serviceClass, Class<T> interf) throws MaiaInjectionException {
+		val service = make(serviceClass)
+		inject(service)
+		invoke(service, PostConstruct, null)
+		context.set(interf, service)
+		return service
+	}
+
+	override deploy(Object service, String key) throws MaiaInjectionException {
+		inject(service)
+		invoke(service, PostConstruct, null)
+		context.set(key, service)
+		return service
+	}
+
+	override <T> deploy(T service, Class<T> interf) throws MaiaInjectionException {
+		inject(service)
+		invoke(service, PostConstruct, null)
+		context.set(interf, service)
+		return service
+	}
+
+	/**
 	 * Don't hold on to the resolved results as it will prevent 
 	 * them from being garbage collected. 
 	 */
@@ -122,16 +171,11 @@ class MaiaContextInjector implements IMaiaContextInjector {
 		}
 	}
 
-	def protected <T> T callConstructor(Constructor<T> constructor) {
-		val modifiers = constructor.modifiers
-		if (((modifiers.bitwiseAnd(Modifier.PRIVATE)) != 0) || ((modifiers.bitwiseAnd(Modifier.PROTECTED)) != 0)) {
-			return null
-		}
+	def protected <T> T tryConstruct(Constructor<T> constructor) {
 		if (!constructor.isAnnotationPresent(Inject) && constructor.parameterTypes.length != 0) {
 			return null
 		}
-
-		val actualArgs = resolveArgs(constructor.parameterTypes)
+		val actualArgs = resolveArgs(constructor.parameters)
 		if (actualArgs.unresolved != -1) {
 			return null
 		}
@@ -159,14 +203,14 @@ class MaiaContextInjector implements IMaiaContextInjector {
 		return result
 	}
 
-	def protected Object[] resolveArgs(Type[] parameterTypes) {
+	def protected Object[] resolveArgs(Parameter[] parameterTypes) {
 		val result = newArrayOfSize(parameterTypes.length)
 		Arrays.fill(result, NOT_A_VALUE)
 		for (i : 0 ..< parameterTypes.size) {
 			val type = parameterTypes.get(i)
-			val ctx = context.contains(type.typeName)
+			val ctx = context.contains(type.type)
 			if (ctx != null) {
-				val obj = ctx.get(type.typeName)
+				val obj = ctx.get(type.type)
 				result.set(i, obj)
 			} else {
 				return result
@@ -181,52 +225,6 @@ class MaiaContextInjector implements IMaiaContextInjector {
 				return i
 		}
 		return -1
-	}
-
-	/**
-	 * PostConstruct method is invoked before registration service in context.
-	 * Services can remove old services from context in PostConstruct method.
-	 */
-	override <T> deploy(Class<T> serviceClass) throws MaiaInjectionException {
-		val service = make(serviceClass)
-		invoke(service, PostConstruct, null)
-		context.set(serviceClass, service)
-		return service
-	}
-
-	override deploy(Object service) throws MaiaInjectionException {
-		inject(service)
-		invoke(service, PostConstruct, null)
-		context.set(service.class.name, service)
-		return service
-	}
-
-	override <T> deploy(Class<T> serviceClass, String key) throws MaiaInjectionException {
-		val service = make(serviceClass)
-		invoke(service, PostConstruct, null)
-		context.set(key, service)
-		return service
-	}
-
-	override <T> deploy(Class<? extends T> serviceClass, Class<T> interf) throws MaiaInjectionException {
-		val service = make(serviceClass)
-		invoke(service, PostConstruct, null)
-		context.set(interf, service)
-		return service
-	}
-
-	override deploy(Object service, String key) throws MaiaInjectionException {
-		inject(service)
-		invoke(service, PostConstruct, null)
-		context.set(key, service)
-		return service
-	}
-
-	override <T> deploy(T service, Class<T> interf) throws MaiaInjectionException {
-		inject(service)
-		invoke(service, PostConstruct, null)
-		context.set(interf, service)
-		return service
 	}
 
 }
