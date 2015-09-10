@@ -10,6 +10,6 @@ import static org.mockito.Mockito.*
 class HashMapContextSetMemoryTests extends AbstractContextSetMemoryTests {
 
 	@Accessors
-	IMaiaContext context = spy(new HashMapContext)
+	IMaiaContext context = new HashMapContext
 	
 }

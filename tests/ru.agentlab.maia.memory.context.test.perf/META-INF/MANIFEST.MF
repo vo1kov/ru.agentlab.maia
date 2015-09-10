@@ -15,4 +15,6 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.memory.context;bundle-version="1.0.0",
  ru.agentlab.maia.memory.doubles;bundle-version="1.0.0"
 Export-Package: ru.agentlab.maia.memory.context.test.perf
+Bundle-ClassPath: classmexer.jar,
+ .
 

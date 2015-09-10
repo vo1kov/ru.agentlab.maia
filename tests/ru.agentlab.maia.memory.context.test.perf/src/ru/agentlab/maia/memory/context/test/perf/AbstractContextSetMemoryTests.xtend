@@ -1,5 +1,6 @@
 package ru.agentlab.maia.memory.context.test.perf
 
+import com.javamex.classmexer.MemoryUtil
 import java.io.PrintWriter
 import java.util.UUID
 import org.junit.Test
@@ -8,16 +9,12 @@ import ru.agentlab.maia.memory.doubles.DummyService
 
 abstract class AbstractContextSetMemoryTests {
 
-	val runtime = Runtime.getRuntime
-
 	@Test
 	def void test() {
-		val totalSize = 10_000
-		val bucketSize = 100
-		val warmupCount = 5
+		val totalSize = 1_000
 		val keys = newArrayOfSize(totalSize)
 		val services = newArrayOfSize(totalSize)
-		val results = newArrayOfSize(totalSize / bucketSize)
+		val results = newArrayOfSize(totalSize)
 
 		for (i : 0 ..< totalSize) {
 			val key = UUID.randomUUID.toString
@@ -25,36 +22,16 @@ abstract class AbstractContextSetMemoryTests {
 			val service = new DummyService
 			services.set(i, service)
 		}
-		// warm up
-		for (c : 0 ..< warmupCount) {
-
-			// test
-			var index = 0
-			for (i : 0 ..< totalSize / bucketSize) {
-				runtime.gc
-				val memoryBefore = runtime.totalMemory - runtime.freeMemory
-
-				for (j : 0 ..< bucketSize) {
-					context.set(keys.get(index), services.get(index))
-					index++
-				}
-				
-				runtime.gc
-				val memoryAfter = runtime.totalMemory - runtime.freeMemory
-				results.set(i, memoryAfter - memoryBefore)
-			}
-//			for (i : 0 ..< totalSize) {
-//				context.remove(keys.get(i))
-//			}
+		for (i : 0 ..< totalSize) {
+			context.set(keys.get(i), services.get(i))
+			results.set(i, MemoryUtil.deepMemoryUsageOf(context))
 		}
-
+//		}
 		val writer = new PrintWriter('''«this.class.simpleName»_memory.csv''', "UTF-8")
-		for (i : 0 ..< totalSize / bucketSize) {
+		for (i : 0 ..< totalSize) {
 			writer.println(results.get(i))
 		}
 		writer.close
-//		val ctxSizeAfter = context.keySet.size
-//		assertThat(ctxSizeAfter - ctxSizeBefore, equalTo(totalSize))
 	}
 
 	def IMaiaContext getContext()

@@ -10,6 +10,6 @@ import static org.mockito.Mockito.*
 class ArrayListContextSetMemoryTests extends AbstractContextSetMemoryTests {
 
 	@Accessors
-	IMaiaContext context = spy(new ListContext)
+	IMaiaContext context = new ListContext
 
 }
