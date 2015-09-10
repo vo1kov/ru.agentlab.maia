@@ -5,8 +5,6 @@ import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.context.arraylist.ListContext
 import ru.agentlab.maia.memory.context.test.perf.AbstractContextSetMemoryTests
 
-import static org.mockito.Mockito.*
-
 class ArrayListContextSetMemoryTests extends AbstractContextSetMemoryTests {
 
 	@Accessors
