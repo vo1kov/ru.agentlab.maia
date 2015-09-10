@@ -36,18 +36,13 @@ abstract class AbstractContextSetPerformanceTests {
 				}
 				results.set(i, System.nanoTime - begin)
 			}
-//			for (i : 0 ..< totalSize) {
-//				context.remove(keys.get(i))
-//			}
 		}
 
-		val writer = new PrintWriter('''«this.class.simpleName»_perf2.csv''', "UTF-8")
+		val writer = new PrintWriter('''target/results/«context.class.simpleName»_performance.csv''', "UTF-8")
 		for (i : 0 ..< totalSize / bucketSize) {
 			writer.println(results.get(i))
 		}
 		writer.close
-//		val ctxSizeAfter = context.keySet.size
-//		assertThat(ctxSizeAfter - ctxSizeBefore, equalTo(totalSize))
 	}
 
 	def IMaiaContext getContext()

@@ -27,7 +27,7 @@ abstract class AbstractContextSetMemoryTests {
 			results.set(i, MemoryUtil.deepMemoryUsageOf(context))
 		}
 //		}
-		val writer = new PrintWriter('''«this.class.simpleName»_memory.csv''', "UTF-8")
+		val writer = new PrintWriter('''target/results/«context.class.simpleName»_memory.csv''', "UTF-8")
 		for (i : 0 ..< totalSize) {
 			writer.println(results.get(i))
 		}
