@@ -2,25 +2,23 @@ package ru.agentlab.maia.memory.injector
 
 import java.lang.annotation.Annotation
 import java.lang.reflect.Constructor
+import java.lang.reflect.Field
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
-import java.lang.reflect.Type
+import java.lang.reflect.Parameter
 import java.util.ArrayList
-import java.util.Arrays
-import java.util.Collections
-import java.util.Comparator
 import javax.annotation.PostConstruct
 import javax.inject.Inject
+import javax.inject.Named
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.IMaiaContextInjector
 import ru.agentlab.maia.memory.exception.MaiaInjectionException
-import java.lang.reflect.Parameter
 
 class MaiaContextInjector implements IMaiaContextInjector {
 
 	val public static Object NOT_A_VALUE = new Object
 
-	IMaiaContext context
+	public IMaiaContext context
 
 	new(IMaiaContext context) {
 		this.context = context
@@ -28,19 +26,11 @@ class MaiaContextInjector implements IMaiaContextInjector {
 
 	override <T> T make(Class<T> clazz) {
 		try {
-			val constructors = clazz.constructors
-
-			val sortedConstructors = new ArrayList<Constructor<T>>(constructors.length)
-			for (constructor : constructors) {
-				sortedConstructors.add(constructor as Constructor<T>)
-			}
-
-			val Comparator<Constructor<T>> comparator = [ c1, c2 |
+			val sortedConstructors = (clazz.constructors as Constructor<T>[]).sortWith [ c1, c2 |
 				val l1 = c1.parameterTypes.length
 				val l2 = c2.parameterTypes.length
 				return l2 - l1
 			]
-			Collections.sort(sortedConstructors, comparator)
 
 			for (constructor : sortedConstructors) {
 				val instance = constructor.tryConstruct
@@ -56,20 +46,43 @@ class MaiaContextInjector implements IMaiaContextInjector {
 		}
 	}
 
-	override invoke(Object object, Class<? extends Annotation> ann) {
-		val method = object.class.declaredMethods.findFirst[isAnnotationPresent(ann)]
-		object.invoke(method)
+	override invoke(Object object, Class<? extends Annotation> qualifier) {
+		val method = object.class.declaredMethods.findFirst[isAnnotationPresent(qualifier)]
+		return object.invoke(method, false, null)
 	}
 
-	override void invoke(Object object, String methodName) {
+	override invoke(Object object, String methodName) {
 		val method = object.class.declaredMethods.findFirst[it.name == name]
-		object.invoke(method)
+		return object.invoke(method, false, null)
 	}
 
-	override Object invoke(Object object, Method method) {
-		val actualArgs = resolveArgs(method.parameters)
-		if (actualArgs.unresolved != -1) {
-			return null
+	override invoke(Object object, Method method) {
+		return object.invoke(method, false, null)
+	}
+
+	override invoke(Object object, Class<? extends Annotation> qualifier,
+		Object defaultValue) throws MaiaInjectionException {
+		val method = object.class.declaredMethods.findFirst[isAnnotationPresent(qualifier)]
+		return object.invoke(method, true, defaultValue)
+	}
+
+	override invoke(Object object, String methodName, Object defaultValue) {
+		val method = object.class.declaredMethods.findFirst[it.name == name]
+		return object.invoke(method, true, defaultValue)
+	}
+
+	override invoke(Object object, Method method, Object defaultValue) {
+		return object.invoke(method, true, defaultValue)
+	}
+
+	def protected invoke(Object object, Method method, boolean haveDefault, Object defaultValue) {
+		val values = resolveValues(resolveKeys(method.parameters))
+		if (values.length < method.parameters.size) {
+			if (haveDefault) {
+				return defaultValue
+			} else {
+				throw new MaiaInjectionException
+			}
 		}
 		var Object result = null
 		var wasAccessible = true
@@ -78,32 +91,31 @@ class MaiaContextInjector implements IMaiaContextInjector {
 			wasAccessible = false
 		}
 		try {
-			result = method.invoke(object, actualArgs)
+			result = method.invoke(object, values)
 		} catch (IllegalArgumentException e) {
-			throw new MaiaInjectionException(e)
+			if (haveDefault) {
+				return defaultValue
+			} else {
+				throw new MaiaInjectionException(e)
+			}
 		} catch (IllegalAccessException e) {
-			throw new MaiaInjectionException(e)
+			if (haveDefault) {
+				return defaultValue
+			} else {
+				throw new MaiaInjectionException(e)
+			}
 		} catch (InvocationTargetException e) {
-			throw new MaiaInjectionException(e)
+			if (haveDefault) {
+				return defaultValue
+			} else {
+				throw new MaiaInjectionException(e)
+			}
 		} finally {
 			if (!wasAccessible)
 				method.setAccessible(false)
-			clearArray(actualArgs)
+			clearArray(values)
 		}
 		return result
-	}
-
-	override invoke(Object object, Class<? extends Annotation> qualifier,
-		Object defaultValue) throws MaiaInjectionException {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
-	override invoke(Object object, String methodName, Object defaultValue) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
-	override invoke(Object object, Method method, Object defaultValue) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 	override void inject(Object object) throws MaiaInjectionException {
@@ -175,8 +187,24 @@ class MaiaContextInjector implements IMaiaContextInjector {
 		if (!constructor.isAnnotationPresent(Inject) && constructor.parameterTypes.length != 0) {
 			return null
 		}
-		val actualArgs = resolveArgs(constructor.parameters)
-		if (actualArgs.unresolved != -1) {
+			println()
+			println("constructor: " + constructor)
+		val params = constructor.parameters
+			println("parameters: ")
+			params.forEach [
+				println("	param: " + it)
+			]
+		val keys= resolveKeys(params)
+			println("keys: ")
+			keys.forEach [
+				println("	key: " + it)
+			]
+		val values = resolveValues(keys)
+			println("values: ")
+			values.forEach [
+				println("	value: " + it)
+			]
+		if (values.length < constructor.parameters.size) {
 			return null
 		}
 		var T result = null
@@ -186,9 +214,11 @@ class MaiaContextInjector implements IMaiaContextInjector {
 			wasAccessible = false
 		}
 		try {
-			result = constructor.newInstance(actualArgs)
+			println("constructor.newInstance")
+			result = constructor.newInstance(values)
+			println("result: " + result)
 		} catch (IllegalArgumentException e) {
-			throw new MaiaInjectionException(actualArgs.toString + " " + constructor.parameterTypes, e)
+			throw new MaiaInjectionException(values.toString + " " + constructor.parameterTypes, e)
 		} catch (InstantiationException e) {
 			throw new MaiaInjectionException("Unable to instantiate " + constructor, e) // $NON-NLS-1$
 		} catch (IllegalAccessException e) {
@@ -196,35 +226,72 @@ class MaiaContextInjector implements IMaiaContextInjector {
 		} catch (InvocationTargetException e) {
 			throw new MaiaInjectionException(e)
 		} finally {
-			if (!wasAccessible)
+			if (!wasAccessible) {
 				constructor.setAccessible(false)
-			clearArray(actualArgs)
+			}
+			clearArray(values)
 		}
 		return result
 	}
 
-	def protected Object[] resolveArgs(Parameter[] parameterTypes) {
-		val result = newArrayOfSize(parameterTypes.length)
-		Arrays.fill(result, NOT_A_VALUE)
-		for (i : 0 ..< parameterTypes.size) {
-			val type = parameterTypes.get(i)
-			val ctx = context.contains(type.type)
-			if (ctx != null) {
-				val obj = ctx.get(type.type)
-				result.set(i, obj)
+	def protected Object[] resolveKeys(Parameter[] parameterTypes) {
+		val Object[] result = newArrayOfSize(parameterTypes.length)
+		parameterTypes.forEach [ p, i |
+			if (p.isAnnotationPresent(Named)) {
+				val name = p.getAnnotation(Named).value
+				result.set(i, name)
 			} else {
-				return result
+				result.set(i, p.type)
+			}
+		]
+		return result
+	}
+
+	def protected Object[] resolveKeys(Field[] fields) {
+		val injectFields = fields.filter[isAnnotationPresent(Inject)]
+		val Object[] result = newArrayOfSize(injectFields.length)
+		injectFields.forEach [ p, i |
+			if (p.isAnnotationPresent(Named)) {
+				val name = p.getAnnotation(Named).value
+				result.set(i, name)
+			} else {
+				result.set(i, p.type)
+			}
+		]
+		return result
+	}
+
+	def protected Object[] resolveValues(Object[] keys) {
+		val result = new ArrayList<Object>
+			println("resolveValues" )
+		for (key : keys) {
+			switch (key) {
+				String: {
+					val ctx = context.contains(key)
+					if (ctx != null) {
+						val value = ctx.get(key)
+						println("	value" + value)
+						result += value
+					} else {
+						return result.toArray
+					}
+				}
+				Class<?>: {
+					val ctx = context.contains(key)
+					if (ctx != null) {
+						val value = ctx.get(key)
+						println("	value" + value)
+						result += value
+					} else {
+						return result.toArray
+					}
+				}
+				default: {
+					return result.toArray
+				}
 			}
 		}
-		return result
-	}
-
-	def protected int unresolved(Object[] actualArgs) {
-		for (i : 0 ..< actualArgs.length) {
-			if (actualArgs.get(i) == NOT_A_VALUE)
-				return i
-		}
-		return -1
+		return result.toArray
 	}
 
 }

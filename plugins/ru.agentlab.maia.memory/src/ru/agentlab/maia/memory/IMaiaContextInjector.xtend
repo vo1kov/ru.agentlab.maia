@@ -69,7 +69,7 @@ interface IMaiaContextInjector {
 	 * @throws 			MaiaInjectionException 
 	 * 					if an exception occurred while performing this operation
 	 */
-	def void invoke(Object object, String methodName)
+	def Object invoke(Object object, String methodName)
 
 	/**
 	 * <p>
@@ -84,7 +84,7 @@ interface IMaiaContextInjector {
 	 * @throws 			MaiaInjectionException 
 	 * 					if an exception occurred while performing this operation
 	 */
-	def void invoke(Object object, String methodName, Object defaultValue)
+	def Object invoke(Object object, String methodName, Object defaultValue)
 
 	/**
 	 * <p>

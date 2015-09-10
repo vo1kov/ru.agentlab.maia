@@ -48,12 +48,12 @@ class ContextInjectorMakeTests {
 
 	@Test
 	def void shouldCallBiggestConstructor() {
-		val string = STRING_VALUE
-		when(context.get(String)).thenReturn(string)
-		when(context.get(String.name)).thenReturn(string)
-		val integer = INT_VALUE
-		when(context.get(Integer)).thenReturn(integer)
-		when(context.get(Integer.name)).thenReturn(integer)
+		context.addService(STRING_VALUE)
+		context.addService(INT_VALUE)
+		
+		
+		assertThat(context.get(Integer), equalTo(INT_VALUE))
+		assertThat(injector.context, equalTo(context))
 
 		val service = injector.make(DummyServiceWithManyConstructors)
 
@@ -63,27 +63,19 @@ class ContextInjectorMakeTests {
 
 	@Test
 	def void shouldInjectToBiggestConstructor() {
-		val string = STRING_VALUE
-		when(context.get(String)).thenReturn(string)
-		when(context.get(String.name)).thenReturn(string)
-		val integer = INT_VALUE
-		when(context.get(Integer)).thenReturn(integer)
-		when(context.get(Integer.name)).thenReturn(integer)
+		context.addService(STRING_VALUE)
+		context.addService(INT_VALUE)
 
 		val service = injector.make(DummyServiceWithManyConstructors)
 
-		assertThat(service.stringValue, equalTo(string))
-		assertThat(service.intValue, equalTo(integer))
+		assertThat(service.stringValue, equalTo(STRING_VALUE))
+		assertThat(service.intValue, equalTo(INT_VALUE))
 	}
 
 	@Test
 	def void shouldCreateServiceByBiggestConstructor() {
-		val string = STRING_VALUE
-		when(context.get(String)).thenReturn(string)
-		when(context.get(String.name)).thenReturn(string)
-		val intValue = INT_VALUE
-		when(context.get(Integer)).thenReturn(intValue)
-		when(context.get(Integer.name)).thenReturn(intValue)
+		context.addService(STRING_VALUE)
+		context.addService(INT_VALUE)
 
 		val service = injector.make(DummyServiceWithManyConstructors)
 
@@ -92,9 +84,7 @@ class ContextInjectorMakeTests {
 
 	@Test
 	def void shouldCallRelevantConstructor() {
-		val string = STRING_VALUE
-		when(context.get(String)).thenReturn(string)
-		when(context.get(String.name)).thenReturn(string)
+		context.addService(STRING_VALUE)
 
 		val service = injector.make(DummyServiceWithManyConstructors)
 
@@ -104,13 +94,18 @@ class ContextInjectorMakeTests {
 
 	@Test
 	def void shouldCreateServiceByRelevantConstructor() {
-		val string = STRING_VALUE
-		when(context.get(String)).thenReturn(string)
-		when(context.get(String.name)).thenReturn(string)
+		context.addService(STRING_VALUE)
 
 		val service = injector.make(DummyServiceWithManyConstructors)
 
 		assertThat(service, notNullValue(DummyServiceWithManyConstructors))
 	}
+	
+	def private void addService(IMaiaContext ctx, Object service){
+		when(ctx.get(service.class)).thenReturn(service)
+		when(ctx.get(service.class.name)).thenReturn(service)
+		when(ctx.contains(service.class.name)).thenReturn(ctx)
+		when(ctx.contains(service.class)).thenReturn(ctx)
+	} 
 
 }
