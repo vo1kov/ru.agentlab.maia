@@ -12,6 +12,21 @@
 		<relativePath>../../releng/ru.agentlab.maia.releng</relativePath>
 	</parent>
 
+	<repositories>
+		<repository>
+			<id>www.chibi.ubc.ca</id>
+			<url>http://www.chibi.ubc.ca/maven2/</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>classmexer</groupId>
+			<artifactId>classmexer</artifactId>
+			<version>0.03</version>
+		</dependency>
+	</dependencies>
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -22,9 +37,10 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<argLine>-Xms1024m -Xmx2048m -javaagent:${project.build.directory}\classmexer.jar</argLine>
+					<argLine>-Xms1024m -Xmx2048m</argLine>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+	
 </project>

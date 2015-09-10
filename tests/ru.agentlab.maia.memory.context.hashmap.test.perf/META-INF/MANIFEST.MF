@@ -16,5 +16,7 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.memory.context;bundle-version="1.0.0",
  org.objenesis;bundle-version="1.0.0",
  ru.agentlab.maia.memory.doubles;bundle-version="1.0.0",
- ru.agentlab.maia.memory.context.test.perf;bundle-version="1.0.0"
+ ru.agentlab.maia.memory.context.test.perf;bundle-version="1.0.0",
+ ru.agentlab.maia.javaagent.classmexer;bundle-version="1.0.0"
+Bundle-ClassPath: .
 

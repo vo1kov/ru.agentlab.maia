@@ -116,6 +116,7 @@
 			</repositories>
 			<modules>
 				<module>../../tests/ru.agentlab.maia.memory.doubles</module>
+				<module>../../tests/ru.agentlab.maia.javaagent.classmexer</module>
 				<module>../../tests/ru.agentlab.maia.memory.context.test.perf</module>
 				<module>../../tests/ru.agentlab.maia.memory.context.hashmap.test.perf</module>
 				<module>../../tests/ru.agentlab.maia.memory.context.arraylist.test.perf</module>
