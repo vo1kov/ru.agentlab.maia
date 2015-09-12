@@ -11,10 +11,10 @@ import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 
 @RunWith(Parameterized)
-class ArrayListContextSetByStringTests extends VariableSizeCotextTests<ListContext> {
+class ArrayListContextSetByStringTests extends VariableSizeCotextTests<ArrayListContext> {
 
 	@Accessors
-	val context = new ListContext
+	val context = new ArrayListContext
 
 	val service = new DummyService
 

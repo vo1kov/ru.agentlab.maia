@@ -4,13 +4,13 @@ import static org.junit.Assert.*
 
 class ArrayListContextTestsExtension {
 	
-	def void checkSameSize(ListContext context) {
+	def void checkSameSize(ArrayListContext context) {
 		if (context.keys.size != context.values.size) {
 			fail("Key and value sizes not match. Testing on corrupted context")
 		}
 	}
 
-	def void prepareWithService(ListContext context, String key, Object service) {
+	def void prepareWithService(ArrayListContext context, String key, Object service) {
 		context.checkSameSize
 		val keyIndex = context.keys.indexOf(key)
 		if (keyIndex == -1) {
@@ -22,7 +22,7 @@ class ArrayListContextTestsExtension {
 		context.checkSameSize
 	}
 
-	def void prepareWithOutService(ListContext context, String key) {
+	def void prepareWithOutService(ArrayListContext context, String key) {
 		context.checkSameSize
 		val keyIndex = context.keys.indexOf(key)
 		if (keyIndex != -1) {
