@@ -1,7 +1,10 @@
-package ru.agentlab.maia.context.test
+package ru.agentlab.maia.memory.context.test
 
 import org.junit.Ignore
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
+import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.doubles.DummyService
 import ru.agentlab.maia.memory.doubles.hierarchy.DummyChildService
 import ru.agentlab.maia.memory.doubles.hierarchy.DummyParentService
@@ -9,8 +12,13 @@ import ru.agentlab.maia.memory.doubles.hierarchy.DummyParentService
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 
-abstract class ContextGetLocalByClassAbstractTests extends ContextAbstractTests {
+@RunWith(Parameterized)
+class AbstractContext_GetLocalByClass_FunctionalTests extends AbstractContext_AbstractFunctionalTests {
 
+	new(IMaiaContext context) {
+		super(context)
+	}
+	
 	@Test
 	def void shouldRetrieveServiceWhenInContext() {
 		val service = new DummyService

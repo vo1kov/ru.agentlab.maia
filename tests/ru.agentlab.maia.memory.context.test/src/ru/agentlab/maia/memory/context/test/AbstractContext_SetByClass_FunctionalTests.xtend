@@ -1,13 +1,21 @@
-package ru.agentlab.maia.context.test
+package ru.agentlab.maia.memory.context.test
 
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
+import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.doubles.DummyService
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 
-abstract class ContextSetByClassAbstractTests extends ContextAbstractTests {
+@RunWith(Parameterized)
+class AbstractContext_SetByClass_FunctionalTests extends AbstractContext_AbstractFunctionalTests {
 
+	new(IMaiaContext context) {
+		super(context)
+	}
+	
 	@Test
 	def void shouldAddServiceWhenNoInContext() {
 		val service = new DummyService

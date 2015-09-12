@@ -1,15 +1,22 @@
-package ru.agentlab.maia.context.test
+package ru.agentlab.maia.memory.context.test
 
 import org.junit.Ignore
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 import ru.agentlab.maia.memory.IMaiaContext
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
 
-abstract class ContextGetParentAbstractTests extends ContextAbstractTests {
+@RunWith(Parameterized)
+class AbstractContext_GetParent_FunctionalTests extends AbstractContext_AbstractFunctionalTests {
 
+	new(IMaiaContext context) {
+		super(context)
+	}
+	
 	@Test
 	def void shouldReturnNull() {
 		val parent = context.parent

@@ -1,12 +1,20 @@
-package ru.agentlab.maia.context.test
+package ru.agentlab.maia.memory.context.test
 
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
+import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.doubles.DummyService
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 
-abstract class ContextGetKeySetAbstractTests extends ContextAbstractTests {
+@RunWith(Parameterized)
+class AbstractContext_GetKeySet_FunctionalTests extends AbstractContext_AbstractFunctionalTests {
+
+	new(IMaiaContext context) {
+		super(context)
+	}
 
 	@Test
 	def void shouldContainKey() {
@@ -16,16 +24,16 @@ abstract class ContextGetKeySetAbstractTests extends ContextAbstractTests {
 
 		assertThat(keySet, containsInAnyOrder(#[DummyService.name]))
 	}
-	
+
 	@Test
 	def void shouldNotChangeKeySetWhenAddDuplicate() {
 		context.set(DummyService, new DummyService)
 		val beforeSize = context.keySet.size
-		
+
 		context.set(DummyService, new DummyService)
 		val afterSize = context.keySet.size
 
 		assertThat(afterSize, equalTo(beforeSize))
 	}
-	
+
 }

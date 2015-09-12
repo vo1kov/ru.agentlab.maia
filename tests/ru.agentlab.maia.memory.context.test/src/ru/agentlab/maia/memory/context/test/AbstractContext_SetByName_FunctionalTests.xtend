@@ -1,18 +1,26 @@
-package ru.agentlab.maia.context.test
+package ru.agentlab.maia.memory.context.test
 
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
+import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.doubles.DummyService
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 
-abstract class ContextSetByNameAbstractTests extends ContextAbstractTests {
+@RunWith(Parameterized)
+class AbstractContext_SetByName_FunctionalTests extends AbstractContext_AbstractFunctionalTests {
+
+	new(IMaiaContext context) {
+		super(context)
+	}
 
 	@Test
 	def void shouldAddServiceWhenNoInContext() {
 		val service = new DummyService
 		assertThat(context.get(DummyService), nullValue)
-		
+
 		context.set(DummyService.name, service)
 
 		assertThat(context.get(DummyService), equalTo(service))
@@ -25,7 +33,7 @@ abstract class ContextSetByNameAbstractTests extends ContextAbstractTests {
 		context.set(DummyService.name, serviceOld)
 		assertThat(context.get(DummyService), equalTo(serviceOld))
 		val serviceNew = new DummyService
-		
+
 		context.set(DummyService.name, serviceNew)
 
 		assertThat(context.get(DummyService), equalTo(serviceNew))
@@ -37,7 +45,7 @@ abstract class ContextSetByNameAbstractTests extends ContextAbstractTests {
 		val parent = context.addParentWithService(parentService)
 		assertThat(context.get(DummyService), equalTo(parentService))
 		val contextService = new DummyService
-		
+
 		context.set(DummyService.name, contextService)
 
 		assertThat(parent.get(DummyService), equalTo(parentService))

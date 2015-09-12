@@ -14,5 +14,6 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.memory;bundle-version="1.0.0",
  ru.agentlab.maia.memory.context;bundle-version="1.0.0",
  ru.agentlab.maia.memory.context.arraylist;bundle-version="1.0.0",
- ru.agentlab.maia.memory.context.test;bundle-version="1.0.0"
+ ru.agentlab.maia.memory.context.test;bundle-version="1.0.0",
+ org.junit.parameterizedsuite;bundle-version="1.0.0"
 

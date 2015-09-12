@@ -14,6 +14,7 @@ Require-Bundle: com.google.guava,
  org.mockito;bundle-version="1.9.5",
  org.objenesis;bundle-version="1.0.0",
  ru.agentlab.maia.memory.doubles;bundle-version="1.0.0"
-Export-Package: ru.agentlab.maia.context.test
+Export-Package: ru.agentlab.maia.memory.context.test,
+ ru.agentlab.maia.memory.context.test.suite
 Bundle-Vendor: http://www.agentlab.ru/
 
