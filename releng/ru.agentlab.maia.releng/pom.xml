@@ -95,6 +95,7 @@
 			</repositories>
 			<modules>
 				<module>../../tests/ru.agentlab.maia.memory.doubles</module>
+				<module>../../tests/org.junit.parameterizedsuite</module>
 				<module>../../tests/ru.agentlab.maia.memory.context.test</module>
 				<module>../../tests/ru.agentlab.maia.memory.context.hashmap.test</module>
 				<module>../../tests/ru.agentlab.maia.memory.context.arraylist.test</module>
@@ -236,6 +237,7 @@
 						<failIfNoTests>false</failIfNoTests>
 						<includes>
 							<include>**/*Tests.java</include>
+							<include>**/*TestSuite.java</include>
 						</includes>
 						<dependencies>
 							<dependency>
