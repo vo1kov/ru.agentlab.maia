@@ -23,6 +23,7 @@
 		<module>../../plugins/ru.agentlab.maia.memory.context</module>
 		<module>../../plugins/ru.agentlab.maia.memory.context.arraylist</module>
 		<module>../../plugins/ru.agentlab.maia.memory.context.hashmap</module>
+		<module>../../plugins/ru.agentlab.maia.memory.context.maplisthybrid</module>
 
 		<module>../../plugins/ru.agentlab.maia.event</module>
 		<module>../../plugins/ru.agentlab.maia.event.osgi</module>
@@ -96,9 +97,12 @@
 			<modules>
 				<module>../../tests/ru.agentlab.maia.memory.doubles</module>
 				<module>../../tests/org.junit.parameterizedsuite</module>
+				
 				<module>../../tests/ru.agentlab.maia.memory.context.test</module>
 				<module>../../tests/ru.agentlab.maia.memory.context.hashmap.test</module>
 				<module>../../tests/ru.agentlab.maia.memory.context.arraylist.test</module>
+				<module>../../tests/ru.agentlab.maia.memory.context.maplisthybrid.test.func</module>
+				
 				<module>../../tests/ru.agentlab.maia.memory.injector.test</module>
 
 				<module>../../tests/ru.agentlab.maia.execution.scheduler.fsm.test</module>

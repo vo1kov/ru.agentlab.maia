@@ -20,12 +20,14 @@ class ParameterizedSuite extends Suite {
 	static final ParametersRunnerFactory DEFAULT_FACTORY = new BlockJUnit4ClassRunnerWithParametersFactory()
 	static final List<Runner> NO_RUNNERS = Collections.<Runner>emptyList()
 	final List<Runner> runners
+	Class<?> suite
 
 	/** 
 	 * Only called reflectively. Do not use programmatically.
 	 */
 	new(Class<?> klass) throws Throwable {
 		super(klass, NO_RUNNERS)
+		suite = klass
 		var ParametersRunnerFactory runnerFactory = getParametersRunnerFactory(klass)
 		var Parameters parameters = getParametersMethod().getAnnotation(Parameters)
 		runners = Collections.unmodifiableList(
@@ -74,7 +76,7 @@ class ParameterizedSuite extends Suite {
 			}
 
 		}
-		throw new Exception('''No public static parameters method on class «getTestClass().getName()»''')
+		throw new Exception('''No public static parameters method on class ï¿½getTestClass().getName()ï¿½''')
 	}
 
 	def private List<Runner> createRunnersForParameters(Iterable<Object> allParameters, String namePattern,
@@ -105,7 +107,7 @@ class ParameterizedSuite extends Suite {
 		String namePattern) throws Exception {
 		var int i = 0
 		var List<TestWithParameters> children = new ArrayList<TestWithParameters>()
-		var Class<?>[] childs = getAnnotatedClasses(testClass.javaClass)
+		var Class<?>[] childs = getAnnotatedClasses(suite)
 		for (Class<?> c : childs) {
 			var TestClass test = createTestClass(c)
 			for (Object parametersOfSingleTest : allParameters()) {
@@ -127,7 +129,7 @@ class ParameterizedSuite extends Suite {
 		Object[] parameters) {
 		var String finalPattern = pattern.replaceAll("\\{index\\}", Integer.toString(index))
 		var String name = MessageFormat.format(finalPattern, parameters)
-		return new TestWithParameters('''[«name»]''', testClass, Arrays.asList(parameters))
+		return new TestWithParameters('''[ï¿½nameï¿½]''', testClass, Arrays.asList(parameters))
 	}
 
 }

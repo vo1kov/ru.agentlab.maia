@@ -19,7 +19,7 @@ class AbstractContext_GetByName_FunctionalTests extends AbstractContext_Abstract
 	@Test
 	def void shouldRetrieveServiceWhenInContext() {
 		val service = new DummyService
-		context.set(DummyService, service)
+		context.set(DummyService.name, service)
 
 		val stored = context.get(DummyService.name)
 

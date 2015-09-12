@@ -19,7 +19,7 @@ class AbstractContext_GetLocalByName_FunctionalTests extends AbstractContext_Abs
 	@Test
 	def void shouldRetrieveServiceWhenInContext() {
 		val service = new DummyService
-		context.set(DummyService, service)
+		context.set(DummyService.name, service)
 
 		val stored = context.getLocal(DummyService.name)
 

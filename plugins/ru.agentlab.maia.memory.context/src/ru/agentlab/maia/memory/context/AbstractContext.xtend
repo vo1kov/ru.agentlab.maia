@@ -89,7 +89,7 @@ abstract class AbstractContext implements IMaiaContext {
 		if (clazz == null) {
 			throw new NullPointerException
 		}
-		if (isContainsLocal(clazz.name)) {
+		if (isContainsLocal(clazz)) {
 			return doGetLocal(clazz)
 		} else {
 			if (parent != null) {
@@ -132,14 +132,7 @@ abstract class AbstractContext implements IMaiaContext {
 		if (name == null) {
 			throw new NullPointerException
 		}
-		try {
-			val clazz = Class.forName(name) as Class<T>
-			doSetLocal(clazz, value)
-		} catch (ClassNotFoundException e) {
-			doSetLocal(name, value)
-		} catch (ClassCastException e) {
-			doSetLocal(name, value)
-		}
+		doSetLocal(name, value)
 	}
 
 	override <T> set(Class<T> clazz, T value) {
