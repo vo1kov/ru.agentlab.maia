@@ -77,5 +77,10 @@ class HashMapContext extends AbstractContext {
 	override <T> doSetLocal(Class<T> clazz, Provider<T> provider) {
 		map.put(clazz.name, provider)
 	}
+	
+	override removeAll() {
+		map.clear
+		return true
+	}
 
 }

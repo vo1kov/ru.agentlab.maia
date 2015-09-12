@@ -27,7 +27,7 @@ import ru.agentlab.maia.memory.context.AbstractContext
  * 
  * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
-class ListContext extends AbstractContext {
+class ArrayListContext extends AbstractContext {
 	
 	val static UNKNOWN = -1
 
@@ -123,6 +123,12 @@ class ListContext extends AbstractContext {
 
 	override synchronized isContainsLocal(Class<?> clazz) {
 		return keys.indexOf(clazz.name) != UNKNOWN
+	}
+	
+	override synchronized removeAll() {
+		keys.clear
+		values.clear
+		return true
 	}
 
 	def private putInternal(String key, Object value) {

@@ -213,6 +213,8 @@ interface IMaiaContext {
 	 * @see #remove(String)
 	 */
 	def <T> T remove(Class<T> clazz)
+	
+	def boolean removeAll()
 
 	/**
 	 * <p>
