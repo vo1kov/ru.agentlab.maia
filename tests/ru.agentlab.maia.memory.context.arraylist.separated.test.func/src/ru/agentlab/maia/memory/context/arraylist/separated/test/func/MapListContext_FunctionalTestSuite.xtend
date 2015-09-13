@@ -1,11 +1,11 @@
-package ru.agentlab.maia.memory.context.maplisthybrid.test.func
+package ru.agentlab.maia.memory.context.arraylist.separated.test.func
 
 import java.util.Collection
 import org.junit.parameterizedsuite.ParameterizedSuite
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized.Parameters
 import org.junit.runners.Suite.SuiteClasses
-import ru.agentlab.maia.memory.context.maplisthybrid.MapListContext
+import ru.agentlab.maia.memory.context.arraylist.separated.SeparatedArrayListContext
 import ru.agentlab.maia.memory.context.test.AbstractContext_GetByClass_FunctionalTests
 import ru.agentlab.maia.memory.context.test.AbstractContext_GetByName_FunctionalTests
 import ru.agentlab.maia.memory.context.test.AbstractContext_GetKeySet_FunctionalTests
@@ -36,7 +36,7 @@ class MapListContext_FunctionalTestSuite {
 
 	@Parameters
 	def public static Collection<?> keysAndValues() {
-		return #[new MapListContext]
+		return #[new SeparatedArrayListContext]
 	}
 
 }
