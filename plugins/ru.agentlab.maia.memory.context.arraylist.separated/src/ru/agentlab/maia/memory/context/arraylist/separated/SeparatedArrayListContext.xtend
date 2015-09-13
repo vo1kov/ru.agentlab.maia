@@ -74,12 +74,14 @@ class SeparatedArrayListContext extends AbstractContext {
 		val nullIndex = nullKeys.indexOf(clazz)
 		if (nullIndex != -1) {
 			nullKeys.remove(nullIndex)
+			nullKeys.trimToSize
 			return null as T
 		} else {
 			val index = findInClassMap(clazz)
 			if (index != -1) {
 				val removed = classValues.get(index) as T
 				classValues.remove(index)
+				classValues.trimToSize
 				return removed
 			} else {
 				return null
