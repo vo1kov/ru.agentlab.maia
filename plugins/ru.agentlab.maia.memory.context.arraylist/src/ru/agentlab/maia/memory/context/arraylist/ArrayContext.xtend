@@ -66,8 +66,8 @@ class ArrayContext extends AbstractContext {
 	}
 
 	override protected synchronized clearInternal() {
-		keys.clear
-		values.clear
+		keys = newArrayOfSize(0)
+		values = newArrayOfSize(0)
 		return true
 	}
 
