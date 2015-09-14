@@ -2,15 +2,15 @@ package ru.agentlab.maia.memory.context.arraylist
 
 import static org.junit.Assert.*
 
-class ArrayListContextTestsExtension {
+class ArrayContextTestsExtension {
 	
-	def void checkSameSize(ArrayListContext context) {
+	def void checkSameSize(ArrayContext context) {
 		if (context.keys.size != context.values.size) {
 			fail("Key and value sizes not match. Testing on corrupted context")
 		}
 	}
 
-	def void prepareWithService(ArrayListContext context, String key, Object service) {
+	def void prepareWithService(ArrayContext context, String key, Object service) {
 		context.checkSameSize
 		val keyIndex = context.keys.indexOf(key)
 		if (keyIndex == -1) {
@@ -22,7 +22,7 @@ class ArrayListContextTestsExtension {
 		context.checkSameSize
 	}
 
-	def void prepareWithOutService(ArrayListContext context, String key) {
+	def void prepareWithOutService(ArrayContext context, String key) {
 		context.checkSameSize
 		val keyIndex = context.keys.indexOf(key)
 		if (keyIndex != -1) {

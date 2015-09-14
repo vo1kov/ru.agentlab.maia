@@ -11,14 +11,14 @@ import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 
 @RunWith(Parameterized)
-class ArrayListContextSetByStringTests extends VariableSizeCotextTests<ArrayListContext> {
+class ArrayContextSetByStringTests extends VariableSizeCotextTests<ArrayContext> {
 
 	@Accessors
-	val context = new ArrayListContext
+	val context = new ArrayContext
 
 	val service = new DummyService
 
-	extension ArrayListContextTestsExtension = new ArrayListContextTestsExtension
+	extension ArrayContextTestsExtension = new ArrayContextTestsExtension
 
 	new(String[] keys, Object[] values) {
 		context.keys.addAll(keys)
@@ -65,8 +65,8 @@ class ArrayListContextSetByStringTests extends VariableSizeCotextTests<ArrayList
 		context.putService(DummyService, newService)
 
 		assertThat(context.keys.get(keyIndex), equalTo(DummyService.name))
-		assertThat(context.values.get(keyIndex), not(service))
-		assertThat(context.values.get(keyIndex), equalTo(newService))
+		assertThat(context.values.get(keyIndex) as DummyService, not(service))
+		assertThat(context.values.get(keyIndex) as DummyService, equalTo(newService))
 	}
 
 	@Test
