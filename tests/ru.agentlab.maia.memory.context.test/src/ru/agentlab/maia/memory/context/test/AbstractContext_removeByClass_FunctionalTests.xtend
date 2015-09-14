@@ -7,10 +7,7 @@ import ru.agentlab.maia.memory.IMaiaContext
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
-import static org.junit.Assume.*
 import static org.mockito.Mockito.*
-import static ru.agentlab.maia.memory.context.test.ServiceRegistration.*
-import java.util.UUID
 
 @RunWith(Parameterized)
 class AbstractContext_removeByClass_FunctionalTests extends AbstractContext_AbstractFunctionalTests {
@@ -62,7 +59,7 @@ class AbstractContext_removeByClass_FunctionalTests extends AbstractContext_Abst
 	@Test
 	def void getKeySet_containKey_whenKeyInContext_whenUnknownArgs() {
 		assumeKeyInContext
-		
+
 		invokeWithUnknownArgs
 
 		assertThat(context.keySet, hasItem(KEY_STRING_VALID))
@@ -71,7 +68,7 @@ class AbstractContext_removeByClass_FunctionalTests extends AbstractContext_Abst
 	@Test
 	def void getKeySet_notContainKey_whenKeyInContext_whenValidArgs() {
 		assumeKeyInContext
-		
+
 		invokeWithValidArgs
 
 		assertThat(context.keySet, not(hasItem(KEY_STRING_VALID)))
@@ -80,7 +77,7 @@ class AbstractContext_removeByClass_FunctionalTests extends AbstractContext_Abst
 	@Test
 	def void getKeySet_notContainKey_whenKeyNoInContext_whenValidArgs() {
 		assumeKeyNotInContext
-		
+
 		invokeWithValidArgs
 
 		assertThat(context.keySet, not(hasItem(KEY_STRING_VALID)))
@@ -89,66 +86,138 @@ class AbstractContext_removeByClass_FunctionalTests extends AbstractContext_Abst
 	@Test
 	def void getKeySet_notContainKey_whenKeyNoInContext_whenUnknownArgs() {
 		assumeKeyNotInContext
-		
+
 		invokeWithUnknownArgs
 
 		assertThat(context.keySet, not(hasItem(KEY_STRING_VALID)))
 	}
 
 	@Test
-	def void getProviderByString_returnNull_whenValidArgs() {
+	def void getProviderByString_returnFromParent_whenValidArgs() {
 		invokeWithValidArgs
 
-		assertThat(context.getProvider(KEY_STRING_VALID), nullValue)
+		assertThat(context.getProvider(KEY_STRING_VALID), equalTo(parent.getProvider(KEY_STRING_VALID)))
 	}
 
 	@Test
-	def void getProviderByString_returnNull_whenUnknownArgs() {
+	def void getProviderByString_unchangeValue_whenUnknownArgs() {
+		val before = context.getProvider(KEY_STRING_VALID)
+
 		invokeWithUnknownArgs
 
-		assertThat(context.getProvider(KEY_STRING_VALID), nullValue)
+		assertThat(context.getProvider(KEY_STRING_VALID), equalTo(before))
 	}
 
 	@Test
-	def void getProviderByClass_returnNull_whenValidArgs() {
+	def void getProviderByClass_returnFromParent_whenValidArgs() {
 		invokeWithValidArgs
 
-		assertThat(context.getProvider(KEY_CLASS_VALID), nullValue)
+		assertThat(context.getProvider(KEY_CLASS_VALID), equalTo(parent.getProvider(KEY_STRING_VALID)))
 	}
 
 	@Test
-	def void getProviderByClass_returnNull_whenUnknownArgs() {
+	def void getProviderByClass_unchangeValue_whenUnknownArgs() {
+		val before = context.getProvider(KEY_STRING_VALID)
+
 		invokeWithUnknownArgs
 
-		assertThat(context.getProvider(KEY_CLASS_VALID), nullValue)
+		assertThat(context.getProvider(KEY_CLASS_VALID), equalTo(before))
 	}
 
 	@Test
-	def void getServiceByString_returnValue_whenValidArgs() {
+	def void getProviderLocalByString_returnNull_whenValidArgs() {
 		invokeWithValidArgs
 
-		assertThat(context.getService(KEY_STRING_VALID), equalTo(SERVICE_VALID))
+		assertThat(context.getProviderLocal(KEY_STRING_VALID), equalTo(PROVIDER_NULL))
 	}
 
 	@Test
-	def void getServiceByString_returnNull_whenUnknownArgs() {
+	def void getProviderLocalByString_unchangeValue_whenUnknownArgs() {
+		val before = context.getProviderLocal(KEY_STRING_VALID)
+
 		invokeWithUnknownArgs
 
-		assertThat(context.getService(KEY_STRING_VALID), equalTo(SERVICE_NULL))
+		assertThat(context.getProviderLocal(KEY_STRING_VALID), equalTo(before))
 	}
 
 	@Test
-	def void getServiceByClass_returnValue_whenValidArgs() {
+	def void getProviderLocalByClass_returnNull_whenValidArgs() {
 		invokeWithValidArgs
 
-		assertThat(context.getService(KEY_CLASS_VALID), equalTo(SERVICE_VALID))
+		assertThat(context.getProviderLocal(KEY_CLASS_VALID), equalTo(PROVIDER_NULL))
 	}
 
 	@Test
-	def void getServiceByClass_returnNull_whenUnknownArgs() {
+	def void getProviderLocalByClass_unchangeValue_whenUnknownArgs() {
+		val before = context.getProviderLocal(KEY_STRING_VALID)
+
 		invokeWithUnknownArgs
 
-		assertThat(context.getService(KEY_CLASS_VALID), equalTo(SERVICE_NULL))
+		assertThat(context.getProviderLocal(KEY_CLASS_VALID), equalTo(before))
+	}
+
+	@Test
+	def void getServiceByString_returnParentValue_whenValidArgs() {
+		invokeWithValidArgs
+
+		assertThat(context.getService(KEY_STRING_VALID), equalTo(parent.getService(KEY_STRING_VALID)))
+	}
+
+	@Test
+	def void getServiceByString_unchangeValue_whenUnknownArgs() {
+		val before = context.getService(KEY_STRING_VALID)
+
+		invokeWithUnknownArgs
+
+		assertThat(context.getService(KEY_STRING_VALID), equalTo(before))
+	}
+
+	@Test
+	def void getServiceByClass_returnParentValue_whenValidArgs() {
+		invokeWithValidArgs
+
+		assertThat(context.getService(KEY_CLASS_VALID), equalTo(parent.getService(KEY_CLASS_VALID)))
+	}
+
+	@Test
+	def void getServiceByClass_unchangeValue_whenUnknownArgs() {
+		val before = context.getService(KEY_CLASS_VALID)
+
+		invokeWithUnknownArgs
+
+		assertThat(context.getService(KEY_CLASS_VALID), equalTo(before))
+	}
+
+	@Test
+	def void getServiceByStringLocal_returnNull_whenValidArgs() {
+		invokeWithValidArgs
+
+		assertThat(context.getServiceLocal(KEY_STRING_VALID), equalTo(SERVICE_NULL))
+	}
+
+	@Test
+	def void getServiceLocalByString_unchangeValue_whenUnknownArgs() {
+		val before = context.getServiceLocal(KEY_STRING_VALID)
+
+		invokeWithUnknownArgs
+
+		assertThat(context.getServiceLocal(KEY_STRING_VALID), equalTo(before))
+	}
+
+	@Test
+	def void getServiceLocalByClass_returnNull_whenValidArgs() {
+		invokeWithValidArgs
+
+		assertThat(context.getServiceLocal(KEY_CLASS_VALID), equalTo(SERVICE_NULL))
+	}
+
+	@Test
+	def void getServiceLocalByClass_unchangeValue_whenUnknownArgs() {
+		val before = context.getServiceLocal(KEY_CLASS_VALID)
+
+		invokeWithUnknownArgs
+
+		assertThat(context.getServiceLocal(KEY_CLASS_VALID), equalTo(before))
 	}
 
 	@Test
@@ -223,47 +292,17 @@ class AbstractContext_removeByClass_FunctionalTests extends AbstractContext_Abst
 	def void self_throw_whenNullArgs() {
 		invokeWithNullArgs
 	}
-	
-	def private assumeByClassNoInContext(){
-		assumeThat(contextServices, anyOf(
-			equalTo(NONE),
-			equalTo(SERVICE_BY_STRING),
-			equalTo(PROVIDER_BY_STRING)
-		))
-	}
-	
-	def private assumeByClassInContext(){
-		assumeThat(contextServices, anyOf(
-			equalTo(SERVICE_BY_CLASS),
-			equalTo(PROVIDER_BY_CLASS)
-		))
-	}
-	
-	def private assumeKeyNotInContext(){
-		assumeThat(contextServices, anyOf(
-			equalTo(NONE)
-		))
-	}
-	
-	def private assumeKeyInContext(){
-		assumeThat(contextServices, anyOf(
-			equalTo(SERVICE_BY_CLASS),
-			equalTo(PROVIDER_BY_CLASS),
-			equalTo(SERVICE_BY_STRING),
-			equalTo(PROVIDER_BY_STRING)
-		))
-	}
 
 	def private void invokeWithValidArgs() {
-		context.remove(KEY_STRING_VALID)
+		context.remove(KEY_CLASS_VALID)
 	}
 
 	def private void invokeWithUnknownArgs() {
-		context.remove(UUID.randomUUID.toString)
+		context.remove(mock(Object).class)
 	}
 
 	def private void invokeWithNullArgs() {
-		context.remove(KEY_STRING_NULL)
+		context.remove(KEY_CLASS_NULL)
 	}
 
 }

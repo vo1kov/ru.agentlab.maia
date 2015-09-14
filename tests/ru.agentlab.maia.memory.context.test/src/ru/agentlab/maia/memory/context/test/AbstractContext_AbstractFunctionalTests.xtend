@@ -6,7 +6,10 @@ import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.doubles.DummyService
 
 import static org.mockito.Mockito.*
+import static org.junit.Assume.*
+import static org.hamcrest.Matchers.*
 import static ru.agentlab.maia.memory.context.test.AbstractContext_AbstractFunctionalTests.*
+import static ru.agentlab.maia.memory.context.test.ServiceRegistration.*
 
 abstract class AbstractContext_AbstractFunctionalTests {
 
@@ -62,16 +65,16 @@ abstract class AbstractContext_AbstractFunctionalTests {
 			case NONE: {
 			}
 			case SERVICE_BY_CLASS: {
-				this.context.putService(KEY_CLASS_VALID, SERVICE_VALID)
+				this.context.putService(KEY_CLASS_VALID, SERVICE_FAKE)
 			}
 			case SERVICE_BY_STRING: {
-				this.context.putService(KEY_STRING_VALID, SERVICE_VALID)
+				this.context.putService(KEY_STRING_VALID, SERVICE_FAKE)
 			}
 			case PROVIDER_BY_CLASS: {
-				this.context.putProvider(KEY_CLASS_VALID, PROVIDER_VALID)
+				this.context.putProvider(KEY_CLASS_VALID, PROVIDER_FAKE)
 			}
 			case PROVIDER_BY_STRING: {
-				this.context.putProvider(KEY_STRING_VALID, PROVIDER_VALID)
+				this.context.putProvider(KEY_STRING_VALID, PROVIDER_FAKE)
 			}
 		}
 		switch (parentServices) {
@@ -85,13 +88,33 @@ abstract class AbstractContext_AbstractFunctionalTests {
 			}
 			case PROVIDER_BY_CLASS: {
 				when(parent.getProvider(KEY_CLASS_VALID)).thenReturn(PROVIDER_FAKE)
+				when(parent.getProvider(KEY_STRING_VALID)).thenReturn(PROVIDER_FAKE)
 				when(parent.getService(KEY_CLASS_VALID)).thenReturn(SERVICE_FAKE)
+				when(parent.getService(KEY_STRING_VALID)).thenReturn(SERVICE_FAKE)
 			}
 			case PROVIDER_BY_STRING: {
+				when(parent.getProvider(KEY_CLASS_VALID)).thenReturn(PROVIDER_FAKE)
 				when(parent.getProvider(KEY_STRING_VALID)).thenReturn(PROVIDER_FAKE)
+				when(parent.getService(KEY_CLASS_VALID)).thenReturn(SERVICE_FAKE)
 				when(parent.getService(KEY_STRING_VALID)).thenReturn(SERVICE_FAKE)
 			}
 		}
+	}
+	
+
+	def protected assumeKeyNotInContext() {
+		assumeThat(contextServices, anyOf(
+			equalTo(NONE)
+		))
+	}
+
+	def protected assumeKeyInContext() {
+		assumeThat(contextServices, anyOf(
+			equalTo(SERVICE_BY_CLASS),
+			equalTo(PROVIDER_BY_CLASS),
+			equalTo(SERVICE_BY_STRING),
+			equalTo(PROVIDER_BY_STRING)
+		))
 	}
 
 }

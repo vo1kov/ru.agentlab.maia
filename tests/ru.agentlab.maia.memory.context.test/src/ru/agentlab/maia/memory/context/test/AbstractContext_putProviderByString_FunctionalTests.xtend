@@ -7,9 +7,7 @@ import ru.agentlab.maia.memory.IMaiaContext
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
-import static org.junit.Assume.*
 import static org.mockito.Mockito.*
-import static ru.agentlab.maia.memory.context.test.ServiceRegistration.*
 
 /**
  * <p>
@@ -43,8 +41,8 @@ class AbstractContext_putProviderByString_FunctionalTests extends AbstractContex
 	}
 
 	@Test
-	def void getKeySet_increaseSize_whenNoInContext_whenValidArgs() {
-		assumeNoInContext
+	def void getKeySet_increaseSize_whenKeyNoInContext_whenValidArgs() {
+		assumeKeyNotInContext
 		val before = context.keySet.size
 
 		invokeWithValidArgs
@@ -53,8 +51,8 @@ class AbstractContext_putProviderByString_FunctionalTests extends AbstractContex
 	}
 
 	@Test
-	def void getKeySet_increaseSize_whenNoInContext_whenNullProvider() {
-		assumeNoInContext
+	def void getKeySet_increaseSize_whenKeyNoInContext_whenNullProvider() {
+		assumeKeyNotInContext
 		val before = context.keySet.size
 
 		invokeWithNullProvider
@@ -63,8 +61,8 @@ class AbstractContext_putProviderByString_FunctionalTests extends AbstractContex
 	}
 
 	@Test
-	def void getKeySet_unchangedSize_whenInContext_whenValidArgs() {
-		assumeInContext
+	def void getKeySet_unchangedSize_whenKeyInContext_whenValidArgs() {
+		assumeKeyInContext
 		val before = context.keySet.size
 
 		invokeWithValidArgs
@@ -73,8 +71,8 @@ class AbstractContext_putProviderByString_FunctionalTests extends AbstractContex
 	}
 
 	@Test
-	def void getKeySet_unchangedSize_whenInContext_whenNullProvider() {
-		assumeInContext
+	def void getKeySet_unchangedSize_whenKeyInContext_whenNullProvider() {
+		assumeKeyInContext
 		val before = context.keySet.size
 
 		invokeWithNullProvider
@@ -100,14 +98,56 @@ class AbstractContext_putProviderByString_FunctionalTests extends AbstractContex
 	def void getProviderByString_returnValue_whenValidArgs() {
 		invokeWithValidArgs
 
-		assertThat(context.getService(KEY_STRING_VALID), equalTo(PROVIDER_VALID))
+		assertThat(context.getProvider(KEY_STRING_VALID), equalTo(PROVIDER_VALID))
 	}
 
 	@Test
 	def void getProviderByString_returnNull_whenNullProvider() {
 		invokeWithNullProvider
 
-		assertThat(context.getProvider(KEY_STRING_VALID), nullValue)
+		assertThat(context.getProvider(KEY_STRING_VALID), equalTo(PROVIDER_NULL))
+	}
+
+	@Test
+	def void getProviderByClass_returnValue_whenValidArgs() {
+		invokeWithValidArgs
+
+		assertThat(context.getProvider(KEY_CLASS_VALID), equalTo(PROVIDER_VALID))
+	}
+
+	@Test
+	def void getProviderByClass_returnNull_whenNullProvider() {
+		invokeWithNullProvider
+
+		assertThat(context.getProvider(KEY_CLASS_VALID), equalTo(PROVIDER_NULL))
+	}
+
+	@Test
+	def void getProviderLocalByString_returnValue_whenValidArgs() {
+		invokeWithValidArgs
+
+		assertThat(context.getProviderLocal(KEY_STRING_VALID), equalTo(PROVIDER_VALID))
+	}
+
+	@Test
+	def void getProviderLocalByString_returnNull_whenNullProvider() {
+		invokeWithNullProvider
+
+		assertThat(context.getProviderLocal(KEY_STRING_VALID), equalTo(PROVIDER_NULL))
+	}
+
+	@Test
+	def void getProviderLocalByClass_returnValue_whenValidArgs() {
+		invokeWithValidArgs
+
+		assertThat(context.getProviderLocal(KEY_CLASS_VALID), equalTo(PROVIDER_VALID))
+	}
+
+	@Test
+	def void getProviderLocalByClass_returnNull_whenNullProvider() {
+		invokeWithNullProvider
+
+		assertThat(context.getProviderLocal(KEY_CLASS_VALID), equalTo(PROVIDER_NULL))
 	}
 
 	@Test
@@ -121,7 +161,49 @@ class AbstractContext_putProviderByString_FunctionalTests extends AbstractContex
 	def void getServiceByString_returnNull_whenNullProvider() {
 		invokeWithNullProvider
 
-		assertThat(context.getService(KEY_STRING_VALID), nullValue)
+		assertThat(context.getService(KEY_STRING_VALID), equalTo(SERVICE_NULL))
+	}
+
+	@Test
+	def void getServiceByClass_returnValue_whenValidArgs() {
+		invokeWithValidArgs
+
+		assertThat(context.getService(KEY_CLASS_VALID), equalTo(SERVICE_VALID))
+	}
+
+	@Test
+	def void getServiceByClass_returnNull_whenNullProvider() {
+		invokeWithNullProvider
+
+		assertThat(context.getService(KEY_CLASS_VALID), equalTo(SERVICE_NULL))
+	}
+
+	@Test
+	def void getServiceLocalByString_returnValue_whenValidArgs() {
+		invokeWithValidArgs
+
+		assertThat(context.getServiceLocal(KEY_STRING_VALID), equalTo(SERVICE_VALID))
+	}
+
+	@Test
+	def void getServiceLocalByString_returnNull_whenNullProvider() {
+		invokeWithNullProvider
+
+		assertThat(context.getServiceLocal(KEY_STRING_VALID), equalTo(SERVICE_NULL))
+	}
+
+	@Test
+	def void getServiceLocalByClass_returnValue_whenValidArgs() {
+		invokeWithValidArgs
+
+		assertThat(context.getServiceLocal(KEY_CLASS_VALID), equalTo(SERVICE_VALID))
+	}
+
+	@Test
+	def void getServiceLocalByClass_returnNull_whenNullProvider() {
+		invokeWithNullProvider
+
+		assertThat(context.getServiceLocal(KEY_CLASS_VALID), equalTo(SERVICE_NULL))
 	}
 
 	@Test
@@ -200,21 +282,6 @@ class AbstractContext_putProviderByString_FunctionalTests extends AbstractContex
 	@Test(expected=NullPointerException)
 	def void self_throw_whenNullArgs() {
 		invokeWithNullArgs
-	}
-
-	def private assumeNoInContext() {
-		assumeThat(contextServices, anyOf(
-			equalTo(NONE),
-			equalTo(SERVICE_BY_CLASS),
-			equalTo(PROVIDER_BY_CLASS)
-		))
-	}
-
-	def private assumeInContext() {
-		assumeThat(contextServices, anyOf(
-			equalTo(SERVICE_BY_STRING),
-			equalTo(PROVIDER_BY_STRING)
-		))
 	}
 
 	def private void invokeWithValidArgs() {

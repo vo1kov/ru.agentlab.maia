@@ -7,9 +7,7 @@ import ru.agentlab.maia.memory.IMaiaContext
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
-import static org.junit.Assume.*
 import static org.mockito.Mockito.*
-import static ru.agentlab.maia.memory.context.test.ServiceRegistration.*
 
 @RunWith(Parameterized)
 class AbstractContext_putServiceByClass_FunctionalTests extends AbstractContext_AbstractFunctionalTests {
@@ -101,6 +99,34 @@ class AbstractContext_putServiceByClass_FunctionalTests extends AbstractContext_
 	}
 
 	@Test
+	def void getProviderLocalByString_returnNull_whenValidArgs() {
+		invokeWithValidArgs
+
+		assertThat(context.getProviderLocal(KEY_STRING_VALID), nullValue)
+	}
+
+	@Test
+	def void getProviderLocalByString_returnNull_whenNullService() {
+		invokeWithNullService
+
+		assertThat(context.getProviderLocal(KEY_STRING_VALID), nullValue)
+	}
+
+	@Test
+	def void getProviderLocalByClass_returnNull_whenValidArgs() {
+		invokeWithValidArgs
+
+		assertThat(context.getProviderLocal(KEY_CLASS_VALID), nullValue)
+	}
+
+	@Test
+	def void getProviderLocalByClass_returnNull_whenNullService() {
+		invokeWithNullService
+
+		assertThat(context.getProviderLocal(KEY_CLASS_VALID), nullValue)
+	}
+
+	@Test
 	def void getServiceByString_returnValue_whenValidArgs() {
 		invokeWithValidArgs
 
@@ -126,6 +152,34 @@ class AbstractContext_putServiceByClass_FunctionalTests extends AbstractContext_
 		invokeWithNullService
 
 		assertThat(context.getService(KEY_CLASS_VALID), equalTo(SERVICE_NULL))
+	}
+
+	@Test
+	def void getServiceLocalByString_returnValue_whenValidArgs() {
+		invokeWithValidArgs
+
+		assertThat(context.getServiceLocal(KEY_STRING_VALID), equalTo(SERVICE_VALID))
+	}
+
+	@Test
+	def void getServiceLocalByString_returnNull_whenNullService() {
+		invokeWithNullService
+
+		assertThat(context.getServiceLocal(KEY_STRING_VALID), equalTo(SERVICE_NULL))
+	}
+
+	@Test
+	def void getServiceLocalByClass_returnValue_whenValidArgs() {
+		invokeWithValidArgs
+
+		assertThat(context.getServiceLocal(KEY_CLASS_VALID), equalTo(SERVICE_VALID))
+	}
+
+	@Test
+	def void getServiceLocalByClass_returnNull_whenNullService() {
+		invokeWithNullService
+
+		assertThat(context.getServiceLocal(KEY_CLASS_VALID), equalTo(SERVICE_NULL))
 	}
 
 	@Test
@@ -204,36 +258,6 @@ class AbstractContext_putServiceByClass_FunctionalTests extends AbstractContext_
 	@Test(expected=NullPointerException)
 	def void self_throw_whenNullArgs() {
 		invokeWithNullArgs
-	}
-
-	def private assumeNoInContext() {
-		assumeThat(contextServices, anyOf(
-			equalTo(NONE),
-			equalTo(SERVICE_BY_STRING),
-			equalTo(PROVIDER_BY_STRING)
-		))
-	}
-
-	def private assumeInContext() {
-		assumeThat(contextServices, anyOf(
-			equalTo(SERVICE_BY_CLASS),
-			equalTo(PROVIDER_BY_CLASS)
-		))
-	}
-	
-	def private assumeKeyNotInContext(){
-		assumeThat(contextServices, anyOf(
-			equalTo(NONE)
-		))
-	}
-	
-	def private assumeKeyInContext(){
-		assumeThat(contextServices, anyOf(
-			equalTo(SERVICE_BY_CLASS),
-			equalTo(PROVIDER_BY_CLASS),
-			equalTo(SERVICE_BY_STRING),
-			equalTo(PROVIDER_BY_STRING)
-		))
 	}
 
 	def private void invokeWithValidArgs() {
