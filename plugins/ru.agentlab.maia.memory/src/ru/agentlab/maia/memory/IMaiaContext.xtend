@@ -79,12 +79,11 @@ interface IMaiaContext {
 	 * </p>
 	 * 
 	 * @param name		the name of the value to return.
-	 * @param T 		type of returning value
 	 * @return			an object corresponding to the given name, or <code>null</code>.
 	 * 
 	 * @see #getService(Class)
 	 */
-	def Object getService(String name)
+	def Object getService(String name) throws NullPointerException
 
 	/**
 	 * <p>
@@ -99,7 +98,7 @@ interface IMaiaContext {
 	 * 
 	 * @see #getService(String)
 	 */
-	def <T> T getService(Class<T> clazz)
+	def <T> T getService(Class<T> clazz) throws NullPointerException, ClassCastException
 
 	/**
 	 * <p>
@@ -115,7 +114,7 @@ interface IMaiaContext {
 	 * 
 	 * @see #getServiceLocal(Class)
 	 */
-	def Object getServiceLocal(String name)
+	def Object getServiceLocal(String name) throws NullPointerException
 
 	/**
 	 * <p>
@@ -131,15 +130,15 @@ interface IMaiaContext {
 	 * 
 	 * @see #getServiceLocal(String)
 	 */
-	def <T> T getServiceLocal(Class<T> clazz)
+	def <T> T getServiceLocal(Class<T> clazz) throws NullPointerException, ClassCastException
 
-	def Provider<?> getProvider(String name)
+	def Provider<?> getProvider(String name) throws NullPointerException
 
-	def <T> Provider<T> getProvider(Class<T> clazz)
+	def <T> Provider<T> getProvider(Class<T> clazz) throws NullPointerException, ClassCastException
 
-	def Provider<?> getProviderLocal(String name)
+	def Provider<?> getProviderLocal(String name) throws NullPointerException
 
-	def <T> Provider<T> getProviderLocal(Class<T> clazz)
+	def <T> Provider<T> getProviderLocal(Class<T> clazz) throws NullPointerException, ClassCastException
 
 	/**
 	 * <p>
@@ -158,7 +157,7 @@ interface IMaiaContext {
 	 * 
 	 * @see #contains(String)
 	 */
-	def IMaiaContext contains(Class<?> clazz)
+	def IMaiaContext contains(Class<?> clazz) throws NullPointerException
 
 	/**
 	 * <p>
@@ -177,7 +176,7 @@ interface IMaiaContext {
 	 * 
 	 * @see #contains(Class)
 	 */
-	def IMaiaContext contains(String name)
+	def IMaiaContext contains(String name) throws NullPointerException
 
 	/**
 	 * <p>
@@ -198,12 +197,11 @@ interface IMaiaContext {
 	 * </p>
 	 * 
 	 * @param name 		the name to remove
-	 * @param T 		type of returning value
 	 * @return 			value removed from context 
 	 * 
 	 * @see #remove(Class)
 	 */
-	def Object remove(String name)
+	def Object remove(String name) throws NullPointerException
 
 	/**
 	 * <p>
@@ -215,12 +213,11 @@ interface IMaiaContext {
 	 * </p>
 	 * 
 	 * @param clazz 	the class to remove
-	 * @param T 		type of returning value
 	 * @return 			value removed from context 
 	 * 
 	 * @see #remove(String)
 	 */
-	def Object remove(Class<?> clazz)
+	def Object remove(Class<?> clazz) throws NullPointerException
 
 	def boolean clear()
 
@@ -233,11 +230,10 @@ interface IMaiaContext {
 	 * @param name 		the name to store a value for. Can not be <code>null</code>.
 	 * 					If <code>null</code> than NullPointerException will be thrown.
 	 * @param value 	the value to be stored that can return the stored value.
-	 * @param T 		type of specified value
 	 * 
 	 * @see #putService(Class, Object)
 	 */
-	def void putService(String name, Object value)
+	def void putService(String name, Object value) throws NullPointerException
 
 	/**
 	 * <p>
@@ -251,7 +247,7 @@ interface IMaiaContext {
 	 * @see #putService(String, Object)
 	 * @see #putProvider(String, Provider)
 	 */
-	def <T> void putService(Class<T> clazz, T value)
+	def <T> void putService(Class<T> clazz, T value) throws NullPointerException, ClassCastException
 
 	/**
 	 * <p>
@@ -261,11 +257,10 @@ interface IMaiaContext {
 	 * 
 	 * @param name 		the class to store a value for
 	 * @param provider 	provider of value to be stored
-	 * @param T 		type of specified value provider
 	 * 
 	 * @see #putProvider(Class, Provider)
 	 */
-	def void putProvider(String name, Provider<?> provider)
+	def void putProvider(String name, Provider<?> provider) throws NullPointerException
 
 	/**
 	 * <p>
@@ -278,6 +273,6 @@ interface IMaiaContext {
 	 * 
 	 * @see #putProvider(String, Provider)
 	 */
-	def <T> void putProvider(Class<T> clazz, Provider<T> provider)
+	def <T> void putProvider(Class<T> clazz, Provider<T> provider) throws NullPointerException, ClassCastException
 
 }

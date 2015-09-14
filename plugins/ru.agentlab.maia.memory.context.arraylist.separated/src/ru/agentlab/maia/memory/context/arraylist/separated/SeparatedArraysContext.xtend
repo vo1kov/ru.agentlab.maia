@@ -2,7 +2,6 @@ package ru.agentlab.maia.memory.context.arraylist.separated
 
 import java.util.Arrays
 import java.util.HashSet
-import javax.inject.Provider
 import ru.agentlab.maia.memory.context.AbstractContext
 
 /**
@@ -18,60 +17,75 @@ class SeparatedArraysContext extends AbstractContext {
 
 	var protected Object[] stringValues = newArrayOfSize(0)
 
-	var protected String[] nullStringKeys = newArrayOfSize(0)
+	/**
+	 * <p>
+	 * Array for storing string-keys for null-value-services and null-value-providers.
+	 * </p><p>
+	 * Array is populating when register service by <code>putService(String, null)</code>
+	 * or <code>putProvider(String, null)</code>.
+	 * </p>
+	 */
+	var protected String[] stringNulls = newArrayOfSize(0)
+
+	var protected Class<?>[] classKeys = newArrayOfSize(0)
 
 	var protected Object[] classValues = newArrayOfSize(0)
 
-	var protected Class<?>[] nullKeys = newArrayOfSize(0)
+	/**
+	 * <p>
+	 * Array for storing class-keys for null-value-services and null-value-providers.
+	 * </p><p>
+	 * Array is populating when register service by <code>putService(Class, null)</code>
+	 * or <code>putProvider(Class, null)</code>.
+	 * </p>
+	 */
+	var protected Class<?>[] classNulls = newArrayOfSize(0)
 
-	override protected synchronized doGetServiceLocal(String name) {
-		val nullIndex = nullStringKeys.indexOf(name)
-		if (nullIndex != -1) {
+	override protected synchronized getInternal(String name) {
+		// try to find key in null string storage
+		if (stringNulls.indexOf(name) != -1) {
 			return null
-		} else {
-			val index = stringKeys.indexOf(name)
-			if (index != -1) {
-				val stored = stringValues.get(index)
-				if (stored != null) {
-					switch (stored) {
-						Provider<?>: {
-							return stored.get
-						}
-						default: {
-							return stored
-						}
-					}
-				} else {
-					return null
-				}
-			} else {
-				return null
-			}
 		}
-	}
-
-	override protected synchronized <T> doGetServiceLocal(Class<T> clazz) {
-		val nullIndex = nullKeys.indexOf(clazz)
-		if (nullIndex != -1) {
+		// try to find key in null class storage
+		if (classNulls.indexOfClassName(name) != -1) {
 			return null
-		} else {
-			for (c : classValues) {
-				if (c.class == clazz) {
-					return c as T
-				}
-			}
 		}
-	}
-	
-	override protected synchronized doGetProviderLocal(String string) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
-	override protected synchronized <T> doGetProviderLocal(Class<T> clazz) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		// try to find key in string storage
+		val stringKeyIndex = stringKeys.indexOf(name)
+		if (stringKeyIndex != -1) {
+			return stringValues.get(stringKeyIndex)
+		}
+		// try to find key in class storage
+		val classKeyIndex = findInClassMap(name)
+		if (classKeyIndex != -1) {
+			return classValues.get(classKeyIndex)
+		}
+		return null
 	}
 
-	override protected synchronized doPutServiceLocal(String name, Object value) {
+	override protected synchronized getInternal(Class<?> clazz) {
+		// try to find key in null class storage
+		if (classNulls.indexOf(clazz) != -1) {
+			return null
+		}
+		// try to find key in null string storage
+		if (stringNulls.indexOf(clazz.name) != -1) {
+			return null
+		}
+		// try to find key in class storage
+		val classKeyIndex = classKeys.indexOf(clazz)
+		if (classKeyIndex != -1) {
+			return classValues.get(classKeyIndex)
+		}
+		// try to find key in string storage
+		val stringKeyIndex = stringKeys.indexOf(clazz.name)
+		if (stringKeyIndex != -1) {
+			return stringValues.get(stringKeyIndex)
+		}
+		return null
+	}
+
+	override protected synchronized putInternal(String name, Object value) {
 		val index = stringKeys.indexOf(name)
 		if (index != -1) {
 			stringValues.set(index, value)
@@ -81,7 +95,7 @@ class SeparatedArraysContext extends AbstractContext {
 		}
 	}
 
-	override protected synchronized <T> doPutServiceLocal(Class<T> clazz, T value) {
+	override protected synchronized putInternal(Class<?> clazz, Object value) {
 		if (value != null) {
 			if (classValues.length == 0) {
 				classValues = classValues.add(value)
@@ -93,19 +107,19 @@ class SeparatedArraysContext extends AbstractContext {
 					classValues = classValues.add(value)
 				}
 			}
-			val ind = nullKeys.indexOf(clazz)
+			val ind = classNulls.indexOf(clazz)
 			if (ind != -1) {
-				nullKeys = nullKeys.remove(ind)
+				classNulls = classNulls.remove(ind)
 			}
 		} else {
-			if (nullKeys.length == 0) {
-				nullKeys = nullKeys.add(clazz)
+			if (classNulls.length == 0) {
+				classNulls = classNulls.add(clazz)
 			} else {
-				val int index = nullKeys.indexOf(clazz)
+				val int index = classNulls.indexOf(clazz)
 				if (index != -1) {
-					nullKeys.set(index, clazz)
+					classNulls.set(index, clazz)
 				} else {
-					nullKeys = nullKeys.add(clazz)
+					classNulls = classNulls.add(clazz)
 				}
 			}
 			val ind = findInClassMap(clazz)
@@ -115,24 +129,10 @@ class SeparatedArraysContext extends AbstractContext {
 		}
 	}
 
-	override protected synchronized doPutProviderLocal(String name, Provider<?> provider) {
-		val index = stringKeys.indexOf(name)
-		if (index != -1) {
-			stringValues.set(index, provider)
-		} else {
-			stringKeys = stringKeys.add(name)
-			stringValues = stringValues.add(provider)
-		}
-	}
-
-	override protected synchronized <T> doPutProviderLocal(Class<T> clazz, Provider<T> provider) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
-	override protected synchronized doRemoveLocal(String name) {
-		val nullIndex = nullStringKeys.indexOf(name)
+	override protected synchronized removeInternal(String name) {
+		val nullIndex = stringNulls.indexOf(name)
 		if (nullIndex != -1) {
-			nullStringKeys = nullStringKeys.remove(nullIndex)
+			stringNulls = stringNulls.remove(nullIndex)
 			return null
 		} else {
 			val index = stringKeys.indexOf(name)
@@ -143,10 +143,10 @@ class SeparatedArraysContext extends AbstractContext {
 		}
 	}
 
-	override protected synchronized doRemoveLocal(Class<?> clazz) {
-		val nullIndex = nullKeys.indexOf(clazz)
+	override protected synchronized removeInternal(Class<?> clazz) {
+		val nullIndex = classNulls.indexOf(clazz)
 		if (nullIndex != -1) {
-			nullKeys = nullKeys.remove(nullIndex)
+			classNulls = classNulls.remove(nullIndex)
 			return null
 		} else {
 			val index = findInClassMap(clazz)
@@ -160,29 +160,29 @@ class SeparatedArraysContext extends AbstractContext {
 		}
 	}
 
-	override protected synchronized isContainsLocal(String name) {
+	override protected synchronized containsInternal(String name) {
 		return stringKeys.contains(name)
 	}
 
-	override protected synchronized isContainsLocal(Class<?> clazz) {
+	override protected synchronized containsInternal(Class<?> clazz) {
 		return classValues.findFirst[it.class == clazz] != null
 	}
 
-	override protected synchronized doClearLocal() {
+	override protected synchronized clearInternal() {
 		stringKeys = newArrayOfSize(0)
 		stringValues = newArrayOfSize(0)
-		nullStringKeys = newArrayOfSize(0)
+		stringNulls = newArrayOfSize(0)
 		classValues = newArrayOfSize(0)
-		nullKeys = newArrayOfSize(0)
+		classNulls = newArrayOfSize(0)
 		return true
 	}
 
-	override protected synchronized doGetKeySet() {
+	override protected synchronized getKeySetInternal() {
 		return new HashSet<String> => [
 			it += stringKeys
-			it += nullStringKeys
+			it += stringNulls
 			it += classValues.map[return it.class.name]
-			it += nullKeys.map[return it.name]
+			it += classNulls.map[return it.name]
 		]
 	}
 
@@ -211,8 +211,26 @@ class SeparatedArraysContext extends AbstractContext {
 	}
 
 	def protected <T> int findInClassMap(Class<T> clazz) {
-		for (i : 0 ..< classValues.size) {
+		for (i : 0 ..< classValues.length) {
 			if (classValues.get(i).class == clazz) {
+				return i
+			}
+		}
+		return -1
+	}
+
+	def protected <T> int findInClassMap(String name) {
+		for (i : 0 ..< classKeys.length) {
+			if (classKeys.get(i).class.name.equals(name)) {
+				return i
+			}
+		}
+		return -1
+	}
+
+	def protected <T> int indexOfClassName(T[] array, String name) {
+		for (i : 0 ..< array.length) {
+			if (array.get(i).class.name.equals(name)) {
 				return i
 			}
 		}

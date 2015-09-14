@@ -45,7 +45,7 @@ abstract class AbstractContext implements IMaiaContext {
 	 * </p>
 	 */
 	override contains(Class<?> clazz) {
-		val inLocal = isContainsLocal(clazz)
+		val inLocal = containsInternal(clazz)
 		if (inLocal) {
 			return this
 		} else {
@@ -58,7 +58,7 @@ abstract class AbstractContext implements IMaiaContext {
 	}
 
 	override contains(String name) {
-		val inLocal = isContainsLocal(name)
+		val inLocal = containsInternal(name)
 		if (inLocal) {
 			return this
 		} else {
@@ -70,12 +70,17 @@ abstract class AbstractContext implements IMaiaContext {
 		}
 	}
 
-	override getService(String name) {
+	override getService(String name) throws NullPointerException {
 		if (name == null) {
 			throw new NullPointerException
 		}
-		if (isContainsLocal(name)) {
-			return doGetServiceLocal(name)
+		if (containsInternal(name)) {
+			val value = getInternal(name)
+			if (value instanceof Provider<?>) {
+				return value.get
+			} else {
+				return value
+			}
 		} else {
 			if (parent != null) {
 				return parent.getService(name)
@@ -85,12 +90,17 @@ abstract class AbstractContext implements IMaiaContext {
 		}
 	}
 
-	override <T> getService(Class<T> clazz) {
+	override <T> getService(Class<T> clazz) throws NullPointerException, ClassCastException {
 		if (clazz == null) {
 			throw new NullPointerException
 		}
-		if (isContainsLocal(clazz)) {
-			return doGetServiceLocal(clazz)
+		if (containsInternal(clazz)) {
+			val value = getInternal(clazz)
+			if (value instanceof Provider<?>) {
+				return value.get as T
+			} else {
+				return value as T
+			}
 		} else {
 			if (parent != null) {
 				return parent.getService(clazz)
@@ -100,26 +110,41 @@ abstract class AbstractContext implements IMaiaContext {
 		}
 	}
 
-	override getServiceLocal(String name) {
+	override getServiceLocal(String name) throws NullPointerException {
 		if (name == null) {
 			throw new NullPointerException
 		}
-		return doGetServiceLocal(name)
+		val value = getInternal(name)
+		if (value instanceof Provider<?>) {
+			return value.get
+		} else {
+			return value
+		}
 	}
 
-	override <T> getServiceLocal(Class<T> clazz) {
+	override <T> getServiceLocal(Class<T> clazz) throws NullPointerException, ClassCastException {
 		if (clazz == null) {
 			throw new NullPointerException
 		}
-		return doGetServiceLocal(clazz)
+		val value = getInternal(clazz)
+		if (value instanceof Provider<?>) {
+			return value.get as T
+		} else {
+			return value as T
+		}
 	}
 
 	override getProvider(String name) {
 		if (name == null) {
 			throw new NullPointerException
 		}
-		if (isContainsLocal(name)) {
-			return doGetProviderLocal(name)
+		if (containsInternal(name)) {
+			val value = getInternal(name)
+			if (value instanceof Provider<?>) {
+				return value as Provider<?>
+			} else {
+				return null
+			}
 		} else {
 			if (parent != null) {
 				return parent.getProvider(name)
@@ -133,8 +158,13 @@ abstract class AbstractContext implements IMaiaContext {
 		if (clazz == null) {
 			throw new NullPointerException
 		}
-		if (isContainsLocal(clazz)) {
-			return doGetProviderLocal(clazz)
+		if (containsInternal(clazz)) {
+			val value = getInternal(clazz)
+			if (value instanceof Provider<?>) {
+				return value as Provider<T>
+			} else {
+				return null
+			}
 		} else {
 			if (parent != null) {
 				return parent.getProvider(clazz)
@@ -148,15 +178,23 @@ abstract class AbstractContext implements IMaiaContext {
 		if (clazz == null) {
 			throw new NullPointerException
 		}
-		return doGetProviderLocal(clazz)
+		val value = getInternal(clazz)
+		if (value instanceof Provider<?>) {
+			return value as Provider<T>
+		} else {
+			return null
+		}
 	}
 
 	override getProviderLocal(String name) {
 		if (name == null) {
 			throw new NullPointerException
 		}
-		if (isContainsLocal(name)) {
-			return doGetProviderLocal(name)
+		val value = getInternal(name)
+		if (value instanceof Provider<?>) {
+			return value as Provider<?>
+		} else {
+			return null
 		}
 	}
 
@@ -164,50 +202,50 @@ abstract class AbstractContext implements IMaiaContext {
 		if (name == null) {
 			throw new NullPointerException
 		}
-		doPutServiceLocal(name, value)
+		putInternal(name, value)
 	}
 
 	override <T> putService(Class<T> clazz, T value) {
 		if (clazz == null) {
 			throw new NullPointerException
 		}
-		doPutServiceLocal(clazz, value)
+		putInternal(clazz, value)
 	}
 
 	override putProvider(String name, Provider<?> provider) {
 		if (name == null) {
 			throw new NullPointerException
 		}
-		doPutProviderLocal(name, provider)
+		putInternal(name, provider)
 	}
 
 	override <T> putProvider(Class<T> clazz, Provider<T> provider) {
 		if (clazz == null) {
 			throw new NullPointerException
 		}
-		doPutProviderLocal(clazz, provider)
+		putInternal(clazz, provider)
 	}
 
 	override remove(String name) {
 		if (name == null) {
 			throw new NullPointerException
 		}
-		doRemoveLocal(name)
+		removeInternal(name)
 	}
 
 	override remove(Class<?> clazz) {
 		if (clazz == null) {
 			throw new NullPointerException
 		}
-		doRemoveLocal(clazz)
+		removeInternal(clazz)
 	}
-	
+
 	override clear() {
-		doClearLocal()
+		clearInternal()
 	}
 
 	override Set<String> getKeySet() {
-		return doGetKeySet
+		return getKeySetInternal
 	}
 
 	override addChild(IMaiaContext child) {
@@ -224,32 +262,24 @@ abstract class AbstractContext implements IMaiaContext {
 		parent.addChild(this)
 	}
 
-	def protected boolean isContainsLocal(String name)
+	def protected boolean containsInternal(String name)
 
-	def protected boolean isContainsLocal(Class<?> clazz)
+	def protected boolean containsInternal(Class<?> clazz)
 
-	def protected <T> T doGetServiceLocal(String name)
+	def protected Object getInternal(String name)
 
-	def protected <T> T doGetServiceLocal(Class<T> clazz)
+	def protected Object getInternal(Class<?> clazz)
 
-	def protected Provider<?> doGetProviderLocal(String string)
+	def protected void putInternal(String name, Object value)
 
-	def protected <T> Provider<T> doGetProviderLocal(Class<T> clazz)
+	def protected void putInternal(Class<?> clazz, Object value)
 
-	def protected void doPutServiceLocal(String name, Object value)
+	def protected Object removeInternal(String name)
 
-	def protected <T> void doPutServiceLocal(Class<T> clazz, T value)
+	def protected Object removeInternal(Class<?> clazz)
 
-	def protected void doPutProviderLocal(String name, Provider<?> provider)
+	def protected boolean clearInternal()
 
-	def protected <T> void doPutProviderLocal(Class<T> clazz, Provider<T> provider)
-
-	def protected Object doRemoveLocal(String name)
-
-	def protected Object doRemoveLocal(Class<?> clazz)
-	
-	def protected boolean doClearLocal()
-
-	def protected Set<String> doGetKeySet()
+	def protected Set<String> getKeySetInternal()
 
 }
