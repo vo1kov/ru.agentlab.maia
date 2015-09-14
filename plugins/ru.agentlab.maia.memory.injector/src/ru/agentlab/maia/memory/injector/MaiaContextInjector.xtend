@@ -119,6 +119,28 @@ class MaiaContextInjector implements IMaiaContextInjector {
 	}
 
 	override void inject(Object object) throws MaiaInjectionException {
+		if (object == null) {
+			throw new NullPointerException
+		}
+		val fields = object.class.declaredFields.filter[isAnnotationPresent(Inject)]
+		val keys = resolveKeys(fields)
+		val values = resolveValues(keys)
+		if (values.length < fields.size) {
+			throw new MaiaInjectionException("Unresolved value for type " + keys.get(values.size))
+		}
+		for (i : 0 ..< fields.length) {
+			val field = fields.get(i)
+			val value = values.get(i)
+			var wasAccessible = true
+			if (!field.accessible) {
+				field.setAccessible(true)
+				wasAccessible = false
+			}
+			field.set(object, value)
+			if (!wasAccessible) {
+				field.setAccessible(false)
+			}
+		}
 	}
 
 	/**
@@ -187,23 +209,23 @@ class MaiaContextInjector implements IMaiaContextInjector {
 		if (!constructor.isAnnotationPresent(Inject) && constructor.parameterTypes.length != 0) {
 			return null
 		}
-			println()
-			println("constructor: " + constructor)
+//			println()
+//			println("constructor: " + constructor)
 		val params = constructor.parameters
-			println("parameters: ")
-			params.forEach [
-				println("	param: " + it)
-			]
-		val keys= resolveKeys(params)
-			println("keys: ")
-			keys.forEach [
-				println("	key: " + it)
-			]
+//			println("parameters: ")
+//			params.forEach [
+//				println("	param: " + it)
+//			]
+		val keys = resolveKeys(params)
+//			println("keys: ")
+//			keys.forEach [
+//				println("	key: " + it)
+//			]
 		val values = resolveValues(keys)
-			println("values: ")
-			values.forEach [
-				println("	value: " + it)
-			]
+//			println("values: ")
+//			values.forEach [
+//				println("	value: " + it)
+//			]
 		if (values.length < constructor.parameters.size) {
 			return null
 		}
@@ -214,9 +236,9 @@ class MaiaContextInjector implements IMaiaContextInjector {
 			wasAccessible = false
 		}
 		try {
-			println("constructor.newInstance")
+//			println("constructor.newInstance")
 			result = constructor.newInstance(values)
-			println("result: " + result)
+//			println("result: " + result)
 		} catch (IllegalArgumentException e) {
 			throw new MaiaInjectionException(values.toString + " " + constructor.parameterTypes, e)
 		} catch (InstantiationException e) {
@@ -234,9 +256,9 @@ class MaiaContextInjector implements IMaiaContextInjector {
 		return result
 	}
 
-	def protected Object[] resolveKeys(Parameter[] parameterTypes) {
-		val Object[] result = newArrayOfSize(parameterTypes.length)
-		parameterTypes.forEach [ p, i |
+	def protected Object[] resolveKeys(Parameter[] parameters) {
+		val Object[] result = newArrayOfSize(parameters.length)
+		parameters.forEach [ p, i |
 			if (p.isAnnotationPresent(Named)) {
 				val name = p.getAnnotation(Named).value
 				result.set(i, name)
@@ -263,14 +285,12 @@ class MaiaContextInjector implements IMaiaContextInjector {
 
 	def protected Object[] resolveValues(Object[] keys) {
 		val result = new ArrayList<Object>
-			println("resolveValues" )
 		for (key : keys) {
 			switch (key) {
 				String: {
 					val ctx = context.contains(key)
 					if (ctx != null) {
 						val value = ctx.getService(key)
-						println("	value" + value)
 						result += value
 					} else {
 						return result.toArray
@@ -280,7 +300,6 @@ class MaiaContextInjector implements IMaiaContextInjector {
 					val ctx = context.contains(key)
 					if (ctx != null) {
 						val value = ctx.getService(key)
-						println("	value" + value)
 						result += value
 					} else {
 						return result.toArray
