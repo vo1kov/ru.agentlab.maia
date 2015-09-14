@@ -25,7 +25,7 @@ public abstract aspect AMaiaContext {
 	 *            - string identifier of context service
 	 */
 	public pointcut onGetByString(IMaiaContext context, String id) : 
-		execution(Object IMaiaContext+.get(String)) && 
+		execution(Object IMaiaContext+.getService(String)) && 
 		target(context) && 
 		args(id);
 
@@ -38,7 +38,7 @@ public abstract aspect AMaiaContext {
 	 *            - type of context service
 	 */
 	public pointcut onGetByClass(IMaiaContext context, Class<?> id) : 
-		execution(Object IMaiaContext+.get(Class)) && 
+		execution(Object IMaiaContext+.getService(Class)) && 
 		target(context) && 
 		args(id);
 
@@ -53,7 +53,7 @@ public abstract aspect AMaiaContext {
 	 *            - service object
 	 */
 	public pointcut onSetByString(IMaiaContext context, String id, Object obj) : 
-		execution(void IMaiaContext+.set(String, Object)) && 
+		execution(void IMaiaContext+.setService(String, Object)) && 
 		target(context) && 
 		args(id, obj);
 
@@ -69,7 +69,7 @@ public abstract aspect AMaiaContext {
 	 */
 	public pointcut onSetByClass(IMaiaContext context, Class<?> id,
 			Object obj) : 
-		execution(void IMaiaContext+.set(Class, Object)) && 
+		execution(void IMaiaContext+.setService(Class, Object)) && 
 		target(context) && 
 		args(id, obj);
 
@@ -82,7 +82,7 @@ public abstract aspect AMaiaContext {
 	 *            - string identifier of context service
 	 */
 	public pointcut onGetLocalByString(IMaiaContext context, String id) : 
-		execution(Object IMaiaContext+.getLocal(String)) && 
+		execution(Object IMaiaContext+.getServiceLocal(String)) && 
 		target(context) && 
 		args(id);
 
@@ -95,7 +95,7 @@ public abstract aspect AMaiaContext {
 	 *            - type of context service
 	 */
 	public pointcut onGetLocalByClass(IMaiaContext context, Class<?> id) : 
-		execution(Object IMaiaContext+.getLocal(Class)) && 
+		execution(Object IMaiaContext+.getServiceLocal(Class)) && 
 		target(context) && 
 		args(id);
 
