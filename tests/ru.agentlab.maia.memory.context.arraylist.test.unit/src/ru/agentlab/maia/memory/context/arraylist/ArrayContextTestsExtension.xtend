@@ -1,34 +1,48 @@
 package ru.agentlab.maia.memory.context.arraylist
 
-import static org.junit.Assert.*
+import java.util.Arrays
 
 class ArrayContextTestsExtension {
-	
-	def void checkSameSize(ArrayContext context) {
-		if (context.keys.size != context.values.size) {
-			fail("Key and value sizes not match. Testing on corrupted context")
-		}
-	}
 
 	def void prepareWithService(ArrayContext context, String key, Object service) {
-		context.checkSameSize
 		val keyIndex = context.keys.indexOf(key)
 		if (keyIndex == -1) {
-			context.keys.add(key)
-			context.values.add(service)
+			context.keys = context.keys.add(key)
+			context.values = context.values.add(service)
 		} else {
-			context.values.add(keyIndex, service)
+			context.values.set(keyIndex, service)
 		}
-		context.checkSameSize
 	}
 
 	def void prepareWithOutService(ArrayContext context, String key) {
-		context.checkSameSize
 		val keyIndex = context.keys.indexOf(key)
 		if (keyIndex != -1) {
-			context.keys.remove(keyIndex)
-			context.values.remove(keyIndex)
+			context.keys = context.keys.remove(keyIndex)
+			context.values = context.values.remove(keyIndex)
 		}
-		context.checkSameSize
+	}
+
+	def protected <T> int indexOf(T[] array, T element) {
+		for (i : 0 ..< array.length) {
+			if (element.equals(array.get(i))) {
+				return i
+			}
+		}
+		return -1
+	}
+
+	def protected <T> T[] remove(T[] array, int index) {
+		val int numMoved = array.length - index - 1
+		if (numMoved > 0) {
+			System.arraycopy(array, index + 1, array, index, numMoved)
+		}
+		val result = Arrays.copyOf(array, array.length - 1)
+		return result
+	}
+
+	def protected <T> T[] add(T[] array, T element) {
+		val result = Arrays.copyOf(array, array.length + 1)
+		result.set(result.length - 1, element)
+		return result
 	}
 }

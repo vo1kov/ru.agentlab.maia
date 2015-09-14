@@ -21,8 +21,8 @@ class ArrayContextSetByClassTests extends VariableSizeCotextTests<ArrayContext> 
 	extension ArrayContextTestsExtension = new ArrayContextTestsExtension
 
 	new(String[] keys, Object[] values) {
-		context.keys.addAll(keys)
-		context.values.addAll(values)
+		context.keys = (keys)
+		context.values = (values)
 	}
 
 	@Test

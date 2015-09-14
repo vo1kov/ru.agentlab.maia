@@ -23,7 +23,11 @@ class AbstractContext_putServiceByClass_FunctionalTests extends AbstractContext_
 
 		invokeWithValidArgs
 
-		assertThat(context.keySet.size - before, equalTo(1))
+		assertThat(
+			"When putService(Class, Object) with non-null service that not exist in context then getKeySet() size should increase",
+			context.keySet.size - before,
+			equalTo(1)
+		)
 	}
 
 	@Test
@@ -33,7 +37,11 @@ class AbstractContext_putServiceByClass_FunctionalTests extends AbstractContext_
 
 		invokeWithNullService
 
-		assertThat(context.keySet.size - before, equalTo(1))
+		assertThat(
+			"When putService(Class, Object) with null service that not exist in context then getKeySet() size should increase",
+			context.keySet.size - before,
+			equalTo(1)
+		)
 	}
 
 	@Test
@@ -43,7 +51,11 @@ class AbstractContext_putServiceByClass_FunctionalTests extends AbstractContext_
 
 		invokeWithValidArgs
 
-		assertThat(context.keySet.size, equalTo(before))
+		assertThat(
+			"When putService(Class, Object) with non-null service that exist in context then getKeySet() size should be unchanged",
+			context.keySet.size,
+			equalTo(before)
+		)
 	}
 
 	@Test
@@ -53,28 +65,44 @@ class AbstractContext_putServiceByClass_FunctionalTests extends AbstractContext_
 
 		invokeWithNullService
 
-		assertThat(context.keySet.size, equalTo(before))
+		assertThat(
+			"When putService(Class, Object) with null service that exist in context then getKeySet() size should be unchanged",
+			context.keySet.size,
+			equalTo(before)
+		)
 	}
 
 	@Test
 	def void getKeySet_containKey_whenValidArgs() {
 		invokeWithValidArgs
 
-		assertThat(context.keySet, hasItem(KEY_STRING_VALID))
+		assertThat(
+			"When putService(Class, Object) with non-null service then getKeySet() should contain key of service in any set of services contained in context before",
+			context.keySet,
+			hasItem(KEY_STRING_VALID)
+		)
 	}
 
 	@Test
 	def void getKeySet_containKey_whenNullService() {
 		invokeWithNullService
 
-		assertThat(context.keySet, hasItem(KEY_STRING_VALID))
+		assertThat(
+			"When putService(Class, Object) with null service then getKeySet() should contain key of service in any set of services contained in context before",
+			context.keySet,
+			hasItem(KEY_STRING_VALID)
+		)
 	}
 
 	@Test
 	def void getProviderByString_returnNull_whenValidArgs() {
 		invokeWithValidArgs
 
-		assertThat(context.getProvider(KEY_STRING_VALID), nullValue)
+		assertThat(
+			"When putService(Class, Object) with non-null service then getProvider(String) should return null",
+			context.getProvider(KEY_STRING_VALID),
+			nullValue
+		)
 	}
 
 	@Test
