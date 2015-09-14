@@ -15,8 +15,8 @@ class MaiaBehaviourContextModifier {
 	@PostConstruct
 	def void setup() {
 		context => [
-			set(IMaiaContext.KEY_TYPE, "behaviour")
-			get(IMaiaContextInjector) => [
+			putService(IMaiaContext.KEY_TYPE, "behaviour")
+			getService(IMaiaContextInjector) => [
 				deploy(SequenceContextScheduler, IExecutionNode)
 			]
 		]

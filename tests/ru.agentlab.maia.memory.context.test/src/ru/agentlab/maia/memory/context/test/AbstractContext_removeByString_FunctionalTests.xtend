@@ -10,30 +10,30 @@ import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 
 @RunWith(Parameterized)
-class AbstractContext_RemoveByName_FunctionalTests extends AbstractContext_AbstractFunctionalTests {
+class AbstractContext_removeByString_FunctionalTests extends AbstractContext_AbstractFunctionalTests {
 
-	new(IMaiaContext context) {
-		super(context)
+	new(IMaiaContext context, ServiceRegistration selfServices, ServiceRegistration parentServices) {
+		super(context, selfServices, parentServices)
 	}
 	
 	@Test
 	def void shouldReturnNull() {
 		val service = new DummyService
-		context.set(DummyService.name, service)
+		context.putService(DummyService.name, service)
 
 		context.remove(DummyService.name)
 
-		assertThat(context.get(DummyService), nullValue)
+		assertThat(context.getService(DummyService), nullValue)
 	}
 
 	@Test
 	def void shouldRemoveKeyFromKeySet() {
 		val service = new DummyService
-		context.set(DummyService.name, service)
+		context.putService(DummyService.name, service)
 
 		context.remove(DummyService.name)
 
-		assertThat(context.keySet, not(containsInAnyOrder(#[DummyService.name])))
+		assertThat(context.keySet, not(hasItem(KEY_STRING_VALID)))
 	}
 
 	@Test(expected=NullPointerException)

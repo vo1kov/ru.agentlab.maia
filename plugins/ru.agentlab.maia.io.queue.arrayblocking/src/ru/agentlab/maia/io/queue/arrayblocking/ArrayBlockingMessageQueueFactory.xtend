@@ -9,10 +9,10 @@ import ru.agentlab.maia.messaging.queue.IMessageQueueFactory
 class ArrayBlockingMessageQueueFactory implements IMessageQueueFactory {
 
 	override createMessageQueue(IMaiaContext context) {
-		val injector = context.get(IMaiaContextInjector)
+		val injector = context.getService(IMaiaContextInjector)
 		val result = injector.make(ArrayBlockingMessageQueue)
 		injector.invoke(result, PostConstruct, null)
-		context.set(IMessageQueue, result)
+		context.putService(IMessageQueue, result)
 		return result
 	}
 

@@ -129,14 +129,14 @@ class MaiaContextInjector implements IMaiaContextInjector {
 		val service = make(serviceClass)
 		inject(service)
 		invoke(service, PostConstruct, null)
-		context.set(serviceClass, service)
+		context.putService(serviceClass, service)
 		return service
 	}
 
 	override deploy(Object service) throws MaiaInjectionException {
 		inject(service)
 		invoke(service, PostConstruct, null)
-		context.set(service.class.name, service)
+		context.putService(service.class.name, service)
 		return service
 	}
 
@@ -144,7 +144,7 @@ class MaiaContextInjector implements IMaiaContextInjector {
 		val service = make(serviceClass)
 		inject(service)
 		invoke(service, PostConstruct, null)
-		context.set(key, service)
+		context.putService(key, service)
 		return service
 	}
 
@@ -152,21 +152,21 @@ class MaiaContextInjector implements IMaiaContextInjector {
 		val service = make(serviceClass)
 		inject(service)
 		invoke(service, PostConstruct, null)
-		context.set(interf, service)
+		context.putService(interf, service)
 		return service
 	}
 
 	override deploy(Object service, String key) throws MaiaInjectionException {
 		inject(service)
 		invoke(service, PostConstruct, null)
-		context.set(key, service)
+		context.putService(key, service)
 		return service
 	}
 
 	override <T> deploy(T service, Class<T> interf) throws MaiaInjectionException {
 		inject(service)
 		invoke(service, PostConstruct, null)
-		context.set(interf, service)
+		context.putService(interf, service)
 		return service
 	}
 
@@ -269,7 +269,7 @@ class MaiaContextInjector implements IMaiaContextInjector {
 				String: {
 					val ctx = context.contains(key)
 					if (ctx != null) {
-						val value = ctx.get(key)
+						val value = ctx.getService(key)
 						println("	value" + value)
 						result += value
 					} else {
@@ -279,7 +279,7 @@ class MaiaContextInjector implements IMaiaContextInjector {
 				Class<?>: {
 					val ctx = context.contains(key)
 					if (ctx != null) {
-						val value = ctx.get(key)
+						val value = ctx.getService(key)
 						println("	value" + value)
 						result += value
 					} else {

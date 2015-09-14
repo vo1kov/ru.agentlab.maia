@@ -20,11 +20,11 @@ class ServerFactory implements IServerFactory {
 
 	override createServer(Class<? extends ServerChannel> channelClass, ChannelHandler handler, int port) {
 		LOGGER.info("Create Server...")
-		val workerGroup = context.get(IClientFactory.KEY_WORKER_GROUP) as EventLoopGroup
+		val workerGroup = context.getService(IClientFactory.KEY_WORKER_GROUP) as EventLoopGroup
 		if (workerGroup == null) {
 			throw new IllegalStateException("Event Loop workerGroup is null")
 		}
-		val bossGroup = context.get(KEY_BOSS_GROUP) as EventLoopGroup
+		val bossGroup = context.getService(KEY_BOSS_GROUP) as EventLoopGroup
 		if (bossGroup == null) {
 			throw new IllegalStateException("Event Loop bossGroup is null")
 		}

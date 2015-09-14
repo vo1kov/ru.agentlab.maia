@@ -27,7 +27,7 @@ class RunnableContextAction extends AbstractAction {
 	}
 
 	override doRun() {
-		val task = context.get(KEY_TASK)
+		val task = context.getService(KEY_TASK)
 		if (task instanceof Runnable) {
 			task.run
 		}

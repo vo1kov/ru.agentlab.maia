@@ -27,7 +27,7 @@ class ArrayListContextSetByClassTests extends VariableSizeCotextTests<ArrayListC
 
 	@Test
 	def void shouldKeysAndValuesHaveSameSize() {
-		context.set(DummyService, service)
+		context.putService(DummyService, service)
 
 		assertThat(context.keys.size, equalTo(context.values.size))
 	}
@@ -38,7 +38,7 @@ class ArrayListContextSetByClassTests extends VariableSizeCotextTests<ArrayListC
 		val keysSizeBefore = context.keys.size
 		val valuesSizeBefore = context.values.size
 
-		context.set(DummyService, service)
+		context.putService(DummyService, service)
 
 		assertThat(context.keys.size - keysSizeBefore, equalTo(1))
 		assertThat(context.values.size - valuesSizeBefore, equalTo(1))
@@ -50,7 +50,7 @@ class ArrayListContextSetByClassTests extends VariableSizeCotextTests<ArrayListC
 		val keysSizeBefore = context.keys.size
 		val valuesSizeBefore = context.values.size
 
-		context.set(DummyService, service)
+		context.putService(DummyService, service)
 
 		assertThat(context.keys.size, equalTo(keysSizeBefore))
 		assertThat(context.values.size, equalTo(valuesSizeBefore))
@@ -62,7 +62,7 @@ class ArrayListContextSetByClassTests extends VariableSizeCotextTests<ArrayListC
 		val keyIndex = context.keys.indexOf(DummyService.name)
 		val newService = new DummyService
 
-		context.set(DummyService, newService)
+		context.putService(DummyService, newService)
 
 		assertThat(context.keys.get(keyIndex), equalTo(DummyService.name))
 		assertThat(context.values.get(keyIndex), not(service))
@@ -73,7 +73,7 @@ class ArrayListContextSetByClassTests extends VariableSizeCotextTests<ArrayListC
 	def void shouldAddWhenNoValue() {
 		context.prepareWithOutService(DummyService.name)
 
-		context.set(DummyService, service)
+		context.putService(DummyService, service)
 
 		assertThat(context.keys.last, equalTo(DummyService.name))
 		assertThat(context.values.last, is(instanceOf(DummyService)))
@@ -83,7 +83,7 @@ class ArrayListContextSetByClassTests extends VariableSizeCotextTests<ArrayListC
 	@Test
 	def void shouldKeyEqualsToClassName() {
 		context.prepareWithOutService(DummyService.name)
-		context.set(DummyService, service)
+		context.putService(DummyService, service)
 		val keyIndex = context.keys.indexOf(DummyService.name)
 
 		assertThat(context.keys.get(keyIndex), equalTo(DummyService.name))

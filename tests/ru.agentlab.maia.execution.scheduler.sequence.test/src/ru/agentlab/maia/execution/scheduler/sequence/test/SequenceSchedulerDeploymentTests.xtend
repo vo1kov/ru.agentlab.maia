@@ -32,7 +32,7 @@ class SequenceSchedulerDeploymentTests {
 
 	@Test
 	def void shouldChangeStateToInstalled() {
-		when(context.getLocal(IMaiaContextInjector)).thenReturn(injector)
+		when(context.getServiceLocal(IMaiaContextInjector)).thenReturn(injector)
 		when(injector.invoke(scheduler, PostConstruct, null)).thenAnswer [
 			(scheduler as AbstractNode).init
 			return null

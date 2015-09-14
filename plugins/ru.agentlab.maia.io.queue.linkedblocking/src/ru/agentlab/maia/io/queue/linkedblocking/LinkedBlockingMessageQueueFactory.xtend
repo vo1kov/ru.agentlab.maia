@@ -9,10 +9,10 @@ import ru.agentlab.maia.messaging.queue.IMessageQueueFactory
 class LinkedBlockingMessageQueueFactory implements IMessageQueueFactory {
 
 	override createMessageQueue(IMaiaContext context) {
-		val injector = context.get(IMaiaContextInjector)
+		val injector = context.getService(IMaiaContextInjector)
 		val result = injector.make(LinkedBlockingMessageQueue)
 		injector.invoke(result, PostConstruct, null)
-		context.set(IMessageQueue, result)
+		context.putService(IMessageQueue, result)
 		return result
 	}
 

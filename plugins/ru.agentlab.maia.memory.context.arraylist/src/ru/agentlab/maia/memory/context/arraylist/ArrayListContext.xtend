@@ -35,7 +35,7 @@ class ArrayListContext extends AbstractContext {
 
 	val protected ArrayList<Object> values = new ArrayList
 
-	override synchronized doGetLocal(String name) {
+	override protected synchronized doGetServiceLocal(String name) {
 		val index = keys.indexOf(name)
 		if (index != UNKNOWN) {
 			return values.get(index)
@@ -44,7 +44,7 @@ class ArrayListContext extends AbstractContext {
 		}
 	}
 
-	override synchronized <T> doGetLocal(Class<T> clazz) {
+	override protected synchronized <T> doGetServiceLocal(Class<T> clazz) {
 		val index = keys.indexOf(clazz.name)
 		try {
 			if (index != UNKNOWN) {
@@ -56,8 +56,16 @@ class ArrayListContext extends AbstractContext {
 			return null
 		}
 	}
+	
+	override protected synchronized doGetProviderLocal(String string) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override protected synchronized <T> doGetProviderLocal(Class<T> clazz) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
 
-	override synchronized <T> doSetLocal(String name, T value) {
+	override protected synchronized doPutServiceLocal(String name, Object value) {
 		val index = keys.indexOf(name)
 		if (index != UNKNOWN) {
 			values.set(index, value)
@@ -66,7 +74,7 @@ class ArrayListContext extends AbstractContext {
 		}
 	}
 
-	override synchronized <T> doSetLocal(Class<T> clazz, T value) {
+	override protected synchronized <T> doPutServiceLocal(Class<T> clazz, T value) {
 		val index = keys.indexOf(clazz.name)
 		if (index != UNKNOWN) {
 			values.set(index, value)
@@ -75,7 +83,7 @@ class ArrayListContext extends AbstractContext {
 		}
 	}
 
-	override synchronized <T> doSetLocal(String name, Provider<T> provider) {
+	override protected synchronized doPutProviderLocal(String name, Provider<?> provider) {
 		val index = keys.indexOf(name)
 		if (index != UNKNOWN) {
 			values.set(index, provider)
@@ -84,7 +92,7 @@ class ArrayListContext extends AbstractContext {
 		}
 	}
 
-	override synchronized <T> doSetLocal(Class<T> clazz, Provider<T> provider) {
+	override protected synchronized <T> doPutProviderLocal(Class<T> clazz, Provider<T> provider) {
 		val index = keys.indexOf(clazz.name)
 		if (index != UNKNOWN) {
 			values.set(index, provider)
@@ -93,7 +101,7 @@ class ArrayListContext extends AbstractContext {
 		}
 	}
 
-	override synchronized doRemoveLocal(String name) {
+	override protected synchronized doRemoveLocal(String name) {
 		val index = keys.indexOf(name)
 		if (index != UNKNOWN) {
 			keys.remove(index)
@@ -103,32 +111,32 @@ class ArrayListContext extends AbstractContext {
 		}
 	}
 
-	override synchronized <T> doRemoveLocal(Class<T> clazz) {
+	override protected synchronized doRemoveLocal(Class<?> clazz) {
 		val index = keys.indexOf(clazz.name)
 		if (index != UNKNOWN) {
 			keys.remove(index)
-			return values.remove(index) as T
+			return values.remove(index)
 		} else {
 			return null
 		}
 	}
 
-	override synchronized doGetKeySet() {
-		return new HashSet<String>(keys)
-	}
-
-	override synchronized isContainsLocal(String name) {
+	override protected synchronized isContainsLocal(String name) {
 		return keys.indexOf(name) != UNKNOWN
 	}
 
-	override synchronized isContainsLocal(Class<?> clazz) {
+	override protected synchronized isContainsLocal(Class<?> clazz) {
 		return keys.indexOf(clazz.name) != UNKNOWN
 	}
 	
-	override synchronized removeAll() {
+	override protected synchronized doClearLocal() {
 		keys.clear
 		values.clear
 		return true
+	}
+
+	override protected synchronized doGetKeySet() {
+		return new HashSet<String>(keys)
 	}
 
 	def private putInternal(String key, Object value) {

@@ -51,9 +51,10 @@ class ParameterizedSuite extends Suite {
 
 	def private TestWithParameters createTestWithNotNormalizedParameters(TestClass test, String pattern, int index,
 		Object parametersOrSingleParameter) {
-		var Object[] parameters = if
-			((parametersOrSingleParameter instanceof Object[])) parametersOrSingleParameter as Object[] else #[
-				parametersOrSingleParameter]
+		var Object[] parameters = if ((parametersOrSingleParameter instanceof Object[]))
+				parametersOrSingleParameter as Object[]
+			else
+				#[parametersOrSingleParameter]
 		return createTestWithParameters(test, pattern, index, parameters)
 	}
 
@@ -129,7 +130,7 @@ class ParameterizedSuite extends Suite {
 		Object[] parameters) {
 		var String finalPattern = pattern.replaceAll("\\{index\\}", Integer.toString(index))
 		var String name = MessageFormat.format(finalPattern, parameters)
-		return new TestWithParameters('''[�name�]''', testClass, Arrays.asList(parameters))
+		return new TestWithParameters('''[«name»]''', testClass, Arrays.asList(parameters))
 	}
 
 }

@@ -52,7 +52,7 @@ class ContextInjectorMakeTests {
 		context.addService(INT_VALUE)
 		
 		
-		assertThat(context.get(Integer), equalTo(INT_VALUE))
+		assertThat(context.getService(Integer), equalTo(INT_VALUE))
 		assertThat(injector.context, equalTo(context))
 
 		val service = injector.make(DummyServiceWithManyConstructors)
@@ -102,8 +102,8 @@ class ContextInjectorMakeTests {
 	}
 	
 	def private void addService(IMaiaContext ctx, Object service){
-		when(ctx.get(service.class)).thenReturn(service)
-		when(ctx.get(service.class.name)).thenReturn(service)
+		when(ctx.getService(service.class)).thenReturn(service)
+		when(ctx.getService(service.class.name)).thenReturn(service)
 		when(ctx.contains(service.class.name)).thenReturn(ctx)
 		when(ctx.contains(service.class)).thenReturn(ctx)
 	} 

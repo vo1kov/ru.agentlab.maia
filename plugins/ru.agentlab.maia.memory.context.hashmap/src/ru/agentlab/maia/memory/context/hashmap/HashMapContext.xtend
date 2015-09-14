@@ -3,9 +3,9 @@ package ru.agentlab.maia.memory.context.hashmap
 import java.util.Collections
 import java.util.HashMap
 import java.util.Map
+import javax.inject.Provider
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.context.AbstractContext
-import javax.inject.Provider
 
 /**
  * <p>{@link IMaiaContext} realization based on {@link HashMap} for storing keys and values.</p>
@@ -29,56 +29,99 @@ class HashMapContext extends AbstractContext {
 
 	val Map<String, Object> map = Collections.synchronizedMap(new HashMap<String, Object>);
 
-	override doGetLocal(String name) {
-		return map.get(name)
+	override protected <T> doGetServiceLocal(String name) {
+		val value = map.get(name)
+		if (value instanceof Provider<?>) {
+			try {
+				return value.get as T
+			} catch (ClassCastException e) {
+				return null
+			}
+		} else {
+			try {
+				return value as T
+			} catch (ClassCastException e) {
+				return null
+			}
+		}
 	}
 
-	override <T> doGetLocal(Class<T> clazz) {
+	override protected <T> doGetServiceLocal(Class<T> clazz) {
 		val value = map.get(clazz.name)
-		try {
-			return value as T
-		} catch (ClassCastException e) {
+		if (value instanceof Provider<?>) {
+			try {
+				return value.get as T
+			} catch (ClassCastException e) {
+				return null
+			}
+		} else {
+			try {
+				return value as T
+			} catch (ClassCastException e) {
+				return null
+			}
+		}
+	}
+
+	override protected doGetProviderLocal(String name) {
+		val value = map.get(name)
+		if (value instanceof Provider<?>) {
+			return value
+		} else {
 			return null
 		}
 	}
 
-	override doSetLocal(String name, Object value) {
+	override protected <T> doGetProviderLocal(Class<T> clazz) {
+		val value = map.get(clazz.name)
+		if (value instanceof Provider<?>) {
+			try {
+				return value as Provider<T>
+			} catch (ClassCastException e) {
+				return null
+			}
+		} else {
+			return null
+		}
+	}
+
+	override protected doPutServiceLocal(String name, Object value) {
 		map.put(name, value)
 	}
 
-	override <T> doSetLocal(Class<T> clazz, T value) {
+	override protected <T> doPutServiceLocal(Class<T> clazz, T value) {
 		map.put(clazz.name, value)
 	}
 
-	override doRemoveLocal(String name) {
-		map.remove(name)
-	}
-
-	override <T> doRemoveLocal(Class<T> clazz) {
-		map.remove(clazz.name) as T
-	}
-
-	override doGetKeySet() {
-		map.keySet
-	}
-	
-	override isContainsLocal(String name) {
-		return map.containsKey(name)
-	}
-	
-	override isContainsLocal(Class<?> clazz) {
-		return map.containsKey(clazz.name)
-	}
-	
-	override <T> doSetLocal(String name, Provider<T> provider) {
+	override protected doPutProviderLocal(String name, Provider<?> provider) {
 		map.put(name, provider)
 	}
-	
-	override <T> doSetLocal(Class<T> clazz, Provider<T> provider) {
+
+	override protected <T> doPutProviderLocal(Class<T> clazz, Provider<T> provider) {
 		map.put(clazz.name, provider)
 	}
+
+	override protected doRemoveLocal(String name) {
+		return map.remove(name)
+	}
+
+	override protected doRemoveLocal(Class<?> clazz) {
+		return map.remove(clazz.name)
+	}
+
+	override protected isContainsLocal(String name) {
+		return map.containsKey(name)
+	}
+
+	override protected isContainsLocal(Class<?> clazz) {
+		return map.containsKey(clazz.name)
+	}
+
+	override protected doGetKeySet() {
+		return map.keySet
+	}
 	
-	override removeAll() {
+	override protected doClearLocal() {
 		map.clear
 		return true
 	}

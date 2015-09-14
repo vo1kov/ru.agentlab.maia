@@ -1,15 +1,15 @@
 package ru.agentlab.maia.memory.context.arraylist.separated.test.func
 
-import ru.agentlab.maia.memory.context.arraylist.separated.SeparatedArrayListContext
 import ru.agentlab.maia.memory.doubles.DummyService
+import ru.agentlab.maia.memory.context.arraylist.separated.SeparatedArraysContext
 
 class Main {
 
 	def static void main(String[] args) {
-		val context = new SeparatedArrayListContext
+		val context = new SeparatedArraysContext
 		val service = new DummyService
-		context.set(DummyService, service)
-		val s = context.get(DummyService)
+		context.putService(DummyService, service)
+		val s = context.getService(DummyService)
 	}
 
 }

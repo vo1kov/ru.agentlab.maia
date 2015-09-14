@@ -5,9 +5,9 @@ import java.util.Collections
 import java.util.HashSet
 import java.util.Set
 import java.util.UUID
+import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.memory.IMaiaContext
-import javax.inject.Provider
 
 /**
  * <p>
@@ -70,48 +70,122 @@ abstract class AbstractContext implements IMaiaContext {
 		}
 	}
 
-	override get(String name) {
+	override getService(String name) {
 		if (name == null) {
 			throw new NullPointerException
 		}
 		if (isContainsLocal(name)) {
-			return doGetLocal(name)
+			return doGetServiceLocal(name)
 		} else {
 			if (parent != null) {
-				return parent.get(name)
+				return parent.getService(name)
 			} else {
 				return null
 			}
 		}
 	}
 
-	override <T> get(Class<T> clazz) {
+	override <T> getService(Class<T> clazz) {
 		if (clazz == null) {
 			throw new NullPointerException
 		}
 		if (isContainsLocal(clazz)) {
-			return doGetLocal(clazz)
+			return doGetServiceLocal(clazz)
 		} else {
 			if (parent != null) {
-				return parent.get(clazz)
+				return parent.getService(clazz)
 			} else {
 				return null
 			}
 		}
 	}
 
-	override getLocal(String name) {
+	override getServiceLocal(String name) {
 		if (name == null) {
 			throw new NullPointerException
 		}
-		return doGetLocal(name)
+		return doGetServiceLocal(name)
 	}
 
-	override <T> getLocal(Class<T> clazz) {
+	override <T> getServiceLocal(Class<T> clazz) {
 		if (clazz == null) {
 			throw new NullPointerException
 		}
-		return doGetLocal(clazz)
+		return doGetServiceLocal(clazz)
+	}
+
+	override getProvider(String name) {
+		if (name == null) {
+			throw new NullPointerException
+		}
+		if (isContainsLocal(name)) {
+			return doGetProviderLocal(name)
+		} else {
+			if (parent != null) {
+				return parent.getProvider(name)
+			} else {
+				return null
+			}
+		}
+	}
+
+	override <T> getProvider(Class<T> clazz) {
+		if (clazz == null) {
+			throw new NullPointerException
+		}
+		if (isContainsLocal(clazz)) {
+			return doGetProviderLocal(clazz)
+		} else {
+			if (parent != null) {
+				return parent.getProvider(clazz)
+			} else {
+				return null
+			}
+		}
+	}
+
+	override <T> getProviderLocal(Class<T> clazz) {
+		if (clazz == null) {
+			throw new NullPointerException
+		}
+		return doGetProviderLocal(clazz)
+	}
+
+	override getProviderLocal(String name) {
+		if (name == null) {
+			throw new NullPointerException
+		}
+		if (isContainsLocal(name)) {
+			return doGetProviderLocal(name)
+		}
+	}
+
+	override putService(String name, Object value) {
+		if (name == null) {
+			throw new NullPointerException
+		}
+		doPutServiceLocal(name, value)
+	}
+
+	override <T> putService(Class<T> clazz, T value) {
+		if (clazz == null) {
+			throw new NullPointerException
+		}
+		doPutServiceLocal(clazz, value)
+	}
+
+	override putProvider(String name, Provider<?> provider) {
+		if (name == null) {
+			throw new NullPointerException
+		}
+		doPutProviderLocal(name, provider)
+	}
+
+	override <T> putProvider(Class<T> clazz, Provider<T> provider) {
+		if (clazz == null) {
+			throw new NullPointerException
+		}
+		doPutProviderLocal(clazz, provider)
 	}
 
 	override remove(String name) {
@@ -121,43 +195,15 @@ abstract class AbstractContext implements IMaiaContext {
 		doRemoveLocal(name)
 	}
 
-	override <T> remove(Class<T> clazz) {
+	override remove(Class<?> clazz) {
 		if (clazz == null) {
 			throw new NullPointerException
 		}
 		doRemoveLocal(clazz)
 	}
-
-	override <T> set(String name, T value) {
-		if (name == null) {
-			throw new NullPointerException
-		}
-		doSetLocal(name, value)
-	}
-
-	override <T> set(Class<T> clazz, T value) {
-		if (clazz == null) {
-			throw new NullPointerException
-		}
-		doSetLocal(clazz, value)
-	}
 	
-	override <T> set(String name, Provider<T> provider) {
-		if (name == null) {
-			throw new NullPointerException
-		}
-		doSetLocal(name, provider)
-	}
-	
-	override <T> set(Class<T> clazz, Provider<T> provider) {
-		if (clazz == null) {
-			throw new NullPointerException
-		}
-		doSetLocal(clazz, provider)
-	}
-
-	override toString() {
-		uuid
+	override clear() {
+		doClearLocal()
 	}
 
 	override Set<String> getKeySet() {
@@ -182,21 +228,27 @@ abstract class AbstractContext implements IMaiaContext {
 
 	def protected boolean isContainsLocal(Class<?> clazz)
 
-	def protected <T> T doGetLocal(String name)
+	def protected <T> T doGetServiceLocal(String name)
 
-	def protected <T> T doGetLocal(Class<T> clazz)
+	def protected <T> T doGetServiceLocal(Class<T> clazz)
 
-	def protected <T> void doSetLocal(String name, T value)
+	def protected Provider<?> doGetProviderLocal(String string)
 
-	def protected <T> void doSetLocal(Class<T> clazz, T value)
+	def protected <T> Provider<T> doGetProviderLocal(Class<T> clazz)
+
+	def protected void doPutServiceLocal(String name, Object value)
+
+	def protected <T> void doPutServiceLocal(Class<T> clazz, T value)
+
+	def protected void doPutProviderLocal(String name, Provider<?> provider)
+
+	def protected <T> void doPutProviderLocal(Class<T> clazz, Provider<T> provider)
+
+	def protected Object doRemoveLocal(String name)
+
+	def protected Object doRemoveLocal(Class<?> clazz)
 	
-	def protected <T> void doSetLocal(String name, Provider<T> provider)
-	
-	def protected <T> void doSetLocal(Class<T> clazz, Provider<T> provider)
-
-	def protected <T> T doRemoveLocal(String name)
-
-	def protected <T> T doRemoveLocal(Class<T> clazz)
+	def protected boolean doClearLocal()
 
 	def protected Set<String> doGetKeySet()
 

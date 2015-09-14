@@ -33,7 +33,7 @@ abstract class AbstractNode implements IExecutionNode {
 	def void init() {
 		val parentContext = context.parent
 		if (parentContext != null) {
-			parent = parentContext.get(IExecutionNode) as IExecutionScheduler
+			parent = parentContext.getService(IExecutionNode) as IExecutionScheduler
 			if (parent != null) {
 				parent.addChild(this)
 			}

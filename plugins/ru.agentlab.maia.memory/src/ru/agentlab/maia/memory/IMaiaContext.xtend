@@ -34,7 +34,7 @@ interface IMaiaContext {
 	 * 					become to be a root context.
 	 */
 	def void setParent(IMaiaContext parent)
-	
+
 	/**
 	 * <p>
 	 * Returns collection of context childs. 
@@ -43,7 +43,7 @@ interface IMaiaContext {
 	 * @return 			collection of context childs.
 	 */
 	def Collection<IMaiaContext> getChilds()
-	
+
 	/**
 	 * <p>
 	 * Register specified context as a child. 
@@ -82,9 +82,9 @@ interface IMaiaContext {
 	 * @param T 		type of returning value
 	 * @return			an object corresponding to the given name, or <code>null</code>.
 	 * 
-	 * @see #get(Class)
+	 * @see #getService(Class)
 	 */
-	def Object get(String name)
+	def Object getService(String name)
 
 	/**
 	 * <p>
@@ -97,9 +97,49 @@ interface IMaiaContext {
 	 * @param T 		type of returning value
 	 * @return			an object corresponding to the given class, or <code>null</code>
 	 * 
-	 * @see #get(String)
+	 * @see #getService(String)
 	 */
-	def <T> T get(Class<T> clazz)
+	def <T> T getService(Class<T> clazz)
+
+	/**
+	 * <p>
+	 * Returns the context value associated with the given name in this context, or <code>null</code> if 
+	 * no such value is defined in this context.
+	 * </p><p>
+	 * This method does not search for the value on other elements on the context tree.
+	 * </p>
+	 * 
+	 * @param name 		the name of the value to return
+	 * @param T 		type of returning value
+	 * @return 			an object corresponding to the given name, or <code>null</code>
+	 * 
+	 * @see #getServiceLocal(Class)
+	 */
+	def Object getServiceLocal(String name)
+
+	/**
+	 * <p>
+	 * Returns the context value associated with the given class in this context, or <code>null</code> if 
+	 * no such value is defined in this context.
+	 * </p><p>
+	 * This method does not search for the value on other elements on the context tree.
+	 * </p>
+	 * 
+	 * @param clazz		the class of the value to return
+	 * @param T 		type of returning value
+	 * @return 			an object corresponding to the given class, or <code>null</code>
+	 * 
+	 * @see #getServiceLocal(String)
+	 */
+	def <T> T getServiceLocal(Class<T> clazz)
+
+	def Provider<?> getProvider(String name)
+
+	def <T> Provider<T> getProvider(Class<T> clazz)
+
+	def Provider<?> getProviderLocal(String name)
+
+	def <T> Provider<T> getProviderLocal(Class<T> clazz)
 
 	/**
 	 * <p>
@@ -138,7 +178,7 @@ interface IMaiaContext {
 	 * @see #contains(Class)
 	 */
 	def IMaiaContext contains(String name)
-	
+
 	/**
 	 * <p>
 	 * Returns keys of registered services. 
@@ -147,38 +187,6 @@ interface IMaiaContext {
 	 * @return keys of registered services.
 	 */
 	def Set<String> getKeySet()
-
-	/**
-	 * <p>
-	 * Returns the context value associated with the given name in this context, or <code>null</code> if 
-	 * no such value is defined in this context.
-	 * </p><p>
-	 * This method does not search for the value on other elements on the context tree.
-	 * </p>
-	 * 
-	 * @param name 		the name of the value to return
-	 * @param T 		type of returning value
-	 * @return 			an object corresponding to the given name, or <code>null</code>
-	 * 
-	 * @see #getLocal(Class)
-	 */
-	def Object getLocal(String name)
-
-	/**
-	 * <p>
-	 * Returns the context value associated with the given class in this context, or <code>null</code> if 
-	 * no such value is defined in this context.
-	 * </p><p>
-	 * This method does not search for the value on other elements on the context tree.
-	 * </p>
-	 * 
-	 * @param clazz		the class of the value to return
-	 * @param T 		type of returning value
-	 * @return 			an object corresponding to the given class, or <code>null</code>
-	 * 
-	 * @see #getLocal(String)
-	 */
-	def <T> T getLocal(Class<T> clazz)
 
 	/**
 	 * <p>
@@ -195,7 +203,7 @@ interface IMaiaContext {
 	 * 
 	 * @see #remove(Class)
 	 */
-	def <T> T remove(String name)
+	def Object remove(String name)
 
 	/**
 	 * <p>
@@ -212,9 +220,9 @@ interface IMaiaContext {
 	 * 
 	 * @see #remove(String)
 	 */
-	def <T> T remove(Class<T> clazz)
-	
-	def boolean removeAll()
+	def Object remove(Class<?> clazz)
+
+	def boolean clear()
 
 	/**
 	 * <p>
@@ -227,9 +235,9 @@ interface IMaiaContext {
 	 * @param value 	the value to be stored that can return the stored value.
 	 * @param T 		type of specified value
 	 * 
-	 * @see #set(Class, Object)
+	 * @see #putService(Class, Object)
 	 */
-	def <T> void set(String name, T value)
+	def void putService(String name, Object value)
 
 	/**
 	 * <p>
@@ -240,11 +248,11 @@ interface IMaiaContext {
 	 * @param value 	the value to be stored
 	 * @param T 		type of specified value
 	 * 
-	 * @see #set(String, Object)
-	 * @see #set(String, Provider)
+	 * @see #putService(String, Object)
+	 * @see #putProvider(String, Provider)
 	 */
-	def <T> void set(Class<T> clazz, T value)
-	
+	def <T> void putService(Class<T> clazz, T value)
+
 	/**
 	 * <p>
 	 * Sets a value to be associated with a given {@link Provider} in this context.
@@ -255,10 +263,10 @@ interface IMaiaContext {
 	 * @param provider 	provider of value to be stored
 	 * @param T 		type of specified value provider
 	 * 
-	 * @see #set(Class, Provider)
+	 * @see #putProvider(Class, Provider)
 	 */
-	def <T> void set(String name, Provider<T> provider)
-	
+	def void putProvider(String name, Provider<?> provider)
+
 	/**
 	 * <p>
 	 * Sets a value to be associated with a given {@link Provider} in this context.
@@ -268,8 +276,8 @@ interface IMaiaContext {
 	 * @param provider 	provider of value to be stored
 	 * @param T 		type of specified value
 	 * 
-	 * @see #set(String, Provider)
+	 * @see #putProvider(String, Provider)
 	 */
-	def <T> void set(Class<T> clazz, Provider<T> provider)
+	def <T> void putProvider(Class<T> clazz, Provider<T> provider)
 
 }

@@ -47,7 +47,7 @@ class AnnotatedAction extends AbstractAction {
 	override doInject() {
 		inputFields.forEach [
 			val input = getInput(it.name)
-			val value = context.get(input.key)
+			val value = context.getService(input.key)
 			accessible = true
 			set(actionImpl, value)
 		]
@@ -55,7 +55,7 @@ class AnnotatedAction extends AbstractAction {
 
 	override doRun() {
 		if (injector == null) {
-			injector = context.get(IMaiaContextInjector)
+			injector = context.getService(IMaiaContextInjector)
 		}
 		return injector.invoke(actionImpl, Action)
 	}
@@ -64,7 +64,7 @@ class AnnotatedAction extends AbstractAction {
 		outputFields.forEach [
 			val value = get(actionImpl)
 			val output = getOutput(it.name)
-			context.set(output.key, value)
+			context.putService(output.key, value)
 		]
 	}
 

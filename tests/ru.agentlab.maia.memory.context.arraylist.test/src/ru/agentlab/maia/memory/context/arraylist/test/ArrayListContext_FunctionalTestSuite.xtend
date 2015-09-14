@@ -6,31 +6,17 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized.Parameters
 import org.junit.runners.Suite.SuiteClasses
 import ru.agentlab.maia.memory.context.arraylist.ArrayListContext
-import ru.agentlab.maia.memory.context.test.AbstractContext_GetByClass_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_GetByName_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_GetKeySet_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_GetLocalByClass_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_GetLocalByName_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_GetParent_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_GetUuid_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_RemoveByClass_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_RemoveByName_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_SetByClass_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_SetByName_FunctionalTests
+import ru.agentlab.maia.memory.context.test.AbstractContext_removeByClass_FunctionalTests
+import ru.agentlab.maia.memory.context.test.AbstractContext_removeByString_FunctionalTests
+import ru.agentlab.maia.memory.context.test.AbstractContext_putServiceByString_FunctionalTests
+import ru.agentlab.maia.memory.context.test.AbstractContext_putServiceByClass_FunctionalTests
 
 @RunWith(ParameterizedSuite)
 @SuiteClasses(#[
-	AbstractContext_GetByClass_FunctionalTests,
-	AbstractContext_GetByName_FunctionalTests,
-	AbstractContext_GetKeySet_FunctionalTests,
-	AbstractContext_GetLocalByClass_FunctionalTests,
-	AbstractContext_GetLocalByName_FunctionalTests,
-	AbstractContext_GetParent_FunctionalTests,
-	AbstractContext_GetUuid_FunctionalTests,
-	AbstractContext_RemoveByClass_FunctionalTests,
-	AbstractContext_RemoveByName_FunctionalTests,
-	AbstractContext_SetByClass_FunctionalTests,
-	AbstractContext_SetByName_FunctionalTests
+	AbstractContext_removeByClass_FunctionalTests,
+	AbstractContext_removeByString_FunctionalTests,
+	AbstractContext_putServiceByClass_FunctionalTests,
+	AbstractContext_putServiceByString_FunctionalTests
 ])
 class ArrayListContext_FunctionalTestSuite {
 

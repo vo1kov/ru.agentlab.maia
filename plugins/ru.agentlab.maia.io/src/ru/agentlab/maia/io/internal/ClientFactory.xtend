@@ -19,7 +19,7 @@ class ClientFactory implements IClientFactory {
 
 	override createClient(Class<? extends Channel> channelClass, ChannelHandler handler) {
 		LOGGER.info("Create Client...")
-		val workerGroup = context.get(KEY_WORKER_GROUP) as EventLoopGroup
+		val workerGroup = context.getService(KEY_WORKER_GROUP) as EventLoopGroup
 		if (workerGroup == null) {
 			throw new IllegalStateException("Event Loop is null")
 		}

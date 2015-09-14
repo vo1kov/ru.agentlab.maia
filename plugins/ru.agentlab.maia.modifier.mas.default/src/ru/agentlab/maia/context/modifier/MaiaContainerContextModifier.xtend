@@ -17,8 +17,8 @@ class MaiaContainerContextModifier {
 	@PostConstruct
 	def void setup() {
 		context => [
-			set(IMaiaContext.KEY_TYPE, "container")
-			get(IMaiaContextInjector) => [
+			putService(IMaiaContext.KEY_TYPE, "container")
+			getService(IMaiaContextInjector) => [
 				deploy(SequenceContextScheduler, IExecutionNode)
 				deploy(MaiaExecutorService, IMaiaExecutorService)
 			]

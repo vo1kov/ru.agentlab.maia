@@ -22,9 +22,9 @@ class NettyMessageDeliveryServiceFactory implements IMessageDeliveryServiceFacto
 
 	override create() {
 		context => [
-			set(INettyMessageDeliveryService.KEY_BOSS_GROUP, new NioEventLoopGroup)
-			set(INettyMessageDeliveryService.KEY_WORKER_GROUP, new NioEventLoopGroup)
-			set(INettyMessageDeliveryService.KEY_CLIENT_HANDLER, new ChannelInitializer<SocketChannel>() { // (4)
+			putService(INettyMessageDeliveryService.KEY_BOSS_GROUP, new NioEventLoopGroup)
+			putService(INettyMessageDeliveryService.KEY_WORKER_GROUP, new NioEventLoopGroup)
+			putService(INettyMessageDeliveryService.KEY_CLIENT_HANDLER, new ChannelInitializer<SocketChannel>() { // (4)
 				override public void initChannel(SocketChannel ch) throws Exception {
 					ch.pipeline => [
 						addLast(new LoggingHandler)
@@ -33,7 +33,7 @@ class NettyMessageDeliveryServiceFactory implements IMessageDeliveryServiceFacto
 					]
 				}
 			})
-			set(INettyMessageDeliveryService.KEY_SERVER_HANDLER, new ChannelInitializer<SocketChannel>() { // (4)
+			putService(INettyMessageDeliveryService.KEY_SERVER_HANDLER, new ChannelInitializer<SocketChannel>() { // (4)
 				override public void initChannel(SocketChannel ch) throws Exception {
 					ch.pipeline => [
 						addLast(new LoggingHandler)
@@ -44,7 +44,7 @@ class NettyMessageDeliveryServiceFactory implements IMessageDeliveryServiceFacto
 			})
 			val portString = System.getProperty("port", "8888")
 			val port = Integer.parseInt(portString)
-			set(INettyMessageDeliveryService.KEY_PORT, port)
+			putService(INettyMessageDeliveryService.KEY_PORT, port)
 		]
 
 		val service = injector.make(NettyMessageDeliveryService)

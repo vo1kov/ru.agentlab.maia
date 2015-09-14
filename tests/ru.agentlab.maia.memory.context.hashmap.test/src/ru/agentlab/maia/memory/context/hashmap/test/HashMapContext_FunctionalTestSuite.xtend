@@ -6,37 +6,43 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized.Parameters
 import org.junit.runners.Suite.SuiteClasses
 import ru.agentlab.maia.memory.context.hashmap.HashMapContext
-import ru.agentlab.maia.memory.context.test.AbstractContext_GetByClass_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_GetByName_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_GetKeySet_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_GetLocalByClass_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_GetLocalByName_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_GetParent_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_GetUuid_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_RemoveByClass_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_RemoveByName_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_SetByClass_FunctionalTests
-import ru.agentlab.maia.memory.context.test.AbstractContext_SetByName_FunctionalTests
+import ru.agentlab.maia.memory.context.test.AbstractContext_removeByClass_FunctionalTests
+
+import static ru.agentlab.maia.memory.context.test.ServiceRegistration.*
+import ru.agentlab.maia.memory.context.test.AbstractContext_removeByString_FunctionalTests
+import ru.agentlab.maia.memory.context.test.AbstractContext_putServiceByString_FunctionalTests
+import ru.agentlab.maia.memory.context.test.AbstractContext_putServiceByClass_FunctionalTests
 
 @RunWith(ParameterizedSuite)
 @SuiteClasses(#[
-	AbstractContext_GetByClass_FunctionalTests,
-	AbstractContext_GetByName_FunctionalTests,
-	AbstractContext_GetKeySet_FunctionalTests,
-	AbstractContext_GetLocalByClass_FunctionalTests,
-	AbstractContext_GetLocalByName_FunctionalTests,
-	AbstractContext_GetParent_FunctionalTests,
-	AbstractContext_GetUuid_FunctionalTests,
-	AbstractContext_RemoveByClass_FunctionalTests,
-	AbstractContext_RemoveByName_FunctionalTests,
-	AbstractContext_SetByClass_FunctionalTests,
-	AbstractContext_SetByName_FunctionalTests
+	AbstractContext_removeByClass_FunctionalTests,
+	AbstractContext_removeByString_FunctionalTests,
+	AbstractContext_putServiceByClass_FunctionalTests,
+	AbstractContext_putServiceByString_FunctionalTests
 ])
 class HashMapContext_FunctionalTestSuite {
 
-	@Parameters
+	@Parameters(name="implementation: [{0}], self:[{1}], parent:[{2}]")
 	def public static Collection<?> keysAndValues() {
-		return #[new HashMapContext]
+		return #[
+			#[new HashMapContext, NONE, NONE].toArray,
+			// service registration by class
+			#[new HashMapContext, SERVICE_BY_CLASS, NONE].toArray,
+			#[new HashMapContext, NONE, SERVICE_BY_CLASS].toArray,
+			#[new HashMapContext, SERVICE_BY_CLASS, SERVICE_BY_CLASS].toArray,
+			// service registration by string
+			#[new HashMapContext, SERVICE_BY_STRING, NONE].toArray,
+			#[new HashMapContext, NONE, SERVICE_BY_STRING].toArray,
+			#[new HashMapContext, SERVICE_BY_STRING, SERVICE_BY_STRING].toArray,
+			// provider registration by class
+			#[new HashMapContext, PROVIDER_BY_CLASS, NONE].toArray,
+			#[new HashMapContext, NONE, PROVIDER_BY_CLASS].toArray,
+			#[new HashMapContext, PROVIDER_BY_CLASS, PROVIDER_BY_CLASS].toArray,
+			// provider registration by string
+			#[new HashMapContext, PROVIDER_BY_STRING, NONE].toArray,
+			#[new HashMapContext, NONE, PROVIDER_BY_STRING].toArray,
+			#[new HashMapContext, PROVIDER_BY_STRING, PROVIDER_BY_STRING].toArray
+		]
 	}
 
 }

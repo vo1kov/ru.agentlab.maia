@@ -19,7 +19,7 @@ abstract class AbstractAction extends AbstractNode implements IExecutionAction {
 
 	override final run() {
 		if (actionImpl == null) {
-			context.get(IMaiaContextInjector) => [
+			context.getService(IMaiaContextInjector) => [
 				actionImpl = make(actionClass)
 				invoke(actionImpl, PostConstruct, null)
 			]

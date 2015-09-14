@@ -14,8 +14,8 @@ class MaiaRootContextModifier {
 	@PostConstruct
 	def void setup() {
 		context => [
-			set(IMaiaContext.KEY_TYPE, "root")
-			set(ExecutorService, Executors.newFixedThreadPool(5))
+			putService(IMaiaContext.KEY_TYPE, "root")
+			putService(ExecutorService, Executors.newFixedThreadPool(5))
 		]
 	}
 }
