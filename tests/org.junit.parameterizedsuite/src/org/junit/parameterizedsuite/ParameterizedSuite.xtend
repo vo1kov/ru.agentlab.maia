@@ -60,7 +60,7 @@ class ParameterizedSuite extends Suite {
 
 	@SuppressWarnings("unchecked") def private Iterable<Object> allParameters() throws Throwable {
 		var Object parameters = getParametersMethod().invokeExplosively(null)
-		if (parameters instanceof Iterable) {
+		if (parameters instanceof Iterable<?>) {
 			return parameters as Iterable<Object>
 		} else if (parameters instanceof Object[]) {
 			return Arrays.asList(parameters as Object[])
