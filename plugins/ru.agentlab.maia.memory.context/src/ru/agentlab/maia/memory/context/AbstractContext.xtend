@@ -40,12 +40,7 @@ abstract class AbstractContext implements IMaiaContext {
 			throw new IllegalArgumentException("Key must be not null")
 		}
 		try {
-			val value = getInternal(key)
-			if (value instanceof Provider<?>) {
-				return value.get
-			} else {
-				return value
-			}
+			return getInternal(key).extractServiceFromObject
 		} catch (MaiaContextKeyNotFound e) {
 			val p = parent
 			if (p != null) {
@@ -63,12 +58,7 @@ abstract class AbstractContext implements IMaiaContext {
 			throw new IllegalArgumentException("Key must be not null")
 		}
 		try {
-			val value = getInternal(key)
-			if (value instanceof Provider<?>) {
-				return value.get as T
-			} else {
-				return value as T
-			}
+			return getInternal(key).extractServiceFromObject
 		} catch (MaiaContextKeyNotFound e) {
 			val p = parent
 			if (p != null) {
@@ -85,24 +75,14 @@ abstract class AbstractContext implements IMaiaContext {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null")
 		}
-		val value = getInternal(key)
-		if (value instanceof Provider<?>) {
-			return value.get
-		} else {
-			return value
-		}
+		return getInternal(key).extractServiceFromObject
 	}
 
 	override <T> getServiceLocal(Class<T> key) throws MaiaContextKeyNotFound {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null")
 		}
-		val value = getInternal(key)
-		if (value instanceof Provider<?>) {
-			return value.get as T
-		} else {
-			return value as T
-		}
+		return getInternal(key).extractServiceFromObject
 	}
 
 	override getProvider(String key) throws MaiaContextKeyNotFound {
@@ -110,12 +90,7 @@ abstract class AbstractContext implements IMaiaContext {
 			throw new IllegalArgumentException("Key must be not null")
 		}
 		try {
-			val value = getInternal(key)
-			if (value instanceof Provider<?>) {
-				return value as Provider<?>
-			} else {
-				return null
-			}
+			return getInternal(key).extractProviderFromObject
 		} catch (MaiaContextKeyNotFound e) {
 			val p = parent
 			if (p != null) {
@@ -133,12 +108,7 @@ abstract class AbstractContext implements IMaiaContext {
 			throw new IllegalArgumentException("Key must be not null")
 		}
 		try {
-			val value = getInternal(key)
-			if (value instanceof Provider<?>) {
-				return value as Provider<T>
-			} else {
-				return null
-			}
+			return getInternal(key).extractProviderFromObject
 		} catch (MaiaContextKeyNotFound e) {
 			val p = parent
 			if (p != null) {
@@ -155,24 +125,14 @@ abstract class AbstractContext implements IMaiaContext {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null")
 		}
-		val value = getInternal(key)
-		if (value instanceof Provider<?>) {
-			return value as Provider<?>
-		} else {
-			return null
-		}
+		return getInternal(key).extractProviderFromObject
 	}
 
 	override <T> getProviderLocal(Class<T> key) throws MaiaContextKeyNotFound {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null")
 		}
-		val value = getInternal(key)
-		if (value instanceof Provider<?>) {
-			return value as Provider<T>
-		} else {
-			return null
-		}
+		return getInternal(key).extractProviderFromObject
 	}
 
 	override putService(String key, Object value) {
@@ -229,6 +189,22 @@ abstract class AbstractContext implements IMaiaContext {
 		parent?.removeChild(this)
 		parent = newParent
 		parent.addChild(this)
+	}
+
+	def private <T> T extractServiceFromObject(Object value) {
+		if (value instanceof Provider<?>) {
+			return value.get as T
+		} else {
+			return value as T
+		}
+	}
+
+	def private <T> Provider<T> extractProviderFromObject(Object value) {
+		if (value instanceof Provider<?>) {
+			return value as Provider<T>
+		} else {
+			return null
+		}
 	}
 
 	def protected Object getInternal(String key) throws MaiaContextKeyNotFound
