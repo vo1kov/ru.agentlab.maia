@@ -263,7 +263,7 @@ class MaiaContextInjector implements IMaiaContextInjector {
 				val name = p.getAnnotation(Named).value
 				result.set(i, name)
 			} else {
-				result.set(i, p.type)
+				result.set(i, p.type.boxedType)
 			}
 		]
 		return result
@@ -277,10 +277,42 @@ class MaiaContextInjector implements IMaiaContextInjector {
 				val name = p.getAnnotation(Named).value
 				result.set(i, name)
 			} else {
-				result.set(i, p.type)
+				result.set(i, p.type.boxedType)
 			}
 		]
 		return result
+	}
+
+	def protected getBoxedType(Class<?> type) {
+		switch (type) {
+			case byte: {
+				return Byte
+			}
+			case short: {
+				return Short
+			}
+			case int: {
+				return Integer
+			}
+			case long: {
+				return Long
+			}
+			case float: {
+				return Float
+			}
+			case double: {
+				return Double
+			}
+			case char: {
+				return Character
+			}
+			case boolean: {
+				return Boolean
+			}
+			default: {
+				return type
+			}
+		}
 	}
 
 	def protected Object[] resolveValues(Object[] keys) {
