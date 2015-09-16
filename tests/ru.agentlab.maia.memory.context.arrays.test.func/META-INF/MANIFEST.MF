@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Perf
-Bundle-SymbolicName: ru.agentlab.maia.memory.context.arraylist.test.perf
+Bundle-Name: Test
+Bundle-SymbolicName: ru.agentlab.maia.memory.context.arrays.test.func
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
@@ -14,6 +14,6 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.memory;bundle-version="1.0.0",
  ru.agentlab.maia.memory.context;bundle-version="1.0.0",
  ru.agentlab.maia.memory.context.arrays;bundle-version="1.0.0",
- ru.agentlab.maia.memory.doubles;bundle-version="1.0.0",
- ru.agentlab.maia.memory.context.test.perf;bundle-version="1.0.0"
+ ru.agentlab.maia.memory.context.test.func;bundle-version="1.0.0",
+ org.junit.parameterizedsuite;bundle-version="1.0.0"
 
