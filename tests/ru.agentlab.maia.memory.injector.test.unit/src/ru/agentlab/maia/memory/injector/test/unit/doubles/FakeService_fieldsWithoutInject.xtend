@@ -24,4 +24,8 @@ class FakeService_fieldsWithoutInject {
 		return newArrayOfSize(0)
 	}
 
+	def public static getFakeValues() {
+		return newArrayOfSize(0)
+	}
+
 }

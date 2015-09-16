@@ -1,24 +1,29 @@
 package ru.agentlab.maia.memory.injector
 
-import javax.inject.Inject
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
+import org.mockito.Matchers
+import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.injector.test.unit.doubles.FakeService_fieldsWithInject
 import ru.agentlab.maia.memory.injector.test.unit.doubles.FakeService_fieldsWithInjectNamed
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
+import static org.mockito.Matchers.*
+import static org.mockito.Mockito.*
 
 @RunWith(Parameterized)
-class MaiaContextInjector_resolveKeys_UnitTests {
+class MaiaContextInjector_resolveValues_UnitTests {
 
-	val injector = new MaiaContextInjector(null)
+	val context = mock(IMaiaContext)
+
+	val injector = new MaiaContextInjector(context)
 
 	val Object service
 
-	val Object[] expected
+	val Object[] keys
 
 	@Parameters(name="service:{0}")
 	def public static getParams() {
@@ -36,24 +41,34 @@ class MaiaContextInjector_resolveKeys_UnitTests {
 
 	new(Object service, Object[] expected) {
 		this.service = service
-		this.expected = expected
+		this.keys = expected
+		when(context.contains(anyString)).thenReturn(context)
+		when(context.contains(Matchers.any(Class))).thenReturn(context)
 	}
 
 	@Test
-	def void self_returnExpectedValues() {
-		val fields = service.class.declaredFields.filter[isAnnotationPresent(Inject)]
+	def void self_callContextGetServiceByClass() {
+		val keys = FakeService_fieldsWithInject.expectedKeys
 
-		val actual = injector.resolveKeys(fields)
+		injector.resolveValues(keys)
 
-		assertArrayEquals(expected, actual)
+		verify(context, times(keys.length)).getService(Matchers.any(Class))
+	}
+
+	@Test
+	def void self_callContextGetServiceByString() {
+		val keys = FakeService_fieldsWithInjectNamed.expectedKeys
+
+		injector.resolveValues(keys)
+
+		verify(context, times(keys.length)).getService(anyString)
 	}
 
 	@Test
 	def void context_unchanged() {
 		val before = injector.context
-		val fields = service.class.declaredFields.filter[isAnnotationPresent(Inject)]
 
-		injector.resolveKeys(fields)
+		injector.resolveValues(FakeService_fieldsWithInjectNamed.expectedKeys)
 
 		assertThat(injector.context, equalTo(before))
 	}

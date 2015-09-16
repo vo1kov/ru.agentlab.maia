@@ -25,4 +25,13 @@ class FakeService_fieldsWithDifferentVisibility {
 		].toArray
 	}
 
+	def public static getFakeValues() {
+		return #[
+			new DummyObject,
+			new DummyObject,
+			new DummyObject,
+			new DummyObject
+		].toArray
+	}
+
 }
