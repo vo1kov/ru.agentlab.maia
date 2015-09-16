@@ -302,7 +302,7 @@ class MaiaContextInjector implements IMaiaContextInjector {
 
 	def protected Object[] resolveValues(Object[] keys) throws MaiaContextKeyNotFound {
 		val result = new ArrayList<Object>
-		result.forEach [
+		keys.forEach [
 			switch (it) {
 				String: {
 					result += context.getService(it)
