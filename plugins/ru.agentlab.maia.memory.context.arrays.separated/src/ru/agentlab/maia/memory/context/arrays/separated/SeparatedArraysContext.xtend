@@ -3,6 +3,7 @@ package ru.agentlab.maia.memory.context.arrays.separated
 import java.util.Arrays
 import java.util.HashSet
 import ru.agentlab.maia.memory.context.AbstractContext
+import ru.agentlab.maia.memory.exception.MaiaContextKeyNotFound
 
 /**
  * TODO: migrate from ArrayLists to Object[]. 
@@ -12,6 +13,8 @@ import ru.agentlab.maia.memory.context.AbstractContext
  *  
  */
 class SeparatedArraysContext extends AbstractContext {
+
+	val static UNKNOWN = -1
 
 	var protected String[] stringKeys = newArrayOfSize(0)
 
@@ -41,53 +44,57 @@ class SeparatedArraysContext extends AbstractContext {
 	 */
 	var protected Class<?>[] classNulls = newArrayOfSize(0)
 
-	override protected synchronized getInternal(String name) {
+	override protected synchronized getInternal(String key) throws MaiaContextKeyNotFound  {
 		// try to find key in null string storage
-		if (stringNulls.indexOf(name) != -1) {
+		if (stringNulls.indexOf(key) != UNKNOWN) {
 			return null
 		}
 		// try to find key in null class storage
-		if (classNulls.indexOfClassName(name) != -1) {
+		if (classNulls.indexOfClassName(key) != UNKNOWN) {
 			return null
 		}
 		// try to find key in string storage
-		val stringKeyIndex = stringKeys.indexOf(name)
-		if (stringKeyIndex != -1) {
+		val stringKeyIndex = stringKeys.indexOf(key)
+		if (stringKeyIndex != UNKNOWN) {
 			return stringValues.get(stringKeyIndex)
 		}
 		// try to find key in class storage
-		val classKeyIndex = findInClassMap(name)
-		if (classKeyIndex != -1) {
+		val classKeyIndex = findInClassMap(key)
+		if (classKeyIndex != UNKNOWN) {
 			return classValues.get(classKeyIndex)
 		}
-		return null
+		throw new MaiaContextKeyNotFound(
+			'''Value for key [«key»] did not found in context [«this.toString»] and all their parents'''
+		)
 	}
 
-	override protected synchronized getInternal(Class<?> clazz) {
+	override protected synchronized getInternal(Class<?> key) throws MaiaContextKeyNotFound  {
 		// try to find key in null class storage
-		if (classNulls.indexOf(clazz) != -1) {
+		if (classNulls.indexOf(key) != UNKNOWN) {
 			return null
 		}
 		// try to find key in null string storage
-		if (stringNulls.indexOf(clazz.name) != -1) {
+		if (stringNulls.indexOf(key.name) != UNKNOWN) {
 			return null
 		}
 		// try to find key in class storage
-		val classKeyIndex = classKeys.indexOf(clazz)
-		if (classKeyIndex != -1) {
+		val classKeyIndex = classKeys.indexOf(key)
+		if (classKeyIndex != UNKNOWN) {
 			return classValues.get(classKeyIndex)
 		}
 		// try to find key in string storage
-		val stringKeyIndex = stringKeys.indexOf(clazz.name)
-		if (stringKeyIndex != -1) {
+		val stringKeyIndex = stringKeys.indexOf(key.name)
+		if (stringKeyIndex != UNKNOWN) {
 			return stringValues.get(stringKeyIndex)
 		}
-		return null
+		throw new MaiaContextKeyNotFound(
+			'''Value for key [«key»] did not found in context [«this.toString»] and all their parents'''
+		)
 	}
 
 	override protected synchronized putInternal(String name, Object value) {
 		val index = stringKeys.indexOf(name)
-		if (index != -1) {
+		if (index != UNKNOWN) {
 			stringValues.set(index, value)
 		} else {
 			stringKeys = stringKeys.add(name)
@@ -101,14 +108,14 @@ class SeparatedArraysContext extends AbstractContext {
 				classValues = classValues.add(value)
 			} else {
 				val int index = clazz.findInClassMap
-				if (index != -1) {
+				if (index != UNKNOWN) {
 					classValues.set(index, value)
 				} else {
 					classValues = classValues.add(value)
 				}
 			}
 			val ind = classNulls.indexOf(clazz)
-			if (ind != -1) {
+			if (ind != UNKNOWN) {
 				classNulls = classNulls.remove(ind)
 			}
 		} else {
@@ -116,14 +123,14 @@ class SeparatedArraysContext extends AbstractContext {
 				classNulls = classNulls.add(clazz)
 			} else {
 				val int index = classNulls.indexOf(clazz)
-				if (index != -1) {
+				if (index != UNKNOWN) {
 					classNulls.set(index, clazz)
 				} else {
 					classNulls = classNulls.add(clazz)
 				}
 			}
 			val ind = findInClassMap(clazz)
-			if (ind != -1) {
+			if (ind != UNKNOWN) {
 				classValues = classValues.remove(ind)
 			}
 		}
@@ -131,7 +138,7 @@ class SeparatedArraysContext extends AbstractContext {
 
 	override protected synchronized removeInternal(String name) {
 		val nullIndex = stringNulls.indexOf(name)
-		if (nullIndex != -1) {
+		if (nullIndex != UNKNOWN) {
 			stringNulls = stringNulls.remove(nullIndex)
 			return null
 		} else {
@@ -145,12 +152,12 @@ class SeparatedArraysContext extends AbstractContext {
 
 	override protected synchronized removeInternal(Class<?> clazz) {
 		val nullIndex = classNulls.indexOf(clazz)
-		if (nullIndex != -1) {
+		if (nullIndex != UNKNOWN) {
 			classNulls = classNulls.remove(nullIndex)
 			return null
 		} else {
 			val index = findInClassMap(clazz)
-			if (index != -1) {
+			if (index != UNKNOWN) {
 				val removed = classValues.get(index)
 				classValues = classValues.remove(index)
 				return removed
@@ -160,21 +167,13 @@ class SeparatedArraysContext extends AbstractContext {
 		}
 	}
 
-	override protected synchronized containsInternal(String name) {
-		return stringKeys.contains(name)
-	}
-
-	override protected synchronized containsInternal(Class<?> clazz) {
-		return classValues.findFirst[it.class == clazz] != null
-	}
-
 	def protected <T> int indexOf(T[] array, T element) {
 		for (i : 0 ..< array.length) {
 			if (element.equals(array.get(i))) {
 				return i
 			}
 		}
-		return -1
+		return UNKNOWN
 	}
 
 	def protected <T> T[] remove(T[] array, int index) {
@@ -198,7 +197,7 @@ class SeparatedArraysContext extends AbstractContext {
 				return i
 			}
 		}
-		return -1
+		return UNKNOWN
 	}
 
 	def protected <T> int findInClassMap(String name) {
@@ -207,7 +206,7 @@ class SeparatedArraysContext extends AbstractContext {
 				return i
 			}
 		}
-		return -1
+		return UNKNOWN
 	}
 
 	def protected <T> int indexOfClassName(T[] array, String name) {
@@ -216,9 +215,9 @@ class SeparatedArraysContext extends AbstractContext {
 				return i
 			}
 		}
-		return -1
+		return UNKNOWN
 	}
-	
+
 	override synchronized getKeySet() {
 		return new HashSet<String> => [
 			it += stringKeys
@@ -227,7 +226,7 @@ class SeparatedArraysContext extends AbstractContext {
 			it += classNulls.map[return it.name]
 		]
 	}
-	
+
 	override synchronized clear() {
 		stringKeys = newArrayOfSize(0)
 		stringValues = newArrayOfSize(0)

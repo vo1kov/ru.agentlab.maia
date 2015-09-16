@@ -1,10 +1,10 @@
 package ru.agentlab.maia.memory.context.hashmap
 
-import java.util.Collections
 import java.util.HashMap
 import java.util.Map
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.context.AbstractContext
+import ru.agentlab.maia.memory.exception.MaiaContextKeyNotFound
 
 /**
  * <p>{@link IMaiaContext} realization based on {@link HashMap} for storing keys and values.</p>
@@ -26,45 +26,49 @@ import ru.agentlab.maia.memory.context.AbstractContext
  */
 class HashMapContext extends AbstractContext {
 
-	val Map<String, Object> map = Collections.synchronizedMap(new HashMap<String, Object>);
+	val Map<String, Object> map = new HashMap<String, Object>
 
-	override protected getInternal(String name) {
-		return map.get(name)
+	override protected synchronized getInternal(String key) throws MaiaContextKeyNotFound  {
+		if (map.containsKey(key)) {
+			return map.get(key)
+		} else {
+			throw new MaiaContextKeyNotFound(
+				'''Value for key [«key»] did not found in context [«this.toString»] and all their parents'''
+			)
+		}
 	}
 
-	override protected getInternal(Class<?> clazz) {
-		return map.get(clazz.name)
+	override protected synchronized getInternal(Class<?> key) throws MaiaContextKeyNotFound  {
+		if (map.containsKey(key.name)) {
+			return map.get(key.name)
+		} else {
+			throw new MaiaContextKeyNotFound(
+				'''Value for key [«key»] did not found in context [«this.toString»] and all their parents'''
+			)
+		}
 	}
 
-	override protected putInternal(String name, Object value) {
+	override protected synchronized putInternal(String name, Object value) {
 		map.put(name, value)
 	}
 
-	override protected putInternal(Class<?> clazz, Object value) {
+	override protected synchronized putInternal(Class<?> clazz, Object value) {
 		map.put(clazz.name, value)
 	}
 
-	override protected removeInternal(String name) {
+	override protected synchronized removeInternal(String name) {
 		return map.remove(name)
 	}
 
-	override protected removeInternal(Class<?> clazz) {
+	override protected synchronized removeInternal(Class<?> clazz) {
 		return map.remove(clazz.name)
 	}
 
-	override protected containsInternal(String name) {
-		return map.containsKey(name)
-	}
-
-	override protected containsInternal(Class<?> clazz) {
-		return map.containsKey(clazz.name)
-	}
-
-	override getKeySet() {
+	override synchronized getKeySet() {
 		return map.keySet
 	}
-	
-	override clear() {
+
+	override synchronized clear() {
 		map.clear
 		return true
 	}

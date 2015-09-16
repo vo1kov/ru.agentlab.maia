@@ -39,41 +39,43 @@ abstract class AbstractContext implements IMaiaContext {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null")
 		}
-		if (containsInternal(key)) {
+		try {
 			val value = getInternal(key)
 			if (value instanceof Provider<?>) {
 				return value.get
 			} else {
 				return value
 			}
-		} else {
-			if (parent != null) {
-				return parent.getService(key)
+		} catch (MaiaContextKeyNotFound e) {
+			val p = parent
+			if (p != null) {
+				return p.getService(key)
 			} else {
 				throw new MaiaContextKeyNotFound(
-					'''Key [«key»] did not found in context [«this.toString»] and all their parents'''
+					'''Service for key [«key»] did not found in context [«this.toString»] and all their parents'''
 				)
 			}
 		}
 	}
 
-	override <T> getService(Class<T> key) throws ClassCastException, MaiaContextKeyNotFound {
+	override <T> getService(Class<T> key) throws MaiaContextKeyNotFound {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null")
 		}
-		if (containsInternal(key)) {
+		try {
 			val value = getInternal(key)
 			if (value instanceof Provider<?>) {
 				return value.get as T
 			} else {
 				return value as T
 			}
-		} else {
-			if (parent != null) {
-				return parent.getService(key)
+		} catch (MaiaContextKeyNotFound e) {
+			val p = parent
+			if (p != null) {
+				return p.getService(key)
 			} else {
 				throw new MaiaContextKeyNotFound(
-					'''Key [«key»] did not found in context [«this.toString»] and all their parents'''
+					'''Service for key [«key»] did not found in context [«this.toString»] and all their parents'''
 				)
 			}
 		}
@@ -91,7 +93,7 @@ abstract class AbstractContext implements IMaiaContext {
 		}
 	}
 
-	override <T> getServiceLocal(Class<T> key) throws ClassCastException, MaiaContextKeyNotFound {
+	override <T> getServiceLocal(Class<T> key) throws MaiaContextKeyNotFound {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null")
 		}
@@ -103,47 +105,53 @@ abstract class AbstractContext implements IMaiaContext {
 		}
 	}
 
-	override getProvider(String key) {
+	override getProvider(String key) throws MaiaContextKeyNotFound {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null")
 		}
-		if (containsInternal(key)) {
+		try {
 			val value = getInternal(key)
 			if (value instanceof Provider<?>) {
 				return value as Provider<?>
 			} else {
 				return null
 			}
-		} else {
-			if (parent != null) {
-				return parent.getProvider(key)
+		} catch (MaiaContextKeyNotFound e) {
+			val p = parent
+			if (p != null) {
+				return p.getProvider(key)
 			} else {
-				return null
+				throw new MaiaContextKeyNotFound(
+					'''Provider for key [«key»] did not found in context [«this.toString»] and all their parents'''
+				)
 			}
 		}
 	}
 
-	override <T> getProvider(Class<T> key) throws ClassCastException {
+	override <T> getProvider(Class<T> key) throws MaiaContextKeyNotFound {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null")
 		}
-		if (containsInternal(key)) {
+		try {
 			val value = getInternal(key)
 			if (value instanceof Provider<?>) {
 				return value as Provider<T>
 			} else {
 				return null
 			}
-		} else {
-			if (parent != null) {
-				return parent.getProvider(key)
+		} catch (MaiaContextKeyNotFound e) {
+			val p = parent
+			if (p != null) {
+				return p.getProvider(key)
 			} else {
-				return null
+				throw new MaiaContextKeyNotFound(
+					'''Provider for key [«key»] did not found in context [«this.toString»] and all their parents'''
+				)
 			}
 		}
 	}
 
-	override getProviderLocal(String key) {
+	override getProviderLocal(String key) throws MaiaContextKeyNotFound {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null")
 		}
@@ -155,7 +163,7 @@ abstract class AbstractContext implements IMaiaContext {
 		}
 	}
 
-	override <T> getProviderLocal(Class<T> key) throws ClassCastException {
+	override <T> getProviderLocal(Class<T> key) throws MaiaContextKeyNotFound {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null")
 		}
@@ -223,13 +231,9 @@ abstract class AbstractContext implements IMaiaContext {
 		parent.addChild(this)
 	}
 
-	def protected boolean containsInternal(String key)
+	def protected Object getInternal(String key) throws MaiaContextKeyNotFound
 
-	def protected boolean containsInternal(Class<?> key)
-
-	def protected Object getInternal(String key)
-
-	def protected Object getInternal(Class<?> key)
+	def protected Object getInternal(Class<?> key) throws MaiaContextKeyNotFound
 
 	def protected void putInternal(String key, Object value)
 

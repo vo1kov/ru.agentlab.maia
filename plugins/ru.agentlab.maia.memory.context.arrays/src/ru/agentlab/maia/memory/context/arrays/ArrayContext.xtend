@@ -4,6 +4,7 @@ import java.util.Arrays
 import java.util.HashSet
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.context.AbstractContext
+import ru.agentlab.maia.memory.exception.MaiaContextKeyNotFound
 
 /**
  * <p>{@link IMaiaContext} realization based on 2 arrays for storing keys and values.</p>
@@ -33,11 +34,11 @@ class ArrayContext extends AbstractContext {
 
 	var protected Object[] values = newArrayOfSize(0)
 
-	override protected synchronized getInternal(String name) {
+	override protected synchronized getInternal(String name) throws MaiaContextKeyNotFound {
 		return getValue(name)
 	}
 
-	override protected synchronized getInternal(Class<?> clazz) {
+	override protected synchronized getInternal(Class<?> clazz) throws MaiaContextKeyNotFound {
 		return getValue(clazz.name)
 	}
 
@@ -55,14 +56,6 @@ class ArrayContext extends AbstractContext {
 
 	override protected synchronized removeInternal(Class<?> clazz) {
 		return removeValue(clazz.name)
-	}
-
-	override protected synchronized containsInternal(String name) {
-		return keys.indexOf(name) != UNKNOWN
-	}
-
-	override protected synchronized containsInternal(Class<?> clazz) {
-		return keys.indexOf(clazz.name) != UNKNOWN
 	}
 
 	def protected <T> int indexOf(T[] array, T element) {
@@ -89,12 +82,14 @@ class ArrayContext extends AbstractContext {
 		return result
 	}
 
-	def private Object getValue(String key) {
+	def private Object getValue(String key) throws MaiaContextKeyNotFound {
 		val index = keys.indexOf(key)
 		if (index != UNKNOWN) {
 			return values.get(index)
 		} else {
-			return null
+			throw new MaiaContextKeyNotFound(
+				'''Value for key [«key»] did not found in context [«this.toString»] and all their parents'''
+			)
 		}
 	}
 
@@ -118,11 +113,11 @@ class ArrayContext extends AbstractContext {
 		}
 	}
 
-	override getKeySet() {
+	override synchronized getKeySet() {
 		return new HashSet<String>(keys)
 	}
 
-	override clear() {
+	override synchronized clear() {
 		keys = newArrayOfSize(0)
 		values = newArrayOfSize(0)
 		return true

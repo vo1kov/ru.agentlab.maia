@@ -107,7 +107,7 @@ interface IMaiaContext {
 	 * 
 	 * @see #getService(String)
 	 */
-	def <T> T getService(Class<T> key) throws ClassCastException, MaiaContextKeyNotFound
+	def <T> T getService(Class<T> key) throws MaiaContextKeyNotFound
 
 	/**
 	 * <p>
@@ -147,18 +147,15 @@ interface IMaiaContext {
 	 * 
 	 * @see #getServiceLocal(String)
 	 */
-	def <T> T getServiceLocal(
-		Class<T> key) throws ClassCastException, MaiaContextKeyNotFound
+	def <T> T getServiceLocal(Class<T> key) throws MaiaContextKeyNotFound
 
 	def Provider<?> getProvider(String key) throws MaiaContextKeyNotFound
 
-	def <T> Provider<T> getProvider(
-		Class<T> clazz) throws ClassCastException, MaiaContextKeyNotFound
+	def <T> Provider<T> getProvider(Class<T> clazz) throws MaiaContextKeyNotFound
 
 	def Provider<?> getProviderLocal(String key) throws MaiaContextKeyNotFound
 
-	def <T> Provider<T> getProviderLocal(
-		Class<T> key) throws ClassCastException, MaiaContextKeyNotFound
+	def <T> Provider<T> getProviderLocal(Class<T> key) throws MaiaContextKeyNotFound
 
 	/**
 	 * <p>
