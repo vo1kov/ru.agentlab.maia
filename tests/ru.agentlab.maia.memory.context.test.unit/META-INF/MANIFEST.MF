@@ -8,7 +8,7 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- org.junit;bundle-version="4.11.0",
- ru.agentlab.maia.memory.doubles;bundle-version="1.0.0"
-Export-Package: ru.agentlab.maia.memory.context.test.unit
+ org.junit;bundle-version="4.11.0"
+Export-Package: ru.agentlab.maia.memory.context.test.unit,
+ ru.agentlab.maia.memory.context.test.unit.doubles
 

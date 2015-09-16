@@ -3,13 +3,13 @@ package ru.agentlab.maia.memory.context.test.func
 import javax.inject.Provider
 import org.junit.Before
 import ru.agentlab.maia.memory.IMaiaContext
-import ru.agentlab.maia.memory.doubles.DummyService
+import ru.agentlab.maia.memory.context.test.func.doubles.DummyService
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assume.*
 import static org.mockito.Mockito.*
-import static ru.agentlab.maia.memory.context.test.func.ServiceRegistration.*
 import static ru.agentlab.maia.memory.context.test.func.AbstractContext_AbstractFunctionalTests.*
+import static ru.agentlab.maia.memory.context.test.func.ServiceRegistration.*
 
 abstract class AbstractContext_AbstractFunctionalTests {
 

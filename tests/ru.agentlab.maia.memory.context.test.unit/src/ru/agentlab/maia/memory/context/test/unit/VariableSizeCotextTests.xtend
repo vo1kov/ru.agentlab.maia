@@ -4,7 +4,7 @@ import java.util.ArrayList
 import java.util.Collection
 import java.util.UUID
 import org.junit.runners.Parameterized
-import ru.agentlab.maia.memory.doubles.DummyService
+import ru.agentlab.maia.memory.context.test.unit.doubles.DummyService
 
 abstract class VariableSizeCotextTests<T> {
 

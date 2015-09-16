@@ -5,7 +5,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import ru.agentlab.maia.memory.context.test.unit.VariableSizeCotextTests
-import ru.agentlab.maia.memory.doubles.DummyService
+import ru.agentlab.maia.memory.context.test.unit.doubles.DummyService
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*

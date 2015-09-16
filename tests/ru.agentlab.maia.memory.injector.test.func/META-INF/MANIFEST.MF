@@ -13,6 +13,5 @@ Require-Bundle: com.google.guava,
  org.hamcrest;bundle-version="1.1.0",
  ru.agentlab.maia.memory.context;bundle-version="1.0.0",
  org.mockito;bundle-version="1.9.5",
- ru.agentlab.maia.memory.doubles;bundle-version="1.0.0",
  ru.agentlab.maia.memory.injector;bundle-version="1.0.0"
 

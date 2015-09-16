@@ -4,7 +4,7 @@ import java.io.PrintWriter
 import java.util.UUID
 import org.junit.Test
 import ru.agentlab.maia.memory.IMaiaContext
-import ru.agentlab.maia.memory.doubles.DummyService
+import ru.agentlab.maia.memory.context.test.perf.doubles.DummyService
 
 abstract class AbstractContextSetPerformanceTests {
 
@@ -31,7 +31,7 @@ abstract class AbstractContextSetPerformanceTests {
 			for (i : 0 ..< totalSize / bucketSize) {
 				val begin = System.nanoTime
 				for (j : 0 ..< bucketSize) {
-					context.set(keys.get(index), services.get(index))
+					context.putService(keys.get(index), services.get(index))
 					index++
 				}
 				results.set(i, System.nanoTime - begin)

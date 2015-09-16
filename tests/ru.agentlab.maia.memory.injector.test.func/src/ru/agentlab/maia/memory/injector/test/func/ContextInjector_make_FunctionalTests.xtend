@@ -9,9 +9,9 @@ import org.mockito.Mock
 import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.memory.IMaiaContext
-import ru.agentlab.maia.memory.doubles.constructors.DummyServiceWithEmptyConstructor
-import ru.agentlab.maia.memory.doubles.constructors.DummyServiceWithManyConstructors
 import ru.agentlab.maia.memory.injector.MaiaContextInjector
+import ru.agentlab.maia.memory.injector.test.func.doubles.FakeService_constructorsEmpty
+import ru.agentlab.maia.memory.injector.test.func.doubles.FakeService_constructorsMany
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
@@ -34,28 +34,26 @@ class ContextInjector_make_FunctionalTests {
 
 	@Test
 	def void shouldCallEmptyConstructor() {
-		val service = injector.make(DummyServiceWithEmptyConstructor)
+		val service = injector.make(FakeService_constructorsEmpty)
 
 		assertThat(service.constructorCalled, equalTo(true))
 	}
 
 	@Test
 	def void shouldCreateServiceWithEmptyConstructor() {
-		val service = injector.make(DummyServiceWithEmptyConstructor)
+		val service = injector.make(FakeService_constructorsEmpty)
 
-		assertThat(service, notNullValue(DummyServiceWithEmptyConstructor))
+		assertThat(service, notNullValue(FakeService_constructorsEmpty))
 	}
 
 	@Test
 	def void shouldCallBiggestConstructor() {
 		context.addService(STRING_VALUE)
 		context.addService(INT_VALUE)
-		
-		
-		assertThat(context.getService(Integer), equalTo(INT_VALUE))
-		assertThat(injector.context, equalTo(context))
 
-		val service = injector.make(DummyServiceWithManyConstructors)
+		assertThat(context.getService(Integer), equalTo(INT_VALUE))
+//		assertThat(injector.context, equalTo(context))
+		val service = injector.make(FakeService_constructorsMany)
 
 		assertThat(service.firstConstructorCalled, equalTo(false))
 		assertThat(service.secondConstructorCalled, equalTo(true))
@@ -66,7 +64,7 @@ class ContextInjector_make_FunctionalTests {
 		context.addService(STRING_VALUE)
 		context.addService(INT_VALUE)
 
-		val service = injector.make(DummyServiceWithManyConstructors)
+		val service = injector.make(FakeService_constructorsMany)
 
 		assertThat(service.stringValue, equalTo(STRING_VALUE))
 		assertThat(service.intValue, equalTo(INT_VALUE))
@@ -77,16 +75,16 @@ class ContextInjector_make_FunctionalTests {
 		context.addService(STRING_VALUE)
 		context.addService(INT_VALUE)
 
-		val service = injector.make(DummyServiceWithManyConstructors)
+		val service = injector.make(FakeService_constructorsMany)
 
-		assertThat(service, notNullValue(DummyServiceWithManyConstructors))
+		assertThat(service, notNullValue(FakeService_constructorsMany))
 	}
 
 	@Test
 	def void shouldCallRelevantConstructor() {
 		context.addService(STRING_VALUE)
 
-		val service = injector.make(DummyServiceWithManyConstructors)
+		val service = injector.make(FakeService_constructorsMany)
 
 		assertThat(service.firstConstructorCalled, equalTo(true))
 		assertThat(service.secondConstructorCalled, equalTo(false))
@@ -96,16 +94,16 @@ class ContextInjector_make_FunctionalTests {
 	def void shouldCreateServiceByRelevantConstructor() {
 		context.addService(STRING_VALUE)
 
-		val service = injector.make(DummyServiceWithManyConstructors)
+		val service = injector.make(FakeService_constructorsMany)
 
-		assertThat(service, notNullValue(DummyServiceWithManyConstructors))
+		assertThat(service, notNullValue(FakeService_constructorsMany))
 	}
-	
-	def private void addService(IMaiaContext ctx, Object service){
+
+	def private void addService(IMaiaContext ctx, Object service) {
 		when(ctx.getService(service.class)).thenReturn(service)
 		when(ctx.getService(service.class.name)).thenReturn(service)
 		when(ctx.contains(service.class.name)).thenReturn(ctx)
 		when(ctx.contains(service.class)).thenReturn(ctx)
-	} 
+	}
 
 }
