@@ -12,6 +12,7 @@ import javax.inject.Inject
 import javax.inject.Named
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.IMaiaContextInjector
+import ru.agentlab.maia.memory.exception.MaiaContextKeyNotFound
 import ru.agentlab.maia.memory.exception.MaiaInjectionException
 
 class MaiaContextInjector implements IMaiaContextInjector {
@@ -207,24 +208,12 @@ class MaiaContextInjector implements IMaiaContextInjector {
 		if (!constructor.isAnnotationPresent(Inject) && constructor.parameterTypes.length != 0) {
 			return null
 		}
-//			println()
-//			println("constructor: " + constructor)
 		val params = constructor.parameters
-//			println("parameters: ")
-//			params.forEach [
-//				println("	param: " + it)
-//			]
 		val keys = resolveKeys(params)
-//			println("keys: ")
-//			keys.forEach [
-//				println("	key: " + it)
-//			]
-		val values = resolveValues(keys)
-//			println("values: ")
-//			values.forEach [
-//				println("	value: " + it)
-//			]
-		if (values.length < constructor.parameters.size) {
+		var Object[] values
+		try {
+			values = resolveValues(keys)
+		} catch (MaiaContextKeyNotFound e) {
 			return null
 		}
 		var T result = null
@@ -234,9 +223,7 @@ class MaiaContextInjector implements IMaiaContextInjector {
 			wasAccessible = false
 		}
 		try {
-//			println("constructor.newInstance")
 			result = constructor.newInstance(values)
-//			println("result: " + result)
 		} catch (IllegalArgumentException e) {
 			throw new MaiaInjectionException(values.toString + " " + constructor.parameterTypes, e)
 		} catch (InstantiationException e) {
@@ -313,33 +300,21 @@ class MaiaContextInjector implements IMaiaContextInjector {
 		}
 	}
 
-	def protected Object[] resolveValues(Object[] keys) {
+	def protected Object[] resolveValues(Object[] keys) throws MaiaContextKeyNotFound {
 		val result = new ArrayList<Object>
-		for (key : keys) {
-			switch (key) {
+		result.forEach [
+			switch (it) {
 				String: {
-					val ctx = context.contains(key)
-					if (ctx != null) {
-						val value = ctx.getService(key)
-						result += value
-					} else {
-						return result.toArray
-					}
+					result += context.getService(it)
 				}
 				Class<?>: {
-					val ctx = context.contains(key)
-					if (ctx != null) {
-						val value = ctx.getService(key)
-						result += value
-					} else {
-						return result.toArray
-					}
+					result += context.getService(it)
 				}
 				default: {
-					return result.toArray
+					throw new MaiaContextKeyNotFound
 				}
 			}
-		}
+		]
 		return result.toArray
 	}
 

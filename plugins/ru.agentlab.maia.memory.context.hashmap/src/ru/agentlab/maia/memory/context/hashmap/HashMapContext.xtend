@@ -60,11 +60,11 @@ class HashMapContext extends AbstractContext {
 		return map.containsKey(clazz.name)
 	}
 
-	override protected getKeySetInternal() {
+	override getKeySet() {
 		return map.keySet
 	}
-
-	override protected clearInternal() {
+	
+	override clear() {
 		map.clear
 		return true
 	}

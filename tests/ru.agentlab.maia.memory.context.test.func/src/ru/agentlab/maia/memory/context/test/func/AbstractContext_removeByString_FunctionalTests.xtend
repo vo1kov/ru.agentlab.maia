@@ -289,7 +289,7 @@ class AbstractContext_removeByString_FunctionalTests extends AbstractContext_Abs
 		verifyZeroInteractions(parent)
 	}
 
-	@Test(expected=NullPointerException)
+	@Test(expected=IllegalArgumentException)
 	def void self_throw_whenNullArgs() {
 		invokeWithNullArgs
 	}

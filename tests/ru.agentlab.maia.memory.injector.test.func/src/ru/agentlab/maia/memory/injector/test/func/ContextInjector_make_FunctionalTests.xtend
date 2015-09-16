@@ -102,8 +102,6 @@ class ContextInjector_make_FunctionalTests {
 	def private void addService(IMaiaContext ctx, Object service) {
 		when(ctx.getService(service.class)).thenReturn(service)
 		when(ctx.getService(service.class.name)).thenReturn(service)
-		when(ctx.contains(service.class.name)).thenReturn(ctx)
-		when(ctx.contains(service.class)).thenReturn(ctx)
 	}
 
 }

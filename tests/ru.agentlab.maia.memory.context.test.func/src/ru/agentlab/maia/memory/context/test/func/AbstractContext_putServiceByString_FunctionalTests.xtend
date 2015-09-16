@@ -250,12 +250,12 @@ class AbstractContext_putServiceByString_FunctionalTests extends AbstractContext
 		verifyZeroInteractions(parent)
 	}
 
-	@Test(expected=NullPointerException)
+	@Test(expected=IllegalArgumentException)
 	def void self_throw_whenNullString() {
 		invokeWithNullString
 	}
 
-	@Test(expected=NullPointerException)
+	@Test(expected=IllegalArgumentException)
 	def void self_throw_whenNullArgs() {
 		invokeWithNullArgs
 	}

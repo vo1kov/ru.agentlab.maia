@@ -168,24 +168,6 @@ class SeparatedArraysContext extends AbstractContext {
 		return classValues.findFirst[it.class == clazz] != null
 	}
 
-	override protected synchronized clearInternal() {
-		stringKeys = newArrayOfSize(0)
-		stringValues = newArrayOfSize(0)
-		stringNulls = newArrayOfSize(0)
-		classValues = newArrayOfSize(0)
-		classNulls = newArrayOfSize(0)
-		return true
-	}
-
-	override protected synchronized getKeySetInternal() {
-		return new HashSet<String> => [
-			it += stringKeys
-			it += stringNulls
-			it += classValues.map[return it.class.name]
-			it += classNulls.map[return it.name]
-		]
-	}
-
 	def protected <T> int indexOf(T[] array, T element) {
 		for (i : 0 ..< array.length) {
 			if (element.equals(array.get(i))) {
@@ -235,6 +217,24 @@ class SeparatedArraysContext extends AbstractContext {
 			}
 		}
 		return -1
+	}
+	
+	override synchronized getKeySet() {
+		return new HashSet<String> => [
+			it += stringKeys
+			it += stringNulls
+			it += classValues.map[return it.class.name]
+			it += classNulls.map[return it.name]
+		]
+	}
+	
+	override synchronized clear() {
+		stringKeys = newArrayOfSize(0)
+		stringValues = newArrayOfSize(0)
+		stringNulls = newArrayOfSize(0)
+		classValues = newArrayOfSize(0)
+		classNulls = newArrayOfSize(0)
+		return true
 	}
 
 }

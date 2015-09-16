@@ -42,8 +42,6 @@ class MaiaContextInjector_resolveValues_UnitTests {
 	new(Object service, Object[] expected) {
 		this.service = service
 		this.keys = expected
-		when(context.contains(anyString)).thenReturn(context)
-		when(context.contains(Matchers.any(Class))).thenReturn(context)
 	}
 
 	@Test

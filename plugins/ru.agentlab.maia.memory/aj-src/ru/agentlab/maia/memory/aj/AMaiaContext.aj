@@ -53,7 +53,7 @@ public abstract aspect AMaiaContext {
 	 *            - service object
 	 */
 	public pointcut onSetByString(IMaiaContext context, String id, Object obj) : 
-		execution(void IMaiaContext+.setService(String, Object)) && 
+		execution(void IMaiaContext+.putService(String, Object)) && 
 		target(context) && 
 		args(id, obj);
 
@@ -69,7 +69,7 @@ public abstract aspect AMaiaContext {
 	 */
 	public pointcut onSetByClass(IMaiaContext context, Class<?> id,
 			Object obj) : 
-		execution(void IMaiaContext+.setService(Class, Object)) && 
+		execution(void IMaiaContext+.putService(Class, Object)) && 
 		target(context) && 
 		args(id, obj);
 

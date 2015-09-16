@@ -65,16 +65,6 @@ class ArrayContext extends AbstractContext {
 		return keys.indexOf(clazz.name) != UNKNOWN
 	}
 
-	override protected synchronized clearInternal() {
-		keys = newArrayOfSize(0)
-		values = newArrayOfSize(0)
-		return true
-	}
-
-	override protected synchronized getKeySetInternal() {
-		return new HashSet<String>(keys)
-	}
-
 	def protected <T> int indexOf(T[] array, T element) {
 		for (i : 0 ..< array.length) {
 			if (element.equals(array.get(i))) {
@@ -126,6 +116,16 @@ class ArrayContext extends AbstractContext {
 		} else {
 			return null
 		}
+	}
+
+	override getKeySet() {
+		return new HashSet<String>(keys)
+	}
+
+	override clear() {
+		keys = newArrayOfSize(0)
+		values = newArrayOfSize(0)
+		return true
 	}
 
 }
