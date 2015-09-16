@@ -16,9 +16,7 @@ import ru.agentlab.maia.memory.exception.MaiaInjectionException
 
 class MaiaContextInjector implements IMaiaContextInjector {
 
-	val public static Object NOT_A_VALUE = new Object
-
-	public IMaiaContext context
+	protected IMaiaContext context
 
 	new(IMaiaContext context) {
 		this.context = context
