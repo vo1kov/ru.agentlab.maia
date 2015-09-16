@@ -13,8 +13,7 @@ Bundle-Activator: ru.agentlab.maia.javaagent.classmexer.Activator
 Import-Package: org.osgi.framework;version="1.8.0"
 Bundle-ClassPath: external:$java.home$/../lib/tools.jar,
  libs/classmexer-0.03.jar,
- .,
- libs/tools-1.6.0.jar
+ .
 Export-Package: com.javamex.classmexer,
  ru.agentlab.maia.javaagent.classmexer
 Require-Bundle: org.eclipse.equinox.weaving.aspectj;bundle-version="1.0.400"
