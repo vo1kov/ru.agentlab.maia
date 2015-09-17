@@ -13,7 +13,7 @@ public aspect AMaiaContextEvent extends AMaiaContext {
 		try {
 			broker = context.getService(IMaiaEventBroker.class);
 			old = context.getServiceLocal(id);
-		} catch (ClassCastException | MaiaContextKeyNotFound e) {
+		} catch (MaiaContextKeyNotFound e) {
 		}
 
 		proceed(context, id);
@@ -31,7 +31,7 @@ public aspect AMaiaContextEvent extends AMaiaContext {
 		try {
 			broker = context.getService(IMaiaEventBroker.class);
 			old = context.getServiceLocal(id);
-		} catch (ClassCastException | MaiaContextKeyNotFound e) {
+		} catch (MaiaContextKeyNotFound e) {
 		}
 
 		proceed(context, id);
@@ -49,7 +49,7 @@ public aspect AMaiaContextEvent extends AMaiaContext {
 		try {
 			broker = context.getService(IMaiaEventBroker.class);
 			old = context.getServiceLocal(id);
-		} catch (ClassCastException | MaiaContextKeyNotFound e) {
+		} catch (MaiaContextKeyNotFound e) {
 		}
 
 		proceed(context, id, value);
@@ -69,7 +69,7 @@ public aspect AMaiaContextEvent extends AMaiaContext {
 		try {
 			broker = context.getService(IMaiaEventBroker.class);
 			old = context.getServiceLocal(id);
-		} catch (ClassCastException | MaiaContextKeyNotFound e) {
+		} catch (MaiaContextKeyNotFound e) {
 		}
 
 		proceed(context, id, value);
