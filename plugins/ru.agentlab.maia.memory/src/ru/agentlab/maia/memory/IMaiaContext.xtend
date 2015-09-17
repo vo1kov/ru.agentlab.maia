@@ -1,6 +1,5 @@
 package ru.agentlab.maia.memory
 
-import java.util.Collection
 import java.util.Set
 import javax.inject.Provider
 import ru.agentlab.maia.memory.exception.MaiaContextKeyNotFound
@@ -43,7 +42,7 @@ interface IMaiaContext {
 	 * 
 	 * @return 			collection of context childs.
 	 */
-	def Collection<IMaiaContext> getChilds()
+	def Iterable<IMaiaContext> getChilds()
 
 	/**
 	 * <p>
@@ -148,13 +147,31 @@ interface IMaiaContext {
 	 * @see #getServiceLocal(String)
 	 */
 	def <T> T getServiceLocal(Class<T> key) throws MaiaContextKeyNotFound
-
+	
+	/**
+	 * @param key		key of registered service as plain string. If <code>null</code>
+	 * 					then IllegalArgumentException will be thrown.
+	 */
 	def Provider<?> getProvider(String key) throws MaiaContextKeyNotFound
-
+	
+	/**
+	 * @param key		key of registered service as type of the value to return. If <code>null</code>
+	 * 					then IllegalArgumentException will be thrown.
+	 * @param <T> 		type of returning value.
+	 */
 	def <T> Provider<T> getProvider(Class<T> clazz) throws MaiaContextKeyNotFound
-
+	
+	/**
+	 * @param key		key of registered service as plain string. If <code>null</code>
+	 * 					then IllegalArgumentException will be thrown.
+	 */
 	def Provider<?> getProviderLocal(String key) throws MaiaContextKeyNotFound
-
+	
+	/**
+	 * @param key		key of registered service as type of the value to return. If <code>null</code>
+	 * 					then IllegalArgumentException will be thrown.
+	 * @param <T> 		type of returning value.
+	 */
 	def <T> Provider<T> getProviderLocal(Class<T> key) throws MaiaContextKeyNotFound
 
 	/**
@@ -175,7 +192,7 @@ interface IMaiaContext {
 	 * stored in a parent context.
 	 * </p>
 	 * 
-	 * @param key 		the name to remove. If <code>null</code>
+	 * @param key		key of registered service as plain string. If <code>null</code>
 	 * 					then IllegalArgumentException will be thrown.
 	 * @return 			value removed from context 
 	 * 
@@ -192,7 +209,7 @@ interface IMaiaContext {
 	 * stored in a parent context.
 	 * </p>
 	 * 
-	 * @param key 		the class to remove. If <code>null</code>
+	 * @param key		key of registered service as type of the value to return. If <code>null</code>
 	 * 					then IllegalArgumentException will be thrown.
 	 * @return 			value removed from context 
 	 * 
@@ -208,28 +225,28 @@ interface IMaiaContext {
 	 * The value can may be <code>null</code>.
 	 * </p>
 	 * 
-	 * @param key 		the name to store a value for. Can not be <code>null</code>.
-	 * 					If <code>null</code> then IllegalArgumentException will be thrown.
+	 * @param key		key of registered service as plain string. If <code>null</code>
+	 * 					then IllegalArgumentException will be thrown.
 	 * @param value 	the value to be stored that can return the stored value.
 	 * 
 	 * @see #putService(Class, Object)
 	 */
-	def void putService(String key, Object value)
+	def Object putService(String key, Object value)
 
 	/**
 	 * <p>
 	 * Sets a value to be associated with a given class in this context.
 	 * </p>
 	 * 
-	 * @param key 	the class to store a value for. If <code>null</code>
+	 * @param key		key of registered service as type of the value to return. If <code>null</code>
 	 * 					then IllegalArgumentException will be thrown.
 	 * @param value 	the value to be stored
-	 * @param <T> 		type of specified value
+	 * @param <T> 		type of specified value.
 	 * 
 	 * @see #putService(String, Object)
 	 * @see #putProvider(String, Provider)
 	 */
-	def <T> void putService(Class<T> key, T value)
+	def <T> Object putService(Class<T> key, T value)
 
 	/**
 	 * <p>
@@ -237,26 +254,26 @@ interface IMaiaContext {
 	 * Value can obtain lazily. The value may be <code>null</code>.
 	 * </p>
 	 * 
-	 * @param key 		the class to store a value for. If <code>null</code>
+	 * @param key		key of registered service as plain string. If <code>null</code>
 	 * 					then IllegalArgumentException will be thrown.
 	 * @param provider 	provider of value to be stored
 	 * 
 	 * @see #putProvider(Class, Provider)
 	 */
-	def void putProvider(String key, Provider<?> provider)
+	def Object putProvider(String key, Provider<?> provider)
 
 	/**
 	 * <p>
 	 * Sets a value to be associated with a given {@link Provider} in this context.
 	 * </p>
 	 * 
-	 * @param key 		the class to store a value for. If <code>null</code>
+	 * @param key		key of registered service as type of the value to return. If <code>null</code>
 	 * 					then IllegalArgumentException will be thrown.
 	 * @param provider 	provider of value to be stored.
 	 * @param <T> 		type of specified value
 	 * 
 	 * @see #putProvider(String, Provider)
 	 */
-	def <T> void putProvider(Class<T> key, Provider<T> provider)
+	def <T> Object putProvider(Class<T> key, Provider<T> provider)
 
 }

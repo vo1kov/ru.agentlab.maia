@@ -95,10 +95,13 @@ class SeparatedArraysContext extends AbstractContext {
 	override protected synchronized putInternal(String name, Object value) {
 		val index = stringKeys.indexOf(name)
 		if (index != UNKNOWN) {
+			val old = stringValues.get(index)
 			stringValues.set(index, value)
+			return old
 		} else {
 			stringKeys = stringKeys.add(name)
 			stringValues = stringValues.add(value)
+			return null
 		}
 	}
 

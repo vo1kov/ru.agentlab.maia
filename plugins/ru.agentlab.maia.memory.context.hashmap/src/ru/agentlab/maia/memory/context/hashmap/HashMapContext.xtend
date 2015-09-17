@@ -49,11 +49,11 @@ class HashMapContext extends AbstractContext {
 	}
 
 	override protected synchronized putInternal(String name, Object value) {
-		map.put(name, value)
+		return map.put(name, value)
 	}
 
 	override protected synchronized putInternal(Class<?> clazz, Object value) {
-		map.put(clazz.name, value)
+		return map.put(clazz.name, value)
 	}
 
 	override protected synchronized removeInternal(String name) {

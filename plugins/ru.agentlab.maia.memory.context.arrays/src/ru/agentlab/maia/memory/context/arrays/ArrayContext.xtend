@@ -43,11 +43,11 @@ class ArrayContext extends AbstractContext {
 	}
 
 	override protected synchronized putInternal(String name, Object value) {
-		setValue(name, value)
+		return setValue(name, value)
 	}
 
 	override protected synchronized putInternal(Class<?> clazz, Object value) {
-		setValue(clazz.name, value)
+		return setValue(clazz.name, value)
 	}
 
 	override protected synchronized removeInternal(String name) {
@@ -96,18 +96,23 @@ class ArrayContext extends AbstractContext {
 	def private Object setValue(String key, Object value) {
 		val index = keys.indexOf(key)
 		if (index != UNKNOWN) {
+			val old = values.get(index)
 			values.set(index, value)
+			return old
 		} else {
 			keys = keys.add(key)
 			values = values.add(value)
+			return null
 		}
 	}
 
 	def private Object removeValue(String key) {
 		val index = keys.indexOf(key)
 		if (index != UNKNOWN) {
+			val old = values.get(index)
 			keys = keys.remove(index)
-			return values = values.remove(index)
+			values = values.remove(index)
+			return old
 		} else {
 			return null
 		}

@@ -139,42 +139,42 @@ abstract class AbstractContext implements IMaiaContext {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null")
 		}
-		putInternal(key, value)
+		return putInternal(key, value)
 	}
 
 	override <T> putService(Class<T> key, T value) {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null")
 		}
-		putInternal(key, value)
+		return putInternal(key, value)
 	}
 
 	override putProvider(String key, Provider<?> provider) {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null")
 		}
-		putInternal(key, provider)
+		return putInternal(key, provider)
 	}
 
 	override <T> putProvider(Class<T> key, Provider<T> provider) {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null")
 		}
-		putInternal(key, provider)
+		return putInternal(key, provider)
 	}
 
 	override remove(String key) {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null")
 		}
-		removeInternal(key)
+		return removeInternal(key)
 	}
 
 	override remove(Class<?> key) {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null")
 		}
-		removeInternal(key)
+		return removeInternal(key)
 	}
 
 	override addChild(IMaiaContext child) {
@@ -211,9 +211,9 @@ abstract class AbstractContext implements IMaiaContext {
 
 	def protected Object getInternal(Class<?> key) throws MaiaContextKeyNotFound
 
-	def protected void putInternal(String key, Object value)
+	def protected Object putInternal(String key, Object value)
 
-	def protected void putInternal(Class<?> key, Object value)
+	def protected Object putInternal(Class<?> key, Object value)
 
 	def protected Object removeInternal(String key)
 
