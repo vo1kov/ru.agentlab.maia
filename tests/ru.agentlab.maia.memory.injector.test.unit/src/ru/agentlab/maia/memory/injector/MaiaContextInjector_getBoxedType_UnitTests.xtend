@@ -40,7 +40,8 @@ class MaiaContextInjector_getBoxedType_UnitTests {
 			#[Boolean, Boolean].toArray,
 			
 			#[DummyObject, DummyObject].toArray,
-			#[String, String].toArray
+			#[String, String].toArray,
+			#[Object, Object].toArray
 		].toArray
 	}
 
