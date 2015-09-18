@@ -6,7 +6,6 @@ import javax.annotation.PreDestroy
 import javax.inject.Inject
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.execution.check.IParametersCheck
-import ru.agentlab.maia.execution.tree.ExecutionNodeState
 import ru.agentlab.maia.execution.tree.IDataInputParameter
 import ru.agentlab.maia.execution.tree.IDataOutputParameter
 import ru.agentlab.maia.execution.tree.IExecutionNode
@@ -27,7 +26,7 @@ abstract class AbstractNode implements IExecutionNode {
 
 	IExecutionScheduler parent
 
-	ExecutionNodeState state = ExecutionNodeState.UNKNOWN
+	var int state = UNKNOWN
 
 	@PostConstruct
 	def void init() {
@@ -38,7 +37,7 @@ abstract class AbstractNode implements IExecutionNode {
 				parent.addChild(this)
 			}
 		}
-		state = ExecutionNodeState.INSTALLED
+		state = INSTALLED
 	}
 
 	@PreDestroy
@@ -46,19 +45,19 @@ abstract class AbstractNode implements IExecutionNode {
 		if (parent != null) {
 			parent.removeChild(this)
 		}
-		state = ExecutionNodeState.UNKNOWN
+		state = UNKNOWN
 	}
 
 	override void block() {
-		if (state != ExecutionNodeState.BLOCKED) {
-			state = ExecutionNodeState.BLOCKED
+		if (state != BLOCKED) {
+			state = BLOCKED
 			parent?.notifyChildDeactivation(this)
 		}
 	}
 
 	override void activate() {
-		if (state != ExecutionNodeState.ACTIVE) {
-			state = ExecutionNodeState.ACTIVE
+		if (state != ACTIVE) {
+			state = ACTIVE
 			parent?.notifyChildActivation(this)
 		}
 	}

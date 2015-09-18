@@ -18,7 +18,6 @@ import ru.agentlab.maia.memory.IMaiaContextInjector
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
-import static ru.agentlab.maia.execution.tree.ExecutionNodeState.*
 
 @RunWith(MockitoJUnitRunner)
 class FsmSchedulerStateTests {
@@ -34,7 +33,7 @@ class FsmSchedulerStateTests {
 
 	@Test
 	def void shouldBeUnknownWhenConstructed() {
-		assertThat(scheduler.state, equalTo(UNKNOWN))
+		assertThat(scheduler.state, equalTo(IExecutionNode.UNKNOWN))
 	}
 
 	@Test
@@ -51,42 +50,42 @@ class FsmSchedulerStateTests {
 
 		injector.deploy(scheduler)
 
-		assertThat(scheduler.state, equalTo(INSTALLED))
+		assertThat(scheduler.state, equalTo(IExecutionNode.INSTALLED))
 	}
 
 	@Test @Ignore
 	def void shouldBeActiveWhenHaveTransitionChain() {
 		val child = mock(IExecutionNode)
 		(scheduler as AbstractNode).init
-		assertThat(scheduler.state, equalTo(INSTALLED))
+		assertThat(scheduler.state, equalTo(IExecutionNode.INSTALLED))
 
 		scheduler.addChild(child)
 		scheduler.addDefaultTransition(null, child)
 		scheduler.addDefaultTransition(child, null)
 
-		assertThat(scheduler.state, equalTo(ACTIVE))
+		assertThat(scheduler.state, equalTo(IExecutionNode.ACTIVE))
 	}
 
 	@Test @Ignore
 	def void shouldNotChangeStateWhenAddTransition() {
 		val child = mock(IExecutionNode)
 		(scheduler as AbstractNode).init
-		assertThat(scheduler.state, equalTo(INSTALLED))
+		assertThat(scheduler.state, equalTo(IExecutionNode.INSTALLED))
 
 		scheduler.addChild(child)
 		scheduler.addDefaultTransition(null, child)
 
-		assertThat(scheduler.state, equalTo(INSTALLED))
+		assertThat(scheduler.state, equalTo(IExecutionNode.INSTALLED))
 	}
 
 	@Test @Ignore
 	def void shouldNotIncreaseStateWhenAddChild() {
 		val child = mock(IExecutionNode)
 		(scheduler as AbstractNode).init
-		assertThat(scheduler.state, equalTo(INSTALLED))
+		assertThat(scheduler.state, equalTo(IExecutionNode.INSTALLED))
 
 		scheduler.addChild(child)
 
-		assertThat(scheduler.state, equalTo(INSTALLED))
+		assertThat(scheduler.state, equalTo(IExecutionNode.INSTALLED))
 	}
 }

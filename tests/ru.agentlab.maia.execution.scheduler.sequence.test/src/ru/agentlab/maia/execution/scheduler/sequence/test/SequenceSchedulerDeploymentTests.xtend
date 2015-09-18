@@ -9,7 +9,7 @@ import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.execution.node.AbstractNode
 import ru.agentlab.maia.execution.scheduler.sequence.SequenceContextScheduler
-import ru.agentlab.maia.execution.tree.ExecutionNodeState
+import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.execution.tree.IExecutionScheduler
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.IMaiaContextInjector
@@ -44,6 +44,6 @@ class SequenceSchedulerDeploymentTests {
 
 		injector.deploy(scheduler)
 
-		assertThat(scheduler.state, equalTo(ExecutionNodeState.INSTALLED))
+		assertThat(scheduler.state, equalTo(IExecutionNode.INSTALLED))
 	}
 }

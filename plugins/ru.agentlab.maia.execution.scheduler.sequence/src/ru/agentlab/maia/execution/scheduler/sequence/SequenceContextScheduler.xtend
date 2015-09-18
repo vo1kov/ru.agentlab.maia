@@ -1,7 +1,6 @@
 package ru.agentlab.maia.execution.scheduler.sequence
 
 import ru.agentlab.maia.execution.scheduler.AbstractScheduler
-import ru.agentlab.maia.execution.tree.ExecutionNodeState
 import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.execution.tree.IExecutionScheduler
 import ru.agentlab.maia.execution.tree.IllegalSchedulerStateException
@@ -49,7 +48,7 @@ class SequenceContextScheduler extends AbstractScheduler implements IExecutionSc
 	}
 
 	override synchronized schedule() throws IllegalSchedulerStateException {
-		if (state != ExecutionNodeState.ACTIVE) {
+		if (state != ACTIVE) {
 			throw new IllegalSchedulerStateException("Only Scheduler in ACTIVE state can schedule.")
 		}
 		if (childs.empty) {

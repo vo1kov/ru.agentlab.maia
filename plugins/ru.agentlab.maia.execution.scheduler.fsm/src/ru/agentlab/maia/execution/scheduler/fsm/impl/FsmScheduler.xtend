@@ -4,7 +4,6 @@ import java.util.ArrayList
 import java.util.List
 import ru.agentlab.maia.execution.scheduler.AbstractScheduler
 import ru.agentlab.maia.execution.scheduler.fsm.IFsmScheduler
-import ru.agentlab.maia.execution.tree.ExecutionNodeState
 import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.execution.tree.IllegalSchedulerStateException
 
@@ -17,7 +16,7 @@ class FsmScheduler extends AbstractScheduler implements IFsmScheduler {
 	val List<EventFsmTransition> eventTransitions = new ArrayList
 
 	override schedule() throws IllegalSchedulerStateException {
-		if (state != ExecutionNodeState.ACTIVE) {
+		if (state != ACTIVE) {
 			throw new IllegalSchedulerStateException("Only Scheduler in ACTIVE state can schedule.")
 		}
 		val excTransition = current.exceptionTransition
