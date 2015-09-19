@@ -2,13 +2,10 @@ package ru.agentlab.maia.memory.injector.test.func
 
 import java.util.Random
 import java.util.UUID
+import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Spy
-import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.memory.IMaiaContext
+import ru.agentlab.maia.memory.exception.MaiaContextKeyNotFound
 import ru.agentlab.maia.memory.injector.MaiaContextInjector
 import ru.agentlab.maia.memory.injector.test.func.doubles.FakeService_constructorsEmpty
 import ru.agentlab.maia.memory.injector.test.func.doubles.FakeService_constructorsMany
@@ -17,7 +14,6 @@ import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
 
-@RunWith(MockitoJUnitRunner)
 class ContextInjector_make_FunctionalTests {
 
 	val static random = new Random
@@ -26,11 +22,14 @@ class ContextInjector_make_FunctionalTests {
 
 	val static STRING_VALUE = UUID.randomUUID.toString
 
-	@Mock
-	IMaiaContext context
+	IMaiaContext context = mock(IMaiaContext)
 
-	@Spy @InjectMocks
-	MaiaContextInjector injector
+	MaiaContextInjector injector = new MaiaContextInjector(context)
+
+	@Before
+	def void before() {
+		reset(context)
+	}
 
 	@Test
 	def void shouldCallEmptyConstructor() {
@@ -48,11 +47,9 @@ class ContextInjector_make_FunctionalTests {
 
 	@Test
 	def void shouldCallBiggestConstructor() {
-		context.addService(STRING_VALUE)
-		context.addService(INT_VALUE)
+		when(context.getService(String)).thenReturn(STRING_VALUE)
+		when(context.getService(Integer)).thenReturn(INT_VALUE)
 
-		assertThat(context.getService(Integer), equalTo(INT_VALUE))
-//		assertThat(injector.context, equalTo(context))
 		val service = injector.make(FakeService_constructorsMany)
 
 		assertThat(service.firstConstructorCalled, equalTo(false))
@@ -61,8 +58,8 @@ class ContextInjector_make_FunctionalTests {
 
 	@Test
 	def void shouldInjectToBiggestConstructor() {
-		context.addService(STRING_VALUE)
-		context.addService(INT_VALUE)
+		when(context.getService(String)).thenReturn(STRING_VALUE)
+		when(context.getService(Integer)).thenReturn(INT_VALUE)
 
 		val service = injector.make(FakeService_constructorsMany)
 
@@ -72,8 +69,8 @@ class ContextInjector_make_FunctionalTests {
 
 	@Test
 	def void shouldCreateServiceByBiggestConstructor() {
-		context.addService(STRING_VALUE)
-		context.addService(INT_VALUE)
+		when(context.getService(String)).thenReturn(STRING_VALUE)
+		when(context.getService(Integer)).thenReturn(INT_VALUE)
 
 		val service = injector.make(FakeService_constructorsMany)
 
@@ -82,7 +79,8 @@ class ContextInjector_make_FunctionalTests {
 
 	@Test
 	def void shouldCallRelevantConstructor() {
-		context.addService(STRING_VALUE)
+		when(context.getService(String)).thenReturn(STRING_VALUE)
+		when(context.getService(Integer)).thenThrow(MaiaContextKeyNotFound)
 
 		val service = injector.make(FakeService_constructorsMany)
 
@@ -92,16 +90,12 @@ class ContextInjector_make_FunctionalTests {
 
 	@Test
 	def void shouldCreateServiceByRelevantConstructor() {
-		context.addService(STRING_VALUE)
+		when(context.getService(String)).thenReturn(STRING_VALUE)
+		when(context.getService(Integer)).thenThrow(MaiaContextKeyNotFound)
 
 		val service = injector.make(FakeService_constructorsMany)
 
 		assertThat(service, notNullValue(FakeService_constructorsMany))
-	}
-
-	def private void addService(IMaiaContext ctx, Object service) {
-		when(ctx.getService(service.class)).thenReturn(service)
-		when(ctx.getService(service.class.name)).thenReturn(service)
 	}
 
 }
