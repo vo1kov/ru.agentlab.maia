@@ -5,6 +5,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import ru.agentlab.maia.memory.IMaiaContext
+import ru.agentlab.maia.memory.exception.MaiaContextKeyNotFound
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
@@ -94,131 +95,259 @@ class AbstractContext_removeByString_FunctionalTests extends AbstractContext_Abs
 	}
 
 	@Test
-	def void getProviderByString_returnFromParent_whenValidArgs() {
+	def void getProviderByString_returnParentValue_whenValidArgs() {
+		val inParent = try {
+			parent.getProvider(KEY_STRING_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
+
 		invokeWithValidArgs
 
-		assertThat(context.getProvider(KEY_STRING_VALID), equalTo(parent.getProvider(KEY_STRING_VALID)))
+		val inContext = try {
+			context.getProvider(KEY_STRING_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
+
+		assertThat(inContext, equalTo(inParent))
 	}
 
 	@Test
 	def void getProviderByString_unchangeValue_whenUnknownArgs() {
-		val before = context.getProvider(KEY_STRING_VALID)
+		val before = try {
+			context.getProvider(KEY_STRING_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
 
 		invokeWithUnknownArgs
 
-		assertThat(context.getProvider(KEY_STRING_VALID), equalTo(before))
+		val inContext = try {
+			context.getProvider(KEY_STRING_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
+
+		assertThat(inContext, equalTo(before))
 	}
 
 	@Test
-	def void getProviderByClass_returnFromParent_whenValidArgs() {
+	def void getProviderByClass_returnParentValue_whenValidArgs() {
+		val inParent = try {
+			parent.getProvider(KEY_CLASS_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
+
 		invokeWithValidArgs
 
-		assertThat(context.getProvider(KEY_CLASS_VALID), equalTo(parent.getProvider(KEY_STRING_VALID)))
+		val inContext = try {
+			context.getProvider(KEY_CLASS_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
+
+		assertThat(inContext, equalTo(inParent))
 	}
 
 	@Test
 	def void getProviderByClass_unchangeValue_whenUnknownArgs() {
-		val before = context.getProvider(KEY_STRING_VALID)
+		val before = try {
+			context.getProvider(KEY_CLASS_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
 
 		invokeWithUnknownArgs
 
-		assertThat(context.getProvider(KEY_CLASS_VALID), equalTo(before))
+		val inContext = try {
+			context.getProvider(KEY_CLASS_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
+
+		assertThat(inContext, equalTo(before))
 	}
 
-	@Test
-	def void getProviderLocalByString_returnNull_whenValidArgs() {
+	@Test(expected=MaiaContextKeyNotFound)
+	def void getProviderLocalByString_throwKeyNotFound_whenValidArgs() {
 		invokeWithValidArgs
 
-		assertThat(context.getProviderLocal(KEY_STRING_VALID), equalTo(PROVIDER_NULL))
+		context.getProviderLocal(KEY_STRING_VALID)
 	}
 
 	@Test
 	def void getProviderLocalByString_unchangeValue_whenUnknownArgs() {
-		val before = context.getProviderLocal(KEY_STRING_VALID)
+		val before = try {
+			context.getProviderLocal(KEY_STRING_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
 
 		invokeWithUnknownArgs
 
-		assertThat(context.getProviderLocal(KEY_STRING_VALID), equalTo(before))
+		val inContext = try {
+			context.getProviderLocal(KEY_STRING_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
+
+		assertThat(inContext, equalTo(before))
 	}
 
-	@Test
-	def void getProviderLocalByClass_returnNull_whenValidArgs() {
+	@Test(expected=MaiaContextKeyNotFound)
+	def void getProviderLocalByClass_throwKeyNotFound_whenValidArgs() {
 		invokeWithValidArgs
 
-		assertThat(context.getProviderLocal(KEY_CLASS_VALID), equalTo(PROVIDER_NULL))
+		context.getProviderLocal(KEY_CLASS_VALID)
 	}
 
 	@Test
 	def void getProviderLocalByClass_unchangeValue_whenUnknownArgs() {
-		val before = context.getProviderLocal(KEY_STRING_VALID)
+		val before = try {
+			context.getProviderLocal(KEY_CLASS_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
 
 		invokeWithUnknownArgs
 
-		assertThat(context.getProviderLocal(KEY_CLASS_VALID), equalTo(before))
+		val inContext = try {
+			context.getProviderLocal(KEY_CLASS_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
+
+		assertThat(inContext, equalTo(before))
 	}
 
 	@Test
 	def void getServiceByString_returnParentValue_whenValidArgs() {
+		val inParent = try {
+			parent.getService(KEY_STRING_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
+
 		invokeWithValidArgs
 
-		assertThat(context.getService(KEY_STRING_VALID), equalTo(parent.getService(KEY_STRING_VALID)))
+		val inContext = try {
+			context.getService(KEY_STRING_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
+
+		assertThat(inContext, equalTo(inParent))
 	}
 
 	@Test
 	def void getServiceByString_unchangeValue_whenUnknownArgs() {
-		val before = context.getService(KEY_STRING_VALID)
+		val before = try {
+			context.getService(KEY_STRING_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
 
 		invokeWithUnknownArgs
 
-		assertThat(context.getService(KEY_STRING_VALID), equalTo(before))
+		val inContext = try {
+			context.getService(KEY_STRING_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
+
+		assertThat(inContext, equalTo(before))
 	}
 
 	@Test
 	def void getServiceByClass_returnParentValue_whenValidArgs() {
+		val inParent = try {
+			parent.getService(KEY_CLASS_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
+
 		invokeWithValidArgs
 
-		assertThat(context.getService(KEY_CLASS_VALID), equalTo(parent.getService(KEY_CLASS_VALID)))
+		val inContext = try {
+			context.getService(KEY_CLASS_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
+
+		assertThat(inContext, equalTo(inParent))
 	}
 
 	@Test
 	def void getServiceByClass_unchangeValue_whenUnknownArgs() {
-		val before = context.getService(KEY_CLASS_VALID)
+		val before = try {
+			context.getService(KEY_CLASS_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
 
 		invokeWithUnknownArgs
 
-		assertThat(context.getService(KEY_CLASS_VALID), equalTo(before))
+		val inContext = try {
+			context.getService(KEY_CLASS_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
+
+		assertThat(inContext, equalTo(before))
 	}
 
-	@Test
-	def void getServiceByStringLocal_returnNull_whenValidArgs() {
+	@Test(expected=MaiaContextKeyNotFound)
+	def void getServiceLocalByString_throwKeyNotFound_whenValidArgs() {
 		invokeWithValidArgs
 
-		assertThat(context.getServiceLocal(KEY_STRING_VALID), equalTo(SERVICE_NULL))
+		context.getServiceLocal(KEY_STRING_VALID)
 	}
 
 	@Test
 	def void getServiceLocalByString_unchangeValue_whenUnknownArgs() {
-		val before = context.getServiceLocal(KEY_STRING_VALID)
+		val before = try {
+			context.getServiceLocal(KEY_STRING_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
 
 		invokeWithUnknownArgs
 
-		assertThat(context.getServiceLocal(KEY_STRING_VALID), equalTo(before))
+		val inContext = try {
+			context.getServiceLocal(KEY_STRING_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
+
+		assertThat(inContext, equalTo(before))
 	}
 
-	@Test
-	def void getServiceLocalByClass_returnNull_whenValidArgs() {
+	@Test(expected=MaiaContextKeyNotFound)
+	def void getServiceLocalByClass_throwKeyNotFound_whenValidArgs() {
 		invokeWithValidArgs
 
-		assertThat(context.getServiceLocal(KEY_CLASS_VALID), equalTo(SERVICE_NULL))
+		context.getServiceLocal(KEY_CLASS_VALID)
 	}
 
 	@Test
 	def void getServiceLocalByClass_unchangeValue_whenUnknownArgs() {
-		val before = context.getServiceLocal(KEY_CLASS_VALID)
+		val before = try {
+			context.getServiceLocal(KEY_CLASS_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
 
 		invokeWithUnknownArgs
 
-		assertThat(context.getServiceLocal(KEY_CLASS_VALID), equalTo(before))
+		val inContext = try {
+			context.getServiceLocal(KEY_CLASS_VALID)
+		} catch (MaiaContextKeyNotFound e) {
+			e.class
+		}
+
+		assertThat(inContext, equalTo(before))
 	}
 
 	@Test

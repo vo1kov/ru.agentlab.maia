@@ -102,13 +102,24 @@ abstract class AbstractContext_AbstractFunctionalTests {
 	}
 
 	def protected assumeKeyNotInContext() {
-		assumeThat(contextServices, anyOf(
-			equalTo(NONE)
-		))
+		assumeThat(contextServices, equalTo(NONE))
 	}
 
 	def protected assumeKeyInContext() {
 		assumeThat(contextServices, anyOf(
+			equalTo(SERVICE_BY_CLASS),
+			equalTo(PROVIDER_BY_CLASS),
+			equalTo(SERVICE_BY_STRING),
+			equalTo(PROVIDER_BY_STRING)
+		))
+	}
+
+	def protected assumeKeyNotInParent() {
+		assumeThat(parentServices, equalTo(NONE))
+	}
+
+	def protected assumeKeyInParent() {
+		assumeThat(parentServices, anyOf(
 			equalTo(SERVICE_BY_CLASS),
 			equalTo(PROVIDER_BY_CLASS),
 			equalTo(SERVICE_BY_STRING),
