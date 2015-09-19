@@ -17,12 +17,12 @@ import ru.agentlab.maia.memory.context.test.func.ServiceRegistrationExtension
 
 @RunWith(ParameterizedSuite)
 @SuiteClasses(#[
-	AbstractContext_removeByClass_FunctionalTests,
-	AbstractContext_removeByString_FunctionalTests,
-	AbstractContext_putServiceByClass_FunctionalTests,
-	AbstractContext_putServiceByString_FunctionalTests,
-	AbstractContext_putProviderByClass_FunctionalTests,
-	AbstractContext_putProviderByString_FunctionalTests
+//	AbstractContext_removeByClass_FunctionalTests,
+//	AbstractContext_removeByString_FunctionalTests,
+//	AbstractContext_putServiceByClass_FunctionalTests,
+//	AbstractContext_putServiceByString_FunctionalTests,
+//	AbstractContext_putProviderByClass_FunctionalTests,
+//	AbstractContext_putProviderByString_FunctionalTests
 ])
 class SeparatedArraysContext_FunctionalTestSuite {
 
