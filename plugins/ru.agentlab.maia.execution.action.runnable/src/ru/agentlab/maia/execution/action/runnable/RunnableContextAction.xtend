@@ -14,10 +14,6 @@ class RunnableContextAction extends AbstractAction {
 	@Accessors
 	var IExecutionScheduler parentNode
 
-	new(Class<?> clazz) {
-		super(clazz)
-	}
-
 	override doInject() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}

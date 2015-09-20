@@ -6,7 +6,7 @@ import ru.agentlab.maia.execution.tree.IExecutionNode
 class AllChildsActive implements IChildsCheck {
 
 	override test(Iterable<IExecutionNode> childs) {
-		return childs.findFirst[state != IExecutionNode.ACTIVE] == null
+		return childs.findFirst[state != IExecutionNode.IN_WORK] == null
 	}
 
 }

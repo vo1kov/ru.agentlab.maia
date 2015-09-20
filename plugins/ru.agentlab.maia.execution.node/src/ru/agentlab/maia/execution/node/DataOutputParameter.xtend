@@ -13,14 +13,12 @@ class DataOutputParameter<T> extends AbstractParameter<T> implements IDataOutput
 		super(name, type)
 	}
 
-	def void add(IDataParameter<T> param) {
+	override void addLinked(IDataParameter<T> param) {
 		linked += param
 	}
 
-	def void doSome() {
-		linked.forEach [ param |
-			param.value = this.value
-		]
+	override getLinked() {
+		return linked
 	}
 
 }

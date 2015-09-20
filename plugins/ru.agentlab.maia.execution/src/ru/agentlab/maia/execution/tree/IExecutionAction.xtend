@@ -6,6 +6,8 @@ interface IExecutionAction extends IExecutionNode {
 
 	val static String KEY_RESULT = "ru.agentlab.maia.execution.action|result"
 	
-	def Class<?> getActionClass()
+	def Object getImplementation()
+	
+	def void setImplementation(Object impl)
 	
 }

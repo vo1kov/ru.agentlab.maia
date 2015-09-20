@@ -48,7 +48,7 @@ class SequenceContextScheduler extends AbstractScheduler implements IExecutionSc
 	}
 
 	override synchronized schedule() throws IllegalSchedulerStateException {
-		if (state != ACTIVE) {
+		if (state != IExecutionNode.IN_WORK) {
 			throw new IllegalSchedulerStateException("Only Scheduler in ACTIVE state can schedule.")
 		}
 		if (childs.empty) {

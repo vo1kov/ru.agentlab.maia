@@ -50,42 +50,42 @@ class FsmSchedulerStateTests {
 
 		injector.deploy(scheduler)
 
-		assertThat(scheduler.state, equalTo(IExecutionNode.INSTALLED))
+		assertThat(scheduler.state, equalTo(IExecutionNode.READY))
 	}
 
 	@Test @Ignore
 	def void shouldBeActiveWhenHaveTransitionChain() {
 		val child = mock(IExecutionNode)
 		(scheduler as AbstractNode).init
-		assertThat(scheduler.state, equalTo(IExecutionNode.INSTALLED))
+		assertThat(scheduler.state, equalTo(IExecutionNode.READY))
 
 		scheduler.addChild(child)
 		scheduler.addDefaultTransition(null, child)
 		scheduler.addDefaultTransition(child, null)
 
-		assertThat(scheduler.state, equalTo(IExecutionNode.ACTIVE))
+		assertThat(scheduler.state, equalTo(IExecutionNode.IN_WORK))
 	}
 
 	@Test @Ignore
 	def void shouldNotChangeStateWhenAddTransition() {
 		val child = mock(IExecutionNode)
 		(scheduler as AbstractNode).init
-		assertThat(scheduler.state, equalTo(IExecutionNode.INSTALLED))
+		assertThat(scheduler.state, equalTo(IExecutionNode.READY))
 
 		scheduler.addChild(child)
 		scheduler.addDefaultTransition(null, child)
 
-		assertThat(scheduler.state, equalTo(IExecutionNode.INSTALLED))
+		assertThat(scheduler.state, equalTo(IExecutionNode.READY))
 	}
 
 	@Test @Ignore
 	def void shouldNotIncreaseStateWhenAddChild() {
 		val child = mock(IExecutionNode)
 		(scheduler as AbstractNode).init
-		assertThat(scheduler.state, equalTo(IExecutionNode.INSTALLED))
+		assertThat(scheduler.state, equalTo(IExecutionNode.READY))
 
 		scheduler.addChild(child)
 
-		assertThat(scheduler.state, equalTo(IExecutionNode.INSTALLED))
+		assertThat(scheduler.state, equalTo(IExecutionNode.READY))
 	}
 }

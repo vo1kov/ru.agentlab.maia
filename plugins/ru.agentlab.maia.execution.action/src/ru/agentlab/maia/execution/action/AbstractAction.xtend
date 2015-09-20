@@ -1,29 +1,14 @@
 package ru.agentlab.maia.execution.action
 
-import javax.annotation.PostConstruct
-import org.eclipse.xtend.lib.annotations.Accessors
+import java.util.concurrent.atomic.AtomicReference
 import ru.agentlab.maia.execution.node.AbstractNode
 import ru.agentlab.maia.execution.tree.IExecutionAction
-import ru.agentlab.maia.memory.IMaiaContextInjector
 
 abstract class AbstractAction extends AbstractNode implements IExecutionAction {
 
-	@Accessors
-	val Class<?> actionClass
-
-	var protected Object actionImpl
-
-	new(Class<?> clazz) {
-		this.actionClass = clazz
-	}
+	var protected implementation = new AtomicReference<Object>
 
 	override final run() {
-		if (actionImpl == null) {
-			context.getService(IMaiaContextInjector) => [
-				actionImpl = make(actionClass)
-				invoke(actionImpl, PostConstruct, null)
-			]
-		}
 		try {
 			doInject()
 			doRun()
@@ -31,6 +16,14 @@ abstract class AbstractAction extends AbstractNode implements IExecutionAction {
 		} catch (Exception e) {
 			e.printStackTrace
 		}
+	}
+
+	override getImplementation() {
+		implementation.get
+	}
+
+	override setImplementation(Object impl) {
+		implementation.set(impl)
 	}
 
 	abstract def void doInject()

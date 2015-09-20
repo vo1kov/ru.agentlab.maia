@@ -16,7 +16,7 @@ class FsmScheduler extends AbstractScheduler implements IFsmScheduler {
 	val List<EventFsmTransition> eventTransitions = new ArrayList
 
 	override schedule() throws IllegalSchedulerStateException {
-		if (state != ACTIVE) {
+		if (state != IExecutionNode.IN_WORK) {
 			throw new IllegalSchedulerStateException("Only Scheduler in ACTIVE state can schedule.")
 		}
 		val excTransition = current.exceptionTransition

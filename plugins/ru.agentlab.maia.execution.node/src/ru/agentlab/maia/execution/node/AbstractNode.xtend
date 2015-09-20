@@ -1,65 +1,50 @@
 package ru.agentlab.maia.execution.node
 
-import java.util.ArrayList
-import javax.annotation.PostConstruct
-import javax.annotation.PreDestroy
-import javax.inject.Inject
+import java.util.concurrent.CopyOnWriteArraySet
+import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicReference
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.execution.check.IParametersCheck
 import ru.agentlab.maia.execution.tree.IDataInputParameter
 import ru.agentlab.maia.execution.tree.IDataOutputParameter
 import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.execution.tree.IExecutionScheduler
-import ru.agentlab.maia.memory.IMaiaContext
 
-@Accessors(PUBLIC_GETTER)
 abstract class AbstractNode implements IExecutionNode {
 
-	val protected inputs = new ArrayList<IDataInputParameter<?>>
+	@Accessors
+	val protected inputs = new CopyOnWriteArraySet<IDataInputParameter<?>>
 
-	val protected outputs = new ArrayList<IDataOutputParameter<?>>
+	@Accessors
+	val protected outputs = new CopyOnWriteArraySet<IDataOutputParameter<?>>
 
-	val protected parametersChecklist = new ArrayList<IParametersCheck>
+	@Accessors
+	val protected parametersChecklist = new CopyOnWriteArraySet<IParametersCheck>
 
-	@Inject
-	IMaiaContext context
+	val protected parent = new AtomicReference<IExecutionScheduler>
 
-	IExecutionScheduler parent
-
-	var int state = UNKNOWN
-
-	@PostConstruct
-	def void init() {
-		val parentContext = context.parent
-		if (parentContext != null) {
-			parent = parentContext.getService(IExecutionNode) as IExecutionScheduler
-			if (parent != null) {
-				parent.addChild(this)
-			}
-		}
-		state = INSTALLED
-	}
-
-	@PreDestroy
-	def void destroy() {
-		if (parent != null) {
-			parent.removeChild(this)
-		}
-		state = UNKNOWN
-	}
+	val protected state = new AtomicInteger(UNKNOWN)
 
 	override void block() {
-		if (state != BLOCKED) {
-			state = BLOCKED
-			parent?.notifyChildDeactivation(this)
+		val previous = state.getAndSet(WAITING)
+		if (previous != WAITING) {
+			parent.get?.notifyChildActivation(this)
 		}
 	}
 
 	override void activate() {
-		if (state != ACTIVE) {
-			state = ACTIVE
-			parent?.notifyChildActivation(this)
+		val previous = state.getAndSet(IN_WORK)
+		if (previous != IN_WORK) {
+			parent.get?.notifyChildActivation(this)
 		}
+	}
+
+	override setParent(IExecutionScheduler newParent) {
+		parent.set(newParent)
+	}
+
+	override IExecutionScheduler getParent() {
+		return parent.get
 	}
 
 	def protected void testPatameters() {
@@ -76,17 +61,17 @@ abstract class AbstractNode implements IExecutionNode {
 		activate()
 	}
 
-	override synchronized void addInput(IDataInputParameter<?> input) {
+	override void addInput(IDataInputParameter<?> input) {
 		inputs += input
 		testPatameters()
 	}
 
-	override synchronized removeInput(IDataInputParameter<?> input) {
+	override removeInput(IDataInputParameter<?> input) {
 		inputs.remove(input)
 		testPatameters()
 	}
 
-	override synchronized getInput(String name) {
+	override getInput(String name) {
 		return inputs.findFirst[it.name == name]
 	}
 
@@ -108,12 +93,8 @@ abstract class AbstractNode implements IExecutionNode {
 		class.simpleName + " [" + state + "]"
 	}
 
-	override synchronized getInputs() {
-		return inputs
-	}
-
-	override synchronized getOutputs() {
-		return outputs
+	override int getState() {
+		return state.get
 	}
 
 }
