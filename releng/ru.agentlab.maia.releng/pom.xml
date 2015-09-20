@@ -40,6 +40,8 @@
 
 				<module>../../plugins/ru.agentlab.maia.event</module>
 				<module>../../plugins/ru.agentlab.maia.event.osgi</module>
+				
+				<module>../../aspects/ru.agentlab.maia.memory.aspect</module>
 
 				<module>../../aspects/ru.agentlab.maia.memory.context.events</module>
 				<module>../../aspects/ru.agentlab.maia.memory.context.logs</module>

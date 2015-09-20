@@ -8,11 +8,9 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- org.aspectj.runtime;resolution:=optional,
  javax.inject;bundle-version="1.0.0";visibility:=reexport
 Import-Package: org.osgi.framework;version="1.8.0"
 Export-Package: ru.agentlab.maia.memory,
- ru.agentlab.maia.memory.aj,
  ru.agentlab.maia.memory.exception
 Bundle-Vendor: http://www.agentlab.ru/
 
