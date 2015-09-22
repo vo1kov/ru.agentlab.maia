@@ -27,6 +27,11 @@ interface IExecutionNode {
 	 */
 	val public static int FINISHED = 11
 
+	/**
+	 * Indicate that current node execution was performed with exception.
+	 */
+	val public static int EXCEPTION = 11
+
 	def void run()
 
 	def IExecutionScheduler getParent()
@@ -44,6 +49,16 @@ interface IExecutionNode {
 	 * Change execution state to READY and notify parent
 	 */
 	def void activate()
+	
+	/**
+	 * Retrieve the number finishes of run
+	 */
+	def int getRepeatCounts()
+	
+	/**
+	 * Change repeat count
+	 */
+	def void setRepeatCounts(int count)
 
 	def Iterable<IDataInputParameter<?>> getInputs()
 

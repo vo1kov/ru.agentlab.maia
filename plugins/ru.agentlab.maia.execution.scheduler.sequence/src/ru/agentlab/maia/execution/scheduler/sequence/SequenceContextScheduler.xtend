@@ -60,4 +60,55 @@ class SequenceContextScheduler extends AbstractScheduler implements IExecutionSc
 		return current
 	}
 
+	/**
+	 * Scheduler becomes UNKNOWN when any of child nodes become UNKNOWN
+	 */
+	override handleChildUnknown(IExecutionNode child) {
+		state.set(UNKNOWN)
+	}
+
+	/**
+	 * Scheduler becomes READY when all child nodes become READY 
+	 */
+	override handleChildReady(IExecutionNode child) {
+		for (ch : childs) {
+			if (ch.state != READY) {
+				return
+			}
+		}
+		state.set(READY)
+	}
+
+	/**
+	 * Scheduler becomes IN_WORK when any of child nodes become IN_WORK
+	 */
+	override handleChildInWork(IExecutionNode child) {
+		state.set(IN_WORK)
+	}
+
+	/**
+	 * Scheduler becomes WAITING when any of child nodes become WAITING
+	 */
+	override handleChildWait(IExecutionNode child) {
+		state.set(WAITING)
+	}
+
+	/**
+	 * Scheduler becomes FINISHED when all child nodes become FINISHED
+	 */
+	override handleChildFinish(IExecutionNode child) {
+		for (ch : childs) {
+			if (ch.state != FINISHED) {
+				return
+			}
+		}
+		if (repeatCounts.getAndDecrement != 0) {
+			for (ch : childs) {
+				ch.activate
+			}
+		} else {
+			state.set(FINISHED)
+		}
+	}
+
 }

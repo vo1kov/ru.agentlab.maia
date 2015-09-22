@@ -25,18 +25,24 @@ abstract class AbstractNode implements IExecutionNode {
 
 	val protected state = new AtomicInteger(UNKNOWN)
 
+	var protected repeatCounts = new AtomicInteger(0)
+
 	override void block() {
-		val previous = state.getAndSet(WAITING)
-		if (previous != WAITING) {
-			parent.get?.notifyChildActivation(this)
-		}
+		state.set(WAITING)
+		parent.get?.handleChildWait(this)
 	}
 
 	override void activate() {
-		val previous = state.getAndSet(IN_WORK)
-		if (previous != IN_WORK) {
-			parent.get?.notifyChildActivation(this)
-		}
+		state.set(READY)
+		parent.get?.handleChildReady(this)
+	}
+
+	override int getRepeatCounts() {
+		return repeatCounts.get
+	}
+
+	override void setRepeatCounts(int count) {
+		repeatCounts.set(count)
 	}
 
 	override setParent(IExecutionScheduler newParent) {

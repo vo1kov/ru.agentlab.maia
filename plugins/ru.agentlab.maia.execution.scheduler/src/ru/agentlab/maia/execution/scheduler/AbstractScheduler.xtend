@@ -26,20 +26,20 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 		schedule?.run
 	}
 
-	override synchronized notifyChildActivation(IExecutionNode node) {
-		testChilds()
-	}
+//	override synchronized notifyChildActivation(IExecutionNode node) {
+//		testChilds()
+//	}
 
-	override synchronized notifyChildDeactivation(IExecutionNode node) {
-		testChilds()
-	}
+//	override synchronized notifyChildDeactivation(IExecutionNode node) {
+//		testChilds()
+//	}
 
-	def synchronized void addLink(IDataParameter<?> from, IDataParameter<?> to) {
-		if (from.key != null && from.key.length > 0) {
-			to.key = from.key
-		}
-		getDataLinks += new DataLink(from, to)
-	}
+//	def synchronized void addLink(IDataParameter<?> from, IDataParameter<?> to) {
+//		if (from.key != null && from.key.length > 0) {
+//			to.key = from.key
+//		}
+//		getDataLinks += new DataLink(from, to)
+//	}
 
 	override synchronized void addChild(IExecutionNode child) {
 		if (child == null) {
@@ -47,7 +47,7 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 		}
 		if (!getChilds.contains(child)) {
 			getChilds += child
-			testChilds()
+//			testChilds()
 		}
 	}
 
@@ -62,7 +62,7 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 	 */
 	override synchronized void removeAll() {
 		getChilds.clear
-		testChilds()
+//		testChilds()
 	}
 
 	/** 
@@ -81,7 +81,7 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 		val index = getChilds.indexOf(node)
 		if (index != -1) {
 			val removed = getChilds.remove(index)
-			testChilds()
+//			testChilds()
 			if (getChilds.length == 0) {
 				setCurrent = null
 			}
@@ -91,19 +91,19 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 		}
 	}
 
-	def protected void testChilds() {
-		for (check : getChildChecklist) {
-			if (!check.test(getChilds)) {
-				block()
-				return
-			}
-			if (!check.test(getChilds)) {
-				block()
-				return
-			}
-		}
-		activate()
-	}
+//	def protected void testChilds() {
+//		for (check : getChildChecklist) {
+//			if (!check.test(getChilds)) {
+//				block()
+//				return
+//			}
+//			if (!check.test(getChilds)) {
+//				block()
+//				return
+//			}
+//		}
+//		activate()
+//	}
 
 	override synchronized IExecutionNode getCurrent() {
 		return current
