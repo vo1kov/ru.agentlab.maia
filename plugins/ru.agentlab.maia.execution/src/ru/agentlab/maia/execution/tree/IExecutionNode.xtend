@@ -41,20 +41,11 @@ interface IExecutionNode {
 	def int getState()
 
 	/**
-	 * Change execution state to WAITING and notify parent
-	 */
-	def void block()
-
-	/**
-	 * Change execution state to READY and notify parent
-	 */
-	def void activate()
-	
-	/**
-	 * Retrieve the number finishes of run
+	 * Retrieve repeat count - the number of completed runs before node 
+	 * will be considered to be finished.
 	 */
 	def int getRepeatCounts()
-	
+
 	/**
 	 * Change repeat count
 	 */
@@ -75,5 +66,26 @@ interface IExecutionNode {
 	def IDataInputParameter<?> getInput(String name)
 
 	def IDataOutputParameter<?> getOutput(String name)
+	
+	def int setState(int newState)
+	
+	def void handleParameterChangedState(IDataParameter<?> parameter, int oldState, int newState)
+	
+//	/**
+//	 * Change execution state to READY and notify parent
+//	 */
+//	def int setUnknownState()
+//
+//	def int setReadyState()
+//
+//	def int setInWorkState()
+//
+//	def int setWaitingState()
+//
+//	def int setFinishedState()
+
+//	def void handleParameterEmpty(IDataParameter<?> param)
+//
+//	def void handleParameterLink(IDataParameter<?> param)
 
 }

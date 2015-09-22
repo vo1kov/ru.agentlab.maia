@@ -25,17 +25,7 @@ abstract class AbstractNode implements IExecutionNode {
 
 	val protected state = new AtomicInteger(UNKNOWN)
 
-	var protected repeatCounts = new AtomicInteger(0)
-
-	override void block() {
-		state.set(WAITING)
-		parent.get?.handleChildWait(this)
-	}
-
-	override void activate() {
-		state.set(READY)
-		parent.get?.handleChildReady(this)
-	}
+	var protected repeatCounts = new AtomicInteger(1)
 
 	override int getRepeatCounts() {
 		return repeatCounts.get
@@ -53,28 +43,28 @@ abstract class AbstractNode implements IExecutionNode {
 		return parent.get
 	}
 
-	def protected void testPatameters() {
-		for (check : parametersChecklist) {
-			if (!check.test(inputs)) {
-				block()
-				return
-			}
-			if (!check.test(outputs)) {
-				block()
-				return
-			}
-		}
-		activate()
-	}
+//	def protected void testPatameters() {
+//		for (check : parametersChecklist) {
+//			if (!check.test(inputs)) {
+//				setState(UNKNOWN)
+//				return
+//			}
+//			if (!check.test(outputs)) {
+//				setState(UNKNOWN)
+//				return
+//			}
+//		}
+//		setState(READY)
+//	}
 
 	override void addInput(IDataInputParameter<?> input) {
 		inputs += input
-		testPatameters()
+//		testPatameters()
 	}
 
 	override removeInput(IDataInputParameter<?> input) {
 		inputs.remove(input)
-		testPatameters()
+//		testPatameters()
 	}
 
 	override getInput(String name) {
@@ -83,24 +73,26 @@ abstract class AbstractNode implements IExecutionNode {
 
 	override synchronized void addOutput(IDataOutputParameter<?> output) {
 		outputs += output
-		testPatameters()
+//		testPatameters()
 	}
 
 	override synchronized removeOutput(IDataOutputParameter<?> output) {
 		outputs.remove(output)
-		testPatameters()
+//		testPatameters()
 	}
 
 	override synchronized getOutput(String name) {
 		return outputs.findFirst[it.name == name]
 	}
 
-	override synchronized toString() {
-		class.simpleName + " [" + state + "]"
-	}
-
 	override int getState() {
 		return state.get
+	}
+
+	override setState(int newState) {
+		val old = state.getAndSet(newState)
+		parent.get?.handleChildChangedState(this, old, newState)
+		return old
 	}
 
 }

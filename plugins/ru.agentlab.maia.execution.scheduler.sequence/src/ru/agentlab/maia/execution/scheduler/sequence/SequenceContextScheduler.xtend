@@ -3,13 +3,12 @@ package ru.agentlab.maia.execution.scheduler.sequence
 import ru.agentlab.maia.execution.scheduler.AbstractScheduler
 import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.execution.tree.IExecutionScheduler
-import ru.agentlab.maia.execution.tree.IllegalSchedulerStateException
 
 class SequenceContextScheduler extends AbstractScheduler implements IExecutionScheduler {
 
-	val static UNKNOWN = -1
+	val static NOT_FOUND = -1
 
-	int index = UNKNOWN
+	int index = NOT_FOUND
 
 	/**
 	 * <p>Removes a specified node from the nodes queue.</p>
@@ -22,10 +21,10 @@ class SequenceContextScheduler extends AbstractScheduler implements IExecutionSc
 	 */
 	override synchronized removeChild(IExecutionNode node) {
 		if (node == null) {
-			return null
+			throw new IllegalArgumentException("Node parameter should be not null")
 		}
 		val i = childs.indexOf(node)
-		if (i != UNKNOWN) {
+		if (i != NOT_FOUND) {
 			val result = super.removeChild(node)
 			if (i < index) {
 				index = index - 1
@@ -34,7 +33,7 @@ class SequenceContextScheduler extends AbstractScheduler implements IExecutionSc
 			}
 			return result
 		} else {
-			return null
+			return false
 		}
 	}
 
@@ -43,71 +42,48 @@ class SequenceContextScheduler extends AbstractScheduler implements IExecutionSc
 	 */
 	override synchronized void removeAll() {
 		super.removeAll()
-		index = UNKNOWN
+		index = NOT_FOUND
 		current = null
 	}
 
-	override synchronized schedule() throws IllegalSchedulerStateException {
-		if (state != IExecutionNode.IN_WORK) {
-			throw new IllegalSchedulerStateException("Only Scheduler in ACTIVE state can schedule.")
-		}
-		if (childs.empty) {
-			current = null
-		} else {
-			index = (index + 1) % childs.size
-			current = childs.get(index)
-		}
-		return current
+	override synchronized schedule() {
+		index = (index + 1) % childs.size
+		return childs.get(index)
 	}
 
-	/**
-	 * Scheduler becomes UNKNOWN when any of child nodes become UNKNOWN
-	 */
-	override handleChildUnknown(IExecutionNode child) {
-		state.set(UNKNOWN)
-	}
-
-	/**
-	 * Scheduler becomes READY when all child nodes become READY 
-	 */
-	override handleChildReady(IExecutionNode child) {
-		for (ch : childs) {
-			if (ch.state != READY) {
-				return
+	override handleChildChangedState(IExecutionNode child, int oldState, int newState) {
+		switch (newState) {
+			case UNKNOWN: {
+				state.set(UNKNOWN)
 			}
-		}
-		state.set(READY)
-	}
-
-	/**
-	 * Scheduler becomes IN_WORK when any of child nodes become IN_WORK
-	 */
-	override handleChildInWork(IExecutionNode child) {
-		state.set(IN_WORK)
-	}
-
-	/**
-	 * Scheduler becomes WAITING when any of child nodes become WAITING
-	 */
-	override handleChildWait(IExecutionNode child) {
-		state.set(WAITING)
-	}
-
-	/**
-	 * Scheduler becomes FINISHED when all child nodes become FINISHED
-	 */
-	override handleChildFinish(IExecutionNode child) {
-		for (ch : childs) {
-			if (ch.state != FINISHED) {
-				return
+			case READY: {
+				for (ch : childs) {
+					if (ch.state != READY) {
+						return
+					}
+				}
+				state.set(READY)
 			}
-		}
-		if (repeatCounts.getAndDecrement != 0) {
-			for (ch : childs) {
-				ch.activate
+			case IN_WORK: {
+				state.set(IN_WORK)
 			}
-		} else {
-			state.set(FINISHED)
+			case WAITING: {
+				state.set(WAITING)
+			}
+			case FINISHED: {
+				for (ch : childs) {
+					if (ch.state != FINISHED) {
+						return
+					}
+				}
+				if (repeatCounts.getAndDecrement != 0) {
+					for (ch : childs) {
+						state.set(READY)
+					}
+				} else {
+					state.set(FINISHED)
+				}
+			}
 		}
 	}
 
