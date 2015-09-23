@@ -7,7 +7,6 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
-import ru.agentlab.maia.execution.node.AbstractNode
 import ru.agentlab.maia.execution.scheduler.sequence.SequenceContextScheduler
 import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.execution.tree.IExecutionScheduler
@@ -17,6 +16,7 @@ import ru.agentlab.maia.memory.IMaiaContextInjector
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
+import ru.agentlab.maia.execution.node.AbstractExecutionNode
 
 @RunWith(MockitoJUnitRunner)
 class SequenceSchedulerDeploymentTests {
@@ -34,11 +34,11 @@ class SequenceSchedulerDeploymentTests {
 	def void shouldChangeStateToInstalled() {
 		when(context.getServiceLocal(IMaiaContextInjector)).thenReturn(injector)
 		when(injector.invoke(scheduler, PostConstruct, null)).thenAnswer [
-			(scheduler as AbstractNode).init
+			(scheduler as AbstractExecutionNode).init
 			return null
 		]
 		when(injector.deploy(scheduler)).thenAnswer [
-			(scheduler as AbstractNode).init
+			(scheduler as AbstractExecutionNode).init
 			return null
 		]
 

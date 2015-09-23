@@ -3,7 +3,6 @@ package ru.agentlab.maia.execution
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
-import ru.agentlab.maia.execution.tree.IExecutionNode
 
 class MaiaExecutorService implements IMaiaExecutorService {
 
@@ -24,7 +23,7 @@ class MaiaExecutorService implements IMaiaExecutorService {
 					val begin = System.nanoTime
 					node.run
 					val end = System.nanoTime
-					println("	" + (end-begin) + " ns")
+					println("	" + (end - begin) + " ns")
 					println("============end=============")
 					executor.submit(this)
 				}

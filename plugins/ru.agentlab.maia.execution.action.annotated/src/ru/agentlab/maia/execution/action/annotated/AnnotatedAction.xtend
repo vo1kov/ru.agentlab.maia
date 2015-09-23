@@ -3,17 +3,17 @@ package ru.agentlab.maia.execution.action.annotated
 import java.lang.reflect.Field
 import java.util.ArrayList
 import javax.inject.Inject
-import ru.agentlab.maia.execution.action.AbstractAction
+import ru.agentlab.maia.execution.action.AbstractExecutionAction
 import ru.agentlab.maia.execution.action.annotation.Action
 import ru.agentlab.maia.execution.action.annotation.Input
 import ru.agentlab.maia.execution.action.annotation.Output
-import ru.agentlab.maia.execution.node.DataInputParameter
-import ru.agentlab.maia.execution.node.DataOutputParameter
-import ru.agentlab.maia.execution.tree.IDataInputParameter
-import ru.agentlab.maia.execution.tree.IDataOutputParameter
 import ru.agentlab.maia.memory.IMaiaContextInjector
+import ru.agentlab.maia.execution.node.ExecutionInput
+import ru.agentlab.maia.execution.IExecutionInput
+import ru.agentlab.maia.execution.node.ExecutionOutput
+import ru.agentlab.maia.execution.IExecutionOutput
 
-class AnnotatedAction extends AbstractAction {
+class AnnotatedAction extends AbstractExecutionAction {
 
 	var Field[] inputFields = newArrayOfSize(0)
 
@@ -60,17 +60,14 @@ class AnnotatedAction extends AbstractAction {
 		}
 	}
 
-//	def private <T> setParameter(IDataParameter<T> param, Object value) {
-//		param.value = value as T
-//	}
-	def private <T> IDataInputParameter<T> createInput(String name, Field field) {
+	def private <T> IExecutionInput<T> createInput(String name, Field field) {
 		val c = field.type as Class<T>
-		new DataInputParameter(name, c)
+		new ExecutionInput(name, c, this, true)
 	}
 
-	def private <T> IDataOutputParameter<T> createOutput(String name, Field field) {
+	def private <T> IExecutionOutput<T> createOutput(String name, Field field) {
 		val c = field.type as Class<T>
-		new DataOutputParameter(name, c)
+		new ExecutionOutput(name, c, this, true)
 	}
 
 }

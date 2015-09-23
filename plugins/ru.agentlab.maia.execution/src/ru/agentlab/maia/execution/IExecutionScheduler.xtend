@@ -1,4 +1,4 @@
-package ru.agentlab.maia.execution.tree
+package ru.agentlab.maia.execution
 
 import java.util.Iterator
 
@@ -8,7 +8,7 @@ interface IExecutionScheduler extends IExecutionNode {
 
 	def IExecutionNode setCurrent(IExecutionNode node)
 
-	def IExecutionNode schedule() throws IllegalSchedulerStateException
+	def IExecutionNode schedule()
 
 	def Iterator<IExecutionNode> getChilds()
 
@@ -20,6 +20,16 @@ interface IExecutionScheduler extends IExecutionNode {
 
 	def boolean isEmpty()
 
-	def void handleChildChangedState(IExecutionNode child, int oldState, int newState)
+	def void onChildUnknown(IExecutionNode node)
+
+	def void onChildReady(IExecutionNode node)
+
+	def void onChildInWork(IExecutionNode node)
+
+	def void onChildWaiting(IExecutionNode node)
+
+	def void onChildFinished(IExecutionNode node)
+
+	def void onChildException(IExecutionNode node)
 
 }

@@ -2,12 +2,12 @@ package ru.agentlab.maia.execution.scheduler.pattern.impl
 
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
-import ru.agentlab.maia.execution.scheduler.AbstractScheduler
+import ru.agentlab.maia.execution.IExecutionNode
+import ru.agentlab.maia.execution.scheduler.AbstractExecutionScheduler
 import ru.agentlab.maia.execution.scheduler.pattern.IPatternScheduler
-import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.memory.IMaiaContext
 
-class PatternScheduler extends AbstractScheduler implements IPatternScheduler {
+class PatternScheduler extends AbstractExecutionScheduler implements IPatternScheduler {
 
 	val stateMapping = new ConcurrentHashMap<String, IExecutionNode>
 
@@ -66,23 +66,27 @@ class PatternScheduler extends AbstractScheduler implements IPatternScheduler {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override handleChildUnknown(IExecutionNode child) {
+	override onChildUnknown(IExecutionNode node) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override handleChildReady(IExecutionNode child) {
+	override onChildReady(IExecutionNode node) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override handleChildInWork(IExecutionNode child) {
+	override onChildInWork(IExecutionNode node) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override handleChildWait(IExecutionNode child) {
+	override onChildWaiting(IExecutionNode node) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override handleChildFinish(IExecutionNode child) {
+	override onChildFinished(IExecutionNode node) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override onChildException(IExecutionNode node) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 

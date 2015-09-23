@@ -2,12 +2,11 @@ package ru.agentlab.maia.execution.scheduler.fsm.impl
 
 import java.util.ArrayList
 import java.util.List
-import ru.agentlab.maia.execution.scheduler.AbstractScheduler
+import ru.agentlab.maia.execution.IExecutionNode
+import ru.agentlab.maia.execution.scheduler.AbstractExecutionScheduler
 import ru.agentlab.maia.execution.scheduler.fsm.IFsmScheduler
-import ru.agentlab.maia.execution.tree.IExecutionNode
-import ru.agentlab.maia.execution.tree.IllegalSchedulerStateException
 
-class FsmScheduler extends AbstractScheduler implements IFsmScheduler {
+class FsmScheduler extends AbstractExecutionScheduler implements IFsmScheduler {
 
 	val List<DefaultFsmTransition> defaultTransitions = new ArrayList
 
@@ -15,22 +14,19 @@ class FsmScheduler extends AbstractScheduler implements IFsmScheduler {
 
 	val List<EventFsmTransition> eventTransitions = new ArrayList
 
-	override schedule() throws IllegalSchedulerStateException {
-		if (state != IExecutionNode.IN_WORK) {
-			throw new IllegalSchedulerStateException("Only Scheduler in ACTIVE state can schedule.")
-		}
-		val excTransition = current.exceptionTransition
-		if (excTransition != null) {
-			return excTransition.to
-		}
-		val defTransition = current.defaultTransition
-		if (defTransition != null) {
-			return defTransition.to
-		}
-		val eventTransition = current.eventTransition
-		if (eventTransition != null) {
-			return eventTransition.to
-		}
+	override schedule() {
+//		val excTransition = current.exceptionTransition
+//		if (excTransition != null) {
+//			return excTransition.to
+//		}
+//		val defTransition = current.defaultTransition
+//		if (defTransition != null) {
+//			return defTransition.to
+//		}
+//		val eventTransition = current.eventTransition
+//		if (eventTransition != null) {
+//			return eventTransition.to
+//		}
 		return null
 	}
 
@@ -79,24 +75,29 @@ class FsmScheduler extends AbstractScheduler implements IFsmScheduler {
 		}
 	}
 	
-	override handleChildUnknown(IExecutionNode child) {
+	override onChildUnknown(IExecutionNode node) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override handleChildReady(IExecutionNode child) {
+	override onChildReady(IExecutionNode node) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override handleChildInWork(IExecutionNode child) {
+	override onChildInWork(IExecutionNode node) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override handleChildWait(IExecutionNode child) {
+	override onChildWaiting(IExecutionNode node) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override handleChildFinish(IExecutionNode child) {
+	override onChildFinished(IExecutionNode node) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
+	
+	override onChildException(IExecutionNode node) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
 
 }

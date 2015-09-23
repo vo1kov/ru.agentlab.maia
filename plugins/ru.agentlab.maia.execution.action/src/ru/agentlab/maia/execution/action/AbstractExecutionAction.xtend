@@ -1,10 +1,10 @@
 package ru.agentlab.maia.execution.action
 
 import java.util.concurrent.atomic.AtomicReference
-import ru.agentlab.maia.execution.node.AbstractNode
-import ru.agentlab.maia.execution.tree.IExecutionAction
+import ru.agentlab.maia.execution.IExecutionAction
+import ru.agentlab.maia.execution.node.AbstractExecutionNode
 
-abstract class AbstractAction extends AbstractNode implements IExecutionAction {
+abstract class AbstractExecutionAction extends AbstractExecutionNode implements IExecutionAction {
 
 	var protected implementation = new AtomicReference<Object>
 

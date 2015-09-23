@@ -3,16 +3,15 @@ package ru.agentlab.maia.execution.scheduler
 import java.util.Iterator
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.atomic.AtomicReference
-import ru.agentlab.maia.execution.node.AbstractNode
-import ru.agentlab.maia.execution.tree.IDataParameter
-import ru.agentlab.maia.execution.tree.IExecutionNode
-import ru.agentlab.maia.execution.tree.IExecutionScheduler
+import ru.agentlab.maia.execution.IExecutionNode
+import ru.agentlab.maia.execution.IExecutionScheduler
+import ru.agentlab.maia.execution.node.AbstractExecutionNode
 
-abstract class AbstractScheduler extends AbstractNode implements IExecutionScheduler {
+abstract class AbstractExecutionScheduler extends AbstractExecutionNode implements IExecutionScheduler {
 
 	val protected childs = new CopyOnWriteArrayList<IExecutionNode>
 
-	var protected current = new AtomicReference<IExecutionNode>
+	val protected current = new AtomicReference<IExecutionNode>
 
 	override run() {
 		val next = schedule()
@@ -65,10 +64,6 @@ abstract class AbstractScheduler extends AbstractNode implements IExecutionSched
 
 	override Iterator<IExecutionNode> getChilds() {
 		return childs.iterator
-	}
-
-	override handleParameterChangedState(IDataParameter<?> parameter, int oldState, int newState) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 }

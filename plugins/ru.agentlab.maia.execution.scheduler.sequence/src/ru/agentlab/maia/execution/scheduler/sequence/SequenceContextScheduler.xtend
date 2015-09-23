@@ -1,10 +1,10 @@
 package ru.agentlab.maia.execution.scheduler.sequence
 
-import ru.agentlab.maia.execution.scheduler.AbstractScheduler
-import ru.agentlab.maia.execution.tree.IExecutionNode
-import ru.agentlab.maia.execution.tree.IExecutionScheduler
+import ru.agentlab.maia.execution.IExecutionNode
+import ru.agentlab.maia.execution.IExecutionScheduler
+import ru.agentlab.maia.execution.scheduler.AbstractExecutionScheduler
 
-class SequenceContextScheduler extends AbstractScheduler implements IExecutionScheduler {
+class SequenceContextScheduler extends AbstractExecutionScheduler implements IExecutionScheduler {
 
 	val static NOT_FOUND = -1
 
@@ -43,7 +43,7 @@ class SequenceContextScheduler extends AbstractScheduler implements IExecutionSc
 	override synchronized void removeAll() {
 		super.removeAll()
 		index = NOT_FOUND
-		current = null
+		current.set(null)
 	}
 
 	override synchronized schedule() {
@@ -51,40 +51,33 @@ class SequenceContextScheduler extends AbstractScheduler implements IExecutionSc
 		return childs.get(index)
 	}
 
-	override handleChildChangedState(IExecutionNode child, int oldState, int newState) {
-		switch (newState) {
-			case UNKNOWN: {
-				state.set(UNKNOWN)
-			}
-			case READY: {
-				for (ch : childs) {
-					if (ch.state != READY) {
-						return
-					}
-				}
-				state.set(READY)
-			}
-			case IN_WORK: {
-				state.set(IN_WORK)
-			}
-			case WAITING: {
-				state.set(WAITING)
-			}
-			case FINISHED: {
-				for (ch : childs) {
-					if (ch.state != FINISHED) {
-						return
-					}
-				}
-				if (repeatCounts.getAndDecrement != 0) {
-					for (ch : childs) {
-						state.set(READY)
-					}
-				} else {
-					state.set(FINISHED)
-				}
+	override onChildUnknown(IExecutionNode node) {
+		changeStateUnknown(true)
+	}
+
+	override onChildReady(IExecutionNode node) {
+		changeStateReady(true)
+	}
+
+	override onChildInWork(IExecutionNode node) {
+		changeStateInWork(true)
+	}
+
+	override onChildWaiting(IExecutionNode node) {
+		changeStateWaiting(true)
+	}
+
+	override onChildFinished(IExecutionNode node) {
+		for (ch : childs) {
+			if (!ch.stateFinished) {
+				return
 			}
 		}
+		changeStateFinished(true)
+	}
+
+	override onChildException(IExecutionNode node) {
+		changeStateException(true)
 	}
 
 }

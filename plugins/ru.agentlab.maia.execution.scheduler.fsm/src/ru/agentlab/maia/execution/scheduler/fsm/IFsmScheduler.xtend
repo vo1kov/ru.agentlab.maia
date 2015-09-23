@@ -1,10 +1,10 @@
 package ru.agentlab.maia.execution.scheduler.fsm
 
+import ru.agentlab.maia.execution.IExecutionNode
+import ru.agentlab.maia.execution.IExecutionScheduler
 import ru.agentlab.maia.execution.scheduler.fsm.impl.DefaultFsmTransition
 import ru.agentlab.maia.execution.scheduler.fsm.impl.EventFsmTransition
 import ru.agentlab.maia.execution.scheduler.fsm.impl.ExceptionFsmTransition
-import ru.agentlab.maia.execution.tree.IExecutionNode
-import ru.agentlab.maia.execution.tree.IExecutionScheduler
 
 interface IFsmScheduler extends IExecutionScheduler {
 

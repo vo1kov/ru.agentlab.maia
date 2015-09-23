@@ -8,7 +8,6 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
-import ru.agentlab.maia.execution.node.AbstractNode
 import ru.agentlab.maia.execution.scheduler.fsm.IFsmScheduler
 import ru.agentlab.maia.execution.scheduler.fsm.impl.FsmScheduler
 import ru.agentlab.maia.execution.tree.IExecutionNode
@@ -18,6 +17,7 @@ import ru.agentlab.maia.memory.IMaiaContextInjector
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
+import ru.agentlab.maia.execution.node.AbstractExecutionNode
 
 @RunWith(MockitoJUnitRunner)
 class FsmSchedulerStateTests {
@@ -40,11 +40,11 @@ class FsmSchedulerStateTests {
 	def void shouldBeInstalledWhenDeployToContext() {
 		when(context.getServiceLocal(IMaiaContextInjector)).thenReturn(injector)
 		when(injector.invoke(scheduler, PostConstruct, null)).thenAnswer [
-			(scheduler as AbstractNode).init
+			(scheduler as AbstractExecutionNode).init
 			return null
 		]
 		when(injector.deploy(scheduler)).thenAnswer [
-			(scheduler as AbstractNode).init
+			(scheduler as AbstractExecutionNode).init
 			return null
 		]
 
@@ -56,7 +56,7 @@ class FsmSchedulerStateTests {
 	@Test @Ignore
 	def void shouldBeActiveWhenHaveTransitionChain() {
 		val child = mock(IExecutionNode)
-		(scheduler as AbstractNode).init
+		(scheduler as AbstractExecutionNode).init
 		assertThat(scheduler.state, equalTo(IExecutionNode.READY))
 
 		scheduler.addChild(child)
@@ -69,7 +69,7 @@ class FsmSchedulerStateTests {
 	@Test @Ignore
 	def void shouldNotChangeStateWhenAddTransition() {
 		val child = mock(IExecutionNode)
-		(scheduler as AbstractNode).init
+		(scheduler as AbstractExecutionNode).init
 		assertThat(scheduler.state, equalTo(IExecutionNode.READY))
 
 		scheduler.addChild(child)
@@ -81,7 +81,7 @@ class FsmSchedulerStateTests {
 	@Test @Ignore
 	def void shouldNotIncreaseStateWhenAddChild() {
 		val child = mock(IExecutionNode)
-		(scheduler as AbstractNode).init
+		(scheduler as AbstractExecutionNode).init
 		assertThat(scheduler.state, equalTo(IExecutionNode.READY))
 
 		scheduler.addChild(child)

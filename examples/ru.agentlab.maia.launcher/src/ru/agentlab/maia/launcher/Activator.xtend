@@ -6,9 +6,9 @@ import ru.agentlab.maia.context.modifier.MaiaExtension
 import ru.agentlab.maia.context.modifier.MaiaRootContextModifier
 import ru.agentlab.maia.execution.IMaiaExecutorService
 import ru.agentlab.maia.execution.action.annotated.AnnotatedAction
-import ru.agentlab.maia.execution.node.DataInputParameter
 import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.memory.IMaiaContext
+import ru.agentlab.maia.execution.node.ExecutionInput
 
 class Activator implements BundleActivator {
 
@@ -45,7 +45,7 @@ class Activator implements BundleActivator {
 		val agent = container.createAgent => [
 			deploy(AgentExample)
 			set("debugString", "agent1")
-			get(IExecutionNode).addInput(new DataInputParameter("text", String))
+			get(IExecutionNode).addInput(new ExecutionInput("text", String))
 		]
 //		container.createAgent
 //		container.createAgent
