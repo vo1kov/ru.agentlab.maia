@@ -32,7 +32,7 @@ interface IExecutionNode {
 	/**
 	 * Indicate that current node execution was performed with exception.
 	 */
-	val public static int EXCEPTION = 11
+	val public static int EXCEPTION = 13
 
 	def void run()
 
@@ -76,6 +76,8 @@ interface IExecutionNode {
 	// --------------------------------------------
 	// State manipulations
 	// --------------------------------------------
+	def String getStateName()
+	
 	def void changeStateUnknown(boolean propagate)
 
 	def void changeStateReady(boolean propagate)

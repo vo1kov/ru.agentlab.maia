@@ -112,6 +112,29 @@ abstract class AbstractExecutionNode implements IExecutionNode {
 	// --------------------------------------------
 	// State manipulations
 	// --------------------------------------------
+	override String getStateName() {
+		switch (state.get) {
+			case UNKNOWN: {
+				return "UNKNOWN"
+			}
+			case READY: {
+				return "READY"
+			}
+			case IN_WORK: {
+				return "IN_WORK"
+			}
+			case WAITING: {
+				return "WAITING"
+			}
+			case FINISHED: {
+				return "FINISHED"
+			}
+			case EXCEPTION: {
+				return "EXCEPTION"
+			}
+		}
+	}
+
 	override void changeStateUnknown(boolean propagate) {
 		val old = state.getAndSet(UNKNOWN)
 		if (propagate && old != UNKNOWN) {
@@ -123,7 +146,6 @@ abstract class AbstractExecutionNode implements IExecutionNode {
 		val old = state.getAndSet(READY)
 		if (propagate && old != READY) {
 			parent.get?.onChildReady(this)
-
 		}
 	}
 
