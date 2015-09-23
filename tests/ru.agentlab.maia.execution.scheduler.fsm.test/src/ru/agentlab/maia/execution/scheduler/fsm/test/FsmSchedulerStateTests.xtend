@@ -8,16 +8,16 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
+import ru.agentlab.maia.execution.IExecutionNode
+import ru.agentlab.maia.execution.node.AbstractExecutionNode
 import ru.agentlab.maia.execution.scheduler.fsm.IFsmScheduler
 import ru.agentlab.maia.execution.scheduler.fsm.impl.FsmScheduler
-import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.IMaiaContextInjector
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
-import ru.agentlab.maia.execution.node.AbstractExecutionNode
 
 @RunWith(MockitoJUnitRunner)
 class FsmSchedulerStateTests {

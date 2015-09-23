@@ -5,8 +5,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
+import ru.agentlab.maia.execution.IExecutionScheduler
 import ru.agentlab.maia.execution.scheduler.sequence.SequenceContextScheduler
-import ru.agentlab.maia.execution.tree.IExecutionScheduler
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*

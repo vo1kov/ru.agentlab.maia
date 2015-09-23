@@ -1,7 +1,7 @@
 package ru.agentlab.maia.execution.scheduler.sequence.test
 
 import java.util.ArrayList
-import ru.agentlab.maia.execution.tree.IExecutionNode
+import ru.agentlab.maia.execution.IExecutionNode
 
 import static org.mockito.Mockito.*
 
