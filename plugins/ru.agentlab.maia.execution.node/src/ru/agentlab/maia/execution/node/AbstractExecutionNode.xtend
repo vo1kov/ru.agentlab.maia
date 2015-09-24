@@ -1,203 +1,96 @@
 package ru.agentlab.maia.execution.node
 
+import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.CopyOnWriteArraySet
-import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicReference
 import ru.agentlab.maia.execution.IExecutionInput
 import ru.agentlab.maia.execution.IExecutionNode
 import ru.agentlab.maia.execution.IExecutionOutput
-import ru.agentlab.maia.execution.IExecutionScheduler
+import ru.agentlab.maia.execution.IExecutionParameter
+import ru.agentlab.maia.execution.IStateChangedListener
 
-abstract class AbstractExecutionNode implements IExecutionNode {
+abstract class AbstractExecutionNode implements IExecutionNode, IStateChangedListener<IExecutionParameter<?>> {
 
-	val protected inputs = new CopyOnWriteArraySet<IExecutionInput<?>>
+	val protected inputs = new CopyOnWriteArrayList<IExecutionInput<?>>
 
-	val protected outputs = new CopyOnWriteArraySet<IExecutionOutput<?>>
+	val protected outputs = new CopyOnWriteArrayList<IExecutionOutput<?>>
 
-	val protected parent = new AtomicReference<IExecutionScheduler>
+	val protected listeners = new CopyOnWriteArraySet<IStateChangedListener<IExecutionNode>>
 
-	val protected state = new AtomicInteger(UNKNOWN)
-
-	// --------------------------------------------
-	// Parent manipulations
-	// --------------------------------------------
-	override setParent(IExecutionScheduler newParent) {
-		parent.set(newParent)
-	}
-
-	override IExecutionScheduler getParent() {
-		return parent.get
-	}
+	val protected state = new AtomicReference<String>(READY)
 
 	// --------------------------------------------
 	// Inputs manipulations
 	// --------------------------------------------
 	override getInputs() {
-		return inputs.iterator
+		return inputs
 	}
 
 	override void addInput(IExecutionInput<?> input) {
 		inputs += input
-		if (input.isConnected) {
-			onInputConnected(input)
-		} else if (input.disconnected) {
-			onInputDisconnected(input)
-		}
+		onStateChanged(input, null, input.state)
 	}
 
 	override removeInput(IExecutionInput<?> input) {
 		inputs.remove(input)
-		onInputConnected(null)
-	}
-
-	override getInput(String name) {
-		return inputs.iterator.findFirst[it.name == name]
-	}
-
-	override onInputDisconnected(IExecutionInput<?> input) {
-		if (!input.optional) {
-			changeStateUnknown(true)
-		}
-	}
-
-	override onOutputConnected(IExecutionOutput<?> output) {
-		for (in : outputs) {
-			if (in.disconnected) {
-				return
-			}
-		}
-		changeStateReady(true)
+		onStateChanged(input, input.state, IExecutionParameter.LINKED)
 	}
 
 	// --------------------------------------------
 	// Outputs manipulations
 	// --------------------------------------------
 	override getOutputs() {
-		return outputs.iterator
+		return outputs
 	}
 
 	override void addOutput(IExecutionOutput<?> output) {
 		outputs += output
-		if (output.isConnected) {
-			onOutputConnected(output)
-		} else if (output.disconnected) {
-			onOutputDisconnected(output)
-		}
+		onStateChanged(output, null, output.state)
 	}
 
 	override removeOutput(IExecutionOutput<?> output) {
 		outputs.remove(output)
-		onOutputConnected(null)
-	}
-
-	override getOutput(String name) {
-		return outputs.iterator.findFirst[it.name == name]
-	}
-
-	override onInputConnected(IExecutionInput<?> input) {
-		for (in : inputs) {
-			if (in.disconnected) {
-				return
-			}
-		}
-		changeStateReady(true)
-	}
-
-	override onOutputDisconnected(IExecutionOutput<?> output) {
-		if (!output.optional) {
-			changeStateUnknown(true)
-		}
+		onStateChanged(output, output.state, IExecutionParameter.LINKED)
 	}
 
 	// --------------------------------------------
 	// State manipulations
 	// --------------------------------------------
-	override String getStateName() {
-		switch (state.get) {
-			case UNKNOWN: {
-				return "UNKNOWN"
+	override String getState() {
+		return state.get
+	}
+
+	override setState(String newState) {
+		val oldState = state.getAndSet(newState)
+		if (oldState != newState) {
+			listeners.forEach [
+				onStateChanged(this, oldState, newState)
+			]
+		}
+		return oldState
+	}
+
+	override addStateListener(IStateChangedListener<IExecutionNode> listener) {
+		listeners += listener
+	}
+
+	override removeStateListener(IStateChangedListener<IExecutionNode> listener) {
+		listeners -= listener
+	}
+
+	override onStateChanged(IExecutionParameter<?> param, String oldState, String newState) {
+		switch (newState) {
+			case IExecutionParameter.LINKED: {
 			}
-			case READY: {
-				return "READY"
+			case IExecutionParameter.UNLINKED: {
+				if (!param.optional) {
+					state = UNKNOWN
+				}
 			}
-			case IN_WORK: {
-				return "IN_WORK"
-			}
-			case WAITING: {
-				return "WAITING"
-			}
-			case FINISHED: {
-				return "FINISHED"
-			}
-			case EXCEPTION: {
-				return "EXCEPTION"
+			default: {
+				throw new IllegalStateException("Unknown parameter state - [" + newState + "]")
 			}
 		}
 	}
 
-	override void changeStateUnknown(boolean propagate) {
-		val old = state.getAndSet(UNKNOWN)
-		if (propagate && old != UNKNOWN) {
-			parent.get?.onChildUnknown(this)
-		}
-	}
-
-	override void changeStateReady(boolean propagate) {
-		val old = state.getAndSet(READY)
-		if (propagate && old != READY) {
-			parent.get?.onChildReady(this)
-		}
-	}
-
-	override void changeStateInWork(boolean propagate) {
-		val old = state.getAndSet(IN_WORK)
-		if (propagate && old != IN_WORK) {
-			parent.get?.onChildInWork(this)
-		}
-	}
-
-	override void changeStateWaiting(boolean propagate) {
-		val old = state.getAndSet(WAITING)
-		if (propagate && old != WAITING) {
-			parent.get?.onChildWaiting(this)
-		}
-	}
-
-	override void changeStateFinished(boolean propagate) {
-		val old = state.getAndSet(FINISHED)
-		if (propagate && old != FINISHED) {
-			parent.get?.onChildFinished(this)
-		}
-	}
-
-	override void changeStateException(boolean propagate) {
-		val old = state.getAndSet(EXCEPTION)
-		if (propagate && old != EXCEPTION) {
-			parent.get?.onChildException(this)
-		}
-	}
-
-	override boolean isStateUnknown() {
-		state.get == UNKNOWN
-	}
-
-	override boolean isStateReady() {
-		state.get == READY
-	}
-
-	override boolean isStateInWork() {
-		state.get == IN_WORK
-	}
-
-	override boolean isStateWaiting() {
-		state.get == WAITING
-	}
-
-	override boolean isStateFinished() {
-		state.get == FINISHED
-	}
-
-	override boolean isStateException() {
-		state.get == EXCEPTION
-	}
 }

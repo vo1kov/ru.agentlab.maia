@@ -40,10 +40,10 @@ class AnnotatedAction extends AbstractExecutionAction {
 	}
 
 	override doInject() {
-		for (field : inputFields) {
-			val input = getInput(field.name)
-			field.accessible = true
-			field.set(implementation, input.value)
+		for(i : 0..< inputFields.length){
+			val input = inputs.get(i)
+			inputFields.get(i).accessible = true
+			inputFields.get(i).set(implementation, input.value)
 		}
 	}
 
@@ -62,12 +62,12 @@ class AnnotatedAction extends AbstractExecutionAction {
 
 	def private <T> IExecutionInput<T> createInput(String name, Field field) {
 		val c = field.type as Class<T>
-		new ExecutionInput(name, c, this, true)
+		new ExecutionInput(name, c)
 	}
 
 	def private <T> IExecutionOutput<T> createOutput(String name, Field field) {
 		val c = field.type as Class<T>
-		new ExecutionOutput(name, c, this, true)
+		new ExecutionOutput(name, c)
 	}
 
 }

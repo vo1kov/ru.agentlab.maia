@@ -1,38 +1,37 @@
 package ru.agentlab.maia.execution.node
 
-import java.util.concurrent.CopyOnWriteArraySet
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.atomic.AtomicReference
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.execution.IExecutionInput
-import ru.agentlab.maia.execution.IExecutionNode
-import ru.agentlab.maia.execution.IExecutionOutput
 import ru.agentlab.maia.execution.IExecutionParameter
+import ru.agentlab.maia.execution.IStateChangedListener
+import java.util.concurrent.CopyOnWriteArraySet
 
 @Accessors
 abstract class AbstractExecutionParameter<T> implements IExecutionParameter<T> {
 
-	val String name
+	val protected String name
 
-	val Class<T> type
+	val protected Class<T> type
 
-	val IExecutionNode node
+	val protected state = new AtomicReference<String>(IExecutionParameter.UNLINKED)
 
-	val state = new AtomicInteger(DISCONNECTED)
+	val protected linked = new CopyOnWriteArraySet<IExecutionParameter<T>>
 
-	val protected linkedInputs = new CopyOnWriteArraySet<IExecutionInput<T>>
+	val protected value = new AtomicReference<T>
 
-	val protected linkedOutputs = new CopyOnWriteArraySet<IExecutionOutput<T>>
+	val protected boolean isOptional
 
-	var AtomicReference<T> value
+	val protected listeners = new CopyOnWriteArrayList<IStateChangedListener<IExecutionParameter<T>>>
 
-	val boolean isOptional
-
-	new(String name, Class<T> type, IExecutionNode node, boolean isOptional) {
+	new(String name, Class<T> type, boolean isOptional) {
 		this.name = name
 		this.type = type
-		this.node = node
 		this.isOptional = isOptional
+	}
+	
+	override getLinked() {
+		return linked
 	}
 
 	// --------------------------------------------
@@ -49,39 +48,46 @@ abstract class AbstractExecutionParameter<T> implements IExecutionParameter<T> {
 	// --------------------------------------------
 	// Connection manipulations
 	// --------------------------------------------
-	override connect(IExecutionInput<T> input) {
-		linkedInputs += input
-		changeStateConnected
-	}
-
-	override connect(IExecutionOutput<T> output) {
-		linkedOutputs += output
-		changeStateConnected
-	}
-
-	override disconnect(IExecutionInput<T> input) {
-		linkedInputs -= input
-		if (linkedOutputs.empty && linkedInputs.empty) {
-			changeStateDisconnected
+	override link(IExecutionParameter<T> param) {
+		val added = linked.add(param)
+		if (added) {
+			state = LINKED
 		}
 	}
 
-	override disconnect(IExecutionOutput<T> output) {
-		linkedOutputs -= output
-		if (linkedOutputs.empty && linkedInputs.empty) {
-			changeStateDisconnected
+	override unlink(IExecutionParameter<T> param) {
+		val removed = linked.remove(param)
+		if (removed) {
+			if (linked.empty) {
+				state = UNLINKED
+			} else {
+				state = LINKED
+			}
 		}
 	}
 
 	// --------------------------------------------
 	// State manipulations
 	// --------------------------------------------
-	override boolean isConnected() {
-		return state.get == CONNECTED
+	override String getState() {
+		return state.get
 	}
 
-	override boolean isDisconnected() {
-		state.get == DISCONNECTED
+	override setState(String newState) {
+		val oldState = state.getAndSet(newState)
+		if (oldState != newState) {
+			listeners.forEach [
+				onStateChanged(this, oldState, newState)
+			]
+		}
+		return oldState
 	}
 
+	override addStateListener(IStateChangedListener<IExecutionParameter<T>> listener) {
+		listeners += listener
+	}
+
+	override removeStateListener(IStateChangedListener<IExecutionParameter<T>> listener) {
+		listeners -= listener
+	}
 }

@@ -75,29 +75,8 @@ class FsmScheduler extends AbstractExecutionScheduler implements IFsmScheduler {
 		}
 	}
 	
-	override onChildUnknown(IExecutionNode node) {
+	override protected onChildChangedState(IExecutionNode node, String oldState, String newState) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override onChildReady(IExecutionNode node) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
-	override onChildInWork(IExecutionNode node) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
-	override onChildWaiting(IExecutionNode node) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
-	override onChildFinished(IExecutionNode node) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
-	override onChildException(IExecutionNode node) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
-
 }

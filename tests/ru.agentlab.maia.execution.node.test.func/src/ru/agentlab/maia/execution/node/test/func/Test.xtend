@@ -6,16 +6,24 @@ import ru.agentlab.maia.execution.node.ExecutionInput
 class Test {
 	
 	def static void main(String[] args) {
+		val parent = new SequenceContextScheduler
 		val scheduler = new SequenceContextScheduler
-		println(scheduler.stateName)
-		val input = new ExecutionInput("1", Object, scheduler, false)
-		val input2 = new ExecutionInput("2", Object, scheduler, false)
+		println("scheduler " + scheduler.stateName)
+		println("parent " + scheduler.stateName)
+		parent.addChild(scheduler)
+		println("scheduler " + scheduler.stateName)
+		println("parent " + scheduler.stateName)
+		val input = new ExecutionInput("1", Object, scheduler)
+		val input2 = new ExecutionInput("2", Object, scheduler)
 		scheduler.addInput(input)
-		println(scheduler.stateName)
-		input.connect(input2)
-		println(scheduler.stateName)
+		println("scheduler " + scheduler.stateName)
+		println("parent " + scheduler.stateName)
+		input.link(input2)
+		println("scheduler " + scheduler.stateName)
+		println("parent " + scheduler.stateName)
 		scheduler.addInput(new ExecutionInput("2", Object, scheduler, true))
-		println(scheduler.stateName)
+		println("scheduler " + scheduler.stateName)
+		println("parent " + scheduler.stateName)
 	}
 	
 }
