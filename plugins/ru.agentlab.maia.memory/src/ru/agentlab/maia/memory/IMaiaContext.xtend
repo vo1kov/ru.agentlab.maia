@@ -33,34 +33,7 @@ interface IMaiaContext {
 	 * @param parent 	the new parent context. If <code>null</code> then context
 	 * 					become to be a root context.
 	 */
-	def void setParent(IMaiaContext parent)
-
-	/**
-	 * <p>
-	 * Returns collection of context childs. 
-	 * </p>
-	 * 
-	 * @return 			collection of context childs.
-	 */
-	def Iterable<IMaiaContext> getChilds()
-
-	/**
-	 * <p>
-	 * Register specified context as a child. 
-	 * </p>
-	 * 
-	 * @param child 	context registering as a child of context.
-	 */
-	def void addChild(IMaiaContext child)
-
-	/**
-	 * <p>
-	 * Deregister specified context from childs. 
-	 * </p>
-	 * 
-	 * @param child 	context deregistering from child contexts.
-	 */
-	def void removeChild(IMaiaContext child)
+	def IMaiaContext setParent(IMaiaContext parent)
 
 	/**
 	 * <p>

@@ -242,23 +242,23 @@ class AbstractContext_putProviderByString_FunctionalTests extends AbstractContex
 		assertThat(context.parent, equalTo(before))
 	}
 
-	@Test
-	def void getChilds_unchangeValue_whenValidArgs() {
-		val before = context.childs
-
-		invokeWithValidArgs
-
-		assertArrayEquals(before, context.childs)
-	}
-
-	@Test
-	def void getChilds_unchangeValue_whenNullProvider() {
-		val before = context.childs
-
-		invokeWithNullProvider
-
-		assertArrayEquals(before, context.childs)
-	}
+//	@Test
+//	def void getChilds_unchangeValue_whenValidArgs() {
+//		val before = context.childs
+//
+//		invokeWithValidArgs
+//
+//		assertArrayEquals(before, context.childs)
+//	}
+//
+//	@Test
+//	def void getChilds_unchangeValue_whenNullProvider() {
+//		val before = context.childs
+//
+//		invokeWithNullProvider
+//
+//		assertArrayEquals(before, context.childs)
+//	}
 
 	@Test
 	def void self_notInteractWithParent_whenValidArgs() {

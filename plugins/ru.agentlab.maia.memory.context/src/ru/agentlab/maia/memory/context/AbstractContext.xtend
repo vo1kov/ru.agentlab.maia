@@ -1,9 +1,7 @@
 package ru.agentlab.maia.memory.context
 
-import java.util.Collection
-import java.util.Collections
-import java.util.HashSet
 import java.util.UUID
+import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.memory.IMaiaContext
@@ -16,8 +14,8 @@ import ru.agentlab.maia.memory.exception.MaiaContextKeyNotFound
  * <p>Implementation guarantee that:
  * </p>
  * <ul>
- * <li>Context can be in hierarchy (have parent and childs);</li>
- * <li>Context will have unique UUID;</li>
+ * <li>Context can have parent;</li>
+ * <li>Context have unique UUID;</li>
  * <li>Context redirect service searching to parent if can't find it;</li>
  * <li>Context disable <code>null</code> keys for storing services;</li>
  * </ul>
@@ -27,13 +25,13 @@ import ru.agentlab.maia.memory.exception.MaiaContextKeyNotFound
 abstract class AbstractContext implements IMaiaContext {
 
 	@Accessors
-	val String uuid = UUID.randomUUID.toString
+	val private uuid = UUID.randomUUID.toString
 
-	@Accessors
-	var volatile IMaiaContext parent
+	var protected parent = new AtomicReference<IMaiaContext>(null)
 
-	@Accessors
-	val Collection<IMaiaContext> childs = Collections.synchronizedSet(new HashSet)
+	override getParent() {
+		return parent.get
+	}
 
 	override getService(String key) throws MaiaContextKeyNotFound {
 		if (key == null) {
@@ -42,7 +40,7 @@ abstract class AbstractContext implements IMaiaContext {
 		try {
 			return getInternal(key).extractServiceFromObject
 		} catch (MaiaContextKeyNotFound e) {
-			val p = parent
+			val p = parent.get
 			if (p != null) {
 				return p.getService(key)
 			} else {
@@ -60,7 +58,7 @@ abstract class AbstractContext implements IMaiaContext {
 		try {
 			return getInternal(key).extractServiceFromObject
 		} catch (MaiaContextKeyNotFound e) {
-			val p = parent
+			val p = parent.get
 			if (p != null) {
 				return p.getService(key)
 			} else {
@@ -92,7 +90,7 @@ abstract class AbstractContext implements IMaiaContext {
 		try {
 			return getInternal(key).extractProviderFromObject
 		} catch (MaiaContextKeyNotFound e) {
-			val p = parent
+			val p = parent.get
 			if (p != null) {
 				return p.getProvider(key)
 			} else {
@@ -110,7 +108,7 @@ abstract class AbstractContext implements IMaiaContext {
 		try {
 			return getInternal(key).extractProviderFromObject
 		} catch (MaiaContextKeyNotFound e) {
-			val p = parent
+			val p = parent.get
 			if (p != null) {
 				return p.getProvider(key)
 			} else {
@@ -177,18 +175,8 @@ abstract class AbstractContext implements IMaiaContext {
 		return removeInternal(key)
 	}
 
-	override addChild(IMaiaContext child) {
-		childs += child
-	}
-
-	override removeChild(IMaiaContext child) {
-		childs -= child
-	}
-
-	override void setParent(IMaiaContext newParent) {
-		parent?.removeChild(this)
-		parent = newParent
-		parent.addChild(this)
+	override IMaiaContext setParent(IMaiaContext newParent) {
+		return parent.getAndSet(newParent)
 	}
 
 	def private <T> T extractServiceFromObject(Object value) {
