@@ -1,8 +1,8 @@
 package ru.agentlab.maia.execution.scheduler.sequence
 
+import ru.agentlab.maia.execution.AbstractExecutionScheduler
 import ru.agentlab.maia.execution.IExecutionNode
 import ru.agentlab.maia.execution.IExecutionScheduler
-import ru.agentlab.maia.execution.scheduler.AbstractExecutionScheduler
 
 class SequenceContextScheduler extends AbstractExecutionScheduler implements IExecutionScheduler {
 
@@ -51,35 +51,35 @@ class SequenceContextScheduler extends AbstractExecutionScheduler implements IEx
 		return childs.get(index)
 	}
 
-	override protected onChildChangedState(IExecutionNode node, String oldState, String newState) {
-		switch (newState) {
-			case UNKNOWN: {
-				state = UNKNOWN
-			}
-			case READY: {
-				state = READY
-			}
-			case IN_WORK: {
-				state = IN_WORK
-			}
-			case WAITING: {
-				state = WAITING
-			}
-			case FINISHED: {
-				for (ch : childs) {
-					if (!ch.state.equals(FINISHED)) {
-						return
-					}
-				}
-				state = FINISHED
-			}
-			case EXCEPTION: {
-				state = EXCEPTION
-			}
-			default: {
-				throw new IllegalStateException("Unknown child node state - [" + newState + "]")
-			}
-		}
-	}
+//	override protected onChildChangedState(IExecutionNode node, String oldState, String newState) {
+//		switch (newState) {
+//			case UNKNOWN: {
+//				state = UNKNOWN
+//			}
+//			case READY: {
+//				state = READY
+//			}
+//			case IN_WORK: {
+//				state = IN_WORK
+//			}
+//			case WAITING: {
+//				state = WAITING
+//			}
+//			case FINISHED: {
+//				for (ch : childs) {
+//					if (!ch.state.equals(FINISHED)) {
+//						return
+//					}
+//				}
+//				state = FINISHED
+//			}
+//			case EXCEPTION: {
+//				state = EXCEPTION
+//			}
+//			default: {
+//				throw new IllegalStateException("Unknown child node state - [" + newState + "]")
+//			}
+//		}
+//	}
 
 }

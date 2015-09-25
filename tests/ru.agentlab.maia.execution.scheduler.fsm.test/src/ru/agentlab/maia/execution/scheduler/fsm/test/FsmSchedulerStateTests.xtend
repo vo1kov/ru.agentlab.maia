@@ -8,8 +8,8 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
+import ru.agentlab.maia.execution.AbstractExecutionNode
 import ru.agentlab.maia.execution.IExecutionNode
-import ru.agentlab.maia.execution.node.AbstractExecutionNode
 import ru.agentlab.maia.execution.scheduler.fsm.IFsmScheduler
 import ru.agentlab.maia.execution.scheduler.fsm.impl.FsmScheduler
 import ru.agentlab.maia.memory.IMaiaContext

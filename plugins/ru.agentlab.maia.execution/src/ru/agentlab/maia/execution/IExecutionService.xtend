@@ -1,6 +1,6 @@
 package ru.agentlab.maia.execution
 
-interface IMaiaExecutorService {
+interface IExecutionService {
 	
 	def void start()
 	

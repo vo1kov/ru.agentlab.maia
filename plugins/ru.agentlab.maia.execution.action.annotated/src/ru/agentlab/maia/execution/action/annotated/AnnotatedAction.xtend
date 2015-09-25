@@ -3,15 +3,13 @@ package ru.agentlab.maia.execution.action.annotated
 import java.lang.reflect.Field
 import java.util.ArrayList
 import javax.inject.Inject
-import ru.agentlab.maia.execution.action.AbstractExecutionAction
+import ru.agentlab.maia.execution.AbstractExecutionAction
+import ru.agentlab.maia.execution.ExecutionParameter
+import ru.agentlab.maia.execution.IExecutionParameter
 import ru.agentlab.maia.execution.action.annotation.Action
 import ru.agentlab.maia.execution.action.annotation.Input
 import ru.agentlab.maia.execution.action.annotation.Output
 import ru.agentlab.maia.memory.IMaiaContextInjector
-import ru.agentlab.maia.execution.node.ExecutionInput
-import ru.agentlab.maia.execution.IExecutionInput
-import ru.agentlab.maia.execution.node.ExecutionOutput
-import ru.agentlab.maia.execution.IExecutionOutput
 
 class AnnotatedAction extends AbstractExecutionAction {
 
@@ -40,10 +38,11 @@ class AnnotatedAction extends AbstractExecutionAction {
 	}
 
 	override doInject() {
-		for(i : 0..< inputFields.length){
+		for (i : 0 ..< inputFields.length) {
 			val input = inputs.get(i)
-			inputFields.get(i).accessible = true
-			inputFields.get(i).set(implementation, input.value)
+			val field = inputFields.get(i)
+			field.accessible = true
+			field.set(implementation, input.value)
 		}
 	}
 
@@ -51,23 +50,27 @@ class AnnotatedAction extends AbstractExecutionAction {
 		return injector.invoke(implementation, Action)
 	}
 
+	def private <T> save(IExecutionParameter<T> output, Field field) {
+		val value = field.get(implementation) as T
+		output.value = value
+	}
+
 	override doUninject() {
-		for (field : outputFields) {
-//			val output = getOutput(field.name)
-//			for (linked : output.linked) {
-//				linked.setParameter(field.get(implementation))
-//			}
+		for (i : 0 ..< outputFields.length) {
+			val output = outputs.get(i)
+			val field = outputFields.get(i)
+			save(output, field)
 		}
 	}
 
-	def private <T> IExecutionInput<T> createInput(String name, Field field) {
+	def private <T> IExecutionParameter<T> createInput(String name, Field field) {
 		val c = field.type as Class<T>
-		new ExecutionInput(name, c)
+		new ExecutionParameter(name, c)
 	}
 
-	def private <T> IExecutionOutput<T> createOutput(String name, Field field) {
+	def private <T> IExecutionParameter<T> createOutput(String name, Field field) {
 		val c = field.type as Class<T>
-		new ExecutionOutput(name, c)
+		new ExecutionParameter(name, c)
 	}
 
 }

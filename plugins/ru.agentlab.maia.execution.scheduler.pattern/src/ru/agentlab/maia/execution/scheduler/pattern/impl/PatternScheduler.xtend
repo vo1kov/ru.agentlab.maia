@@ -2,8 +2,8 @@ package ru.agentlab.maia.execution.scheduler.pattern.impl
 
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
+import ru.agentlab.maia.execution.AbstractExecutionScheduler
 import ru.agentlab.maia.execution.IExecutionNode
-import ru.agentlab.maia.execution.scheduler.AbstractExecutionScheduler
 import ru.agentlab.maia.execution.scheduler.pattern.IPatternScheduler
 import ru.agentlab.maia.memory.IMaiaContext
 
@@ -54,10 +54,6 @@ class PatternScheduler extends AbstractExecutionScheduler implements IPatternSch
 		stateMapping.clear
 	}
 
-	override synchronized isEmpty() {
-		return stateMapping.empty
-	}
-
 	def add(IExecutionNode context) {
 //		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
@@ -65,9 +61,5 @@ class PatternScheduler extends AbstractExecutionScheduler implements IPatternSch
 	override schedule() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
-	override protected onChildChangedState(IExecutionNode node, String oldState, String newState) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
+
 }

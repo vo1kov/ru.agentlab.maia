@@ -1,13 +1,12 @@
-package ru.agentlab.maia.execution.scheduler
+package ru.agentlab.maia.execution
 
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.atomic.AtomicReference
-import ru.agentlab.maia.execution.IExecutionNode
-import ru.agentlab.maia.execution.IExecutionScheduler
-import ru.agentlab.maia.execution.node.AbstractExecutionNode
+import org.eclipse.xtend.lib.annotations.Accessors
 
 abstract class AbstractExecutionScheduler extends AbstractExecutionNode implements IExecutionScheduler {
-
+	
+	@Accessors
 	val protected childs = new CopyOnWriteArrayList<IExecutionNode>
 
 	val protected current = new AtomicReference<IExecutionNode>
@@ -25,11 +24,7 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 		}
 	}
 
-	override isEmpty() {
-		return childs.empty
-	}
-	
-	def protected void onChildChangedState(IExecutionNode node, String oldState, String newState)
+//	def protected void onChildChangedState(IExecutionNode node, String oldState, String newState)
 
 	/** 
 	 * Removes all nodes from the queue.
@@ -65,10 +60,6 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 			throw new IllegalArgumentException("Node parameter should be not null")
 		}
 		return current.getAndSet(node)
-	}
-
-	override getChilds() {
-		return childs.iterator
 	}
 
 }

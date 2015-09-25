@@ -1,6 +1,6 @@
 package ru.agentlab.maia.execution.action.jade
 
-import ru.agentlab.maia.execution.action.AbstractExecutionAction
+import ru.agentlab.maia.execution.AbstractExecutionAction
 
 class JadeAction extends AbstractExecutionAction {
 

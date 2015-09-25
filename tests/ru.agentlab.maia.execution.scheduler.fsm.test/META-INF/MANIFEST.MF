@@ -13,9 +13,7 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.execution;bundle-version="1.0.0",
  ru.agentlab.maia.memory;bundle-version="1.0.0",
  ru.agentlab.maia.execution.scheduler.fsm;bundle-version="1.0.0",
- org.hamcrest;bundle-version="1.1.0",
- ru.agentlab.maia.execution.node;bundle-version="1.0.0",
- ru.agentlab.maia.execution.scheduler;bundle-version="1.0.0"
+ org.hamcrest;bundle-version="1.1.0"
 Import-Package: org.osgi.framework;version="1.8.0"
 Bundle-ClassPath: .
 Bundle-Vendor: http://www.agentlab.ru/

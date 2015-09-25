@@ -2,8 +2,8 @@ package ru.agentlab.maia.execution.scheduler.fsm.impl
 
 import java.util.ArrayList
 import java.util.List
+import ru.agentlab.maia.execution.AbstractExecutionScheduler
 import ru.agentlab.maia.execution.IExecutionNode
-import ru.agentlab.maia.execution.scheduler.AbstractExecutionScheduler
 import ru.agentlab.maia.execution.scheduler.fsm.IFsmScheduler
 
 class FsmScheduler extends AbstractExecutionScheduler implements IFsmScheduler {
@@ -74,9 +74,5 @@ class FsmScheduler extends AbstractExecutionScheduler implements IFsmScheduler {
 			return null
 		}
 	}
-	
-	override protected onChildChangedState(IExecutionNode node, String oldState, String newState) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
+
 }

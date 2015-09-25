@@ -1,22 +1,19 @@
 package ru.agentlab.maia.execution
 
-interface IExecutionParameter<T> extends IStateFull<IExecutionParameter<T>> {
+import java.util.concurrent.atomic.AtomicReference
 
-	/**
-	 * Indicate that current parameter isn't ready for execution by some worker.
-	 */
-	val public static String UNLINKED = "UNLINKED"
+interface IExecutionParameter<T> {
 
-	/**
-	 * Indicate that current parameter .
-	 */
-	val public static String LINKED = "LINKED"
-	
 	def String getName()
 
 	def T getValue()
 
 	def void setValue(T value)
+	
+	/**
+	 * Can not be <code>null</code>.
+	 */
+	def AtomicReference<T> getReference()
 
 	def <T> Class<T> getType()
 
@@ -24,8 +21,6 @@ interface IExecutionParameter<T> extends IStateFull<IExecutionParameter<T>> {
 
 	def void link(IExecutionParameter<T> param)
 
-	def void unlink(IExecutionParameter<T> param)
+	def void unlink()
 	
-	def Iterable<IExecutionParameter<T>> getLinked()
-
 }

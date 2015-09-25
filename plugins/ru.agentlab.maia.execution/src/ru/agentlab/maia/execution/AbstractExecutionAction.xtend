@@ -1,8 +1,6 @@
-package ru.agentlab.maia.execution.action
+package ru.agentlab.maia.execution
 
 import java.util.concurrent.atomic.AtomicReference
-import ru.agentlab.maia.execution.IExecutionAction
-import ru.agentlab.maia.execution.node.AbstractExecutionNode
 
 abstract class AbstractExecutionAction extends AbstractExecutionNode implements IExecutionAction {
 

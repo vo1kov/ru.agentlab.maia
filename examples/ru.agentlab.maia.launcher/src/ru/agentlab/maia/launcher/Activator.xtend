@@ -4,11 +4,11 @@ import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import ru.agentlab.maia.context.modifier.MaiaExtension
 import ru.agentlab.maia.context.modifier.MaiaRootContextModifier
-import ru.agentlab.maia.execution.IMaiaExecutorService
 import ru.agentlab.maia.execution.action.annotated.AnnotatedAction
 import ru.agentlab.maia.execution.tree.IExecutionNode
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.execution.node.ExecutionInput
+import ru.agentlab.maia.execution.IExecutionService
 
 class Activator implements BundleActivator {
 
@@ -79,7 +79,7 @@ class Activator implements BundleActivator {
 //			deploy(new AnnotatedAction(PrintlnAction), IExecutionNode)
 //			set("debugString", "behaviour4")
 //		]
-		container.get(IMaiaExecutorService).start
+		container.get(IExecutionService).start
 	// Thread.sleep(100)
 	// container.get(IMaiaExecutorService).stop
 //		agent => [

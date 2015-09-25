@@ -12,7 +12,6 @@ Require-Bundle: com.google.guava,
  javax.inject;bundle-version="1.0.0",
  ru.agentlab.maia.memory;bundle-version="1.0.0",
  ru.agentlab.maia.execution;bundle-version="1.0.0",
- ru.agentlab.maia.execution.action.annotation;bundle-version="1.0.0",
- ru.agentlab.maia.execution.action;bundle-version="1.0.0"
+ ru.agentlab.maia.execution.action.annotation;bundle-version="1.0.0"
 Bundle-Vendor: http://www.agentlab.ru/
 
