@@ -20,6 +20,10 @@ abstract class AbstractExecutionNode implements IExecutionNode {
 		inputs -= input
 	}
 
+	override removeAllInputs() {
+		inputs.clear
+	}
+
 	override getOutputs() {
 		return outputs
 	}
@@ -32,4 +36,8 @@ abstract class AbstractExecutionNode implements IExecutionNode {
 		outputs -= output
 	}
 
+	override removeAllOutputs() {
+		outputs.clear
+	}
+	
 }

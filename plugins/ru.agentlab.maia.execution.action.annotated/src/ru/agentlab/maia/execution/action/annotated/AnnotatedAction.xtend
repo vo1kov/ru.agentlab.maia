@@ -72,5 +72,13 @@ class AnnotatedAction extends AbstractExecutionAction {
 		val c = field.type as Class<T>
 		new ExecutionParameter(name, c)
 	}
+	
+	override isDone() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override reset() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
 
 }

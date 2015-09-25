@@ -1,6 +1,6 @@
 package ru.agentlab.maia.execution.scheduler.aj;
 
-import ru.agentlab.maia.execution.tree.IExecutionScheduler;
+import ru.agentlab.maia.execution.IExecutionScheduler;
 
 public abstract aspect AMaiaExecutorScheduler {
 

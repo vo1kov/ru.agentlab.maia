@@ -74,5 +74,9 @@ class FsmScheduler extends AbstractExecutionScheduler implements IFsmScheduler {
 			return null
 		}
 	}
+	
+	override isDone() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
 
 }
