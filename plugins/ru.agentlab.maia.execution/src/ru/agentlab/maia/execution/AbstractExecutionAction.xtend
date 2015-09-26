@@ -11,8 +11,12 @@ abstract class AbstractExecutionAction extends AbstractExecutionNode implements 
 			doInject()
 			doRun()
 			doUninject()
+			
+			state.set(FINISHED)
+			parent.get.markChildFinished(this)
 		} catch (Exception e) {
-			e.printStackTrace
+			state.set(EXCEPTION)
+			parent.get.markChildException(this)
 		}
 	}
 

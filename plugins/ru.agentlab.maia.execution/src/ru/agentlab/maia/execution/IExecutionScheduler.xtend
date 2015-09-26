@@ -6,7 +6,7 @@ interface IExecutionScheduler extends IExecutionNode {
 
 	def IExecutionNode setCurrent(IExecutionNode node)
 
-	def Iterable<IExecutionNode> schedule()
+	def IExecutionNode schedule()
 
 	def Iterable<IExecutionNode> getChilds()
 
@@ -18,7 +18,7 @@ interface IExecutionScheduler extends IExecutionNode {
 
 	def void markChildReady(IExecutionNode node)
 	
-	def void markChildInWork(IExecutionNode node)
+//	def void markChildInWork(IExecutionNode node)
 
 	def void markChildWaiting(IExecutionNode node)
 

@@ -30,10 +30,6 @@ class RunnableContextAction extends AbstractExecutionAction {
 		return null
 	}
 
-	override isDone() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
 	override reset() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}

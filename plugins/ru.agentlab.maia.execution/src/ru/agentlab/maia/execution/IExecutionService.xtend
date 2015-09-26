@@ -6,8 +6,6 @@ interface IExecutionService {
 	
 	def void stop()
 	
-	def void submit(IExecutionNode node)
-	
 	def boolean isActive()
 	
 }

@@ -27,10 +27,10 @@ class AnnotatedAction extends AbstractExecutionAction {
 		for (field : implementation.get.class.declaredFields) {
 			if (field.isAnnotationPresent(Input)) {
 				inputs += field
-				addInput(createInput(field.name, field))
+				addInput(createPrameter(field.name, field))
 			} else if (field.isAnnotationPresent(Output)) {
 				outputs += field
-				addOutput(createOutput(field.name, field))
+				addOutput(createPrameter(field.name, field))
 			}
 		}
 		inputFields = inputs.toArray(newArrayOfSize(inputs.size))
@@ -63,20 +63,11 @@ class AnnotatedAction extends AbstractExecutionAction {
 		}
 	}
 
-	def private <T> IExecutionParameter<T> createInput(String name, Field field) {
+	def private <T> IExecutionParameter<T> createPrameter(String name, Field field) {
 		val c = field.type as Class<T>
 		new ExecutionParameter(name, c)
 	}
 
-	def private <T> IExecutionParameter<T> createOutput(String name, Field field) {
-		val c = field.type as Class<T>
-		new ExecutionParameter(name, c)
-	}
-	
-	override isDone() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
 	override reset() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}

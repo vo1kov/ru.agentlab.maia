@@ -1,7 +1,6 @@
 package ru.agentlab.maia.execution
 
 import java.util.ArrayList
-import java.util.BitSet
 import java.util.concurrent.atomic.AtomicReference
 import org.eclipse.xtend.lib.annotations.Accessors
 
@@ -12,89 +11,49 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 
 	val protected current = new AtomicReference<IExecutionNode>
 
-	val protected inworkChilds = new BitSet
-
-	val protected waitingChilds = new BitSet
-
-	val protected finishedChilds = new BitSet
-
-	val protected exceptionChilds = new BitSet
-
-	override synchronized markChildReady(IExecutionNode node) {
-		val index = childs.indexOf(node)
-		if (index != -1) {
-			inworkChilds.set(index, false)
-			waitingChilds.set(index, false)
-			finishedChilds.set(index, false)
-			exceptionChilds.set(index, false)
-		} else {
-			throw new IllegalArgumentException("Scheduler [" + this + "] have no child node [" + node + "]")
-		}
+	override markChildReady(IExecutionNode node) {
+		node.checkValid
+		onChildReady(node)
 	}
 
-	override synchronized markChildInWork(IExecutionNode node) {
-		val index = childs.indexOf(node)
-		if (index != -1) {
-			inworkChilds.set(index, true)
-			waitingChilds.set(index, false)
-			finishedChilds.set(index, false)
-			exceptionChilds.set(index, false)
-		} else {
-			throw new IllegalArgumentException("Scheduler [" + this + "] have no child node [" + node + "]")
-		}
+	override markChildWaiting(IExecutionNode node) {
+		node.checkValid
+		onChildWaiting(node)
 	}
 
-	override synchronized markChildWaiting(IExecutionNode node) {
-		val index = childs.indexOf(node)
-		if (index != -1) {
-			inworkChilds.set(index, false)
-			waitingChilds.set(index, true)
-			finishedChilds.set(index, false)
-			exceptionChilds.set(index, false)
-		} else {
-			throw new IllegalArgumentException("Scheduler [" + this + "] have no child node [" + node + "]")
-		}
+	override markChildFinished(IExecutionNode node) {
+		node.checkValid
+		onChildFinished(node)
 	}
 
-	override synchronized markChildFinished(IExecutionNode node) {
-		val index = childs.indexOf(node)
-		if (index != -1) {
-			inworkChilds.set(index, false)
-			waitingChilds.set(index, false)
-			finishedChilds.set(index, true)
-			exceptionChilds.set(index, false)
-		} else {
-			throw new IllegalArgumentException("Scheduler [" + this + "] have no child node [" + node + "]")
-		}
+	override markChildException(IExecutionNode node) {
+		node.checkValid
+		onChildException(node)
 	}
 
-	override synchronized markChildException(IExecutionNode node) {
-		val index = childs.indexOf(node)
-		if (index != -1) {
-			inworkChilds.set(index, false)
-			waitingChilds.set(index, false)
-			finishedChilds.set(index, false)
-			exceptionChilds.set(index, true)
-		} else {
+	def protected void onChildReady(IExecutionNode node)
+
+	def protected void onChildWaiting(IExecutionNode node)
+
+	def protected void onChildFinished(IExecutionNode node)
+
+	def protected void onChildException(IExecutionNode node)
+
+	def private checkValid(IExecutionNode node) {
+		if (node == null) {
+			throw new NullPointerException("Node can't be null")
+		}
+		if (!childs.contains(node)) {
 			throw new IllegalArgumentException("Scheduler [" + this + "] have no child node [" + node + "]")
 		}
 	}
 
 	override synchronized addChild(IExecutionNode node) {
-		if (node == null) {
-			throw new IllegalArgumentException("Node parameter should be not null")
-		}
-		val index = childs.indexOf(node)
-		if (index == -1) {
-			childs.add(node)
-		}
+		node.checkValid
+		childs.add(node)
 	}
 
 	override synchronized reset() {
-		inworkChilds.clear
-		waitingChilds.clear
-		finishedChilds.clear
-		exceptionChilds.clear
 		for (child : childs) {
 			child.reset
 		}
@@ -107,10 +66,6 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 	 */
 	override synchronized removeAll() {
 		childs.clear
-		inworkChilds.clear
-		waitingChilds.clear
-		finishedChilds.clear
-		exceptionChilds.clear
 	}
 
 	/** 
@@ -123,20 +78,8 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 	 * @return node previously at the scheduler 
 	 */
 	override synchronized removeChild(IExecutionNode node) {
-		if (node == null) {
-			throw new IllegalArgumentException("Node parameter should be not null")
-		}
-		val index = childs.indexOf(node)
-		if (index != -1) {
-			inworkChilds.set(index, false)
-			waitingChilds.set(index, false)
-			finishedChilds.set(index, false)
-			exceptionChilds.set(index, true)
-			childs.remove(index)
-			return true
-		} else {
-			throw new IllegalArgumentException("Scheduler [" + this + "] have no child node [" + node + "]")
-		}
+		node.checkValid
+		childs.remove(node)
 	}
 
 	override getCurrent() {
