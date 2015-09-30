@@ -2,11 +2,7 @@ package ru.agentlab.maia.execution
 
 interface IExecutionScheduler extends IExecutionNode {
 
-	def IExecutionNode getCurrent()
-
-	def IExecutionNode setCurrent(IExecutionNode node)
-
-	def IExecutionNode schedule()
+	def IExecutionNode getNode()
 
 	def Iterable<IExecutionNode> getChilds()
 
@@ -16,14 +12,12 @@ interface IExecutionScheduler extends IExecutionNode {
 
 	def void removeAll()
 
-	def void markChildReady(IExecutionNode node)
+	def void notifyChildReady(IExecutionNode node)
 	
-//	def void markChildInWork(IExecutionNode node)
+	def void notifyChildBlocked()
 
-	def void markChildWaiting(IExecutionNode node)
+	def void notifyChildSuccess()
 
-	def void markChildFinished(IExecutionNode node)
-
-	def void markChildException(IExecutionNode node)
+	def void notifyChildException()
 	
 }

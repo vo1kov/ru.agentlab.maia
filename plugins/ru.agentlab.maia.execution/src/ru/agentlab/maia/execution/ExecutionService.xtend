@@ -19,20 +19,25 @@ class ExecutionService implements IExecutionService {
 		executor.submit(new Runnable {
 			override run() {
 				if (active) {
-					switch (node) {
-						IExecutionScheduler: {
-							val childs = node.schedule
-						}
-						IExecutionAction: {
-							node.run
-						}
+					val action = node.action
+					if (action != null) {
+						action.run
 					}
-					if (node.state != IExecutionNode.FINISHED) {
+					if (node.state != IExecutionNode.ru.agentlab.maia.execution.IExecutionNode.SUCCESSFULLY) {
 						executor.submit(this)
 					}
 				}
 			}
 		})
+	}
+
+	def IExecutionAction getAction(IExecutionNode node) {
+		if (node instanceof IExecutionAction) {
+			return node
+		}
+		if (node instanceof IExecutionScheduler) {
+			return node.node.action
+		}
 	}
 
 	override void stop() {
@@ -44,37 +49,3 @@ class ExecutionService implements IExecutionService {
 	}
 
 }
-
-//class MaiaWorker implements Runnable {
-//
-//	IExecutionService service
-//
-//	IExecutionNode node
-//
-//	@Inject
-//	new(IExecutionService service, IExecutionNode node) {
-//		this.service = service
-//		this.node = node
-//	}
-//
-//	override run() {
-//		if (service.active) {
-//			switch (node) {
-//				IExecutionScheduler: {
-//					val childs = node.schedule
-//					if (childs.size > 0) {
-//						for (i : 1 ..< childs.size) {
-//						}
-//					}
-//				}
-//				IExecutionAction: {
-//					node.run
-//				}
-//			}
-//			if (!node.done) {
-//				service.submit(node)
-//			}
-//		}
-//	}
-//
-//}

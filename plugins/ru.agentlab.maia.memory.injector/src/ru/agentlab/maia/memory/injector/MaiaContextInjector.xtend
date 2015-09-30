@@ -25,10 +25,8 @@ class MaiaContextInjector implements IMaiaContextInjector {
 
 	override <T> T make(Class<T> clazz) {
 		try {
-			val sortedConstructors = (clazz.constructors as Constructor<T>[]).sortWith [ c1, c2 |
-				val l1 = c1.parameterTypes.length
-				val l2 = c2.parameterTypes.length
-				return l2 - l1
+			val sortedConstructors = (clazz.constructors as Constructor<T>[]).sortWith [
+				return $0.parameterTypes.length.compareTo($1.parameterTypes.length)
 			]
 
 			for (constructor : sortedConstructors) {

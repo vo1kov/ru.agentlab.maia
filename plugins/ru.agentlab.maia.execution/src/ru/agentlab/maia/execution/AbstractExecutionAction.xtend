@@ -12,11 +12,11 @@ abstract class AbstractExecutionAction extends AbstractExecutionNode implements 
 			doRun()
 			doUninject()
 			
-			state.set(FINISHED)
-			parent.get.markChildFinished(this)
+			state.set(ru.agentlab.maia.execution.IExecutionNode.SUCCESS)
+			parent.get.notifyChildSuccess
 		} catch (Exception e) {
-			state.set(EXCEPTION)
-			parent.get.markChildException(this)
+			state.set(ru.agentlab.maia.execution.IExecutionNode.EXCEPTION)
+			parent.get.notifyChildException
 		}
 	}
 

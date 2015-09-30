@@ -13,13 +13,16 @@ abstract class AbstractExecutionNode implements IExecutionNode {
 	val protected parent = new AtomicReference<IExecutionScheduler>
 
 	val protected state = new AtomicInteger(UNKNOWN)
-	
+
 	override getState() {
 		return state.get
 	}
 
 	override setParent(IExecutionScheduler newParent) {
-		parent.set(newParent)
+		val oldParent = parent.getAndSet(newParent)
+		if (oldParent != newParent) {
+			oldParent.removeChild(this)
+		}
 	}
 
 	override IExecutionScheduler getParent() {

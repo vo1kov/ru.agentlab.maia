@@ -20,17 +20,17 @@ interface IExecutionNode {
 	/**
 	 * Indicate that current node was handled and now is waiting for some external event.
 	 */
-	val public static int WAITING = 5
+	val public static int BLOCKED = 5
 
 	/**
 	 * Indicate that current node execution was finished.
 	 */
-	val public static int FINISHED = 11
+	val public static int SUCCESS = 11
 
 	/**
 	 * Indicate that current node execution was performed with exception.
 	 */
-	val public static int EXCEPTION = 11
+	val public static int EXCEPTION = 13
 	
 	def IExecutionScheduler getParent()
 

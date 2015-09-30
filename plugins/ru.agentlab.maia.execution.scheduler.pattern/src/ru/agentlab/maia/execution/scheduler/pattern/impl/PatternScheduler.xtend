@@ -58,23 +58,19 @@ class PatternScheduler extends AbstractExecutionScheduler implements IPatternSch
 //		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
-	override schedule() {
+	override notifyChildReady(IExecutionNode node) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override protected onChildReady(IExecutionNode node) {
+	override notifyChildBlocked() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override protected onChildWaiting(IExecutionNode node) {
+	override notifyChildSuccess() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override protected onChildFinished(IExecutionNode node) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
-	override protected onChildException(IExecutionNode node) {
+	override notifyChildException() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	

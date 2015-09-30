@@ -14,7 +14,7 @@ class FsmScheduler extends AbstractExecutionScheduler implements IFsmScheduler {
 
 	val List<EventFsmTransition> eventTransitions = new ArrayList
 
-	override schedule() {
+//	override schedule() {
 //		val excTransition = current.exceptionTransition
 //		if (excTransition != null) {
 //			return excTransition.to
@@ -27,8 +27,8 @@ class FsmScheduler extends AbstractExecutionScheduler implements IFsmScheduler {
 //		if (eventTransition != null) {
 //			return eventTransition.to
 //		}
-		return null
-	}
+//		return null
+//	}
 
 	def DefaultFsmTransition getDefaultTransition(IExecutionNode from) {
 		return defaultTransitions.findFirst[it.from == from]
@@ -75,19 +75,19 @@ class FsmScheduler extends AbstractExecutionScheduler implements IFsmScheduler {
 		}
 	}
 	
-	override protected onChildReady(IExecutionNode node) {
+	override notifyChildReady(IExecutionNode node) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override protected onChildWaiting(IExecutionNode node) {
+	override notifyChildBlocked() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override protected onChildFinished(IExecutionNode node) {
+	override notifyChildSuccess() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override protected onChildException(IExecutionNode node) {
+	override notifyChildException() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
