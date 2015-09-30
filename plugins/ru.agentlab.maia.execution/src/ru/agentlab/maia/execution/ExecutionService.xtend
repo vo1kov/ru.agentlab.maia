@@ -19,25 +19,13 @@ class ExecutionService implements IExecutionService {
 		executor.submit(new Runnable {
 			override run() {
 				if (active) {
-					val action = node.action
-					if (action != null) {
-						action.run
-					}
-					if (node.state != IExecutionNode.ru.agentlab.maia.execution.IExecutionNode.SUCCESSFULLY) {
+					node.run
+					if (node.state != IExecutionNode.SUCCESS) {
 						executor.submit(this)
 					}
 				}
 			}
 		})
-	}
-
-	def IExecutionAction getAction(IExecutionNode node) {
-		if (node instanceof IExecutionAction) {
-			return node
-		}
-		if (node instanceof IExecutionScheduler) {
-			return node.node.action
-		}
 	}
 
 	override void stop() {

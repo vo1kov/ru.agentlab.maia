@@ -1,22 +1,21 @@
 package ru.agentlab.maia.execution
 
 import java.util.concurrent.CopyOnWriteArrayList
-import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicReference
+import org.eclipse.xtend.lib.annotations.Accessors
 
 abstract class AbstractExecutionNode implements IExecutionNode {
 
+	@Accessors
 	val protected inputs = new CopyOnWriteArrayList<IExecutionParameter<?>>
 
+	@Accessors
 	val protected outputs = new CopyOnWriteArrayList<IExecutionParameter<?>>
 
 	val protected parent = new AtomicReference<IExecutionScheduler>
 
-	val protected state = new AtomicInteger(UNKNOWN)
-
-	override getState() {
-		return state.get
-	}
+	@Accessors
+	var protected byte state = UNKNOWN
 
 	override setParent(IExecutionScheduler newParent) {
 		val oldParent = parent.getAndSet(newParent)
@@ -29,10 +28,6 @@ abstract class AbstractExecutionNode implements IExecutionNode {
 		return parent.get
 	}
 
-	override getInputs() {
-		return inputs
-	}
-
 	override void addInput(IExecutionParameter<?> input) {
 		inputs += input
 	}
@@ -43,10 +38,6 @@ abstract class AbstractExecutionNode implements IExecutionNode {
 
 	override removeAllInputs() {
 		inputs.clear
-	}
-
-	override getOutputs() {
-		return outputs
 	}
 
 	override void addOutput(IExecutionParameter<?> output) {

@@ -2,21 +2,45 @@ package ru.agentlab.maia.execution.scheduler.parallel
 
 import java.util.ArrayList
 import ru.agentlab.maia.execution.AbstractExecutionScheduler
+import ru.agentlab.maia.execution.ExceptionHandling
 import ru.agentlab.maia.execution.IExecutionNode
 
 class ParallelScheduler extends AbstractExecutionScheduler {
 
-	val blockedChilds = new ArrayList<IExecutionNode>
+	val protected blockedChilds = new ArrayList<IExecutionNode>
 
-	val finishedChilds = new ArrayList<IExecutionNode>
+	val protected finishedChilds = new ArrayList<IExecutionNode>
 
-	val exceptionChilds = new ArrayList<IExecutionNode>
+	val protected exceptionChilds = new ArrayList<IExecutionNode>
+
+	var byte failHandling = ExceptionHandling.SKIP
+	var byte successHandling = ExceptionHandling.SKIP
+	var byte blockHandling = ExceptionHandling.SKIP
+	var byte readyHandling = ExceptionHandling.SKIP
+
+	var byte finishHandling = ExceptionHandling.SUCCESS
 
 	override notifyChildReady(IExecutionNode node) {
 		if (node == null) {
 			throw new NullPointerException("Node can't be null")
 		}
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		if (childs.contains(node)) {
+			// Already ready state
+			return
+		}
+		var removed = blockedChilds.remove(node)
+		if (!removed) {
+			removed = finishedChilds.remove(node)
+		}
+		if (!removed) {
+			removed = exceptionChilds.remove(node)
+		}
+		if (!removed) {
+			throw new IllegalArgumentException("Node doesn't contains in the scheduler")
+		}
+		childs += node
+		state = READY
+		parent.get?.notifyChildReady(this)
 	}
 
 	/**
@@ -37,10 +61,9 @@ class ParallelScheduler extends AbstractExecutionScheduler {
 	override notifyChildBlocked() {
 		blockedChilds += childs.remove(index)
 		if (!childs.empty) {
-			protectIndexOverflow()
+			schedule()
 		} else {
-			state.set(IExecutionNode.BLOCKED)
-			parent.get.notifyChildBlocked
+			finish()
 		}
 	}
 
@@ -63,21 +86,9 @@ class ParallelScheduler extends AbstractExecutionScheduler {
 	override notifyChildSuccess() {
 		finishedChilds += childs.remove(index)
 		if (!childs.empty) {
-			protectIndexOverflow()
+			schedule()
 		} else {
-			if (!blockedChilds.empty) {
-				state.set(IExecutionNode.BLOCKED)
-				parent.get.notifyChildBlocked
-			} else {
-				if (exceptionChilds.empty) {
-					state.set(IExecutionNode.SUCCESS)
-					parent.get.notifyChildSuccess
-				} else {
-					// Should never happened
-					state.set(IExecutionNode.EXCEPTION)
-					parent.get.notifyChildException
-				}
-			}
+			finish()
 		}
 	}
 
@@ -100,23 +111,32 @@ class ParallelScheduler extends AbstractExecutionScheduler {
 	override notifyChildException() {
 		exceptionChilds += childs.remove(index)
 		if (!childs.empty) {
-			protectIndexOverflow()
+			schedule()
 		} else {
-			if (!blockedChilds.empty) {
-				state.set(IExecutionNode.BLOCKED)
-				parent.get.notifyChildBlocked
-			} else {
-				state.set(IExecutionNode.EXCEPTION)
-				parent.get.notifyChildException
-			}
+			finish()
 		}
 	}
 
 	/**
 	 * Protect index overflow. Should be invoked after remove from child list.
 	 */
-	def protected void protectIndexOverflow() {
+	def protected void schedule() {
 		index = index % childs.size
+	}
+
+	def protected void finish() {
+		if (!blockedChilds.empty) {
+			state = BLOCKED
+			parent.get.notifyChildBlocked
+			return
+		}
+		if (!exceptionChilds.empty) {
+			state = EXCEPTION
+			parent.get.notifyChildException
+			return
+		}
+		state = SUCCESS
+		parent.get.notifyChildSuccess
 	}
 
 }

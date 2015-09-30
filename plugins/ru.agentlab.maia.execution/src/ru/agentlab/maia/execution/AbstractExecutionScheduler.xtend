@@ -1,12 +1,25 @@
 package ru.agentlab.maia.execution
 
 import java.util.ArrayList
+import java.util.BitSet
 
 abstract class AbstractExecutionScheduler extends AbstractExecutionNode implements IExecutionScheduler {
 
 	protected int index = 0
 
 	val protected childs = new ArrayList<IExecutionNode>
+
+	val protected blockedChilds = new BitSet
+
+	val protected finishedChilds = new BitSet
+
+	val protected exceptionChilds = new BitSet
+
+	var byte failHandling = ExceptionHandling.SKIP
+	var byte successHandling = ExceptionHandling.SKIP
+	var byte blockHandling = ExceptionHandling.SKIP
+	var byte readyHandling = ExceptionHandling.SKIP
+	var byte finishHandling = ExceptionHandling.SUCCESS
 
 	override addChild(IExecutionNode node) {
 		if (node == null) {
@@ -21,6 +34,9 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 	}
 
 	override reset() {
+		finishedChilds.clear
+		blockedChilds.clear
+		exceptionChilds.clear
 		for (child : childs) {
 			child.reset
 		}
@@ -63,8 +79,23 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 		}
 	}
 
-	override getNode() {
-		return childs.get(index)
+	override run() {
+		childs.get(index).run
+	}
+
+	override notifyChildBlocked() {
+		blockedChilds.set(index, true)
+		switch (blockHandling) {
+			case BLOCKED: {
+				state = BLOCKED
+				parent.get?.notifyChildBlocked
+			}
+		}
+		if (!childs.empty) {
+			schedule()
+		} else {
+			finish()
+		}
 	}
 
 }

@@ -1,13 +1,12 @@
 package ru.agentlab.maia.execution.node.test.func
 
-import ru.agentlab.maia.execution.scheduler.sequence.SequenceContextScheduler
-import ru.agentlab.maia.execution.node.ExecutionInput
+import ru.agentlab.maia.execution.scheduler.sequential.OneShotSequentialScheduler
 
 class Test {
-	
+
 	def static void main(String[] args) {
-		val parent = new SequenceContextScheduler
-		val scheduler = new SequenceContextScheduler
+		val parent = new OneShotSequentialScheduler
+		val scheduler = new OneShotSequentialScheduler
 		println("scheduler " + scheduler.stateName)
 		println("parent " + scheduler.stateName)
 		parent.addChild(scheduler)
@@ -25,5 +24,5 @@ class Test {
 		println("scheduler " + scheduler.stateName)
 		println("parent " + scheduler.stateName)
 	}
-	
+
 }

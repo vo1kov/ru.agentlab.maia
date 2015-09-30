@@ -37,7 +37,11 @@ class AnnotatedAction extends AbstractExecutionAction {
 		outputFields = outputs.toArray(newArrayOfSize(outputs.size))
 	}
 
-	override doInject() {
+	override reset() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+
+	override protected doInject() {
 		for (i : 0 ..< inputFields.length) {
 			val input = inputs.get(i)
 			val field = inputFields.get(i)
@@ -46,16 +50,11 @@ class AnnotatedAction extends AbstractExecutionAction {
 		}
 	}
 
-	override doRun() {
+	override protected doRun() {
 		return injector.invoke(implementation, Action)
 	}
 
-	def private <T> save(IExecutionParameter<T> output, Field field) {
-		val value = field.get(implementation) as T
-		output.value = value
-	}
-
-	override doUninject() {
+	override protected doUninject() {
 		for (i : 0 ..< outputFields.length) {
 			val output = outputs.get(i)
 			val field = outputFields.get(i)
@@ -68,8 +67,9 @@ class AnnotatedAction extends AbstractExecutionAction {
 		new ExecutionParameter(name, c)
 	}
 
-	override reset() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	def private <T> save(IExecutionParameter<T> output, Field field) {
+		val value = field.get(implementation) as T
+		output.value = value
 	}
 
 }

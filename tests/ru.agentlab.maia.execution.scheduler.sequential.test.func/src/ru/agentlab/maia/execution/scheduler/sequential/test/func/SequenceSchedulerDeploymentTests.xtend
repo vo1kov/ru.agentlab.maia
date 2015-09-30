@@ -10,9 +10,7 @@ import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.execution.AbstractExecutionNode
 import ru.agentlab.maia.execution.IExecutionNode
 import ru.agentlab.maia.execution.IExecutionScheduler
-import ru.agentlab.maia.execution.scheduler.sequental.OneShotSequentialScheduler
-import ru.agentlab.maia.memory.IMaiaContext
-import ru.agentlab.maia.memory.IMaiaContextInjector
+import ru.agentlab.maia.execution.scheduler.sequential.OneShotSequentialScheduler
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*

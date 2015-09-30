@@ -6,16 +6,18 @@ abstract class AbstractExecutionAction extends AbstractExecutionNode implements 
 
 	var protected implementation = new AtomicReference<Object>
 
-	override final run() {
+	override run() {
 		try {
+			state = IN_WORK
+
 			doInject()
 			doRun()
 			doUninject()
-			
-			state.set(ru.agentlab.maia.execution.IExecutionNode.SUCCESS)
+
+			state = SUCCESS
 			parent.get.notifyChildSuccess
 		} catch (Exception e) {
-			state.set(ru.agentlab.maia.execution.IExecutionNode.EXCEPTION)
+			state = EXCEPTION
 			parent.get.notifyChildException
 		}
 	}
@@ -28,10 +30,10 @@ abstract class AbstractExecutionAction extends AbstractExecutionNode implements 
 		implementation.set(impl)
 	}
 
-	abstract def void doInject()
+	def protected void doInject()
 
-	abstract def void doUninject()
+	def protected void doUninject()
 
-	abstract def Object doRun()
+	def protected Object doRun()
 
 }
