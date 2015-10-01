@@ -8,14 +8,14 @@ import ru.agentlab.maia.execution.IExecutionScheduler
  * Sequential implementation of {@link IExecutionScheduler}.
  * Select child nodes in order of adding.
  * <p>Default policies:</p><ul>
- * <li>When any child become {@link ru.agentlab.maia.execution.IExecutionNode.State#BLOCKED BLOCKED} then 
- * scheduler become {@link ru.agentlab.maia.execution.IExecutionNode.State#BLOCKED BLOCKED};</li>
- * <li>When any child become {@link ru.agentlab.maia.execution.IExecutionNode.State#FAILED FAILED} then 
- * scheduler become {@link ru.agentlab.maia.execution.IExecutionNode.State#FAILED FAILED};</li>
- * <li>When any child become  {@link ru.agentlab.maia.execution.IExecutionNode.State#SUCCESS SUCCESS} then 
+ * <li>When any child become {@link State#BLOCKED BLOCKED} then 
+ * scheduler become {@link State#BLOCKED BLOCKED};</li>
+ * <li>When any child become {@link State#FAILED FAILED} then 
+ * scheduler become {@link State#FAILED FAILED};</li>
+ * <li>When any child become  {@link State#SUCCESS SUCCESS} then 
  * scheduler scheduling to next child;</li>
  * <li>When all child nodes are executed successfully then 
- * scheduler become {@link ru.agentlab.maia.execution.IExecutionNode.State#SUCCESS SUCCESS};</li>
+ * scheduler become {@link State#SUCCESS SUCCESS};</li>
  * </ul>
  * 
  * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
@@ -28,7 +28,9 @@ class SequentialScheduler extends AbstractExecutionScheduler {
 	new() {
 		childBlockedPolicy = Policy.BLOCKED
 		childFailedPolicy = Policy.FAILED
-		childSuccessPolicy = Policy.WORKING
+		childSuccessPolicy = Policy.SCHEDULING
+		childScheduledPolicy = Policy.IDLE
+		childIdlePolicy = Policy.IDLE
 		schedulerFinishedPolicy = Policy.SUCCESS
 	}
 

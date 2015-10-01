@@ -28,13 +28,19 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 	@Accessors
 	var protected Policy schedulerFinishedPolicy = Policy.RESTART
 
+	@Accessors
+	var protected Policy childScheduledPolicy = Policy.SCHEDULING
+
+	@Accessors
+	var protected Policy childIdlePolicy = Policy.IDLE
+
 	override addChild(IExecutionNode node) {
 		if (node == null) {
 			throw new NullPointerException("Node can't be null")
 		}
 		node.parent = this
 		childs += node
-		skipping += null
+		skipping.add(null)
 	}
 
 	override reset() {
@@ -110,6 +116,14 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 		childSuccessPolicy.handlePolicy
 	}
 
+	override notifyChildScheduled() {
+		childScheduledPolicy.handlePolicy
+	}
+
+	override notifyChildIdle() {
+		childIdlePolicy.handlePolicy
+	}
+
 	override notifyChildReady(IExecutionNode node) {
 		if (node == null) {
 			throw new NullPointerException("Node can't be null")
@@ -123,31 +137,72 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 		parent.get?.notifyChildReady(this)
 	}
 
-	def protected handlePolicy(Policy policy) {
+	def protected void handlePolicy(Policy policy) {
+		val p = parent.get
 		switch (policy) {
-			case Policy.BLOCKED: {
+			case BLOCKED: {
 				state = State.BLOCKED
-				parent.get?.notifyChildBlocked
+				if (parent != null) {
+					p.notifyChildBlocked
+				} else {
+					// Do nothing..
+				}
 			}
-			case Policy.FAILED: {
+			case FAILED: {
 				state = State.FAILED
-				parent.get?.notifyChildFailed
+				if (parent != null) {
+					p.notifyChildFailed
+				} else {
+					// Do nothing..
+				}
 			}
-			case Policy.SUCCESS: {
+			case SUCCESS: {
 				state = State.SUCCESS
-				parent.get?.notifyChildSuccess
+				if (parent != null) {
+					p.notifyChildSuccess
+				} else {
+					// Do nothing..
+				}
 			}
-			case Policy.WORKING: {
+			case SCHEDULING: {
 				schedule()
+				if (parent != null) {
+					p.notifyChildScheduled
+				} else {
+					// Do nothing..
+				}
 			}
-			case Policy.RESTART: {
+			case RESTART: {
 				reset()
 				retries++
+				if (parent != null) {
+					p.notifyChildScheduled
+				} else {
+					// Do nothing..
+				}
 			}
-			case Policy.SKIP: {
+			case SKIP: {
 				val current = childs.get(index)
 				skipping.set(index, current)
 				schedule()
+				if (parent != null) {
+					p.notifyChildScheduled
+				} else {
+					// Do nothing..
+				}
+			}
+			case IDLE: {
+				if (parent != null) {
+					p.notifyChildIdle
+				} else {
+					// Do nothing..
+				}
+			}
+			case DELETED: {
+				if (parent != null) {
+					p.removeChild(this)
+					p.notifyChildIdle
+				}
 			}
 		}
 	}

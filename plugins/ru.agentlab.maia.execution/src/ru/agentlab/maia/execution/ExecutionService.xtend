@@ -16,16 +16,18 @@ class ExecutionService implements IExecutionService {
 
 	override void start() {
 		isActive.set(true)
-		executor.submit(new Runnable {
-			override run() {
-				if (active) {
-					node.run
-					if (node.state != IExecutionNode.State.SUCCESS) {
-						executor.submit(this)
+		executor.submit(
+			new Runnable {
+				override run() {
+					if (active) {
+						node.run
+						if (node.state != IExecutionNode.State.SUCCESS) {
+							executor.submit(this)
+						}
 					}
 				}
 			}
-		})
+		)
 	}
 
 	override void stop() {
