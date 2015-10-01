@@ -142,7 +142,7 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 		switch (policy) {
 			case BLOCKED: {
 				state = State.BLOCKED
-				if (parent != null) {
+				if (p != null) {
 					p.notifyChildBlocked
 				} else {
 					// Do nothing..
@@ -150,7 +150,7 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 			}
 			case FAILED: {
 				state = State.FAILED
-				if (parent != null) {
+				if (p != null) {
 					p.notifyChildFailed
 				} else {
 					// Do nothing..
@@ -158,7 +158,7 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 			}
 			case SUCCESS: {
 				state = State.SUCCESS
-				if (parent != null) {
+				if (p != null) {
 					p.notifyChildSuccess
 				} else {
 					// Do nothing..
@@ -166,7 +166,7 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 			}
 			case SCHEDULING: {
 				schedule()
-				if (parent != null) {
+				if (p != null) {
 					p.notifyChildScheduled
 				} else {
 					// Do nothing..
@@ -175,7 +175,7 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 			case RESTART: {
 				reset()
 				retries++
-				if (parent != null) {
+				if (p != null) {
 					p.notifyChildScheduled
 				} else {
 					// Do nothing..
@@ -185,21 +185,21 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 				val current = childs.get(index)
 				skipping.set(index, current)
 				schedule()
-				if (parent != null) {
+				if (p != null) {
 					p.notifyChildScheduled
 				} else {
 					// Do nothing..
 				}
 			}
 			case IDLE: {
-				if (parent != null) {
+				if (p != null) {
 					p.notifyChildIdle
 				} else {
 					// Do nothing..
 				}
 			}
 			case DELETED: {
-				if (parent != null) {
+				if (p != null) {
 					p.removeChild(this)
 					p.notifyChildIdle
 				}
