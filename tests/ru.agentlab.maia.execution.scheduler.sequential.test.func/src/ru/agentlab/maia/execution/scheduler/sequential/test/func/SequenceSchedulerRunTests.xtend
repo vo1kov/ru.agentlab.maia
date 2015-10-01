@@ -1,7 +1,6 @@
 package ru.agentlab.maia.execution.scheduler.sequential.test.func
 
 import java.util.Collections
-import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -9,7 +8,7 @@ import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.execution.IExecutionNode
 import ru.agentlab.maia.execution.IExecutionScheduler
-import ru.agentlab.maia.execution.scheduler.sequential.OneShotSequentialScheduler
+import ru.agentlab.maia.execution.scheduler.sequential.SequentialScheduler
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
@@ -21,17 +20,16 @@ class SequenceSchedulerRunTests {
 	extension SequenceSchedulerTestsExtension = new SequenceSchedulerTestsExtension
 
 	@Spy
-	IExecutionScheduler scheduler = new OneShotSequentialScheduler
+	IExecutionScheduler scheduler = new SequentialScheduler
 
-	@Before
-	def void before() {
-		scheduler.activate
-	}
-
+//	@Before
+//	def void before() {
+//		scheduler.activate
+//	}
 	@Test
 	def void shouldInvokeNextChild() {
 		scheduler.run
-		verify(scheduler).schedule
+//		verify(scheduler).schedule
 	}
 
 	@Test

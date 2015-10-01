@@ -7,7 +7,7 @@ import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.execution.IExecutionNode
 import ru.agentlab.maia.execution.IExecutionScheduler
-import ru.agentlab.maia.execution.scheduler.sequential.OneShotSequentialScheduler
+import ru.agentlab.maia.execution.scheduler.sequential.SequentialScheduler
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*
 class SequenceSchedulerAddChildTests {
 
 	@Spy
-	IExecutionScheduler scheduler = new OneShotSequentialScheduler
+	IExecutionScheduler scheduler = new SequentialScheduler
 
 	@Test
 	def void shouldIncreaseQueueSize() {
