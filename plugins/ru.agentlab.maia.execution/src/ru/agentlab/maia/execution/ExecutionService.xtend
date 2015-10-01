@@ -20,7 +20,7 @@ class ExecutionService implements IExecutionService {
 			override run() {
 				if (active) {
 					node.run
-					if (node.state != IExecutionNode.SUCCESS) {
+					if (node.state != IExecutionNode.State.SUCCESS) {
 						executor.submit(this)
 					}
 				}

@@ -5,7 +5,7 @@ import javax.inject.Inject
 import ru.agentlab.maia.execution.ExecutionService
 import ru.agentlab.maia.execution.IExecutionNode
 import ru.agentlab.maia.execution.IExecutionService
-import ru.agentlab.maia.execution.scheduler.sequential.OneShotSequentialScheduler
+import ru.agentlab.maia.execution.scheduler.sequential.SequentialScheduler
 import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.memory.IMaiaContextInjector
 
@@ -19,7 +19,7 @@ class MaiaContainerContextModifier {
 		context => [
 			putService(IMaiaContext.KEY_TYPE, "container")
 			getService(IMaiaContextInjector) => [
-				deploy(OneShotSequentialScheduler, IExecutionNode)
+				deploy(SequentialScheduler, IExecutionNode)
 				deploy(ExecutionService, IExecutionService)
 			]
 		]

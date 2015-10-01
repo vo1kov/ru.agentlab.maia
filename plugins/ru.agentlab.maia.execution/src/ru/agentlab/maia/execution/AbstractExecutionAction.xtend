@@ -8,25 +8,25 @@ abstract class AbstractExecutionAction extends AbstractExecutionNode implements 
 
 	override run() {
 		try {
-			state = IN_WORK
+			state = State.WORKING
 
 			doInject()
 			doRun()
 			doUninject()
 
-			state = SUCCESS
+			state = State.SUCCESS
 			parent.get.notifyChildSuccess
 		} catch (Exception e) {
-			state = EXCEPTION
-			parent.get.notifyChildException
+			state = State.FAILED
+			parent.get.notifyChildFailed
 		}
 	}
 
-	override getImplementation() {
+	def getImplementation() {
 		implementation.get
 	}
 
-	override setImplementation(Object impl) {
+	def setImplementation(Object impl) {
 		implementation.set(impl)
 	}
 

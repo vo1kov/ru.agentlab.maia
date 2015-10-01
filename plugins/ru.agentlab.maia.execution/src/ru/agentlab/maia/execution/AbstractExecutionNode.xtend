@@ -15,7 +15,7 @@ abstract class AbstractExecutionNode implements IExecutionNode {
 	val protected parent = new AtomicReference<IExecutionScheduler>
 
 	@Accessors
-	var protected byte state = UNKNOWN
+	var protected State state = State.UNKNOWN
 
 	override setParent(IExecutionScheduler newParent) {
 		val oldParent = parent.getAndSet(newParent)

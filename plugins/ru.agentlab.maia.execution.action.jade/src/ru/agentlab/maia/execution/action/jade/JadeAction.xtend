@@ -16,8 +16,4 @@ class JadeAction extends AbstractExecutionAction {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override reset() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
 }

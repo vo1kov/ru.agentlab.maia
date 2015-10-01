@@ -42,6 +42,6 @@ class SequenceSchedulerDeploymentTests {
 
 		injector.deploy(scheduler)
 
-		assertThat(scheduler.state, equalTo(IExecutionNode.READY))
+		assertThat(scheduler.state, equalTo(IExecutionNode.STATE_READY))
 	}
 }

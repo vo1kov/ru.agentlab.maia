@@ -37,10 +37,6 @@ class AnnotatedAction extends AbstractExecutionAction {
 		outputFields = outputs.toArray(newArrayOfSize(outputs.size))
 	}
 
-	override reset() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
 	override protected doInject() {
 		for (i : 0 ..< inputFields.length) {
 			val input = inputs.get(i)
