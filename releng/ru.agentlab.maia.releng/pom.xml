@@ -138,7 +138,7 @@
 				<module>../../plugins/ru.agentlab.maia.execution.scheduler</module>
 				<module>../../plugins/ru.agentlab.maia.execution.scheduler.fsm</module>
 				<module>../../plugins/ru.agentlab.maia.execution.scheduler.pattern</module>
-				<module>../../plugins/ru.agentlab.maia.execution.scheduler.sequence</module>
+				<module>../../plugins/ru.agentlab.maia.execution.scheduler.sequential</module>
 			</modules>
 		</profile>
 		<profile>
@@ -173,7 +173,7 @@
 				<module>../../plugins/ru.agentlab.maia.execution.scheduler</module>
 				<module>../../plugins/ru.agentlab.maia.execution.scheduler.fsm</module>
 				<module>../../plugins/ru.agentlab.maia.execution.scheduler.pattern</module>
-				<module>../../plugins/ru.agentlab.maia.execution.scheduler.sequence</module>
+				<module>../../plugins/ru.agentlab.maia.execution.scheduler.sequential</module>
 
 			</modules>
 		</profile>
@@ -188,20 +188,18 @@
 			</repositories>
 			<modules>
 				<module>../../plugins/ru.agentlab.maia.execution</module>
-				<module>../../plugins/ru.agentlab.maia.execution.node</module>
-				<module>../../plugins/ru.agentlab.maia.execution.action</module>
 				<module>../../plugins/ru.agentlab.maia.execution.action.annotated</module>
 				<module>../../plugins/ru.agentlab.maia.execution.action.annotation</module>
-				<module>../../plugins/ru.agentlab.maia.execution.scheduler</module>
 				<module>../../plugins/ru.agentlab.maia.execution.scheduler.fsm</module>
 				<module>../../plugins/ru.agentlab.maia.execution.scheduler.pattern</module>
-				<module>../../plugins/ru.agentlab.maia.execution.scheduler.sequence</module>
+				<module>../../plugins/ru.agentlab.maia.execution.scheduler.sequential</module>
 
 				<module>../../tests/org.junit.parameterizedsuite</module>
 
+				<module>../../tests/ru.agentlab.maia.execution.scheduler.parallel.test.func</module>
 				<module>../../tests/ru.agentlab.maia.execution.scheduler.fsm.test</module>
 				<module>../../tests/ru.agentlab.maia.execution.scheduler.pattern.test</module>
-				<module>../../tests/ru.agentlab.maia.execution.scheduler.sequence.test</module>
+				<module>../../tests/ru.agentlab.maia.execution.scheduler.sequential.test.func</module>
 			</modules>
 		</profile>
 		<profile>
@@ -215,20 +213,17 @@
 			</repositories>
 			<modules>
 				<module>../../plugins/ru.agentlab.maia.execution</module>
-				<module>../../plugins/ru.agentlab.maia.execution.node</module>
-				<module>../../plugins/ru.agentlab.maia.execution.action</module>
 				<module>../../plugins/ru.agentlab.maia.execution.action.annotated</module>
 				<module>../../plugins/ru.agentlab.maia.execution.action.annotation</module>
-				<module>../../plugins/ru.agentlab.maia.execution.scheduler</module>
 				<module>../../plugins/ru.agentlab.maia.execution.scheduler.fsm</module>
 				<module>../../plugins/ru.agentlab.maia.execution.scheduler.pattern</module>
-				<module>../../plugins/ru.agentlab.maia.execution.scheduler.sequence</module>
+				<module>../../plugins/ru.agentlab.maia.execution.scheduler.sequential</module>
 
 				<!-- <module>../../tests/org.junit.parameterizedsuite</module> -->
 
 				<!-- <module>../../tests/ru.agentlab.maia.execution.scheduler.fsm.test</module> -->
 				<!-- <module>../../tests/ru.agentlab.maia.execution.scheduler.pattern.test</module> -->
-				<!-- <module>../../tests/ru.agentlab.maia.execution.scheduler.sequence.test</module> -->
+				<!-- <module>../../tests/ru.agentlab.maia.execution.scheduler.sequential.test</module> -->
 			</modules>
 		</profile>
 		<profile>
