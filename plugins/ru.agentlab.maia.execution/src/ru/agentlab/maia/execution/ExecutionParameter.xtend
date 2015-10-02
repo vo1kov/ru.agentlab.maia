@@ -13,8 +13,11 @@ class ExecutionParameter<T> implements IExecutionParameter<T> {
 
 	val protected reference = new AtomicReference<AtomicReference<T>>
 
-	@Accessors
 	val protected boolean isOptional
+
+	override isOptional() {
+		return isOptional
+	}
 
 	new(String name, Class<T> type, boolean isOptional) {
 		this.name = name

@@ -3,6 +3,27 @@ package ru.agentlab.maia.execution
 import java.util.ArrayList
 import org.eclipse.xtend.lib.annotations.Accessors
 
+/**
+ * <p>Abstract {@link IExecutionScheduler} implementation.</p>
+ *
+ * <p>Implementation guarantee:</p>
+ * 
+ * <ul>
+ * <li>execution of {@code run()} method will be redirected to one of child 
+ * nodes. What exactly child node should be chosen depends of concrete
+ * implementation.</li>
+ * <li>when child node will notify about state change then appropriate policy 
+ * will be handled.</li>
+ * <li>when all retries will be exhausted then appropriate policy 
+ * will be handled.</li>
+ * </ul>
+ * 
+ * <p>Concrete implementations must implement algorithm of retrieving next 
+ * child node. Additionally concrete implementation can change policies for
+ * satisfying behavior requirements.</p>
+ * 
+ * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
+ */
 abstract class AbstractExecutionScheduler extends AbstractExecutionNode implements IExecutionScheduler {
 
 	var protected int index = 0
@@ -26,13 +47,13 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 	var protected Policy childBlockedPolicy = Policy.BLOCKED
 
 	@Accessors
-	var protected Policy schedulerFinishedPolicy = Policy.RESTART
+	var protected Policy childWorkingPolicy = Policy.IDLE
 
 	@Accessors
-	var protected Policy childScheduledPolicy = Policy.SCHEDULING
+	var protected Policy noChildsSkipedPolicy = Policy.SUCCESS
 
 	@Accessors
-	var protected Policy childIdlePolicy = Policy.IDLE
+	var protected Policy someChildsSkipedPolicy = Policy.FAILED
 
 	override addChild(IExecutionNode node) {
 		if (node == null) {
@@ -116,12 +137,8 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 		childSuccessPolicy.handlePolicy
 	}
 
-	override notifyChildScheduled() {
-		childScheduledPolicy.handlePolicy
-	}
-
-	override notifyChildIdle() {
-		childIdlePolicy.handlePolicy
+	override notifyChildWorking() {
+		childWorkingPolicy.handlePolicy
 	}
 
 	override notifyChildReady(IExecutionNode node) {
@@ -167,7 +184,7 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 			case SCHEDULING: {
 				schedule()
 				if (p != null) {
-					p.notifyChildScheduled
+					p.notifyChildWorking
 				} else {
 					// Do nothing..
 				}
@@ -176,7 +193,7 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 				reset()
 				retries++
 				if (p != null) {
-					p.notifyChildScheduled
+					p.notifyChildWorking
 				} else {
 					// Do nothing..
 				}
@@ -186,14 +203,14 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 				skipping.set(index, current)
 				schedule()
 				if (p != null) {
-					p.notifyChildScheduled
+					p.notifyChildWorking
 				} else {
 					// Do nothing..
 				}
 			}
 			case IDLE: {
 				if (p != null) {
-					p.notifyChildIdle
+					p.notifyChildWorking
 				} else {
 					// Do nothing..
 				}
@@ -201,7 +218,7 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 			case DELETED: {
 				if (p != null) {
 					p.removeChild(this)
-					p.notifyChildIdle
+					p.notifyChildWorking
 				}
 			}
 		}
@@ -210,7 +227,11 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 	def protected void schedule() {
 		index = nextIndex
 		if (index > childs.size - 1) {
-			schedulerFinishedPolicy.handlePolicy
+			if (skipping.forall[it == null]) {
+				noChildsSkipedPolicy.handlePolicy
+			} else {
+				someChildsSkipedPolicy.handlePolicy
+			}
 		}
 	}
 

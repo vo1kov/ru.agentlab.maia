@@ -1,60 +1,90 @@
 package ru.agentlab.maia.execution
 
 /**
- * Execution node than not contain executable action
- * but select one of it's child for delegate execution.
+ * <p>Execution node than delegate execution to one of child nodes.</p>
  * 
+ * <h2>Child state change notification</h2>
+ * <p>After executing any child node scheduler should know a new state of
+ * that node for further scheduling. For this purpose child should notify 
+ * its parent about changing its state.</p>
+ * 
+ * <p>There are possible notifications:</p>
+ * <ul>
+ * <li>{@link #notifyChildSuccess() notifyChildSuccess()} - when node finished 
+ * successfully.</li>
+ * <li>{@link #notifyChildBlocked() notifyChildBlocked()} - when node wait 
+ * some external event for continue.</li>
+ * <li>{@link #notifyChildFailed() notifyChildFailed()} - when node finished 
+ * with some exception.</li>
+ * <li>{@link #notifyChildWorking() notifyChildWorking()} - when node still working
+ * and need more iterations to complete the task.</li>
+ * <li>{@link #notifyChildReady(IExecutionNode) notifyChildReady()} - 
+ * when node became ready for execution.</li>
+ * </ul>
+ * 
+ * <h2>Reacting on child notifications</h2>
+ * <p>Depending on the requirements of scheduler behavior there are some
+ * possible variants of reacting on child notification. Reactions are configured
+ * for every scheduler instance by {@link Policy Policy} - some flag indicating 
+ * how exactly react on child notification.</p>
+ *  
  * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
 interface IExecutionScheduler extends IExecutionNode {
 
 	/**
-	 * Policies that control backward notification of execution chain
-	 * after execution atomic action.
+	 * <p>Policy that control reaction on notification.</p>
 	 */
 	enum Policy {
 
 		/**
-		 * The policy means that the scheduler should select next node
-		 * and next time skip current child node.
+		 * <p>The policy means that the scheduler should select next node and next 
+		 * time skip current child node and notify own parent that is
+		 * still working.</p>
 		 */
 		SKIP,
 
 		/**
-		 * The policy means that the scheduler should select next node.
+		 * <p>The policy means that the scheduler should select next node and 
+		 * notify own parent that is still working.</p>
 		 */
 		SCHEDULING,
 
 		/**
-		 * The policy means that the scheduler should do nothing at all.
+		 * <p>The policy means that the scheduler should do nothing, wait some 
+		 * another notification from child node and notify own parent that 
+		 * is still working.</p>
 		 */
 		IDLE,
 
 		/**
-		 * The policy means that the scheduler should become 
-		 * {@link IExecutionNode.State#BLOCKED BLOCKED}.
+		 * <p>The policy means that the scheduler should wait notification that 
+		 * some child node become ready and notify parent that is waiting.</p>
 		 */
 		BLOCKED,
 
 		/**
-		 * The policy means that the scheduler should become 
-		 * {@link IExecutionNode.State#SUCCESS SUCCESS}.
+		 * <p>The policy means that the scheduler successfully finish its work 
+		 * and should notify own parent about it.</p>
 		 */
 		SUCCESS,
 
 		/**
-		 * The policy means that the scheduler should become 
-		 * {@link IExecutionNode.State#FAILED FAILED}.
+		 * <p>The policy means that the scheduler can't execute other subtasks 
+		 * and should notify own parent about it.</p>
 		 */
 		FAILED,
 
 		/**
-		 * The policy means that the scheduler should be restarted.
+		 * <p>The policy means that the scheduler should try to restart 
+		 * execution of its child nodes and notify own parent that is
+		 * still working.</p>
 		 */
 		RESTART,
 
 		/**
-		 * The policy means that the scheduler should be deleted.
+		 * <p>The policy means that the scheduler should be deleted from its 
+		 * own parent.</p>
 		 */
 		DELETED
 	}
@@ -125,15 +155,6 @@ interface IExecutionScheduler extends IExecutionNode {
 
 	/**
 	 * <p>
-	 * Notifies that the current child node scheduled to next node.
-	 * </p><p>
-	 * Current node should be a scheduler.
-	 * </p>
-	 */
-	def void notifyChildScheduled()
-
-	/**
-	 * <p>
 	 * Notifies that the current child was received some notification from 
 	 * it's own child but did nothing. It is needed only for notifying
 	 * parent scheduler about child notification.
@@ -146,7 +167,7 @@ interface IExecutionScheduler extends IExecutionNode {
 	 * @see #getChildIdlePolicy() getChildIdlePolicy()
 	 * @see #setChildIdlePolicy(State) setChildIdlePolicy(State)
 	 */
-	def void notifyChildIdle()
+	def void notifyChildWorking()
 
 	def long getMaxRetries()
 
@@ -164,17 +185,17 @@ interface IExecutionScheduler extends IExecutionNode {
 
 	def void setChildSuccessPolicy(Policy newPolicy)
 
-	def Policy getChildScheduledPolicy()
+	def Policy getChildWorkingPolicy()
 
-	def void setChildScheduledPolicy(Policy newPolicy)
+	def void setChildWorkingPolicy(Policy newPolicy)
 
-	def Policy getChildIdlePolicy()
+	def Policy getSomeChildsSkipedPolicy()
 
-	def void setChildIdlePolicy(Policy newPolicy)
+	def void setSomeChildsSkipedPolicy(Policy newPolicy)
 
-	def Policy getSchedulerFinishedPolicy()
+	def Policy getNoChildsSkipedPolicy()
 
-	def void setSchedulerFinishedPolicy(Policy newPolicy)
+	def void setNoChildsSkipedPolicy(Policy newPolicy)
 
 	def void reset()
 
