@@ -169,33 +169,33 @@ interface IExecutionScheduler extends IExecutionNode {
 	 */
 	def void notifyChildWorking()
 
-	def long getMaxRetries()
+	def long getNumRetriesMax()
 
-	def void setMaxRetries(long newiterations)
+	def void setNumRetriesMax(long newiterations)
 
-	def Policy getChildBlockedPolicy()
+	def Policy getPolicyOnChildBlocked()
 
-	def void setChildBlockedPolicy(Policy newPolicy)
+	def void setPolicyOnChildBlocked(Policy newPolicy)
 
-	def Policy getChildFailedPolicy()
+	def Policy getPolicyOnChildFailed()
 
-	def void setChildFailedPolicy(Policy newPolicy)
+	def void setPolicyOnChildFailed(Policy newPolicy)
 
-	def Policy getChildSuccessPolicy()
+	def Policy getPolicyOnChildSuccess()
 
-	def void setChildSuccessPolicy(Policy newPolicy)
+	def void setPolicyOnChildSuccess(Policy newPolicy)
 
-	def Policy getChildWorkingPolicy()
+	def Policy getPolicyOnChildWorking()
 
-	def void setChildWorkingPolicy(Policy newPolicy)
+	def void setPolicyOnChildWorking(Policy newPolicy)
 
-	def Policy getSomeChildsSkipedPolicy()
+	def Policy getPolicySomeChildsSkiped()
 
-	def void setSomeChildsSkipedPolicy(Policy newPolicy)
+	def void setPolicySomeChildsSkiped(Policy newPolicy)
 
-	def Policy getNoChildsSkipedPolicy()
+	def Policy getPolicyNoChildsSkiped()
 
-	def void setNoChildsSkipedPolicy(Policy newPolicy)
+	def void setPolicyNoChildsSkiped(Policy newPolicy)
 
 	def void reset()
 

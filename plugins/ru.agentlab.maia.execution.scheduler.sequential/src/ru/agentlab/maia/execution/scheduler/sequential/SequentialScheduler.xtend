@@ -26,12 +26,12 @@ class SequentialScheduler extends AbstractExecutionScheduler {
 	 * Construct instance of scheduler and set default policies.
 	 */
 	new() {
-		childBlockedPolicy = Policy.BLOCKED
-		childFailedPolicy = Policy.FAILED
-		childSuccessPolicy = Policy.SCHEDULING
-		childWorkingPolicy = Policy.IDLE
-		someChildsSkipedPolicy = Policy.FAILED
-		noChildsSkipedPolicy = Policy.SUCCESS
+		policyOnChildBlocked = Policy.BLOCKED
+		policyOnChildFailed = Policy.FAILED
+		policyOnChildSuccess = Policy.SCHEDULING
+		policyOnChildWorking = Policy.IDLE
+		policySomeChildsSkiped = Policy.FAILED
+		policyNoChildsSkiped = Policy.SUCCESS
 	}
 
 	/**

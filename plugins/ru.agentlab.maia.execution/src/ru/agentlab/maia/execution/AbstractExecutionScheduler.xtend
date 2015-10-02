@@ -5,7 +5,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
  * <p>Abstract {@link IExecutionScheduler} implementation.</p>
- *
+ * 
  * <p>Implementation guarantee:</p>
  * 
  * <ul>
@@ -24,36 +24,34 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * 
  * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
+@Accessors
 abstract class AbstractExecutionScheduler extends AbstractExecutionNode implements IExecutionScheduler {
 
+	@Accessors(PUBLIC_GETTER)
 	var protected int index = 0
-
 	val protected childs = new ArrayList<IExecutionNode>
-
 	val protected skipping = new ArrayList<IExecutionNode>
 
-	var protected long retries = 0
+	/**
+	 * <p>The number of current retries to perform an action.</p>
+	 */
+	@Accessors(PUBLIC_GETTER)
+	var protected long numRetries = 0L
 
-	@Accessors
-	var protected long maxRetries = RETRIES_ONE_TIME
+	/**
+	 * <p>The maximum number of retries to perform an action.</p>
+	 */
+	var protected long numRetriesMax = RETRIES_ONE_TIME
 
-	@Accessors
-	var protected Policy childFailedPolicy = Policy.FAILED
-
-	@Accessors
-	var protected Policy childSuccessPolicy = Policy.SKIP
-
-	@Accessors
-	var protected Policy childBlockedPolicy = Policy.BLOCKED
-
-	@Accessors
-	var protected Policy childWorkingPolicy = Policy.IDLE
-
-	@Accessors
-	var protected Policy noChildsSkipedPolicy = Policy.SUCCESS
-
-	@Accessors
-	var protected Policy someChildsSkipedPolicy = Policy.FAILED
+	var protected Policy policyOnChildFailed = Policy.FAILED
+	var protected Policy policyOnChildSuccess = Policy.SKIP
+	var protected Policy policyOnChildBlocked = Policy.BLOCKED
+	var protected Policy policyOnChildWorking = Policy.IDLE
+	var protected Policy policyOnSomeChildsFailed = Policy.SUCCESS
+	var protected Policy policyOnSomeChildsBlocked = Policy.SUCCESS
+	var protected Policy policyOnAllChildsSuccess = Policy.SUCCESS
+	var protected Policy policyNoChildsSkiped = Policy.SUCCESS
+	var protected Policy policySomeChildsSkiped = Policy.FAILED
 
 	override addChild(IExecutionNode node) {
 		if (node == null) {
@@ -61,41 +59,27 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 		}
 		node.parent = this
 		childs += node
-		skipping.add(null)
 	}
 
 	override reset() {
 		skipping.clear
-		retries = 0
+		numRetries = 0
 		for (child : childs.filter(IExecutionScheduler)) {
 			child.reset
 		}
 	}
 
-	override getChilds() {
-		return childs
-	}
-
 	override restart() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		numRetries++
+		index = 0
 	}
 
-	/** 
-	 * Removes all nodes from the queue.
-	 */
 	override removeAll() {
 		childs.clear
 		skipping.clear
 		index = 0
 	}
 
-	/** 
-	 * Removes specified node from the queue.
-	 * 
-	 * @param node - node to be deleted
-	 * 
-	 * @return node previously at the scheduler 
-	 */
 	override removeChild(IExecutionNode node) {
 		if (node == null) {
 			throw new NullPointerException("Node can't be null")
@@ -103,7 +87,7 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 		val i = childs.indexOf(node)
 		if (i != -1) {
 			childs.remove(i)
-			skipping.remove(i)
+			skipping.remove(node)
 			if (i < index) {
 				index = index - 1
 			} else if (i == index && index == childs.size()) {
@@ -126,19 +110,19 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 	}
 
 	override notifyChildBlocked() {
-		childBlockedPolicy.handlePolicy
+		policyOnChildBlocked.handlePolicy
 	}
 
 	override notifyChildFailed() {
-		childFailedPolicy.handlePolicy
+		policyOnChildFailed.handlePolicy
 	}
 
 	override notifyChildSuccess() {
-		childSuccessPolicy.handlePolicy
+		policyOnChildSuccess.handlePolicy
 	}
 
 	override notifyChildWorking() {
-		childWorkingPolicy.handlePolicy
+		policyOnChildWorking.handlePolicy
 	}
 
 	override notifyChildReady(IExecutionNode node) {
@@ -149,73 +133,41 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 		if (i == -1) {
 			throw new IllegalArgumentException("Node doesn't contains in the scheduler")
 		}
-		skipping.set(i, null)
+		skipping.remove(node)
 		state = IExecutionNode.State.READY
 		parent.get?.notifyChildReady(this)
 	}
 
 	def protected void handlePolicy(Policy policy) {
-		val p = parent.get
 		switch (policy) {
 			case BLOCKED: {
 				state = State.BLOCKED
-				if (p != null) {
-					p.notifyChildBlocked
-				} else {
-					// Do nothing..
-				}
+				parent.get?.notifyChildBlocked
 			}
 			case FAILED: {
 				state = State.FAILED
-				if (p != null) {
-					p.notifyChildFailed
-				} else {
-					// Do nothing..
-				}
+				parent.get?.notifyChildFailed
 			}
 			case SUCCESS: {
 				state = State.SUCCESS
-				if (p != null) {
-					p.notifyChildSuccess
-				} else {
-					// Do nothing..
-				}
+				parent.get?.notifyChildSuccess
 			}
 			case SCHEDULING: {
 				schedule()
-				if (p != null) {
-					p.notifyChildWorking
-				} else {
-					// Do nothing..
-				}
 			}
 			case RESTART: {
-				reset()
-				retries++
-				if (p != null) {
-					p.notifyChildWorking
-				} else {
-					// Do nothing..
-				}
+				restart()
+				parent.get?.notifyChildWorking
 			}
 			case SKIP: {
-				val current = childs.get(index)
-				skipping.set(index, current)
+				skipping.add(childs.get(index))
 				schedule()
-				if (p != null) {
-					p.notifyChildWorking
-				} else {
-					// Do nothing..
-				}
 			}
 			case IDLE: {
-				if (p != null) {
-					p.notifyChildWorking
-				} else {
-					// Do nothing..
-				}
+				parent.get?.notifyChildWorking
 			}
 			case DELETED: {
+				val p = parent.get
 				if (p != null) {
 					p.removeChild(this)
 					p.notifyChildWorking
@@ -227,11 +179,13 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 	def protected void schedule() {
 		index = nextIndex
 		if (index > childs.size - 1) {
-			if (skipping.forall[it == null]) {
-				noChildsSkipedPolicy.handlePolicy
+			if (skipping.empty) {
+				policyNoChildsSkiped.handlePolicy
 			} else {
-				someChildsSkipedPolicy.handlePolicy
+				policySomeChildsSkiped.handlePolicy
 			}
+		} else {
+			parent.get?.notifyChildWorking
 		}
 	}
 

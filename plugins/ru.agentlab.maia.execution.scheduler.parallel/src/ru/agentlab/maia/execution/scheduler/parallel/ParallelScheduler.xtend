@@ -27,13 +27,13 @@ class ParallelScheduler extends AbstractExecutionScheduler {
 	 * Construct instance of scheduler and set default policies.
 	 */
 	new() {
-		childBlockedPolicy = Policy.SKIP
-		childFailedPolicy = Policy.SKIP
-		childSuccessPolicy = Policy.SKIP
-		childWorkingPolicy = Policy.SCHEDULING
-		someChildsSkipedPolicy = Policy.FAILED
-		noChildsSkipedPolicy = Policy.SUCCESS
-		maxRetries = 1
+		policyOnChildBlocked = Policy.SKIP
+		policyOnChildFailed = Policy.SKIP
+		policyOnChildSuccess = Policy.SKIP
+		policyOnChildWorking = Policy.SCHEDULING
+		policySomeChildsSkiped = Policy.FAILED
+		policyNoChildsSkiped = Policy.SUCCESS
+		numRetriesMax = 1
 	}
 
 	/**
