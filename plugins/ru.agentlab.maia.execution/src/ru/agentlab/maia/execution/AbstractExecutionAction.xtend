@@ -5,11 +5,9 @@ import java.util.concurrent.atomic.AtomicReference
 abstract class AbstractExecutionAction extends AbstractExecutionNode implements IExecutionAction {
 
 	var protected implementation = new AtomicReference<Object>
-
-	override run() {
+	
+	override protected runInternal() {
 		try {
-			state = State.WORKING
-
 			doInject()
 			doRun()
 			doUninject()

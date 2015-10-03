@@ -30,8 +30,8 @@ class SequentialScheduler extends AbstractExecutionScheduler {
 		policyOnChildFailed = Policy.FAILED
 		policyOnChildSuccess = Policy.SCHEDULING
 		policyOnChildWorking = Policy.IDLE
-		policySomeChildsSkiped = Policy.FAILED
-		policyNoChildsSkiped = Policy.SUCCESS
+		policyOnAllChildsBlocked = Policy.BLOCKED
+		policyOnAllChildsSuccess = Policy.SUCCESS
 	}
 
 	/**

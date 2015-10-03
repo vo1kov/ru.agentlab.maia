@@ -3,6 +3,7 @@ package ru.agentlab.maia.execution
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.atomic.AtomicReference
 import org.eclipse.xtend.lib.annotations.Accessors
+import java.util.ConcurrentModificationException
 
 abstract class AbstractExecutionNode implements IExecutionNode {
 
@@ -13,6 +14,8 @@ abstract class AbstractExecutionNode implements IExecutionNode {
 	val protected outputs = new CopyOnWriteArrayList<IExecutionParameter<?>>
 
 	val protected parent = new AtomicReference<IExecutionScheduler>
+
+	var owner = new AtomicReference<Thread>
 
 	@Accessors
 	var protected State state = State.READY
@@ -51,5 +54,20 @@ abstract class AbstractExecutionNode implements IExecutionNode {
 	override removeAllOutputs() {
 		outputs.clear
 	}
+
+	override final run() {
+		val entered = owner.compareAndSet(null, Thread.currentThread)
+		if (entered) {
+			state = State.WORKING
+			
+			runInternal()
+			
+			owner.set(null)
+		} else {
+			throw new ConcurrentModificationException("Execution node is executing by another thread")
+		}
+	}
+	
+	def protected void runInternal()
 
 }

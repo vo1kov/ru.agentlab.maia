@@ -189,13 +189,13 @@ interface IExecutionScheduler extends IExecutionNode {
 
 	def void setPolicyOnChildWorking(Policy newPolicy)
 
-	def Policy getPolicySomeChildsSkiped()
+	def Policy getPolicyOnAllChildsBlocked()
 
-	def void setPolicySomeChildsSkiped(Policy newPolicy)
+	def void setPolicyOnAllChildsBlocked(Policy newPolicy)
 
-	def Policy getPolicyNoChildsSkiped()
+	def Policy getPolicyOnAllChildsSuccess()
 
-	def void setPolicyNoChildsSkiped(Policy newPolicy)
+	def void setPolicyOnAllChildsSuccess(Policy newPolicy)
 
 	def void reset()
 

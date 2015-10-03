@@ -30,7 +30,7 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 	@Accessors(PUBLIC_GETTER)
 	var protected int index = 0
 	val protected childs = new ArrayList<IExecutionNode>
-	val protected skipping = new ArrayList<IExecutionNode>
+	val protected blockedChilds = new ArrayList<IExecutionNode>
 
 	/**
 	 * <p>The number of current retries to perform an action.</p>
@@ -47,11 +47,8 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 	var protected Policy policyOnChildSuccess = Policy.SKIP
 	var protected Policy policyOnChildBlocked = Policy.BLOCKED
 	var protected Policy policyOnChildWorking = Policy.IDLE
-	var protected Policy policyOnSomeChildsFailed = Policy.SUCCESS
-	var protected Policy policyOnSomeChildsBlocked = Policy.SUCCESS
+	var protected Policy policyOnAllChildsBlocked = Policy.SUCCESS
 	var protected Policy policyOnAllChildsSuccess = Policy.SUCCESS
-	var protected Policy policyNoChildsSkiped = Policy.SUCCESS
-	var protected Policy policySomeChildsSkiped = Policy.FAILED
 
 	override addChild(IExecutionNode node) {
 		if (node == null) {
@@ -62,7 +59,7 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 	}
 
 	override reset() {
-		skipping.clear
+		blockedChilds.clear
 		numRetries = 0
 		for (child : childs.filter(IExecutionScheduler)) {
 			child.reset
@@ -76,7 +73,7 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 
 	override removeAll() {
 		childs.clear
-		skipping.clear
+		blockedChilds.clear
 		index = 0
 	}
 
@@ -87,7 +84,7 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 		val i = childs.indexOf(node)
 		if (i != -1) {
 			childs.remove(i)
-			skipping.remove(node)
+			blockedChilds.remove(node)
 			if (i < index) {
 				index = index - 1
 			} else if (i == index && index == childs.size()) {
@@ -99,8 +96,7 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 		}
 	}
 
-	override run() {
-		state = State.WORKING
+	override protected runInternal() {
 		val next = if (!childs.empty) {
 				childs.get(index)
 			} else {
@@ -133,7 +129,7 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 		if (i == -1) {
 			throw new IllegalArgumentException("Node doesn't contains in the scheduler")
 		}
-		skipping.remove(node)
+		blockedChilds.remove(node)
 		state = IExecutionNode.State.READY
 		parent.get?.notifyChildReady(this)
 	}
@@ -160,7 +156,7 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 				parent.get?.notifyChildWorking
 			}
 			case SKIP: {
-				skipping.add(childs.get(index))
+				blockedChilds.add(childs.get(index))
 				schedule()
 			}
 			case IDLE: {
@@ -179,10 +175,10 @@ abstract class AbstractExecutionScheduler extends AbstractExecutionNode implemen
 	def protected void schedule() {
 		index = nextIndex
 		if (index > childs.size - 1) {
-			if (skipping.empty) {
-				policyNoChildsSkiped.handlePolicy
+			if (blockedChilds.empty) {
+				policyOnAllChildsBlocked.handlePolicy
 			} else {
-				policySomeChildsSkiped.handlePolicy
+				policyOnAllChildsSuccess.handlePolicy
 			}
 		} else {
 			parent.get?.notifyChildWorking

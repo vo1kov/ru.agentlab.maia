@@ -28,11 +28,11 @@ class ParallelScheduler extends AbstractExecutionScheduler {
 	 */
 	new() {
 		policyOnChildBlocked = Policy.SKIP
-		policyOnChildFailed = Policy.SKIP
+		policyOnChildFailed = Policy.SCHEDULING
 		policyOnChildSuccess = Policy.SKIP
 		policyOnChildWorking = Policy.SCHEDULING
-		policySomeChildsSkiped = Policy.FAILED
-		policyNoChildsSkiped = Policy.SUCCESS
+		policyOnAllChildsBlocked = Policy.BLOCKED
+		policyOnAllChildsSuccess = Policy.SUCCESS
 		numRetriesMax = 1
 	}
 
