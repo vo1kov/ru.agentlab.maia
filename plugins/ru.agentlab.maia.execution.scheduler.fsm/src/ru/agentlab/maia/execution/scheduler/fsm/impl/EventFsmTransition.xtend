@@ -1,12 +1,12 @@
 package ru.agentlab.maia.execution.scheduler.fsm.impl
 
-import ru.agentlab.maia.execution.IExecutionNode
+import ru.agentlab.maia.execution.ITask
 
 class EventFsmTransition extends AbstractFsmTransition {
 
 	String topic
 
-	new(IExecutionNode from, IExecutionNode to, String topic) {
+	new(ITask from, ITask to, String topic) {
 		super(from, to)
 		this.topic = topic
 	}

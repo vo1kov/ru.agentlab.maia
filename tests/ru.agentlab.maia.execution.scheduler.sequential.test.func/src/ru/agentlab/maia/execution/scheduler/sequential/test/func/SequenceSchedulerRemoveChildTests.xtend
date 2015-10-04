@@ -7,12 +7,12 @@ import org.junit.runner.RunWith
 import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.execution.IExecutionNode
-import ru.agentlab.maia.execution.IExecutionScheduler
-import ru.agentlab.maia.execution.scheduler.sequential.SequentialScheduler
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
+import ru.agentlab.maia.execution.ITaskScheduler
+import ru.agentlab.maia.execution.scheduler.sequential.SequentialTaskScheduler
 
 @RunWith(MockitoJUnitRunner)
 class SequenceSchedulerRemoveChildTests {
@@ -22,30 +22,30 @@ class SequenceSchedulerRemoveChildTests {
 	extension SequenceSchedulerTestsExtension = new SequenceSchedulerTestsExtension
 
 	@Spy
-	IExecutionScheduler scheduler = new SequentialScheduler
+	ITaskScheduler scheduler = new SequentialTaskScheduler
 
 	@Test
 	def void shouldSilenceOnUnknownChild() {
 		val size = 10
 		val childs = getFakeChilds(size)
-		when(scheduler.childs).thenReturn(childs)
-		assertThat(scheduler.childs, iterableWithSize(size))
+		when(scheduler.subtasks).thenReturn(childs)
+		assertThat(scheduler.subtasks, iterableWithSize(size))
 
-		val removed = scheduler.removeChild(mock(IExecutionNode))
+		val removed = scheduler.removeSubtask(mock(IExecutionNode))
 
 		assertThat(removed, nullValue)
-		assertThat(scheduler.childs, iterableWithSize(size))
-		assertThat(scheduler.childs, contains(childs.toArray))
+		assertThat(scheduler.subtasks, iterableWithSize(size))
+		assertThat(scheduler.subtasks, contains(childs.toArray))
 	}
 
 	@Test
 	def void shouldReturnNullOnUnknownChild() {
 		val size = 10
 		val childs = getFakeChilds(size)
-		when(scheduler.childs).thenReturn(childs)
-		assertThat(scheduler.childs, iterableWithSize(size))
+		when(scheduler.subtasks).thenReturn(childs)
+		assertThat(scheduler.subtasks, iterableWithSize(size))
 
-		val removed = scheduler.removeChild(mock(IExecutionNode))
+		val removed = scheduler.removeSubtask(mock(IExecutionNode))
 
 		assertThat(removed, nullValue)
 	}
@@ -54,23 +54,23 @@ class SequenceSchedulerRemoveChildTests {
 	def void shouldSilenceOnNullChild() {
 		val size = 10
 		val childs = getFakeChilds(size)
-		when(scheduler.childs).thenReturn(childs)
-		assertThat(scheduler.childs, iterableWithSize(size))
+		when(scheduler.subtasks).thenReturn(childs)
+		assertThat(scheduler.subtasks, iterableWithSize(size))
 
-		scheduler.removeChild(null)
+		scheduler.removeSubtask(null)
 
-		assertThat(scheduler.childs, iterableWithSize(size))
-		assertThat(scheduler.childs, contains(childs.toArray))
+		assertThat(scheduler.subtasks, iterableWithSize(size))
+		assertThat(scheduler.subtasks, contains(childs.toArray))
 	}
 
 	@Test
 	def void shouldReturnNullOnNullChild() {
 		val size = 10
 		val childs = getFakeChilds(size)
-		when(scheduler.childs).thenReturn(childs)
-		assertThat(scheduler.childs, iterableWithSize(size))
+		when(scheduler.subtasks).thenReturn(childs)
+		assertThat(scheduler.subtasks, iterableWithSize(size))
 
-		val removed = scheduler.removeChild(null)
+		val removed = scheduler.removeSubtask(null)
 
 		assertThat(removed, nullValue)
 	}
@@ -79,11 +79,11 @@ class SequenceSchedulerRemoveChildTests {
 	def void shouldReturnRemoved() {
 		val size = 10
 		val childs = getFakeChilds(size)
-		when(scheduler.childs).thenReturn(childs)
-		assertThat(scheduler.childs, iterableWithSize(size))
+		when(scheduler.subtasks).thenReturn(childs)
+		assertThat(scheduler.subtasks, iterableWithSize(size))
 
 		val toRemove = childs.get(rnd.nextInt(childs.size))
-		val removed = scheduler.removeChild(toRemove)
+		val removed = scheduler.removeSubtask(toRemove)
 
 		assertThat(removed, equalTo(toRemove))
 	}
@@ -92,12 +92,12 @@ class SequenceSchedulerRemoveChildTests {
 	def void shouldDecreaseQueueSize() {
 		val size = 10
 		val childs = getFakeChilds(size)
-		when(scheduler.childs).thenReturn(childs)
-		assertThat(scheduler.childs, iterableWithSize(size))
+		when(scheduler.subtasks).thenReturn(childs)
+		assertThat(scheduler.subtasks, iterableWithSize(size))
 
-		scheduler.removeChild(childs.get(rnd.nextInt(childs.size)))
+		scheduler.removeSubtask(childs.get(rnd.nextInt(childs.size)))
 
-		assertThat(scheduler.childs, iterableWithSize(size - 1))
+		assertThat(scheduler.subtasks, iterableWithSize(size - 1))
 	}
 
 	@Test
@@ -106,8 +106,8 @@ class SequenceSchedulerRemoveChildTests {
 		val childs = new ArrayList<IExecutionNode> => [
 			add(child)
 		]
-		when(scheduler.childs).thenReturn(childs)
-		assertThat(scheduler.childs, iterableWithSize(1))
+		when(scheduler.subtasks).thenReturn(childs)
+		assertThat(scheduler.subtasks, iterableWithSize(1))
 //		scheduler.current = child
 //		assertThat(scheduler.current, notNullValue)
 //
@@ -120,13 +120,13 @@ class SequenceSchedulerRemoveChildTests {
 	def void shouldRemoveFromQueue() {
 		val size = 10
 		val childs = getFakeChilds(size)
-		when(scheduler.childs).thenReturn(childs)
+		when(scheduler.subtasks).thenReturn(childs)
 		val toRemove = childs.get(rnd.nextInt(childs.size))
-		assertThat(toRemove, isIn(scheduler.childs))
+		assertThat(toRemove, isIn(scheduler.subtasks))
 
-		scheduler.removeChild(toRemove)
+		scheduler.removeSubtask(toRemove)
 
-		assertThat(toRemove, not(isIn(scheduler.childs)))
+		assertThat(toRemove, not(isIn(scheduler.subtasks)))
 	}
 
 }

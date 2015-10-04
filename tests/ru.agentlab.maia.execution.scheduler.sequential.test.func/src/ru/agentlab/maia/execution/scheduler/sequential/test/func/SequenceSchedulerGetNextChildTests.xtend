@@ -6,12 +6,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
-import ru.agentlab.maia.execution.IExecutionScheduler
-import ru.agentlab.maia.execution.scheduler.sequential.SequentialScheduler
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
+import ru.agentlab.maia.execution.ITaskScheduler
+import ru.agentlab.maia.execution.scheduler.sequential.SequentialTaskScheduler
 
 @RunWith(MockitoJUnitRunner)
 class SequenceSchedulerGetNextChildTests {
@@ -19,7 +19,7 @@ class SequenceSchedulerGetNextChildTests {
 	extension SequenceSchedulerTestsExtension = new SequenceSchedulerTestsExtension
 
 	@Spy
-	IExecutionScheduler scheduler = new SequentialScheduler
+	ITaskScheduler scheduler = new SequentialTaskScheduler
 
 	@Before
 	def void before() {
@@ -29,8 +29,8 @@ class SequenceSchedulerGetNextChildTests {
 	@Test
 	def void shouldSilenceOnEmptyQueue() {
 		val childs = Collections.EMPTY_LIST
-		when(scheduler.childs).thenReturn(childs)
-		assertThat(scheduler.childs, emptyIterable)
+		when(scheduler.subtasks).thenReturn(childs)
+		assertThat(scheduler.subtasks, emptyIterable)
 
 //		val next = scheduler.schedule
 //
@@ -41,8 +41,8 @@ class SequenceSchedulerGetNextChildTests {
 	def void shouldBeginFromFirst() {
 		val size = 10
 		val childs = getFakeChilds(size)
-		when(scheduler.childs).thenReturn(childs)
-		assertThat(scheduler.childs, not(emptyIterable))
+		when(scheduler.subtasks).thenReturn(childs)
+		assertThat(scheduler.subtasks, not(emptyIterable))
 
 //		val next = scheduler.schedule
 //
@@ -53,8 +53,8 @@ class SequenceSchedulerGetNextChildTests {
 	def void shouldChangeCurrenChild() {
 		val size = 10
 		val childs = getFakeChilds(size)
-		when(scheduler.childs).thenReturn(childs)
-		assertThat(scheduler.childs, not(emptyIterable))
+		when(scheduler.subtasks).thenReturn(childs)
+		assertThat(scheduler.subtasks, not(emptyIterable))
 
 //		for (i : 0 ..< 10) {
 //			val next = scheduler.schedule
@@ -68,8 +68,8 @@ class SequenceSchedulerGetNextChildTests {
 	def void shouldRestartFromBeginWhenOverload() {
 		val size = 10
 		val childs = getFakeChilds(size)
-		when(scheduler.childs).thenReturn(childs)
-		assertThat(scheduler.childs, not(emptyIterable))
+		when(scheduler.subtasks).thenReturn(childs)
+		assertThat(scheduler.subtasks, not(emptyIterable))
 //		assertThat(scheduler.current, nullValue)
 //		for (i : 0 ..< size * 3) {
 //			val next = scheduler.schedule
@@ -83,8 +83,8 @@ class SequenceSchedulerGetNextChildTests {
 	def void shouldReturnChildsInOrder() {
 		val size = 10
 		val childs = getFakeChilds(size)
-		when(scheduler.childs).thenReturn(childs)
-		assertThat(scheduler.childs, not(emptyIterable))
+		when(scheduler.subtasks).thenReturn(childs)
+		assertThat(scheduler.subtasks, not(emptyIterable))
 
 //		for (i : 0 ..< size) {
 //			val next = scheduler.schedule

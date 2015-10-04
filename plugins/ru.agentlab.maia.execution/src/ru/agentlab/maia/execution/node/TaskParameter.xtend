@@ -1,9 +1,10 @@
-package ru.agentlab.maia.execution
+package ru.agentlab.maia.execution.node
 
 import java.util.concurrent.atomic.AtomicReference
 import org.eclipse.xtend.lib.annotations.Accessors
+import ru.agentlab.maia.execution.ITaskParameter
 
-class ExecutionParameter<T> implements IExecutionParameter<T> {
+class TaskParameter<T> implements ITaskParameter<T> {
 
 	@Accessors
 	val protected String name
@@ -41,7 +42,7 @@ class ExecutionParameter<T> implements IExecutionParameter<T> {
 		return reference.get
 	}
 
-	override link(IExecutionParameter<T> param) {
+	override link(ITaskParameter<T> param) {
 		reference.set(param.reference)
 	}
 

@@ -1,15 +1,15 @@
 package ru.agentlab.maia.execution.scheduler.pattern.impl
 
-import java.util.concurrent.ConcurrentHashMap
+import java.util.HashMap
 import javax.inject.Inject
-import ru.agentlab.maia.execution.AbstractExecutionScheduler
-import ru.agentlab.maia.execution.IExecutionNode
+import ru.agentlab.maia.execution.ITask
+import ru.agentlab.maia.execution.scheduler.TaskSchedulerUnordered
 import ru.agentlab.maia.execution.scheduler.pattern.IPatternScheduler
 import ru.agentlab.maia.memory.IMaiaContext
 
-class PatternScheduler extends AbstractExecutionScheduler implements IPatternScheduler {
+class PatternScheduler extends TaskSchedulerUnordered implements IPatternScheduler {
 
-	val stateMapping = new ConcurrentHashMap<String, IExecutionNode>
+	val stateMapping = new HashMap<PatternState, ITask>
 
 	IMaiaContext context
 
@@ -21,8 +21,8 @@ class PatternScheduler extends AbstractExecutionScheduler implements IPatternSch
 		this.scheme = scheme
 	}
 
-	def IExecutionNode getCurrentNode() {
-//		return context.get(KEY_CURRENT_CONTEXT) as IExecutionNode
+	def ITask getCurrentNode() {
+//		return context.get(KEY_CURRENT_CONTEXT) as ITask
 	}
 
 	def getNextNode() {
@@ -36,7 +36,7 @@ class PatternScheduler extends AbstractExecutionScheduler implements IPatternSch
 		return nextContext
 	}
 
-	def synchronized link(IExecutionNode context, String stateName) {
+	def link(ITask context, String stateName) {
 		val state = scheme.allStates.findFirst [
 			name == stateName
 		]
@@ -46,21 +46,36 @@ class PatternScheduler extends AbstractExecutionScheduler implements IPatternSch
 		stateMapping.put(stateName, context)
 	}
 
-	def synchronized remove(IExecutionNode context) {
+	def remove(ITask context) {
 		stateMapping.remove(context)
 	}
 
-	override synchronized removeAll() {
+	override clear() {
 		stateMapping.clear
 	}
 
-	def add(IExecutionNode context) {
-//		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
-	override getNextIndex() {
+	override protected internalSchedule() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
+	override notifySubtaskReady(ITask task) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override notifySubtaskBlocked() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override notifySubtaskSuccess() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override notifySubtaskFailed() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override notifySubtaskWorking() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
 
 }

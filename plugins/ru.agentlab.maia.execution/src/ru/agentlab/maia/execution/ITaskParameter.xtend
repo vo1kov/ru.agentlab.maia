@@ -2,7 +2,7 @@ package ru.agentlab.maia.execution
 
 import java.util.concurrent.atomic.AtomicReference
 
-interface IExecutionParameter<T> {
+interface ITaskParameter<T> {
 
 	def String getName()
 
@@ -19,7 +19,7 @@ interface IExecutionParameter<T> {
 
 	def boolean isOptional()
 
-	def void link(IExecutionParameter<T> param)
+	def void link(ITaskParameter<T> param)
 
 	def void unlink()
 	

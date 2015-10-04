@@ -6,72 +6,72 @@ import org.junit.runner.RunWith
 import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.execution.IExecutionNode
-import ru.agentlab.maia.execution.IExecutionScheduler
-import ru.agentlab.maia.execution.scheduler.sequential.SequentialScheduler
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
+import ru.agentlab.maia.execution.ITaskScheduler
+import ru.agentlab.maia.execution.scheduler.sequential.SequentialTaskScheduler
 
 @RunWith(MockitoJUnitRunner)
 class SequenceSchedulerAddChildTests {
 
 	@Spy
-	IExecutionScheduler scheduler = new SequentialScheduler
+	ITaskScheduler scheduler = new SequentialTaskScheduler
 
 	@Test
 	def void shouldIncreaseQueueSize() {
-		assertThat(scheduler.childs, emptyIterable)
+		assertThat(scheduler.subtasks, emptyIterable)
 		val size = 10
 		for (i : 0 ..< size) {
 			val action = mock(IExecutionNode)
-			scheduler.addChild(action)
+			scheduler.addSubtask(action)
 		}
-		assertThat(scheduler.childs, iterableWithSize(size))
+		assertThat(scheduler.subtasks, iterableWithSize(size))
 	}
 
 	@Test
 	def void shouldSilenceOnNull() {
-		val lastSize = scheduler.childs.size
-		scheduler.addChild(null)
-		assertThat(scheduler.childs, iterableWithSize(lastSize))
+		val lastSize = scheduler.subtasks.size
+		scheduler.addSubtask(null)
+		assertThat(scheduler.subtasks, iterableWithSize(lastSize))
 	}
 
 	@Test
 	def void shouldAddWithSameOrder() {
 		val size = 10
 		val cache = new ArrayList<IExecutionNode>
-		assertThat(scheduler.childs, emptyIterable)
+		assertThat(scheduler.subtasks, emptyIterable)
 
 		for (i : 0 ..< size) {
 			val action = mock(IExecutionNode)
-			scheduler.addChild(action)
+			scheduler.addSubtask(action)
 			cache.add(i, action)
 		}
-		assertThat(scheduler.childs, iterableWithSize(size))
-		assertThat(scheduler.childs, contains(cache.toArray))
+		assertThat(scheduler.subtasks, iterableWithSize(size))
+		assertThat(scheduler.subtasks, contains(cache.toArray))
 	}
 
 	@Test
 	def void shouldAddDuplicatesWithoutChangingQueue() {
 		val size = 10
 		val cache = new ArrayList<IExecutionNode>
-		assertThat(scheduler.childs, emptyIterable)
+		assertThat(scheduler.subtasks, emptyIterable)
 
 		for (i : 0 ..< size) {
 			val action = mock(IExecutionNode)
-			scheduler.addChild(action)
+			scheduler.addSubtask(action)
 			cache.add(i, action)
 		}
-		assertThat(scheduler.childs, iterableWithSize(size))
-		assertThat(scheduler.childs, contains(cache.toArray))
+		assertThat(scheduler.subtasks, iterableWithSize(size))
+		assertThat(scheduler.subtasks, contains(cache.toArray))
 
 		for (i : 0 ..< size) {
 			val action = cache.get(i)
-			scheduler.addChild(action)
+			scheduler.addSubtask(action)
 		}
-		assertThat(scheduler.childs, iterableWithSize(size))
-		assertThat(scheduler.childs, contains(cache.toArray))
+		assertThat(scheduler.subtasks, iterableWithSize(size))
+		assertThat(scheduler.subtasks, contains(cache.toArray))
 	}
 
 }

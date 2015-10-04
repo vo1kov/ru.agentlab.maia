@@ -7,12 +7,12 @@ import org.junit.runner.RunWith
 import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.execution.IExecutionNode
-import ru.agentlab.maia.execution.IExecutionScheduler
-import ru.agentlab.maia.execution.scheduler.sequential.SequentialScheduler
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
+import ru.agentlab.maia.execution.ITaskScheduler
+import ru.agentlab.maia.execution.scheduler.sequential.SequentialTaskScheduler
 
 @RunWith(MockitoJUnitRunner)
 class SequenceSchedulerRunTests {
@@ -20,7 +20,7 @@ class SequenceSchedulerRunTests {
 	extension SequenceSchedulerTestsExtension = new SequenceSchedulerTestsExtension
 
 	@Spy
-	IExecutionScheduler scheduler = new SequentialScheduler
+	ITaskScheduler scheduler = new SequentialTaskScheduler
 
 //	@Before
 //	def void before() {
@@ -34,7 +34,7 @@ class SequenceSchedulerRunTests {
 
 	@Test
 	def void shouldDelegateToEmptyChilds() {
-		when(scheduler.childs).thenReturn(Collections.EMPTY_LIST)
+		when(scheduler.subtasks).thenReturn(Collections.EMPTY_LIST)
 
 		scheduler.run
 	}
@@ -42,8 +42,8 @@ class SequenceSchedulerRunTests {
 	@Test
 	def void shouldDelegateToSingleChilds() {
 		val child = mock(IExecutionNode)
-		when(scheduler.childs).thenReturn(#[child])
-		assertThat(scheduler.childs, iterableWithSize(1))
+		when(scheduler.subtasks).thenReturn(#[child])
+		assertThat(scheduler.subtasks, iterableWithSize(1))
 
 		scheduler.run
 
@@ -54,8 +54,8 @@ class SequenceSchedulerRunTests {
 	def void shouldDelegateToMultipleChilds() {
 		val size = 10
 		val childs = getFakeChilds(size)
-		when(scheduler.childs).thenReturn(childs)
-		assertThat(scheduler.childs, iterableWithSize(size))
+		when(scheduler.subtasks).thenReturn(childs)
+		assertThat(scheduler.subtasks, iterableWithSize(size))
 		for (i : 0 ..< size) {
 
 			scheduler.run

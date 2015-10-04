@@ -1,7 +1,7 @@
 package ru.agentlab.maia.execution.scheduler.sequential
 
-import ru.agentlab.maia.execution.AbstractExecutionScheduler
-import ru.agentlab.maia.execution.IExecutionScheduler
+import ru.agentlab.maia.execution.ITask
+import ru.agentlab.maia.execution.scheduler.TaskSchedulerOrdered
 
 /**
  * <p>
@@ -20,25 +20,33 @@ import ru.agentlab.maia.execution.IExecutionScheduler
  * 
  * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
-class SequentialScheduler extends AbstractExecutionScheduler {
+class SequentialTaskScheduler extends TaskSchedulerOrdered {
 
-	/**
-	 * Construct instance of scheduler and set default policies.
-	 */
-	new() {
-		policyOnChildBlocked = Policy.BLOCKED
-		policyOnChildFailed = Policy.FAILED
-		policyOnChildSuccess = Policy.SCHEDULING
-		policyOnChildWorking = Policy.IDLE
-		policyOnAllChildsBlocked = Policy.BLOCKED
-		policyOnAllChildsSuccess = Policy.SUCCESS
+	override notifySubtaskBlocked() {
+		setStateBlocked()
 	}
 
-	/**
-	 * Increment current index.
-	 */
-	override getNextIndex() {
-		index = index + 1
+	override notifySubtaskSuccess() {
+		if (index < subtasks.size) {
+			schedule()
+		} else {
+			setStateSuccess()
+		}
+	}
+
+	override notifySubtaskFailed() {
+		setStateFailed()
+	}
+
+	override notifySubtaskWorking() {
+		idle()
+	}
+
+	override notifySubtaskReady(ITask node) {
+		if (node !== subtasks.get(index)) {
+			throw new IllegalArgumentException("Node doesn't contains in the scheduler")
+		}
+		setStateReady()
 	}
 
 }

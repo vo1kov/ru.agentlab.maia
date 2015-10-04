@@ -1,10 +1,10 @@
 package ru.agentlab.maia.execution.scheduler.fsm
 
-import ru.agentlab.maia.execution.IExecutionNode
+import ru.agentlab.maia.execution.ITask
 
 interface IFsmTransition {
 
-	def IExecutionNode getFrom()
+	def ITask getFrom()
 
-	def IExecutionNode getTo()
+	def ITask getTo()
 }

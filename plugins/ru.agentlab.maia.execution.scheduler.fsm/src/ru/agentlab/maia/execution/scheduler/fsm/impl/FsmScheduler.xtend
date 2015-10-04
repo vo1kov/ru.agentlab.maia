@@ -2,11 +2,11 @@ package ru.agentlab.maia.execution.scheduler.fsm.impl
 
 import java.util.ArrayList
 import java.util.List
-import ru.agentlab.maia.execution.AbstractExecutionScheduler
-import ru.agentlab.maia.execution.IExecutionNode
+import ru.agentlab.maia.execution.ITask
 import ru.agentlab.maia.execution.scheduler.fsm.IFsmScheduler
+import ru.agentlab.maia.execution.scheduler.TaskSchedulerUnordered
 
-class FsmScheduler extends AbstractExecutionScheduler implements IFsmScheduler {
+class FsmScheduler extends TaskSchedulerUnordered implements IFsmScheduler {
 
 	val List<DefaultFsmTransition> defaultTransitions = new ArrayList
 
@@ -29,20 +29,19 @@ class FsmScheduler extends AbstractExecutionScheduler implements IFsmScheduler {
 //		}
 //		return null
 //	}
-
-	def DefaultFsmTransition getDefaultTransition(IExecutionNode from) {
+	def DefaultFsmTransition getDefaultTransition(ITask from) {
 		return defaultTransitions.findFirst[it.from == from]
 	}
 
-	def ExceptionFsmTransition getExceptionTransition(IExecutionNode from) {
+	def ExceptionFsmTransition getExceptionTransition(ITask from) {
 		return exceptionTransitions.findFirst[it.from == from]
 	}
 
-	def EventFsmTransition getEventTransition(IExecutionNode from) {
+	def EventFsmTransition getEventTransition(ITask from) {
 		return eventTransitions.findFirst[it.from == from]
 	}
 
-	override addDefaultTransition(IExecutionNode from, IExecutionNode to) {
+	override addDefaultTransition(ITask from, ITask to) {
 		val existing = defaultTransitions.findFirst[it.from == from && it.to == to]
 		if (existing == null) {
 			val transition = new DefaultFsmTransition(from, to)
@@ -53,7 +52,7 @@ class FsmScheduler extends AbstractExecutionScheduler implements IFsmScheduler {
 		}
 	}
 
-	override addExceptionTransition(IExecutionNode from, IExecutionNode to, Class<? extends RuntimeException> exc) {
+	override addExceptionTransition(ITask from, ITask to, Class<? extends RuntimeException> exc) {
 		val existing = exceptionTransitions.findFirst[it.from == from && it.to == to]
 		if (existing == null) {
 			val transition = new ExceptionFsmTransition(from, to, exc)
@@ -64,7 +63,7 @@ class FsmScheduler extends AbstractExecutionScheduler implements IFsmScheduler {
 		}
 	}
 
-	override addEventTransition(IExecutionNode from, IExecutionNode to, String topic) {
+	override addEventTransition(ITask from, ITask to, String topic) {
 		val existing = eventTransitions.findFirst[it.from == from && it.to == to]
 		if (existing == null) {
 			val transition = new EventFsmTransition(from, to, topic)
@@ -74,10 +73,29 @@ class FsmScheduler extends AbstractExecutionScheduler implements IFsmScheduler {
 			return null
 		}
 	}
-	
-	override getNextIndex() {
+
+	override protected internalSchedule() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
+	override notifySubtaskReady(ITask task) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override notifySubtaskBlocked() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override notifySubtaskSuccess() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override notifySubtaskFailed() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override notifySubtaskWorking() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
 
 }

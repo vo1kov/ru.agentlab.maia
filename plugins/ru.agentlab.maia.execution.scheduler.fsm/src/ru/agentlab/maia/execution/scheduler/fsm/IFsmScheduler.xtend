@@ -1,12 +1,12 @@
 package ru.agentlab.maia.execution.scheduler.fsm
 
-import ru.agentlab.maia.execution.IExecutionNode
-import ru.agentlab.maia.execution.IExecutionScheduler
+import ru.agentlab.maia.execution.ITask
+import ru.agentlab.maia.execution.ITaskScheduler
 import ru.agentlab.maia.execution.scheduler.fsm.impl.DefaultFsmTransition
 import ru.agentlab.maia.execution.scheduler.fsm.impl.EventFsmTransition
 import ru.agentlab.maia.execution.scheduler.fsm.impl.ExceptionFsmTransition
 
-interface IFsmScheduler extends IExecutionScheduler {
+interface IFsmScheduler extends ITaskScheduler {
 
 	/**
 	 * Add new Default transition to scheduler.
@@ -21,7 +21,7 @@ interface IFsmScheduler extends IExecutionScheduler {
 	 * @return Newly created Default transition or <code>null</code> scheduler have 
 	 * some transition with same parameters.
 	 */
-	def DefaultFsmTransition addDefaultTransition(IExecutionNode from, IExecutionNode to)
+	def DefaultFsmTransition addDefaultTransition(ITask from, ITask to)
 
 	/**
 	 * Add new Exception-based transition to scheduler.
@@ -38,8 +38,7 @@ interface IFsmScheduler extends IExecutionScheduler {
 	 * @return Newly created Exception transition or <code>null</code> if there is some transition 
 	 * with same parameters.
 	 */
-	def ExceptionFsmTransition addExceptionTransition(IExecutionNode from, IExecutionNode to,
-		Class<? extends RuntimeException> exception)
+	def ExceptionFsmTransition addExceptionTransition(ITask from, ITask to, Class<? extends RuntimeException> exception)
 
 	/**
 	 * Add new Event-based transition to scheduler.
@@ -56,5 +55,5 @@ interface IFsmScheduler extends IExecutionScheduler {
 	 * @return Newly created Event transition or <code>null</code> if there is some transition 
 	 * with same parameters.
 	 */
-	def EventFsmTransition addEventTransition(IExecutionNode from, IExecutionNode to, String topic)
+	def EventFsmTransition addEventTransition(ITask from, ITask to, String topic)
 }

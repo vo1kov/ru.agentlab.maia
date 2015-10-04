@@ -3,15 +3,15 @@ package ru.agentlab.maia.execution.action.annotated
 import java.lang.reflect.Field
 import java.util.ArrayList
 import javax.inject.Inject
-import ru.agentlab.maia.execution.AbstractExecutionAction
-import ru.agentlab.maia.execution.ExecutionParameter
-import ru.agentlab.maia.execution.IExecutionParameter
+import ru.agentlab.maia.execution.ITaskParameter
 import ru.agentlab.maia.execution.action.annotation.Action
 import ru.agentlab.maia.execution.action.annotation.Input
 import ru.agentlab.maia.execution.action.annotation.Output
+import ru.agentlab.maia.execution.node.TaskParameter
 import ru.agentlab.maia.memory.IMaiaContextInjector
+import ru.agentlab.maia.execution.node.TaskPrimitive
 
-class AnnotatedAction extends AbstractExecutionAction {
+class AnnotatedAction extends TaskPrimitive {
 
 	var Field[] inputFields = newArrayOfSize(0)
 
@@ -20,11 +20,11 @@ class AnnotatedAction extends AbstractExecutionAction {
 	@Inject
 	var IMaiaContextInjector injector
 
-	override setImplementation(Object impl) {
-		super.implementation = impl
+	new(Object impl) {
+		implementation.set = impl
 		val inputs = new ArrayList<Field>
 		val outputs = new ArrayList<Field>
-		for (field : implementation.get.class.declaredFields) {
+		for (field : impl.class.declaredFields) {
 			if (field.isAnnotationPresent(Input)) {
 				inputs += field
 				addInput(createPrameter(field.name, field))
@@ -58,14 +58,17 @@ class AnnotatedAction extends AbstractExecutionAction {
 		}
 	}
 
-	def private <T> IExecutionParameter<T> createPrameter(String name, Field field) {
+	def private <T> ITaskParameter<T> createPrameter(String name, Field field) {
 		val c = field.type as Class<T>
-		new ExecutionParameter(name, c)
+		new TaskParameter(name, c)
 	}
 
-	def private <T> save(IExecutionParameter<T> output, Field field) {
+	def private <T> save(ITaskParameter<T> output, Field field) {
 		val value = field.get(implementation) as T
 		output.value = value
+	}
+
+	override reset() {
 	}
 
 }

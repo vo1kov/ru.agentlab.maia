@@ -1,10 +1,10 @@
 package ru.agentlab.maia.execution.scheduler.fsm.impl
 
-import ru.agentlab.maia.execution.IExecutionNode
+import ru.agentlab.maia.execution.ITask
 
 class DefaultFsmTransition extends AbstractFsmTransition {
 
-	new(IExecutionNode from, IExecutionNode to) {
+	new(ITask from, ITask to) {
 		super(from, to)
 	}
 

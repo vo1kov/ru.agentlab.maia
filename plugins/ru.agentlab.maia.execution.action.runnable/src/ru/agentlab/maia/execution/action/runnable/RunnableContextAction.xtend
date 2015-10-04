@@ -2,12 +2,12 @@ package ru.agentlab.maia.execution.action.runnable
 
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.execution.AbstractExecutionAction
-import ru.agentlab.maia.execution.IExecutionScheduler
+import ru.agentlab.maia.execution.ITaskScheduler
 
 class RunnableContextAction extends AbstractExecutionAction {
 
 	@Accessors
-	var IExecutionScheduler parentNode
+	var ITaskScheduler parentNode
 
 	override doInject() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")

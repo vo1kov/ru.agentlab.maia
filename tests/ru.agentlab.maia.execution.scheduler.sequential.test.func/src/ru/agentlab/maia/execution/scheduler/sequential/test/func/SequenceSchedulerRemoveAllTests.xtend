@@ -4,12 +4,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
-import ru.agentlab.maia.execution.IExecutionScheduler
-import ru.agentlab.maia.execution.scheduler.sequential.SequentialScheduler
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
+import ru.agentlab.maia.execution.ITaskScheduler
+import ru.agentlab.maia.execution.scheduler.sequential.SequentialTaskScheduler
 
 @RunWith(MockitoJUnitRunner)
 class SequenceSchedulerRemoveAllTests {
@@ -18,26 +18,26 @@ class SequenceSchedulerRemoveAllTests {
 	extension SequenceSchedulerTestsExtension = new SequenceSchedulerTestsExtension
 
 	@Spy
-	IExecutionScheduler scheduler = new SequentialScheduler
+	ITaskScheduler scheduler = new SequentialTaskScheduler
 
 	@Test
 	def void shouldClearQueueSize() {
 		val size = 10
 		val childs = getFakeChilds(size)
-		when(scheduler.childs).thenReturn(childs)
-		assertThat(scheduler.childs, not(emptyIterable))
+		when(scheduler.subtasks).thenReturn(childs)
+		assertThat(scheduler.subtasks, not(emptyIterable))
 
-		scheduler.removeAll
+		scheduler.removeAllChilds
 
-		assertThat(scheduler.childs, emptyIterable)
+		assertThat(scheduler.subtasks, emptyIterable)
 	}
 
 	@Test
 	def void shouldClearCurrenNode() {
 		val size = 10
 		val childs = getFakeChilds(size)
-		when(scheduler.childs).thenReturn(childs)
-		assertThat(scheduler.childs, not(emptyIterable))
+		when(scheduler.subtasks).thenReturn(childs)
+		assertThat(scheduler.subtasks, not(emptyIterable))
 //		scheduler.current = childs.get(rnd.nextInt(childs.size))
 //		assertThat(scheduler.current, notNullValue)
 //		assertThat(scheduler.current, isIn(scheduler.childs))
@@ -51,8 +51,8 @@ class SequenceSchedulerRemoveAllTests {
 	def void shouldStartSchedulingFromBegin() {
 		val size = 10
 		val childs = getFakeChilds(size)
-		when(scheduler.childs).thenReturn(childs)
-		assertThat(scheduler.childs, not(emptyIterable))
+		when(scheduler.subtasks).thenReturn(childs)
+		assertThat(scheduler.subtasks, not(emptyIterable))
 //		scheduler.current = childs.get(rnd.nextInt(childs.size))
 //		assertThat(scheduler.current, notNullValue)
 //		assertThat(scheduler.current, isIn(scheduler.childs))

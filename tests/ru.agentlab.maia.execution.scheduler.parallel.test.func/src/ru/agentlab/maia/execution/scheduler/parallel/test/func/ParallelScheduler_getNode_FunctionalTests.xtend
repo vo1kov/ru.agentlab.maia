@@ -3,22 +3,22 @@ package ru.agentlab.maia.execution.scheduler.parallel.test.func
 import org.junit.Test
 import ru.agentlab.maia.execution.IExecutionNode
 import ru.agentlab.maia.execution.IExecutionNode.State
-import ru.agentlab.maia.execution.scheduler.parallel.ParallelScheduler
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
+import ru.agentlab.maia.execution.scheduler.parallel.ParallelTaskScheduler
 
 class ParallelScheduler_getNode_FunctionalTests {
 
-	val scheduler = new ParallelScheduler
+	val scheduler = new ParallelTaskScheduler
 
 	def IExecutionNode getSuccessNode() {
 		val result = mock(IExecutionNode) => [
 			when(it.state).thenReturn(IExecutionNode.State.SUCCESS)
 
 			doAnswer[
-				scheduler.notifyChildSuccess
+				scheduler.notifySubtaskSuccess
 				return null
 			].when(it).run
 		]
@@ -30,7 +30,7 @@ class ParallelScheduler_getNode_FunctionalTests {
 			when(it.state).thenReturn(IExecutionNode.State.FAILED)
 
 			doAnswer[
-				scheduler.notifyChildFailed
+				scheduler.notifySubtaskFailed
 				return null
 			].when(it).run
 		]
@@ -42,8 +42,8 @@ class ParallelScheduler_getNode_FunctionalTests {
 	 */
 	@Test
 	def void test() {
-		scheduler.addChild(successNode)
-		scheduler.addChild(failedNode)
+		scheduler.addSubtask(successNode)
+		scheduler.addSubtask(failedNode)
 
 		scheduler.run
 		scheduler.run

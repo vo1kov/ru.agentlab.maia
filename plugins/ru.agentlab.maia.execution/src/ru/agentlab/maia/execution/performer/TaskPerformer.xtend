@@ -1,16 +1,18 @@
-package ru.agentlab.maia.execution
+package ru.agentlab.maia.execution.performer
 
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
+import ru.agentlab.maia.execution.ITask
+import ru.agentlab.maia.execution.ITaskPerformer
 
-class ExecutionService implements IExecutionService {
+class TaskPerformer implements ITaskPerformer {
 
 	@Inject
 	ExecutorService executor
 
 	@Inject
-	IExecutionNode node
+	ITask task
 
 	val isActive = new AtomicBoolean(false)
 
@@ -20,8 +22,8 @@ class ExecutionService implements IExecutionService {
 			new Runnable {
 				override run() {
 					if (active) {
-						node.run
-						if (node.state != IExecutionNode.State.SUCCESS) {
+						task.run
+						if (task.state != ITask.State.SUCCESS) {
 							executor.submit(this)
 						}
 					}
