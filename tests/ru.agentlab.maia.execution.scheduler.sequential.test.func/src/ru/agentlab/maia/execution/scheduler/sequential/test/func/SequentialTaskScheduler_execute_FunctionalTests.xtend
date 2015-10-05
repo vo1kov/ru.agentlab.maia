@@ -6,18 +6,16 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
-import ru.agentlab.maia.execution.IExecutionNode
+import ru.agentlab.maia.execution.ITask
+import ru.agentlab.maia.execution.ITaskScheduler
+import ru.agentlab.maia.execution.scheduler.sequential.SequentialTaskScheduler
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
-import ru.agentlab.maia.execution.ITaskScheduler
-import ru.agentlab.maia.execution.scheduler.sequential.SequentialTaskScheduler
 
 @RunWith(MockitoJUnitRunner)
-class SequenceSchedulerRunTests {
-
-	extension SequenceSchedulerTestsExtension = new SequenceSchedulerTestsExtension
+class SequentialTaskScheduler_execute_FunctionalTests {
 
 	@Spy
 	ITaskScheduler scheduler = new SequentialTaskScheduler
@@ -28,7 +26,7 @@ class SequenceSchedulerRunTests {
 //	}
 	@Test
 	def void shouldInvokeNextChild() {
-		scheduler.run
+		scheduler.execute
 //		verify(scheduler).schedule
 	}
 
@@ -36,31 +34,31 @@ class SequenceSchedulerRunTests {
 	def void shouldDelegateToEmptyChilds() {
 		when(scheduler.subtasks).thenReturn(Collections.EMPTY_LIST)
 
-		scheduler.run
+		scheduler.execute
 	}
 
 	@Test
 	def void shouldDelegateToSingleChilds() {
-		val child = mock(IExecutionNode)
+		val child = mock(ITask)
 		when(scheduler.subtasks).thenReturn(#[child])
 		assertThat(scheduler.subtasks, iterableWithSize(1))
 
-		scheduler.run
+		scheduler.execute
 
-		verify(child).run
+		verify(child).execute
 	}
 
 	@Test @Ignore
 	def void shouldDelegateToMultipleChilds() {
 		val size = 10
-		val childs = getFakeChilds(size)
-		when(scheduler.subtasks).thenReturn(childs)
-		assertThat(scheduler.subtasks, iterableWithSize(size))
-		for (i : 0 ..< size) {
-
-			scheduler.run
-
-			verify(childs.get(i)).run
-		}
+//		val childs = getFakeChilds(size)
+//		when(scheduler.subtasks).thenReturn(childs)
+//		assertThat(scheduler.subtasks, iterableWithSize(size))
+//		for (i : 0 ..< size) {
+//
+//			scheduler.execute
+//
+//			verify(childs.get(i)).execute
+//		}
 	}
 }
