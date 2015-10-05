@@ -6,7 +6,7 @@ abstract class TaskPrimitive extends Task {
 
 	var protected implementation = new AtomicReference<Object>
 
-	override protected internalRun() {
+	override protected internalExecute() {
 		try {
 			doInject()
 			doRun()

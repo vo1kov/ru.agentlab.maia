@@ -39,8 +39,8 @@ abstract class TaskSchedulerOrdered extends TaskScheduler {
 		index = 0
 	}
 
-	override protected internalRun() {
-		subtasks.get(index).run
+	override protected internalExecute() {
+		subtasks.get(index).execute
 	}
 
 	/**

@@ -38,7 +38,7 @@ interface ITask {
 	/**
 	 * <p>Invoke one step of execution of the task.</p>
 	 */
-	def void run()
+	def void execute()
 
 	/**
 	 * <p>Retrieve task parent.</p>

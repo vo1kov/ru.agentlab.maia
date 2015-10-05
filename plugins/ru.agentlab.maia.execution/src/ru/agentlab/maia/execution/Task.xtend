@@ -75,12 +75,12 @@ abstract class Task implements ITask {
 	/**
 	 * ThreadSafe! But allow only 1 thread to execute node.
 	 */
-	override final run() {
+	override final execute() {
 		val entered = owner.compareAndSet(null, Thread.currentThread)
 		if (entered) {
 
 			state = State.WORKING
-			internalRun()
+			internalExecute()
 
 			owner.set(null)
 		} else {
@@ -108,6 +108,6 @@ abstract class Task implements ITask {
 		parent.get?.notifySubtaskReady(this)
 	}
 
-	def protected void internalRun()
+	def protected void internalExecute()
 
 }

@@ -36,8 +36,8 @@ abstract class TaskSchedulerUnordered extends TaskScheduler {
 		current = null
 	}
 
-	override protected internalRun() {
-		current.run
+	override protected internalExecute() {
+		current.execute
 	}
 
 	def boolean isFirst(ITask subtask)
