@@ -1,4 +1,4 @@
-package ru.agentlab.maia.execution.node.test.func
+package ru.agentlab.maia.execution
 
 import ru.agentlab.maia.execution.ITaskScheduler
 import ru.agentlab.maia.execution.TaskParameter

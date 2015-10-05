@@ -97,5 +97,13 @@ class FsmScheduler extends TaskSchedulerUnordered implements IFsmScheduler {
 	override notifySubtaskWorking() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
+	
+	override isFirst(ITask subtask) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override isReady() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
 
 }

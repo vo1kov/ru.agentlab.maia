@@ -14,17 +14,16 @@ class SequentialTaskScheduler_addSubtask_FunctionalTests {
 	ITaskScheduler scheduler = new SequentialTaskScheduler
 
 	@Test
-	def void getSubtasks_increaseSize_whenValidArgs() {
+	def void getSubtasks_increaseSize_afterAddSubtask() {
 		val sizeBefore = scheduler.subtasks.size
 
 		scheduler.addSubtask(mock(ITask))
-		val sizeAfter = scheduler.subtasks.size
 
-		assertThat(sizeAfter - sizeBefore, equalTo(1))
+		assertThat(scheduler.subtasks.size - sizeBefore, equalTo(1))
 	}
 
 	@Test
-	def void getSubtasks_containsAddedInLast_whenValidArgs() {
+	def void getSubtasks_containsAddedInLast_afterAddSubtask() {
 		val task = mock(ITask)
 
 		scheduler.addSubtask(task)
@@ -33,25 +32,24 @@ class SequentialTaskScheduler_addSubtask_FunctionalTests {
 	}
 
 	@Test
-	def void getSubtasks_notChangeSize_whenCatchNPE() {
+	def void getSubtasks_notChangeSize_afterAddNullSubtaskAndCatchNPE() {
 		val sizeBefore = scheduler.subtasks.size
 
 		try {
 			scheduler.addSubtask(null)
 		} catch (NullPointerException e) {
 		}
-		val sizeAfter = scheduler.subtasks.size
 
-		assertThat(sizeAfter, equalTo(sizeBefore))
+		assertThat(scheduler.subtasks.size, equalTo(sizeBefore))
 	}
 
 	@Test(expected=NullPointerException)
-	def void getSubtasks_throws_whenNullArgs() {
+	def void getSubtasks_throws_afterAddNullSubtask() {
 		scheduler.addSubtask(null)
 	}
 
 	@Test
-	def void getSubtasks_returnAddOrder() {
+	def void getSubtasks_returnAddOrder_afterAddSubtask() {
 		val size = 10
 		scheduler.clear
 		val ITask[] cache = newArrayOfSize(size)
@@ -64,11 +62,11 @@ class SequentialTaskScheduler_addSubtask_FunctionalTests {
 			scheduler.addSubtask(subtask)
 		}
 
-		assertThat(scheduler.subtasks, contains(cache.toArray))
+		assertThat(scheduler.subtasks, contains(cache))
 	}
 
 	@Test
-	def void getSubtasks_returnUniqueOnly_whenAddDublicates() {
+	def void getSubtasks_returnUniqueOnly_afterAddExistingSubtask() {
 		val size = 10
 		scheduler.clear
 		val ITask[] cache = newArrayOfSize(size)
@@ -83,16 +81,16 @@ class SequentialTaskScheduler_addSubtask_FunctionalTests {
 			scheduler.addSubtask(subtask)
 		}
 
-		assertArrayEquals(cache, scheduler.subtasks.toList.toArray)
+		assertThat(scheduler.subtasks, contains(cache))
 	}
 
 	@Test(expected=NullPointerException)
-	def void addSubtask_throw_whenNullArgs() {
+	def void addSubtask_throw_afterAddNullSubtask() {
 		scheduler.removeSubtask(null)
 	}
 
 	@Test
-	def void addSubtask_returnTrue_whenUniqueArg() {
+	def void addSubtask_returnTrue_afterAddNonExistingSubtask() {
 		scheduler.clear
 
 		scheduler.addSubtask(mock(ITask))
@@ -102,7 +100,7 @@ class SequentialTaskScheduler_addSubtask_FunctionalTests {
 	}
 
 	@Test
-	def void addSubtask_returnFalse_whenDublicate() {
+	def void addSubtask_returnFalse_afterAddExistingSubtask() {
 		scheduler.clear
 		val task = mock(ITask)
 

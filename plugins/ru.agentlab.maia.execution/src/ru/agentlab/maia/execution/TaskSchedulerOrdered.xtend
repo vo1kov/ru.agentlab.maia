@@ -16,7 +16,11 @@ abstract class TaskSchedulerOrdered extends TaskScheduler {
 	}
 
 	override protected internalAddSubtask(ITask task) {
-		subtasks += task
+		if (!subtasks.contains(task)) {
+			subtasks += task
+		} else {
+			return false
+		}
 	}
 
 	override protected internalRemoveSubtask(ITask task) {
@@ -40,6 +44,9 @@ abstract class TaskSchedulerOrdered extends TaskScheduler {
 	}
 
 	override protected internalExecute() {
+		if (subtasks.empty) {
+			throw new IllegalStateException
+		}
 		subtasks.get(index).execute
 	}
 
@@ -49,12 +56,12 @@ abstract class TaskSchedulerOrdered extends TaskScheduler {
 	override protected void internalSchedule() {
 		index = index + 1
 	}
-	
+
 	override restart() {
 		super.restart()
 		index = 0
 	}
-	
+
 	override reset() {
 		super.reset()
 		index = 0

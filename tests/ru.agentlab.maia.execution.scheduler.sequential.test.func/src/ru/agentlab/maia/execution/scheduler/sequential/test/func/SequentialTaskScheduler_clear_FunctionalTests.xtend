@@ -14,7 +14,7 @@ class SequentialTaskScheduler_clear_FunctionalTests {
 	ITaskScheduler scheduler = new SequentialTaskScheduler
 
 	@Test
-	def void getSubtasks_returnEmptyIterable() {
+	def void getSubtasks_returnEmptyIterable_afterClear() {
 		val size = 10
 		for (i : 0 ..< size) {
 			val action = mock(ITask)
@@ -27,7 +27,7 @@ class SequentialTaskScheduler_clear_FunctionalTests {
 	}
 
 	@Test(expected=IllegalStateException)
-	def void execute_throw() {
+	def void execute_throw_afterClear() {
 		scheduler.clear
 		scheduler.execute
 	}

@@ -43,7 +43,7 @@ class PatternScheduler extends TaskSchedulerUnordered implements IPatternSchedul
 		if (state == null) {
 			throw new IllegalArgumentException("Scheme have no state " + stateName)
 		}
-		stateMapping.put(stateName, context)
+//		stateMapping.put(stateName, context)
 	}
 
 	def remove(ITask context) {
@@ -75,6 +75,14 @@ class PatternScheduler extends TaskSchedulerUnordered implements IPatternSchedul
 	}
 
 	override notifySubtaskWorking() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override isFirst(ITask subtask) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override isReady() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 

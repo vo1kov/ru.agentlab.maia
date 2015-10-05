@@ -107,7 +107,7 @@ interface ITaskScheduler extends ITask {
 	 * @throws					NullPointerException
 	 * 							if task argument is {@code null}.
 	 */
-	def void addSubtask(ITask task)
+	def boolean addSubtask(ITask task)
 
 	/**
 	 * <p>Remove specified task from subtasks list.</p>

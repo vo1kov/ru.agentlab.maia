@@ -47,6 +47,7 @@ abstract class TaskScheduler extends Task implements ITaskScheduler {
 				state = State.READY
 			}
 		}
+		return added
 	}
 
 	override reset() {

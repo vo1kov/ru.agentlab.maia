@@ -197,10 +197,10 @@
 
 				<module>../../tests/org.junit.parameterizedsuite</module>
 
+				<module>../../tests/ru.agentlab.maia.execution.scheduler.sequential.test.func</module>
 				<module>../../tests/ru.agentlab.maia.execution.scheduler.parallel.test.func</module>
 				<module>../../tests/ru.agentlab.maia.execution.scheduler.fsm.test</module>
 				<module>../../tests/ru.agentlab.maia.execution.scheduler.pattern.test</module>
-				<module>../../tests/ru.agentlab.maia.execution.scheduler.sequential.test.func</module>
 			</modules>
 		</profile>
 		<profile>

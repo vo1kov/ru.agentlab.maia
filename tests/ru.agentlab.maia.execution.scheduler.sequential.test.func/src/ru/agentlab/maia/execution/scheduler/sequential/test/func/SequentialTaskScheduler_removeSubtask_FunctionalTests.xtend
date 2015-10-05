@@ -17,12 +17,12 @@ class SequentialTaskScheduler_removeSubtask_FunctionalTests {
 	ITaskScheduler scheduler = new SequentialTaskScheduler
 
 	@Test
-	def void getSubtasks_decreaseSize_whenValidArgs() {
+	def void getSubtasks_decreaseSize_afterRemoveExistingSubtask() {
 		val size = 10
-		val sizeBefore = scheduler.subtasks.size
 		for (i : 0 ..< size) {
 			scheduler.addSubtask(mock(ITask))
 		}
+		val sizeBefore = scheduler.subtasks.size
 		val toRemoveTask = scheduler.subtasks.get(rnd.nextInt(size))
 
 		scheduler.removeSubtask(toRemoveTask)
@@ -31,15 +31,15 @@ class SequentialTaskScheduler_removeSubtask_FunctionalTests {
 	}
 
 	@Test
-	def void getSubtasks_unchangeSize_whenUnknownArgs() {
+	def void getSubtasks_unchangeSize_afterRemoveNonExistingSubtask() {
 		val size = 10
 		val ITask[] cache = newArrayOfSize(size)
-		val sizeBefore = scheduler.subtasks.size
 		for (i : 0 ..< size) {
 			val action = mock(ITask)
 			scheduler.addSubtask(action)
 			cache.set(i, action)
 		}
+		val sizeBefore = scheduler.subtasks.size
 
 		scheduler.removeSubtask(mock(ITask))
 
@@ -47,15 +47,15 @@ class SequentialTaskScheduler_removeSubtask_FunctionalTests {
 	}
 
 	@Test
-	def void getSubtasks_unchangeSize_whenCatchNPE() {
+	def void getSubtasks_unchangeSize_afterRemoveSubtaskAndCatchNPE() {
 		val size = 10
 		val ITask[] cache = newArrayOfSize(size)
-		val sizeBefore = scheduler.subtasks.size
 		for (i : 0 ..< size) {
 			val action = mock(ITask)
 			scheduler.addSubtask(action)
 			cache.set(i, action)
 		}
+		val sizeBefore = scheduler.subtasks.size
 
 		try {
 			scheduler.removeSubtask(null)
@@ -66,7 +66,7 @@ class SequentialTaskScheduler_removeSubtask_FunctionalTests {
 	}
 
 	@Test
-	def void getSubtasks_notContainsRemoved_whenValidArgs() {
+	def void getSubtasks_notContainsRemoved_afterRemoveExistingSubtask() {
 		val size = 10
 		for (i : 0 ..< size) {
 			scheduler.addSubtask(mock(ITask))
@@ -79,7 +79,7 @@ class SequentialTaskScheduler_removeSubtask_FunctionalTests {
 	}
 
 	@Test
-	def void getSubtasks_unchanged_whenUnknownArgs() {
+	def void getSubtasks_unchanged_afterRemoveNonExistingSubtask() {
 		val size = 10
 		for (i : 0 ..< size) {
 			scheduler.addSubtask(mock(ITask))
@@ -92,13 +92,13 @@ class SequentialTaskScheduler_removeSubtask_FunctionalTests {
 	}
 
 	@Test(expected=NullPointerException)
-	def void removeSubtask_throw_whenNullArgs() {
+	def void removeSubtask_throw_afterRemoveNullSubtask() {
 		scheduler.addSubtask(mock(ITask))
 		scheduler.removeSubtask(null)
 	}
 
 	@Test
-	def void removeSubtask_returnTrue_whenValidArgs() {
+	def void removeSubtask_returnTrue_afterRemoveExistingSubtask() {
 		val task = mock(ITask)
 		scheduler.addSubtask(task)
 
@@ -108,7 +108,7 @@ class SequentialTaskScheduler_removeSubtask_FunctionalTests {
 	}
 
 	@Test
-	def void removeSubtask_returnFalse_whenUnknownArgs() {
+	def void removeSubtask_returnFalse_afterRemoveNonExistingSubtask() {
 		scheduler.addSubtask(mock(ITask))
 
 		val result = scheduler.removeSubtask(mock(ITask))
