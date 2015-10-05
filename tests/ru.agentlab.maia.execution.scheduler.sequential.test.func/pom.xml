@@ -12,6 +12,14 @@
 		<relativePath>../../releng/ru.agentlab.maia.releng</relativePath>
 	</parent>
 
+	<dependencies>
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>jbehave-junit-runner</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>

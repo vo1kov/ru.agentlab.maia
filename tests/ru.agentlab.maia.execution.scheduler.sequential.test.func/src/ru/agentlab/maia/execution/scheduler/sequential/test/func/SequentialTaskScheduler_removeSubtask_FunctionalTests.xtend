@@ -1,6 +1,8 @@
 package ru.agentlab.maia.execution.scheduler.sequential.test.func
 
 import java.util.Random
+import org.jbehave.core.annotations.Given
+import org.jbehave.core.annotations.When
 import org.junit.Test
 import ru.agentlab.maia.execution.ITask
 import ru.agentlab.maia.execution.ITaskScheduler
@@ -33,11 +35,9 @@ class SequentialTaskScheduler_removeSubtask_FunctionalTests {
 	@Test
 	def void getSubtasks_unchangeSize_afterRemoveNonExistingSubtask() {
 		val size = 10
-		val ITask[] cache = newArrayOfSize(size)
 		for (i : 0 ..< size) {
 			val action = mock(ITask)
 			scheduler.addSubtask(action)
-			cache.set(i, action)
 		}
 		val sizeBefore = scheduler.subtasks.size
 
@@ -46,23 +46,43 @@ class SequentialTaskScheduler_removeSubtask_FunctionalTests {
 		assertThat(scheduler.subtasks.size, equalTo(sizeBefore))
 	}
 
+	@Given("^Scheduler with (\\d+) subtasks$")
+	def private void givenSchedulerWithSize(int size) {
+		for (i : 0 ..< size) {
+			scheduler.addSubtask(mock(ITask))
+		}
+	}
+
+	@When("^Remove any existing subtask$")
+	def private void whenRemoveExistingSubtask() {
+		val size = scheduler.subtasks.size
+		val task = scheduler.subtasks.get(rnd.nextInt(size))
+		scheduler.removeSubtask(task)
+	}
+
+	def private void whenRemoveNullSubtask() {
+		scheduler.removeSubtask(null)
+	}
+
+	def private void whenRemoveNullSubtaskAndCatchException() {
+		try {
+			scheduler.removeSubtask(null)
+		} catch (Exception e) {
+		}
+	}
+
+	def private void thenSchedulerSizeIs(int size) {
+		assertThat(scheduler.subtasks.size, equalTo(size))
+	}
+
 	@Test
 	def void getSubtasks_unchangeSize_afterRemoveSubtaskAndCatchNPE() {
 		val size = 10
-		val ITask[] cache = newArrayOfSize(size)
-		for (i : 0 ..< size) {
-			val action = mock(ITask)
-			scheduler.addSubtask(action)
-			cache.set(i, action)
-		}
-		val sizeBefore = scheduler.subtasks.size
+		givenSchedulerWithSize(size)
 
-		try {
-			scheduler.removeSubtask(null)
-		} catch (NullPointerException e) {
-		}
+		whenRemoveNullSubtaskAndCatchException()
 
-		assertThat(scheduler.subtasks.size, equalTo(sizeBefore))
+		thenSchedulerSizeIs(size)
 	}
 
 	@Test

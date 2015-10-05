@@ -12,7 +12,8 @@ Require-Bundle: com.google.guava,
  org.mockito;bundle-version="1.9.5",
  org.hamcrest;bundle-version="1.1.0",
  ru.agentlab.maia.execution;bundle-version="1.0.0",
- ru.agentlab.maia.execution.scheduler.sequential;bundle-version="1.0.0"
+ ru.agentlab.maia.execution.scheduler.sequential;bundle-version="1.0.0",
+ org.jbehave.eclipse;bundle-version="1.0.0"
 Import-Package: org.osgi.framework;version="1.8.0"
 Bundle-Vendor: http://www.agentlab.ru/
 Export-Package: ru.agentlab.maia.execution.scheduler.sequential.test.func

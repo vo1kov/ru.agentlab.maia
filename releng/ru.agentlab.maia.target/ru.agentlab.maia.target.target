@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="ru.agentlab.maia.target" sequenceNumber="78">
+<?pde version="3.8"?><target name="ru.agentlab.maia.target" sequenceNumber="80">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.sdk.ide" version="4.5.0.I20150603-2000"/>
@@ -49,6 +49,10 @@
 <unit id="org.hamcrest.integration.source" version="1.3.0.v201305210900"/>
 <unit id="org.hamcrest.generator" version="1.3.0.v201305210900"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150124073747/repository/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.jbehave.eclipse.feature.feature.group" version="1.0.0.20140605-0717"/>
+<repository location="http://jbehave.org/reference/eclipse/updates/"/>
 </location>
 </locations>
 <includeBundles>
@@ -106,6 +110,7 @@
 <plugin id="org.hamcrest.library.source"/>
 <plugin id="org.hamcrest.text"/>
 <plugin id="org.hamcrest.text.source"/>
+<plugin id="org.jbehave.eclipse"/>
 <plugin id="org.junit" version="4.12.0.v201504281640"/>
 <plugin id="org.junit.source" version="4.12.0.v201504281640"/>
 <plugin id="org.junit.source" version="4.11.0.v201303080030"/>
