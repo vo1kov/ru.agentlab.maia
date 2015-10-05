@@ -1,7 +1,7 @@
 package ru.agentlab.maia.execution.node.test.func
 
-import ru.agentlab.maia.execution.ExecutionParameter
 import ru.agentlab.maia.execution.ITaskScheduler
+import ru.agentlab.maia.execution.TaskParameter
 import ru.agentlab.maia.execution.scheduler.sequential.SequentialTaskScheduler
 
 class Test {
@@ -14,15 +14,15 @@ class Test {
 		parent.addSubtask(scheduler)
 		println("scheduler " + scheduler.state)
 		println("parent " + scheduler.state)
-		val input = new ExecutionParameter("1", Object)
-		val input2 = new ExecutionParameter("2", Object)
+		val input = new TaskParameter("1", Object)
+		val input2 = new TaskParameter("2", Object)
 		scheduler.addInput(input)
 		println("scheduler " + scheduler.state)
 		println("parent " + scheduler.state)
 		input.link(input2)
 		println("scheduler " + scheduler.state)
 		println("parent " + scheduler.state)
-		scheduler.addInput(new ExecutionParameter("2", Object, true))
+		scheduler.addInput(new TaskParameter("2", Object, true))
 		println("scheduler " + scheduler.state)
 		println("parent " + scheduler.state)
 	}
