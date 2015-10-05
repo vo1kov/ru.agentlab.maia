@@ -1,7 +1,8 @@
 package ru.agentlab.maia.execution.scheduler.sequential
 
 import ru.agentlab.maia.execution.ITask
-import ru.agentlab.maia.execution.scheduler.TaskSchedulerOrdered
+import ru.agentlab.maia.execution.ITask.State
+import ru.agentlab.maia.execution.TaskSchedulerOrdered
 
 /**
  * <p>

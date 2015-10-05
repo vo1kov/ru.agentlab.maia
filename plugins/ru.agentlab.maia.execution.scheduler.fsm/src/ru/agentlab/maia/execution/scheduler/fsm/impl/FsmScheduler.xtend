@@ -3,8 +3,8 @@ package ru.agentlab.maia.execution.scheduler.fsm.impl
 import java.util.ArrayList
 import java.util.List
 import ru.agentlab.maia.execution.ITask
+import ru.agentlab.maia.execution.TaskSchedulerUnordered
 import ru.agentlab.maia.execution.scheduler.fsm.IFsmScheduler
-import ru.agentlab.maia.execution.scheduler.TaskSchedulerUnordered
 
 class FsmScheduler extends TaskSchedulerUnordered implements IFsmScheduler {
 
@@ -77,23 +77,23 @@ class FsmScheduler extends TaskSchedulerUnordered implements IFsmScheduler {
 	override protected internalSchedule() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+
 	override notifySubtaskReady(ITask task) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+
 	override notifySubtaskBlocked() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+
 	override notifySubtaskSuccess() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+
 	override notifySubtaskFailed() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+
 	override notifySubtaskWorking() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}

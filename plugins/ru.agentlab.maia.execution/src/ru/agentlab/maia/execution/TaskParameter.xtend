@@ -1,8 +1,7 @@
-package ru.agentlab.maia.execution.node
+package ru.agentlab.maia.execution
 
 import java.util.concurrent.atomic.AtomicReference
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.execution.ITaskParameter
 
 class TaskParameter<T> implements ITaskParameter<T> {
 

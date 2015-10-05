@@ -1,12 +1,10 @@
-package ru.agentlab.maia.execution.performer
+package ru.agentlab.maia.execution
 
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
-import ru.agentlab.maia.execution.ITask
-import ru.agentlab.maia.execution.ITaskPerformer
 
-class TaskPerformer implements ITaskPerformer {
+class TaskExecutor implements ITaskExecutor {
 
 	@Inject
 	ExecutorService executor

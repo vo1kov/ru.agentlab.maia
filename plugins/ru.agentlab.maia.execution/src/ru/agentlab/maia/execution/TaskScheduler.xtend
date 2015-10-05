@@ -1,9 +1,6 @@
-package ru.agentlab.maia.execution.scheduler
+package ru.agentlab.maia.execution
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.execution.ITask
-import ru.agentlab.maia.execution.ITaskScheduler
-import ru.agentlab.maia.execution.node.Task
 
 /**
  * <p>Abstract {@link ITaskScheduler} implementation.</p>

@@ -3,7 +3,7 @@ package ru.agentlab.maia.execution.scheduler.pattern.impl
 import java.util.HashMap
 import javax.inject.Inject
 import ru.agentlab.maia.execution.ITask
-import ru.agentlab.maia.execution.scheduler.TaskSchedulerUnordered
+import ru.agentlab.maia.execution.TaskSchedulerUnordered
 import ru.agentlab.maia.execution.scheduler.pattern.IPatternScheduler
 import ru.agentlab.maia.memory.IMaiaContext
 
@@ -57,23 +57,23 @@ class PatternScheduler extends TaskSchedulerUnordered implements IPatternSchedul
 	override protected internalSchedule() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+
 	override notifySubtaskReady(ITask task) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+
 	override notifySubtaskBlocked() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+
 	override notifySubtaskSuccess() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+
 	override notifySubtaskFailed() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+
 	override notifySubtaskWorking() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}

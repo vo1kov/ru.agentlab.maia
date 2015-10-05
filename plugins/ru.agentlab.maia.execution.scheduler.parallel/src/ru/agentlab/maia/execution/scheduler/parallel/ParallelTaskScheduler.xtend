@@ -2,7 +2,8 @@ package ru.agentlab.maia.execution.scheduler.parallel
 
 import java.util.ArrayList
 import ru.agentlab.maia.execution.ITask
-import ru.agentlab.maia.execution.scheduler.TaskSchedulerOrdered
+import ru.agentlab.maia.execution.ITask.State
+import ru.agentlab.maia.execution.TaskSchedulerOrdered
 
 /**
  * <p>
@@ -27,7 +28,7 @@ class ParallelTaskScheduler extends TaskSchedulerOrdered {
 	val protected blockedSubtasks = new ArrayList<ITask>
 
 	val protected terminatedSubtasks = new ArrayList<ITask>
-	
+
 	override getRetriesLimit() {
 		return RETRIES_INFINITE
 	}

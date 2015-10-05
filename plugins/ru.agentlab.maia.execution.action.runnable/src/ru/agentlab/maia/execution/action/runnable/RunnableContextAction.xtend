@@ -1,7 +1,6 @@
 package ru.agentlab.maia.execution.action.runnable
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.execution.AbstractExecutionAction
 import ru.agentlab.maia.execution.ITaskScheduler
 
 class RunnableContextAction extends AbstractExecutionAction {

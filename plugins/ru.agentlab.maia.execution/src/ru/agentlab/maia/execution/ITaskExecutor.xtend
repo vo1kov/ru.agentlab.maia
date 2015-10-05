@@ -1,6 +1,6 @@
 package ru.agentlab.maia.execution
 
-interface ITaskPerformer {
+interface ITaskExecutor {
 	
 	def void start()
 	

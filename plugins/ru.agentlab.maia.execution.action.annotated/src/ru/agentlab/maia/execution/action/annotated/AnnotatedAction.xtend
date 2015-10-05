@@ -4,12 +4,12 @@ import java.lang.reflect.Field
 import java.util.ArrayList
 import javax.inject.Inject
 import ru.agentlab.maia.execution.ITaskParameter
+import ru.agentlab.maia.execution.TaskParameter
+import ru.agentlab.maia.execution.TaskPrimitive
 import ru.agentlab.maia.execution.action.annotation.Action
 import ru.agentlab.maia.execution.action.annotation.Input
 import ru.agentlab.maia.execution.action.annotation.Output
-import ru.agentlab.maia.execution.node.TaskParameter
 import ru.agentlab.maia.memory.IMaiaContextInjector
-import ru.agentlab.maia.execution.node.TaskPrimitive
 
 class AnnotatedAction extends TaskPrimitive {
 

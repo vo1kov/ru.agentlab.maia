@@ -1,13 +1,10 @@
-package ru.agentlab.maia.execution.node
+package ru.agentlab.maia.execution
 
 import java.util.ArrayList
 import java.util.ConcurrentModificationException
 import java.util.List
 import java.util.concurrent.atomic.AtomicReference
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.execution.ITask
-import ru.agentlab.maia.execution.ITaskParameter
-import ru.agentlab.maia.execution.ITaskScheduler
 
 abstract class Task implements ITask {
 
