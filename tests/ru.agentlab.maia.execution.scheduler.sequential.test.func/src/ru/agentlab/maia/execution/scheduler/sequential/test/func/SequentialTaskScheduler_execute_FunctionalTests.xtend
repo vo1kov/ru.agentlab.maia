@@ -1,10 +1,9 @@
 package ru.agentlab.maia.execution.scheduler.sequential.test.func
 
+import java.util.Random
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Spy
-import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.execution.ITask
+import ru.agentlab.maia.execution.ITask.State
 import ru.agentlab.maia.execution.ITaskScheduler
 import ru.agentlab.maia.execution.scheduler.sequential.SequentialTaskScheduler
 
@@ -12,51 +11,104 @@ import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
 
-@RunWith(MockitoJUnitRunner)
 class SequentialTaskScheduler_execute_FunctionalTests {
 
-	@Spy
-	ITaskScheduler scheduler = new SequentialTaskScheduler
+	val rnd = new Random
 
-//	@Before
-//	def void before() {
-//		scheduler.activate
-//	}
-	@Test
-	def void shouldInvokeNextChild() {
-//		scheduler.execute
-//		verify(scheduler).schedule
+	ITaskScheduler scheduler = spy(new SequentialTaskScheduler)
+
+	@Test(expected=IllegalStateException)
+	def void execute_throw_whenNoSubtasks() {
+		scheduler.execute
 	}
 
 	@Test
-	def void shouldDelegateToEmptyChilds() {
-//		when(scheduler.subtasks).thenReturn(Collections.EMPTY_LIST)
-//
-//		scheduler.execute
+	def void execute_invokeFirstSubtask_whenHaveSubtasks() {
+		val task = mock(ITask)
+		scheduler.addSubtask(task)
+
+		scheduler.execute
+
+		verify(task).execute
 	}
 
 	@Test
-	def void shouldDelegateToSingleChilds() {
-		val child = mock(ITask)
-		when(scheduler.subtasks).thenReturn(#[child])
-		assertThat(scheduler.subtasks, iterableWithSize(1))
+	def void execute_invokeSubtasksInOrder_whenExecute() {
+		val size = 10
+		val ITask[] cache = newArrayOfSize(size)
+		for (i : 0 ..< size) {
+			val task = getSuccessNode()
+			cache.set(i, task)
+			scheduler.addSubtask(task)
+		}
+		val inOrder = inOrder(cache)
 
-//		scheduler.execute
-//
-//		verify(child).execute
+		for (i : 0 ..< size) {
+			scheduler.execute
+		}
+
+		for (i : 0 ..< size) {
+			inOrder.verify(cache.get(i)).execute
+		}
 	}
 
 	@Test
-	def void shouldDelegateToMultipleChilds() {
-//		val size = 10
-//		val childs = getFakeChilds(size)
-//		when(scheduler.subtasks).thenReturn(childs)
-//		assertThat(scheduler.subtasks, iterableWithSize(size))
-//		for (i : 0 ..< size) {
-//
-//			scheduler.execute
-//
-//			verify(childs.get(i)).execute
-//		}
+	def void getState_returnSuccess_whenAllSubtasksSuccess() {
+		val size = 10
+		for (i : 0 ..< size) {
+			val task = getSuccessNode()
+			scheduler.addSubtask(task)
+		}
+
+		for (i : 0 ..< size) {
+			scheduler.execute
+		}
+
+		assertThat(scheduler.state, equalTo(State.SUCCESS))
 	}
+
+	@Test
+	def void getState_returnFailed_whenSomeSubtaskFailedExecute() {
+		val size = 10
+		val failedSubtaskIndex = rnd.nextInt(size)
+		for (i : 0 ..< size) {
+			val task = if (i === failedSubtaskIndex) {
+					failedNode
+				} else {
+					successNode
+				}
+			scheduler.addSubtask(task)
+		}
+
+		for (i : 0 ..< failedSubtaskIndex) {
+			scheduler.execute
+		}
+
+		assertThat(scheduler.state, equalTo(State.FAILED))
+	}
+
+	def private ITask getSuccessNode() {
+		val result = mock(ITask) => [
+			when(it.state).thenReturn(ITask.State.SUCCESS)
+
+			doAnswer[
+				scheduler.notifySubtaskSuccess
+				return null
+			].when(it).execute
+		]
+		return result
+	}
+
+	def private ITask getFailedNode() {
+		val result = mock(ITask) => [
+			when(it.state).thenReturn(ITask.State.FAILED)
+
+			doAnswer[
+				scheduler.notifySubtaskFailed
+				return null
+			].when(it).execute
+		]
+		return result
+	}
+
 }

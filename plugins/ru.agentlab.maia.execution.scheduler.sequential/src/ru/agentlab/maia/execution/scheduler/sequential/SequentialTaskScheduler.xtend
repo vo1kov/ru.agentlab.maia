@@ -1,7 +1,6 @@
 package ru.agentlab.maia.execution.scheduler.sequential
 
 import ru.agentlab.maia.execution.ITask
-import ru.agentlab.maia.execution.ITask.State
 import ru.agentlab.maia.execution.TaskSchedulerOrdered
 
 /**
@@ -28,7 +27,7 @@ class SequentialTaskScheduler extends TaskSchedulerOrdered {
 	}
 
 	override notifySubtaskSuccess() {
-		if (index < subtasks.size) {
+		if (index < subtasks.size - 1) {
 			schedule()
 		} else {
 			setStateSuccess()
