@@ -1,6 +1,8 @@
 package ru.agentlab.maia.execution.action.jade
 
-class JadeAction extends AbstractExecutionAction {
+import ru.agentlab.maia.execution.TaskPrimitive
+
+class JadeAction extends TaskPrimitive {
 
 	override doInject() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
@@ -11,6 +13,10 @@ class JadeAction extends AbstractExecutionAction {
 	}
 
 	override doRun() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override reset() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 

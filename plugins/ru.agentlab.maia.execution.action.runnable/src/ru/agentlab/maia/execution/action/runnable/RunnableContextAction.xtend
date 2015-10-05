@@ -2,8 +2,9 @@ package ru.agentlab.maia.execution.action.runnable
 
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.execution.ITaskScheduler
+import ru.agentlab.maia.execution.TaskPrimitive
 
-class RunnableContextAction extends AbstractExecutionAction {
+class RunnableContextAction extends TaskPrimitive {
 
 	@Accessors
 	var ITaskScheduler parentNode
@@ -22,6 +23,10 @@ class RunnableContextAction extends AbstractExecutionAction {
 //			task.run
 //		}
 		return null
+	}
+	
+	override reset() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 }
