@@ -196,6 +196,7 @@
 				<module>../../plugins/ru.agentlab.maia.execution.scheduler.pattern</module>
 
 				<module>../../tests/org.junit.parameterizedsuite</module>
+				<module>../../tests/org.jbehave</module>
 
 				<module>../../tests/ru.agentlab.maia.execution.scheduler.sequential.test.func</module>
 				<module>../../tests/ru.agentlab.maia.execution.scheduler.parallel.test.func</module>
