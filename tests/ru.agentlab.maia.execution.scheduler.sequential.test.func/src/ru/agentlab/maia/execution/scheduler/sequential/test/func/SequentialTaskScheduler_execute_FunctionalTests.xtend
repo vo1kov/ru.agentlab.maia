@@ -80,7 +80,7 @@ class SequentialTaskScheduler_execute_FunctionalTests {
 			scheduler.addSubtask(task)
 		}
 
-		for (i : 0 ..< failedSubtaskIndex) {
+		for (i : 0 ..< failedSubtaskIndex + 1) {
 			scheduler.execute
 		}
 

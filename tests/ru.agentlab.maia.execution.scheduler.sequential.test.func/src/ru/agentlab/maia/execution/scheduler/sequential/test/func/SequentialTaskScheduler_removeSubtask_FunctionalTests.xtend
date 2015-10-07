@@ -1,8 +1,6 @@
 package ru.agentlab.maia.execution.scheduler.sequential.test.func
 
 import java.util.Random
-import org.jbehave.core.annotations.Given
-import org.jbehave.core.annotations.When
 import org.junit.Test
 import ru.agentlab.maia.execution.ITask
 import ru.agentlab.maia.execution.ITaskScheduler
@@ -46,14 +44,12 @@ class SequentialTaskScheduler_removeSubtask_FunctionalTests {
 		assertThat(scheduler.subtasks.size, equalTo(sizeBefore))
 	}
 
-	@Given("^Scheduler with (\\d+) subtasks$")
 	def private void givenSchedulerWithSize(int size) {
 		for (i : 0 ..< size) {
 			scheduler.addSubtask(mock(ITask))
 		}
 	}
 
-	@When("^Remove any existing subtask$")
 	def private void whenRemoveExistingSubtask() {
 		val size = scheduler.subtasks.size
 		val task = scheduler.subtasks.get(rnd.nextInt(size))

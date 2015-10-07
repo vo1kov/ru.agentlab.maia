@@ -5,6 +5,7 @@ import java.util.ConcurrentModificationException
 import java.util.List
 import java.util.concurrent.atomic.AtomicReference
 import org.eclipse.xtend.lib.annotations.Accessors
+import ru.agentlab.maia.execution.ITask.State
 
 abstract class Task implements ITask {
 
@@ -86,6 +87,31 @@ abstract class Task implements ITask {
 		} else {
 			throw new ConcurrentModificationException("Execution node is executing by another thread")
 		}
+	}
+
+	override setState(State newState) {
+		val old = state
+		state = newState
+		switch (newState) {
+			case UNKNOWN: {
+			}
+			case READY: {
+				parent.get?.notifySubtaskReady(this)
+			}
+			case WORKING: {
+				parent.get?.notifySubtaskWorking
+			}
+			case BLOCKED: {
+				parent.get?.notifySubtaskBlocked
+			}
+			case SUCCESS: {
+				parent.get?.notifySubtaskSuccess
+			}
+			case FAILED: {
+				parent.get?.notifySubtaskFailed
+			}
+		}
+		return old
 	}
 
 	def protected final void setStateFailed() {

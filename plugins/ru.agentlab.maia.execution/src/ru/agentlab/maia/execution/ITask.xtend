@@ -62,6 +62,14 @@ interface ITask {
 	def State getState()
 
 	/**
+	 * <p>Change task state.</p>
+	 * 
+	 * @param parent			new task state.
+	 * @return 					previous task state.
+	 */
+	def State setState(State newState)
+
+	/**
 	 * <p>Retrieve all task inputs.</p>
 	 * 
 	 * @return 					collection of task inputs or
