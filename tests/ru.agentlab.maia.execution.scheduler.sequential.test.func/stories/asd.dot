@@ -1,0 +1,45 @@
+// Diagram of some use case with slices
+digraph UC_2 {
+	rankdir=LR;
+    node [
+    	shape=circle 
+    	style=filled 
+    	fillcolor=azure
+    ]
+    edge [
+    	weight=0
+    ]
+	subgraph cluster_0 {
+		label="default"
+		color=gray
+		style=dashed
+		fontcolor=gray
+		edge [
+	    	weight=1
+	    ]
+	    node [
+	    	fillcolor=cadetblue3
+	    ]
+	    "s" [
+	    	label=""
+	    	penwidth=5
+	     	fixedsize=true
+	    	width=0.2
+    		fillcolor=black
+	    	shape=point
+	    ]
+	     "f" [
+	     	fixedsize=true
+	    	width=0.2
+	    	label=""
+    		fillcolor=black
+	    	shape=doublecircle
+	    ]
+		"s" -> 1 -> 2 -> 3 -> 4 -> 5 -> "f";
+	}
+	1 -> "1a" -> 5;
+	3 -> "3a" -> "s";
+	3 -> "3b" -> "f";
+	5 -> "5a" -> "f";
+	5 -> "5b" -> "s";
+}

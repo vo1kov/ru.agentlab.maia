@@ -20,7 +20,7 @@ abstract class Task implements ITask {
 	val protected owner = new AtomicReference<Thread>(null)
 
 	@Accessors
-	var protected State state = State.UNKNOWN
+	var State state = State.UNKNOWN
 
 	/**
 	 * ThreadSafe!
@@ -114,25 +114,25 @@ abstract class Task implements ITask {
 		return old
 	}
 
-	def protected final void setStateFailed() {
-		state = State.FAILED
-		parent.get?.notifySubtaskFailed
-	}
-
-	def protected final void setStateSuccess() {
-		state = State.SUCCESS
-		parent.get?.notifySubtaskSuccess
-	}
-
-	def protected final void setStateBlocked() {
-		state = State.BLOCKED
-		parent.get?.notifySubtaskBlocked
-	}
-
-	def protected final void setStateReady() {
-		state = State.READY
-		parent.get?.notifySubtaskReady(this)
-	}
+//	def protected final void setStateFailed() {
+//		state = State.FAILED
+//		parent.get?.notifySubtaskFailed
+//	}
+//
+//	def protected final void setStateSuccess() {
+//		state = State.SUCCESS
+//		parent.get?.notifySubtaskSuccess
+//	}
+//
+//	def protected final void setStateBlocked() {
+//		state = State.BLOCKED
+//		parent.get?.notifySubtaskBlocked
+//	}
+//
+//	def protected final void setStateReady() {
+//		state = State.READY
+//		parent.get?.notifySubtaskReady(this)
+//	}
 
 	def protected void internalExecute()
 

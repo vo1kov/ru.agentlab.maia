@@ -24,7 +24,7 @@ class MySteps {
 
 	@Given("a scheduler")
 	def void givenScheduler() {
-		scheduler = provider.get
+		scheduler = spy(provider.get)
 	}
 
 	@Given("scheduler have $size subtasks")
@@ -67,47 +67,59 @@ class MySteps {
 	}
 
 	@Given("scheduler have $state state")
-	def void schedulerInState(String state) {
+	def void givenSchedulerInState(String state) {
 		scheduler.state = State.valueOf(state)
 	}
 
-	@When("remove null subtask")
-	def void removingNullSubtask() {
-		scheduler.removeSubtask(null)
+	@When("add new subtask")
+	def void whenSchedulerAddNewSubtask() {
+		val added = mock(ITask)
+		scheduler.addSubtask(added)
+	}
+
+	@When("add existing subtask")
+	def void whenSchedulerAddExistingSubtask() {
+		val added = scheduler.subtasks.get((new Random).nextInt(scheduler.subtasks.size))
+		scheduler.addSubtask(added)
 	}
 
 	@When("execute scheduler $times times")
-	def void executeSchedulerByTimes(int times) {
+	def void whenSchedulerExecuteSchedulerTimes(int times) {
 		for (i : 0 ..< times) {
 			scheduler.execute
 		}
 	}
 
 	@When("clear scheduler")
-	def void clearScheduler() {
+	def void whenSchedulerClear() {
 		scheduler.clear
 	}
 
 	@When("remove existing subtask")
-	def void removingExistingSubtask() {
+	def void whenSchedulerRemoveExistingSubtask() {
 		val removed = scheduler.subtasks.get((new Random).nextInt(scheduler.subtasks.size))
 		scheduler.removeSubtask(removed)
 	}
 
 	@When("remove unknown subtask")
-	def void removingNonExistingSubtask() {
+	def void whenSchedulerRemoveNonExistingSubtask() {
 		val removed = mock(ITask)
 		scheduler.removeSubtask(removed)
 	}
 
 	@Then("scheduler contains $size subtasks")
-	def void whenRemoveAnyExistingSubtask1(int size) {
+	def void thenSchedulerSubtasksSize(int size) {
 		assertThat(scheduler.subtasks.size, equalTo(size))
 	}
 
-	@Then("scheduler is in $state state")
-	def void whenRemoveAnyExistingSubtask12(String state) {
+	@Then("scheduler have $state state")
+	def void thenSchedulerState(String state) {
 		assertThat(scheduler.state, equalTo(State.valueOf(state)))
+	}
+
+	@Then("scheduler don't change state")
+	def void thenSchedulerDontChangeState() {
+		verify(scheduler, times(0)).setState(anyObject)
 	}
 
 }

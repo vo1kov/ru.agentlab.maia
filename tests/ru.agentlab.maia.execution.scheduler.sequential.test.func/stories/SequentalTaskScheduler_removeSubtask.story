@@ -1,58 +1,66 @@
-Sequential Task Schduler Remove Subtask
+Remove subtask from scheduler
 
 Narrative:
-In order to communicate effectively to the business some functionality
-As a HTN user
-I want to remove wrong subtasks from compound task
+In order to change subtasks of scheduler
+As a task designer
+I want to remove some subtasks from the scheduler
 
 Meta:
 @author Shishkin Dmitriy
 
-Scenario: Removing existing subtask from scheduler schould decrease subtasks list size
+Scenario: After removing existing subtask from scheduler subtasks schould decrease its size
 Given a scheduler
 And scheduler have <size> subtasks
 When remove existing subtask
 Then scheduler contains <sizeAfter> subtasks
 Examples:
-|size		|sizeAfter	|
-|100		|99			|
-|10			|9			|
-|5			|4			|
-|2			|1			|
-|1			|0			|
+|size	|sizeAfter	|
+|100	|99			|
+|10		|9			|
+|5		|4			|
+|2		|1			|
+|1		|0			|
 
-Scenario: Remove unknown subtask from scheduler should unchange subtask list
+Scenario: After removing unknown subtask from scheduler subtasks should unchange
 Given a scheduler
 And scheduler have <size> subtasks
 When remove unknown subtask
 Then scheduler contains <size> subtasks
 Examples:
-|size		|
-|100		|
-|10			|
-|5			|
-|2			|
-|1			|
-|0			|
+|size	|
+|100	|
+|10		|
+|5		|
+|2		|
+|1		|
+|0		|
 
-Scenario: Removing last subtask from scheduler schould change state to UNKNOWN, in other states should not change
+Scenario: Remove non last subtask from scheduler
 Given a scheduler
-And scheduler have <size> subtasks
+And scheduler have 5 subtasks
 And scheduler have <state> state
 When remove existing subtask
-Then scheduler is in <stateAfter> state
+Then scheduler have <state> state
 Examples:
-|size	|state		|stateAfter	|
-|5		|READY		|READY		|
-|5		|UNKNOWN	|UNKNOWN	|
-|5		|WORKING	|WORKING	|
-|5		|BLOCKED	|BLOCKED	|
-|5		|SUCCESS	|SUCCESS	|
-|5		|FAILED		|FAILED		|
+|state	|
+|READY	|
+|UNKNOWN|
+|WORKING|
+|BLOCKED|
+|SUCCESS|
+|FAILED	|
 
-|1		|READY		|UNKNOWN	|
-|1		|UNKNOWN	|UNKNOWN	|
-|1		|WORKING	|UNKNOWN	|
-|1		|BLOCKED	|UNKNOWN	|
-|1		|SUCCESS	|UNKNOWN	|
-|1		|FAILED		|UNKNOWN	|
+Scenario: Remove last subtask from scheduler
+Given a scheduler
+And scheduler have 1 subtasks
+And scheduler have <state> state
+When remove existing subtask
+Then scheduler have UNKNOWN state
+Examples:
+|state	|
+|READY	|
+|UNKNOWN|
+|WORKING|
+|BLOCKED|
+|SUCCESS|
+|FAILED	|

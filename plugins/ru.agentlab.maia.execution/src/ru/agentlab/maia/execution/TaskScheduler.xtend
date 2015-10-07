@@ -80,11 +80,11 @@ abstract class TaskScheduler extends Task implements ITaskScheduler {
 
 	def protected final void schedule() {
 		internalSchedule()
-		parent.get?.notifySubtaskWorking
+		state = State.WORKING
 	}
 
 	def protected final void idle() {
-		parent.get?.notifySubtaskWorking
+		state = State.WORKING
 	}
 
 	def protected void internalSchedule()

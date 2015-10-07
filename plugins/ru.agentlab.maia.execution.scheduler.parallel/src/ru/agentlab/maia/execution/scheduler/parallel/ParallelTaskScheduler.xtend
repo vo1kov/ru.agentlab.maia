@@ -42,7 +42,7 @@ class ParallelTaskScheduler extends TaskSchedulerOrdered {
 	}
 
 	override notifySubtaskFailed() {
-		setStateFailed()
+		state = State.FAILED
 	}
 
 	override notifySubtaskWorking() {

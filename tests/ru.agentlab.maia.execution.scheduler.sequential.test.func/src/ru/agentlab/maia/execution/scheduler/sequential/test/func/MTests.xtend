@@ -31,7 +31,8 @@ class MTests extends JUnitStories {
 		return Arrays.asList(
 			"SequentalTaskScheduler_removeSubtask.story",
 			"SequentalTaskScheduler_clear.story",
-			"SequentalTaskScheduler_execute.story"
+			"SequentalTaskScheduler_execute.story",
+			"SequentalTaskScheduler_addSubtask.story"
 		)
 	}
 

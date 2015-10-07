@@ -23,19 +23,19 @@ import ru.agentlab.maia.execution.TaskSchedulerOrdered
 class SequentialTaskScheduler extends TaskSchedulerOrdered {
 
 	override notifySubtaskBlocked() {
-		setStateBlocked()
+		state = State.BLOCKED
 	}
 
 	override notifySubtaskSuccess() {
 		if (index < subtasks.size - 1) {
 			schedule()
 		} else {
-			setStateSuccess()
+			state = State.SUCCESS
 		}
 	}
 
 	override notifySubtaskFailed() {
-		setStateFailed()
+		state = State.FAILED
 	}
 
 	override notifySubtaskWorking() {
@@ -46,7 +46,7 @@ class SequentialTaskScheduler extends TaskSchedulerOrdered {
 		if (node !== subtasks.get(index)) {
 			throw new IllegalArgumentException("Node doesn't contains in the scheduler")
 		}
-		setStateReady()
+		state = State.READY
 	}
 
 }
