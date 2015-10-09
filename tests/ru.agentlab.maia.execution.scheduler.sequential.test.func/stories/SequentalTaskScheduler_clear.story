@@ -8,30 +8,29 @@ I want to clear the scheduler
 Meta:
 @author Shishkin Dmitriy
 
-Scenario: Clearing scheduler schould set to zero subtasks list size
+Scenario: Clear scheduler
+Meta:
+@default
 Given a scheduler
 And scheduler have <size> subtasks
-When clear scheduler
-Then scheduler contains 0 subtasks
-Examples:
-|size		|
-|100		|
-|10			|
-|5			|
-|2			|
-|1			|
-
-Scenario: Clearing scheduler schould change state to UNKNOWN
-Given a scheduler
-And scheduler have 10 subtasks
 And scheduler have <state> state
 When clear scheduler
-Then scheduler have UNKNOWN state
+Then scheduler contains 0 subtasks
+And scheduler have UNKNOWN state
 Examples:
-|state		|
-|READY		|
-|UNKNOWN	|
-|WORKING	|
-|BLOCKED	|
-|SUCCESS	|
-|FAILED		|
+|size		|state		|
+|100		|READY		|
+|100		|UNKNOWN	|
+|100		|WORKING	|
+|100		|BLOCKED	|
+|100		|SUCCESS	|
+|100		|FAILED		|
+
+|1			|READY		|
+|1			|UNKNOWN	|
+|1			|WORKING	|
+|1			|BLOCKED	|
+|1			|SUCCESS	|
+|1			|FAILED		|
+
+|0			|UNKNOWN	|

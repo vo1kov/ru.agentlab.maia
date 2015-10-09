@@ -9,6 +9,8 @@ Meta:
 @author Shishkin Dmitriy
 
 Scenario: Executing task scheduler schould change state
+Meta:
+@default
 Given a scheduler
 And scheduler subtasks states are <subtasks>
 When execute scheduler <step> times

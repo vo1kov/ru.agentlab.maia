@@ -14,16 +14,25 @@ Meta:
 @steps 1->2->3->4->5
 Given a scheduler
 And scheduler have <size> subtasks
+And scheduler have <state> state
 When add new subtask
 Then scheduler contains <sizeAfter> subtasks
+And scheduler have <state> state
 Examples:
-|size	|sizeAfter	|
-|100	|101		|
-|10		|11			|
-|5		|6			|
-|2		|3			|
-|1		|2			|
-|0		|1			|
+|size	|state		|sizeAfter	|
+|5		|READY		|6			|
+|5		|UNKNOWN	|6			|
+|5		|WORKING	|6			|
+|5		|BLOCKED	|6			|
+|5		|SUCCESS	|6			|
+|5		|FAILED		|6			|
+
+|1		|READY		|2			|
+|1		|UNKNOWN	|2			|
+|1		|WORKING	|2			|
+|1		|BLOCKED	|2			|
+|1		|SUCCESS	|2			|
+|1		|FAILED		|2			|
 
 Scenario: Add existing subtask to scheduler
 Given a scheduler
@@ -37,21 +46,6 @@ Examples:
 |5		|
 |2		|
 |1		|
-
-Scenario: Add subtask to non empty scheduler
-Given a scheduler
-And scheduler have 5 subtasks
-And scheduler have <state> state
-When add new subtask
-Then scheduler have <state> state
-Examples:
-|state	|
-|READY	|
-|UNKNOWN|
-|WORKING|
-|BLOCKED|
-|SUCCESS|
-|FAILED	|
 
 Scenario: Add subtask to empty scheduler
 Given a scheduler
