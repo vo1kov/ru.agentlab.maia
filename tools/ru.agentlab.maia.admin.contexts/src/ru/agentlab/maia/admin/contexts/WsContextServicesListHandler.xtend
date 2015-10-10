@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerAdapter
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame
 import ru.agentlab.maia.admin.contexts.internal.Activator
-import ru.agentlab.maia.memory.IMaiaContext
+import ru.agentlab.maia.context.IContext
 
 class WsContextServicesListHandler extends ChannelHandlerAdapter {
 
@@ -35,7 +35,7 @@ class WsContextServicesListHandler extends ChannelHandlerAdapter {
 		}
 	}
 	
-	def String dump(IMaiaContext context) {
+	def String dump(IContext context) {
 		val list = context.keySet.sortWith [ a, b |
 			a.compareTo(b)
 		]
@@ -70,7 +70,7 @@ class WsContextServicesListHandler extends ChannelHandlerAdapter {
 		return res.toString
 	}
 
-	def IMaiaContext findContext(IMaiaContext context, String id) {
+	def IContext findContext(IContext context, String id) {
 		if (context.uuid.equalsIgnoreCase(id)) {
 			return context
 		} else {

@@ -8,7 +8,7 @@ import org.osgi.framework.ServiceRegistration
 import ru.agentlab.maia.admin.contexts.WsContextListHandler
 import ru.agentlab.maia.admin.contexts.WsContextServicesListHandler
 import ru.agentlab.maia.admin.contexts.WsContextSubscribeHandler
-import ru.agentlab.maia.memory.IMaiaContext
+import ru.agentlab.maia.context.IContext
 
 class Activator implements BundleActivator {
 
@@ -37,13 +37,13 @@ class Activator implements BundleActivator {
 	 */
 	override void stop(BundleContext bundleContext) throws Exception {
 		Activator.context = null
-		registrations.forEach[
+		registrations.forEach [
 			unregister
 		]
 	}
 
 	def static getRootContext() {
-		val reference = Activator.context.getServiceReference(IMaiaContext)
+		val reference = Activator.context.getServiceReference(IContext)
 		val service = Activator.context.getService(reference)
 		return service
 	}

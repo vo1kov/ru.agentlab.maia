@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerAdapter
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame
 import ru.agentlab.maia.admin.contexts.internal.Activator
-import ru.agentlab.maia.memory.IMaiaContext
+import ru.agentlab.maia.context.IContext
 
 class WsContextListHandler extends ChannelHandlerAdapter {
 
@@ -27,13 +27,13 @@ class WsContextListHandler extends ChannelHandlerAdapter {
 		}
 	}
 
-	def String serialize(IMaiaContext context) {
+	def String serialize(IContext context) {
 		if (context.childs.empty) {
 			return '''
 				{
 					"name" : "«context.toString»",
 					"uuid" : "«context.uuid»",
-					"type" : "«context.getService(IMaiaContext.KEY_TYPE)»"
+					"type" : "«context.getService(IContext.KEY_TYPE)»"
 				}
 			'''
 		} else {
@@ -41,11 +41,11 @@ class WsContextListHandler extends ChannelHandlerAdapter {
 				{
 					"name" : "«context.toString»",
 					"uuid" : "«context.uuid»",
-					"type" : "«context.getService(IMaiaContext.KEY_TYPE)»",
+					"type" : "«context.getService(IContext.KEY_TYPE)»",
 					"children" : [
-						«FOR child : context.childs SEPARATOR ","»
-							«child.serialize»
-						«ENDFOR»
+«««						«FOR child : context.childs SEPARATOR ","»
+«««							«child.serialize»
+«««						«ENDFOR»
 					]
 				}
 			'''
