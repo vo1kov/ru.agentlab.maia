@@ -10,9 +10,7 @@ digraph UC_2 {
     	weight=0
     ]
 	subgraph cluster_0 {
-		label="default"
-		color=gray
-		style=dashed
+		color=invis
 		fontcolor=gray
 		edge [
 	    	weight=1

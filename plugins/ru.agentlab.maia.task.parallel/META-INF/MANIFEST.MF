@@ -1,14 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Protocol
-Bundle-SymbolicName: ru.agentlab.maia.protocol
+Bundle-Name: Parallel
+Bundle-SymbolicName: ru.agentlab.maia.task.parallel
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- ru.agentlab.maia.task.pattern;bundle-version="1.0.0"
-Export-Package: ru.agentlab.maia.protocol,
- ru.agentlab.maia.protocol.internal
+ ru.agentlab.maia.task;bundle-version="1.0.0";visibility:=reexport
+Export-Package: ru.agentlab.maia.execution.scheduler.parallel
 

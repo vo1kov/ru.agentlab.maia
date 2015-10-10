@@ -5,4 +5,4 @@ Bundle-SymbolicName: ru.agentlab.maia.execution.aspect
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.aspectj.runtime,
- ru.agentlab.maia.execution;bundle-version="1.0.0"
+ ru.agentlab.maia.task;bundle-version="1.0.0"
