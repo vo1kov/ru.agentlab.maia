@@ -11,7 +11,6 @@ Require-Bundle: com.google.guava,
  javax.inject;bundle-version="1.0.0",
  org.junit;bundle-version="4.11.0",
  org.hamcrest;bundle-version="1.1.0",
- ru.agentlab.maia.memory.context;bundle-version="1.0.0",
  org.mockito;bundle-version="1.9.5",
- ru.agentlab.maia.memory.injector;bundle-version="1.0.0"
+ ru.agentlab.maia.context;bundle-version="1.0.0"
 

@@ -13,6 +13,6 @@ Require-Bundle: com.google.guava,
  org.mockito;bundle-version="1.9.5",
  org.hamcrest;bundle-version="1.1.0",
  ru.agentlab.maia.memory.context;bundle-version="1.0.0",
- ru.agentlab.maia.memory.context.hashmap;bundle-version="1.0.0",
- ru.agentlab.maia.memory.context.test.func;bundle-version="1.0.0"
+ ru.agentlab.maia.context.hashmap;bundle-version="1.0.0",
+ ru.agentlab.maia.context.test.func;bundle-version="1.0.0"
 

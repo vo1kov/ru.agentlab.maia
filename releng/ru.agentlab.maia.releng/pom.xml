@@ -23,31 +23,25 @@
 		<profile>
 			<id>memory-plugins</id>
 			<modules>
-				<module>../../plugins/ru.agentlab.maia.memory</module>
+				<module>../../plugins/ru.agentlab.maia.context</module>
 
-				<module>../../plugins/ru.agentlab.maia.memory.injector</module>
-
-				<module>../../plugins/ru.agentlab.maia.memory.context</module>
-				<module>../../plugins/ru.agentlab.maia.memory.context.hashmap</module>
-				<module>../../plugins/ru.agentlab.maia.memory.context.arrays</module>
-				<module>../../plugins/ru.agentlab.maia.memory.context.arrays.separated</module>
+				<module>../../plugins/ru.agentlab.maia.context.arrays</module>
+				<module>../../plugins/ru.agentlab.maia.context.arrays.separated</module>
+				<module>../../plugins/ru.agentlab.maia.context.hashmap</module>
 			</modules>
 		</profile>
 		<profile>
 			<id>memory-aspects</id>
 			<modules>
-				<module>../../plugins/ru.agentlab.maia.memory</module>
+				<module>../../plugins/ru.agentlab.maia.context</module>
 
 				<module>../../plugins/ru.agentlab.maia.event</module>
 				<module>../../plugins/ru.agentlab.maia.event.osgi</module>
 				
-				<module>../../aspects/ru.agentlab.maia.memory.aspect</module>
+				<module>../../aspects/ru.agentlab.maia.context.aspect</module>
 
-				<module>../../aspects/ru.agentlab.maia.memory.context.events</module>
-				<module>../../aspects/ru.agentlab.maia.memory.context.logs</module>
-
-				<module>../../aspects/ru.agentlab.maia.memory.injector.events</module>
-				<module>../../aspects/ru.agentlab.maia.memory.injector.logs</module>
+				<module>../../aspects/ru.agentlab.maia.context.events</module>
+				<module>../../aspects/ru.agentlab.maia.context.logs</module>
 			</modules>
 		</profile>
 		<profile>
@@ -60,15 +54,13 @@
 				</repository>
 			</repositories>
 			<modules>
-				<module>../../plugins/ru.agentlab.maia.memory</module>
-				<module>../../plugins/ru.agentlab.maia.memory.injector</module>
-				<module>../../plugins/ru.agentlab.maia.memory.context</module>
-				<module>../../plugins/ru.agentlab.maia.memory.context.hashmap</module>
-				<module>../../plugins/ru.agentlab.maia.memory.context.arrays</module>
-				<module>../../plugins/ru.agentlab.maia.memory.context.arrays.separated</module>
+				<module>../../plugins/ru.agentlab.maia.context</module>
+				<module>../../plugins/ru.agentlab.maia.context.arrays</module>
+				<module>../../plugins/ru.agentlab.maia.context.arrays.separated</module>
+				<module>../../plugins/ru.agentlab.maia.context.hashmap</module>
 
-				<module>../../tests/ru.agentlab.maia.memory.context.test.unit</module>
-				<module>../../tests/ru.agentlab.maia.memory.context.arrays.test.unit</module>
+				<module>../../tests/ru.agentlab.maia.context.test.unit</module>
+				<module>../../tests/ru.agentlab.maia.context.arrays.test.unit</module>
 
 				<module>../../tests/ru.agentlab.maia.memory.injector.test.unit</module>
 			</modules>
@@ -83,19 +75,17 @@
 				</repository>
 			</repositories>
 			<modules>
-				<module>../../plugins/ru.agentlab.maia.memory</module>
-				<module>../../plugins/ru.agentlab.maia.memory.injector</module>
-				<module>../../plugins/ru.agentlab.maia.memory.context</module>
-				<module>../../plugins/ru.agentlab.maia.memory.context.hashmap</module>
-				<module>../../plugins/ru.agentlab.maia.memory.context.arrays</module>
-				<module>../../plugins/ru.agentlab.maia.memory.context.arrays.separated</module>
+				<module>../../plugins/ru.agentlab.maia.context</module>
+				<module>../../plugins/ru.agentlab.maia.context.arrays</module>
+				<module>../../plugins/ru.agentlab.maia.context.arrays.separated</module>
+				<module>../../plugins/ru.agentlab.maia.context.hashmap</module>
 
 				<module>../../tests/org.junit.parameterizedsuite</module>
 
-				<module>../../tests/ru.agentlab.maia.memory.context.test.func</module>
-				<module>../../tests/ru.agentlab.maia.memory.context.hashmap.test.func</module>
-				<module>../../tests/ru.agentlab.maia.memory.context.arrays.test.func</module>
-				<module>../../tests/ru.agentlab.maia.memory.context.arrays.separated.test.func</module>
+				<module>../../tests/ru.agentlab.maia.context.test.func</module>
+				<module>../../tests/ru.agentlab.maia.context.hashmap.test.func</module>
+				<module>../../tests/ru.agentlab.maia.context.arrays.test.func</module>
+				<module>../../tests/ru.agentlab.maia.context.arrays.separated.test.func</module>
 
 				<module>../../tests/ru.agentlab.maia.memory.injector.test.func</module>
 			</modules>
@@ -110,18 +100,16 @@
 				</repository>
 			</repositories>
 			<modules>
-				<module>../../plugins/ru.agentlab.maia.memory</module>
-				<module>../../plugins/ru.agentlab.maia.memory.injector</module>
-				<module>../../plugins/ru.agentlab.maia.memory.context</module>
-				<module>../../plugins/ru.agentlab.maia.memory.context.hashmap</module>
-				<module>../../plugins/ru.agentlab.maia.memory.context.arrays</module>
-				<module>../../plugins/ru.agentlab.maia.memory.context.arrays.separated</module>
+				<module>../../plugins/ru.agentlab.maia.context</module>
+				<module>../../plugins/ru.agentlab.maia.context.arrays</module>
+				<module>../../plugins/ru.agentlab.maia.context.arrays.separated</module>
+				<module>../../plugins/ru.agentlab.maia.context.hashmap</module>
 
 				<module>../../tests/ru.agentlab.maia.javaagent.classmexer</module>
 
-				<module>../../tests/ru.agentlab.maia.memory.context.test.perf</module>
-				<module>../../tests/ru.agentlab.maia.memory.context.hashmap.test.perf</module>
-				<module>../../tests/ru.agentlab.maia.memory.context.arraylist.test.perf</module>
+				<module>../../tests/ru.agentlab.maia.context.test.perf</module>
+				<module>../../tests/ru.agentlab.maia.context.hashmap.test.perf</module>
+				<module>../../tests/ru.agentlab.maia.context.arraylist.test.perf</module>
 			</modules>
 		</profile>
 		<profile>

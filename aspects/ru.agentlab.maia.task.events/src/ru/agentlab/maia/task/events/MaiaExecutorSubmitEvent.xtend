@@ -2,8 +2,8 @@ package ru.agentlab.maia.task.events
 
 import java.util.HashMap
 import org.eclipse.xtend.lib.annotations.Accessors
+import ru.agentlab.maia.context.IContext
 import ru.agentlab.maia.event.IMaiaEvent
-import ru.agentlab.maia.memory.IMaiaContext
 
 class MaiaExecutorSubmitEvent implements IMaiaEvent {
 
@@ -14,7 +14,7 @@ class MaiaExecutorSubmitEvent implements IMaiaEvent {
 	@Accessors
 	val data = new HashMap<String, Object>
 
-	new(IMaiaContext context) {
+	new(IContext context) {
 		data.put(KEY_CONTEXT, context)
 	}
 

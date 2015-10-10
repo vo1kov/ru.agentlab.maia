@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Unit
+Bundle-SymbolicName: ru.agentlab.maia.context.test.unit
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit;bundle-version="4.11.0",
+ org.mockito;bundle-version="1.9.5",
+ org.hamcrest;bundle-version="1.1.0"
+Export-Package: ru.agentlab.maia.context,
+ ru.agentlab.maia.memory.injector.test.unit.doubles
+Fragment-Host: ru.agentlab.maia.context

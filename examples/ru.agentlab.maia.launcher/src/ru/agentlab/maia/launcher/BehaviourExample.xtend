@@ -3,16 +3,16 @@ package ru.agentlab.maia.launcher
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import org.slf4j.LoggerFactory
-import ru.agentlab.maia.context.IMaiaContext
 import ru.agentlab.maia.launcher.task.ContextDumpTask
 import ru.agentlab.maia.launcher.task.IncrementTask
+import ru.agentlab.maia.context.IContext
 
 class BehaviourExample {
 
 	val static LOGGER = LoggerFactory.getLogger(BehaviourExample)
 
 	@Inject
-	IMaiaContext context
+	IContext context
 
 	@PostConstruct
 	def void init() {

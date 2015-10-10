@@ -9,10 +9,10 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  javax.inject;bundle-version="1.0.0",
- ru.agentlab.maia.memory;bundle-version="1.0.0",
+ ru.agentlab.maia.context;bundle-version="1.0.0",
  ru.agentlab.maia.task;bundle-version="1.0.0",
  ru.agentlab.maia.task.sequential;bundle-version="1.0.0",
- ru.agentlab.maia.memory.context.hashmap;bundle-version="1.0.0"
+ ru.agentlab.maia.context.hashmap;bundle-version="1.0.0"
 Import-Package: org.osgi.framework;version="1.8.0"
 Bundle-Vendor: http://www.agentlab.ru/
 

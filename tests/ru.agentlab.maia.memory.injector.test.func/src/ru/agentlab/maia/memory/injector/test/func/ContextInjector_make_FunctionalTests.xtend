@@ -4,9 +4,10 @@ import java.util.Random
 import java.util.UUID
 import org.junit.Before
 import org.junit.Test
-import ru.agentlab.maia.memory.IMaiaContext
-import ru.agentlab.maia.memory.exception.MaiaContextKeyNotFound
-import ru.agentlab.maia.memory.injector.MaiaContextInjector
+import ru.agentlab.maia.context.IContext
+import ru.agentlab.maia.context.IInjector
+import ru.agentlab.maia.context.Injector
+import ru.agentlab.maia.context.exception.MaiaContextKeyNotFound
 import ru.agentlab.maia.memory.injector.test.func.doubles.FakeService_constructorsEmpty
 import ru.agentlab.maia.memory.injector.test.func.doubles.FakeService_constructorsMany
 
@@ -22,9 +23,9 @@ class ContextInjector_make_FunctionalTests {
 
 	val static STRING_VALUE = UUID.randomUUID.toString
 
-	IMaiaContext context = mock(IMaiaContext)
+	IContext context = mock(IContext)
 
-	MaiaContextInjector injector = new MaiaContextInjector(context)
+	IInjector injector = new Injector(context)
 
 	@Before
 	def void before() {
