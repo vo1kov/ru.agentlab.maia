@@ -1,6 +1,6 @@
-package ru.agentlab.maia.execution.scheduler.log;
+package ru.agentlab.maia.task.logs;
 
-import ru.agentlab.maia.execution.scheduler.aj.AMaiaExecutorScheduler;
+import ru.agentlab.maia.task.aspect.AMaiaExecutorScheduler;
 
 public aspect AMaiaExecutorSchedulerLog extends AMaiaExecutorScheduler {
 

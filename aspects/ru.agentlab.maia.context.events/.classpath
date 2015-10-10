@@ -14,5 +14,11 @@
 	<classpathentry kind="src" path="xtend-gen"/>
 	<classpathentry including="**/*.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="aj-src"/>
+	<classpathentry kind="src" path="/ru.agentlab.maia.context.aspect">
+		<attributes>
+			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
+			<attribute name="org.eclipse.ajdt.aspectpath" value="org.eclipse.ajdt.aspectpath"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

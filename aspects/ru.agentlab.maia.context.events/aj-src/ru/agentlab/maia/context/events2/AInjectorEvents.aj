@@ -1,4 +1,6 @@
-package ru.agentlab.maia.context.events;
+package ru.agentlab.maia.context.events2;
+
+import ru.agentlab.maia.context.aspect.AInjector;
 
 public aspect AInjectorEvents extends AInjector {
 

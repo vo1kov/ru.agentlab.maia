@@ -1,8 +1,12 @@
-package ru.agentlab.maia.context.events;
+package ru.agentlab.maia.context.events2;
 
 import ru.agentlab.maia.context.IContext;
+import ru.agentlab.maia.context.events.MaiaContextChangeObjectEvent;
+import ru.agentlab.maia.context.events.MaiaContextRemoveObjectEvent;
+import ru.agentlab.maia.context.events.MaiaContextSetObjectEvent;
 import ru.agentlab.maia.context.exception.MaiaContextKeyNotFound;
 import ru.agentlab.maia.event.IMaiaEventBroker;
+import ru.agentlab.maia.context.aspect.AContext;
 
 public aspect AContextEvents extends AContext {
 
