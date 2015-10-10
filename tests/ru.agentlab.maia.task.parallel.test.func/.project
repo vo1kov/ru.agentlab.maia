@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>ru.agentlab.maia.execution.scheduler.parallel.test.func</name>
+	<name>ru.agentlab.maia.task.parallel.test.func</name>
 	<comment></comment>
 	<projects>
 	</projects>

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: MAIA Tests for Simple Sequence-based Scheduler
-Bundle-SymbolicName: ru.agentlab.maia.execution.scheduler.sequential.test.func
+Bundle-Name: MAIA Tests for Pattern-based Scheduler
+Bundle-SymbolicName: ru.agentlab.maia.task.pattern.test.func
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
@@ -9,14 +9,13 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  org.junit;bundle-version="4.11.0",
+ ru.agentlab.maia.memory;bundle-version="1.0.0",
  org.mockito;bundle-version="1.9.5",
- org.hamcrest;bundle-version="1.1.0",
+ org.objenesis;bundle-version="1.0.0",
+ ru.agentlab.maia.event;bundle-version="1.0.0",
+ ru.agentlab.maia.task.pattern;bundle-version="1.0.0",
  ru.agentlab.maia.task;bundle-version="1.0.0",
- ru.agentlab.maia.task.sequential;bundle-version="1.0.0",
- org.jbehave;bundle-version="1.0.0",
- org.objenesis;bundle-version="1.0.0"
+ org.hamcrest;bundle-version="1.1.0"
 Import-Package: org.osgi.framework;version="1.8.0"
 Bundle-Vendor: http://www.agentlab.ru/
-Export-Package: ru.agentlab.maia.execution.scheduler.sequential.test.func
-Bundle-ClassPath: .
 
