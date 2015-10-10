@@ -3,7 +3,7 @@ package ru.agentlab.maia.task.pattern
 import org.eclipse.xtend.lib.annotations.Accessors
 
 @Accessors
-abstract class AbstractPatternTransition implements ru.agentlab.maia.execution.scheduler.pattern.IPatternTransition {
+abstract class AbstractPatternTransition implements IPatternTransition {
 
 	var String name
 

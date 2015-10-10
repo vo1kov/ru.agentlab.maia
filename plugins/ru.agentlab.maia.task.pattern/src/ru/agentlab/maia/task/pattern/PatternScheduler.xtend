@@ -2,7 +2,6 @@ package ru.agentlab.maia.task.pattern
 
 import java.util.HashMap
 import javax.inject.Inject
-import ru.agentlab.maia.memory.IMaiaContext
 import ru.agentlab.maia.task.ITask
 import ru.agentlab.maia.task.UnorderedTaskScheduler
 
@@ -10,13 +9,10 @@ class PatternScheduler extends UnorderedTaskScheduler implements IPatternSchedul
 
 	val stateMapping = new HashMap<PatternState, ITask>
 
-	IMaiaContext context
-
 	PatternScheme scheme
 
 	@Inject
-	new(IMaiaContext context, PatternScheme scheme) {
-		this.context = context
+	new(PatternScheme scheme) {
 		this.scheme = scheme
 	}
 

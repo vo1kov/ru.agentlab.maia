@@ -2,23 +2,17 @@ package ru.agentlab.maia.task.primitive
 
 import java.lang.reflect.Field
 import java.util.ArrayList
-import javax.inject.Inject
-import ru.agentlab.maia.memory.IMaiaContextInjector
 import ru.agentlab.maia.task.ITaskParameter
+import ru.agentlab.maia.task.PrimitiveTask
 import ru.agentlab.maia.task.TaskParameter
-import ru.agentlab.maia.task.annotation.Action
 import ru.agentlab.maia.task.annotation.Input
 import ru.agentlab.maia.task.annotation.Output
-import ru.agentlab.maia.task.PrimitiveTask
 
 class AnnotatedAction extends PrimitiveTask {
 
 	var Field[] inputFields = newArrayOfSize(0)
 
 	var Field[] outputFields = newArrayOfSize(0)
-
-	@Inject
-	var IMaiaContextInjector injector
 
 	new(Object impl) {
 		implementation.set = impl
@@ -47,7 +41,7 @@ class AnnotatedAction extends PrimitiveTask {
 	}
 
 	override protected doRun() {
-		return injector.invoke(implementation, Action)
+//		return sinjector.invoke(implementation, Action)
 	}
 
 	override protected doUninject() {

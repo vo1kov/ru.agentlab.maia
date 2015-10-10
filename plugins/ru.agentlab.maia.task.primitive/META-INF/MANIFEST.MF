@@ -10,7 +10,6 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  javax.inject;bundle-version="1.0.0",
- ru.agentlab.maia.memory;bundle-version="1.0.0",
  ru.agentlab.maia.task;bundle-version="1.0.0"
 Bundle-Vendor: http://www.agentlab.ru/
 
