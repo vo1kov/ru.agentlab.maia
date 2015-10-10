@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>ru.agentlab.maia.execution.event</name>
+	<name>ru.agentlab.maia.task.logs</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -32,10 +32,10 @@
 		</buildCommand>
 	</buildSpec>
 	<natures>
+		<nature>org.eclipse.xtext.ui.shared.xtextNature</nature>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 		<nature>org.eclipse.ajdt.ui.ajnature</nature>
 		<nature>org.eclipse.pde.PluginNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
-		<nature>org.eclipse.xtext.ui.shared.xtextNature</nature>
 	</natures>
 </projectDescription>
