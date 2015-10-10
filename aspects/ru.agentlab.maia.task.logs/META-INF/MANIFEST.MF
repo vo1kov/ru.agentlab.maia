@@ -9,5 +9,5 @@ Require-Bundle: org.aspectj.runtime,
  org.slf4j.api;bundle-version="1.7.2",
  ru.agentlab.maia.task.aspect;bundle-version="1.0.0"
 Export-Package: ru.agentlab.maia.task.logs
-Eclipse-SupplementBundle: ru.agentlab.maia.execution.scheduler.*
+Eclipse-SupplementBundle: ru.agentlab.maia.task.*
 

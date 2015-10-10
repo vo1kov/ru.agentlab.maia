@@ -13,4 +13,4 @@ Require-Bundle: org.aspectj.runtime,
  ru.agentlab.maia.context;bundle-version="1.0.0",
  ru.agentlab.maia.context.aspect;bundle-version="1.0.0"
 Export-Package: ru.agentlab.maia.context.events;aspects="AMaiaContextEvent,AMaiaContextFactoryEvent"
-Eclipse-SupplementBundle: ru.agentlab.maia.context.injector.*
+Eclipse-SupplementBundle: ru.agentlab.maia.context.*
