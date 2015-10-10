@@ -21,7 +21,7 @@
 
 	<profiles>
 		<profile>
-			<id>memory-plugins</id>
+			<id>context-plugins</id>
 			<modules>
 				<module>../../plugins/ru.agentlab.maia.context</module>
 				<module>../../plugins/ru.agentlab.maia.context.arrays</module>
@@ -30,7 +30,7 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>memory-aspects</id>
+			<id>context-aspects</id>
 			<modules>
 				<module>../../plugins/ru.agentlab.maia.context</module>
 				<module>../../plugins/ru.agentlab.maia.event</module>
@@ -42,7 +42,7 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>memory-unit-tests</id>
+			<id>context-whitebox-tests</id>
 			<repositories>
 				<repository>
 					<id>eclipse-luna</id>
@@ -56,12 +56,12 @@
 				<module>../../plugins/ru.agentlab.maia.context.arrays.separated</module>
 				<module>../../plugins/ru.agentlab.maia.context.hashmap</module>
 
-				<module>../../tests/ru.agentlab.maia.context.test.unit</module>
-				<module>../../tests/ru.agentlab.maia.context.arrays.test.unit</module>
+				<module>../../tests/ru.agentlab.maia.context.test.whitebox</module>
+				<module>../../tests/ru.agentlab.maia.context.arrays.test.whitebox</module>
 			</modules>
 		</profile>
 		<profile>
-			<id>memory-functional-tests</id>
+			<id>context-blackbox-tests</id>
 			<repositories>
 				<repository>
 					<id>eclipse-luna</id>
@@ -76,15 +76,15 @@
 				<module>../../plugins/ru.agentlab.maia.context.hashmap</module>
 				<module>../../tests/org.junit.parameterizedsuite</module>
 
-				<module>../../tests/ru.agentlab.maia.context.test.func</module>
-				<module>../../tests/ru.agentlab.maia.context.hashmap.test.func</module>
-				<module>../../tests/ru.agentlab.maia.context.arrays.test.func</module>
-				<module>../../tests/ru.agentlab.maia.context.arrays.separated.test.func</module>
-				<module>../../tests/ru.agentlab.maia.memory.injector.test.func</module>
+				<module>../../tests/ru.agentlab.maia.context.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.context.hashmap.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.context.arrays.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.context.arrays.separated.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.memory.injector.test.blackbox</module>
 			</modules>
 		</profile>
 		<profile>
-			<id>memory-performance-tests</id>
+			<id>context-performance-tests</id>
 			<repositories>
 				<repository>
 					<id>eclipse-luna</id>
@@ -99,13 +99,13 @@
 				<module>../../plugins/ru.agentlab.maia.context.hashmap</module>
 				<module>../../tests/ru.agentlab.maia.javaagent.classmexer</module>
 
-				<module>../../tests/ru.agentlab.maia.context.test.perf</module>
-				<module>../../tests/ru.agentlab.maia.context.hashmap.test.perf</module>
-				<module>../../tests/ru.agentlab.maia.context.arraylist.test.perf</module>
+				<module>../../tests/ru.agentlab.maia.context.test.performance</module>
+				<module>../../tests/ru.agentlab.maia.context.hashmap.test.performance</module>
+				<module>../../tests/ru.agentlab.maia.context.arraylist.test.performance</module>
 			</modules>
 		</profile>
 		<profile>
-			<id>execution-plugins</id>
+			<id>task-plugins</id>
 			<modules>
 				<module>../../plugins/ru.agentlab.maia.task</module>
 				<module>../../plugins/ru.agentlab.maia.task.fsm</module>
@@ -117,7 +117,7 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>execution-aspects</id>
+			<id>task-aspects</id>
 			<modules>
 				<module>../../plugins/ru.agentlab.maia.task</module>
 				<module>../../plugins/ru.agentlab.maia.event</module>
@@ -129,7 +129,7 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>execution-unit-tests</id>
+			<id>task-whitebox-tests</id>
 			<repositories>
 				<repository>
 					<id>eclipse-luna</id>
@@ -148,7 +148,7 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>execution-functional-tests</id>
+			<id>task-blackbox-tests</id>
 			<repositories>
 				<repository>
 					<id>eclipse-luna</id>
@@ -168,15 +168,15 @@
 				<module>../../tests/org.junit.parameterizedsuite</module>
 				<module>../../tests/org.jbehave</module>
 
-				<module>../../tests/ru.agentlab.maia.task.test.func</module>
-				<module>../../tests/ru.agentlab.maia.task.sequential.test.func</module>
-				<module>../../tests/ru.agentlab.maia.task.parallel.test.func</module>
-				<module>../../tests/ru.agentlab.maia.task.fsm.test</module>
-				<module>../../tests/ru.agentlab.maia.task.pattern.test</module>
+				<module>../../tests/ru.agentlab.maia.task.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.task.sequential.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.task.parallel.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.task.fsm.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.task.pattern.test.blackbox</module>
 			</modules>
 		</profile>
 		<profile>
-			<id>execution-performance-tests</id>
+			<id>task-performance-tests</id>
 			<repositories>
 				<repository>
 					<id>eclipse-luna</id>
@@ -213,7 +213,7 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>io-unit-tests</id>
+			<id>io-whitebox-tests</id>
 			<modules>
 				<module>../../plugins/io.netty</module>
 			</modules>
