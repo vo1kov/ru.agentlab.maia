@@ -1,6 +1,6 @@
 package ru.agentlab.maia.messaging.queue
 
-import ru.agentlab.maia.memory.IMaiaContext
+import ru.agentlab.maia.context.IContext
 
 /**
  * Factory for creating <code>IMessageQueue</code> objects.
@@ -16,6 +16,6 @@ interface IMessageQueueFactory {
 	 * @return New <code>IMessageQueue</code> object in context where this factory 
 	 * located. Implementation depends on concrete factory.
 	 */
-	def IMessageQueue createMessageQueue(IMaiaContext ctx)
+	def IMessageQueue createMessageQueue(IContext ctx)
 
 }
