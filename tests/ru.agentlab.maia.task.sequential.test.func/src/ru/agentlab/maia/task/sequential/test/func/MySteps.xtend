@@ -12,14 +12,15 @@ import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Matchers.*
 import static org.mockito.Mockito.*
+import javax.inject.Provider
 
 class MySteps {
 
 	var ITaskScheduler scheduler
 
-	val ITaskSchedulerProvider provider
+	val Provider<ITaskScheduler> provider
 
-	new(ITaskSchedulerProvider provider) {
+	new(Provider<ITaskScheduler> provider) {
 		this.provider = provider
 	}
 
