@@ -9,7 +9,7 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  javax.inject;bundle-version="1.0.0"
-Export-Package: ru.agentlab.maia.execution,
- ru.agentlab.maia.execution.action.annotation
+Export-Package: ru.agentlab.maia.task,
+ ru.agentlab.maia.task.annotation
 Bundle-Vendor: http://www.agentlab.ru/
 

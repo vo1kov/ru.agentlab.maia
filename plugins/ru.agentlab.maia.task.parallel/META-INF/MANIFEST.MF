@@ -9,5 +9,5 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  ru.agentlab.maia.task;bundle-version="1.0.0";visibility:=reexport
-Export-Package: ru.agentlab.maia.execution.scheduler.parallel
+Export-Package: ru.agentlab.maia.task.parallel
 
