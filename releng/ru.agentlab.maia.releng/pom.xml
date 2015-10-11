@@ -96,11 +96,11 @@
 				<module>../../plugins/ru.agentlab.maia.context.arrays</module>
 				<module>../../plugins/ru.agentlab.maia.context.arrays.separated</module>
 				<module>../../plugins/ru.agentlab.maia.context.hashmap</module>
-				<module>../../tests/ru.agentlab.maia.javaagent.classmexer</module>
+<!-- 				<module>../../tests/ru.agentlab.maia.javaagent.classmexer</module> -->
 
-				<module>../../tests/ru.agentlab.maia.context.test.performance</module>
-				<module>../../tests/ru.agentlab.maia.context.hashmap.test.performance</module>
-				<module>../../tests/ru.agentlab.maia.context.arrays.test.performance</module>
+<!-- 				<module>../../tests/ru.agentlab.maia.context.test.performance</module> -->
+<!-- 				<module>../../tests/ru.agentlab.maia.context.hashmap.test.performance</module> -->
+<!-- 				<module>../../tests/ru.agentlab.maia.context.arrays.test.performance</module> -->
 			</modules>
 		</profile>
 		<profile>
