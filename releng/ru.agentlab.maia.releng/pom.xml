@@ -80,7 +80,6 @@
 				<module>../../tests/ru.agentlab.maia.context.hashmap.test.blackbox</module>
 				<module>../../tests/ru.agentlab.maia.context.arrays.test.blackbox</module>
 				<module>../../tests/ru.agentlab.maia.context.arrays.separated.test.blackbox</module>
-				<module>../../tests/ru.agentlab.maia.memory.injector.test.blackbox</module>
 			</modules>
 		</profile>
 		<profile>
@@ -164,7 +163,6 @@
 				<module>../../plugins/ru.agentlab.maia.task.pattern</module>
 				<module>../../plugins/ru.agentlab.maia.task.parallel</module>
 				<module>../../plugins/ru.agentlab.maia.task.sequential</module>
-
 				<module>../../tests/org.junit.parameterizedsuite</module>
 				<module>../../tests/org.jbehave</module>
 
@@ -219,7 +217,7 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>io-functional-tests</id>
+			<id>io-blackbox-tests</id>
 			<modules>
 				<module>../../plugins/io.netty</module>
 			</modules>
