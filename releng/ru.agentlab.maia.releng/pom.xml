@@ -100,7 +100,7 @@
 
 				<module>../../tests/ru.agentlab.maia.context.test.performance</module>
 				<module>../../tests/ru.agentlab.maia.context.hashmap.test.performance</module>
-				<module>../../tests/ru.agentlab.maia.context.arraylist.test.performance</module>
+				<module>../../tests/ru.agentlab.maia.context.arrays.test.performance</module>
 			</modules>
 		</profile>
 		<profile>
