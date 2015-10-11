@@ -31,7 +31,7 @@ class MTests extends JUnitStories {
 		return Arrays.asList(
 			"SequentalTaskScheduler_removeSubtask.story",
 			"SequentalTaskScheduler_clear.story",
-			"SequentalTaskScheduler_execute.story",
+			"ru/agentlab/maia/task/sequential/test/blackbox/SequentalTaskScheduler_execute.story",
 			"SequentalTaskScheduler_addSubtask.story"
 		)
 	}
