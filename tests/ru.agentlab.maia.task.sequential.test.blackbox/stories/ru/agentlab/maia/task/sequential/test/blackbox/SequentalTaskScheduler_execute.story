@@ -11,7 +11,7 @@ Meta:
 Scenario: Executing task scheduler schould change state
 Meta:
 @default
-Given a scheduler
+Given a sequential scheduler
 And scheduler subtasks states are <subtasks>
 When execute scheduler <step> times
 Then scheduler have <state> state

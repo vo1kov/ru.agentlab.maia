@@ -1,21 +1,21 @@
 Clear task schduler
 
+Meta:
+@author Shishkin Dmitriy
+
 Narrative:
 In order to remove all subtask from schediler
 As a task designer
 I want to clear the scheduler
 
-Meta:
-@author Shishkin Dmitriy
-
 Scenario: Clear scheduler
 Meta:
-@default
+@flow default
 Given a scheduler
 And scheduler have <size> subtasks
 And scheduler have <state> state
 When clear scheduler
-Then scheduler contains 0 subtasks
+Then scheduler have 0 subtasks
 And scheduler have UNKNOWN state
 Examples:
 |size		|state		|

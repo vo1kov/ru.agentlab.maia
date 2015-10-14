@@ -1,18 +1,20 @@
 Remove subtask from scheduler
 
+Meta:
+@author Shishkin Dmitriy
+
 Narrative:
 In order to change subtasks of scheduler
 As a task designer
 I want to remove some subtasks from the scheduler
 
+Scenario: Remove existing subtask from scheduler
 Meta:
-@author Shishkin Dmitriy
-
-Scenario: After removing existing subtask from scheduler subtasks schould decrease its size
+@flow default
 Given a scheduler
 And scheduler have <size> subtasks
 When remove existing subtask
-Then scheduler contains <sizeAfter> subtasks
+Then scheduler have <sizeAfter> subtasks
 Examples:
 |size	|sizeAfter	|
 |100	|99			|
@@ -21,11 +23,13 @@ Examples:
 |2		|1			|
 |1		|0			|
 
-Scenario: After removing unknown subtask from scheduler subtasks should unchange
+Scenario: Remove unknown subtask from scheduler
+Meta:
+@flow A1
 Given a scheduler
 And scheduler have <size> subtasks
 When remove unknown subtask
-Then scheduler contains <size> subtasks
+Then scheduler have <size> subtasks
 Examples:
 |size	|
 |100	|
@@ -36,6 +40,8 @@ Examples:
 |0		|
 
 Scenario: Remove non last subtask from scheduler
+Meta:
+@flow A2
 Given a scheduler
 And scheduler have 5 subtasks
 And scheduler have <state> state
@@ -51,6 +57,8 @@ Examples:
 |FAILED	|
 
 Scenario: Remove last subtask from scheduler
+Meta:
+@flow A3
 Given a scheduler
 And scheduler have 1 subtasks
 And scheduler have <state> state

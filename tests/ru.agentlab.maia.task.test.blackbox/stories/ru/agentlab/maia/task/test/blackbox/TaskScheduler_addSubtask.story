@@ -10,13 +10,12 @@ I want to add subtasks to the scheduler
 
 Scenario: Add new subtask to scheduler
 Meta:
-@default
-@steps 1->2->3->4->5
+@flow BF
 Given a scheduler
 And scheduler have <size> subtasks
 And scheduler have <state> state
 When add new subtask
-Then scheduler contains <sizeAfter> subtasks
+Then scheduler have <sizeAfter> subtasks
 And scheduler have <state> state
 Examples:
 |size	|state		|sizeAfter	|
@@ -35,10 +34,12 @@ Examples:
 |1		|FAILED		|2			|
 
 Scenario: Add existing subtask to scheduler
+Meta:
+@flow A1
 Given a scheduler
 And scheduler have <size> subtasks
 When add existing subtask
-Then scheduler contains <size> subtasks
+Then scheduler have <size> subtasks
 Examples:
 |size	|
 |100	|
@@ -48,6 +49,8 @@ Examples:
 |1		|
 
 Scenario: Add subtask to empty scheduler
+Meta:
+@flow A2
 Given a scheduler
 And scheduler have 0 subtasks
 When add new subtask
