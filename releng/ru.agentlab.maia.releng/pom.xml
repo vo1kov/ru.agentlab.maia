@@ -166,7 +166,7 @@
 				<module>../../tests/org.junit.parameterizedsuite</module>
 				<module>../../tests/org.jbehave</module>
 
-<!-- 				<module>../../tests/ru.agentlab.maia.task.test.blackbox</module> -->
+				<module>../../tests/ru.agentlab.maia.task.test.blackbox</module>
 				<module>../../tests/ru.agentlab.maia.task.sequential.test.blackbox</module>
 				<module>../../tests/ru.agentlab.maia.task.parallel.test.blackbox</module>
 				<module>../../tests/ru.agentlab.maia.task.fsm.test.blackbox</module>
