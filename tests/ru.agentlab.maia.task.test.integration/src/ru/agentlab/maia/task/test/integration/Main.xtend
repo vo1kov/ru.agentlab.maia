@@ -46,7 +46,7 @@ class Main {
 		for (subtaskId : ids.split(DELIMETER)) {
 			val primitive = mock(ITask)
 			doAnswer[
-				println("EXECUTE " + subtaskId)
+				println("EXECUTE " + subtaskId.trim)
 				primitive.parent.notifySubtaskSuccess
 				return null
 			].when(primitive).execute

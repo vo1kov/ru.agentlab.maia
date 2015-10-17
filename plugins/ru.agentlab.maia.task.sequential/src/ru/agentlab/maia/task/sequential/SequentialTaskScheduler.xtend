@@ -47,7 +47,7 @@ class SequentialTaskScheduler extends OrderedTaskScheduler {
 		if (node !== subtasks.get(index)) {
 			throw new IllegalArgumentException("Node doesn't contains in the scheduler")
 		}
-		state = State.READY
+//		state = State.READY
 	}
 
 }

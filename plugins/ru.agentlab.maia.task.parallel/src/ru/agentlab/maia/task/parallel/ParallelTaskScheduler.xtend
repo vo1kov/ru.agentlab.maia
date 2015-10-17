@@ -2,7 +2,6 @@ package ru.agentlab.maia.task.parallel
 
 import java.util.ArrayList
 import ru.agentlab.maia.task.ITask
-import ru.agentlab.maia.task.ITask.State
 import ru.agentlab.maia.task.OrderedTaskScheduler
 
 /**
@@ -34,11 +33,17 @@ class ParallelTaskScheduler extends OrderedTaskScheduler {
 	}
 
 	override notifySubtaskBlocked() {
-		blockedSubtasks += subtasks.get(index)
+		blockedSubtasks += subtasks.remove(index)
+		if (subtasks.empty) {
+			state = State.BLOCKED
+		}
 	}
 
 	override notifySubtaskSuccess() {
-		terminatedSubtasks += subtasks.get(index)
+		terminatedSubtasks += subtasks.remove(index)
+		if (subtasks.empty) {
+			state = State.SUCCESS
+		}
 	}
 
 	override notifySubtaskFailed() {
@@ -50,15 +55,11 @@ class ParallelTaskScheduler extends OrderedTaskScheduler {
 	}
 
 	override notifySubtaskReady(ITask node) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+//		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 	override protected internalSchedule() {
-		index = index + 1
-		val current = subtasks.get(index)
-		if (blockedSubtasks.contains(current) || terminatedSubtasks.contains(current)) {
-			internalSchedule()
-		}
+		index = (index + 1) % subtasks.size
 	}
 
 }

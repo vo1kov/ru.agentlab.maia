@@ -174,6 +174,28 @@
 			</modules>
 		</profile>
 		<profile>
+			<id>task-integration-tests</id>
+			<repositories>
+				<repository>
+					<id>eclipse-luna</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/releases/luna/</url>
+				</repository>
+			</repositories>
+			<modules>
+				<module>../../plugins/ru.agentlab.maia.task</module>
+				<module>../../plugins/ru.agentlab.maia.task.fsm</module>
+				<module>../../plugins/ru.agentlab.maia.task.jade</module>
+				<module>../../plugins/ru.agentlab.maia.task.primitive</module>
+				<module>../../plugins/ru.agentlab.maia.task.pattern</module>
+				<module>../../plugins/ru.agentlab.maia.task.parallel</module>
+				<module>../../plugins/ru.agentlab.maia.task.sequential</module>
+				<module>../../tests/org.jbehave</module>
+
+				<module>../../tests/ru.agentlab.maia.task.test.integration</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>task-performance-tests</id>
 			<repositories>
 				<repository>
