@@ -44,7 +44,7 @@ abstract class TaskScheduler extends Task implements ITaskScheduler {
 		if (added) {
 			node.parent = this
 			if (subtasks.size == 1) {
-//				state = State.READY
+				state = State.READY
 			}
 		}
 		return added

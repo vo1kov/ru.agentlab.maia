@@ -2,14 +2,17 @@ package ru.agentlab.maia.task.parallel
 
 import java.util.ArrayList
 import ru.agentlab.maia.task.ITask
+import ru.agentlab.maia.task.ITaskScheduler
 import ru.agentlab.maia.task.OrderedTaskScheduler
 
 /**
- * <p>
- * Parallel implementation of {@link IExecutionScheduler}.
+ * <p>Parallel implementation of {@link ITaskScheduler}.
  * Execute until all nodes are performed.  
- * Select child nodes in order of adding.
- * <p>Default policies:</p><ul>
+ * Select child nodes in order of adding.</p>
+ * 
+ * <p>Default policies:</p>
+ * 
+ * <ul>
  * <li>When any child become {@link State#BLOCKED BLOCKED} then 
  * scheduler skip it and select next;</li>
  * <li>When any child become {@link State#FAILED FAILED} then 
@@ -54,8 +57,17 @@ class ParallelTaskScheduler extends OrderedTaskScheduler {
 		schedule()
 	}
 
-	override notifySubtaskReady(ITask node) {
-//		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	override notifySubtaskReady(ITask task) {
+		if (subtasks.contains(task)) {
+			return
+		}
+		if (blockedSubtasks.remove(task) || terminatedSubtasks.remove(task)) {
+			subtasks += task
+			state = State.READY
+			return
+		} else {
+			throw new IllegalArgumentException("Subtask " + task + " doesn't contains in scheduler")
+		}
 	}
 
 	override protected internalSchedule() {

@@ -44,10 +44,10 @@ class SequentialTaskScheduler extends OrderedTaskScheduler {
 	}
 
 	override notifySubtaskReady(ITask node) {
-		if (node !== subtasks.get(index)) {
+		if (!subtasks.contains(node)) {
 			throw new IllegalArgumentException("Node doesn't contains in the scheduler")
 		}
-//		state = State.READY
+		state = State.READY
 	}
 
 }
