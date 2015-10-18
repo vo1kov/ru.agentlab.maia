@@ -4,15 +4,17 @@ import javax.inject.Provider
 import org.jbehave.core.annotations.When
 import ru.agentlab.maia.task.ITaskScheduler
 
-class TaskScheduler_clear_Steps extends TaskScheduler_Steps {
+class AbstractTaskSchedulerClearSteps {
+
+	val Provider<ITaskScheduler> provider
 
 	new(Provider<ITaskScheduler> provider) {
-		super(provider)
+		this.provider = provider
 	}
 
 	@When("clear scheduler")
 	def void whenSchedulerClear() {
-		scheduler.clear
+		provider.get.clear
 	}
 
 }

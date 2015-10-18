@@ -10,8 +10,8 @@ Meta:
 
 Scenario: Executing task scheduler schould change state
 Meta:
-@default
-Given a sequential scheduler
+@flow BF
+Given a scheduler
 And scheduler subtasks states are <subtasks>
 When execute scheduler <step> times
 Then scheduler have <state> state

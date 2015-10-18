@@ -8,22 +8,24 @@ import ru.agentlab.maia.task.ITaskScheduler
 
 import static org.mockito.Mockito.*
 
-class TaskScheduler_addSubtask_Steps extends TaskScheduler_Steps {
+class AbstractTaskSchedulerAddSubtaskSteps {
+
+	val Provider<ITaskScheduler> provider
 
 	new(Provider<ITaskScheduler> provider) {
-		super(provider)
+		this.provider = provider
 	}
 
 	@When("add new subtask")
 	def void whenSchedulerAddNewSubtask() {
 		val added = mock(ITask)
-		scheduler.addSubtask(added)
+		provider.get.addSubtask(added)
 	}
 
 	@When("add existing subtask")
 	def void whenSchedulerAddExistingSubtask() {
-		val added = scheduler.subtasks.get((new Random).nextInt(scheduler.subtasks.size))
-		scheduler.addSubtask(added)
+		val added = provider.get.subtasks.get((new Random).nextInt(provider.get.subtasks.size))
+		provider.get.addSubtask(added)
 	}
 
 }

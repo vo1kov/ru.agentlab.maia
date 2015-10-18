@@ -1,7 +1,6 @@
 package ru.agentlab.maia.task.test.blackbox
 
 import javax.inject.Provider
-import org.jbehave.core.annotations.Aliases
 import org.jbehave.core.annotations.Given
 import org.jbehave.core.annotations.Then
 import ru.agentlab.maia.task.ITask
@@ -13,50 +12,47 @@ import static org.junit.Assert.*
 import static org.mockito.Matchers.*
 import static org.mockito.Mockito.*
 
-abstract class TaskScheduler_Steps {
+class AbstractTaskSchedulerBaseSteps {
 
-	var ITaskScheduler scheduler
+	val TaskSchedulerStorage provider
 
-	val Provider<ITaskScheduler> provider
+	Provider<ITaskScheduler> factory
 
-	new(Provider<ITaskScheduler> provider) {
+	new(TaskSchedulerStorage provider, Provider<ITaskScheduler> factory) {
 		this.provider = provider
-	}
-
-	def ITaskScheduler getScheduler() {
-		return scheduler
+		this.factory = factory
 	}
 
 	@Given("a scheduler")
 	def void givenScheduler() {
-		scheduler = spy(provider.get)
+		provider.set(factory.get)
 	}
 
 	@Given("scheduler have $size subtasks")
 	def void givenSchedulerWithSubtasks(int size) {
 		for (i : 0 ..< size) {
-			scheduler.addSubtask(mock(ITask))
+			provider.get.addSubtask(mock(ITask))
 		}
 	}
 
 	@Given("scheduler have $state state")
 	def void givenSchedulerInState(String state) {
-		scheduler.state = State.valueOf(state)
+		provider.get.state = State.valueOf(state)
 	}
 
 	@Then("scheduler have $size subtasks")
 	def void thenSchedulerSubtasksSize(int size) {
-		assertThat(scheduler.subtasks.size, equalTo(size))
+		assertThat(provider.get.subtasks.size, equalTo(size))
 	}
 
 	@Then("scheduler have $state state")
 	def void thenSchedulerState(String state) {
-		assertThat(scheduler.state, equalTo(State.valueOf(state)))
+		assertThat(provider.get.state, equalTo(State.valueOf(state)))
 	}
 
 	@Then("scheduler don't change state")
 	def void thenSchedulerDontChangeState() {
-		verify(scheduler, times(0)).setState(anyObject)
+		verify(provider.get, times(0)).setState(anyObject)
 	}
 
 }
