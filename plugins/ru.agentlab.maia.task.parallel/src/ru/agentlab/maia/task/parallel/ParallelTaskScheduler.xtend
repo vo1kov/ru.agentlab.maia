@@ -46,6 +46,8 @@ class ParallelTaskScheduler extends OrderedTaskScheduler {
 		terminatedSubtasks += subtasks.remove(index)
 		if (subtasks.empty) {
 			state = State.SUCCESS
+		} else {
+			state = State.WORKING
 		}
 	}
 
