@@ -40,7 +40,7 @@ class SequentialTaskScheduler_BlackboxTests extends JUnitStories {
 		).useParameterControls(
 			new ParameterControls().useDelimiterNamedParameters(true)
 		).useStoryReporterBuilder(
-			new StoryReporterBuilder().withDefaultFormats.withFormats(Format.CONSOLE, Format.TXT, Format.HTML)
+			new StoryReporterBuilder().withDefaultFormats.withFormats(Format.HTML)
 		)
 	}
 
