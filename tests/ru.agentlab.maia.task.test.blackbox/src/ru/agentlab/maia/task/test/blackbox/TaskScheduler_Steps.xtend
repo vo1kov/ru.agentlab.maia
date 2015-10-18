@@ -1,6 +1,7 @@
 package ru.agentlab.maia.task.test.blackbox
 
 import javax.inject.Provider
+import org.jbehave.core.annotations.Aliases
 import org.jbehave.core.annotations.Given
 import org.jbehave.core.annotations.Then
 import ru.agentlab.maia.task.ITask
@@ -21,8 +22,8 @@ abstract class TaskScheduler_Steps {
 	new(Provider<ITaskScheduler> provider) {
 		this.provider = provider
 	}
-	
-	def ITaskScheduler getScheduler(){
+
+	def ITaskScheduler getScheduler() {
 		return scheduler
 	}
 
@@ -43,7 +44,7 @@ abstract class TaskScheduler_Steps {
 		scheduler.state = State.valueOf(state)
 	}
 
-	@Then("scheduler contains $size subtasks")
+	@Then("scheduler have $size subtasks")
 	def void thenSchedulerSubtasksSize(int size) {
 		assertThat(scheduler.subtasks.size, equalTo(size))
 	}
