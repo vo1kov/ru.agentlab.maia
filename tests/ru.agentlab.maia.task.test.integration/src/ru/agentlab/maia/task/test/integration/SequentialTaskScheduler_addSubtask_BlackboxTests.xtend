@@ -10,6 +10,8 @@ import org.jbehave.core.reporters.Format
 import org.jbehave.core.reporters.StoryReporterBuilder
 import org.jbehave.core.steps.InstanceStepsFactory
 import org.jbehave.core.steps.ParameterControls
+import org.jbehave.core.steps.ParameterConverters
+import org.jbehave.core.steps.ParameterConverters.StringListConverter
 import org.junit.runner.RunWith
 
 @RunWith(JUnitReportingRunner)
@@ -28,7 +30,9 @@ class SequentialTaskScheduler_addSubtask_BlackboxTests extends JUnitStories {
 		).useParameterControls(
 			new ParameterControls().useDelimiterNamedParameters(true)
 		).useStoryReporterBuilder(
-			new StoryReporterBuilder().withDefaultFormats.withFormats(Format.CONSOLE, Format.TXT)
+			new StoryReporterBuilder().withDefaultFormats.withFormats(Format.HTML)
+		).useParameterConverters(
+			new ParameterConverters().addConverters(new StringListConverter)
 		)
 	}
 
