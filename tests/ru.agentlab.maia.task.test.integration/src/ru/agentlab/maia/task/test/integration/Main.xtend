@@ -4,19 +4,22 @@ import java.util.ArrayList
 import java.util.HashMap
 import java.util.List
 import java.util.Map
+import org.hamcrest.Matchers
 import org.jbehave.core.annotations.Given
 import org.jbehave.core.annotations.Then
 import org.jbehave.core.annotations.When
 import org.mockito.InOrder
 import ru.agentlab.maia.task.ITask
+import ru.agentlab.maia.task.ITask.State
 import ru.agentlab.maia.task.ITaskScheduler
 import ru.agentlab.maia.task.parallel.ParallelTaskScheduler
 import ru.agentlab.maia.task.sequential.SequentialTaskScheduler
 
+import static org.junit.Assert.*
 import static org.mockito.Mockito.*
 
 class Main {
-	
+
 	val static String DELIMETER = ","
 
 	val Map<String, ITask> cache = new HashMap
@@ -83,6 +86,13 @@ class Main {
 			val subtask = cache.get(subtaskId.trim)
 			inOrder.verify(subtask).execute
 		}
+	}
+
+	@Then("task $id have $state state")
+	def void thenTaskHaveState(String id, String state) {
+		val task = cache.get(id)
+		val s = State.valueOf(state)
+		assertThat(task.state, Matchers.equalTo(s))
 	}
 
 }
