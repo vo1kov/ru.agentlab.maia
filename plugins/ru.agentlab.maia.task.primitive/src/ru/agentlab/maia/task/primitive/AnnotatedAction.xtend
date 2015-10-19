@@ -29,6 +29,7 @@ class AnnotatedAction extends PrimitiveTask {
 		}
 		inputFields = inputs.toArray(newArrayOfSize(inputs.size))
 		outputFields = outputs.toArray(newArrayOfSize(outputs.size))
+		state = State.READY
 	}
 
 	override protected doInject() {

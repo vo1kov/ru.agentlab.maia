@@ -1,10 +1,10 @@
-Sample story
+Execution order with different scheduler types
 
 Narrative:
-In order to communicate effectively to the business some functionality
-As a development team
-I want to use Behaviour-Driven Development
-					 
+In order to effectively execute task tree
+As a task designer
+I want to control execution order by using different schedulers with different types
+
 Scenario: Executing sequential scheduler with parallel subtasks
 Given a sequential schedulers A
 And a parallel schedulers B, C

@@ -39,6 +39,8 @@ class ParallelTaskScheduler extends OrderedTaskScheduler {
 		blockedSubtasks += subtasks.remove(index)
 		if (subtasks.empty) {
 			state = State.BLOCKED
+		} else {
+			state = State.WORKING
 		}
 	}
 
