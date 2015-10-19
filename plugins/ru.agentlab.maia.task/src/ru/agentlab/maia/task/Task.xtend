@@ -110,6 +110,7 @@ abstract class Task implements ITask {
 				parent.get?.notifySubtaskFailed
 			}
 		}
+		println("Task " + this + " change state to " + newState)
 		return old
 	}
 

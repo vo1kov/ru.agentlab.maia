@@ -74,6 +74,13 @@ class Main {
 		]
 	}
 
+	@Then("task $execute have been executed")
+	def void thenTaskExecuted(String id) {
+		if (id != null && !id.empty) {
+			verify(cache.get(id)).execute
+		}
+	}
+
 	@Then("task $id have $state state")
 	def void thenTaskHaveState(String id, String state) {
 		assertThat(cache.get(id).state, Matchers.equalTo(State.valueOf(state)))
