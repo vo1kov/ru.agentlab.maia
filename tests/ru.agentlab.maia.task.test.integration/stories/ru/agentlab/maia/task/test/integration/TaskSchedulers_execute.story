@@ -5,7 +5,7 @@ In order to effectively execute task tree
 As a task designer
 I want to control execution order by using different schedulers with different types
 
-Scenario: Executing sequential scheduler with parallel subtasks
+Scenario: Executing sequential compound task with parallel subtasks
 Given a sequential schedulers A
 And a parallel schedulers B, C
 And a primitive tasks B1, B2, B3, B4, C1, C2, C3, C4
@@ -37,7 +37,7 @@ Examples:
 |7		|C3		|WORKING|SUCCESS|WORKING|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|READY	|
 |8		|C4		|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|
 
-Scenario: Executing sequential scheduler with sequential subtasks
+Scenario: Executing sequential compound task with sequential subtasks
 Given a sequential schedulers A, B, C
 And a primitive tasks B1, B2, B3, B4, C1, C2, C3, C4
 And task A have subtasks B, C
@@ -68,7 +68,7 @@ Examples:
 |7		|C3		|WORKING|SUCCESS|WORKING|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|READY	|
 |8		|C4		|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|
 
-Scenario: Executing parallel scheduler with sequential subtasks
+Scenario: Executing parallel compound task with sequential subtasks
 Given a parallel schedulers A
 And a sequential schedulers B, C
 And a primitive tasks B1, B2, B3, B4, C1, C2, C3, C4
@@ -100,7 +100,7 @@ Examples:
 |7		|B4		|WORKING|SUCCESS|WORKING|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|READY	|
 |8		|C4		|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|SUCCESS|
 
-Scenario: Executing parallel scheduler with parallel subtasks
+Scenario: Executing parallel compound task with parallel subtasks
 Given a parallel schedulers A, B, C
 And a primitive tasks B1, B2, B3, B4, C1, C2, C3, C4
 And task A have subtasks B, C

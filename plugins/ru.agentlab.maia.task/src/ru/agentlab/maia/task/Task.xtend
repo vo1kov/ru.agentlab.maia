@@ -78,6 +78,9 @@ abstract class Task implements ITask {
 	override final execute() {
 		val entered = owner.compareAndSet(null, Thread.currentThread)
 		if (entered) {
+			if (!(state === State.READY || state === State.WORKING)) {
+				throw new IllegalStateException("Task in illegal state; " + state)
+			}
 			internalExecute()
 			owner.set(null)
 		} else {

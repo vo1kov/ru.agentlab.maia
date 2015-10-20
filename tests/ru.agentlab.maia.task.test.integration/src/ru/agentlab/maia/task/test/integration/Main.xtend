@@ -9,10 +9,10 @@ import org.jbehave.core.annotations.When
 import ru.agentlab.maia.task.ITask
 import ru.agentlab.maia.task.ITask.State
 import ru.agentlab.maia.task.ITaskScheduler
-import ru.agentlab.maia.task.annotation.Action
 import ru.agentlab.maia.task.parallel.ParallelTaskScheduler
 import ru.agentlab.maia.task.primitive.AnnotatedAction
 import ru.agentlab.maia.task.sequential.SequentialTaskScheduler
+import ru.agentlab.maia.task.test.integration.doubles.DummyAction
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
@@ -20,7 +20,7 @@ import static org.junit.Assert.*
 class Main {
 
 	val Map<String, ITask> tasks = new HashMap
-	
+
 	val Map<String, DummyAction> impls = new HashMap
 
 	@Given("a sequential schedulers $ids")
@@ -75,14 +75,4 @@ class Main {
 		assertThat(tasks.get(id).state, equalTo(State.valueOf(state)))
 	}
 
-}
-
-class DummyAction {
-
-	var protected int count = 0
-
-	@Action
-	def void action() {
-		count++
-	}
 }
