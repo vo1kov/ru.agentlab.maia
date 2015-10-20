@@ -38,9 +38,7 @@ class SequentialTaskScheduler_addSubtask_BlackboxTests extends JUnitStories {
 
 	override protected storyPaths() {
 		return Arrays.asList(
-			"ru/agentlab/maia/task/test/integration/ParallelTaskScheduler_withOthers_execute.story",
-			"ru/agentlab/maia/task/test/integration/SequentialTaskScheduler_withOthers_execute.story",
-			"ru/agentlab/maia/task/test/integration/Sample.story"
+			"ru/agentlab/maia/task/test/integration/TaskSchedulers_execute.story"
 		)
 	}
 

@@ -43,7 +43,7 @@ abstract class OrderedTaskScheduler extends TaskScheduler {
 		index = 0
 	}
 
-	override protected internalExecute() {
+	override final protected internalExecute() {
 		if (subtasks.empty) {
 			throw new IllegalStateException
 		}
