@@ -78,10 +78,7 @@ abstract class Task implements ITask {
 	override final execute() {
 		val entered = owner.compareAndSet(null, Thread.currentThread)
 		if (entered) {
-
-			state = State.WORKING
 			internalExecute()
-
 			owner.set(null)
 		} else {
 			throw new ConcurrentModificationException("Execution node is executing by another thread")
@@ -114,25 +111,6 @@ abstract class Task implements ITask {
 		return old
 	}
 
-//	def protected final void setStateFailed() {
-//		state = State.FAILED
-//		parent.get?.notifySubtaskFailed
-//	}
-//
-//	def protected final void setStateSuccess() {
-//		state = State.SUCCESS
-//		parent.get?.notifySubtaskSuccess
-//	}
-//
-//	def protected final void setStateBlocked() {
-//		state = State.BLOCKED
-//		parent.get?.notifySubtaskBlocked
-//	}
-//
-//	def protected final void setStateReady() {
-//		state = State.READY
-//		parent.get?.notifySubtaskReady(this)
-//	}
 	def protected void internalExecute()
 
 }
