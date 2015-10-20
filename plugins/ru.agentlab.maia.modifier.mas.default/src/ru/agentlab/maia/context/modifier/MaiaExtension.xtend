@@ -1,41 +1,41 @@
 package ru.agentlab.maia.context.modifier
 
-import ru.agentlab.maia.memory.IMaiaContext
-import ru.agentlab.maia.memory.IMaiaContextInjector
-import ru.agentlab.maia.memory.context.hashmap.HashMapContext
+import ru.agentlab.maia.context.IContext
+import ru.agentlab.maia.context.IInjector
+import ru.agentlab.maia.context.hashmap.HashMapContext
 
 class MaiaExtension {
 
-	def <T> T deploy(IMaiaContext context, Class<T> serviceClass) {
-		context.getService(IMaiaContextInjector).deploy(serviceClass)
+	def <T> T deploy(IContext context, Class<T> serviceClass) {
+		context.getService(IInjector).deploy(serviceClass)
 	}
 
-	def Object deploy(IMaiaContext context, Object service) {
-		context.getService(IMaiaContextInjector).deploy(service)
+	def Object deploy(IContext context, Object service) {
+		context.getService(IInjector).deploy(service)
 	}
 
-	def <T> T deploy(IMaiaContext context, T service, Class<T> interf) {
-		context.getService(IMaiaContextInjector).deploy(service, interf)
+	def <T> T deploy(IContext context, T service, Class<T> interf) {
+		context.getService(IInjector).deploy(service, interf)
 	}
 
-	def IMaiaContext createContainer(IMaiaContext parent) {
+	def IContext createContainer(IContext parent) {
 		return new HashMapContext => [
 			it.parent = parent
-			getService(IMaiaContextInjector).deploy(MaiaContainerContextModifier)
+			getService(IInjector).deploy(MaiaContainerContextModifier)
 		]
 	}
 
-	def IMaiaContext createAgent(IMaiaContext parent) {
+	def IContext createAgent(IContext parent) {
 		return new HashMapContext => [
 			it.parent = parent
-			getService(IMaiaContextInjector).deploy(MaiaAgentContextModifier)
+			getService(IInjector).deploy(MaiaAgentContextModifier)
 		]
 	}
 
-	def IMaiaContext createBehaviour(IMaiaContext parent) {
+	def IContext createBehaviour(IContext parent) {
 		return new HashMapContext => [
 			it.parent = parent
-			getService(IMaiaContextInjector).deploy(MaiaBehaviourContextModifier)
+			getService(IInjector).deploy(MaiaBehaviourContextModifier)
 		]
 	}
 
