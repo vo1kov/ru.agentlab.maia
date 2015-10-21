@@ -7,4 +7,8 @@ class TaskException implements ITaskException {
 	@Accessors
 	var String name
 
+	new(String name) {
+		this.name = name
+	}
+
 }

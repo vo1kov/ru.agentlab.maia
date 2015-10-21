@@ -8,28 +8,30 @@ import java.util.Map
 import ru.agentlab.maia.task.ITaskScheduler
 import ru.agentlab.maia.task.TaskParameter
 import ru.agentlab.maia.task.sequential.SequentialTaskScheduler
+import ru.agentlab.maia.task.TaskException
+import ru.agentlab.maia.task.ITaskAdapter
 
-class JsonSequentialTaskSchedulerAdapter {
+class JsonSequentialTaskSchedulerAdapter implements ITaskAdapter<String>{
 
-	val PATH_TASK_ID = "$.id"
+	val static String PATH_TASK_ID = "$.id"
 
-	val PATH_TASK_LABEL = "$.label"
+	val static String PATH_TASK_LABEL = "$.label"
 
-	val PATH_TASK_EXCEPTIONS = "$.exceptions"
+	val static String PATH_TASK_EXCEPTIONS = "$.exceptions"
 
-	val PATH_TASK_INPUTS = "$.inputs"
+	val static String PATH_TASK_INPUTS = "$.inputs"
 
-	val PATH_TASK_OUTPUTS = "$.outputs"
+	val static String PATH_TASK_OUTPUTS = "$.outputs"
 
-	val PATH_TASK_STATES = "$.states"
+	val static String PATH_TASK_STATES = "$.states"
 
-	val PATH_PARAM_ID = "id"
+	val static String PATH_PARAM_ID = "id"
 
-	val PATH_PARAM_TYPE = "type"
+	val static String PATH_PARAM_TYPE = "type"
 	
-	val conf = Configuration.defaultConfiguration.addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL)
+	val static Configuration conf = Configuration.defaultConfiguration.addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL)
 
-	def ITaskScheduler create(String json) {
+	override ITaskScheduler adapt(String json) {
 		val doc = JsonPath.using(conf).parse(json)
 		val String id = doc.read(PATH_TASK_ID)
 		val String label = doc.read(PATH_TASK_LABEL)
@@ -39,6 +41,10 @@ class JsonSequentialTaskSchedulerAdapter {
 		val List<Map<String, String>> states = doc.read(PATH_TASK_STATES)
 		return new SequentialTaskScheduler(id) => [ scheduler |
 			scheduler.label = label
+			exceptions.forEach[
+				val name = get("id")
+				scheduler.addException(new TaskException(name))
+			]
 			inputs.forEach [
 				val paramId = get(PATH_PARAM_ID)
 				val paramType = get(PATH_PARAM_TYPE)
@@ -51,6 +57,14 @@ class JsonSequentialTaskSchedulerAdapter {
 				val javaType = Class.forName(paramType)
 				scheduler.addOutput(new TaskParameter(paramId, javaType))
 			]
+			states.forEach [
+				
+			]
 		]
 	}
+	
+	override getType() {
+		return SequentialTaskScheduler.name
+	}
+	
 }

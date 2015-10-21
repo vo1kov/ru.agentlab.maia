@@ -5,7 +5,7 @@ import ru.agentlab.maia.task.ITaskScheduler
 import ru.agentlab.maia.task.TaskParameter
 import ru.agentlab.maia.task.sequential.SequentialTaskScheduler
 
-class DummyJson {
+class DummyJson2 {
 	
 	@Accessors
 	val json = '''
@@ -13,6 +13,9 @@ class DummyJson {
 			"type" : "ru.agentlab.maia.task.sequential.SequentialTaskScheduler",
 			"id" : "6058416d-401c-48e2-bf58-a77d618eb4d2",
 			"label" : "ZipatoAuthenticateProtocol",
+			"exceptions" : [
+				{ "id" : "java.lang.NullPointerException" }
+			],
 			"inputs" : [
 				{ "id" : "login", 		"type" : "java.lang.String" },
 				{ "id" : "password", 	"type" : "java.lang.String" }

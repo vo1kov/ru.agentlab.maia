@@ -12,4 +12,6 @@ Require-Bundle: com.google.guava,
  com.jayway.jsonpath;bundle-version="2.0.0",
  ru.agentlab.maia.task.sequential;bundle-version="1.0.0";visibility:=reexport
 Export-Package: ru.agentlab.maia.task.sequential.json
+Import-Package: org.osgi.framework;version="1.8.0"
+Bundle-Activator: ru.agentlab.maia.task.sequential.json.internal.Activator
 
