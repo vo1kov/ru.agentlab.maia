@@ -3,9 +3,9 @@ package ru.agentlab.maia.task.fsm
 import java.util.ArrayList
 import java.util.List
 import ru.agentlab.maia.task.ITask
-import ru.agentlab.maia.task.UnorderedTaskScheduler
+import ru.agentlab.maia.task.TaskSchedulerUnordered
 
-class FsmTaskScheduler extends UnorderedTaskScheduler implements IFsmTaskScheduler {
+class FsmTaskScheduler extends TaskSchedulerUnordered implements IFsmTaskScheduler {
 
 	val List<DefaultFsmTransition> defaultTransitions = new ArrayList
 

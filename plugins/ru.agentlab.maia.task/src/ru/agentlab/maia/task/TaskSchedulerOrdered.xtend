@@ -5,7 +5,7 @@ import java.util.ArrayList
 /**
  * Task scheduler which selects tasks in order of adding.
  */
-abstract class OrderedTaskScheduler extends TaskScheduler {
+abstract class TaskSchedulerOrdered extends TaskScheduler {
 
 	val protected subtasks = new ArrayList<ITask>
 

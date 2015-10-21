@@ -2,7 +2,7 @@ package ru.agentlab.maia.task
 
 import java.util.concurrent.atomic.AtomicReference
 
-abstract class PrimitiveTask extends Task {
+abstract class TaskPrimitive extends Task {
 
 	var protected implementation = new AtomicReference<Object>
 

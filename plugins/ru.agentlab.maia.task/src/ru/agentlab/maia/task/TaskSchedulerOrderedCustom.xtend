@@ -1,6 +1,6 @@
 package ru.agentlab.maia.task
 
-abstract class TaskSchedulerOrderedCustom extends OrderedTaskScheduler {
+abstract class TaskSchedulerOrderedCustom extends TaskSchedulerOrdered {
 
 	var protected Policy policyOnChildFailed = Policy.FAILED
 

@@ -2,9 +2,9 @@ package ru.agentlab.maia.task.primitive
 
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.task.ITaskScheduler
-import ru.agentlab.maia.task.PrimitiveTask
+import ru.agentlab.maia.task.TaskPrimitive
 
-class RunnableContextAction extends PrimitiveTask {
+class RunnableContextAction extends TaskPrimitive {
 
 	@Accessors
 	var ITaskScheduler parentNode

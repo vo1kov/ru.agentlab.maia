@@ -3,8 +3,8 @@ package ru.agentlab.maia.task.parallel
 import java.util.ArrayList
 import ru.agentlab.maia.task.ITask
 import ru.agentlab.maia.task.ITaskScheduler
-import ru.agentlab.maia.task.OrderedTaskScheduler
 import ru.agentlab.maia.task.TaskState
+import ru.agentlab.maia.task.TaskSchedulerOrdered
 
 /**
  * <p>Parallel implementation of {@link ITaskScheduler}.
@@ -26,7 +26,7 @@ import ru.agentlab.maia.task.TaskState
  * 
  * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
-class ParallelTaskScheduler extends OrderedTaskScheduler {
+class ParallelTaskScheduler extends TaskSchedulerOrdered {
 
 	val protected blockedSubtasks = new ArrayList<ITask>
 

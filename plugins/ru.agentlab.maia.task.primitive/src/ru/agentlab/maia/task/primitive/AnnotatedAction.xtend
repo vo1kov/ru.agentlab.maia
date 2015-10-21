@@ -4,14 +4,14 @@ import java.lang.reflect.Field
 import java.lang.reflect.Method
 import java.util.ArrayList
 import ru.agentlab.maia.task.ITaskParameter
-import ru.agentlab.maia.task.PrimitiveTask
 import ru.agentlab.maia.task.TaskParameter
 import ru.agentlab.maia.task.TaskState
 import ru.agentlab.maia.task.annotation.Action
 import ru.agentlab.maia.task.annotation.Input
 import ru.agentlab.maia.task.annotation.Output
+import ru.agentlab.maia.task.TaskPrimitive
 
-class AnnotatedAction extends PrimitiveTask {
+class AnnotatedAction extends TaskPrimitive {
 
 	var Field[] inputFields = newArrayOfSize(0)
 

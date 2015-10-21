@@ -1,8 +1,8 @@
 package ru.agentlab.maia.task.sequential
 
 import ru.agentlab.maia.task.ITask
-import ru.agentlab.maia.task.OrderedTaskScheduler
 import ru.agentlab.maia.task.TaskState
+import ru.agentlab.maia.task.TaskSchedulerOrdered
 
 /**
  * <p>
@@ -21,7 +21,7 @@ import ru.agentlab.maia.task.TaskState
  * 
  * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
-class SequentialTaskScheduler extends OrderedTaskScheduler {
+class SequentialTaskScheduler extends TaskSchedulerOrdered {
 
 	new() {
 		super()

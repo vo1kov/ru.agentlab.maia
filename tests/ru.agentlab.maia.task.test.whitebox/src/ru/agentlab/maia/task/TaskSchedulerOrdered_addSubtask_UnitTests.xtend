@@ -2,7 +2,6 @@ package ru.agentlab.maia.task
 
 import org.mockito.Spy
 import ru.agentlab.maia.task.ITask
-import ru.agentlab.maia.task.OrderedTaskScheduler
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
@@ -13,7 +12,7 @@ class TaskSchedulerOrdered_addSubtask_UnitTests {
 	var protected ITask task = createTask()
 
 	@Spy
-	var protected OrderedTaskScheduler scheduler
+	var protected TaskSchedulerOrdered scheduler
 
 	def static ITask createTask() {
 		return mock(ITask)

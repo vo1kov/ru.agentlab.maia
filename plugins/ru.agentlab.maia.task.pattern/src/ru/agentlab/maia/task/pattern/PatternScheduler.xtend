@@ -3,9 +3,9 @@ package ru.agentlab.maia.task.pattern
 import java.util.HashMap
 import javax.inject.Inject
 import ru.agentlab.maia.task.ITask
-import ru.agentlab.maia.task.UnorderedTaskScheduler
+import ru.agentlab.maia.task.TaskSchedulerUnordered
 
-class PatternScheduler extends UnorderedTaskScheduler implements IPatternScheduler {
+class PatternScheduler extends TaskSchedulerUnordered implements IPatternScheduler {
 
 	val stateMapping = new HashMap<PatternState, ITask>
 

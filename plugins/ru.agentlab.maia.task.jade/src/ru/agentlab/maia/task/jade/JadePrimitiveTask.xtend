@@ -1,8 +1,8 @@
 package ru.agentlab.maia.task.jade
 
-import ru.agentlab.maia.task.PrimitiveTask
+import ru.agentlab.maia.task.TaskPrimitive
 
-class JadePrimitiveTask extends PrimitiveTask {
+class JadePrimitiveTask extends TaskPrimitive {
 
 	override doInject() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")

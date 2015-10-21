@@ -2,7 +2,7 @@ package ru.agentlab.maia.task
 
 import java.util.HashSet
 
-abstract class UnorderedTaskScheduler extends TaskScheduler {
+abstract class TaskSchedulerUnordered extends TaskScheduler {
 
 	val protected subtasks = new HashSet<ITask>
 
