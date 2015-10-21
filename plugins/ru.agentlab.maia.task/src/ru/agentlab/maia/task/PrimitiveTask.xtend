@@ -12,9 +12,9 @@ abstract class PrimitiveTask extends Task {
 			doRun()
 			doUninject()
 
-			state = State.SUCCESS
+			state = TaskState.SUCCESS
 		} catch (Exception e) {
-			state = State.FAILED
+			state = TaskState.FAILED
 		}
 	}
 

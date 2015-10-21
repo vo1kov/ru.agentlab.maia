@@ -5,8 +5,8 @@ import org.jbehave.core.annotations.Given
 import org.jbehave.core.annotations.Then
 import org.jbehave.core.annotations.When
 import ru.agentlab.maia.task.ITask
-import ru.agentlab.maia.task.ITask.State
 import ru.agentlab.maia.task.ITaskScheduler
+import ru.agentlab.maia.task.TaskState
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
@@ -24,7 +24,7 @@ class AbstractTaskSchedulerExecuteSteps {
 	def void givenSchedulerWithSubtasks(String statesString) {
 		val String[] states = statesString.split(",")
 		for (stateString : states) {
-			val state = State.valueOf(stateString.trim)
+			val state = TaskState.valueOf(stateString.trim)
 			val task = mock(ITask) => [
 				when(it.state).thenReturn(state)
 				doAnswer[
@@ -61,7 +61,7 @@ class AbstractTaskSchedulerExecuteSteps {
 
 	@Then("scheduler have $state state")
 	def void thenSchedulerState(String state) {
-		assertThat(provider.get.state, equalTo(State.valueOf(state)))
+		assertThat(provider.get.state, equalTo(TaskState.valueOf(state)))
 	}
 
 }

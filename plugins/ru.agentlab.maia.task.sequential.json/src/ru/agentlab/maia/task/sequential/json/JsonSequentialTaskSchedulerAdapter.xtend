@@ -37,7 +37,8 @@ class JsonSequentialTaskSchedulerAdapter {
 		val List<Map<String, String>> inputs = doc.read(PATH_TASK_INPUTS)
 		val List<Map<String, String>> outputs = doc.read(PATH_TASK_OUTPUTS)
 		val List<Map<String, String>> states = doc.read(PATH_TASK_STATES)
-		return new SequentialTaskScheduler => [ scheduler |
+		return new SequentialTaskScheduler(id) => [ scheduler |
+			scheduler.label = label
 			inputs.forEach [
 				val paramId = get(PATH_PARAM_ID)
 				val paramType = get(PATH_PARAM_TYPE)

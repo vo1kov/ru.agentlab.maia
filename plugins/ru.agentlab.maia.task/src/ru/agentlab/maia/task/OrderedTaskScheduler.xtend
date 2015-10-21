@@ -10,6 +10,14 @@ abstract class OrderedTaskScheduler extends TaskScheduler {
 	val protected subtasks = new ArrayList<ITask>
 
 	var protected int index = 0
+	
+	new(){
+		super()
+	}
+	
+	new(String uuid){
+		super(uuid)
+	}
 
 	override getSubtasks() {
 		return subtasks

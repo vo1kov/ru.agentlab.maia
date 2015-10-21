@@ -18,7 +18,7 @@ abstract class UnorderedTaskScheduler extends TaskScheduler {
 			current = task
 		}
 		if (added && ready) {
-			state = State.READY
+			state = TaskState.READY
 		}
 		return added
 	}
@@ -26,7 +26,7 @@ abstract class UnorderedTaskScheduler extends TaskScheduler {
 	override protected internalRemoveSubtask(ITask task) {
 		val removed = subtasks -= task
 		if (removed && !ready) {
-			state = State.UNKNOWN
+			state = TaskState.UNKNOWN
 		}
 		return removed
 	}

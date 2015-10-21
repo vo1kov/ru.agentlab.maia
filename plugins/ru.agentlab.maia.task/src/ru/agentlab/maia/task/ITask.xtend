@@ -2,38 +2,11 @@ package ru.agentlab.maia.task
 
 interface ITask {
 
-	enum State {
-
-		/**
-		 * <p>Indicate that current node isn't ready for execution by some worker.</p>
-		 */
-		UNKNOWN,
-
-		/**
-		 * <p>Indicate that current node is ready for execution by some worker.</p>
-		 */
-		READY,
-
-		/**
-		 * <p>Indicate that current node is handled by some worker.</p>
-		 */
-		WORKING,
-
-		/**
-		 * <p>Indicate that current node was handled and now is waiting for some external event.</p>
-		 */
-		BLOCKED,
-
-		/**
-		 * <p>Indicate that current node execution was finished successfully.</p>
-		 */
-		SUCCESS,
-
-		/**
-		 * <p>Indicate that current node execution was performed with exception.</p>
-		 */
-		FAILED
-	}
+	def String getUuid()
+	
+	def String getLabel()
+	
+	def void setLabel(String newLabel)
 
 	/**
 	 * <p>Invoke one step of execution of the task.</p>
@@ -59,7 +32,7 @@ interface ITask {
 	 * 
 	 * @return 					task state.
 	 */
-	def State getState()
+	def TaskState getState()
 
 	/**
 	 * <p>Change task state.</p>
@@ -67,7 +40,7 @@ interface ITask {
 	 * @param parent			new task state.
 	 * @return 					previous task state.
 	 */
-	def State setState(State newState)
+	def TaskState setState(TaskState newState)
 
 	/**
 	 * <p>Retrieve all task inputs.</p>
@@ -122,6 +95,14 @@ interface ITask {
 	 * <p>Remove all parameters from task outputs.</p>
 	 */
 	def void clearOutputs()
+	
+	def Iterable<ITaskException> getExceptions()
+	
+	def void addException(ITaskException exception)
+	
+	def void removeException(ITaskException exception)
+	
+	def void clearExceptions()
 
 	/**
 	 * <p>Reset task to initial state.</p>

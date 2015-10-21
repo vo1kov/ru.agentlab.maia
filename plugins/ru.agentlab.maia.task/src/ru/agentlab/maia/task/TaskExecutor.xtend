@@ -21,7 +21,7 @@ class TaskExecutor implements ITaskExecutor {
 				override run() {
 					if (active) {
 						task.execute
-						if (task.state != ITask.State.SUCCESS) {
+						if (task.state != TaskState.SUCCESS) {
 							executor.submit(this)
 						}
 					}

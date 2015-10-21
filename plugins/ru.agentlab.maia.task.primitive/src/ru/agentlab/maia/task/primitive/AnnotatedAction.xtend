@@ -6,6 +6,7 @@ import java.util.ArrayList
 import ru.agentlab.maia.task.ITaskParameter
 import ru.agentlab.maia.task.PrimitiveTask
 import ru.agentlab.maia.task.TaskParameter
+import ru.agentlab.maia.task.TaskState
 import ru.agentlab.maia.task.annotation.Action
 import ru.agentlab.maia.task.annotation.Input
 import ru.agentlab.maia.task.annotation.Output
@@ -37,7 +38,7 @@ class AnnotatedAction extends PrimitiveTask {
 		if (method == null) {
 			throw new IllegalStateException("Task have no method annotated with @Actions")
 		}
-		state = State.READY
+		state = TaskState.READY
 	}
 
 	override protected doInject() {

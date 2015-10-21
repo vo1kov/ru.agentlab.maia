@@ -35,7 +35,15 @@ abstract class TaskScheduler extends Task implements ITaskScheduler {
 	 * <p>The maximum number of retries to perform an action.</p>
 	 */
 	var protected long retriesLimit = RETRIES_ONE_TIME
-
+	
+	new(){
+		super()
+	}
+	
+	new(String uuid){
+		super(uuid)
+	}
+	
 	override final addSubtask(ITask node) {
 		if (node == null) {
 			throw new NullPointerException("Node can't be null")
@@ -44,7 +52,7 @@ abstract class TaskScheduler extends Task implements ITaskScheduler {
 		if (added) {
 			node.parent = this
 			if (subtasks.size == 1) {
-				state = State.READY
+				state = TaskState.READY
 			}
 		}
 		return added
@@ -53,7 +61,7 @@ abstract class TaskScheduler extends Task implements ITaskScheduler {
 	override reset() {
 		retries = 0
 		if (subtasks.size > 0) {
-			state = State.READY
+			state = TaskState.READY
 		}
 		subtasks.forEach[reset]
 	}
@@ -68,23 +76,23 @@ abstract class TaskScheduler extends Task implements ITaskScheduler {
 		}
 		val removed = internalRemoveSubtask(node)
 		if (removed && subtasks.empty) {
-			state = State.UNKNOWN
+			state = TaskState.UNKNOWN
 		}
 		return removed
 	}
 
 	override clear() {
 		internalClear()
-		state = State.UNKNOWN
+		state = TaskState.UNKNOWN
 	}
 
 	def protected final void schedule() {
 		internalSchedule()
-		state = State.WORKING
+		state = TaskState.WORKING
 	}
 
 	def protected final void idle() {
-		state = State.WORKING
+		state = TaskState.WORKING
 	}
 
 	def protected void internalSchedule()

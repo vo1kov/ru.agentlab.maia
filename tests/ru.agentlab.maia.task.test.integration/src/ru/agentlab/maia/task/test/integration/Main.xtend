@@ -7,8 +7,8 @@ import org.jbehave.core.annotations.Given
 import org.jbehave.core.annotations.Then
 import org.jbehave.core.annotations.When
 import ru.agentlab.maia.task.ITask
-import ru.agentlab.maia.task.ITask.State
 import ru.agentlab.maia.task.ITaskScheduler
+import ru.agentlab.maia.task.TaskState
 import ru.agentlab.maia.task.parallel.ParallelTaskScheduler
 import ru.agentlab.maia.task.primitive.AnnotatedAction
 import ru.agentlab.maia.task.sequential.SequentialTaskScheduler
@@ -72,7 +72,7 @@ class Main {
 
 	@Then("task $id have $state state")
 	def void thenTaskHaveState(String id, String state) {
-		assertThat(tasks.get(id).state, equalTo(State.valueOf(state)))
+		assertThat(tasks.get(id).state, equalTo(TaskState.valueOf(state)))
 	}
 
 }

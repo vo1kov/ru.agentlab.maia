@@ -4,8 +4,8 @@ import javax.inject.Provider
 import org.jbehave.core.annotations.Given
 import org.jbehave.core.annotations.Then
 import ru.agentlab.maia.task.ITask
-import ru.agentlab.maia.task.ITask.State
 import ru.agentlab.maia.task.ITaskScheduler
+import ru.agentlab.maia.task.TaskState
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
@@ -37,7 +37,7 @@ class AbstractTaskSchedulerBaseSteps {
 
 	@Given("scheduler have $state state")
 	def void givenSchedulerInState(String state) {
-		provider.get.state = State.valueOf(state)
+		provider.get.state = TaskState.valueOf(state)
 	}
 
 	@Then("scheduler have $size subtasks")
@@ -47,7 +47,7 @@ class AbstractTaskSchedulerBaseSteps {
 
 	@Then("scheduler have $state state")
 	def void thenSchedulerState(String state) {
-		assertThat(provider.get.state, equalTo(State.valueOf(state)))
+		assertThat(provider.get.state, equalTo(TaskState.valueOf(state)))
 	}
 
 	@Then("scheduler don't change state")

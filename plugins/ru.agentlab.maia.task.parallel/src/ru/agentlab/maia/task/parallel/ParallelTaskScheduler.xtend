@@ -4,6 +4,7 @@ import java.util.ArrayList
 import ru.agentlab.maia.task.ITask
 import ru.agentlab.maia.task.ITaskScheduler
 import ru.agentlab.maia.task.OrderedTaskScheduler
+import ru.agentlab.maia.task.TaskState
 
 /**
  * <p>Parallel implementation of {@link ITaskScheduler}.
@@ -13,14 +14,14 @@ import ru.agentlab.maia.task.OrderedTaskScheduler
  * <p>Default policies:</p>
  * 
  * <ul>
- * <li>When any child become {@link State#BLOCKED BLOCKED} then 
+ * <li>When any child become {@link TaskState#BLOCKED BLOCKED} then 
  * scheduler skip it and select next;</li>
- * <li>When any child become {@link State#FAILED FAILED} then 
+ * <li>When any child become {@link TaskState#FAILED FAILED} then 
  * scheduler skip it and select next;</li>
- * <li>When any child become {@link State#SUCCESS SUCCESS} then 
+ * <li>When any child become {@link TaskState#SUCCESS SUCCESS} then 
  * scheduler scheduling to next child;</li>
  * <li>When all child nodes are executed successfully then 
- * scheduler become {@link State#SUCCESS SUCCESS};</li>
+ * scheduler become {@link TaskState#SUCCESS SUCCESS};</li>
  * </ul>
  * 
  * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
@@ -38,23 +39,23 @@ class ParallelTaskScheduler extends OrderedTaskScheduler {
 	override notifySubtaskBlocked() {
 		blockedSubtasks += subtasks.remove(index)
 		if (subtasks.empty) {
-			state = State.BLOCKED
+			state = TaskState.BLOCKED
 		} else {
-			state = State.WORKING
+			state = TaskState.WORKING
 		}
 	}
 
 	override notifySubtaskSuccess() {
 		terminatedSubtasks += subtasks.remove(index)
 		if (subtasks.empty) {
-			state = State.SUCCESS
+			state = TaskState.SUCCESS
 		} else {
-			state = State.WORKING
+			state = TaskState.WORKING
 		}
 	}
 
 	override notifySubtaskFailed() {
-		state = State.FAILED
+		state = TaskState.FAILED
 	}
 
 	override notifySubtaskWorking() {
@@ -67,7 +68,7 @@ class ParallelTaskScheduler extends OrderedTaskScheduler {
 		}
 		if (blockedSubtasks.remove(task) || terminatedSubtasks.remove(task)) {
 			subtasks += task
-			state = State.READY
+			state = TaskState.READY
 			return
 		} else {
 			throw new IllegalArgumentException("Subtask " + task + " doesn't contains in scheduler")

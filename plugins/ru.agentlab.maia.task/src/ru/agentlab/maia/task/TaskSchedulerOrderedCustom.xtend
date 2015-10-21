@@ -33,20 +33,20 @@ abstract class TaskSchedulerOrderedCustom extends OrderedTaskScheduler {
 	def protected void handlePolicy(Policy policy) {
 		switch (policy) {
 			case BLOCKED: {
-				state = State.BLOCKED
+				state = TaskState.BLOCKED
 			}
 			case FAILED: {
-				state = State.FAILED
+				state = TaskState.FAILED
 			}
 			case SUCCESS: {
-				state = State.SUCCESS
+				state = TaskState.SUCCESS
 			}
 			case SCHEDULING: {
 				schedule()
 			}
 			case RESTART: {
 				restart()
-				state = State.WORKING
+				state = TaskState.WORKING
 			}
 			case SKIP: {
 //				blockedChilds.add(childs.get(index))

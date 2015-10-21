@@ -3,7 +3,7 @@ package ru.agentlab.maia.task.parallel.test.blackbox
 import org.junit.Ignore
 import org.junit.Test
 import ru.agentlab.maia.task.ITask
-import ru.agentlab.maia.task.ITask.State
+import ru.agentlab.maia.task.TaskState
 import ru.agentlab.maia.task.parallel.ParallelTaskScheduler
 
 import static org.hamcrest.Matchers.*
@@ -16,7 +16,7 @@ class ParallelScheduler_getNode_FunctionalTests {
 
 	def ITask getSuccessNode() {
 		val result = mock(ITask) => [
-			when(it.state).thenReturn(ITask.State.SUCCESS)
+			when(it.state).thenReturn(TaskState.SUCCESS)
 
 			doAnswer[
 				scheduler.notifySubtaskSuccess
@@ -28,7 +28,7 @@ class ParallelScheduler_getNode_FunctionalTests {
 
 	def ITask getFailedNode() {
 		val result = mock(ITask) => [
-			when(it.state).thenReturn(ITask.State.FAILED)
+			when(it.state).thenReturn(TaskState.FAILED)
 
 			doAnswer[
 				scheduler.notifySubtaskFailed
@@ -49,7 +49,7 @@ class ParallelScheduler_getNode_FunctionalTests {
 		scheduler.execute
 		scheduler.execute
 
-		assertThat(scheduler.state, equalTo(State.FAILED))
+		assertThat(scheduler.state, equalTo(TaskState.FAILED))
 	}
 
 }

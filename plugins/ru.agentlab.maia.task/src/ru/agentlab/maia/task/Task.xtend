@@ -3,10 +3,17 @@ package ru.agentlab.maia.task
 import java.util.ArrayList
 import java.util.ConcurrentModificationException
 import java.util.List
+import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
 import org.eclipse.xtend.lib.annotations.Accessors
 
 abstract class Task implements ITask {
+
+	@Accessors
+	val String uuid
+
+	@Accessors
+	var String label
 
 	@Accessors
 	var List<ITaskParameter<?>> inputs = null
@@ -14,12 +21,23 @@ abstract class Task implements ITask {
 	@Accessors
 	var List<ITaskParameter<?>> outputs = null
 
+	@Accessors
+	var List<ITaskException> exceptions = null
+
 	val protected parent = new AtomicReference<ITaskScheduler>(null)
 
 	val protected owner = new AtomicReference<Thread>(null)
 
 	@Accessors
-	var State state = State.UNKNOWN
+	var TaskState state = TaskState.UNKNOWN
+
+	new() {
+		this.uuid = UUID.randomUUID.toString
+	}
+
+	new(String uuid) {
+		this.uuid = uuid
+	}
 
 	/**
 	 * ThreadSafe!
@@ -52,6 +70,13 @@ abstract class Task implements ITask {
 		outputs += parameter
 	}
 
+	override addException(ITaskException exception) {
+		if (exceptions === null) {
+			exceptions = new ArrayList<ITaskException>
+		}
+		exceptions += exception
+	}
+
 	override removeInput(ITaskParameter<?> parameter) {
 		if (inputs !== null) {
 			inputs.remove(parameter)
@@ -64,6 +89,12 @@ abstract class Task implements ITask {
 		}
 	}
 
+	override removeException(ITaskException exception) {
+		if (exceptions !== null) {
+			exceptions.remove(exception)
+		}
+	}
+
 	override clearInputs() {
 		inputs = null
 	}
@@ -72,13 +103,17 @@ abstract class Task implements ITask {
 		outputs = null
 	}
 
+	override clearExceptions() {
+		exceptions = null
+	}
+
 	/**
 	 * ThreadSafe! But allow only 1 thread to execute node.
 	 */
 	override final execute() {
 		val entered = owner.compareAndSet(null, Thread.currentThread)
 		if (entered) {
-			if (!(state === State.READY || state === State.WORKING)) {
+			if (!(state === TaskState.READY || state === TaskState.WORKING)) {
 				throw new IllegalStateException("Task in illegal state; " + state)
 			}
 			internalExecute()
@@ -88,7 +123,7 @@ abstract class Task implements ITask {
 		}
 	}
 
-	override setState(State newState) {
+	override setState(TaskState newState) {
 		val old = state
 		state = newState
 		switch (newState) {
@@ -116,4 +151,11 @@ abstract class Task implements ITask {
 
 	def protected void internalExecute()
 
+//	override equals(Object obj) {
+//		if(obj instanceof Task){
+//			return false
+//		} else {
+//			return false
+//		}
+//	}
 }
