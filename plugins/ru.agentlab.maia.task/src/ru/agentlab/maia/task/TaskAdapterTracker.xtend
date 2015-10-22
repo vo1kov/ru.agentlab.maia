@@ -17,14 +17,14 @@ class TaskAdapterTracker extends ServiceTracker<ITaskAdapter<?>, ITaskAdapter<?>
 		val adapter = context.getService(reference)
 		println("Added adapter" + adapter)
 		if (registry != null) {
-			registry.putAdapter(adapter.type, adapter)
+//			registry.putAdapter(adapter.type, adapter)
 		}
 		return adapter
 	}
 	
 	override removedService(ServiceReference<ITaskAdapter<?>> reference, ITaskAdapter<?> service) {
 		println("Remove adapter" + service)
-		registry.removeAdapter(service.type)
+//		registry.removeAdapter(service.type)
 		super.removedService(reference, service)
 	}
 

@@ -8,6 +8,4 @@ interface ITaskAdapter<T> {
 
 	def ITask adapt(T object)
 
-	def String getType()
-
 }

@@ -3,68 +3,66 @@ package ru.agentlab.maia.task.sequential.json
 import com.jayway.jsonpath.Configuration
 import com.jayway.jsonpath.JsonPath
 import com.jayway.jsonpath.Option
+import java.util.HashMap
 import java.util.List
 import java.util.Map
+import ru.agentlab.maia.task.ITaskAdapter
+import ru.agentlab.maia.task.ITaskParameter
 import ru.agentlab.maia.task.ITaskScheduler
+import ru.agentlab.maia.task.TaskException
 import ru.agentlab.maia.task.TaskParameter
 import ru.agentlab.maia.task.sequential.SequentialTaskScheduler
-import ru.agentlab.maia.task.TaskException
-import ru.agentlab.maia.task.ITaskAdapter
 
-class JsonSequentialTaskSchedulerAdapter implements ITaskAdapter<String>{
+class JsonSequentialTaskSchedulerAdapter implements ITaskAdapter<String> {
 
-	val static String PATH_TASK_ID = "$.id"
-
-	val static String PATH_TASK_LABEL = "$.label"
-
-	val static String PATH_TASK_EXCEPTIONS = "$.exceptions"
-
-	val static String PATH_TASK_INPUTS = "$.inputs"
-
-	val static String PATH_TASK_OUTPUTS = "$.outputs"
-
-	val static String PATH_TASK_STATES = "$.states"
-
-	val static String PATH_PARAM_ID = "id"
-
-	val static String PATH_PARAM_TYPE = "type"
-	
 	val static Configuration conf = Configuration.defaultConfiguration.addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL)
 
+	def boolean is(String json) {
+		try {
+			val String type = JsonPath.using(conf).parse(json).read("$.type")
+			return type.equals(SequentialTaskScheduler.name)
+		} catch (Exception e) {
+			return false
+		}
+	}
+
 	override ITaskScheduler adapt(String json) {
+		val parametersCache = new HashMap<String, ITaskParameter<?>>
 		val doc = JsonPath.using(conf).parse(json)
-		val String id = doc.read(PATH_TASK_ID)
-		val String label = doc.read(PATH_TASK_LABEL)
-		val List<Map<String, String>> exceptions = doc.read(PATH_TASK_EXCEPTIONS)
-		val List<Map<String, String>> inputs = doc.read(PATH_TASK_INPUTS)
-		val List<Map<String, String>> outputs = doc.read(PATH_TASK_OUTPUTS)
-		val List<Map<String, String>> states = doc.read(PATH_TASK_STATES)
-		return new SequentialTaskScheduler(id) => [ scheduler |
-			scheduler.label = label
-			exceptions.forEach[
-				val name = get("id")
-				scheduler.addException(new TaskException(name))
+		val String schedulerUuid = doc.read("$.uuid")
+		val String schedulerLabel = doc.read("$.label")
+		val List<Map<String, String>> schedulerExceptions = doc.read("$.exceptions")
+		val List<Map<String, String>> schedulerInputs = doc.read("$.inputs")
+		val List<Map<String, String>> schedulerOutputs = doc.read("$.outputs")
+		val List<Map<String, String>> schedulerStates = doc.read("$.states")
+		return new SequentialTaskScheduler(schedulerUuid) => [ scheduler |
+			scheduler.label = schedulerLabel
+			schedulerExceptions.forEach [
+				val exceptionUuid = get("uuid")
+				val exceptionLabel = get("label")
+				val exceptionType = get("type")
+				scheduler.addException(new TaskException(exceptionLabel))
 			]
-			inputs.forEach [
-				val paramId = get(PATH_PARAM_ID)
-				val paramType = get(PATH_PARAM_TYPE)
-				val javaType = Class.forName(paramType)
-				scheduler.addInput(new TaskParameter(paramId, javaType))
+			schedulerInputs.forEach [
+				val inputUuid = get("uuid")
+				val inputLabel = get("label")
+				val inputType = get("type")
+				val javaType = Class.forName(inputType)
+				val input = new TaskParameter(inputLabel, javaType)
+				scheduler.addInput(input)
+				parametersCache.put(inputUuid, input)
 			]
-			outputs.forEach [
-				val paramId = get(PATH_PARAM_ID)
-				val paramType = get(PATH_PARAM_TYPE)
-				val javaType = Class.forName(paramType)
-				scheduler.addOutput(new TaskParameter(paramId, javaType))
+			schedulerOutputs.forEach [
+				val outputUuid = get("uuid")
+				val outputLabel = get("label")
+				val outputType = get("type")
+				val javaType = Class.forName(outputType)
+				val output = new TaskParameter(outputLabel, javaType)
+				scheduler.addOutput(output)
+				parametersCache.put(outputUuid, output)
 			]
-			states.forEach [
-				
-			]
+			schedulerStates.forEach[]
 		]
 	}
-	
-	override getType() {
-		return SequentialTaskScheduler.name
-	}
-	
+
 }
