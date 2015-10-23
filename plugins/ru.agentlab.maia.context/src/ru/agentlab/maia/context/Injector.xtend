@@ -71,6 +71,9 @@ class Injector implements IInjector {
 	}
 
 	def protected invoke(Object object, Method method, boolean haveDefault, Object defaultValue) {
+		if (method == null && haveDefault) {
+			return defaultValue
+		}
 		val values = resolveValues(resolveKeys(method.parameters))
 		if (values.length < method.parameters.size) {
 			if (haveDefault) {

@@ -28,7 +28,7 @@
 			"type" : "java.lang.Boolean" 
 		}
 	],
-	"states" : [
+	"subtasks" : [
 		{
 			"uuid" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6",
 			"label" : "Create Bootstrap",
