@@ -36,13 +36,13 @@ abstract class TaskScheduler extends Task implements ITaskScheduler {
 	 */
 	var protected long retriesLimit = RETRIES_ONE_TIME
 	
-	new(){
-		super()
-	}
-	
-	new(String uuid){
-		super(uuid)
-	}
+//	new(){
+//		super()
+//	}
+//	
+//	new(String uuid){
+//		super(uuid)
+//	}
 	
 	override final addSubtask(ITask node) {
 		if (node == null) {

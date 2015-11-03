@@ -23,13 +23,13 @@ import ru.agentlab.maia.task.TaskSchedulerOrdered
  */
 class SequentialTaskScheduler extends TaskSchedulerOrdered {
 
-	new() {
-		super()
-	}
-
-	new(String uuid) {
-		super(uuid)
-	}
+//	new() {
+//		super()
+//	}
+//
+//	new(String uuid) {
+//		super(uuid)
+//	}
 
 	override notifySubtaskBlocked() {
 		state = TaskState.BLOCKED

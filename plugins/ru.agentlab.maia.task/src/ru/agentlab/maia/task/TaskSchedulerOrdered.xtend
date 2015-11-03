@@ -11,13 +11,13 @@ abstract class TaskSchedulerOrdered extends TaskScheduler {
 
 	var protected int index = 0
 	
-	new(){
-		super()
-	}
-	
-	new(String uuid){
-		super(uuid)
-	}
+//	new(){
+//		super()
+//	}
+//	
+//	new(String uuid){
+//		super(uuid)
+//	}
 
 	override getSubtasks() {
 		return subtasks

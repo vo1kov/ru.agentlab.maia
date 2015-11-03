@@ -3,15 +3,13 @@ package ru.agentlab.maia.task
 import java.util.ArrayList
 import java.util.ConcurrentModificationException
 import java.util.List
-import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
 import org.eclipse.xtend.lib.annotations.Accessors
 
 abstract class Task implements ITask {
 
-	@Accessors
-	val String uuid
-
+//	@Accessors
+//	val String uuid
 	@Accessors
 	var String label
 
@@ -31,14 +29,13 @@ abstract class Task implements ITask {
 	@Accessors
 	var TaskState state = TaskState.UNKNOWN
 
-	new() {
-		this.uuid = UUID.randomUUID.toString
-	}
-
-	new(String uuid) {
-		this.uuid = uuid
-	}
-
+//	new() {
+//		this.uuid = UUID.randomUUID.toString
+//	}
+//
+//	new(String uuid) {
+//		this.uuid = uuid
+//	}
 	/**
 	 * ThreadSafe!
 	 */

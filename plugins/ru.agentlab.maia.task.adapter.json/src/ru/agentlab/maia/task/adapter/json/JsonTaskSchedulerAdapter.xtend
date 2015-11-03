@@ -1,39 +1,45 @@
 package ru.agentlab.maia.task.adapter.json
 
+import com.jayway.jsonpath.Configuration
+import com.jayway.jsonpath.JsonPath
+import com.jayway.jsonpath.Option
 import java.util.List
 import java.util.Map
+import ru.agentlab.maia.task.ITask
 import ru.agentlab.maia.task.ITaskScheduler
-import ru.agentlab.maia.context.IInjector
+import ru.agentlab.maia.task.adapter.ITaskAdapterElement
 
-class JsonTaskSchedulerAdapter extends JsonTaskAdapter {
+class JsonTaskSchedulerAdapter implements ITaskAdapterElement<String> {
 
-	new(IInjector injector) {
-		super(injector)
-	}
-	
-	override adapt(String json) {
-		val task = super.adapt(json)
+	val conf = Configuration.defaultConfiguration.addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL)
+
+	override adapt(ITask task, String json) {
 		if (task instanceof ITaskScheduler) {
-			return task => [
-				extractSubtasks(parsed)
-				extractDataflow(parsed)
-			]
+			val internal = JsonPath.using(conf).parse(json).read("$.internal") as Map<?, ?>
+			task.adapt(internal)
 		} else {
 			throw new IllegalArgumentException
 		}
 	}
 
-	def protected void extractSubtasks(ITaskScheduler scheduler, Map<?, ?> parsed) {
-		val subtasks = parsed.get("subtasks") as List<Map<?, ?>>
+	def ITaskScheduler adapt(ITaskScheduler task, Map<?, ?> internal) {
+		task.extractSubtasks(internal)
+		task.extractDataflow(internal)
+		return task
+	}
+
+	def protected void extractSubtasks(ITaskScheduler scheduler, Map<?, ?> internal) {
+		val subtasks = internal.get("subtasks") as List<Map<?, ?>>
 		subtasks?.forEach [
 			val subtask = super.adapt(it)
 			scheduler.addSubtask(subtask)
-			subtasksCache.put(subtask.uuid, subtask)
+			val uuid = it.get("uuid") as String
+			subtasksCache.put(uuid, subtask)
 		]
 	}
 
-	def protected void extractDataflow(ITaskScheduler scheduler, Map<?, ?> parsed) {
-		val links = parsed.get("dataflow") as List<List<String>>
+	def protected void extractDataflow(ITaskScheduler scheduler, Map<?, ?> internal) {
+		val links = internal.get("dataflow") as List<List<String>>
 		links?.forEach [ link |
 			for (uuid : link) {
 				if (!parametersCache.containsKey(uuid)) {

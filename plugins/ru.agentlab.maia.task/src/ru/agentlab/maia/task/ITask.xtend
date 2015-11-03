@@ -2,7 +2,7 @@ package ru.agentlab.maia.task
 
 interface ITask {
 
-	def String getUuid()
+//	def String getUuid()
 	
 	def String getLabel()
 	
