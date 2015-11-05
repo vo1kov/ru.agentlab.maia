@@ -86,7 +86,9 @@ abstract class JsonTaskAdapter implements ITaskAdapter<String> {
 
 	def protected void internalAdaptLabel(ITask task, Map<?, ?> parsed) {
 		val label = parsed.get("label") as String
-		task.label = label
+		if (task.label != label) {
+			task.label = label
+		}
 	}
 
 	def protected void internalAdaptExceptions(ITask task, Map<?, ?> parsed) {
@@ -94,8 +96,11 @@ abstract class JsonTaskAdapter implements ITaskAdapter<String> {
 		exceptions?.forEach [
 			val uuid = get("uuid")
 			val label = get("label")
-			val exception = new TaskException(label)
-			task.addException(exception)
+			var exception = task.exceptions.findFirst[it.name == label]
+			if (exception == null) {
+				exception = new TaskException(label)
+				task.addException(exception)
+			}
 			exceptionsCache.put(uuid, exception)
 		]
 	}
@@ -107,8 +112,11 @@ abstract class JsonTaskAdapter implements ITaskAdapter<String> {
 			val label = get("label")
 			val type = get("type")
 			val javaType = Class.forName(type)
-			val input = new TaskParameter(label, javaType)
-			task.addInput(input)
+			var input = task.inputs.findFirst[it.name == label && it.type == javaType]
+			if (input == null) {
+				input = new TaskParameter(label, javaType)
+				task.addInput(input)
+			}
 			parametersCache.put(uuid, input)
 		]
 	}
@@ -120,8 +128,11 @@ abstract class JsonTaskAdapter implements ITaskAdapter<String> {
 			val label = get("label")
 			val type = get("type")
 			val javaType = Class.forName(type)
-			val output = new TaskParameter(label, javaType)
-			task.addOutput(output)
+			var output = task.outputs.findFirst[it.name == label && it.type == javaType]
+			if (output == null) {
+				output = new TaskParameter(label, javaType)
+				task.addOutput(output)
+			}
 			parametersCache.put(uuid, output)
 		]
 	}
