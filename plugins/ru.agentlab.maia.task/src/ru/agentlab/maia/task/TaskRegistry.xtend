@@ -14,5 +14,9 @@ class TaskRegistry implements ITaskRegistry {
 	override ITask get(String uuid) {
 		return tasks.get(uuid)
 	}
+	
+	override ITask remove(String uuid){
+		return tasks.remove(uuid)
+	}
 
 }
