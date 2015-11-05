@@ -6,7 +6,8 @@ import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import ru.agentlab.maia.task.ITaskRegistry
 import ru.agentlab.maia.task.adapter.ITaskAdapter
-import ru.agentlab.maia.task.adapter.json.JsonTaskAdapter
+import ru.agentlab.maia.task.adapter.json.JsonTaskSchedulerAdapter
+import ru.agentlab.maia.task.TaskSchedulerOrdered
 
 class Activator implements BundleActivator {
 
@@ -22,9 +23,9 @@ class Activator implements BundleActivator {
 			if (registry != null) {
 				val properties = new Hashtable<String, Object> => [
 					put(ITaskAdapter.KEY_LANGUAGE, "json")
-					put(ITaskAdapter.KEY_TYPE, null)
+					put(ITaskAdapter.KEY_TYPE, TaskSchedulerOrdered)
 				]
-				context.registerService(ITaskAdapter, new JsonTaskAdapter(registry), properties)
+				context.registerService(ITaskAdapter, new JsonTaskSchedulerAdapter(registry), properties)
 			}
 		}
 

@@ -1,34 +1,31 @@
 package ru.agentlab.maia.task.adapter.json
 
-import com.jayway.jsonpath.Configuration
-import com.jayway.jsonpath.JsonPath
-import com.jayway.jsonpath.Option
 import java.util.List
 import java.util.Map
-import ru.agentlab.maia.task.ITask
+import javax.inject.Inject
+import ru.agentlab.maia.task.ITaskRegistry
 import ru.agentlab.maia.task.ITaskScheduler
-import ru.agentlab.maia.task.adapter.ITaskAdapterElement
 
-class JsonTaskSchedulerAdapter implements ITaskAdapterElement<String> {
+class JsonTaskSchedulerAdapter extends JsonTaskAdapter {
 
-	val conf = Configuration.defaultConfiguration.addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL)
+	@Inject
+	new(ITaskRegistry registry) {
+		super(registry)
+	}
 
-	override adapt(ITask task, String json) {
+	override adapt(Map<?, ?> parsed) {
+		val task = super.adapt(parsed)
 		if (task instanceof ITaskScheduler) {
-			val internal = JsonPath.using(conf).parse(json).read("$.internal") as Map<?, ?>
-			task.adapt(internal)
+			val internal = parsed.get("internal") as Map<?, ?>
+			task.internalAdaptSubtasks(internal)
+			task.internalAdaptDataflow(internal)
+			return task
 		} else {
 			throw new IllegalArgumentException
 		}
 	}
 
-	def ITaskScheduler adapt(ITaskScheduler task, Map<?, ?> internal) {
-		task.extractSubtasks(internal)
-		task.extractDataflow(internal)
-		return task
-	}
-
-	def protected void extractSubtasks(ITaskScheduler scheduler, Map<?, ?> internal) {
+	def protected void internalAdaptSubtasks(ITaskScheduler scheduler, Map<?, ?> internal) {
 		val subtasks = internal.get("subtasks") as List<Map<?, ?>>
 		subtasks?.forEach [
 			val subtask = super.adapt(it)
@@ -38,7 +35,7 @@ class JsonTaskSchedulerAdapter implements ITaskAdapterElement<String> {
 		]
 	}
 
-	def protected void extractDataflow(ITaskScheduler scheduler, Map<?, ?> internal) {
+	def protected void internalAdaptDataflow(ITaskScheduler scheduler, Map<?, ?> internal) {
 		val links = internal.get("dataflow") as List<List<String>>
 		links?.forEach [ link |
 			for (uuid : link) {

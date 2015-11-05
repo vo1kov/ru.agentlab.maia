@@ -8,6 +8,8 @@ import ru.agentlab.maia.task.adapter.json.JsonTaskAdapter
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
+import ru.agentlab.maia.task.adapter.json.JsonTaskSchedulerAdapter
+import ru.agentlab.maia.task.TaskRegistry
 
 class JsonTest {
 
@@ -111,11 +113,8 @@ class JsonTest {
 
 	@Test
 	def void test() {
-		val context = new HashMapContext
-		val injector = new Injector(context)
-		context.putService(IInjector, injector)
-		val adapter = new JsonTaskAdapter()
-		val scheduler = adapter.adapt(context, json2)
+		val adapter = new JsonTaskSchedulerAdapter(new TaskRegistry)
+		val scheduler = adapter.adapt(json2)
 		assertThat(scheduler, notNullValue)
 		assertThat(scheduler.inputs, iterableWithSize(2))
 		assertThat(scheduler.outputs, iterableWithSize(1))
