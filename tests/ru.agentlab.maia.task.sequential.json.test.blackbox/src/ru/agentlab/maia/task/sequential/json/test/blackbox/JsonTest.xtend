@@ -8,8 +8,8 @@ import ru.agentlab.maia.task.adapter.json.JsonTaskAdapter
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
-import ru.agentlab.maia.task.adapter.json.JsonTaskSchedulerAdapter
 import ru.agentlab.maia.task.TaskRegistry
+import ru.agentlab.maia.task.adapter.json.JsonTaskSchedulerOrderedModifier
 
 class JsonTest {
 
@@ -113,7 +113,7 @@ class JsonTest {
 
 	@Test
 	def void test() {
-		val adapter = new JsonTaskSchedulerAdapter(new TaskRegistry)
+		val adapter = new JsonTaskSchedulerOrderedModifier(new TaskRegistry)
 		val scheduler = adapter.adapt(json2)
 		assertThat(scheduler, notNullValue)
 		assertThat(scheduler.inputs, iterableWithSize(2))
