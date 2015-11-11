@@ -6,16 +6,15 @@ import com.jayway.jsonpath.Option
 import java.util.Map
 import javax.inject.Inject
 import ru.agentlab.maia.task.ITask
+import ru.agentlab.maia.task.ITaskModifier
 import ru.agentlab.maia.task.ITaskRegistry
+import ru.agentlab.maia.task.TaskModifier
 import ru.agentlab.maia.task.adapter.ITaskAdapter
-import ru.agentlab.maia.task.adapter.ITaskModifier
 import ru.agentlab.maia.task.adapter.json.internal.Activator
 
 class JsonTaskAdapter implements ITaskAdapter<String> {
-
-	val static String PATH_ROOT = "$"
-
-	val conf = Configuration.defaultConfiguration.addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL)
+	
+	val public static String JSON = "json" 
 
 	var ITaskRegistry registry
 
@@ -25,24 +24,17 @@ class JsonTaskAdapter implements ITaskAdapter<String> {
 	}
 
 	override ITask adapt(String json) {
-		val parsed = JsonPath.using(conf).parse(json).read(PATH_ROOT) as Map<String, ?>
-		val uuid = parsed.get(JsonConstants.TASK_UUID) as String
-		val typeString = parsed.get(JsonConstants.TASK_TYPE) as String
-		var type = Class.forName(typeString) as Class<? extends ITask>
-		var task = getTask(uuid, type)
-		val modifier = getModifier(JsonConstants.LANGUAGE, type.name) as ITaskModifier<Map<String, ?>>
-		if (modifier != null) {
-			modifier.modify(task, parsed)
-		}
-		return task
+		val conf = Configuration.defaultConfiguration.addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL)
+		val parsed = JsonPath.using(conf).parse(json).read("$") as Map<String, ?>
+		return adapt(parsed)
 	}
-	
-	def protected ITask adapt(Map<String, ?> parsed){
-		val uuid = parsed.get(JsonConstants.TASK_UUID) as String
-		val typeString = parsed.get(JsonConstants.TASK_TYPE) as String
+
+	override ITask adapt(Map<String, ?> parsed) {
+		val uuid = parsed.get(TaskModifier.TASK_UUID) as String
+		val typeString = parsed.get(TaskModifier.TASK_TYPE) as String
 		var type = Class.forName(typeString) as Class<? extends ITask>
 		var task = getTask(uuid, type)
-		val modifier = getModifier(JsonConstants.LANGUAGE, type.name) as ITaskModifier<Map<String, ?>>
+		val modifier = getModifier(type.name)
 		if (modifier != null) {
 			modifier.modify(task, parsed)
 		}
@@ -73,10 +65,10 @@ class JsonTaskAdapter implements ITaskAdapter<String> {
 	 * @param type					type name of task.
 	 * @return 						task modifier for specified language ant task type. 
 	 */
-	def protected ITaskModifier<?> getModifier(String language, String type) {
+	def protected ITaskModifier getModifier(String type) {
 		val refs = Activator.context.getServiceReferences(
 			ITaskModifier,
-			'''(&(«ITaskAdapter.KEY_LANGUAGE»=«language»)(«ITaskModifier.KEY_TYPE»=«type»))'''
+			'''(«ITaskModifier.KEY_TYPE»=«type»)'''
 		)
 		if (!refs.empty) {
 			return Activator.context.getService(refs.get(0))

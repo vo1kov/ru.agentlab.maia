@@ -1,16 +1,40 @@
-package ru.agentlab.maia.task.adapter.json
+package ru.agentlab.maia.task
 
 import java.util.HashMap
 import java.util.List
 import java.util.Map
-import ru.agentlab.maia.task.ITask
-import ru.agentlab.maia.task.ITaskException
-import ru.agentlab.maia.task.ITaskParameter
-import ru.agentlab.maia.task.TaskException
-import ru.agentlab.maia.task.TaskParameter
-import ru.agentlab.maia.task.adapter.ITaskModifier
 
-abstract class JsonTaskModifier implements ITaskModifier<Map<String, ?>> {
+abstract class TaskModifier implements ITaskModifier {
+
+	val public static String TASK_UUID = "uuid"
+
+	val public static String TASK_TYPE = "type"
+
+	val public static String TASK_LABEL = "label"
+
+	val public static String TASK_EXCEPTIONS = "exceptions"
+
+	val public static String TASK_INPUTS = "inputs"
+
+	val public static String TASK_OUTPUTS = "outputs"
+
+	val public static String EXCEPTION_UUID = "uuid"
+
+	val public static String EXCEPTION_TYPE = "type"
+
+	val public static String EXCEPTION_LABEL = "label"
+
+	val public static String INPUT_UUID = "uuid"
+
+	val public static String INPUT_TYPE = "type"
+
+	val public static String INPUT_LABEL = "label"
+
+	val public static String OUTPUT_UUID = "uuid"
+
+	val public static String OUTPUT_TYPE = "type"
+
+	val public static String OUTPUT_LABEL = "label"
 	
 	val protected parametersCache = new HashMap<String, ITaskParameter<?>>
 
@@ -26,17 +50,17 @@ abstract class JsonTaskModifier implements ITaskModifier<Map<String, ?>> {
 	}
 
 	def protected void modifyLabel(ITask task, Map<String, ?> parsed) {
-		val label = parsed.get(JsonConstants.TASK_LABEL) as String
+		val label = parsed.get(TASK_LABEL) as String
 		if (task.label != label) {
 			task.label = label
 		}
 	}
 
 	def protected void modifyExceptions(ITask task, Map<String, ?> parsed) {
-		val exceptions = parsed.get(JsonConstants.EXCEPTIONS) as List<Map<String, String>>
+		val exceptions = parsed.get(TASK_EXCEPTIONS) as List<Map<String, String>>
 		exceptions?.forEach [
-			val uuid = get(JsonConstants.EXCEPTION_UUID)
-			val label = get(JsonConstants.EXCEPTION_LABEL)
+			val uuid = get(EXCEPTION_UUID)
+			val label = get(EXCEPTION_LABEL)
 			var exception = task.exceptions?.findFirst[it.name == label]
 			if (exception == null) {
 				exception = new TaskException(label)
@@ -47,11 +71,11 @@ abstract class JsonTaskModifier implements ITaskModifier<Map<String, ?>> {
 	}
 
 	def protected void modifyInputs(ITask task, Map<String, ?> parsed) {
-		val inputs = parsed.get(JsonConstants.INPUTS) as List<Map<String, String>>
+		val inputs = parsed.get(TASK_INPUTS) as List<Map<String, String>>
 		inputs?.forEach [
-			val uuid = get(JsonConstants.INPUT_UUID)
-			val label = get(JsonConstants.INPUT_LABEL)
-			val type = get(JsonConstants.INPUT_TYPE)
+			val uuid = get(INPUT_UUID)
+			val label = get(INPUT_LABEL)
+			val type = get(INPUT_TYPE)
 			val javaType = Class.forName(type)
 			var input = task.inputs?.findFirst[it.name == label && it.type == javaType]
 			if (input == null) {
@@ -63,11 +87,11 @@ abstract class JsonTaskModifier implements ITaskModifier<Map<String, ?>> {
 	}
 
 	def protected void modifyOutputs(ITask task, Map<String, ?> parsed) {
-		val outputs = parsed.get(JsonConstants.OUTPUTS) as List<Map<String, String>>
+		val outputs = parsed.get(TASK_OUTPUTS) as List<Map<String, String>>
 		outputs?.forEach [
-			val uuid = get(JsonConstants.OUTPUT_UUID)
-			val label = get(JsonConstants.OUTPUT_LABEL)
-			val type = get(JsonConstants.OUTPUT_TYPE)
+			val uuid = get(OUTPUT_UUID)
+			val label = get(OUTPUT_LABEL)
+			val type = get(OUTPUT_TYPE)
 			val javaType = Class.forName(type)
 			var output = task.outputs?.findFirst[it.name == label && it.type == javaType]
 			if (output == null) {
