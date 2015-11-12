@@ -1,7 +1,7 @@
 package ru.agentlab.maia.task.test.integration.doubles
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.task.annotation.Action
+import ru.agentlab.maia.behaviour.annotation.Action
 
 class DummyAction {
 

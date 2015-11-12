@@ -4,9 +4,9 @@ import javax.inject.Provider
 import org.jbehave.core.annotations.Given
 import org.jbehave.core.annotations.Then
 import org.jbehave.core.annotations.When
-import ru.agentlab.maia.task.ITask
-import ru.agentlab.maia.task.ITaskScheduler
-import ru.agentlab.maia.task.TaskState
+import ru.agentlab.maia.behaviour.BehaviourState
+import ru.agentlab.maia.behaviour.IBehaviour
+import ru.agentlab.maia.behaviour.IBehaviourScheduler
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
@@ -14,9 +14,9 @@ import static org.mockito.Mockito.*
 
 class AbstractTaskSchedulerExecuteSteps {
 
-	val Provider<ITaskScheduler> provider
+	val Provider<IBehaviourScheduler> provider
 
-	new(Provider<ITaskScheduler> provider) {
+	new(Provider<IBehaviourScheduler> provider) {
 		this.provider = provider
 	}
 
@@ -24,22 +24,22 @@ class AbstractTaskSchedulerExecuteSteps {
 	def void givenSchedulerWithSubtasks(String statesString) {
 		val String[] states = statesString.split(",")
 		for (stateString : states) {
-			val state = TaskState.valueOf(stateString.trim)
-			val task = mock(ITask) => [
+			val state = BehaviourState.valueOf(stateString.trim)
+			val task = mock(IBehaviour) => [
 				when(it.state).thenReturn(state)
 				doAnswer[
 					switch (state) {
 						case WORKING: {
-							provider.get.notifySubtaskWorking
+							provider.get.notifyChildWorking
 						}
 						case BLOCKED: {
-							provider.get.notifySubtaskBlocked
+							provider.get.notifyChildBlocked
 						}
 						case SUCCESS: {
-							provider.get.notifySubtaskSuccess
+							provider.get.notifyChildSuccess
 						}
 						case FAILED: {
-							provider.get.notifySubtaskFailed
+							provider.get.notifyChildFailed
 						}
 						default: {
 							throw new IllegalArgumentException
@@ -48,7 +48,7 @@ class AbstractTaskSchedulerExecuteSteps {
 					return null
 				].when(it).execute
 			]
-			provider.get.addSubtask(task)
+			provider.get.addChild(task)
 		}
 	}
 
@@ -61,7 +61,7 @@ class AbstractTaskSchedulerExecuteSteps {
 
 	@Then("scheduler have $state state")
 	def void thenSchedulerState(String state) {
-		assertThat(provider.get.state, equalTo(TaskState.valueOf(state)))
+		assertThat(provider.get.state, equalTo(BehaviourState.valueOf(state)))
 	}
 
 }

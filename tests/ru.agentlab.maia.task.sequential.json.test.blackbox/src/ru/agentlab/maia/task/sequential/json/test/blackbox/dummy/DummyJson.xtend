@@ -1,12 +1,12 @@
 package ru.agentlab.maia.task.sequential.json.test.blackbox.dummy
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.task.ITaskScheduler
-import ru.agentlab.maia.task.TaskParameter
-import ru.agentlab.maia.task.sequential.SequentialTaskScheduler
+import ru.agentlab.maia.behaviour.BehaviourParameter
+import ru.agentlab.maia.behaviour.IBehaviourScheduler
+import ru.agentlab.maia.behaviour.sequential.SequentialBehaviour
 
 class DummyJson {
-	
+
 	@Accessors
 	val json = '''
 		{
@@ -23,11 +23,11 @@ class DummyJson {
 		}
 	'''
 
-	def ITaskScheduler getEthalon() {
-		return new SequentialTaskScheduler => [
-			addInput(new TaskParameter("login", String))
-			addInput(new TaskParameter("password", String))
-			addOutput(new TaskParameter("success", Boolean))
+	def IBehaviourScheduler getEthalon() {
+		return new SequentialBehaviour => [
+			addInput(new BehaviourParameter("login", String))
+			addInput(new BehaviourParameter("password", String))
+			addOutput(new BehaviourParameter("success", Boolean))
 		]
 	}
 

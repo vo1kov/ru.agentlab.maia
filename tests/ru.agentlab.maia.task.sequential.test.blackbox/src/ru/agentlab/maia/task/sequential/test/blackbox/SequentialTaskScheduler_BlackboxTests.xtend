@@ -11,13 +11,13 @@ import org.jbehave.core.reporters.StoryReporterBuilder
 import org.jbehave.core.steps.InstanceStepsFactory
 import org.jbehave.core.steps.ParameterControls
 import org.junit.runner.RunWith
-import ru.agentlab.maia.task.sequential.SequentialTaskScheduler
 import ru.agentlab.maia.task.test.blackbox.AbstractTaskSchedulerAddSubtaskSteps
 import ru.agentlab.maia.task.test.blackbox.AbstractTaskSchedulerBaseSteps
 import ru.agentlab.maia.task.test.blackbox.AbstractTaskSchedulerClearSteps
 import ru.agentlab.maia.task.test.blackbox.AbstractTaskSchedulerExecuteSteps
 import ru.agentlab.maia.task.test.blackbox.AbstractTaskSchedulerRemoveSubtaskSteps
 import ru.agentlab.maia.task.test.blackbox.TaskSchedulerStorage
+import ru.agentlab.maia.behaviour.sequential.SequentialBehaviour
 
 @RunWith(JUnitReportingRunner)
 class SequentialTaskScheduler_BlackboxTests extends JUnitStories {
@@ -26,7 +26,7 @@ class SequentialTaskScheduler_BlackboxTests extends JUnitStories {
 		val storage = new TaskSchedulerStorage
 		return new InstanceStepsFactory(
 			configuration,
-			new AbstractTaskSchedulerBaseSteps(storage, [return new SequentialTaskScheduler]),
+			new AbstractTaskSchedulerBaseSteps(storage, [return new SequentialBehaviour]),
 			new AbstractTaskSchedulerAddSubtaskSteps(storage),
 			new AbstractTaskSchedulerRemoveSubtaskSteps(storage),
 			new AbstractTaskSchedulerClearSteps(storage),

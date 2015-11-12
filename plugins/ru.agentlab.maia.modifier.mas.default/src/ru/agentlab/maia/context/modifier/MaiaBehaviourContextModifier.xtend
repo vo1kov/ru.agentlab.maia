@@ -2,10 +2,10 @@ package ru.agentlab.maia.context.modifier
 
 import javax.annotation.PostConstruct
 import javax.inject.Inject
+import ru.agentlab.maia.behaviour.IBehaviour
+import ru.agentlab.maia.behaviour.sequential.SequentialBehaviour
 import ru.agentlab.maia.context.IContext
 import ru.agentlab.maia.context.IInjector
-import ru.agentlab.maia.task.ITask
-import ru.agentlab.maia.task.sequential.SequentialTaskScheduler
 
 class MaiaBehaviourContextModifier {
 
@@ -17,7 +17,7 @@ class MaiaBehaviourContextModifier {
 		context => [
 			putService(IContext.KEY_TYPE, "behaviour")
 			getService(IInjector) => [
-				deploy(SequentialTaskScheduler, ITask)
+				deploy(SequentialBehaviour, IBehaviour)
 			]
 		]
 	}

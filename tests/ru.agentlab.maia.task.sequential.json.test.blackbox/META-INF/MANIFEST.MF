@@ -10,9 +10,9 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib.macro,
  org.junit;bundle-version="4.12.0",
  org.hamcrest;bundle-version="1.1.0",
- ru.agentlab.maia.task.adapter.json;bundle-version="1.0.0",
+ ru.agentlab.maia.adapter.behaviour.json;bundle-version="1.0.0",
  ru.agentlab.maia.context.hashmap;bundle-version="1.0.0",
  ru.agentlab.maia.context;bundle-version="1.0.0",
- ru.agentlab.maia.task;bundle-version="1.0.0",
- ru.agentlab.maia.task.sequential;bundle-version="1.0.0"
+ ru.agentlab.maia.behaviour;bundle-version="1.0.0",
+ ru.agentlab.maia.behaviour.sequential;bundle-version="1.0.0"
 

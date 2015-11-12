@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MAIA Pattern-based Scheduler
+Bundle-SymbolicName: ru.agentlab.maia.behaviour.pattern
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: ru.agentlab.maia.behaviour.pattern
+Require-Bundle: com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ javax.inject;bundle-version="1.0.0",
+ ru.agentlab.maia.behaviour;bundle-version="1.0.0"
+Bundle-Vendor: http://www.agentlab.ru/
+

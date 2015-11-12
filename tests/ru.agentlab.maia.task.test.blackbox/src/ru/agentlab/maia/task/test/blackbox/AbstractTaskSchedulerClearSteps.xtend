@@ -2,13 +2,13 @@ package ru.agentlab.maia.task.test.blackbox
 
 import javax.inject.Provider
 import org.jbehave.core.annotations.When
-import ru.agentlab.maia.task.ITaskScheduler
+import ru.agentlab.maia.behaviour.IBehaviourScheduler
 
 class AbstractTaskSchedulerClearSteps {
 
-	val Provider<ITaskScheduler> provider
+	val Provider<IBehaviourScheduler> provider
 
-	new(Provider<ITaskScheduler> provider) {
+	new(Provider<IBehaviourScheduler> provider) {
 		this.provider = provider
 	}
 

@@ -8,7 +8,7 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- ru.agentlab.maia.task.pattern;bundle-version="1.0.0"
+ ru.agentlab.maia.behaviour.pattern;bundle-version="1.0.0"
 Export-Package: ru.agentlab.maia.protocol,
  ru.agentlab.maia.protocol.internal
 

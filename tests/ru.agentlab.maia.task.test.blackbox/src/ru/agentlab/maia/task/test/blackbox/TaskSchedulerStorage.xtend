@@ -1,17 +1,17 @@
 package ru.agentlab.maia.task.test.blackbox
 
 import javax.inject.Provider
-import ru.agentlab.maia.task.ITaskScheduler
+import ru.agentlab.maia.behaviour.IBehaviourScheduler
 
-class TaskSchedulerStorage implements Provider<ITaskScheduler> {
+class TaskSchedulerStorage implements Provider<IBehaviourScheduler> {
 
-	var ITaskScheduler scheduler
+	var IBehaviourScheduler scheduler
 
 	override get() {
 		return scheduler
 	}
 
-	def void set(ITaskScheduler scheduler) {
+	def void set(IBehaviourScheduler scheduler) {
 		this.scheduler = scheduler
 	}
 

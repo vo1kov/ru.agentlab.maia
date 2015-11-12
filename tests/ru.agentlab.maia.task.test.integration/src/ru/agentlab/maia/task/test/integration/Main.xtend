@@ -6,12 +6,12 @@ import java.util.Map
 import org.jbehave.core.annotations.Given
 import org.jbehave.core.annotations.Then
 import org.jbehave.core.annotations.When
-import ru.agentlab.maia.task.ITask
-import ru.agentlab.maia.task.ITaskScheduler
-import ru.agentlab.maia.task.TaskState
-import ru.agentlab.maia.task.parallel.ParallelTaskScheduler
-import ru.agentlab.maia.task.primitive.AnnotatedAction
-import ru.agentlab.maia.task.sequential.SequentialTaskScheduler
+import ru.agentlab.maia.behaviour.BehaviourState
+import ru.agentlab.maia.behaviour.IBehaviour
+import ru.agentlab.maia.behaviour.IBehaviourScheduler
+import ru.agentlab.maia.behaviour.parallel.ParallelBehaviour
+import ru.agentlab.maia.behaviour.primitive.AnnotatedAction
+import ru.agentlab.maia.behaviour.sequential.SequentialBehaviour
 import ru.agentlab.maia.task.test.integration.doubles.DummyAction
 
 import static org.hamcrest.Matchers.*
@@ -19,26 +19,26 @@ import static org.junit.Assert.*
 
 class Main {
 
-	val Map<String, ITask> tasks = new HashMap
+	val Map<String, IBehaviour> tasks = new HashMap
 
 	val Map<String, DummyAction> impls = new HashMap
 
 	@Given("a sequential schedulers $ids")
 	def void givenSequentialScheduler(List<String> ids) {
 		ids.forEach [
-			tasks.put(it, new SequentialTaskScheduler)
+			tasks.put(it, new SequentialBehaviour)
 		]
 	}
 
 	@Given("a parallel schedulers $ids")
 	def void givenParallelScheduler(List<String> ids) {
 		ids.forEach [
-			tasks.put(it, new ParallelTaskScheduler)
+			tasks.put(it, new ParallelBehaviour)
 		]
 	}
 
 	@Given("a primitive tasks $ids")
-	def void givenPrimitiveTask(List<String> ids) {
+	def void givenPrimitiveBehaviour(List<String> ids) {
 		ids.forEach [
 			val impl = new DummyAction
 			val task = new AnnotatedAction(impl)
@@ -48,15 +48,15 @@ class Main {
 	}
 
 	@Given("task $id have subtasks $ids")
-	def void givenTaskHaveSubtasks(String id, List<String> ids) {
-		val scheduler = tasks.get(id) as ITaskScheduler
+	def void givenBehaviourHaveSubtasks(String id, List<String> ids) {
+		val scheduler = tasks.get(id) as IBehaviourScheduler
 		ids.forEach [
-			scheduler.addSubtask(tasks.get(it))
+			scheduler.addChild(tasks.get(it))
 		]
 	}
 
 	@When("execute task $id by $times times")
-	def void whenExecuteTaskByTimes(String id, int times) {
+	def void whenExecuteBehaviourByTimes(String id, int times) {
 		val task = tasks.get(id)
 		for (i : 0 ..< times) {
 			task.execute
@@ -64,15 +64,15 @@ class Main {
 	}
 
 	@Then("task $execute have been executed")
-	def void thenTaskExecuted(String id) {
+	def void thenBehaviourExecuted(String id) {
 		if (id != null && !id.empty) {
 			assertThat(impls.get(id).count, equalTo(1))
 		}
 	}
 
 	@Then("task $id have $state state")
-	def void thenTaskHaveState(String id, String state) {
-		assertThat(tasks.get(id).state, equalTo(TaskState.valueOf(state)))
+	def void thenBehaviourHaveState(String id, String state) {
+		assertThat(tasks.get(id).state, equalTo(BehaviourState.valueOf(state)))
 	}
 
 }

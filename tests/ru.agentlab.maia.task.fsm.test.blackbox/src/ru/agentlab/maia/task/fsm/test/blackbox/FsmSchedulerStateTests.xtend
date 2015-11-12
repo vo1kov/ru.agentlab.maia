@@ -6,11 +6,11 @@ import org.junit.runner.RunWith
 import org.mockito.InjectMocks
 import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
-import ru.agentlab.maia.task.ITask
-import ru.agentlab.maia.task.fsm.FsmTaskScheduler
-import ru.agentlab.maia.task.fsm.IFsmTaskScheduler
+import ru.agentlab.maia.behaviour.IBehaviour
 
 import static org.mockito.Mockito.*
+import ru.agentlab.maia.behaviour.fsm.FsmBehaviour
+import ru.agentlab.maia.behaviour.fsm.IFsmBehaviour
 
 @RunWith(MockitoJUnitRunner)
 class FsmSchedulerStateTests {
@@ -21,7 +21,7 @@ class FsmSchedulerStateTests {
 //	@Mock
 //	IMaiaContextInjector injector
 	@Spy @InjectMocks
-	IFsmTaskScheduler scheduler = new FsmTaskScheduler
+	IFsmBehaviour scheduler = new FsmBehaviour
 
 	@Test
 	def void shouldBeUnknownWhenConstructed() {
@@ -45,10 +45,10 @@ class FsmSchedulerStateTests {
 
 	@Test @Ignore
 	def void shouldBeActiveWhenHaveTransitionChain() {
-		val child = mock(ITask)
+		val child = mock(IBehaviour)
 //		(scheduler as AbstractExecutionNode).init
 //		assertThat(scheduler.state, equalTo(ITask.STATE_READY))
-		scheduler.addSubtask(child)
+		scheduler.addChild(child)
 		scheduler.addDefaultTransition(null, child)
 		scheduler.addDefaultTransition(child, null)
 
@@ -57,10 +57,10 @@ class FsmSchedulerStateTests {
 
 	@Test @Ignore
 	def void shouldNotChangeStateWhenAddTransition() {
-		val child = mock(ITask)
+		val child = mock(IBehaviour)
 //		(scheduler as AbstractExecutionNode).init
 //		assertThat(scheduler.state, equalTo(ITask.STATE_READY))
-		scheduler.addSubtask(child)
+		scheduler.addChild(child)
 		scheduler.addDefaultTransition(null, child)
 
 //		assertThat(scheduler.state, equalTo(ITask.STATE_READY))
@@ -68,10 +68,10 @@ class FsmSchedulerStateTests {
 
 	@Test @Ignore
 	def void shouldNotIncreaseStateWhenAddChild() {
-		val child = mock(ITask)
+		val child = mock(IBehaviour)
 //		(scheduler as AbstractExecutionNode).init
 //		assertThat(scheduler.state, equalTo(ITask.STATE_READY))
-		scheduler.addSubtask(child)
+		scheduler.addChild(child)
 
 //		assertThat(scheduler.state, equalTo(ITask.STATE_READY))
 	}

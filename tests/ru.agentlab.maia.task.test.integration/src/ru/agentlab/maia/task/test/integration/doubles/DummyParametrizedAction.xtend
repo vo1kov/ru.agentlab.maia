@@ -1,9 +1,9 @@
 package ru.agentlab.maia.task.test.integration.doubles
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.task.annotation.Action
-import ru.agentlab.maia.task.annotation.Input
-import ru.agentlab.maia.task.annotation.Output
+import ru.agentlab.maia.behaviour.annotation.Action
+import ru.agentlab.maia.behaviour.annotation.Input
+import ru.agentlab.maia.behaviour.annotation.Output
 
 class DummyParametrizedAction {
 
