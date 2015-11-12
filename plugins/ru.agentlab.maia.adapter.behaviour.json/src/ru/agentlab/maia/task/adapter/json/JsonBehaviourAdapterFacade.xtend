@@ -12,7 +12,7 @@ import ru.agentlab.maia.behaviour.IBehaviourModifier
 import ru.agentlab.maia.behaviour.IBehaviourRegistry
 import ru.agentlab.maia.behaviour.BehaviourModifier
 
-class JsonTaskAdapter implements IAdapter<String, IBehaviour> {
+class JsonBehaviourAdapterFacade implements IAdapter<String, IBehaviour> {
 
 	val public static String JSON = "json"
 

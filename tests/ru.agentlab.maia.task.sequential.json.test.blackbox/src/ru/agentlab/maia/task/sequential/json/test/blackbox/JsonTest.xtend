@@ -2,10 +2,10 @@ package ru.agentlab.maia.task.sequential.json.test.blackbox
 
 import org.junit.Test
 import ru.agentlab.maia.behaviour.BehaviourRegistry
-import ru.agentlab.maia.task.adapter.json.JsonTaskAdapter
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
+import ru.agentlab.maia.task.adapter.json.JsonBehaviourAdapterFacade
 
 class JsonTest {
 
@@ -97,7 +97,7 @@ class JsonTest {
 
 	@Test
 	def void test() {
-		val adapter = new JsonTaskAdapter(new BehaviourRegistry)
+		val adapter = new JsonBehaviourAdapterFacade(new BehaviourRegistry)
 		val scheduler = adapter.adapt(json2)
 		assertThat(scheduler, notNullValue)
 		assertThat(scheduler.inputs, iterableWithSize(2))
