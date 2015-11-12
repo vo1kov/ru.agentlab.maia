@@ -9,6 +9,8 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  ru.agentlab.maia.task;bundle-version="1.0.0",
- ru.agentlab.maia.context;bundle-version="1.0.0"
-Export-Package: ru.agentlab.maia.task.adapter
+ ru.agentlab.maia.context;bundle-version="1.0.0",
+ ru.agentlab.maia.adapter;bundle-version="1.0.0"
+Export-Package: ru.agentlab.maia.task.adapter,
+ ru.agentlab.maia.task.issue
 

@@ -9,12 +9,12 @@ import ru.agentlab.maia.task.ITask
 import ru.agentlab.maia.task.ITaskModifier
 import ru.agentlab.maia.task.ITaskRegistry
 import ru.agentlab.maia.task.TaskModifier
-import ru.agentlab.maia.task.adapter.ITaskAdapter
+import ru.agentlab.maia.task.adapter.IAdapter
 import ru.agentlab.maia.task.adapter.json.internal.Activator
 
-class JsonTaskAdapter implements ITaskAdapter<String> {
-	
-	val public static String JSON = "json" 
+class JsonTaskAdapter implements IAdapter<String, ITask> {
+
+	val public static String JSON = "json"
 
 	var ITaskRegistry registry
 
@@ -26,10 +26,6 @@ class JsonTaskAdapter implements ITaskAdapter<String> {
 	override ITask adapt(String json) {
 		val conf = Configuration.defaultConfiguration.addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL)
 		val parsed = JsonPath.using(conf).parse(json).read("$") as Map<String, ?>
-		return adapt(parsed)
-	}
-
-	override ITask adapt(Map<String, ?> parsed) {
 		val uuid = parsed.get(TaskModifier.TASK_UUID) as String
 		val typeString = parsed.get(TaskModifier.TASK_TYPE) as String
 		var type = Class.forName(typeString) as Class<? extends ITask>
