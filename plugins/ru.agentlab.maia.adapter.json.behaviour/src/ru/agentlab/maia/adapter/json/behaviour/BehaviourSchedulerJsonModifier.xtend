@@ -2,9 +2,11 @@ package ru.agentlab.maia.adapter.json.behaviour
 
 import java.util.List
 import java.util.Map
+import ru.agentlab.maia.adapter.json.JsonAdapter
 import ru.agentlab.maia.behaviour.BehaviourScheduler
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.behaviour.IBehaviourScheduler
+import ru.agentlab.maia.task.adapter.json.internal.Activator
 
 class BehaviourSchedulerJsonModifier extends BehaviourJsonModifier {
 
@@ -26,14 +28,17 @@ class BehaviourSchedulerJsonModifier extends BehaviourJsonModifier {
 	def protected void modifySubtasks(IBehaviourScheduler scheduler, Map<String, ?> internal) {
 		val subtasks = internal.get(KEY_SUBTASKS) as List<Map<String, ?>>
 		subtasks?.forEach [
-			val type = it.get(TASK_TYPE) as String
-			val modifier = JsonTaskAdapter.getModifier(LANGUAGE, type)
-			modifier.modify()
-			JsonTaskAdapter.callModifier()
-			val subtask = super.adapt(it)
-			scheduler.addChild(subtask)
-			val uuid = it.get("uuid") as String
-			subtasksCache.put(uuid, subtask)
+			val json = it.toString
+			val language = JsonAdapter.LANGUAGE
+			val adapter = Activator.getAdapter(language)
+			if (adapter != null) {
+				val child = adapter.adapt(json)
+				scheduler.addChild(child)
+				val uuid = it.get("uuid") as String
+				subtasksCache.put(uuid, child)
+			} else {
+				throw new RuntimeException('''Adapter for [«language»] is not registered''')
+			}
 		]
 	}
 

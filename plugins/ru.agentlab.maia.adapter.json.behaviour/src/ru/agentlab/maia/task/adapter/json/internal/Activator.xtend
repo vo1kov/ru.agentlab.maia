@@ -10,6 +10,7 @@ import ru.agentlab.maia.adapter.json.JsonAdapter
 import ru.agentlab.maia.adapter.json.behaviour.BehaviourJsonAdapter
 import ru.agentlab.maia.adapter.json.behaviour.ParallelBehaviourJsonModifier
 import ru.agentlab.maia.adapter.json.behaviour.SequentialBehaviourJsonModifier
+import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.behaviour.IBehaviourRegistry
 
 class Activator implements BundleActivator {
@@ -24,6 +25,18 @@ class Activator implements BundleActivator {
 		context.registerSequentialBehaviourJsonModifier
 		context.registerParallelBehaviourJsonModifier
 	}
+	
+	def static IAdapter<String, IBehaviour> getAdapter(String language) {
+		val refs = Activator.context.getServiceReferences(
+			IAdapter,
+			'''(«IAdapter.KEY_LANGUAGE»=«language»)'''
+		)
+		if (!refs.empty) {
+			return Activator.context.getService(refs.get(0))
+		} else {
+			return null
+		}
+	}
 
 	def void registerBehaviourJsonAdapter(BundleContext context) {
 		val reference = context.getServiceReference(IBehaviourRegistry)
@@ -31,7 +44,7 @@ class Activator implements BundleActivator {
 			val registry = context.getService(reference)
 			if (registry != null) {
 				val properties = new Hashtable<String, Object> => [
-					put(IAdapter.KEY_LANGUAGE, JsonAdapter.JSON_LANGUAGE)
+					put(IAdapter.KEY_LANGUAGE, JsonAdapter.LANGUAGE)
 				]
 				context.registerService(IAdapter, new BehaviourJsonAdapter(registry.map), properties)
 			}
@@ -44,7 +57,7 @@ class Activator implements BundleActivator {
 			val registry = context.getService(reference)
 			if (registry != null) {
 				val properties = new Hashtable<String, Object> => [
-					put(IAdapter.KEY_LANGUAGE, JsonAdapter.JSON_LANGUAGE)
+					put(IAdapter.KEY_LANGUAGE, JsonAdapter.LANGUAGE)
 					put(IModifier.KEY_TYPE, "ru.agentlab.maia.behaviour.sequential.SequentialBehaviour")
 				]
 				context.registerService(IModifier, new SequentialBehaviourJsonModifier, properties)
@@ -58,7 +71,7 @@ class Activator implements BundleActivator {
 			val registry = context.getService(reference)
 			if (registry != null) {
 				val properties = new Hashtable<String, Object> => [
-					put(IAdapter.KEY_LANGUAGE, JsonAdapter.JSON_LANGUAGE)
+					put(IAdapter.KEY_LANGUAGE, JsonAdapter.LANGUAGE)
 					put(IModifier.KEY_TYPE, "ru.agentlab.maia.behaviour.parallel.ParallelBehaviour")
 				]
 				context.registerService(IModifier, new ParallelBehaviourJsonModifier, properties)

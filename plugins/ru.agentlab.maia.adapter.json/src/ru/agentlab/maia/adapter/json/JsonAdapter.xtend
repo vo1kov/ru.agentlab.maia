@@ -13,7 +13,7 @@ abstract class JsonAdapter<T> extends Adapter<String, T> {
 
 	val public static String KEY_TYPE = "type"
 
-	val public static String JSON_LANGUAGE = "json"
+	val public static String LANGUAGE = "json"
 	
 	val public static String ROOT = "$"
 
@@ -30,7 +30,7 @@ abstract class JsonAdapter<T> extends Adapter<String, T> {
 		val typeString = parsed.get(KEY_TYPE) as String
 		var type = Class.forName(typeString) as Class<? extends T>
 		var result = getTarget(uuid, type)
-		val modifier = getModifier(JSON_LANGUAGE, type.name)
+		val modifier = getModifier(ru.agentlab.maia.adapter.json.JsonAdapter.LANGUAGE, type.name)
 		if (modifier != null) {
 			modifier.modify(result, parsed)
 		}
