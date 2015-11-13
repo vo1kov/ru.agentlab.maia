@@ -2,21 +2,26 @@ package ru.agentlab.maia.behaviour
 
 import java.util.Map
 import java.util.TreeMap
+import java.util.UUID
 
 class BehaviourRegistry implements IBehaviourRegistry {
 
-	val Map<String, IBehaviour> tasks = new TreeMap
+	val Map<UUID, IBehaviour> behaviours = new TreeMap
 
-	override void put(String uuid, IBehaviour task) {
-		tasks.put(uuid, task)
+	override IBehaviour put(UUID uuid, IBehaviour task) {
+		behaviours.put(uuid, task)
 	}
 
-	override IBehaviour get(String uuid) {
-		return tasks.get(uuid)
+	override IBehaviour get(UUID uuid) {
+		return behaviours.get(uuid)
 	}
-	
-	override IBehaviour remove(String uuid){
-		return tasks.remove(uuid)
+
+	override IBehaviour remove(UUID uuid) {
+		return behaviours.remove(uuid)
+	}
+
+	override getMap() {
+		return behaviours
 	}
 
 }
