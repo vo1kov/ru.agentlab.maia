@@ -1,10 +1,9 @@
-package ru.agentlab.maia.adapter.json.behaviour
+package ru.agentlab.maia.adapter.behaviour.json
 
 import java.util.HashMap
 import java.util.List
 import java.util.Map
 import ru.agentlab.maia.adapter.IModifier
-import ru.agentlab.maia.adapter.json.JsonAdapter
 import ru.agentlab.maia.behaviour.BehaviourException
 import ru.agentlab.maia.behaviour.BehaviourParameter
 import ru.agentlab.maia.behaviour.IBehaviour
@@ -45,7 +44,7 @@ class BehaviourJsonModifier implements IModifier<IBehaviour> {
 	def protected void modifyExceptions(IBehaviour task, Map<String, ?> parsed) {
 		val exceptions = parsed.get(KEY_EXCEPTIONS) as List<Map<String, String>>
 		exceptions?.forEach [
-			val uuid = get(JsonAdapter.KEY_UUID)
+			val uuid = get(BehaviourJsonAdapter.KEY_UUID)
 			val label = get(KEY_LABEL)
 			var exception = task.exceptions?.findFirst[it.name == label]
 			if (exception == null) {
@@ -59,8 +58,8 @@ class BehaviourJsonModifier implements IModifier<IBehaviour> {
 	def protected void modifyInputs(IBehaviour task, Map<String, ?> parsed) {
 		val inputs = parsed.get(KEY_INPUTS) as List<Map<String, String>>
 		inputs?.forEach [
-			val uuid = get(JsonAdapter.KEY_UUID)
-			val type = get(JsonAdapter.KEY_TYPE)
+			val uuid = get(BehaviourJsonAdapter.KEY_UUID)
+			val type = get(BehaviourJsonAdapter.KEY_TYPE)
 			val label = get(KEY_LABEL)
 			val javaType = Class.forName(type)
 			var input = task.inputs?.findFirst[it.name == label && it.type == javaType]
@@ -75,8 +74,8 @@ class BehaviourJsonModifier implements IModifier<IBehaviour> {
 	def protected void modifyOutputs(IBehaviour task, Map<String, ?> parsed) {
 		val outputs = parsed.get(KEY_OUTPUTS) as List<Map<String, String>>
 		outputs?.forEach [
-			val uuid = get(JsonAdapter.KEY_UUID)
-			val type = get(JsonAdapter.KEY_TYPE)
+			val uuid = get(BehaviourJsonAdapter.KEY_UUID)
+			val type = get(BehaviourJsonAdapter.KEY_TYPE)
 			val label = get(KEY_LABEL)
 			val javaType = Class.forName(type)
 			var output = task.outputs?.findFirst[it.name == label && it.type == javaType]

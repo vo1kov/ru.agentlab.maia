@@ -1,12 +1,11 @@
-package ru.agentlab.maia.adapter.json.behaviour
+package ru.agentlab.maia.adapter.behaviour.json
 
 import java.util.List
 import java.util.Map
-import ru.agentlab.maia.adapter.json.JsonAdapter
+import ru.agentlab.maia.adapter.behaviour.json.internal.Activator
 import ru.agentlab.maia.behaviour.BehaviourScheduler
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.behaviour.IBehaviourScheduler
-import ru.agentlab.maia.task.adapter.json.internal.Activator
 
 class BehaviourSchedulerJsonModifier extends BehaviourJsonModifier {
 
@@ -29,7 +28,7 @@ class BehaviourSchedulerJsonModifier extends BehaviourJsonModifier {
 		val subtasks = internal.get(KEY_SUBTASKS) as List<Map<String, ?>>
 		subtasks?.forEach [
 			val json = it.toString
-			val language = JsonAdapter.LANGUAGE
+			val language = BehaviourJsonAdapter.LANGUAGE
 			val adapter = Activator.getAdapter(language)
 			if (adapter != null) {
 				val child = adapter.adapt(json)
@@ -47,7 +46,7 @@ class BehaviourSchedulerJsonModifier extends BehaviourJsonModifier {
 		links?.forEach [ link |
 			for (uuid : link) {
 				if (!parametersCache.containsKey(uuid)) {
-					throw new IllegalStateException("Loaded task have no any parameter with UUID: " + uuid)
+					throw new IllegalStateException('''Loaded task have no any parameter with UUID: [«uuid»]''')
 				}
 //				val parameter = parametersCache.get(uuid)
 //				parameter.link()
