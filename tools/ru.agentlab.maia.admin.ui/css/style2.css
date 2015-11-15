@@ -1,7 +1,9 @@
-body {
+﻿body {
 	background-color: #ddd;
 }
-
+.ui.segment {
+	background-color: #ddd;
+}
 .ui.footer.segment {
 	margin-top : 5em;
 }
