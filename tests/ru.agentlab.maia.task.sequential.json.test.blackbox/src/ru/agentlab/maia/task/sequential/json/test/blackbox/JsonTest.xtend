@@ -5,43 +5,43 @@ import ru.agentlab.maia.behaviour.BehaviourRegistry
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
-import ru.agentlab.maia.task.adapter.json.JsonBehaviourAdapterFacade
+import ru.agentlab.maia.adapter.behaviour.json.BehaviourJsonAdapter
 
 class JsonTest {
 
-	val json = '''
-		{
-			"uuid" : "64a2672e-4c90-4001-be82-d33860eec2be",
-			"label" : "Zipato Authenticate Protocol",
-			"type" : "ru.agentlab.maia.task.sequential.SequentialTaskScheduler",
-			"exceptions" : [
-				{ 
-					"uuid" : "21bc06af-34ca-47d6-b1e9-745ea7182f56",
-					"label" : "NullPointerException", 
-					"type" : "java.lang.NullPointerException" 
-				}
-			],
-			"inputs" : [
-				{ 
-					"uuid" : "fb39c4f3-d68a-4fbc-9145-6de0f6c899ba",
-					"label" : "login", 
-					"type" : "java.lang.String" 
-				},
-				{ 
-					"uuid" : "c3b52306-3046-4a8f-8ac1-19a4032ac14b",
-					"label" : "password", 
-					"type" : "java.lang.String" 
-				}
-			],
-			"outputs" : [
-				{ 
-					"uuid" : "b71e5d2d-61ea-4751-bfd2-2ee59021dd54",
-					"label" : "success", 
-					"type" : "java.lang.Boolean" 
-				}
-			]
-		}
-	'''
+//	val json = '''
+//		{
+//			"uuid" : "64a2672e-4c90-4001-be82-d33860eec2be",
+//			"label" : "Zipato Authenticate Protocol",
+//			"type" : "ru.agentlab.maia.task.sequential.SequentialTaskScheduler",
+//			"exceptions" : [
+//				{ 
+//					"uuid" : "21bc06af-34ca-47d6-b1e9-745ea7182f56",
+//					"label" : "NullPointerException", 
+//					"type" : "java.lang.NullPointerException" 
+//				}
+//			],
+//			"inputs" : [
+//				{ 
+//					"uuid" : "fb39c4f3-d68a-4fbc-9145-6de0f6c899ba",
+//					"label" : "login", 
+//					"type" : "java.lang.String" 
+//				},
+//				{ 
+//					"uuid" : "c3b52306-3046-4a8f-8ac1-19a4032ac14b",
+//					"label" : "password", 
+//					"type" : "java.lang.String" 
+//				}
+//			],
+//			"outputs" : [
+//				{ 
+//					"uuid" : "b71e5d2d-61ea-4751-bfd2-2ee59021dd54",
+//					"label" : "success", 
+//					"type" : "java.lang.Boolean" 
+//				}
+//			]
+//		}
+//	'''
 
 	val json2 = '''
 		{
@@ -97,7 +97,7 @@ class JsonTest {
 
 	@Test
 	def void test() {
-		val adapter = new JsonBehaviourAdapterFacade(new BehaviourRegistry)
+		val adapter = new BehaviourJsonAdapter((new BehaviourRegistry).map)
 		val scheduler = adapter.adapt(json2)
 		assertThat(scheduler, notNullValue)
 		assertThat(scheduler.inputs, iterableWithSize(2))
