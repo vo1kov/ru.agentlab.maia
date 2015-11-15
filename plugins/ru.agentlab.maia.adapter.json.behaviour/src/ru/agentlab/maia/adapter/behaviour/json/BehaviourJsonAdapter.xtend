@@ -14,7 +14,7 @@ class BehaviourJsonAdapter extends Adapter<String, IBehaviour> {
 
 	val public static String KEY_TYPE = "type"
 
-	val public static String LANGUAGE = "json"
+	val public static String LANGUAGE = "behaviour-json"
 
 	val public static String ROOT = "$"
 
