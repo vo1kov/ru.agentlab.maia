@@ -1,0 +1,40 @@
+{
+	"uuid" : "2662a202-136f-4d45-a13f-25fedc0814e6",
+	"label" : "FIPA Request",
+	"initiator" : {
+		"uuid" : "beba8402-6d10-4024-89d0-6d41539904b0",
+		"label" : "Initiator"
+	},
+	"participants" : [
+		{
+			"uuid" : "58eb8cda-c457-4183-8bf6-1edba78fb842",
+			"label" : "Participant"
+		}
+	],
+	"interactions" : [
+		{
+			"source" : "beba8402-6d10-4024-89d0-6d41539904b0",
+			"target" : "58eb8cda-c457-4183-8bf6-1edba78fb842",
+			"performative" : "request"
+		},
+		{
+			"type" : "alternative",
+			"childs" : [
+				{"performative" : "agree"},
+				{"performative" : "refuse"}
+			],
+			"source" : "58eb8cda-c457-4183-8bf6-1edba78fb842",
+			"target" : "beba8402-6d10-4024-89d0-6d41539904b0"
+		},
+		{
+			"type" : "alternative",
+			"childs" : [
+				{"performative" : "failure"},
+				{"performative" : "inform-done"},
+				{"performative" : "inform-result"}
+			],
+			"source" : "58eb8cda-c457-4183-8bf6-1edba78fb842",
+			"target" : "beba8402-6d10-4024-89d0-6d41539904b0"
+		}
+	]
+}
