@@ -59,7 +59,7 @@ var item = group.selectAll("a.item")
 /***********************************
  *		SVG
  ***********************************/
-var svg = d3.select(".basic.segment")
+var svg = d3.select("#editor")
 	.append("svg")
 		.attr("width", width)
 		.attr("height", height);
@@ -175,7 +175,7 @@ var participantLine = participant.append("line")
 	.attr("y2", participantHeight + lineH)
 	.style("stroke-width", 2)
 	.style("stroke", "#2185d0")
-	//.style("stroke-dasharray", "10,5")
+	.style("stroke-dasharray", "10,5")
 	.style("fill", "none");
 
 /********************
