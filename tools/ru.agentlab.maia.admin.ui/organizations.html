@@ -22,7 +22,7 @@
 	
 		<p class="header item">MAIA Admin Console</p>
 		
-		<div class="ui simple dropdown item">
+		<div class="ui dropdown item">
 			<i class="cloud icon"></i>
 				Cluster
 			<i class="dropdown icon"></i>
@@ -34,7 +34,7 @@
 			</div>
 		</div>
 		
-		<div class="ui simple dropdown item">
+		<div class="ui dropdown item">
 			<i class="windows icon"></i>
 				OS
 			<i class="dropdown icon"></i>
@@ -44,7 +44,7 @@
 			</div>
 		</div>
 		
-		<div class="ui simple dropdown item">
+		<div class="ui dropdown item">
 			<i class="disk outline icon"></i>
 				JVM
 			<i class="dropdown icon"></i>
@@ -54,7 +54,7 @@
 			</div>
 		</div>
 		
-		<div class="ui simple dropdown item">
+		<div class="ui dropdown item">
 			<i class="plug icon"></i>
 				OSGI
 			<i class="dropdown icon"></i>
@@ -65,22 +65,17 @@
 		</div>
 <!-- 		<a class="red active item" href="tasks.html"><i class="sitemap icon"></i>Tasks</a> -->
 		
-		<div class="ui simple dropdown item">
+		<div class="ui dropdown item">
 			<i class="laptop icon"></i>
 				MAIA
 			<i class="dropdown icon"></i>
 			<div class="menu">
 				<a class="item" href="contexts.html"><i class="grid layout icon"></i>Containers</a>
 				<a class="item" href="tasks.html"><i class="sitemap icon"></i>Tasks</a>
-				<a class="item" href="organizations.html"><i class="users icon"></i>Organizations</a>
+				<a class="active item" href="organizations.html"><i class="users icon"></i>Organizations</a>
 				<a class="item" href="protocols.html"><i class="comments icon"></i>Protocols</a>
 			</div>
 		</div>
-		
-		
-		<a class="item"><i class="file text outline icon"></i></a>
-		<a class="item"><i class="line chart icon"></i></a>
-		<a class="item"><i class="download icon"></i></a>
 		 
 		  <div class="right menu">
 			 
@@ -128,8 +123,8 @@
 					<div class="active section">Organizations</div>
 				</div>
 
-				<h2 class="ui green header">
-					<i class="circular inverted green users icon"></i>
+				<h2 class="ui header">
+					<i class="circular inverted blue users icon"></i>
 					<div class="content">
 						Organization Library
 						<div class="sub header">
@@ -137,21 +132,9 @@
 						</div>
 					</div>
 				</h2>
-
-
-				<table
-					class="ui compact very basic selectable celled small sortable table">
-					<thead>
-						<tr>
-							<th class="four wide">Label</th>
-							<th>Version</th>
-							<!-- 						<th>Hub</th> -->
-							<th>Description</th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
+				
+				<div class="ui divided items">
+		    	</div>
 
 
 			</div>
@@ -211,24 +194,15 @@
 					description : "The FIPA Contract Net Interaction Protocol (IP) is a minor modification of the original contract net IP pattern[1] in that it adds rejection and confirmation communicative acts. In the contract net IP, one agent (the Initiator) takes the role of manager which wishes to have some task performed by one or more other agents (the Participants) and further wishes to optimise a function that characterizes the task. This characteristic is commonly expressed as the price, in some domain specific way, but could also be soonest time to completion, fair distribution of tasks, etc. For a given task, any number of the Participants may respond with a proposal; the rest must refuse. Negotiations then continue with the Participants that proposed."
 				} ]
 
-		var table = d3.selectAll("table").select("tbody").selectAll("tr").data(
-				protocols).enter();
+		var item = d3.select(".ui.items").selectAll("div").data(protocols).enter().append("div").classed("item", true);
+//item.append("i").classed("large comments top aligned blue icon", true)
+var content = item.append("div").classed("content", true)
+content.append("a").classed("header", true).text(function(d){return d.label + " ";});
+content.append("div").classed("meta", true).text(function(d){return "Version: " + d.version;});
+content.append("div").classed("description", true).text(function(d){return d.description;});
+var extra = content.append("div").classed("extra", true).selectAll("div").data(function(d){return d.tags;}).enter();
+extra.append("div").classed("ui label", true).text(function(d){return d;});
 
-		var row = table.append("tr");
-
-		row.append("td").append("a").attr("href", "#").text(function(d) {
-			return d.label;
-		});
-		row.append("td").text(function(d) {
-			return d.version;
-		});
-		// row.append("td")//.append("a").attr("href", "#")
-		// 	.text(function(d){return d.provider;});
-		row.append("td").text(function(d) {
-			return "";
-		});
-		// row.append("td")
-		// 	.text(function(d){return d.id;});
 	</script>
 
 

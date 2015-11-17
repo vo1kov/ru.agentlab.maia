@@ -18,35 +18,64 @@
 </head>
 
 <body>	
-	<div class="ui top attached  inverted   menu">
-		<p class="header item">MAIA</p>
-		<div class="ui dropdown item">
-			<i class="laptop icon"></i>http://localhost:9091/<i class="dropdown icon"></i>
-			<div class="menu">
-			  <a class="item"><i class="desktop icon"></i>http://10.106.39.175:9091/</a>
-			  <a class="item"><i class="tablet icon"></i>http://10.106.39.172:9091/</a>
-			  <div class="divider"></div>
-			  <a class="item">Connect...</a>
-			</div>
-		  </div>
-		<a class="item" href="bundles.html"><i class="plug icon"></i>Bundles</a>
-		<a class="item" href="threads.html"><i class="tasks icon"></i>Threads</a>
-		<a class="item" href="contexts.html"><i class="grid layout icon"></i>Contexts</a>
-		<a class="red active item" href="tasks.html"><i class="sitemap icon"></i>Tasks</a>
+	<div class="ui top attached inverted menu">
+	
+		<p class="header item">MAIA Admin Console</p>
 		
 		<div class="ui dropdown item">
-			<i class="laptop icon"></i>Protocols<i class="dropdown icon"></i>
+			<i class="cloud icon"></i>
+				Cluster
+			<i class="dropdown icon"></i>
 			<div class="menu">
+				<a class="item"><i class="desktop icon"></i>http://10.106.39.175:9091/</a>
+				<a class="item"><i class="tablet icon"></i>http://10.106.39.172:9091/</a>
+				<div class="divider"></div>
+				<a class="item">Connect...</a>
+			</div>
+		</div>
+		
+		<div class="ui dropdown item">
+			<i class="windows icon"></i>
+				OS
+			<i class="dropdown icon"></i>
+			<div class="menu">
+				<a class="item"><i class="line chart icon"></i>CPU Utilization</a>
+				<a class="item"><i class="line chart icon"></i>Memory Utilization</a>
+			</div>
+		</div>
+		
+		<div class="ui dropdown item">
+			<i class="disk outline icon"></i>
+				JVM
+			<i class="dropdown icon"></i>
+			<div class="menu">
+				<a class="item" href="threads.html"><i class="tasks icon"></i>Threads</a>
+				<a class="item" href="bundles.html"><i class="users icon"></i>Services</a>
+			</div>
+		</div>
+		
+		<div class="ui dropdown item">
+			<i class="plug icon"></i>
+				OSGI
+			<i class="dropdown icon"></i>
+			<div class="menu">
+				<a class="item" href="bundles.html"><i class="sitemap icon"></i>Bundles</a>
+				<a class="item" href="bundles.html"><i class="users icon"></i>Services</a>
+			</div>
+		</div>
+<!-- 		<a class="red active item" href="tasks.html"><i class="sitemap icon"></i>Tasks</a> -->
+		
+		<div class="ui dropdown item">
+			<i class="laptop icon"></i>
+				MAIA
+			<i class="dropdown icon"></i>
+			<div class="menu">
+				<a class="item" href="contexts.html"><i class="grid layout icon"></i>Containers</a>
 				<a class="item" href="tasks.html"><i class="sitemap icon"></i>Tasks</a>
-				<a class="item" href="protocol.html"><i class="sitemap icon"></i>Organizations</a>
-				<a class="item" href="protocol.html"><i class="retweet icon"></i>Protocols</a>
+				<a class="active item" href="organizations.html"><i class="users icon"></i>Organizations</a>
+				<a class="item" href="protocols.html"><i class="comments icon"></i>Protocols</a>
 			</div>
-		  </div>
-		
-		
-		<a class="item"><i class="file text outline icon"></i></a>
-		<a class="item"><i class="line chart icon"></i></a>
-		<a class="item"><i class="download icon"></i></a>
+		</div>
 		 
 		  <div class="right menu">
 			 
@@ -63,7 +92,7 @@
 					<div class="item">
 					  <i class="dropdown icon"></i>
 					  <span class="text">Upload Settings</span>
-					  <div class="menu">
+					  <div class="left vertical menu">
 						<div class="item">
 						  <i class="check icon"></i>
 						  Convert Uploaded Files to PDF
@@ -83,135 +112,37 @@
 		  </div>
 		
 	</div>
-<div class="ui bottom attached segment ">
-  <div class="ui visible left vertical inverted sidebar accordion menu">
-  	<div class="header item">
-  		Interaction Protocols
-  	</div>
-	<a class="active title">
-      <i class="dropdown icon"></i>
-      FIPA
-    </a>
-  	<div class="active content">
-  		<div class="menu">
-	  		<a class="item">
-				FIPA Request
-		    </a>
-	  		<a class="item">
-		     	FIPA Query
-		    </a>
-	  		<a class="item">
-		     	FIPA Request When
-		    </a>
-	  		<a class="item">
-		     	FIPA Contract Net
-		    </a>
-	  		<a class="item">
-		     	FIPA Iterated Contract Net
-		    </a>
-	  		<a class="item">
-				FIPA English Auction
-		    </a>
-	  		<a class="active item">
-				FIPA Dutch Auction
-		    </a>
-	  		<a class="item">
-				FIPA Brokering
-		    </a>
-	  		<a class="item">
-				FIPA Recruiting
-		    </a>
-	  		<a class="item">
-				FIPA Subscribe
-		    </a>
-	  		<a class="item">
-				FIPA Propose
-		    </a>
-  		</div>
-  	</div>
-  	
-  	<a class="title">
-      <i class="dropdown icon"></i>
-      Custom
-    </a>
-  	<div class="content">
-  		<div class="menu">
-	  		<a class="item">
-				FIPA Request
-		    </a>
-	  		<a class="item">
-		     	FIPA Query
-		    </a>
-	  		<a class="item">
-		     	FIPA Request When
-		    </a>
-	  		<a class="item">
-		     	FIPA Contract Net
-		    </a>
-	  		<a class="item">
-		     	FIPA Iterated Contract Net
-		    </a>
-	  		<a class="item">
-				FIPA English Auction
-		    </a>
-	  		<a class=" item">
-				FIPA Dutch Auction
-		    </a>
-	  		<a class="item">
-				FIPA Brokering
-		    </a>
-	  		<a class="item">
-				FIPA Recruiting
-		    </a>
-	  		<a class="item">
-				FIPA Subscribe
-		    </a>
-	  		<a class="item">
-				FIPA Propose
-		    </a>
-	  		<a class="item">
-				FIPA English Auction
-		    </a>
-	  		<a class=" item">
-				FIPA Dutch Auction
-		    </a>
-	  		<a class="item">
-				FIPA Brokering
-		    </a>
-	  		<a class="item">
-				FIPA Recruiting
-		    </a>
-	  		<a class="item">
-				FIPA Subscribe
-		    </a>
-	  		<a class="item">
-				FIPA Propose
-		    </a>
-  		</div>
-  	</div>
-  </div>
-  <div class="pusher">
-  	
-    <div class="ui basic segment">
-    	<h2 class="ui header">
-		  <i class="retweet icon"></i>
-		  <div class="content">
-		    Account Settings
-		    <div class="sub header">Manage your preferences</div>
-		  </div>
-		</h2>
-		<div class="ui breadcrumb">
-			<a class="section">MAIA</a>
-			<div class="divider"> / </div>
-			<a class="section" href="protocol.html">Protocols</a>
-			<div class="divider"> / </div>
-			<div class="active section">FIPA Dutch Auction</div>
+	
+	
+	<div class="ui container">
+		<div class="ui vertical segment">
+			<div class="ui text container">
+
+				<div class="ui breadcrumb">
+					<a class="section">MAIA</a>
+					<div class="divider">/</div>
+					<a class="section" href="protocols.html">Protocols</a>
+					<div class="divider">/</div>
+					<div class="active section">FIPA sdfsdf Interaction Protocol</div>
+				</div>
+
+				<h2 class="ui header">
+					<i class="circular inverted blue users icon"></i>
+					<div class="content">
+						FIPA sdfsdf Interaction Protocol
+						<div class="sub header">
+							Organizations available on this	machine
+						</div>
+					</div>
+				</h2>
+				
+				<div class="ui basic segment" id="editor">
+		    	</div>
+
+
+			</div>
 		</div>
-    </div>
-    <div class="ui basic segment" id="editor">
-    </div>
-  </div>
-</div>
+	</div>
 
 
 	
