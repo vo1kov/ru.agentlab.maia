@@ -18,30 +18,64 @@
 </head>
 
 <body>	
-	<div class="ui top attached  inverted   menu">
-		<p class="header item">MAIA</p>
-		<div class="ui dropdown item">
-			<i class="laptop icon"></i>http://localhost:9091/<i class="dropdown icon"></i>
-			<div class="menu">
-			  <a class="item"><i class="desktop icon"></i>http://10.106.39.175:9091/</a>
-			  <a class="item"><i class="tablet icon"></i>http://10.106.39.172:9091/</a>
-			  <div class="divider"></div>
-			  <a class="item">Connect...</a>
-			</div>
-		  </div>
-		<a class="item" href="bundles.html"><i class="plug icon"></i>Bundles</a>
-		<a class="item" href="threads.html"><i class="tasks icon"></i>Threads</a>
-		<a class="item" href="contexts.html"><i class="grid layout icon"></i>Contexts</a>
-		<a class="red active item" href="tasks.html"><i class="sitemap icon"></i>Tasks</a>
+	<div class="ui top attached inverted menu">
+	
+		<p class="header item">MAIA Admin Console</p>
 		
-		<div class="ui dropdown item">
-			<i class="laptop icon"></i>Protocols<i class="dropdown icon"></i>
+		<div class="ui simple dropdown item">
+			<i class="cloud icon"></i>
+				Cluster
+			<i class="dropdown icon"></i>
 			<div class="menu">
-				<a class="item" href="tasks.html"><i class="sitemap icon"></i>Tasks</a>
-				<a class="item" href="protocol.html"><i class="sitemap icon"></i>Organizations</a>
-				<a class="item" href="protocol.html"><i class="retweet icon"></i>Protocols</a>
+				<a class="item"><i class="desktop icon"></i>http://10.106.39.175:9091/</a>
+				<a class="item"><i class="tablet icon"></i>http://10.106.39.172:9091/</a>
+				<div class="divider"></div>
+				<a class="item">Connect...</a>
 			</div>
-		  </div>
+		</div>
+		
+		<div class="ui simple dropdown item">
+			<i class="windows icon"></i>
+				OS
+			<i class="dropdown icon"></i>
+			<div class="menu">
+				<a class="item"><i class="line chart icon"></i>CPU Utilization</a>
+				<a class="item"><i class="line chart icon"></i>Memory Utilization</a>
+			</div>
+		</div>
+		
+		<div class="ui simple dropdown item">
+			<i class="disk outline icon"></i>
+				JVM
+			<i class="dropdown icon"></i>
+			<div class="menu">
+				<a class="item" href="threads.html"><i class="tasks icon"></i>Threads</a>
+				<a class="item" href="bundles.html"><i class="users icon"></i>Services</a>
+			</div>
+		</div>
+		
+		<div class="ui simple dropdown item">
+			<i class="plug icon"></i>
+				OSGI
+			<i class="dropdown icon"></i>
+			<div class="menu">
+				<a class="item" href="bundles.html"><i class="sitemap icon"></i>Bundles</a>
+				<a class="item" href="bundles.html"><i class="users icon"></i>Services</a>
+			</div>
+		</div>
+<!-- 		<a class="red active item" href="tasks.html"><i class="sitemap icon"></i>Tasks</a> -->
+		
+		<div class="ui simple dropdown item">
+			<i class="laptop icon"></i>
+				MAIA
+			<i class="dropdown icon"></i>
+			<div class="menu">
+				<a class="item" href="contexts.html"><i class="grid layout icon"></i>Containers</a>
+				<a class="item" href="tasks.html"><i class="sitemap icon"></i>Tasks</a>
+				<a class="item" href="organizations.html"><i class="users icon"></i>Organizations</a>
+				<a class="item" href="protocols.html"><i class="comments icon"></i>Protocols</a>
+			</div>
+		</div>
 		
 		
 		<a class="item"><i class="file text outline icon"></i></a>
@@ -63,7 +97,7 @@
 					<div class="item">
 					  <i class="dropdown icon"></i>
 					  <span class="text">Upload Settings</span>
-					  <div class="menu">
+					  <div class="left vertical menu">
 						<div class="item">
 						  <i class="check icon"></i>
 						  Convert Uploaded Files to PDF
@@ -86,7 +120,7 @@
 
 <div class="ui container">
 	<div class="ui vertical segment">
-		<div class="ui  container">
+		<div class="ui text container">
 
 			<div class="ui breadcrumb">
 				<a class="section">MAIA</a>
@@ -94,8 +128,8 @@
 				<div class="active section">Protocols</div>
 			</div>	
 		
-			<h2 class="ui header">
-<!-- 				<i class="retweet icon"></i> -->
+			<h2 class="ui red header">
+				<i class="circular inverted red comments icon"></i>
 				<div class="content">
 					Protocol Library
 					<div class="sub header">
@@ -228,9 +262,10 @@ var table = d3.selectAll("table").select("tbody")
 	.enter();
 
 var row = table.append("tr");
-	
+
 row.append("td").append("a").attr("href", "#")
 	.text(function(d){return d.label;});
+
 row.append("td")
 	.text(function(d){return d.version;});
 // row.append("td")//.append("a").attr("href", "#")

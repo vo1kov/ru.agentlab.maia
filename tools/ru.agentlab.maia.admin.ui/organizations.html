@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<head>
+<title>Tasks</title>
+
+<meta charset="utf-8" />
+
+<link type="text/css" rel="stylesheet" href="css/semantic.min.css" />
+<link type="text/css" rel="stylesheet" href="css/style2.css" />
+<link type="text/css" rel="stylesheet" href="css/bundles.css" />
+<link type="text/css" rel="stylesheet" href="css/tasks.css" />
+
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/semantic.min.js"></script>
+<script type="text/javascript" src="js/d3.min.js"></script>
+<script type="text/javascript" src="js/scripts.js"></script>
+<script type="text/javascript" src="js/maia.js"></script>
+<script type="text/javascript" src="js/proto_model.js"></script>
+</head>
+
+<body>
+	<div class="ui top attached inverted menu">
+	
+		<p class="header item">MAIA Admin Console</p>
+		
+		<div class="ui simple dropdown item">
+			<i class="cloud icon"></i>
+				Cluster
+			<i class="dropdown icon"></i>
+			<div class="menu">
+				<a class="item"><i class="desktop icon"></i>http://10.106.39.175:9091/</a>
+				<a class="item"><i class="tablet icon"></i>http://10.106.39.172:9091/</a>
+				<div class="divider"></div>
+				<a class="item">Connect...</a>
+			</div>
+		</div>
+		
+		<div class="ui simple dropdown item">
+			<i class="windows icon"></i>
+				OS
+			<i class="dropdown icon"></i>
+			<div class="menu">
+				<a class="item"><i class="line chart icon"></i>CPU Utilization</a>
+				<a class="item"><i class="line chart icon"></i>Memory Utilization</a>
+			</div>
+		</div>
+		
+		<div class="ui simple dropdown item">
+			<i class="disk outline icon"></i>
+				JVM
+			<i class="dropdown icon"></i>
+			<div class="menu">
+				<a class="item" href="threads.html"><i class="tasks icon"></i>Threads</a>
+				<a class="item" href="bundles.html"><i class="users icon"></i>Services</a>
+			</div>
+		</div>
+		
+		<div class="ui simple dropdown item">
+			<i class="plug icon"></i>
+				OSGI
+			<i class="dropdown icon"></i>
+			<div class="menu">
+				<a class="item" href="bundles.html"><i class="sitemap icon"></i>Bundles</a>
+				<a class="item" href="bundles.html"><i class="users icon"></i>Services</a>
+			</div>
+		</div>
+<!-- 		<a class="red active item" href="tasks.html"><i class="sitemap icon"></i>Tasks</a> -->
+		
+		<div class="ui simple dropdown item">
+			<i class="laptop icon"></i>
+				MAIA
+			<i class="dropdown icon"></i>
+			<div class="menu">
+				<a class="item" href="contexts.html"><i class="grid layout icon"></i>Containers</a>
+				<a class="item" href="tasks.html"><i class="sitemap icon"></i>Tasks</a>
+				<a class="item" href="organizations.html"><i class="users icon"></i>Organizations</a>
+				<a class="item" href="protocols.html"><i class="comments icon"></i>Protocols</a>
+			</div>
+		</div>
+		
+		
+		<a class="item"><i class="file text outline icon"></i></a>
+		<a class="item"><i class="line chart icon"></i></a>
+		<a class="item"><i class="download icon"></i></a>
+		 
+		  <div class="right menu">
+			 
+			  <div class="link item">
+				<div class="ui icon top right pointing dropdown">
+				  <i class="wrench icon"></i>
+				  <div class="menu">
+					<div class="header">Display Density</div>
+					<div class="item">Comfortable</div>
+					<div class="item">Cozy</div>
+					<div class="item">Compact</div>
+					<div class="ui divider"></div>
+					<div class="item">Settings</div>
+					<div class="item">
+					  <i class="dropdown icon"></i>
+					  <span class="text">Upload Settings</span>
+					  <div class="left vertical menu">
+						<div class="item">
+						  <i class="check icon"></i>
+						  Convert Uploaded Files to PDF
+						</div>
+						<div class="item">
+						  <i class="check icon"></i>
+						  Digitize Text from Uploaded Files
+						</div>
+					  </div>
+					</div>
+					<div class="item">Manage Apps</div>
+					<div class="item">Keyboard Shortcuts</div>
+					<div class="item">Help</div>
+				  </div>
+				</div>
+			  </div>
+		  </div>
+		
+	</div>
+
+	<div class="ui container">
+		<div class="ui vertical segment">
+			<div class="ui text container">
+
+				<div class="ui breadcrumb">
+					<a class="section">MAIA</a>
+					<div class="divider">/</div>
+					<div class="active section">Organizations</div>
+				</div>
+
+				<h2 class="ui green header">
+					<i class="circular inverted green users icon"></i>
+					<div class="content">
+						Organization Library
+						<div class="sub header">
+							Organizations available on this	machine
+						</div>
+					</div>
+				</h2>
+
+
+				<table
+					class="ui compact very basic selectable celled small sortable table">
+					<thead>
+						<tr>
+							<th class="four wide">Label</th>
+							<th>Version</th>
+							<!-- 						<th>Hub</th> -->
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+
+
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<script type="text/javascript" src="js/protocol.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('.ui.dropdown').dropdown();
+		});
+
+		$('.ui.accordion').accordion({
+			exclusive : false
+		});
+
+		$('body .ui.sidebar').sidebar({
+			context : $('body .bottom.segment')
+		})
+		//.sidebar('attach events', 'body .menu .item')
+		;
+	</script>
+
+
+	<script>
+		var protocols = [
+				{
+					id : "e0e27887-674f-4a30-9bdd-7d2d880da60e",
+					label : "SubmissionGroup",
+					version : "1.0.0",
+					provider : "http://www.fipa.org/specs/fipa00026/SC00026H.html",
+					description : "The FIPA Request Interaction Protocol (IP) allows one agent to request another to perform some action."
+
+				},
+				{
+					id : "2a095da6-2854-441a-9505-195d857d8476",
+					label : "ProgramCommittee",
+					version : "1.0.0",
+					provider : "http://www.fipa.org/",
+					description : "The FIPA Query Interaction Protocol (IP) allows one agent to request to perform some kind of action on another agent."
+				},
+				{
+					id : "25f8905f-b84f-4b60-9b4e-5e6c4c60f709",
+					label : "SubmissionGroup",
+					version : "1.0.0",
+					provider : "http://www.fipa.org/",
+					description : "The FIPA Request When Interaction Protocol (IP) allows an agent to request that the receiver perform some action at the time a given precondition becomes true. This IP provides a framework for the request-when communicative act (see [FIPA00037])."
+				},
+				{
+					id : "eef5ccc4-a59a-4416-8ecf-70f795810db4",
+					label : ":Conference",
+					version : "1.0.0",
+					provider : "http://www.fipa.org/",
+					description : "The FIPA Contract Net Interaction Protocol (IP) is a minor modification of the original contract net IP pattern[1] in that it adds rejection and confirmation communicative acts. In the contract net IP, one agent (the Initiator) takes the role of manager which wishes to have some task performed by one or more other agents (the Participants) and further wishes to optimise a function that characterizes the task. This characteristic is commonly expressed as the price, in some domain specific way, but could also be soonest time to completion, fair distribution of tasks, etc. For a given task, any number of the Participants may respond with a proposal; the rest must refuse. Negotiations then continue with the Participants that proposed."
+				} ]
+
+		var table = d3.selectAll("table").select("tbody").selectAll("tr").data(
+				protocols).enter();
+
+		var row = table.append("tr");
+
+		row.append("td").append("a").attr("href", "#").text(function(d) {
+			return d.label;
+		});
+		row.append("td").text(function(d) {
+			return d.version;
+		});
+		// row.append("td")//.append("a").attr("href", "#")
+		// 	.text(function(d){return d.provider;});
+		row.append("td").text(function(d) {
+			return "";
+		});
+		// row.append("td")
+		// 	.text(function(d){return d.id;});
+	</script>
+
+
+
+</body>
