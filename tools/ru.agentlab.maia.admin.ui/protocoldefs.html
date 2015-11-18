@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<head>
+<title>Tasks</title>
+
+<meta charset="utf-8" />
+
+<link type="text/css" rel="stylesheet" href="css/semantic.min.css" />
+<link type="text/css" rel="stylesheet" href="css/style2.css" />
+<link type="text/css" rel="stylesheet" href="css/bundles.css" />
+<link type="text/css" rel="stylesheet" href="css/tasks.css" />
+
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/semantic.min.js"></script>
+<script type="text/javascript" src="js/d3.min.js"></script>
+<script type="text/javascript" src="js/scripts.js"></script>
+<script type="text/javascript" src="js/maia.js"></script>
+<script type="text/javascript" src="js/proto_model.js"></script>
+</head>
+
+<body>
+	<div class="ui left vertical inverted orange sidebar overflow visible menu">
+<!-- 		<div class="ui basic segment"> -->
+<!-- 			<div class="ui basic  center aligned segment "> -->
+<!-- 				<div class="ui header inverted"> -->
+<!-- 					Stack -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+			<div class="ui accordion inverted">
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="cloud icon"></i>
+						Ecosystem
+					</div>
+				</div>
+				<div class="active content menu">
+					<a class="item" href="tasks.html">Clouds</a>
+					<a class="item" href="tasks.html">Peers</a>
+					<a class="item" href="protocols.html">Organization Repositories</a>
+					<a class="item" href="protocols.html">Protocol Repositories</a>
+					<a class="item" href="protocols.html">Ontology Repositories</a>
+					<a class="item" href="protocols.html">P2 Repositories</a>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="user icon"></i>
+						MAIA
+					</div>
+				</div>
+				<div class="active content menu">
+					<a class="item" href="contexts.html">Containers</a>
+					<a class="item" href="tasks.html">Behaviours</a>
+					<a class="item" href="organizations.html">Organizations</a>
+					<a class="item" href="protocols.html">Protocols</a>
+					<a class="item" href="organizationdefs.html">Organization Definitions</a>
+					<a class="active item" href="protocoldefs.html"><i class="right chevron icon"></i>Protocol Definitions</a>
+					<a class="item" href="protocols.html">Ontology Definitions</a>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="plug icon"></i>
+						OSGI
+					</div>
+				</div>
+				<div class="active content">
+					<div class="menu">
+						<a class="item" href="bundles.html">Bundles</a>
+						<a class="item" href="bundles.html">Services</a>
+					</div>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="coffee icon"></i>
+						JVM
+					</div>
+				</div>
+				<div class="active content">
+				    <div class="menu">
+						<a class="item" href="threads.html">Threads</a>
+						<a class="item" href="bundles.html">Services</a>
+					</div>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="windows icon"></i>
+						OS
+					</div>
+				</div>
+				<div class="active content">
+				    <div class="menu">
+						<a class="item">Processes</a>
+						<a class="item">CPU Utilization</a>
+						<a class="item">Memory Utilization</a>
+					</div>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="cube icon"></i>
+						HW
+					</div>
+				</div>
+				<div class="active content">
+				    <div class="menu">
+						<a class="item">Modules</a>
+					</div>
+				</div>
+			</div>
+<!-- 		</div> -->
+	</div>
+	
+	<div class="ui main pusher container">
+		<h1 class="ui  header">
+<!-- 			<i class="exchange icon"></i> -->
+			<div class="content">
+				<div class="sub header">
+					<div class="ui breadcrumb">
+						<div class="section">Home</div>
+						<i class="right chevron icon divider"></i>
+						<div class="section">MAIA</div>
+						<i class="right chevron icon divider"></i>
+						<div class="section">Definitions</div>
+						<i class="right chevron icon divider"></i>
+					</div>
+				</div>
+				<div>Protocol Definitions</div>
+			</div>
+		</h1>
+		<div class="ui special three stackable doubling cards"> </div>
+	</div>
+
+
+
+
+	<script type="text/javascript" src="js/protocol.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('.ui.dropdown').dropdown();
+		});
+
+		$('.ui.accordion').accordion({
+			exclusive : false
+		});
+
+// 		$('body .ui.sidebar').sidebar({
+// 			context : $('body .bottom.segment')
+// 		})
+		//.sidebar('attach events', 'body .menu .item')
+		;
+	</script>
+
+
+	<script>
+		var protocols = [
+				{
+					id : "e0e27887-674f-4a30-9bdd-7d2d880da60e",
+					label : "FIPA Request Interaction Protocol",
+					version : "1.0.0",
+					tags : [ "http://www.fipa.org/" ],
+					description : "The FIPA Request Interaction Protocol (IP) allows one agent to request another to perform some action."
+
+				},
+				{
+					id : "2a095da6-2854-441a-9505-195d857d8476",
+					label : "FIPA Query Interaction Protocol",
+					version : "1.0.0",
+					tags : [ "http://www.fipa.org/" ],
+					description : "The FIPA Query Interaction Protocol (IP) allows one agent to request to perform some kind of action on another agent."
+				},
+				{
+					id : "25f8905f-b84f-4b60-9b4e-5e6c4c60f709",
+					label : "FIPA Request When Interaction Protocol",
+					version : "1.0.0",
+					tags : [ "http://www.fipa.org/" ],
+					description : "The FIPA Request When Interaction Protocol (IP) allows an agent to request that the receiver perform some action at the time a given precondition becomes true. This IP provides a framework for the request-when communicative act (see [FIPA00037])."
+				},
+				{
+					id : "eef5ccc4-a59a-4416-8ecf-70f795810db4",
+					label : "FIPA Contract Net Interaction Protocol",
+					version : "1.0.0",
+					tags : [ "http://www.fipa.org/" ],
+					description : "The FIPA Contract Net Interaction Protocol (IP) is a minor modification of the original contract net IP pattern[1] in that it adds rejection and confirmation communicative acts. In the contract net IP, one agent (the Initiator) takes the role of manager which wishes to have some task performed by one or more other agents (the Participants) and further wishes to optimise a function that characterizes the task. This characteristic is commonly expressed as the price, in some domain specific way, but could also be soonest time to completion, fair distribution of tasks, etc. For a given task, any number of the Participants may respond with a proposal; the rest must refuse. Negotiations then continue with the Participants that proposed."
+				},
+				{
+					id : "d18de8e0-0dc2-489e-9817-7fe348c6638a",
+					label : "FIPA Iterated Contract Net Interaction Protocol",
+					version : "1.0.0",
+					tags : [ "http://www.fipa.org/" ],
+					description : "The FIPA Iterated Contract Net Interaction Protocol (IP) is an extension of the basic FIPA Contract Net IP (see [FIPA00029]), but it differs by allowing multi-round iterative bidding."
+				},
+				{
+					id : "ff1b4838-8b55-402e-831d-483ec863ede0",
+					label : "FIPA English Auction Interaction Protocol",
+					version : "1.0.0",
+					tags : [ "http://www.fipa.org/" ],
+					description : "In the FIPA English Auction Interaction Protocol (IP), the auctioneer seeks to find the market price of a good by initially proposing a price below that of the supposed market value and then gradually raising the price. Each time the price is announced, the auctioneer waits to see if any buyers will signal their willingness to pay the proposed price. As soon as one buyer indicates that it will accept the price, the auctioneer issues a new call for bids with an incremented price. The auction continues until no buyers are prepared to pay the proposed price, at which point the auction ends. If the last price that was accepted by a buyer exceeds the auctioneer's (privately known) reservation price, the good is sold to that buyer for the agreed price. If the last accepted price is less than the reservation price, the good is not sold"
+				},
+				{
+					id : "f5c2713a-77ad-4555-abe8-da5f0cf33e74",
+					label : "FIPA Dutch Auction Interaction Protocol",
+					version : "1.0.0",
+					tags : [ "http://www.fipa.org/" ],
+					description : "In the FIPA Dutch Auction Interaction Protocol (IP), the auctioneer attempts to find the market price for a good by starting bidding at a price much higher than the expected market value, then progressively reducing the price until one of the buyers accepts the price. The rate of reduction of the price is up to the auctioneer and they usually have a reserve price below which not to go. If the auction reduces the price to the reserve price with no buyers, then the auction terminates."
+				},
+				{
+					id : "e11c8eae-7210-47b9-82ae-e824f54f1b0c",
+					label : "FIPA Brokering Interaction Protocol",
+					version : "1.0.0",
+					tags : [ "http://www.fipa.org/" ],
+					description : "The FIPA Brokering Interaction Protocol (IP) is designed to support brokerage interactions in mediated systems and in multi-agent systems, for example, [Finin97]."
+				},
+				{
+					id : "5bf4b35e-0af1-4316-af2e-696effabed1c",
+					label : "FIPA Recruiting Interaction Protocol",
+					version : "1.0.0",
+					tags : [ "http://www.fipa.org/" ],
+					description : "The FIPA Subscribe Interaction Protocol (IP) allows an agent to request a receiving agent to perform an action on subscription and subsequently when the referenced object changes."
+				},
+				{
+					id : "7258a600-2365-4035-a9d3-a723de2336d6",
+					label : "FIPA Propose Interaction Protocol",
+					version : "1.0.0",
+					tags : [ "http://www.fipa.org/", "stadart", "remote" ],
+					description : "The FIPA Propose Interaction Protocol (IP) allows an agent to propose to receiving agents that the initiator will do the actions described in the propose communicative act (see [FIPA00037]) when the receiving agent accepts the proposal."
+				} ]
+
+// 		var item = d3.select(".ui.items").selectAll("div").data(protocols)
+// 				.enter().append("div").classed("item", true);
+// 		//item.append("i").classed("large comments top aligned blue icon", true)
+// 		var content = item.append("div").classed("content", true)
+// 		content.append("div").attr("href", "protocol.html").classed("header",
+// 				true).text(function(d) {
+// 			return d.label + " ";
+// 		});
+// 		content.append("div").classed("meta", true).text(function(d) {
+// 			return "Version: " + d.version;
+// 		});
+// 		content.append("div").classed("description", true).text(function(d) {
+// 			return d.description;
+// 		});
+// 		var extra = content.append("div").classed("extra", true);
+// 		var tag = extra.selectAll("div").data(function(d) {
+// 			return d.tags;
+// 		}).enter();
+// 		tag.append("div").classed("ui label", true).text(function(d) {
+// 			return d;
+// 		});
+// 		// 	.append("i").classed(" delete icon", true);
+// 		extra
+// 				.append("div")
+// 				.classed(
+// 						"ui circular right floated red compact basic icon button",
+// 						true).append("i").classed(" remove icon", true);
+// 		extra.append("div").classed(
+// 				"ui circular right floated green compact basic icon button",
+// 				true).append("i").classed(" write icon", true);
+		
+		
+
+		var card = d3.select(".ui.cards").selectAll("card").data(protocols).enter().append("div").classed("blurring dimmable card", true);
+		//item.append("i").classed("large comments top aligned blue icon", true)
+		var buttons = card.append("div").classed("ui inverted dimmer", true)
+			.append("div").classed("content", true)
+			.append("div").classed("center", true)
+			.append("div").classed("ui labeled icon vertical basic buttons", true);
+		buttons.append("div").classed("ui button", true).text("Edit").append("i").classed("blue write icon", true);
+		buttons.append("div").classed("ui button", true).text("Remove").append("i").classed("red remove icon", true);
+		
+		var content = card.append("div").classed("content", true)
+		content.append("div").classed("header", true).text(function(d){return d.label + " ";});
+		content.append("div").classed("meta", true).text(function(d){return "Version: " + d.version;});
+		content.append("p").text(function(d){return d.description;});
+		var extra = card.append("div").classed("extra content", true);
+			var tags = extra.append("div").append("span");
+			tags.append("i").classed("user icon", true);
+			tags.append("span").text(function(d){return d.tags.length + " Roles";});
+			
+			var tags2 = extra.append("div").append("span");
+			tags2.append("i").classed("comments icon", true);
+			tags2.append("span").text(function(d){return d.tags.length + " Protocols";});
+			
+			var tags3 = extra.append("div").append("span");
+			tags3.append("i").classed("tags icon", true);
+			tags3.append("span").text(function(d){return d.tags.length + " Tags";});
+
+			var tags4 = extra.append("div").append("span");
+			tags4.append("i").classed("user icon", true);
+			tags4.append("span").text(function(d){return d.tags.length + " Instances";});
+		
+		
+		
+		
+	</script>
+	<script type="text/javascript">
+		$('.special.cards .dimmable.card').dimmer({
+		  on: 'hover'
+		});
+	</script>
+
+
+</body>

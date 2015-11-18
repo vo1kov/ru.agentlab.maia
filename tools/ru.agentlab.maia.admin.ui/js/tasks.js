@@ -1,5 +1,5 @@
 //	Layout variables
-var width = 1200,
+var width = 1100,
     height = 600,
 	marginL = 100,
 	marginT = 10,

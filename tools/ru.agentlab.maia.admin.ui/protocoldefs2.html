@@ -18,120 +18,51 @@
 </head>
 
 <body>
-	<div class="ui top attached inverted menu">
-
-		<p class="header item">MAIA Admin Console</p>
-
-		<div class="ui dropdown item">
-			<i class="cloud icon"></i> Cluster <i class="dropdown icon"></i>
-			<div class="menu">
-				<a class="item"><i class="desktop icon"></i>http://10.106.39.175:9091/</a>
-				<a class="item"><i class="tablet icon"></i>http://10.106.39.172:9091/</a>
-				<div class="divider"></div>
-				<a class="item">Connect...</a>
-			</div>
-		</div>
-
-		<div class="ui dropdown item">
-			<i class="windows icon"></i> OS <i class="dropdown icon"></i>
-			<div class="menu">
-				<a class="item"><i class="line chart icon"></i>CPU Utilization</a> <a
-					class="item"><i class="line chart icon"></i>Memory Utilization</a>
-			</div>
-		</div>
-
-		<div class="ui dropdown item">
-			<i class="disk outline icon"></i> JVM <i class="dropdown icon"></i>
-			<div class="menu">
-				<a class="item" href="threads.html"><i class="tasks icon"></i>Threads</a>
-				<a class="item" href="bundles.html"><i class="users icon"></i>Services</a>
-			</div>
-		</div>
-
-		<div class="ui dropdown item">
-			<i class="plug icon"></i> OSGI <i class="dropdown icon"></i>
-			<div class="menu">
-				<a class="item" href="bundles.html"><i class="sitemap icon"></i>Bundles</a>
-				<a class="item" href="bundles.html"><i class="users icon"></i>Services</a>
-			</div>
-		</div>
-		<!-- 		<a class="red active item" href="tasks.html"><i class="sitemap icon"></i>Tasks</a> -->
-
-		<div class="ui dropdown item">
-			<i class="laptop icon"></i> MAIA <i class="dropdown icon"></i>
-			<div class="menu">
-				<a class="item" href="contexts.html"><i class="grid layout icon"></i>Containers</a>
-				<a class="item" href="tasks.html"><i class="sitemap icon"></i>Behaviours</a>
-				<a class="item" href="organizations.html"><i class="users icon"></i>Organizations</a>
-				<a class="active item" href="protocols.html"><i
-					class="comments icon"></i>Protocols</a>
-			</div>
-		</div>
-
-		<div class="right menu">
-
-			<div class="link item">
-				<div class="ui icon top right pointing dropdown">
-					<i class="wrench icon"></i>
-					<div class="menu">
-						<div class="header">Display Density</div>
-						<div class="item">Comfortable</div>
-						<div class="item">Cozy</div>
-						<div class="item">Compact</div>
-						<div class="ui divider"></div>
-						<div class="item">Settings</div>
-						<div class="item">
-							<i class="dropdown icon"></i> <span class="text">Upload
-								Settings</span>
-							<div class="left vertical menu">
-								<div class="item">
-									<i class="check icon"></i> Convert Uploaded Files to PDF
-								</div>
-								<div class="item">
-									<i class="check icon"></i> Digitize Text from Uploaded Files
-								</div>
-							</div>
+	<nav id="nav" class="ui left vertical floating very wide active sidebar menu inverted visible teal unselectable">
+			<a class="active item">
+				<i class="icon home"></i> Home
+			</a>
+			<div class="ui dropdown item">
+				<i class="icon mail"></i> Messages <i class="dropdown icon"></i>
+				
+				<div class="menu">
+					<div class="item">
+						<i class="mail icon"></i>Categories
+						<div class="menu">
+							<div class="item">Unread</div>
+							<div class="item">Promotions</div>
+							<div class="item">Updates</div>
 						</div>
-						<div class="item">Manage Apps</div>
-						<div class="item">Keyboard Shortcuts</div>
-						<div class="item">Help</div>
+					</div>
+					<div class="item"><i class="book icon"></i>Archive</div>
+				</div>
+			</div>
+			<a class="item">
+				<i class="user icon"></i> Browse
+			</a>
+			<a class="item">Activity Feed</a>
+			<a class="item">Profile</a>
+	</nav>
+    <div class="ui main pusher container">
+		<h2 class="ui blue header">
+			<i class="exchange icon"></i>
+			<div class="content">
+				<div class="sub header">
+					<div class="ui breadcrumb">
+						<a class="section">Home</a>
+						<i class="right chevron icon divider"></i>
+						<a class="section">MAIA</a>
+						<i class="right chevron icon divider"></i>
+						<a class="section">Definitions</a>
+						<i class="right chevron icon divider"></i>
 					</div>
 				</div>
+				<div>Protocol Definitions</div>
 			</div>
-		</div>
+		</h2>
+		<div class="ui special three stackable doubling cards"> </div>
 	</div>
-	
-	<div class="ui container">
-		<div class="ui text container">
-
-			<div class="ui breadcrumb">
-					<a class="section">Home</a>
-					<i class="right chevron icon divider"></i>
-				<a class="section">MAIA</a> <i class="right chevron icon divider"></i>
-				<a class="section">Definitions</a> <i
-					class="right chevron icon divider"></i>
-			</div>
-
-			<h2 class="ui blue header">
-				<i class="blue comments icon"></i>
-				<div class="content">
-					Protocol Definitions
-					<div class="sub header">Organizations available on this
-						machine</div>
-				</div>
-			</h2>
-
-			<div class="ui divider"></div>
-
-			<div class="ui divided items"></div>
-
-		</div>
-	</div>
-
-
-
-
-	<script type="text/javascript" src="js/protocol.js"></script>
+<script type="text/javascript" src="js/protocol.js"></script>
 	<script>
 		$(document).ready(function() {
 			$('.ui.dropdown').dropdown();
@@ -141,9 +72,9 @@
 			exclusive : false
 		});
 
-		$('body .ui.sidebar').sidebar({
-			context : $('body .bottom.segment')
-		})
+// 		$('body .ui.sidebar').sidebar({
+// 			context : $('body .bottom.segment')
+// 		})
 		//.sidebar('attach events', 'body .menu .item')
 		;
 	</script>
@@ -223,38 +154,42 @@
 					description : "The FIPA Propose Interaction Protocol (IP) allows an agent to propose to receiving agents that the initiator will do the actions described in the propose communicative act (see [FIPA00037]) when the receiving agent accepts the proposal."
 				} ]
 
-		var item = d3.select(".ui.items").selectAll("div").data(protocols)
-				.enter().append("div").classed("item", true);
+		var card = d3.select(".ui.cards").selectAll("card").data(protocols).enter().append("div").classed("blurring dimmable card", true);
 		//item.append("i").classed("large comments top aligned blue icon", true)
-		var content = item.append("div").classed("content", true)
-		content.append("div").attr("href", "protocol.html").classed("header",
-				true).text(function(d) {
-			return d.label + " ";
-		});
-		content.append("div").classed("meta", true).text(function(d) {
-			return "Version: " + d.version;
-		});
-		content.append("div").classed("description", true).text(function(d) {
-			return d.description;
-		});
-		var extra = content.append("div").classed("extra", true);
-		var tag = extra.selectAll("div").data(function(d) {
-			return d.tags;
-		}).enter();
-		tag.append("div").classed("ui label", true).text(function(d) {
-			return d;
-		});
-		// 	.append("i").classed(" delete icon", true);
-		extra
-				.append("div")
-				.classed(
-						"ui circular right floated red compact basic icon button",
-						true).append("i").classed(" remove icon", true);
-		extra.append("div").classed(
-				"ui circular right floated green compact basic icon button",
-				true).append("i").classed(" write icon", true);
+		var buttons = card.append("div").classed("ui inverted dimmer", true)
+			.append("div").classed("content", true)
+			.append("div").classed("center", true)
+			.append("div").classed("ui labeled icon vertical basic buttons", true);
+		buttons.append("div").classed("ui button", true).text("Edit").append("i").classed("blue write icon", true);
+		buttons.append("div").classed("ui button", true).text("Remove").append("i").classed("red remove icon", true);
+		
+		var content = card.append("div").classed("content", true)
+		content.append("div").classed("header", true).text(function(d){return d.label + " ";});
+		content.append("div").classed("meta", true).text(function(d){return "Version: " + d.version;});
+		content.append("p").text(function(d){return d.description;});
+		var extra = card.append("div").classed("extra content", true);
+			var tags = extra.append("div").append("span");
+			tags.append("i").classed("user icon", true);
+			tags.append("span").text(function(d){return d.tags.length + " Roles";});
+			
+			var tags2 = extra.append("div").append("span");
+			tags2.append("i").classed("comments icon", true);
+			tags2.append("span").text(function(d){return d.tags.length + " Protocols";});
+			
+			var tags3 = extra.append("div").append("span");
+			tags3.append("i").classed("tags icon", true);
+			tags3.append("span").text(function(d){return d.tags.length + " Tags";});
+
+			var tags4 = extra.append("div").append("span");
+			tags4.append("i").classed("user icon", true);
+			tags4.append("span").text(function(d){return d.tags.length + " Instances";});
 	</script>
-
-
+	
+	
+	<script type="text/javascript">
+		$('.special.cards .dimmable.card').dimmer({
+		  on: 'hover'
+		});
+	</script>
 
 </body>

@@ -59,8 +59,11 @@
 				OSGI
 			<i class="dropdown icon"></i>
 			<div class="menu">
-				<a class="item" href="bundles.html"><i class="sitemap icon"></i>Bundles</a>
+				<a class="item" href="bundles.html"><i class="plug icon"></i>Features</a>
+				<a class="item" href="bundles.html"><i class="plug icon"></i>Bundles</a>
 				<a class="item" href="bundles.html"><i class="users icon"></i>Services</a>
+				<div class="header">Repositories</div>
+				<a class="item" href="protocols.html"><i class="database icon"></i>p2 Repositories</a>
 			</div>
 		</div>
 <!-- 		<a class="red active item" href="tasks.html"><i class="sitemap icon"></i>Tasks</a> -->
@@ -70,10 +73,20 @@
 				MAIA
 			<i class="dropdown icon"></i>
 			<div class="menu">
+				<div class="header">Instances</div>
 				<a class="item" href="contexts.html"><i class="grid layout icon"></i>Containers</a>
 				<a class="item" href="tasks.html"><i class="sitemap icon"></i>Tasks</a>
 				<a class="active item" href="organizations.html"><i class="users icon"></i>Organizations</a>
 				<a class="item" href="protocols.html"><i class="comments icon"></i>Protocols</a>
+				<div class="divider"></div>
+				<div class="header">Definitions</div>
+				<a class="item" href="organizationdefs.html"><i class="database icon"></i>Organization Definitions</a>
+				<a class="item" href="protocols.html"><i class="database icon"></i>Protocol Definitions</a>
+				
+				<div class="header">Repositories</div>
+				<a class="item" href="protocols.html"><i class="database icon"></i>Organization Repositories</a>
+				<a class="item" href="protocols.html"><i class="database icon"></i>Protocol Repositories</a>
+				
 			</div>
 		</div>
 		 
@@ -114,31 +127,89 @@
 	</div>
 
 	<div class="ui container">
-		<div class="ui vertical segment">
+<!-- 		<div class="ui vertical segment"> -->
 			<div class="ui text container">
 
 				<div class="ui breadcrumb">
+					<a class="section">Home</a>
+					<i class="right chevron icon divider"></i>
 					<a class="section">MAIA</a>
-					<div class="divider">/</div>
-					<div class="active section">Organizations</div>
+					<i class="right chevron icon divider"></i>
+					<a class="section">Instances</a>
+					<i class="right chevron icon divider"></i>
 				</div>
-
-				<h2 class="ui header">
-					<i class="circular inverted blue users icon"></i>
+				
+				<h2 class="ui blue header">
+					<i class="blue users icon"></i>
 					<div class="content">
-						Organization Library
+						Organizations
 						<div class="sub header">
 							Organizations available on this	machine
 						</div>
 					</div>
 				</h2>
 				
+				<div class="ui divider"></div>
+
+				
+				
+<!-- 				<div class="ui multiple dropdown"> -->
+<!--   <input type="hidden" name="filters"> -->
+<!--   <i class="filter icon"></i> -->
+<!--   <span class="text">Filter Posts</span> -->
+<!--   <div class="menu"> -->
+<!--     <div class="ui icon search input"> -->
+<!--       <i class="search icon"></i> -->
+<!--       <input type="text" placeholder="Search tags..."> -->
+<!--     </div> -->
+<!--     <div class="divider"></div> -->
+<!--     <div class="header"> -->
+<!--       <i class="tags icon"></i> -->
+<!--       Tag Label -->
+<!--     </div> -->
+<!--     <div class="scrolling menu"> -->
+<!--       <div class="item" data-value="important"> -->
+<!--         <div class="ui red empty circular label"></div> -->
+<!--         Important -->
+<!--       </div> -->
+<!--       <div class="item" data-value="announcement"> -->
+<!--         <div class="ui blue empty circular label"></div> -->
+<!--         Announcement -->
+<!--       </div> -->
+<!--       <div class="item" data-value="cannotfix"> -->
+<!--         <div class="ui black empty circular label"></div> -->
+<!--         Cannot Fix -->
+<!--       </div> -->
+<!--       <div class="item" data-value="news"> -->
+<!--         <div class="ui purple empty circular label"></div> -->
+<!--         News -->
+<!--       </div> -->
+<!--       <div class="item" data-value="enhancement"> -->
+<!--         <div class="ui orange empty circular label"></div> -->
+<!--         Enhancement -->
+<!--       </div> -->
+<!--       <div class="item" data-value="off-topic"> -->
+<!--         <div class="ui yellow empty circular label"></div> -->
+<!--         Off Topic -->
+<!--       </div> -->
+<!--       <div class="item" data-value="interesting"> -->
+<!--         <div class="ui pink empty circular label"></div> -->
+<!--         Interesting -->
+<!--       </div> -->
+<!--       <div class="item" data-value="discussion"> -->
+<!--         <div class="ui green empty circular label"></div> -->
+<!--         Discussion -->
+<!--       </div> -->
+<!--     </div> -->
+<!--   </div> -->
+<!-- </div> -->
+				
 				<div class="ui divided items">
 		    	</div>
 
 
 			</div>
-		</div>
+<!-- 		</div> -->
 	</div>
 
 
@@ -168,7 +239,7 @@
 					id : "e0e27887-674f-4a30-9bdd-7d2d880da60e",
 					label : "SubmissionGroup",
 					version : "1.0.0",
-					provider : "http://www.fipa.org/specs/fipa00026/SC00026H.html",
+					tags : ["http://www.fipa.org/", "stadart", "remote"],
 					description : "The FIPA Request Interaction Protocol (IP) allows one agent to request another to perform some action."
 
 				},
@@ -176,32 +247,38 @@
 					id : "2a095da6-2854-441a-9505-195d857d8476",
 					label : "ProgramCommittee",
 					version : "1.0.0",
-					provider : "http://www.fipa.org/",
+					tags : ["http://www.fipa.org/", "stadart", "remote"],
 					description : "The FIPA Query Interaction Protocol (IP) allows one agent to request to perform some kind of action on another agent."
 				},
 				{
 					id : "25f8905f-b84f-4b60-9b4e-5e6c4c60f709",
 					label : "SubmissionGroup",
 					version : "1.0.0",
-					provider : "http://www.fipa.org/",
+					tags : ["http://www.fipa.org/", "stadart", "remote"],
 					description : "The FIPA Request When Interaction Protocol (IP) allows an agent to request that the receiver perform some action at the time a given precondition becomes true. This IP provides a framework for the request-when communicative act (see [FIPA00037])."
 				},
 				{
 					id : "eef5ccc4-a59a-4416-8ecf-70f795810db4",
 					label : ":Conference",
 					version : "1.0.0",
-					provider : "http://www.fipa.org/",
+					tags : ["http://www.fipa.org/", "stadart", "remote"],
 					description : "The FIPA Contract Net Interaction Protocol (IP) is a minor modification of the original contract net IP pattern[1] in that it adds rejection and confirmation communicative acts. In the contract net IP, one agent (the Initiator) takes the role of manager which wishes to have some task performed by one or more other agents (the Participants) and further wishes to optimise a function that characterizes the task. This characteristic is commonly expressed as the price, in some domain specific way, but could also be soonest time to completion, fair distribution of tasks, etc. For a given task, any number of the Participants may respond with a proposal; the rest must refuse. Negotiations then continue with the Participants that proposed."
 				} ]
 
 		var item = d3.select(".ui.items").selectAll("div").data(protocols).enter().append("div").classed("item", true);
 //item.append("i").classed("large comments top aligned blue icon", true)
 var content = item.append("div").classed("content", true)
-content.append("a").classed("header", true).text(function(d){return d.label + " ";});
+content.append("div").classed("header", true).text(function(d){return d.label + " ";});
 content.append("div").classed("meta", true).text(function(d){return "Version: " + d.version;});
 content.append("div").classed("description", true).text(function(d){return d.description;});
-var extra = content.append("div").classed("extra", true).selectAll("div").data(function(d){return d.tags;}).enter();
-extra.append("div").classed("ui label", true).text(function(d){return d;});
+var extra = content.append("div").classed("extra", true);
+var tag = extra.selectAll("div.ui.label").data(function(d){return d.tags;}).enter();
+tag.append("div").classed("ui label", true).text(function(d){return d;});
+// 	.append("i").classed(" delete icon", true);
+extra.append("a").classed("ui circular right floated red compact basic icon button", true)
+	.append("i").classed(" remove icon", true);
+extra.append("a").classed("ui circular right floated green compact basic icon button", true)
+	.append("i").classed(" write icon", true);
 
 	</script>
 

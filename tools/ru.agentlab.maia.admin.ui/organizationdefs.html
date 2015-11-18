@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<head>
+<title>Tasks</title>
+
+<meta charset="utf-8" />
+
+<link type="text/css" rel="stylesheet" href="css/semantic.min.css" />
+<link type="text/css" rel="stylesheet" href="css/style2.css" />
+<link type="text/css" rel="stylesheet" href="css/bundles.css" />
+<link type="text/css" rel="stylesheet" href="css/tasks.css" />
+
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/semantic.min.js"></script>
+<script type="text/javascript" src="js/d3.min.js"></script>
+<script type="text/javascript" src="js/scripts.js"></script>
+<script type="text/javascript" src="js/maia.js"></script>
+<script type="text/javascript" src="js/proto_model.js"></script>
+</head>
+
+<body>
+	<div class="ui top attached inverted menu">
+	
+		<p class="header item">MAIA Admin Console</p>
+		
+		<div class="ui dropdown item">
+			<i class="cloud icon"></i>
+				Cluster
+			<i class="dropdown icon"></i>
+			<div class="menu">
+				<a class="item"><i class="desktop icon"></i>http://10.106.39.175:9091/</a>
+				<a class="item"><i class="tablet icon"></i>http://10.106.39.172:9091/</a>
+				<div class="divider"></div>
+				<a class="item">Connect...</a>
+			</div>
+		</div>
+		
+		<div class="ui dropdown item">
+			<i class="windows icon"></i>
+				OS
+			<i class="dropdown icon"></i>
+			<div class="menu">
+				<a class="item"><i class="line chart icon"></i>CPU Utilization</a>
+				<a class="item"><i class="line chart icon"></i>Memory Utilization</a>
+			</div>
+		</div>
+		
+		<div class="ui dropdown item">
+			<i class="disk outline icon"></i>
+				JVM
+			<i class="dropdown icon"></i>
+			<div class="menu">
+				<a class="item" href="threads.html"><i class="tasks icon"></i>Threads</a>
+				<a class="item" href="bundles.html"><i class="users icon"></i>Services</a>
+			</div>
+		</div>
+		
+		<div class="ui dropdown item">
+			<i class="plug icon"></i>
+				OSGI
+			<i class="dropdown icon"></i>
+			<div class="menu">
+				<a class="item" href="bundles.html"><i class="plug icon"></i>Features</a>
+				<a class="item" href="bundles.html"><i class="plug icon"></i>Bundles</a>
+				<a class="item" href="bundles.html"><i class="users icon"></i>Services</a>
+				
+				<div class="ui labeled horizontal divider"><i class="database icon"></i></div>
+				
+				<a class="item" href="protocols.html"><i class="database icon"></i>p2 Repositories</a>
+			</div>
+		</div>
+<!-- 		<a class="red active item" href="tasks.html"><i class="sitemap icon"></i>Tasks</a> -->
+		
+		<div class="ui dropdown item">
+			<i class="laptop icon"></i>
+				MAIA
+			<i class="dropdown icon"></i>
+			<div class="menu">
+<!-- 				<div class="ui labeled horizontal divider"><i class="file icon"></i></div> -->
+				<a class="item" href="contexts.html">Containers</a>
+				<a class="item" href="tasks.html">Tasks</a>
+				<a class=" item" href="organizations.html">Organizations</a>
+				<a class="item" href="protocols.html">Protocols</a>
+				
+				<div class="ui labeled horizontal divider"><i class="file icon"></i></div>
+				
+				<a class="active item" href="organizationdefs.html">Organization Definitions</a>
+				<a class="item" href="protocoldefs.html">Protocol Definitions</a>
+				
+				<div class="ui labeled horizontal divider"><i class="database icon"></i></div>
+				
+				<a class="item" href="protocols.html">Organization Repositories</a>
+				<a class="item" href="protocols.html">Protocol Repositories</a>
+			</div>
+		</div>
+		 
+		  <div class="right menu">
+			 
+			  <div class="link item">
+				<div class="ui icon top right pointing dropdown">
+				  <i class="wrench icon"></i>
+				  <div class="menu">
+					<div class="header">Display Density</div>
+					<div class="item">Comfortable</div>
+					<div class="item">Cozy</div>
+					<div class="item">Compact</div>
+					<div class="ui divider"></div>
+					<div class="item">Settings</div>
+					<div class="item">
+					  <i class="dropdown icon"></i>
+					  <span class="text">Upload Settings</span>
+					  <div class="left vertical menu">
+						<div class="item">
+						  <i class="check icon"></i>
+						  Convert Uploaded Files to PDF
+						</div>
+						<div class="item">
+						  <i class="check icon"></i>
+						  Digitize Text from Uploaded Files
+						</div>
+					  </div>
+					</div>
+					<div class="item">Manage Apps</div>
+					<div class="item">Keyboard Shortcuts</div>
+					<div class="item">Help</div>
+				  </div>
+				</div>
+			  </div>
+		  </div>
+		
+	</div>
+
+	<div class="ui main container">
+		<h2 class="ui blue header">
+			<i class="users icon"></i>
+			<div class="content">
+				<div class="sub header">
+					<div class="ui breadcrumb">
+						<a class="section">Home</a>
+						<i class="right chevron icon divider"></i>
+						<a class="section">MAIA</a>
+						<i class="right chevron icon divider"></i>
+						<a class="section">Definitions</a>
+						<i class="right chevron icon divider"></i>
+					</div>
+				</div>
+				<div>Organization Definitions</div>
+<!-- 				<div class="sub header">Organizations available on this	machine</div> -->
+			</div>
+		</h2>
+		<div class="ui special three stackable doubling cards">
+	</div>
+
+
+
+
+	<script type="text/javascript" src="js/protocol.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('.ui.dropdown').dropdown();
+		});
+
+		$('.ui.accordion').accordion({
+			exclusive : false
+		});
+
+		$('body .ui.sidebar').sidebar({
+			context : $('body .bottom.segment')
+		})
+		//.sidebar('attach events', 'body .menu .item')
+		;
+	</script>
+
+
+	<script>
+		var protocols = [
+				{
+					id : "e0e27887-674f-4a30-9bdd-7d2d880da60e",
+					label : "SubmissionGroup",
+					version : "1.0.0",
+					tags : ["http://www.fipa.org/", "stadart", "remote"],
+					description : "The FIPA Request Interaction Protocol (IP) allows one agent to request another to perform some action."
+
+				},
+				{
+					id : "2a095da6-2854-441a-9505-195d857d8476",
+					label : "ProgramCommittee",
+					version : "1.0.0",
+					tags : ["http://www.fipa.org/", "stadart", "remote"],
+					description : "The FIPA Query Interaction Protocol (IP) allows one agent to request to perform some kind of action on another agent."
+				},
+				{
+					id : "25f8905f-b84f-4b60-9b4e-5e6c4c60f709",
+					label : "SubmissionGroup",
+					version : "1.0.0",
+					tags : ["http://www.fipa.org/", "stadart", "remote"],
+					description : "The FIPA Request When Interaction Protocol (IP) allows an agent to request that the receiver perform some action at the time a given precondition becomes true. This IP provides a framework for the request-when communicative act (see [FIPA00037])."
+				},
+				{
+					id : "eef5ccc4-a59a-4416-8ecf-70f795810db4",
+					label : "Conference",
+					version : "1.0.0",
+					tags : ["http://www.fipa.org/", "stadart", "remote"],
+					description : "The FIPA Contract Net Interaction Protocol (IP) is a minor modification of the original contract net IP pattern[1] in that it adds rejection and confirmation communicative acts. In the contract net IP, one agent (the Initiator) takes the role of manager which wishes to have some task performed by one or more other agents (the Participants) and further wishes to optimise a function that characterizes the task. "
+				} ]
+
+// 		var item = d3.select(".ui.items").selectAll("div").data(protocols).enter().append("div").classed("item", true);
+// //item.append("i").classed("large comments top aligned blue icon", true)
+// var content = item.append("div").classed("content", true)
+// content.append("div").classed("header", true).text(function(d){return d.label + " ";});
+// content.append("div").classed("meta", true).text(function(d){return "Version: " + d.version;});
+// content.append("div").classed("description", true).text(function(d){return d.description;});
+// var extra = content.append("div").classed("extra", true);
+// var tag = extra.selectAll("div.ui.label").data(function(d){return d.tags;}).enter();
+// tag.append("div").classed("ui label", true).text(function(d){return d;});
+// // 	.append("i").classed(" delete icon", true);
+// extra.append("a").classed("ui circular right floated red compact basic icon button", true)
+// 	.append("i").classed(" remove icon", true);
+// extra.append("a").classed("ui circular right floated green compact basic icon button", true)
+// 	.append("i").classed(" write icon", true);
+	
+	
+	var card = d3.select(".ui.cards").selectAll("card").data(protocols).enter().append("div").classed("blurring dimmable card", true);
+	//item.append("i").classed("large comments top aligned blue icon", true)
+	var buttons = card.append("div").classed("ui inverted dimmer", true)
+		.append("div").classed("content", true)
+		.append("div").classed("center", true)
+		.append("div").classed("ui labeled icon vertical basic buttons", true);
+	buttons.append("div").classed("ui button", true).text("Edit").append("i").classed("blue write icon", true);
+	buttons.append("div").classed("ui button", true).text("Remove").append("i").classed("red remove icon", true);
+	
+	var content = card.append("div").classed("content", true)
+	content.append("div").classed("header", true).text(function(d){return d.label + " ";});
+	content.append("div").classed("meta", true).text(function(d){return "Version: " + d.version;});
+	content.append("p").text(function(d){return d.description;});
+	var extra = card.append("div").classed("extra content", true);
+		var tags = extra.append("div").append("span");
+		tags.append("i").classed("user icon", true);
+		tags.append("span").text(function(d){return d.tags.length + " Roles";});
+		
+		var tags2 = extra.append("div").append("span");
+		tags2.append("i").classed("comments icon", true);
+		tags2.append("span").text(function(d){return d.tags.length + " Protocols";});
+		
+		var tags3 = extra.append("div").append("span");
+		tags3.append("i").classed("tags icon", true);
+		tags3.append("span").text(function(d){return d.tags.length + " Tags";});
+
+		var tags4 = extra.append("div").append("span");
+		tags4.append("i").classed("user icon", true);
+		tags4.append("span").text(function(d){return d.tags.length + " Instances";});
+	
+	
+	
+	
+	$('.special.cards .dimmable.card').dimmer({
+	  on: 'hover'
+	});
+	
+	</script>
+
+
+
+</body>
