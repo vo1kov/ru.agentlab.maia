@@ -48,11 +48,11 @@
 				<div class="active content menu">
 					<a class="item" href="tasks.html">Peers</a>
 					<a class="item" href="contexts.html">Containers</a>
-					<a class="item" href="agents.html">Agents</a>
+					<a class="active item" href="agents.html">Agents</a>
 					<a class="item" href="tasks.html">Behaviours</a>
 					<a class="item" href="organizationdefs.html">Behaviour Definitions</a>
 					<a class="item" href="organizationdefs.html">Agent Group Definitions</a>
-					<a class="active item" href="protocoldefs.html">Interaction Protocols</a>
+					<a class="item" href="protocoldefs.html">Interaction Protocols</a>
 					<a class="item" href="protocols.html">Ontology Definitions</a>
 				</div>
 				<div class="active title">
@@ -119,22 +119,19 @@
 							<div class="divider"> / </div>
 						</div>
 					</div>
-					<div>Interaction Protocols</div>
+					<div>Agents</div>
 				</div>
 			</h1>
 			<div class="ui right floated secondary small borderless menu">
-				<div class="ui  icon basic buttons">
-					<div class="ui icon button">
-						<i class="cloud download icon"></i>
-					</div>
-					<div class="ui button">
+				<div class="ui icon basic buttons">
+					<div class="ui button" data-content="Create new Agent" data-variation="inverted small">
 						<i class="green plus icon"></i>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="ui attached basic  segment">
-			<div class="ui special three stackable doubling cards"> </div>
+		<div class="ui attached basic segment">
+			<div class="ui special five stackable doubling cards"> </div>
 		</div>
 	</div>
 
@@ -163,7 +160,7 @@
 		var protocols = [
 				{
 					id : "e0e27887-674f-4a30-9bdd-7d2d880da60e",
-					label : "FIPA Request Interaction Protocol",
+					label : "Lamp1",
 					version : "1.0.0",
 					participants : [
 						{
@@ -177,7 +174,7 @@
 				},
 				{
 					id : "2a095da6-2854-441a-9505-195d857d8476",
-					label : "FIPA Query Interaction Protocol",
+					label : "Lamp2",
 					version : "1.0.0",
 					participants : [
 						{
@@ -334,33 +331,34 @@
 			.append("div").classed("content", true)
 			.append("div").classed("center", true)
 			.append("div").classed("ui icon basic buttons", true);
-		buttons.append("div").classed("ui button", true).append("i").classed("blue write icon", true);
+		buttons.append("div").classed("ui button", true).append("i").classed("blue pause icon", true);
+		buttons.append("div").classed("ui disabled button", true).append("i").classed("blue write icon", true);
 		buttons.append("div").classed("ui button", true).append("i").classed("red remove icon", true);
 		content.append("div").classed("header", true).text(function(d){return d.label + " ";});
-		var meta = 	content.append("div").classed("meta", true)
+		var meta = 	content.append("div").classed("meta", true).append("div");//.classed("ui equal width two column grid", true)
 			
-			var tags3 = meta.append("div");
-			tags3.append("i").classed("history icon", true);
-			tags3.append("span").text(function(d){return "Version: " + d.version;});
-		
 			var tags = meta.append("div");
 			tags.append("i").classed("user icon", true);
-			tags.append("span").text(function(d){return d.participants.length + " Participants";});
+			tags.append("span").text(function(d){return d.participants.length + " Roles";});
+			
+			var tags12 = meta.append("div");
+			tags12.append("i").classed("sitemap icon", true);
+			tags12.append("span").text(function(d){return "2/" + d.participants.length + " Behaviours";});
 			
 			//var tags2 = meta.append("div");
 			//tags2.append("i").classed("comments icon", true);
 			//tags2.append("span").text(function(d){return d.tags.length + " Protocols";});
 			
-		content.append("p").text(function(d){return d.description;});
-		content.append("div").classed("ui  right corner label", true).append("i").classed("exchange icon", true);
-		var extra = card.append("div").classed("extra content", true);
-			var tags4 = extra.append("div").append("a");
-			tags4.append("i").classed("user icon", true);
-			tags4.append("span").text(function(d){return d.tags.length + " Agents";});
+		//content.append("p").text(function(d){return d.description;});
+		content.append("div").classed("ui  right corner label", true).append("i").classed("user icon", true);
+		//var extra = card.append("div").classed("extra content", true);
+			//var tags4 = extra.append("span").append("a");
+			//tags4.append("i").classed("user icon", true);
+			//tags4.append("span").text(function(d){return d.tags.length + " Instances";});
 		
-			var tags5 = extra.append("div").append("a");
-			tags5.append("i").classed("users icon", true);
-			tags5.append("span").text(function(d){return d.tags.length + " Groups";});
+			//var tags5 = extra.append("span").classed("right floated", true).append("a");
+			//tags5.append("i").classed("users icon", true);
+			//tags5.append("span").text(function(d){return d.tags.length + " Groups";});
 		
 		
 		
@@ -369,6 +367,9 @@
 		$('.special.cards .dimmable.content').dimmer({
 		  on: 'hover'
 		});
+		$('.ui.button')
+		  .popup()
+		;
 	</script>
 
 

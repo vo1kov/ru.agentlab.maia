@@ -15,9 +15,11 @@
 .ui.footer.segment {
 	margin-top : 5em;
 }
-
+.ui.attached.segment{
+	border:0px;
+}
 .main.container {
-	margin-top: 1em;
+	padding-left: 15em;
 }
   
 .ui.pointing.menu {

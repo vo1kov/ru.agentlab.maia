@@ -18,130 +18,119 @@
 </head>
 
 <body>
-	<div class="ui top attached inverted menu">
-		<p class="header item">
-			MAIA Admin Console
-		</p>
-		<div class="ui dropdown item">
-			<i class="cloud icon"></i>
-			Cluster
-			<i class="dropdown icon"></i>
-			<div class="menu">
-				<a class="item">
-					<i class="desktop icon"></i>
-					http://10.106.39.175:9091/
-				</a>
-				<a class="item">
-					<i class="tablet icon"></i>
-					http://10.106.39.172:9091/
-				</a>
-				<div class="divider"></div>
-				<a class="item">
-					Connect...
-				</a>
-			</div>
-		</div>
-		<div class="ui dropdown item">
-			<i class="windows icon"></i> OS <i class="dropdown icon"></i>
-			<div class="menu">
-				<a class="item">
-					<i class="line chart icon"> </i>
-					CPU Utilization
-				</a> 
-				<a class="item">
-					<i class="line chart icon"></i>
-					Memory Utilization
-				</a>
-			</div>
-		</div>
-		<div class="ui dropdown item">
-			<i class="disk outline icon"></i> JVM <i class="dropdown icon"></i>
-			<div class="menu">
-				<a class="item" href="threads.html"><i class="tasks icon"></i>Threads</a>
-				<a class="item" href="bundles.html"><i class="users icon"></i>Services</a>
-			</div>
-		</div>
-		<div class="ui dropdown item">
-			<i class="plug icon"></i> OSGI <i class="dropdown icon"></i>
-			<div class="menu">
-				<a class="item" href="bundles.html"><i class="sitemap icon"></i>Bundles</a>
-				<a class="item" href="bundles.html"><i class="users icon"></i>Services</a>
-			</div>
-		</div>
-		<div class="ui dropdown item">
-			<i class="laptop icon"></i>
-			MAIA
-			<i class="dropdown icon"></i>
-			<div class="menu">
-				<a class="item" href="contexts.html">
-					<i class="grid layout icon"></i>
-					Containers
-				</a>
-				<a class="active item" href="tasks.html">
-					<i class="sitemap icon"></i>
-					Behaviours
-				</a>
-				<a class="item" href="organizations.html">
-					<i class="users icon"></i>
-					Organizations
-				</a>
-				<a class="item" href="protocols.html">
-					<i class="comments icon"></i>
-					Protocols
-				</a>
-			</div>
-		</div>
-		<div class="right menu">
-			<div class="link item">
-				<div class="ui icon top right pointing dropdown">
-					<i class="wrench icon"></i>
+	<div class="ui left vertical inverted orange sidebar overlay visible menu">
+			<div class="ui accordion inverted">
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="cloud icon"></i>
+						Ecosystem
+					</div>
+				</div>
+				<div class="active content menu">
+					<a class="item" href="tasks.html">Clouds</a>
+					<a class="item" href="protocols.html">Agent Group Repositories</a>
+					<a class="item" href="protocolrep.html">Protocol Repositories</a>
+					<a class="item" href="protocols.html">Ontology Repositories</a>
+					<a class="item" href="protocols.html">P2 Repositories</a>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="user icon"></i>
+						MAIA
+					</div>
+				</div>
+				<div class="active content menu">
+					<a class="item" href="tasks.html">Peers</a>
+					<a class="item" href="contexts.html">Containers</a>
+					<a class="item" href="agents.html">Agents</a>
+					<a class="active item" href="tasks.html">Behaviours</a>
+					<a class="item" href="organizationdefs.html">Behaviour Definitions</a>
+					<a class="item" href="organizationdefs.html">Agent Group Definitions</a>
+					<a class="item" href="protocoldefs.html">Interaction Protocols</a>
+					<a class="item" href="protocols.html">Ontology Definitions</a>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="plug icon"></i>
+						OSGI
+					</div>
+				</div>
+				<div class="active content">
 					<div class="menu">
-						<div class="header">Display Density</div>
-						<div class="item">Comfortable</div>
-						<div class="item">Cozy</div>
-						<div class="item">Compact</div>
-						<div class="ui divider"></div>
-						<div class="item">Settings</div>
-						<div class="item">
-							<i class="dropdown icon"></i> <span class="text">Upload
-								Settings</span>
-							<div class="left vertical menu">
-								<div class="item">
-									<i class="check icon"></i> Convert Uploaded Files to PDF
-								</div>
-								<div class="item">
-									<i class="check icon"></i> Digitize Text from Uploaded Files
-								</div>
-							</div>
-						</div>
-						<div class="item">Manage Apps</div>
-						<div class="item">Keyboard Shortcuts</div>
-						<div class="item">Help</div>
+						<a class="item" href="bundles.html">Bundles</a>
+						<a class="item" href="bundles.html">Services</a>
+					</div>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="coffee icon"></i>
+						JVM
+					</div>
+				</div>
+				<div class="active content">
+				    <div class="menu">
+						<a class="item" href="threads.html">Threads</a>
+						<a class="item" href="bundles.html">Services</a>
+					</div>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="windows icon"></i>
+						OS
+					</div>
+				</div>
+				<div class="active content">
+				    <div class="menu">
+						<a class="item">Processes</a>
+						<a class="item">CPU Utilization</a>
+						<a class="item">Memory Utilization</a>
+					</div>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="cube icon"></i>
+						HW
+					</div>
+				</div>
+				<div class="active content">
+				    <div class="menu">
+						<a class="item">Modules</a>
 					</div>
 				</div>
 			</div>
+	</div>
+	
+	<div class="ui main pusher container">
+		<div class="ui top attached clearing basic segment">
+			<h1 class="ui left floated header">
+				<div class="content">
+					<div class="sub header">
+						<div class="ui breadcrumb">
+							<div class="section">Home</div>
+							<div class="divider"> / </div>
+							<div class="section">MAIA</div>
+							<div class="divider"> / </div>
+						</div>
+					</div>
+					<div>Behaviour Definitions</div>
+				</div>
+			</h1>
+			<div class="ui right floated secondary small borderless menu">
+				<div class="ui  icon basic buttons">
+					<div class="ui icon button">
+						<i class="cloud download icon"></i>
+					</div>
+					<div class="ui button">
+						<i class="green plus icon"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="ui attached basic  segment">
+		<div class="ui main vertical center aligned segment" id="body"></div>
 		</div>
 	</div>
 
-	<div class="ui main container">
-		<h2 class="ui blue header">
-			<i class="sitemap icon"></i>
-			<div class="content">
-				<div class="sub header">
-					<div class="ui breadcrumb">
-						<a class="section">Home</a>
-						<i class="right chevron icon divider"></i>
-						<a class="section">MAIA</a>
-						<i class="right chevron icon divider"></i>
-						<a class="section">Definitions</a>
-						<i class="right chevron icon divider"></i>
-					</div>
-				</div>
-				<div>Behaviours Definitions</div>
-			</div>
-		</h2>
-		<div class="ui main vertical center aligned segment" id="body"></div>
-	</div>
 
 	<script type="text/javascript" src="js/tasks.js"></script>
 	<script>
