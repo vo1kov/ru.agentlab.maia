@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<head>
+<title>Tasks</title>
+
+<meta charset="utf-8" />
+
+<link type="text/css" rel="stylesheet" href="css/semantic.min.css" />
+<link type="text/css" rel="stylesheet" href="css/style2.css" />
+<link type="text/css" rel="stylesheet" href="css/bundles.css" />
+<link type="text/css" rel="stylesheet" href="css/tasks.css" />
+
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/semantic.min.js"></script>
+<script type="text/javascript" src="js/d3.min.js"></script>
+<script type="text/javascript" src="js/scripts.js"></script>
+<script type="text/javascript" src="js/maia.js"></script>
+<script type="text/javascript" src="js/proto_model.js"></script>
+</head>
+
+<body>
+	<div class="ui left vertical inverted orange sidebar overlay visible menu">
+		<div class="ui basic segment">
+			<img class="ui centered tiny circular image" src="images/maya-calendar.jpg"></img>
+		</div>
+			<div class="ui accordion inverted">
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="cloud icon"></i>
+						Ecosystem
+					</div>
+				</div>
+				<div class="active content menu">
+					<a class="item" href="clouds.html">Clouds</a>
+					<a class="item" href="protocols.html">Agent Group Repositories</a>
+					<a class="item" href="protocolrep.html">Protocol Repositories</a>
+					<a class="item" href="protocols.html">Ontology Repositories</a>
+					<a class="item" href="protocols.html">P2 Repositories</a>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="user icon"></i>
+						MAIA
+					</div>
+				</div>
+				<div class="active content menu">
+					<a class="item" href="tasks.html">Peers</a>
+					<a class="item" href="contexts.html">Containers</a>
+					<a class="item" href="agents.html">Agents</a>
+					<a class="item" href="tasks.html">Behaviours</a>
+					<a class="item" href="organizationdefs.html">Behaviour Definitions</a>
+					<a class="item" href="organizationdefs.html">Agent Group Definitions</a>
+					<a class="item" href="protocoldefs.html">Interaction Protocols</a>
+					<a class="item" href="protocols.html">Ontology Definitions</a>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="plug icon"></i>
+						OSGI
+					</div>
+				</div>
+				<div class="active content">
+					<div class="menu">
+						<a class="item" href="bundles.html">Bundles</a>
+						<a class="item" href="bundles.html">Services</a>
+					</div>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="coffee icon"></i>
+						JVM
+					</div>
+				</div>
+				<div class="active content">
+				    <div class="menu">
+						<a class="item" href="threads.html">Threads</a>
+						<a class="item" href="bundles.html">Services</a>
+					</div>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="windows icon"></i>
+						OS
+					</div>
+				</div>
+				<div class="active content">
+				    <div class="menu">
+						<a class="item">Processes</a>
+						<a class="item">CPU Utilization</a>
+						<a class="item">Memory Utilization</a>
+					</div>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="cube icon"></i>
+						HW
+					</div>
+				</div>
+				<div class="active content">
+				    <div class="menu">
+						<a class="item">Modules</a>
+					</div>
+				</div>
+			</div>
+<!-- 		</div> -->
+	</div>
+	
+	<div class="ui main pusher container">
+		<div class="ui top attached clearing basic segment">
+			<h1 class="ui left floated header">
+				<div class="content">
+					<div class="sub header">
+						<div class="ui breadcrumb">
+							<div class="section">Home</div>
+							<div class="divider"> / </div>
+							<div class="section">Ecosystem</div>
+							<div class="divider"> / </div>
+						</div>
+					</div>
+					<div>Clouds</div>
+				</div>
+			</h1>
+			<div class="ui right floated secondary small borderless menu">
+				<div class="ui icon basic buttons">
+					<div class="ui button" data-content="Create new Cloud definition" data-variation="inverted small">
+						<i class="green plus icon"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="ui attached basic segment" id="editor2">
+<!-- 			<div class="ui special two stackable doubling cards"> </div> -->
+		</div>
+	</div>
+
+	<div class="ui small modal">
+		<i class="close icon"></i>
+		<div class="header"> Add new Cloud definition</div>
+		<div class="ui large right corner label"><i class="cloud icon"></i></div>
+		<div class="content">
+			<form class="ui form">
+				<div class="field">
+					<label>Label</label> 
+					<input type="text" name="cloud-label" placeholder="Cloud Label">
+				</div>
+				<div class="required field">
+					<label>Address</label>
+					<input class="address" type="text" name="cloud-address" placeholder="Cloud Address">
+				</div>
+				<div class="field">
+					<label>Description</label>
+					<textarea rows="2"></textarea>
+				</div>
+				<div class="field">
+				    <label>Country</label>
+				    <select multiple="" class="ui dropdown">
+				      <option value="">Select Country</option>
+				      <option value="EH">Western Sahara</option>
+				      <option value="YE">Yemen</option>
+				      <option value="ZM">Zambia</option>
+				      <option value="ZW">Zimbabwe</option>
+				    </select>
+				  </div>
+			</form>
+		</div>
+		<div class="actions">
+			<div class="ui black deny button">Cancel</div>
+			<div class="ui positive right labeled icon button">
+				Ok 
+				<i class="checkmark icon"></i>
+			</div>
+		</div>
+	</div>
+
+
+	<script type="text/javascript" src="js/protocol.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('.ui.dropdown').dropdown();
+		});
+
+		$('.ui.accordion').accordion({
+			exclusive : false
+		});
+
+// 		$('body .ui.sidebar').sidebar({
+// 			context : $('body .bottom.segment')
+// 		})
+		//.sidebar('attach events', 'body .menu .item')
+		;
+	</script>
+
+
+	<script>
+		var clouds = [
+				{
+					id : "e0e27887-674f-4a30-9bdd-7d2d880da60e",
+					label : "Inwion Cloud",
+					version : "1.0.0",
+					address : "http://example.com/inwion_connector/rs/",
+					protocol : "HTTP",
+					participants : [
+						{},{},
+						{},{},
+						{},{}
+					],
+					tags : [ "http://www.fipa.org/" ],
+					description : "The FIPA Request Interaction Protocol (IP) allows one agent to request another to perform some action."
+
+				},
+				{
+					id : "2a095da6-2854-441a-9505-195d857d8476",
+					label : "Zipato Cloud",
+					version : "1.0.0",
+					address : "https://my.zipato.com/zipato-web/api/", 
+					protocol : "HTTP",
+					ontologies : [{},{},{}],
+					participants : [
+						{},{}
+					],
+					tags : [ "http://www.fipa.org/" ],
+					description : "The FIPA Query Interaction Protocol (IP) allows one agent to request to perform some kind of action on another agent."
+				}
+		]
+
+		
+		
+		
+		var stack = {
+			channel : "io.netty.channel.socket.nio.NioSocketChannel",
+			pipeline : [  {
+				label : "Http Client Codec",
+				impl : "io.netty.handler.codec.http.HttpClientCodec",
+				type : "Codec",
+				from : "HttpObject",
+				to : "byte[]",
+				description: "A combination of HttpRequestEncoder and HttpResponseDecoder which enables easier client side HTTP implementation"
+			},{
+				label : "SSL Client Handler",
+				impl : "io.netty.handler.ssl.SslHandler",
+				type : "Codec",
+				from : "byte[]",
+				to : "byte[]",
+				parameters : [ {
+					key : "host",
+					value : "my.zipato.com"
+				} ]
+			} ]
+		}
+		
+		var editor = d3.select("#editor2").append("div").classed("ui text container", true)
+			.append("div").classed("ui special one stackable cards", true);
+		var item = editor.selectAll("div.handler").data(stack.pipeline).enter()
+			.append("div").classed("ui card handler", true);
+		item.append("div").classed("ui top attached button", true)
+			.append("i").classed("arrow up icon", true);
+		var content = item.append("div").classed("content", true);
+			content.append("div").classed("header", true).text(function(d){return d.label});
+// 		var meta = content.append("div").classed("meta ", true);
+// 			meta.append("div").text(function(d){return "Convert from " +  d.from + " to " + d.to});
+// 			content.append("div").classed("description", true).text(function(d){return d.description});
+		item.append("div").classed("ui bottom attached button", true)
+			.append("i").classed("arrow down icon", true);
+		
+		
+		
+
+		function generateUUID() {
+			var d = new Date().getTime();
+			if (window.performance
+					&& typeof window.performance.now === "function") {
+				d += performance.now();
+				; //use high-precision timer if available
+			}
+			var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
+					function(c) {
+						var r = (d + Math.random() * 16) % 16 | 0;
+						d = Math.floor(d / 16);
+						return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+					});
+			return uuid;
+		}
+	</script>
+	<script type="text/javascript">
+		$('.special.cards .dimmable.content').dimmer({
+		  on: 'hover'
+		});
+		$('.ui.button')
+		  .popup()
+		;
+		
+		$('.ui.button')
+			.on('click', function(){
+				$('.ui.modal')
+					.modal({
+					    onApprove : function() {
+					    	var uuid = generateUUID();
+					    	clouds.push({
+								"id" : uuid,
+								"label" : uuid,
+								"version" : "1.0.0",
+								"address" : $('.ui.modal input.address').val(), 
+								"protocol" : "HTTP",
+								"ontologies" : [{},{},{}],
+								"participants" : [
+									{},{}
+								],
+								"tags" : [ "http://www.fipa.org/" ],
+								"description" : "The FIPA Query Interaction Protocol (IP) allows one agent to request to perform some kind of action on another agent."
+							});
+					    }
+					  })
+				  .modal('show');
+			});
+		
+	</script>
+
+
+</body>

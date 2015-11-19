@@ -3,12 +3,16 @@
 }
 .ui.cards>.card  {
 	background-color: #fafafa;
+box-shadow: 0 0 30px rgba(34,36,38,.15);
 
 }
 .ui.dropdown .menu>.labeled.divider {
 	border-top: 0px solid rgba(34,36,38,.1);
 }
+.main.container .ui.row {
+	background-color: #fafafa;
 
+}
 .ui.segment {
 	background-color: #ddd;
 }
