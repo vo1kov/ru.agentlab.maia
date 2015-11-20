@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-<title>Tasks</title>
+<title>Pipeline</title>
 
 <meta charset="utf-8" />
 
@@ -112,11 +112,15 @@
 						<div class="ui breadcrumb">
 							<div class="section">Home</div>
 							<div class="divider"> / </div>
-							<div class="section">Ecosystem</div>
+							<div class="section">MAIA</div>
 							<div class="divider"> / </div>
 						</div>
 					</div>
-					<div>Clouds</div>
+<!-- 					<div class="ui transparent massive icon input"> -->
+<!-- 					  <input type="text" value="Pipeline" placeholder="Search..."> -->
+<!-- 					  <i class="write icon"></i> -->
+<!-- 					</div> -->
+					<div>Pipeline</div>
 				</div>
 			</h1>
 			<div class="ui right floated secondary small borderless menu">
@@ -127,9 +131,78 @@
 				</div>
 			</div>
 		</div>
+<!-- 		<div class="ui three column  grid"> -->
+<!-- 			<div class="ui row"> -->
+<!-- 				<div class="right floated twelve wide column"> -->
+<!-- 					<div class="ui one column cards"> -->
+<!-- 					<div class="ui card"> -->
+<!-- 						<div class="content"> -->
+<!-- 							sdsfd -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 			<div class="ui row"> -->
+<!-- 				<div class=" twelve wide column"> -->
+<!-- 					<div class="ui one column cards"> -->
+<!-- 					<div class="ui card"> -->
+<!-- 						<div class="content"> -->
+<!-- 							sdsfd -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 			<div class="ui row"> -->
+<!-- 				<div class="sixteen wide column"> -->
+<!-- 					<div class="ui one column cards"> -->
+<!-- 					<div class="ui card"> -->
+<!-- 						<div class="content"> -->
+<!-- 							sdsfd -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
 		<div class="ui attached basic segment" id="editor2">
+<!-- 			<div class="ui input"> -->
+<!-- 			  <input type="text" placeholder="Search..."> -->
+<!-- 			</div> -->
 <!-- 			<div class="ui special two stackable doubling cards"> </div> -->
 		</div>
+<!-- 		<div class="ui fluid selection dropdown"> -->
+<!-- 		  <input type="hidden" name="user" value="stevie"> -->
+<!-- 		  <i class="dropdown icon"></i> -->
+<!-- 		  <div class="default text">Select Friend</div> -->
+<!-- 		  <div class="menu" id="channel"> -->
+<!-- 		    <div class="item" data-value="jenny"> -->
+<!-- 		      <img class="ui mini avatar image" src="/images/avatar/small/jenny.jpg"> -->
+<!-- 		      Jenny Hess -->
+<!-- 		    </div> -->
+<!-- 		    <div class="item" data-value="elliot"> -->
+<!-- 		      <img class="ui mini avatar image" src="/images/avatar/small/elliot.jpg"> -->
+<!-- 		      Elliot Fu -->
+<!-- 		    </div> -->
+<!-- 		    <div class="item" data-value="stevie"> -->
+<!-- 		      <img class="ui mini avatar image" src="/images/avatar/small/stevie.jpg"> -->
+<!-- 		      Stevie Feliciano -->
+<!-- 		    </div> -->
+<!-- 		    <div class="item" data-value="christian"> -->
+<!-- 		      <img class="ui mini avatar image" src="/images/avatar/small/christian.jpg"> -->
+<!-- 		      Christian -->
+<!-- 		    </div> -->
+<!-- 		    <div class="item" data-value="matt"> -->
+<!-- 		      <img class="ui mini avatar image" src="/images/avatar/small/matt.jpg"> -->
+<!-- 		      Matt -->
+<!-- 		    </div> -->
+<!-- 		    <div class="item" data-value="justen"> -->
+<!-- 		      <img class="ui mini avatar image" src="/images/avatar/small/justen.jpg"> -->
+<!-- 		      Justen Kitsune -->
+<!-- 		    </div> -->
+<!-- 		  </div> -->
+<!-- 		</div> -->
 	</div>
 
 	<div class="ui small modal">
@@ -223,47 +296,113 @@
 		]
 
 		
-		
+		var channelTypes = [
+			{
+				"label" : "NioSocketChannel"
+			},
+			{
+				"label" : "NioSocketChannel"
+			},
+			{
+				"label" : "NioSocketChannel"
+			}
+		]
 		
 		var stack = {
-			channel : "io.netty.channel.socket.nio.NioSocketChannel",
+			channel : {
+				label : "NioSocketChannel",
+				type : "io.netty.channel.socket.nio.NioSocketChannel"
+			},
 			pipeline : [  {
 				label : "Http Client Codec",
 				impl : "io.netty.handler.codec.http.HttpClientCodec",
 				type : "Codec",
-				from : "HttpObject",
-				to : "byte[]",
+				upstreamFrom : "ByteBuf",
+				upstreamTo : "HttpResponceObject",
+				downstreamFrom : "",
+				downstreamTo : "",
+				description: "A combination of HttpRequestEncoder and HttpResponseDecoder which enables easier client side HTTP implementation"
+			},{
+				label : "Http Client Codec",
+				impl : "io.netty.handler.codec.http.HttpClientCodec",
+				type : "Codec",
+				upstreamFrom : "ByteBuf",
+				upstreamTo : "HttpResponseObject",
+				downstreamFrom : "HttpRequestObject",
+				downstreamTo : "ByteBuf",
 				description: "A combination of HttpRequestEncoder and HttpResponseDecoder which enables easier client side HTTP implementation"
 			},{
 				label : "SSL Client Handler",
 				impl : "io.netty.handler.ssl.SslHandler",
 				type : "Codec",
-				from : "byte[]",
-				to : "byte[]",
+				upstreamFrom : "ByteBuf",
+				upstreamTo : "ByteBuf",
+				downstreamFrom : "ByteBuf",
+				downstreamTo : "ByteBuf",
 				parameters : [ {
 					key : "host",
 					value : "my.zipato.com"
-				} ]
+				} ],
+				description : "Adds SSL · TLS and StartTLS support to a Channel."
 			} ]
 		}
 		
-		var editor = d3.select("#editor2").append("div").classed("ui text container", true)
+		var editor = d3.select("#editor2").append("div").classed("ui  container", true)
 			.append("div").classed("ui special one stackable cards", true);
 		var item = editor.selectAll("div.handler").data(stack.pipeline).enter()
-			.append("div").classed("ui card handler", true);
-		item.append("div").classed("ui top attached button", true)
-			.append("i").classed("arrow up icon", true);
-		var content = item.append("div").classed("content", true);
-			content.append("div").classed("header", true).text(function(d){return d.label});
-// 		var meta = content.append("div").classed("meta ", true);
-// 			meta.append("div").text(function(d){return "Convert from " +  d.from + " to " + d.to});
-// 			content.append("div").classed("description", true).text(function(d){return d.description});
-		item.append("div").classed("ui bottom attached button", true)
-			.append("i").classed("arrow down icon", true);
+			.append("div").classed("ui card handler", true)
+			.append("div").classed("ui three column internally celled grid content", true)
+			.append("div").classed("stretched row", true);
+// 			item.append("div").classed("ui top attached button", true)
+// 			.append("i").classed("arrow up icon", true);
 		
+// 		var topExtra = item.append("div").classed("extra content", true);
+// 		var upstreamTo = topExtra.append("a");
+// 			upstreamTo.append("i").classed("arrow up icon", true);
+// 			upstreamTo.append("span").text(function(d){return d.upstreamTo});
+// 		var downstreamFrom = topExtra.append("a").classed("right floated", true);
+// 			downstreamFrom.append("span").text(function(d){return d.downstreamFrom});
+// 			downstreamFrom.append("i").classed("arrow down icon", true);
 		
+// 		var content = item.append("div").classed("ui three column internally celled grid content", true);
+		var upstream = item.append("div").classed("four wide column", true)
+		.append("div").classed("ui one column grid", true)
+		.append("div").classed("center aligned row", true);
+		var upstreamFrom = upstream
+			.append("div").classed("column", true).append("div").classed("meta", true);
+			upstreamFrom.append("span").text(function(d){return d.upstreamTo});
+		var downstreamTo2 = upstream
+			.append("div").classed("column", true).append("div").classed("meta", true);
+			downstreamTo2.append("i").classed("chevron up big icon", true);
+		var downstreamTo = upstream
+			.append("div").classed("column", true).append("div").classed("meta", true);
+			downstreamTo.append("span").text(function(d){return d.upstreamFrom});
 		
-
+		var content = item.append("div").classed("eight wide column", true);
+			content.append("h3").classed("header", true).text(function(d){return d.label});
+			content.append("div").classed("description", true).text(function(d){return d.description});
+		var downstream = item.append("div").classed("four wide column", true)
+			.append("div").classed("ui one column grid", true)
+			.append("div").classed("center aligned row", true);
+			
+// 		var bottomExtra = item.append("div").classed("extra content", true);
+		var upstreamFrom = downstream
+			.append("div").classed("column", true).append("div").classed("meta", true);
+			upstreamFrom.append("span").text(function(d){return d.downstreamFrom});
+		var downstreamTo2 = downstream
+			.append("div").classed("column", true).append("div").classed("meta", true);
+			downstreamTo2.append("i").classed("chevron down big icon", true);
+		var downstreamTo = downstream
+			.append("div").classed("column", true).append("div").classed("meta", true);
+			downstreamTo.append("span").text(function(d){return d.downstreamTo});
+		
+		editor.append("div").classed("ui card channel", true)
+			.append("div").classed("center aligned content", true)
+			.append("div").classed("header", true).text("NioSocketChannel (TCP)");
+		
+		var channelVariant = d3.select("#channel").selectAll("item").data(channelTypes).enter();
+		channelVariant.append("div").classed("item", true).text(function(d){return d.label;});
+		
 		function generateUUID() {
 			var d = new Date().getTime();
 			if (window.performance
