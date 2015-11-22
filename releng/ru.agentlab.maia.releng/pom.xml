@@ -106,25 +106,25 @@
 		<profile>
 			<id>task-plugins</id>
 			<modules>
-				<module>../../plugins/ru.agentlab.maia.task</module>
-				<module>../../plugins/ru.agentlab.maia.task.fsm</module>
-				<module>../../plugins/ru.agentlab.maia.task.jade</module>
-				<module>../../plugins/ru.agentlab.maia.task.primitive</module>
-				<module>../../plugins/ru.agentlab.maia.task.pattern</module>
-				<module>../../plugins/ru.agentlab.maia.task.parallel</module>
-				<module>../../plugins/ru.agentlab.maia.task.sequential</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.fsm</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.jade</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.primitive</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.pattern</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.parallel</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.sequential</module>
 			</modules>
 		</profile>
 		<profile>
 			<id>task-aspects</id>
 			<modules>
-				<module>../../plugins/ru.agentlab.maia.task</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour</module>
 				<module>../../plugins/ru.agentlab.maia.event</module>
 				<module>../../plugins/ru.agentlab.maia.event.osgi</module>
 				
-				<module>../../aspects/ru.agentlab.maia.task.aspect</module>
-				<module>../../aspects/ru.agentlab.maia.task.events</module>
-				<module>../../aspects/ru.agentlab.maia.task.logs</module>
+				<module>../../aspects/ru.agentlab.maia.behaviour.aspect</module>
+				<module>../../aspects/ru.agentlab.maia.behaviour.events</module>
+				<module>../../aspects/ru.agentlab.maia.behaviour.logs</module>
 			</modules>
 		</profile>
 		<profile>
@@ -137,13 +137,13 @@
 				</repository>
 			</repositories>
 			<modules>
-				<module>../../plugins/ru.agentlab.maia.task</module>
-				<module>../../plugins/ru.agentlab.maia.task.fsm</module>
-				<module>../../plugins/ru.agentlab.maia.task.jade</module>
-				<module>../../plugins/ru.agentlab.maia.task.primitive</module>
-				<module>../../plugins/ru.agentlab.maia.task.pattern</module>
-				<module>../../plugins/ru.agentlab.maia.task.parallel</module>
-				<module>../../plugins/ru.agentlab.maia.task.sequential</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.fsm</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.jade</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.primitive</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.pattern</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.parallel</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.sequential</module>
 			</modules>
 		</profile>
 		<profile>
@@ -156,21 +156,21 @@
 				</repository>
 			</repositories>
 			<modules>
-				<module>../../plugins/ru.agentlab.maia.task</module>
-				<module>../../plugins/ru.agentlab.maia.task.fsm</module>
-				<module>../../plugins/ru.agentlab.maia.task.jade</module>
-				<module>../../plugins/ru.agentlab.maia.task.primitive</module>
-				<module>../../plugins/ru.agentlab.maia.task.pattern</module>
-				<module>../../plugins/ru.agentlab.maia.task.parallel</module>
-				<module>../../plugins/ru.agentlab.maia.task.sequential</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.fsm</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.jade</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.primitive</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.pattern</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.parallel</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.sequential</module>
 				<module>../../tests/org.junit.parameterizedsuite</module>
 				<module>../../tests/org.jbehave</module>
 
-				<module>../../tests/ru.agentlab.maia.task.test.blackbox</module>
-				<module>../../tests/ru.agentlab.maia.task.sequential.test.blackbox</module>
-				<module>../../tests/ru.agentlab.maia.task.parallel.test.blackbox</module>
-				<module>../../tests/ru.agentlab.maia.task.fsm.test.blackbox</module>
-				<module>../../tests/ru.agentlab.maia.task.pattern.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.behaviour.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.behaviour.sequential.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.behaviour.parallel.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.behaviour.fsm.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.behaviour.pattern.test.blackbox</module>
 			</modules>
 		</profile>
 		<profile>
@@ -183,13 +183,12 @@
 				</repository>
 			</repositories>
 			<modules>
-				<module>../../plugins/ru.agentlab.maia.task</module>
-				<module>../../plugins/ru.agentlab.maia.task.fsm</module>
-				<module>../../plugins/ru.agentlab.maia.task.jade</module>
-				<module>../../plugins/ru.agentlab.maia.task.primitive</module>
-				<module>../../plugins/ru.agentlab.maia.task.pattern</module>
-				<module>../../plugins/ru.agentlab.maia.task.parallel</module>
-				<module>../../plugins/ru.agentlab.maia.task.sequential</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.fsm</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.primitive</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.pattern</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.parallel</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.sequential</module>
 				<module>../../tests/org.jbehave</module>
 
 				<module>../../tests/ru.agentlab.maia.task.test.integration</module>
@@ -205,19 +204,19 @@
 				</repository>
 			</repositories>
 			<modules>
-				<module>../../plugins/ru.agentlab.maia.task</module>
-				<module>../../plugins/ru.agentlab.maia.task.fsm</module>
-				<module>../../plugins/ru.agentlab.maia.task.jade</module>
-				<module>../../plugins/ru.agentlab.maia.task.primitive</module>
-				<module>../../plugins/ru.agentlab.maia.task.pattern</module>
-				<module>../../plugins/ru.agentlab.maia.task.parallel</module>
-				<module>../../plugins/ru.agentlab.maia.task.sequential</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.fsm</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.jade</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.primitive</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.pattern</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.parallel</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.sequential</module>
 
 				<!-- <module>../../tests/org.junit.parameterizedsuite</module> -->
 
-				<!-- <module>../../tests/ru.agentlab.maia.task.fsm.test</module> -->
-				<!-- <module>../../tests/ru.agentlab.maia.task.pattern.test</module> -->
-				<!-- <module>../../tests/ru.agentlab.maia.task.sequential.test</module> -->
+				<!-- <module>../../tests/ru.agentlab.maia.behaviour.fsm.test</module> -->
+				<!-- <module>../../tests/ru.agentlab.maia.behaviour.pattern.test</module> -->
+				<!-- <module>../../tests/ru.agentlab.maia.behaviour.sequential.test</module> -->
 			</modules>
 		</profile>
 		<profile>
