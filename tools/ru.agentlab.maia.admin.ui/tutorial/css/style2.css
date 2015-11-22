@@ -1,0 +1,266 @@
+﻿body {
+	background-color: #ddd;
+}
+.ui.cards>.card  {
+	background-color: #fafafa;
+box-shadow: 0 0 30px rgba(34,36,38,.15);
+
+}
+.ui.card>.content.grid, .ui.cards>.card>.content.grid {
+	padding : 0px;
+}
+
+.ui.dropdown .menu>.labeled.divider {
+	border-top: 0px solid rgba(34,36,38,.1);
+}
+.ui.segment {
+	background-color: #ddd;
+}
+.ui.footer.segment {
+	margin-top : 5em;
+}
+.ui.attached.segment{
+	border:0px;
+}
+.main.container {
+	padding-left: 15em;
+}
+  
+.ui.pointing.menu {
+	background-color : #eee;
+}
+
+.ui.multiple.dropdown {
+	padding-right : 10px;
+}
+
+.ui.pointing.menu .active.item:after, .ui.pointing.menu .active.item:hover:after {
+	background-color : #e0e0e0;
+}
+
+.ui.category.search.item {
+	height: 40px;
+}
+
+.btn-default {
+	background-image : none;
+	background-color : transparent;
+	border-color : transparent;
+	//box-shadow : null;
+}
+
+
+.ui.loading.segment:before {
+  background: none;
+}
+
+
+.ui.table tr.error,
+.ui.table td.error {
+  background: rgba(219,40,40, 0.2) !important;
+  color: #9f3a38 !important;
+}
+
+text {
+            user-select: none; /* CSS3 (little to no support) */
+        -ms-user-select: none; /* IE 10+ */
+       -moz-user-select: none; /* Gecko (Firefox) */
+    -webkit-user-select: none; /* Webkit (Safari, Chrome) */
+}
+
+.ui.input input {
+	width : 100%;
+	//margin-top: 10px;
+	padding: 10px;
+	background  : #eee;
+	font-size: 11px;
+	height: 20px;
+	font-family: Tahoma;
+	border: 1px solid #ccc; //цвет рамки
+  // border-radius: 3px; //закругление углов (общее)
+  // -webkit-border-radius: 3px; //закругление углов (Google Chrome)
+  // -moz-border-radius: 3px; //закругление углов (FireFox)
+  // -khtml-border-radius: 3px; //закругление углов (Safari)
+  // background: #ffffff !important; // желательно прописывать, так как в Chrome при сохранных данных оно может быть желтым
+   //outline: none; // удаляет обводку в браузерах хром(желтая) и сафари(синяя)
+   //height: 24px; // высота на свое усмотрение
+   //width: 120px; // ширина на свое усмотрение
+  // color: #ccc; //цвет шрифта в обычном состоянии
+   //font-size: 9px; // Размер шрифта
+   //font-family: Tahoma; // Стиль шрифта
+}
+
+.ui.input input:focus  {
+	outline: none;
+	background  : #f8f8f8;
+	border: 1px solid #aaa;
+}
+	
+div.tooltip {   
+  position: absolute;           
+  text-align: start;           
+  width: 400px;                  
+  height: 48px;                 
+  padding: 2px;             
+  font: 11px sans-serif;        
+  background: black;
+  opacity : 1;
+  fill: white;
+  color : white;
+  fill-opacity: 1;
+  border: 1px;      
+  border-radius: 0px;
+  border-color : white;
+  pointer-events: none;         
+}
+
+.chart {
+  display: block;
+  margin: auto;
+  margin-top: 10px;
+  font-size: 11px;
+}
+
+g.context {
+	//cursor : pointer;
+}
+
+g.context > rect {
+	-webkit-transition: fill 0.7s ease-in-out, fill-opacity 0.7s ease-in-out;
+	fill: #bbb;
+	stroke: #ddd;
+	stroke-width : 2px;
+}
+
+g.context.root > rect {
+	//fill : #93A7BD;
+	fill : #7692B5;
+	//fill : rgb(18, 88, 98);
+}
+g.context.container > rect {
+	//fill : #8EB2B8;
+	fill : #759FB8;
+	//fill : rgb(42, 128, 114);
+}
+g.context.agent > rect {
+	//fill : #9BC7AF;
+	fill : #76AEBA;
+	//fill : rgb(85, 169, 119);
+}
+g.context.behaviour > rect {
+	//fill : #B7DBA7;
+	fill : #71B2B1;
+	//fill : rgb(153, 206, 112);
+}
+g.context.task > rect {
+	//fill : #D6B5B4;
+	fill : #80C7B7;
+	//fill : rgb(239, 238, 107);
+}
+
+g.context.hover > rect {
+	fill-opacity : 0.85;
+	//stroke: #aaa;
+	//stroke-width : 1px;
+}
+
+g.context.hover > text {
+	fill : #fff;
+	//stroke: #aaa;
+	//stroke-width : 1px;
+}
+g.context.selected > rect {
+	//fill: #bbb;
+	//fill: #5cb85c;
+	//fill-opacity: 0.3;
+}
+
+g.context.z > rect {
+	-webkit-transition: fill 0.7s ease-in-out, fill-opacity 0.7s ease-in-out;
+	//fill: #ccc ;
+	//fill: #5cb85c;
+	fill-opacity: 0.2;
+	//opacity: 0.3;
+}
+
+g.context.z > g.service > text {
+	//fill: #ddd;
+	//fill: #5cb85c;
+	opacity: 0.3;
+}
+
+
+g.context.z > g.active.hover > text {
+	fill: #fff;
+	//fill: #5cb85c;
+	//fill-opacity: 0.3;
+}
+
+g.context.selected > text {
+pointer-events: none;
+	fill: #eee;
+}
+
+g.context > text {
+	//-webkit-transition: fill 0.5s ease-in-out;
+	cursor : default;
+	font-size : 11px;
+	fill: #ddd;
+	pointer-events: none;
+}
+
+g.service {
+	//cursor : pointer;
+}
+
+g.service > rect {
+	-webkit-transition: fill 0.3s ease-in-out , fill-opacity 0.3s ease-in-out;
+	stroke: #eee;
+	//fill : #eee;
+	fill-opacity : 0;
+	stroke-width : 1px;
+	stroke-opacity : 0.4;
+	fill: none;
+}
+
+g.service > text {
+	-webkit-transition: fill 0.6s ease-in-out;
+	text-anchor : start;
+	alignment-baseline : before-edge;
+	fill : #eee;
+	fill-opacity : 0.6;
+	font-size : 9px;
+	cursor : default;
+	pointer-events: none;
+}
+
+g.service.hover > rect {
+	fill-opacity : 1;
+}
+
+g.service.hover > text {
+	fill-opacity : 1;
+	fill : #fff;
+}
+
+g.service.hover.active > text {
+	fill-opacity : 1;
+	fill : #fff;
+}
+g.service.hover.active > rect {
+	stroke-width : 0px;
+	fill-opacity : 1;
+	fill : #eee;
+}
+
+g.service.active > rect {
+	stroke : #eee;
+	stroke-width : 1px;
+	stroke-opacity : 1;
+	fill-opacity : 0.6;
+	//fill: #ddd;
+}
+
+g.service.active > text {
+	fill: #eee;
+}

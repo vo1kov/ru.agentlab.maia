@@ -1,0 +1,27 @@
+<div class="ui attached basic segment">
+	<div class="ui three statistics">
+		<div ng-repeat="(name, value) in os.info" class="statistic">
+			<div class="label">{{name}}</div>
+			<div class="text value">{{value}}</div>
+		</div>
+	</div>
+	<table class="ui very basic table">
+		<thead>
+			<tr>
+				<th class="four wide">Environment Variable</th>
+				<th class="twelve wide">Environment Value</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="(name, value) in os.variables">
+				<td>{{name}}</td>
+				<td>
+					<div class="ui transparent big fluid icon input">
+						<input type="text" value="{{value}}">
+						<i class="write icon"></i>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

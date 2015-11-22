@@ -20,8 +20,14 @@
 <body>
 	<div class="ui left vertical inverted orange sidebar overlay visible menu">
 			<div class="ui basic segment">
-				<img class="ui centered tiny circular image" src="images/maya-calendar.jpg"></img>
-			</div>
+			<img class="ui centered tiny circular image" src="images/maya-calendar.jpg"></img>
+		</div>
+<!-- 		<div class="ui basic segment"> -->
+<!-- 			<div class="ui basic  center aligned segment "> -->
+<!-- 				<div class="ui header inverted"> -->
+<!-- 					Stack -->
+<!-- 				</div> -->
+<!-- 			</div> -->
 			<div class="ui accordion inverted">
 				<div class="active title">
 					<div class="ui horizontal inverted fitted divider">
@@ -112,26 +118,67 @@
 						<div class="ui breadcrumb">
 							<div class="section">Home</div>
 							<div class="divider"> / </div>
-							<div class="section">MAIA</div>
+							<div class="section">JVM</div>
 							<div class="divider"> / </div>
 						</div>
 					</div>
-					<div>Interaction Protocols</div>
+					<div>Statistic</div>
 				</div>
 			</h1>
 			<div class="ui right floated secondary small borderless menu">
-				<div class="ui  icon basic buttons">
-					<div class="ui icon button">
-						<i class="cloud download icon"></i>
-					</div>
-					<div class="ui button">
-						<i class="green plus icon"></i>
-					</div>
-				</div>
 			</div>
 		</div>
 		<div class="ui attached basic  segment">
-			<div class="ui special three stackable doubling cards"> </div>
+			<div class="ui two statistics">
+				<div class="statistic">
+					<div class="label">vendor</div>
+					<div class="text value">Oracle Corporation</div>
+				</div>
+				<div class="statistic">
+					<div class="label">version</div>
+					<div class="text value">1.8.0_20</div>
+				</div>
+			</div>
+			
+			
+			<table class="ui very basic table">
+			  <thead>
+			    <tr>
+			      <th class="four wide">Environment Variable</th>
+			      <th class="twelve wide">Environment Value</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr>
+			      <td>PATH</td>
+			      <td>
+			      	<div class="ui transparent big fluid icon input">
+					  <input type="text" value="C:\Users\Dmitriy\AppData\Local\.meteor\">
+						<i class="write icon"></i>
+					</div>
+		      	  </td>
+			    </tr>
+			    <tr>
+			      <td>TEMP</td>
+			      <td>
+			      	<div class="ui transparent big fluid icon input">
+					  <input type="text" value="%USERPROFILE%\AppData\Local\Temp">
+						<i class="write icon"></i>
+					</div>
+					</td>
+			    </tr>
+			    <tr>
+			      <td>OS</td>
+			      <td>
+			      <div class="ui transparent big fluid icon input">
+					  <input type="text" value="Windows_NT">
+						<i class="write icon"></i>
+					</div>
+				</td>
+			    </tr>
+			  </tbody>
+			</table>
+			
 		</div>
 	</div>
 

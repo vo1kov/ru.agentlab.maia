@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" ng-app="maiaApp">
+	<head>
+		<meta charset="utf-8">
+		<title>_test</title>
+		
+		<link type="text/css" rel="stylesheet" href="css/semantic.min.css" />
+		<link type="text/css" rel="stylesheet" href="css/style2.css" />
+		
+		<script type="text/javascript" src="js/semantic.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<script type="text/javascript" src="js/angular-ui-router.min.js"></script>
+		<script type="text/javascript" src="js/maia-app.js"></script>
+	</head>
+	
+	<body>
+		<div ng-controller="Menu" class="ui left vertical inverted orange sidebar overlay visible menu">
+			<div class="ui basic segment">
+				<img class="ui centered tiny circular image" src="images/maya-calendar.jpg"></img>
+			</div>
+			<div class="ui accordion inverted" ng-repeat="category in menu">
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="{{category.icon}} icon"></i>
+						{{category.name}}
+					</div>
+				</div>
+				<div class="active content menu">
+					<a class="item" ng-repeat="item in category.items" href="{{item.href}}">{{item.label}}</a>
+				</div>
+		    </div>
+		</div>
+		
+		<div class="ui main pusher container">
+			<div class="ui top attached clearing basic segment">
+				<h1 class="ui left floated header">
+					<div ng-controller="Menu" class="content">
+						<div class="sub header">
+							<div class="ui breadcrumb">
+								<span ng-repeat="step in bread">
+									<a class="section">{{step}}</a>
+									<div class="divider"> / </div>
+								</span>
+							</div>
+						</div>
+						<div>{{current}}</div>
+					</div>
+				</h1>
+				<div class="ui right floated secondary small borderless menu"></div>
+			</div>
+			<div ui-view></div>
+			<div class="ui attached basic segment" ng-controller="OperatingSystemStatistic">
+				<div class="ui three statistics">
+					<div ng-repeat="(name, value) in os.info" class="statistic">
+						<div class="label">{{name}}</div>
+						<div class="text value">{{value}}</div>
+					</div>
+				</div>
+				<table class="ui very basic table">
+					<thead>
+						<tr>
+							<th class="four wide">Environment Variable</th>
+							<th class="twelve wide">Environment Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="(name, value) in os.variables">
+							<td>{{name}}</td>
+							<td>
+								<div class="ui transparent big fluid icon input">
+									<input type="text" value="{{value}}">
+									<i class="write icon"></i>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+	</body>
+</html>

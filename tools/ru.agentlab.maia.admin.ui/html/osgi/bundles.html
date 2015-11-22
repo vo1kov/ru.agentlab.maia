@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link type="text/css" rel="stylesheet" href="../../css/semantic.min.css" />
+<link type="text/css" rel="stylesheet" href="../../css/style2.css" />
+<link type="text/css" rel="stylesheet" href="../../css/bundles.css" />
+
+<script type="text/javascript" src="../../js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="../../js/semantic.min.js"></script>
+<script type="text/javascript" src="../../js/d3.min.js"></script>
+<script type="text/javascript" src="../../js/maia.js"></script>
+<script type="text/javascript" src="../../js/socket.js"></script>
+<body>
+	<div class="ui left vertical inverted orange sidebar overlay visible menu">
+			<div class="ui basic segment">
+			<img class="ui centered tiny circular image" src="images/maya-calendar.jpg"></img>
+		</div>
+<!-- 		<div class="ui basic segment"> -->
+<!-- 			<div class="ui basic  center aligned segment "> -->
+<!-- 				<div class="ui header inverted"> -->
+<!-- 					Stack -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+			<div class="ui accordion inverted">
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="cloud icon"></i>
+						Ecosystem
+					</div>
+				</div>
+				<div class="active content menu">
+					<a class="item" href="clouds.html">Clouds</a>
+					<a class="item" href="protocols.html">Organization Repositories</a>
+					<a class="item" href="protocolrep.html">Protocol Repositories</a>
+					<a class="item" href="protocols.html">Ontology Repositories</a>
+					<a class="item" href="protocols.html">P2 Repositories</a>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="user icon"></i>
+						MAIA
+					</div>
+				</div>
+				<div class="active content menu">
+					<a class="item" href="tasks.html">Peers</a>
+					<a class="item" href="contexts.html">Containers</a>
+					<a class="item" href="agents.html">Agents</a>
+					<a class="item" href="tasks.html">Behaviours</a>
+					<a class="item" href="organizations.html">Organizations</a>
+					<a class="item" href="organizationdefs.html">Behaviour Definitions</a>
+					<a class="item" href="organizationdefs.html">Organization Definitions</a>
+					<a class="item" href="protocoldefs.html">Interaction Protocols</a>
+					<a class="item" href="protocols.html">Ontology Definitions</a>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="plug icon"></i>
+						OSGI
+					</div>
+				</div>
+				<div class="active content">
+					<div class="menu">
+						<a class="active item" href="bundles.html">Bundles</a>
+						<a class="item" href="bundles.html">Services</a>
+					</div>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="coffee icon"></i>
+						JVM
+					</div>
+				</div>
+				<div class="active content">
+				    <div class="menu">
+						<a class="item" href="threads.html">Threads</a>
+						<a class="item" href="bundles.html">Services</a>
+					</div>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="windows icon"></i>
+						OS
+					</div>
+				</div>
+				<div class="active content">
+				    <div class="menu">
+						<a class="item">Processes</a>
+						<a class="item">CPU Utilization</a>
+						<a class="item">Memory Utilization</a>
+					</div>
+				</div>
+				<div class="active title">
+					<div class="ui horizontal inverted fitted divider">
+						<i class="cube icon"></i>
+						HW
+					</div>
+				</div>
+				<div class="active content">
+				    <div class="menu">
+						<a class="item">Modules</a>
+					</div>
+				</div>
+			</div>
+<!-- 		</div> -->
+	</div>
+	
+	<div class="ui main pusher container">
+		<div class="ui top attached clearing basic segment">
+			<h1 class="ui left floated header">
+				<div class="content">
+					<div class="sub header">
+						<div class="ui breadcrumb">
+							<div class="section">Home</div>
+							<i class="right chevron icon divider"></i>
+							<div class="section">MAIA</div>
+							<i class="right chevron icon divider"></i>
+							<div class="section">Definitions</div>
+							<i class="right chevron icon divider"></i>
+						</div>
+					</div>
+					<div>OSGI Bundles</div>
+				</div>
+			</h1>
+			<div class="ui right floated secondary small borderless menu">
+				<div class="ui icon basic buttons">
+					<div class="ui button" data-content="Import Bundle" data-variation="inverted small">
+						<i class="cloud download icon"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="ui attached basic segment">
+			<div class="ui main vertical loading center aligned segment" id="body">
+		</div>
+	</div>
+	
+
+	<script>
+		var outerRadius = 800 / 2, innerRadius = 200;
+
+		var fill = d3.scale.category20c();
+
+		var chord = d3.layout.chord().padding(.02).sortSubgroups(d3.descending)
+				.sortChords(d3.descending);
+
+		var arc = d3.svg.arc().innerRadius(innerRadius).outerRadius(
+				innerRadius + 50);
+
+		var svg = d3.select("#body").append("svg").attr("width",
+				outerRadius * 2).attr("height", outerRadius * 2).append("g")
+				.attr("transform",
+						"translate(" + outerRadius + "," + outerRadius + ")");
+
+		function updateBundles(imports) {
+
+			var indexByName = d3.map(), nameByIndex = d3.map(), stateByIndex = d3
+					.map(), unresolved = d3.map(), matrix = [], n = 0;
+
+			dispatch.on("bundle_update.bundles", function(event) {
+				var bundle = event.bundle;
+				imports.forEach(function(d) {
+					if (d.id == bundle) {
+						console.log(d);
+						switch (event.type) {
+						case "started":
+							d.state = "active";
+							break;
+						case "stopped":
+							d.state = "resolved";
+							break;
+						default:
+							console.log("!!qwert");
+							break;
+						}
+						console.log(d);
+						stateByIndex.set(bundle, d.state);
+						//d.state
+					}
+				})
+				updateBundles(imports);
+			});
+
+			imports.sort(function(a, b) {
+				return a.id - b.id;
+			});
+
+			// Compute a unique index for each package name.
+			imports.forEach(function(d) {
+				if (!indexByName.has(d.name)) {
+					nameByIndex.set(n, d.name);
+					stateByIndex.set(n, d.state);
+					indexByName.set(d.name, n++);
+				}
+			});
+
+			// Construct a square matrix counting package imports.
+			imports.forEach(function(im) {
+				var source = indexByName.get(im.name), row = matrix[source];
+				if (!row) {
+					row = matrix[source] = [];
+					for (var i = -1; ++i < n;)
+						row[i] = 0;
+				}
+				im.imports.forEach(function(d) {
+					var r = indexByName.get(d);
+					if (typeof (r) === 'undefined') {
+						console.log(im);
+						if (!unresolved.get(im.name)) {
+							unresolved.set(im.name, []);
+						}
+						var un = unresolved.get(im.name);
+						un.push(d);
+						//unresolved.set(im, un);
+					}
+					row[indexByName.get(d)]++;
+				});
+			});
+
+			var table = d3.select("table").select("tbody").selectAll("tr")
+					.data(imports).enter();
+
+			var row = table.append("tr").classed("error", function(d) {
+				return d.state === 'installed' ? true : null;
+			})
+
+			row.append("td").text(function(d) {
+				return d.id;
+			})
+
+			row.append("td").append("div").attr("class", function(d) {
+				switch (d.state) {
+				case "active":
+					return "ui blue label";
+					break;
+				case "installed":
+					return "ui red label";
+					break;
+				case "resolved":
+					return "ui label";
+					break;
+				}
+			})
+			//.classed("ui", true)
+			//.classed("label", true)
+			.text(function(d) {
+				return d.state.toUpperCase();
+			})
+
+			row.append("td").text(function(d) {
+				return d.name;
+			})
+
+			row.filter(function(d) {
+				return d.state != 'installed';
+			}).append("td");
+
+			var unrTD = row.filter(function(d) {
+				return d.state === 'installed';
+			}).append("td");
+
+			//console.log(unresolved);
+
+			unrTD.html(function(d) {
+				var res = "";
+				var und = unresolved.get(d.name);
+				if (und) {
+					for (var i = 0; i < und.length; i++) {
+						res += "<div class='item'>";
+						res += unresolved.get(d.name)[i];
+						res += "</div>";
+					}
+					return "<h4>Unresolved dependencies:</h4>"
+							+ "<div class = 'ui bulleted list'>" + res
+							+ "</div>";
+				}
+			})
+			//.text("Unresolved dependencies:");
+
+			//unrTD.append("div")
+			//.classed("ui bulleted list", true)
+			//.append("div")
+			//.classed("item", true)
+			//.text(function(d){return unresolved.get(d);});
+
+			chord.matrix(matrix);
+
+			function showImports(d) {
+				g.filter(function(l) {
+					return l != d;
+				}).style("opacity", 0.1);
+				var n = [];
+
+				links.filter(function(l) {
+					var result = l.source.index != d.index;
+					if (!result) {
+						n.push(l.target.index);
+					}
+					return result;
+				}).style("opacity", 0.01);
+				//console.log(n);
+				if (n.length > 0) {
+					g.filter(function(l) {
+						return n.indexOf(l.index) > -1;
+					}).style("opacity", 1);
+				}
+			}
+
+			function showExports(d) {
+				g.filter(function(l) {
+					return l != d;
+				}).style("opacity", 0.1);
+				var n = [];
+
+				links.filter(function(l) {
+					var result = l.target.index != d.index;
+					if (!result) {
+						n.push(l.source.index);
+					}
+					return result;
+				}).style("opacity", 0.01);
+				//console.log(n);
+				if (n.length > 0) {
+					g.filter(function(l) {
+						return n.indexOf(l.index) > -1;
+					}).style("opacity", 1);
+				}
+			}
+
+			function showImportExports(d) {
+				g.filter(function(l) {
+					return l != d;
+				}).style("opacity", 0.1);
+				var n = [];
+
+				links.filter(function(l) {
+					var result1 = l.target.index != d.index;
+					if (!result1) {
+						n.push(l.source.index);
+					}
+					var result2 = l.source.index != d.index;
+					if (!result2) {
+						n.push(l.target.index);
+					}
+					return result1 & result2;
+				}).style("opacity", 0.01);
+				//console.log(n);
+				if (n.length > 0) {
+					g.filter(function(l) {
+						return n.indexOf(l.index) > -1;
+					}).style("opacity", 1);
+				}
+			}
+
+			$(document).on("mousedown", "svg", function(e) {
+				e.stopPropagation();
+				e.stopImmediatePropagation();
+				e.preventDefault();
+				return false;
+			}).on("contextmenu", "svg", function(e) {
+				e.stopPropagation();
+				e.stopImmediatePropagation();
+				e.preventDefault();
+				return false;
+			});
+
+			//var mouseDownCount = 0;
+
+			var g = svg.selectAll(".bundle").data(chord.groups).enter().append(
+					"g").attr("class", function(d) {
+				return stateByIndex.get(d.index);
+			}).classed("bundle", true).on("mousedown", function(d) {
+				switch (d3.event.buttons) {
+				case 1:
+					showImports(d);
+					break;
+				case 2:
+					showExports(d);
+					break;
+				case 3:
+				case 4:
+					showImportExports(d);
+					break;
+				default:
+					break;
+				}
+			}).on("mouseup", function(d) {
+				g.style("opacity", 1);
+				links.style("opacity", 1);
+			});
+
+			var h = {};
+
+			var nodes = g.append("path").classed("node", true).attr("d", arc);
+
+			g.append("text").each(function(d) {
+				d.angle = (d.startAngle + d.endAngle) / 2;
+			}).attr("dy", ".35em").attr(
+					"transform",
+					function(d) {
+						return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
+								+ "translate(" + (innerRadius + 65) + ")"
+								+ (d.angle > Math.PI ? "rotate(180)" : "");
+					}).style("text-anchor", function(d) {
+				return d.angle > Math.PI ? "end" : null;
+			}).text(function(d) {
+				return nameByIndex.get(d.index);
+			});
+
+			var links = svg.selectAll(".import").data(chord.chords).enter()
+					.append("path").attr("class", function(d) {
+						return stateByIndex.get(d.source.index).toLowerCase();
+					}).classed("import", true).attr("d",
+							d3.svg.chord().radius(innerRadius));
+
+			d3.selectAll(".loading").classed("loading", false);
+		}
+
+		d3.select(self.frameElement).style("height", outerRadius * 2 + "px");
+	</script>
+
+	<script>
+		$(document).ready(function() {
+			$('.ui.dropdown').dropdown();
+		});
+	</script>
+</body>
