@@ -1,0 +1,63 @@
+<div class="ui special two stackable doubling cards">
+	<div class="card" ng-repeat="repository in repositories">
+		<div class="blurring dimmable content">
+			<div class="ui right corner label">
+				<i class="database icon"></i>
+			</div>
+			<div class="ui inverted dimmer">
+				<div class="content">
+					<div class="center">
+						<div class="ui icon basic buttons">
+							<div class="ui button">
+								<i class="blue pause icon"></i>
+							</div>
+							<div class="ui button">
+								<i class="blue write icon"></i>
+							</div>
+							<div class="ui button">
+								<i class="blue remove icon"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="header">
+				{{repository.label}}
+			</div>
+			<div class="meta">
+				<div>
+					<i class="world icon"></i>
+					{{repository.address}}
+				</div>
+				<div>
+					<i class="sitemap icon"></i>
+					{{repository.protocols.length}} Protocols
+				</div>
+			</div>
+			<div class="description">
+				{{repository.description}}
+			</div>
+		</div>
+		<div class="extra content">
+			<div>
+				<a>
+					<i class="align justify icon"></i>
+					{{repository.protocol}} Network stack
+				</a>
+			</div>
+			<div>
+				<a>
+					<i class="exchange icon"></i>
+					{{repository.protocols.length}} Protocols
+				</a>
+			</div>
+			<div>
+				<a>
+					<i class="student icon"></i>
+					{{repository.protocols.length}} Ontologies
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+

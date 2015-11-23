@@ -1,0 +1,19 @@
+<div class="ui center aligned basic segment">
+	<a ui-sref="root.home" class="ui tiny circular image">
+		<img src="images/maya-calendar.jpg"></img>
+	</a>
+</div>
+<div class="ui accordion inverted" ng-repeat="category in menu">
+	<div class="active title">
+		<div class="ui horizontal inverted fitted divider">
+			<i class="{{category.icon}} icon"></i>
+			{{category.name}}
+		</div>
+	</div>
+	<div class="active content menu">
+		<a class="item" ng-repeat="item in category.items" ng-href="{{$state.href(item.state)}}"
+			ng-class="{active: $state.includes(item.state)}">
+			{{item.label}}
+		</a>
+	</div>
+</div>

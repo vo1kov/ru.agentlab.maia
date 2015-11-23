@@ -1,0 +1,40 @@
+<div class="ui special five stackable doubling cards">
+	<div class="card" ng-repeat="agent in agents">
+		<div class="blurring dimmable content">
+			<div class="ui right corner label">
+				<i class="user icon"></i>
+			</div>
+			<div class="ui inverted dimmer">
+				<div class="content">
+					<div class="center">
+						<div class="ui icon basic buttons">
+							<div class="ui button">
+								<i class="blue pause icon"></i>
+							</div>
+							<div class="ui button">
+								<i class="blue write icon"></i>
+							</div>
+							<div class="ui button">
+								<i class="blue remove icon"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="header">
+				{{agent.label}}
+			</div>
+			<div class="meta">
+				<div>
+					<i class="user icon"></i>
+					{{agent.participants.length}} Roles
+				</div>
+				<div>
+					<i class="sitemap icon"></i>
+					{{agent.participants.length}} Behaviours
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
