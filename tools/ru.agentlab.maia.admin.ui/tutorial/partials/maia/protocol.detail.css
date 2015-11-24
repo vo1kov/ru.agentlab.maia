@@ -1,0 +1,33 @@
+svg .participant .body {
+	fill: #fafafa;
+	stroke: none;
+	rx: 4px;
+	ry: 4px;
+}
+
+svg .participant .line {
+	fill: none;
+	stroke: rgba(0,0,0,.85);
+	stroke-width: 2px;
+	stroke-dasharray: 10px, 5px;
+}
+
+svg .participant .text {
+	fill: rgba(0,0,0,.85);
+	font-weight: bold;    
+	font-size: 1.28571429em;
+	text-anchor: middle;
+	alignment-baseline: middle;
+}
+
+svg .participant .back {
+	fill: lightgray;
+	stroke: none;
+	cursor: pointer;
+}
+
+svg line.interaction {
+	fill: none;
+	stroke: rgba(0,0,0,.85);
+	stroke-width: 3px;
+}

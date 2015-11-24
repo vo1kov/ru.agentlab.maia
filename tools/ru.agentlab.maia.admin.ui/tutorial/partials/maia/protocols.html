@@ -1,0 +1,57 @@
+<div class="ui special three stackable doubling cards">
+	<div class="card" ng-repeat="protocol in protocols">
+		<div class="blurring dimmable content">
+			<div class="ui right corner label">
+				<i class="database icon"></i>
+			</div>
+			<div class="ui inverted dimmer">
+				<div class="content">
+					<div class="center">
+						<div class="ui icon basic buttons">
+							<div class="ui button">
+								<i class="blue write icon"></i>
+							</div>
+							<div class="ui button">
+								<i class="blue remove icon"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="header">
+				{{protocol.label}}
+			</div>
+			<div class="meta">
+				<div>
+					<i class="history icon"></i>
+					{{protocol.version}}
+				</div>
+				<div>
+					<i class="sitemap icon"></i>
+					{{protocol.participants.length}} Participants
+				</div>
+			</div>
+			<div class="description">
+				{{protocol.description}}
+			</div>
+			<div class="description">
+				{{protocol.description}}
+			</div>
+		</div>
+		<div class="extra content">
+			<div>
+				<a ng-href="#/maia/protocols/{{protocol.id}}">
+					<i class="user icon"></i>
+					{{protocol.participants.length}} Agents
+				</a>
+			</div>
+			<div>
+				<a ng-href="#/maia/protocols/{{protocol.id}}">
+					<i class="users icon"></i>
+					{{protocol.participants.length}} Groups
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+

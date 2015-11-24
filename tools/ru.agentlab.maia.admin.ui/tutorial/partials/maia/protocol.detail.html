@@ -1,0 +1,61 @@
+<svg width="600" height="600">
+	<defs>
+		<marker 
+			id="arrow" 
+			viewBox="0 -5 10 10" 
+			refX="10" 
+			refY="0" 
+			markerWidth="6" 
+			markerHeight="4" 
+			orient="auto" 
+			style="fill: rgb(32, 32, 32);">
+			<path d="M0,-5L10,0L0,5">
+			</path>
+		</marker>
+	</defs>
+	<g 
+		class="participant" 
+		ng-repeat="participant in protocol.participants" 
+		transform="translate({{participationX($index)}}, 0)">
+		
+		<rect 
+			class="back" 
+			x="50" 
+			y="50" 
+			width="50" 
+			height="375">
+		</rect>
+		<line 
+			class="line" 
+			x1="75" 
+			y1="50" 
+			x2="75" 
+			y2="400">
+		</line>
+		<rect 
+			class="body" 
+			x="0" 
+			y="0" 
+			width="150" 
+			height="50">
+		</rect>
+		<text 
+			class="text" 
+			x="75" 
+			y="25">
+			{{participant.label}}
+		</text>
+	</g>
+	<line 
+		class="interaction" 
+		ng-repeat="interaction in protocol.interactions" 
+		x1="{{getX(interaction.source)}}" 
+		y1="{{$index * 40 + 70}}" 
+		x2="{{getX(interaction.target)}}" 
+		y2="{{$index * 40 + 70}}" 
+		marker-end="url(#arrow)">
+	</line>
+</svg>
+
+
+	

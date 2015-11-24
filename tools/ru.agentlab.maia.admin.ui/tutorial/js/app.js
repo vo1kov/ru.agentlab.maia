@@ -60,6 +60,18 @@ maiaApp.config(function($stateProvider, $urlRouterProvider) {
        		controller: 'agents-controller'
 	    })
 	    
+	    .state('root.maia.protocols', {
+	        url: '/protocols',
+	        templateUrl: 'partials/maia/protocols.html',
+	        controller: 'protocols-controller'
+	    })
+	    
+	    .state('root.maia.protocols-detail', {
+	        url: '/protocols/:id',
+	        templateUrl: 'partials/maia/protocol.detail.html',
+	        controller: 'protocol-controller'
+	    })
+	    
 	    .state('root.osgi', {
 	        url: '^/osgi',
 	        template: '<div ui-view/>'
@@ -113,6 +125,8 @@ maiaApp.config(function($stateProvider, $urlRouterProvider) {
 	    });
         
 });
+
+
 
 maiaApp.controller('repositories-controller', function($scope) {
     
