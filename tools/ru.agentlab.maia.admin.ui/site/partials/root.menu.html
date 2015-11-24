@@ -10,7 +10,7 @@
 			{{category.name}}
 		</div>
 	</div>
-	<div class="active content menu">
+	<div class="active content">
 		<a class="item" ng-repeat="item in category.items" ng-href="{{$state.href(item.state)}}"
 			ng-class="{active: $state.includes(item.state)}">
 			{{item.label}}

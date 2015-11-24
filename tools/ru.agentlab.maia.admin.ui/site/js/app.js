@@ -60,6 +60,12 @@ maiaApp.config(function($stateProvider, $urlRouterProvider) {
        		controller: 'agents-controller'
 	    })
 	    
+	    .state('root.maia.behaviours', {
+	        url: '/behaviours',
+	        templateUrl: 'partials/maia/behaviours.html',
+       		controller: 'behaviours-controller'
+	    })
+	    
 	    .state('root.maia.protocols', {
 	        url: '/protocols',
 	        templateUrl: 'partials/maia/protocols.html',
