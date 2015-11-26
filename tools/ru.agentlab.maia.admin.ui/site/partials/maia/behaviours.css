@@ -63,26 +63,18 @@
 	cursor : pointer;
 }
 
-.node circle.finish.outer {
-	r : 15px;
-	fill: lightgray;
-	stroke: rgb(32,32,32);
-	stroke-width: 2px;
+.node circle.finish {
+	r : 10px;
+	fill: rgb(32,32,32);
 	cursor : pointer;
 }
 
-.node circle.finish.inner {
-	r : 10px;
-	fill: rgb(32,32,32);
-	pointer-events : none;
-}
-	
 .node .exception > circle {
 	r : 10px;
 	fill: rgb(32,32,32);
 }
 
-.node  .exception > text {
+.node .exception > text {
 	font-size:12px;
 	text-anchor : start;
 	alignment-baseline : middle;

@@ -6,7 +6,7 @@
 	</defs>
 	<g class="node" transform="translate(100, 10)">
 		<rect width="900" height="580"></rect>
-		<text x="450" y="15">ZipatoAuthenticateProtocol</text>
+		<text x="450" y="15">{{behaviour.label}}</text>
 		<path class="workflow link" d="M0,40C100,40 100,215 200,215" marker-end="url(#arrow)"></path>
 		<path class="workflow link" d="M350,215C425,215 425,115 500,115" marker-end="url(#arrow)"></path>
 		<path class="workflow link exception" d="M350,240C475,240 475,315 600,315" marker-end="url(#arrow)"></path>
@@ -19,169 +19,38 @@
 		<path class="dataflow link" d="M350,260C425,260 425,160 500,160" style="stroke: rgb(173, 31, 150);"></path>
 		<path class="dataflow link" d="M650,145C775,145 775,105 900,105" style="stroke: rgb(119, 31, 173);"></path>
 		<path class="dataflow link" d="M750,345C825,345 825,105 900,105" style="stroke: rgb(119, 31, 173);"></path>
-		<g class="execution start" transform="translate(0, 40)">
-			<circle class="start"></circle>
+		<circle class="execution start" transform="translate(0, 40)"></circle>
+		<circle class="execution finish" transform="translate(900, 40)"></circle>
+		<g ng-repeat="exception in behaviour.exceptions" class="exception" transform="translate(900, {{15* $index + 80}})">
+			<circle></circle>
+			<text x="10">{{exception.id}}</text>
 		</g>
-		<g class="execution finish" transform="translate(900, 40)">
-			<circle class="finish outer"></circle>
-			<circle class="finish inner"></circle>
+		<g ng-repeat="output in behaviour.outputs" class="output parameter" transform="translate(900, {{15* $index + 105}})">
+			<circle style="fill: {{getTypeColor(output.type)}};"></circle>
+			<text x="10">{{output.id}}</text>
 		</g>
-		<g class="execution exceptions" transform="translate(900, 80)">
-			<g class="exception" transform="translate(0, 0)">
-				<circle></circle>
-				<text x="10">NullPointerException</text>
-			</g>
+		<g ng-repeat="input in behaviour.inputs" class="input parameter" transform="translate(0, {{15* $index + 80}})">
+			<circle style="fill: {{getTypeColor(input.type)}};"></circle>
+			<text x="-10">{{input.id}}</text>
 		</g>
-		<g class="data outputs" transform="translate(900, 105)">
-			<g class="output parameter" transform="translate(0, 0)">
-				<circle style="fill: rgb(119, 31, 173);"></circle>
-				<text x="10">success</text>
-			</g>
-		</g>
-		<g class="data inputs" transform="translate(0, 80)">
-			<g class="input parameter" transform="translate(0, 0)">
-				<circle style="fill: rgb(173, 45, 31);"></circle>
-				<text x="-10">login</text>
-			</g>
-			<g class="input parameter" transform="translate(0, 15)">
-				<circle style="fill: rgb(173, 45, 31);"></circle>
-				<text x="-10">password</text>
-			</g>
-			<g class="input parameter" transform="translate(0, 30)">
-				<circle style="fill: rgb(31, 173, 142);"></circle>
-				<text x="-10">eventLoop</text>
-			</g>
-			<g class="input parameter" transform="translate(0, 45)">
-				<circle style="fill: rgb(173, 97, 31);"></circle>
-				<text x="-10">channel</text>
-			</g>
-			<g class="input parameter" transform="translate(0, 60)">
-				<circle style="fill: rgb(31, 173, 97);"></circle>
-				<text x="-10">options</text>
-			</g>
-			<g class="input parameter" transform="translate(0, 75)">
-				<circle style="fill: rgb(173, 119, 31);"></circle>
-				<text x="-10">handler</text>
-			</g>
-		</g>
-		<g class="ready state" transform="translate(200,200)">
+		<g ng-repeat="state in behaviour.states" class="ready state" my-draggable transform="translate({{state.x}}, {{state.y}})">
 			<rect width="150" height="130"></rect>
-			<text x="75" y="15">Create Bootstrap</text>
+			<text x="75" y="15">{{state.label}}</text>
 			<line x1="0" y1="30" x2="150" y2="30"></line>
 			<line x1="0" y1="50" x2="150" y2="50"></line>
-			<g class="execution start" transform="translate(0, 15)">
-				<circle class="start"></circle>
+			<circle class="execution start" transform="translate(0, 15)"></circle>
+			<circle class="execution finish" transform="translate(150, 15)"></circle>
+			<g ng-repeat="exception in state.exceptions" class="exception" transform="translate(150, {{$index*15 + 40}})">
+				<circle></circle>
+				<text x="-10">{{exception.id}}</text>
 			</g>
-			<g class="execution finish" transform="translate(150, 15)">
-				<circle class="finish outer"></circle>
-				<circle class="finish inner"></circle>
+			<g ng-repeat="output in state.outputs" class="output parameter" transform="translate(150, {{15* $index + 60}})">
+				<circle style="fill: {{getTypeColor(output.type)}};"></circle>
+				<text x="10">{{output.id}}</text>
 			</g>
-			<g class="execution exceptions" transform="translate(150, 40)">
-				<g class="exception" transform="translate(0, 0)">
-					<circle></circle>
-					<text x="-10">NullPointerException</text>
-				</g>
-			</g>
-			<g class="data outputs" transform="translate(150, 60)">
-				<g class="output parameter" transform="translate(0, 0)">
-					<circle style="fill: rgb(173, 31, 150);"></circle>
-					<text x="-10">bootstrap</text>
-				</g>
-			</g>
-			<g class="data inputs" transform="translate(0, 75)">
-				<g class="input parameter" transform="translate(0, 0)">
-					<circle style="fill: rgb(31, 173, 142);"></circle>
-					<text x="10">eventLoop</text>
-				</g>
-				<g class="input parameter" transform="translate(0, 15)">
-					<circle style="fill: rgb(173, 97, 31);"></circle>
-					<text x="10">channel</text>
-				</g>
-				<g class="input parameter" transform="translate(0, 30)">
-					<circle style="fill: rgb(31, 173, 97);"></circle>
-					<text x="10">options</text>
-				</g>
-				<g class="input parameter" transform="translate(0, 45)">
-					<circle style="fill: rgb(173, 119, 31);"></circle>
-					<text x="10">handler</text>
-				</g>
-			</g>
-		</g>
-		<g class="ready state" transform="translate(500,100)">
-			<rect width="150" height="70"></rect>
-			<text x="75" y="15">Check Not Null</text>
-			<line x1="0" y1="30" x2="150" y2="30"></line>
-			<line x1="0" y1="35" x2="150" y2="35"></line>
-			<g class="execution start" transform="translate(0, 15)">
-				<circle class="start"></circle>
-			</g>
-			<g class="execution finish" transform="translate(150, 15)">
-				<circle class="finish outer"></circle>
-				<circle class="finish inner"></circle>
-			</g>
-			<g class="execution exceptions" transform="translate(150, 40)"></g>
-			<g class="data outputs" transform="translate(150, 45)">
-				<g class="output parameter" transform="translate(0, 0)">
-					<circle style="fill: rgb(119, 31, 173);"></circle>
-					<text x="-10">result</text>
-				</g>
-			</g>
-			<g class="data inputs" transform="translate(0, 60)">
-				<g class="input parameter" transform="translate(0, 0)">
-					<circle style="fill: rgb(173, 31, 150);"></circle>
-					<text x="10">input</text>
-				</g>
-			</g>
-		</g>
-		<g class="ready state" transform="translate(600,300)">
-			<rect width="150" height="55"></rect>
-			<text x="75" y="15">false</text>
-			<line x1="0" y1="30" x2="150" y2="30"></line>
-			<line x1="0" y1="35" x2="150" y2="35"></line>
-			<g class="execution start" transform="translate(0, 15)">
-				<circle class="start"></circle>
-			</g>
-			<g class="execution finish" transform="translate(150, 15)">
-				<circle class="finish outer"></circle>
-				<circle class="finish inner"></circle>
-			</g>
-			<g class="execution exceptions" transform="translate(150, 40)"></g>
-			<g class="data outputs" transform="translate(150, 45)">
-				<g class="output parameter" transform="translate(0, 0)">
-					<circle style="fill: rgb(119, 31, 173);"></circle>
-					<text x="-10">result</text>
-				</g>
-			</g>
-			<g class="data inputs" transform="translate(0, 60)"></g>
-		</g>
-		<g class="ready state" transform="translate(700,200)">
-			<rect width="150" height="85"></rect>
-			<text x="75" y="15">And</text>
-			<line x1="0" y1="30" x2="150" y2="30"></line>
-			<line x1="0" y1="35" x2="150" y2="35"></line>
-			<g class="execution start" transform="translate(0, 15)">
-				<circle class="start"></circle>
-			</g>
-			<g class="execution finish" transform="translate(150, 15)">
-				<circle class="finish outer"></circle>
-				<circle class="finish inner"></circle>
-			</g>
-			<g class="execution exceptions" transform="translate(150, 40)"></g>
-			<g class="data outputs" transform="translate(150, 45)">
-				<g class="output parameter" transform="translate(0, 0)">
-					<circle style="fill: rgb(119, 31, 173);"></circle>
-					<text x="-10">result</text>
-				</g>
-			</g>
-			<g class="data inputs" transform="translate(0, 60)">
-				<g class="input parameter" transform="translate(0, 0)">
-					<circle style="fill: rgb(119, 31, 173);"></circle>
-					<text x="10">first</text>
-				</g>
-				<g class="input parameter" transform="translate(0, 15)">
-					<circle style="fill: rgb(119, 31, 173);"></circle>
-					<text x="10">second</text>
-				</g>
+			<g ng-repeat="input in state.inputs" class="input parameter" transform="translate(0, {{15* $index + 75}})">
+				<circle style="fill: {{getTypeColor(input.type)}};"></circle>
+				<text x="-10">{{input.id}}</text>
 			</g>
 		</g>
 	</g>

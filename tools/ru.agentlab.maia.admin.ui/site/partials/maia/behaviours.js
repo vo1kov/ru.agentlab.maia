@@ -137,6 +137,27 @@ maiaApp.controller('behaviours-controller', function($scope) {
 				"to" 	: { "node" : "test" }
 			}
 		]
-	}
+	};
+    
+    var dict = {};
+    var hues = [];
+    
+    $scope.getTypeColor = function(type) {
+    	var color = dict[type];
+    	
+    	if(typeof color != 'undefined'){
+    		return color;
+    	} else {
+    		var hue = Math.floor(Math.random()*360);
+    		if (dict.length <= 360 && hues.indexOf(hue) > 0){
+    			return getTypeColor(type);
+    		} else {
+    			hues.push(hue);
+    			color = d3.hsl(hue, 0.7, 0.4);
+    			dict[type] = color;
+    			return color;
+    		}
+    	}
+    };
     
 });
