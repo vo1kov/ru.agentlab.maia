@@ -1,5 +1,5 @@
 maiaApp.controller('behaviours-controller', function($scope) {
-//	$scope.state = {};
+
 	$scope.state_width = 150;
 	$scope.state_height = 130;
 	
@@ -25,7 +25,8 @@ maiaApp.controller('behaviours-controller', function($scope) {
 		  			"label" : "Create Bootstrap",
 		  			"type" : "ru.agentlab.maia.behaviour.sequential.SequentialBehaviour",
 		  			"exceptions" : [
-		  				{ "uuid" : "cc4172f6-518a-46fb-8aaf-6e8dc8377fbc", "label" : "NullPointerException", "type" : "java.lang.NullPointerException"}
+		  				{ "uuid" : "cc4172f6-518a-46fb-8aaf-6e8dc8377fbc", "label" : "NullPointerException", "type" : "java.lang.NullPointerException"},
+		  				{ "uuid" : "cc4172f6-518a-46fb-8aaf-6e8dc837ssss", "label" : "NullPointerException", "type" : "java.lang.NullPointerException"}
 		  			],
 		  			"inputs" : [ 
 		  				{ "uuid" : "f2def088-eb54-44fc-942e-8ec3ef441488", "label" : "login", "type" : "java.lang.String" },
@@ -66,171 +67,98 @@ maiaApp.controller('behaviours-controller', function($scope) {
 		return null;
 	}
 	
+	function findChildInput(uuid){
+		for (var i = 0; i < $scope.behaviour.childs.length; i++){
+			var child = $scope.behaviour.childs[i];
+			for (var j = 0; j < child.inputs.length; j++){
+				var input = child.inputs[j]
+				if (input.uuid == uuid){
+					return input;
+				}
+			}
+		}
+		return null;
+	}
+	
+	$scope.childSeparatorVisible = function(uuid){
+		var child = findChild(uuid);
+		if (child){
+			return child.exceptions
+		}
+	}
+	
+	$scope.childSeparatorY = function(uuid){
+		var child = findChild(uuid);
+		if (child && child.exceptions){
+			return (child.exceptions.length - 1) * 15 + 50;
+		}
+		return  
+	}
+	
 	$scope.childHeight = function(uuid){
 		var child = findChild(uuid);
-		var result = 0;
+		var result = 30;
 		if (child){
-			
-			return 30 + child.exceptions.length * 15 + child.inputs.length * 15 + child.outputs.length * 15;
+			if (child.exceptions){
+				result += 10;
+				result += (child.exceptions.length - 1) * 15;
+				result += 10;
+			}
+			result += 10;
+			if (child.inputs){
+				result += child.inputs.length * 15;
+			}
+			if (child.outputs){
+				result += child.outputs.length * 15;
+			}
 		}
 		return result;
 	}
 	
-//	for (var i = 0; i < $scope.behaviour.inputs.length; i++){
-//		coordinates[$scope.behaviour.inputs[i].uuid] = {x : 0, y: (15 * i + 80)};
-//	}
-//	
-//	for (var i = 0; i < $scope.behaviour.outputs.length; i++){
-//		coordinates[$scope.behaviour.outputs[i].uuid] = {x : 900, y: (15 * i + 105)};
-//	}
-//	for (var i = 0; i < $scope.behaviour.childs.length; i++){
-//		coordinates[$scope.behaviour.childs[i].uuid] = {x : 0, y: 100};
-//	}
-	
-//	$scope.coordinates = function(uuid){
-//		return coordinates[uuid];
-//	}
-	
-    $scope.behaviour2 = {
-		"id" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol",
-		"label" : "ZipatoAuthenticateProtocol",
-		"exceptions" : [
-			{ "id" : "NullPointerException", "type" : "java.lang.NullPointerException" }
-		],
-		"inputs" : [
-			{ "id" : "login", 		"type" : "java.lang.String" },
-			{ "id" : "password", 	"type" : "java.lang.String" },
-			{ "id" : "eventLoop",	"type" : "io.netty.channel.EventLoopGroup" }, 
-			{ "id" : "channel", 	"type" : "java.lang.Class<? extends io.netty.channel.Channel>" }, 
-			{ "id" : "options", 	"type" : "java.util.Map<io.netty.channel.ChannelOption<java.lang.Object>, java.lang.Object>" }, 
-			{ "id" : "handler", 	"type" : "io.netty.channel.ChannelHandler" }
-		],
-		"outputs" : [
-			{ "id" : "success", "type" : "boolean" }
-		],
-		"states" : [
-			{
-				"x" : 200,
-				"y" : 200,
-				"id" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6",
-				"label" : "Create Bootstrap",
-				"ref" : "ru.beeline.iot.gateway.zipato.CreateBootstrapBehaviour",
-				"exceptions" : [
-					{ "id" : "NullPointerException", "type" : "java.lang.NullPointerException" }
-				],
-				"inputs" : [ 
-					{ "id" : "eventLoop", 	"type" : "io.netty.channel.EventLoopGroup" }, 
-					{ "id" : "channel", 	"type" : "java.lang.Class<? extends io.netty.channel.Channel>" }, 
-					{ "id" : "options", 	"type" : "java.util.Map<io.netty.channel.ChannelOption<java.lang.Object>, java.lang.Object>" }, 
-					{ "id" : "handler", 	"type" : "io.netty.channel.ChannelHandler" }
-				],
-				"outputs" : [ 
-					{ "id" : "bootstrap", "type" : "io.netty.bootstrap.Bootstrap" }
-				]
-			},
-			{	
-				"x" : 500,
-				"y" : 100,
-				"id" : "2da4cfe4-9da7-4940-830d-bbed1e895568",
-				"label" : "Check Not Null",
-				"ref" : "ru.beeline.iot.CheckNotNull",
-				"exceptions" : [],
-				"inputs" : [ 
-					{ "id" : "input", "type" : "io.netty.bootstrap.Bootstrap", "required" : true }
-				],
-				"outputs" : [ 
-					{ "id" : "result", "type" : "boolean" }
-				]
-			},
-			{	
-				"x" : 600,
-				"y" : 300,
-				"id" : "test",
-				"label" : "false",
-				"ref" : "ru.beeline.iot.CheckNotNull",
-				"exceptions" : [],
-				"inputs" : [ ],
-				"outputs" : [ 
-					{ "id" : "result", "type" : "boolean" }
-				]
-			},
-			{	
-				"x" : 700,
-				"y" : 200,
-				"id" : "and",
-				"label" : "And",
-				"ref" : "ru.beeline.iot.CheckNotNull",
-				"exceptions" : [],
-				"inputs" : [
-					{ "id" : "first", "type" : "boolean" },
-					{ "id" : "second", "type" : "boolean" }
-				],
-				"outputs" : [ 
-					{ "id" : "result", "type" : "boolean" }
-				]
-			}
-		],
-		"dataflow" : [
-			["this#eventLoop", "719b2a8a-4119-453b-a39d-62e9ce2d6cc6#eventLoop"],
-			["this#options", "719b2a8a-4119-453b-a39d-62e9ce2d6cc6#options"],
-			["this#channel", "719b2a8a-4119-453b-a39d-62e9ce2d6cc6#channel"],
-			["this#handler", "719b2a8a-4119-453b-a39d-62e9ce2d6cc6#handler"],
-			["719b2a8a-4119-453b-a39d-62e9ce2d6cc6#bootstrap", "2da4cfe4-9da7-4940-830d-bbed1e895568#input"],
-			["2da4cfe4-9da7-4940-830d-bbed1e895568#result", "this#success"],
-			["test#result", "this#success"]
-		],
-		"workflow" : [
-			["this#start", "719b2a8a-4119-453b-a39d-62e9ce2d6cc6#start"], 
-			["719b2a8a-4119-453b-a39d-62e9ce2d6cc6#finish", "2da4cfe4-9da7-4940-830d-bbed1e895568#start"],
-			["719b2a8a-4119-453b-a39d-62e9ce2d6cc6#NullPointerException", "test#start"],
-			["2da4cfe4-9da7-4940-830d-bbed1e895568#finish", "this#finish"],
-			["test#finish", "this#NullPointerException"]
-		],
-		"dataflow2" : [
-			{
-				"from" 	: { "node" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol", "parameter" : "eventLoop" },
-				"to" 	: { "node" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "parameter" : "eventLoop" }
-			},{
-				"from" 	: { "node" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol", "parameter" : "options" },
-				"to" 	: { "node" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "parameter" : "options" }
-			},{
-				"from" 	: { "node" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol", "parameter" : "channel" },
-				"to" 	: { "node" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "parameter" : "channel" }
-			},{
-				"from" 	: { "node" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol", "parameter" : "handler" },
-				"to" 	: { "node" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "parameter" : "handler" }
-			},{
-				"from" 	: { "node" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "parameter" : "bootstrap" },
-				"to" 	: { "node" : "2da4cfe4-9da7-4940-830d-bbed1e895568", "parameter" : "input" }
-			},{
-				"from" 	: { "node" : "2da4cfe4-9da7-4940-830d-bbed1e895568", "parameter" : "result" },
-				"to" 	: { "node" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol", "parameter" : "success" }
-			},{
-				"from" 	: { "node" : "test", "parameter" : "result" },
-				"to" 	: { "node" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol", "parameter" : "success" }
-			}
-		],
-		"workflow2" : [
-			{
-				"from" 	: { "node" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol" },
-				"to" 	: { "node" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6" }
-			},{
-				"from" 	: { "node" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6" },
-				"to" 	: { "node" : "2da4cfe4-9da7-4940-830d-bbed1e895568" }
-			},{
-				"from" 	: { "node" : "2da4cfe4-9da7-4940-830d-bbed1e895568", },
-				"to" 	: { "node" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol" }
-			},{
-				"from" 	: { "node" : "test" },
-				"to" 	: { "node" : "ru.beeline.iot.gateway.zipato.proto.ZipatoAuthenticateProtocol", "exception" : "NullPointerException" }
-			},{
-				"from" 	: { "node" : "719b2a8a-4119-453b-a39d-62e9ce2d6cc6", "exception" : "NullPointerException" },
-				"to" 	: { "node" : "test" }
-			}
-		]
-	};
-    
     var colors = {};
+    
+    $scope.stateInputY = function(uuid, index){
+    	var child = findChild(uuid);
+    	var result = 30;
+		if (child){
+			if (child.exceptions){
+				result += 10;
+				result += (child.exceptions.length - 1) * 15;
+				result += 10;
+			}
+			result += 10;
+			if (child.outputs){
+				result += child.outputs.length * 15;
+			}
+			result += index * 15;
+		}
+		return result;
+    }
+    
+    $scope.stateOutputY = function(uuid, index){
+    	var child = findChild(uuid);
+    	var result = 30;
+		if (child){
+			if (child.exceptions){
+				result += 10;
+				result += (child.exceptions.length - 1) * 15;
+				result += 10;
+			}
+			result += 10;
+			result += index * 15;
+		}
+		return result;
+    }
+    
+    $scope.stateExceptionY = function(uuid, index){
+    	var child = findChild(uuid);
+    	var result = 30;
+		if (child){
+			result += 10;
+			result += index * 15;
+		}
+		return result;
+    }
     
     $scope.state_startX = function(uuid){
     	for (var i=0; i< $scope.behaviour.childs; i++){
@@ -263,9 +191,23 @@ maiaApp.controller('behaviours-controller', function($scope) {
     	}
     };
     
-    $scope.test = function(){
-    	console.log("CLICK");
-    	$scope.behaviour.childs[1].x += 10;
+    $scope.addInput = function(){
+    	if(!$scope.behaviour.childs[1].inputs){
+    		$scope.behaviour.childs[1].inputs = [];
+    	}
+    	$scope.behaviour.childs[1].inputs.push({label:"test"});// += 10;
+    };
+    $scope.addOutput = function(){
+    	if(!$scope.behaviour.childs[1].outputs){
+    		$scope.behaviour.childs[1].outputs = [];
+    	}
+    	$scope.behaviour.childs[1].outputs.push({label:"test"});// += 10;
+    };
+    $scope.addException = function(){
+    	if(!$scope.behaviour.childs[1].exceptions){
+    		$scope.behaviour.childs[1].exceptions = [];
+    	}
+    	$scope.behaviour.childs[1].exceptions.push({label:"test"});// += 10;
     };
     
 });

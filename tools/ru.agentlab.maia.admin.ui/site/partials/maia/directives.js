@@ -26,3 +26,19 @@ maiaApp.directive('myDraggable', [ '$document', function($document) {
 		element.on('mousedown', mousedown);
 	};
 } ]);
+
+maiaApp.directive('lineFrom', [ '$document', function($document) {
+	return function(scope, element, attr) {
+		
+		console.log("lineFrom" + scope);
+		
+	};
+} ]);
+
+maiaApp.directive('lineTo', [ '$document', function($document) {
+	return function(scope, element, attr) {
+		
+		console.log("lineTo" + scope);
+		
+	};
+} ]);

@@ -24,6 +24,8 @@
 			y1="0"
 			x2="122"
 			y2="122" 
+			line-from="dataflow[0]"
+			line-to="dataflow[1]"
 			ng-repeat="dataflow in behaviour.dataflow">
 		</line>
 		<circle class="start" transform="translate(0, 40)"></circle>
@@ -42,24 +44,26 @@
 		</g>
 		<g class="ready state" my-draggable transform="translate({{child.x}}, {{child.y}})" ng-repeat="child in behaviour.childs">
 			<rect width="{{state_width}}" height="{{childHeight(child.uuid)}}"></rect>
-			<text x="75" y="15">{{state.label}}</text>
+			<text x="75" y="15">{{child.label}}</text>
 			<line x1="0" y1="30" x2="{{state_width}}" y2="30"></line>
-			<line x1="0" y1="50" x2="{{state_width}}" y2="50"></line>
+			<line ng-show="childSeparatorVisible(child.uuid)" x1="0" y1="{{childSeparatorY(child.uuid)}}" x2="{{state_width}}" y2="{{childSeparatorY(child.uuid)}}"></line>
 			<circle class="start" transform="translate(0, 15)"></circle>
 			<circle class="finish" transform="translate({{state_width}}, 15)"></circle>
-			<g class="exception" transform="translate({{state_width}}, {{$index*15 + 40}})" ng-repeat="exception in state.exceptions">
+			<g class="exception" transform="translate({{state_width}}, {{stateExceptionY(child.uuid, $index)}})" ng-repeat="exception in child.exceptions">
 				<circle></circle>
 				<text x="-10">{{exception.label}}</text>
 			</g>
-			<g class="output" transform="translate({{state_width}}, {{15* $index + 60}})" ng-repeat="output in child.outputs">
+			<g class="output" transform="translate({{state_width}}, {{stateOutputY(child.uuid, $index)}})" ng-repeat="output in child.outputs">
 				<circle style="fill: {{getTypeColor(output.type)}};"></circle>
 				<text x="-10">{{output.label}}</text>
 			</g>
-			<g class="input" transform="translate(0, {{15* $index + 75}})" ng-repeat="input in child.inputs">
+			<g class="input" transform="translate(0, {{stateInputY(child.uuid, $index)}})" ng-repeat="input in child.inputs">
 				<circle style="fill: {{getTypeColor(input.type)}};"></circle>
 				<text x="10">{{input.label}}</text>
 			</g>
 		</g>
 	</g>
 </svg>
-<a ng-click="test()">123456789</a>
+<a ng-click="addInput()">addInput()</a>
+<a ng-click="addOutput()">addOutput()</a>
+<a ng-click="addException()">addException()</a>
