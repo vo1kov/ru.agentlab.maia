@@ -19,39 +19,47 @@
 		<path class="dataflow link" d="M350,260C425,260 425,160 500,160" style="stroke: rgb(173, 31, 150);"></path>
 		<path class="dataflow link" d="M650,145C775,145 775,105 900,105" style="stroke: rgb(119, 31, 173);"></path>
 		<path class="dataflow link" d="M750,345C825,345 825,105 900,105" style="stroke: rgb(119, 31, 173);"></path>
-		<circle class="execution start" transform="translate(0, 40)"></circle>
-		<circle class="execution finish" transform="translate(900, 40)"></circle>
-		<g ng-repeat="exception in behaviour.exceptions" class="exception" transform="translate(900, {{15* $index + 80}})">
+		<line 
+			x1="0"
+			y1="0"
+			x2="122"
+			y2="122" 
+			ng-repeat="dataflow in behaviour.dataflow">
+		</line>
+		<circle class="start" transform="translate(0, 40)"></circle>
+		<circle class="finish" transform="translate(900, 40)"></circle>
+		<g class="exception" transform="translate(900, {{15* $index + 80}})" ng-repeat="exception in behaviour.exceptions">
 			<circle></circle>
-			<text x="10">{{exception.id}}</text>
+			<text x="10">{{exception.label}}</text>
 		</g>
-		<g ng-repeat="output in behaviour.outputs" class="output parameter" transform="translate(900, {{15* $index + 105}})">
+		<g class="output" transform="translate(900, {{15* $index + 105}})" ng-repeat="output in behaviour.outputs">
 			<circle style="fill: {{getTypeColor(output.type)}};"></circle>
-			<text x="10">{{output.id}}</text>
+			<text x="10">{{output.label}}</text>
 		</g>
-		<g ng-repeat="input in behaviour.inputs" class="input parameter" transform="translate(0, {{15* $index + 80}})">
+		<g class="input" transform="translate(0, {{15* $index + 80}})" ng-repeat="input in behaviour.inputs">
 			<circle style="fill: {{getTypeColor(input.type)}};"></circle>
-			<text x="-10">{{input.id}}</text>
+			<text x="-10">{{input.label}}</text>
 		</g>
-		<g ng-repeat="state in behaviour.states" class="ready state" my-draggable transform="translate({{state.x}}, {{state.y}})">
-			<rect width="150" height="130"></rect>
+		<g class="ready state" my-draggable transform="translate({{child.x}}, {{child.y}})" ng-repeat="child in behaviour.childs">
+			<rect width="{{state_width}}" height="{{childHeight(child.uuid)}}"></rect>
 			<text x="75" y="15">{{state.label}}</text>
-			<line x1="0" y1="30" x2="150" y2="30"></line>
-			<line x1="0" y1="50" x2="150" y2="50"></line>
-			<circle class="execution start" transform="translate(0, 15)"></circle>
-			<circle class="execution finish" transform="translate(150, 15)"></circle>
-			<g ng-repeat="exception in state.exceptions" class="exception" transform="translate(150, {{$index*15 + 40}})">
+			<line x1="0" y1="30" x2="{{state_width}}" y2="30"></line>
+			<line x1="0" y1="50" x2="{{state_width}}" y2="50"></line>
+			<circle class="start" transform="translate(0, 15)"></circle>
+			<circle class="finish" transform="translate({{state_width}}, 15)"></circle>
+			<g class="exception" transform="translate({{state_width}}, {{$index*15 + 40}})" ng-repeat="exception in state.exceptions">
 				<circle></circle>
-				<text x="-10">{{exception.id}}</text>
+				<text x="-10">{{exception.label}}</text>
 			</g>
-			<g ng-repeat="output in state.outputs" class="output parameter" transform="translate(150, {{15* $index + 60}})">
+			<g class="output" transform="translate({{state_width}}, {{15* $index + 60}})" ng-repeat="output in child.outputs">
 				<circle style="fill: {{getTypeColor(output.type)}};"></circle>
-				<text x="10">{{output.id}}</text>
+				<text x="-10">{{output.label}}</text>
 			</g>
-			<g ng-repeat="input in state.inputs" class="input parameter" transform="translate(0, {{15* $index + 75}})">
+			<g class="input" transform="translate(0, {{15* $index + 75}})" ng-repeat="input in child.inputs">
 				<circle style="fill: {{getTypeColor(input.type)}};"></circle>
-				<text x="-10">{{input.id}}</text>
+				<text x="10">{{input.label}}</text>
 			</g>
 		</g>
 	</g>
 </svg>
+<a ng-click="test()">123456789</a>

@@ -1,36 +1,28 @@
 maiaApp.directive('myDraggable', [ '$document', function($document) {
 	return function(scope, element, attr) {
-		var startX = 0, startY = 0, x = 0, y = 0;
-
-		element.css({
-			position : 'absolute',
-			border : '1px solid red',
-			backgroundColor : 'lightgrey',
-			cursor : 'pointer'
-		});
-
-		element.on('mousedown', function(event) {
-			// Prevent default dragging of selected content
+		
+		var startX = 0, startY = 0;
+		
+		function mousedown(event) {
 			event.preventDefault();
-			startX = event.pageX - x;
-			startY = event.pageY - y;
+			startX = event.pageX - scope.child.x;
+			startY = event.pageY - scope.child.y;
 			$document.on('mousemove', mousemove);
 			$document.on('mouseup', mouseup);
-		});
+		};
 
 		function mousemove(event) {
-			y = event.pageY - startY;
-			x = event.pageX - startX;
-			element.css({
-				transform : 'translate(' + x + 'px,' + y + 'px)',
-				WebkitTransform : 'translate(' + x + 'px,' + y + 'px)'
+			scope.$apply(function(){
+				scope.child.x = event.pageX - startX;
+				scope.child.y = event.pageY - startY;
 			});
-			console.log(element.css('transform'));
 		}
 
 		function mouseup() {
 			$document.off('mousemove', mousemove);
 			$document.off('mouseup', mouseup);
 		}
+		
+		element.on('mousedown', mousedown);
 	};
 } ]);
