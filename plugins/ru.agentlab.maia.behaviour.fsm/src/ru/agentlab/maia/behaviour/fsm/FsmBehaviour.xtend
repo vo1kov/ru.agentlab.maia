@@ -1,9 +1,11 @@
 package ru.agentlab.maia.behaviour.fsm
 
 import java.util.ArrayList
+import java.util.HashMap
 import java.util.List
-import ru.agentlab.maia.behaviour.IBehaviour
+import java.util.Map
 import ru.agentlab.maia.behaviour.BehaviourUnordered
+import ru.agentlab.maia.behaviour.IBehaviour
 
 class FsmBehaviour extends BehaviourUnordered implements IFsmBehaviour {
 
@@ -12,6 +14,8 @@ class FsmBehaviour extends BehaviourUnordered implements IFsmBehaviour {
 	val List<ExceptionFsmTransition> exceptionTransitions = new ArrayList
 
 	val List<EventFsmTransition> eventTransitions = new ArrayList
+
+	val Map<IBehaviour, List<IFsmTransition>> map = new HashMap
 
 //	override schedule() {
 //		val excTransition = current.exceptionTransition
@@ -63,6 +67,14 @@ class FsmBehaviour extends BehaviourUnordered implements IFsmBehaviour {
 	}
 
 	override addEventTransition(IBehaviour from, IBehaviour to, String topic) {
+
+//		val transitions = from.getTransitions(true)
+//		val existing = transitions
+//			.filter(EventFsmTransition)
+//			.findFirst[
+//				it.to == to && 
+//				it.topic == topic
+//			]
 		val existing = eventTransitions.findFirst[it.from == from && it.to == to]
 		if (existing == null) {
 			val transition = new EventFsmTransition(from, to, topic)
@@ -73,35 +85,27 @@ class FsmBehaviour extends BehaviourUnordered implements IFsmBehaviour {
 		}
 	}
 
-	override protected internalSchedule() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	def List<IFsmTransition> getTransitions(IBehaviour behaviour, boolean safe) {
+		var result = map.get(behaviour)
+		if (safe && result === null) {
+			result = new ArrayList<IFsmTransition>
+		}
+		return result
 	}
 
-	override notifyChildReady(IBehaviour task) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
-	override notifyChildBlocked() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
-	override notifyChildSuccess() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
-	override notifyChildFailed() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
-	override notifyChildWorking() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
 	override isFirst(IBehaviour subtask) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+
 	override isReady() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+
+	override protected finished() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+
+	override protected schedule() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 

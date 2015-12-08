@@ -16,8 +16,4 @@ class JadePrimitiveTask extends BehaviourPrimitive {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
-	override reset() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
 }

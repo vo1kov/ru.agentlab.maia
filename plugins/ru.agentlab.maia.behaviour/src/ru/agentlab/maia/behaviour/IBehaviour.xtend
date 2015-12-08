@@ -38,7 +38,7 @@ interface IBehaviour {
 	 * @param parent			new task state.
 	 * @return 					previous task state.
 	 */
-	def BehaviourState setState(BehaviourState newState)
+	def void setState(BehaviourState newState)
 
 	/**
 	 * <p>Retrieve all task inputs.</p>
@@ -105,6 +105,6 @@ interface IBehaviour {
 	/**
 	 * <p>Reset task to initial state.</p>
 	 */
-	def void reset()
+//	def void reset()
 
 }

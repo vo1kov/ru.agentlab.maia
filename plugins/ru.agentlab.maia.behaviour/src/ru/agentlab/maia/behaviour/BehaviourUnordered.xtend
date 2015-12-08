@@ -1,43 +1,49 @@
 package ru.agentlab.maia.behaviour
 
 import java.util.HashSet
+import org.eclipse.xtend.lib.annotations.Accessors
 
 abstract class BehaviourUnordered extends BehaviourScheduler {
 
-	val protected subtasks = new HashSet<IBehaviour>
+	@Accessors
+	val protected childs = new HashSet<IBehaviour>
 
 	var protected IBehaviour current = null
 
-	override getChilds() {
-		return subtasks
-	}
-
-	override protected internalAddChild(IBehaviour task) {
-		val added = subtasks += task
-		if (added && task.first) {
-			current = task
+	override addChild(IBehaviour child) {
+		if (child == null) {
+			throw new NullPointerException("Node can't be null")
+		}
+		val added = childs += child
+		if (added && child.first) {
+			current = child
 		}
 		if (added && ready) {
+			child.parent = this
 			state = BehaviourState.READY
 		}
 		return added
 	}
 
-	override protected internalRemoveChild(IBehaviour task) {
-		val removed = subtasks -= task
-		if (removed && !ready) {
+	override removeChild(IBehaviour child) {
+		if (child == null) {
+			throw new NullPointerException("Node can't be null")
+		}
+		val removed = childs -= child
+		if (removed && childs.empty) {
 			state = BehaviourState.UNKNOWN
 		}
 		return removed
 	}
 
-	override protected internalClear() {
-		subtasks.clear
+	override clear() {
+		childs.clear
 		current = null
+		state = BehaviourState.UNKNOWN
 	}
-
-	override protected internalExecute() {
-		current.execute
+	
+	override protected getCurrent() {
+		return current
 	}
 
 	def boolean isFirst(IBehaviour subtask)

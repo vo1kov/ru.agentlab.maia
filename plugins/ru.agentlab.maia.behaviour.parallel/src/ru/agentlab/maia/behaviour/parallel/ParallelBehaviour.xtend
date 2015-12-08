@@ -31,13 +31,12 @@ class ParallelBehaviour extends BehaviourOrdered {
 
 	val protected terminatedSubtasks = new ArrayList<IBehaviour>
 
-	override getRetriesLimit() {
-		return RETRIES_INFINITE
-	}
-
+//	override getRetriesLimit() {
+//		return RETRIES_INFINITE
+//	}
 	override notifyChildBlocked() {
-		blockedSubtasks += subtasks.remove(index)
-		if (subtasks.empty) {
+		blockedSubtasks += childs.remove(index)
+		if (childs.empty) {
 			state = BehaviourState.BLOCKED
 		} else {
 			state = BehaviourState.WORKING
@@ -45,28 +44,28 @@ class ParallelBehaviour extends BehaviourOrdered {
 	}
 
 	override notifyChildSuccess() {
-		terminatedSubtasks += subtasks.remove(index)
-		if (subtasks.empty) {
+		terminatedSubtasks += childs.remove(index)
+		if (childs.empty) {
 			state = BehaviourState.SUCCESS
 		} else {
 			state = BehaviourState.WORKING
 		}
 	}
 
-	override notifyChildFailed() {
-		state = BehaviourState.FAILED
-	}
-
+//	override notifyChildFailed() {
+//		state = BehaviourState.FAILED
+//	}
 	override notifyChildWorking() {
 		schedule()
+		state = BehaviourState.WORKING
 	}
 
 	override notifyChildReady(IBehaviour task) {
-		if (subtasks.contains(task)) {
+		if (childs.contains(task)) {
 			return
 		}
 		if (blockedSubtasks.remove(task) || terminatedSubtasks.remove(task)) {
-			subtasks += task
+			childs += task
 			state = BehaviourState.READY
 			return
 		} else {
@@ -74,8 +73,7 @@ class ParallelBehaviour extends BehaviourOrdered {
 		}
 	}
 
-	override protected internalSchedule() {
-		index = (index + 1) % subtasks.size
-	}
-
+//	override protected schedule() {
+//		index = (index + 1) % childs.size
+//	}
 }

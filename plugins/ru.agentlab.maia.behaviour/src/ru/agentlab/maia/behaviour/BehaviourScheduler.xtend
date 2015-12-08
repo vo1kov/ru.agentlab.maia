@@ -3,7 +3,7 @@ package ru.agentlab.maia.behaviour
 import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
- * <p>Abstract {@link ITaskScheduler} implementation.</p>
+ * <p>Abstract {@link IBehaviourScheduler} implementation.</p>
  * 
  * <p>Implementation guarantee:</p>
  * 
@@ -26,73 +26,43 @@ import org.eclipse.xtend.lib.annotations.Accessors
 @Accessors
 abstract class BehaviourScheduler extends Behaviour implements IBehaviourScheduler {
 
-	/**
-	 * <p>The number of current retries to perform an action.</p>
-	 */
-	var protected long retries = 0L
+	override notifyChildBlocked() {
+		setBlockedState
+	}
 
-	/**
-	 * <p>The maximum number of retries to perform an action.</p>
-	 */
-	var protected long retriesLimit = RETRIES_ONE_TIME
+	override notifyChildSuccess() {
+		if (finished) {
+			setSuccessState
+		} else {
+			schedule()
+			setWorkingState
+		}
+	}
+
+	override notifyChildFailed(IBehaviourException exception) {
+		setFailedState(exception)
+	}
+
+	override notifyChildWorking() {
+		setWorkingState
+	}
+
+	override notifyChildReady(IBehaviour node) {
+		if (childs.exists[it == node]) {
+			setReadyState
+		} else {
+			throw new IllegalArgumentException("Node doesn't contains in the scheduler")
+		}
+	}
 	
-	override final addChild(IBehaviour node) {
-		if (node == null) {
-			throw new NullPointerException("Node can't be null")
-		}
-		val added = internalAddChild(node)
-		if (added) {
-			node.parent = this
-			if (childs.size == 1) {
-				state = BehaviourState.READY
-			}
-		}
-		return added
+	override execute() {
+		current.execute
 	}
 
-	override reset() {
-		retries = 0
-		if (childs.size > 0) {
-			state = BehaviourState.READY
-		}
-		childs.forEach[reset]
-	}
+	def protected IBehaviour getCurrent()
 
-	override restart() {
-		retries++
-	}
+	def protected boolean finished()
 
-	override final removeChild(IBehaviour node) {
-		if (node == null) {
-			throw new NullPointerException("Node can't be null")
-		}
-		val removed = internalRemoveChild(node)
-		if (removed && childs.empty) {
-			state = BehaviourState.UNKNOWN
-		}
-		return removed
-	}
-
-	override clear() {
-		internalClear()
-		state = BehaviourState.UNKNOWN
-	}
-
-	def protected final void schedule() {
-		internalSchedule()
-		state = BehaviourState.WORKING
-	}
-
-	def protected final void idle() {
-		state = BehaviourState.WORKING
-	}
-
-	def protected void internalSchedule()
-
-	def protected boolean internalAddChild(IBehaviour task)
-
-	def protected boolean internalRemoveChild(IBehaviour task)
-
-	def protected void internalClear()
+	def protected void schedule()
 
 }

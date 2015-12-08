@@ -25,8 +25,4 @@ class RunnableContextAction extends BehaviourPrimitive {
 		return null
 	}
 
-	override reset() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
 }

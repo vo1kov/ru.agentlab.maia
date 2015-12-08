@@ -18,12 +18,12 @@ class TaskSchedulerOrdered_addSubtask_UnitTests {
 	}
 
 	def void before() {
-		doCallRealMethod.when(scheduler).internalAddChild(task)
+		doCallRealMethod.when(scheduler).addChild(task)
 	}
 
 	@org.junit.Test
 	def void index_notChanged_whenIndexOn0() {
-		scheduler.subtasks.clear
+		scheduler.childs.clear
 		scheduler.index = 0
 
 		scheduler.addChild(createTask)
@@ -35,7 +35,7 @@ class TaskSchedulerOrdered_addSubtask_UnitTests {
 	def void index_notChanged_whenIndexOnLast() {
 		val size = 10
 		val lastIndex = size - 1
-		scheduler.subtasks => [
+		scheduler.childs => [
 			clear
 			for (i : 0 ..< size) {
 				add(createTask)

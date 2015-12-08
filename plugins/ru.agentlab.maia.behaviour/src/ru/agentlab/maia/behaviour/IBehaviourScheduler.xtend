@@ -146,7 +146,7 @@ interface IBehaviourScheduler extends IBehaviour {
 	 * <p>Notifies that the current subtask was executed and it's state
 	 * changed to {@link ITask.State#FAILED FAILED}.</p>
 	 */
-	def void notifyChildFailed()
+	def void notifyChildFailed(IBehaviourException exception)
 
 	/**
 	 * <p>Notifies that the current child was received some notification from 
@@ -159,9 +159,9 @@ interface IBehaviourScheduler extends IBehaviour {
 	 */
 	def void notifyChildWorking()
 
-	def long getRetriesLimit()
-
-	def void setRetriesLimit(long newiterations)
+//	def long getRetriesLimit()
+//
+//	def void setRetriesLimit(long newiterations)
 
 //	def Policy getPolicyOnChildBlocked()
 //
@@ -187,7 +187,7 @@ interface IBehaviourScheduler extends IBehaviour {
 //
 //	def void setPolicyOnAllChildsSuccess(Policy newPolicy)
 
-	def void restart()
+//	def void restart()
 	
 	def void clear()
 

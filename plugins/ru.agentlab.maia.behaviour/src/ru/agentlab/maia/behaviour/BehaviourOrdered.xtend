@@ -1,44 +1,46 @@
 package ru.agentlab.maia.behaviour
 
 import java.util.ArrayList
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
  * Task scheduler which selects tasks in order of adding.
  */
 abstract class BehaviourOrdered extends BehaviourScheduler {
 
-	val protected subtasks = new ArrayList<IBehaviour>
+	@Accessors
+	val protected childs = new ArrayList<IBehaviour>
 
 	var protected int index = 0
-	
-//	new(){
-//		super()
-//	}
-//	
-//	new(String uuid){
-//		super(uuid)
-//	}
 
-	override getChilds() {
-		return subtasks
-	}
-
-	override protected internalAddChild(IBehaviour task) {
-		if (!subtasks.contains(task)) {
-			subtasks += task
-		} else {
-			return false
+	override final addChild(IBehaviour child) {
+		if (child == null) {
+			throw new NullPointerException("Node can't be null")
 		}
+		val added = childs += child
+		if (added) {
+			child.parent = this
+			if (childs.size == 1) {
+				state = BehaviourState.READY
+			}
+		}
+		return added
 	}
 
-	override protected internalRemoveChild(IBehaviour task) {
-		val i = subtasks.indexOf(task)
+	override final removeChild(IBehaviour child) {
+		if (child == null) {
+			throw new NullPointerException("Node can't be null")
+		}
+		val i = childs.indexOf(child)
 		if (i != -1) {
-			subtasks.remove(i)
+			childs.remove(i)
 			if (i < index) {
 				index = index - 1
-			} else if (i === index && index === subtasks.size()) {
+			} else if (i === index && index === childs.size()) {
 				index = 0
+			}
+			if (childs.empty) {
+				state = BehaviourState.UNKNOWN
 			}
 			return true
 		} else {
@@ -46,33 +48,22 @@ abstract class BehaviourOrdered extends BehaviourScheduler {
 		}
 	}
 
-	override protected internalClear() {
-		subtasks.clear
+	override clear() {
+		childs.clear
 		index = 0
+		state = BehaviourState.UNKNOWN
 	}
 
-	override final protected internalExecute() {
-		if (subtasks.empty) {
-			throw new IllegalStateException
-		}
-		subtasks.get(index).execute
+	override protected getCurrent() {
+		childs.get(index)
 	}
 
-	/**
-	 * Increment current index.
-	 */
-	override protected void internalSchedule() {
-		index = index + 1
+	override protected finished() {
+		return index < childs.size - 1
 	}
 
-	override restart() {
-		super.restart()
-		index = 0
-	}
-
-	override reset() {
-		super.reset()
-		index = 0
+	override protected schedule() {
+		index = (index + 1) % childs.size
 	}
 
 }

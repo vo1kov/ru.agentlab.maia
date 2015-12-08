@@ -6,7 +6,7 @@ abstract class BehaviourPrimitive extends Behaviour {
 
 	var protected implementation = new AtomicReference<Object>
 
-	override protected internalExecute() {
+	override execute() {
 		try {
 			doInject()
 			doRun()

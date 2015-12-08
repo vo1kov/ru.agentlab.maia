@@ -72,7 +72,4 @@ class AnnotatedAction extends BehaviourPrimitive {
 		output.value = value
 	}
 
-	override reset() {
-	}
-
 }
