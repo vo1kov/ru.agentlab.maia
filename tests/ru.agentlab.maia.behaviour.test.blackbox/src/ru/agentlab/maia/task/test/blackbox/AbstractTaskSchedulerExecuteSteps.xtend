@@ -6,12 +6,12 @@ import org.jbehave.core.annotations.Then
 import org.jbehave.core.annotations.When
 import ru.agentlab.maia.behaviour.BehaviourState
 import ru.agentlab.maia.behaviour.IBehaviour
+import ru.agentlab.maia.behaviour.IBehaviourException
 import ru.agentlab.maia.behaviour.IBehaviourScheduler
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
-import ru.agentlab.maia.behaviour.execution.ExecutionException
 
 class AbstractTaskSchedulerExecuteSteps {
 
@@ -40,7 +40,7 @@ class AbstractTaskSchedulerExecuteSteps {
 							provider.get.notifyChildSuccess
 						}
 						case FAILED: {
-							provider.get.notifyChildFailed(mock(ExecutionException))
+							provider.get.notifyChildFailed(mock(IBehaviourException))
 						}
 						default: {
 							throw new IllegalArgumentException

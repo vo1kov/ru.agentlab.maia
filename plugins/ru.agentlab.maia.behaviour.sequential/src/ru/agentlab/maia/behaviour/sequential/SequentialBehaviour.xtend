@@ -23,6 +23,7 @@ import ru.agentlab.maia.behaviour.IBehaviourScheduler
  * @author Shishkin Dmitriy
  */
 class SequentialBehaviour extends BehaviourOrdered {
+	
 //	override notifyChildBlocked() {
 //		state = BehaviourState.BLOCKED
 //	}

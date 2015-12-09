@@ -1,6 +1,6 @@
 package ru.agentlab.maia.behaviour
 
-interface IBehaviour {
+interface IBehaviour extends IExecutionStep {
 
 	def String getLabel()
 	

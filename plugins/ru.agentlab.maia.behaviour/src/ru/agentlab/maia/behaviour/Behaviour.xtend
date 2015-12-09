@@ -4,7 +4,6 @@ import java.util.ArrayList
 import java.util.List
 import java.util.concurrent.atomic.AtomicReference
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.behaviour.execution.ExecutionException
 
 abstract class Behaviour implements IBehaviour {
 
@@ -23,7 +22,6 @@ abstract class Behaviour implements IBehaviour {
 	val protected parent = new AtomicReference<IBehaviourScheduler>(null)
 
 //	val protected owner = new AtomicReference<Thread>(null)
-
 	@Accessors
 	var BehaviourState state = BehaviourState.UNKNOWN
 
@@ -151,7 +149,7 @@ abstract class Behaviour implements IBehaviour {
 		parent.get?.notifyChildSuccess
 	}
 
-	def protected void setFailedState(ExecutionException e) {
+	def protected void setFailedState(IBehaviourException e) {
 		state = BehaviourState.FAILED
 		parent.get?.notifyChildFailed(e)
 	}

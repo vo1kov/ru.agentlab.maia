@@ -6,6 +6,9 @@ class ExecutionException {
 
 	@Accessors
 	val ExecutionException cause
+	
+	@Accessors
+	String name
 
 	new() {
 		this.cause = null

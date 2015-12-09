@@ -48,6 +48,15 @@ abstract class BehaviourOrdered extends BehaviourScheduler {
 			return false
 		}
 	}
+	
+	override notifyChildSuccess() {
+		if (finished) {
+			setSuccessState
+		} else {
+			schedule()
+			setWorkingState
+		}
+	}
 
 	override clear() {
 		childs.clear
@@ -59,11 +68,11 @@ abstract class BehaviourOrdered extends BehaviourScheduler {
 		childs.get(index)
 	}
 
-	override protected finished() {
+	def protected finished() {
 		return index == childs.size - 1
 	}
 
-	override protected schedule() {
+	def protected schedule() {
 		index = (index + 1) % childs.size
 	}
 

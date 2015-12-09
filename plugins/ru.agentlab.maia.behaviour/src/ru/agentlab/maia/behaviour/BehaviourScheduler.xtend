@@ -1,7 +1,6 @@
 package ru.agentlab.maia.behaviour
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.behaviour.execution.ExecutionException
 
 /**
  * <p>Abstract {@link IBehaviourScheduler} implementation.</p>
@@ -31,16 +30,15 @@ abstract class BehaviourScheduler extends Behaviour implements IBehaviourSchedul
 		setBlockedState
 	}
 
-	override notifyChildSuccess() {
-		if (finished) {
-			setSuccessState
-		} else {
-			schedule()
-			setWorkingState
-		}
-	}
-
-	override notifyChildFailed(ExecutionException exception) {
+//	override notifyChildSuccess() {
+//		if (finished) {
+//			setSuccessState
+//		} else {
+//			schedule()
+//			setWorkingState
+//		}
+//	}
+	override notifyChildFailed(IBehaviourException exception) {
 		setFailedState(exception)
 	}
 
@@ -55,15 +53,13 @@ abstract class BehaviourScheduler extends Behaviour implements IBehaviourSchedul
 			throw new IllegalArgumentException("Node doesn't contains in the scheduler")
 		}
 	}
-	
+
 	override execute() {
-		current.execute
+		getCurrent().execute
 	}
 
 	def protected IBehaviour getCurrent()
 
-	def protected boolean finished()
-
-	def protected void schedule()
-
+//	def protected boolean finished()
+//	def protected void schedule()
 }

@@ -15,13 +15,10 @@ abstract class BehaviourUnordered extends BehaviourScheduler {
 			throw new NullPointerException("Node can't be null")
 		}
 		val added = childs += child
-		if (added && child.first) {
-			current = child
-		}
-		if (added && ready) {
-			child.parent = this
-			state = BehaviourState.READY
-		}
+		child.parent = this
+//		if (added && ready) {
+//			state = BehaviourState.READY
+//		}
 		return added
 	}
 
@@ -46,8 +43,8 @@ abstract class BehaviourUnordered extends BehaviourScheduler {
 		return current
 	}
 
-	def boolean isFirst(IBehaviour subtask)
+//	def boolean isFirst(IBehaviour subtask)
 
-	def boolean isReady()
+//	def boolean isReady()
 
 }

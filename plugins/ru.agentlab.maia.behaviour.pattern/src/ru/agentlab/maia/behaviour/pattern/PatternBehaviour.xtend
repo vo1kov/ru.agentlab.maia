@@ -49,21 +49,25 @@ class PatternBehaviour extends BehaviourUnordered implements IPatternBehaviour {
 		super.clear()
 		stateMapping.clear
 	}
-
-	override isFirst(IBehaviour subtask) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
-	override isReady() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
 	
-	override protected finished() {
+	override notifyChildSuccess() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
+
+//	override isFirst(IBehaviour subtask) {
+//		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+//	}
+//
+//	override isReady() {
+//		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+//	}
 	
-	override protected schedule() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
+//	override protected finished() {
+//		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+//	}
+//	
+//	override protected schedule() {
+//		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+//	}
 
 }

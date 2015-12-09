@@ -1,14 +1,11 @@
 package ru.agentlab.maia.behaviour.fsm
 
-import ru.agentlab.maia.behaviour.IBehaviour
+import ru.agentlab.maia.behaviour.IExecutionStep
 
 class ExceptionFsmTransition extends AbstractFsmTransition {
 
-	Class<? extends RuntimeException> exception
-
-	new(IBehaviour from, IBehaviour to, Class<? extends RuntimeException> exc) {
+	new(IExecutionStep from, IExecutionStep to) {
 		super(from, to)
-		this.exception = exc
 	}
 
 }

@@ -1,6 +1,6 @@
 package ru.agentlab.maia.behaviour
 
-interface IBehaviourException {
+interface IBehaviourException extends IExecutionStep {
 	
 	def String getName()
 

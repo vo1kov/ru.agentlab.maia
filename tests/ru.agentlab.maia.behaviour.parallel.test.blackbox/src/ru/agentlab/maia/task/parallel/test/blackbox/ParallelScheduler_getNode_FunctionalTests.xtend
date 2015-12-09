@@ -4,7 +4,7 @@ import org.junit.Ignore
 import org.junit.Test
 import ru.agentlab.maia.behaviour.BehaviourState
 import ru.agentlab.maia.behaviour.IBehaviour
-import ru.agentlab.maia.behaviour.execution.ExecutionException
+import ru.agentlab.maia.behaviour.IBehaviourException
 import ru.agentlab.maia.behaviour.parallel.ParallelBehaviour
 
 import static org.hamcrest.Matchers.*
@@ -32,7 +32,7 @@ class ParallelScheduler_getNode_FunctionalTests {
 			when(it.state).thenReturn(BehaviourState.FAILED)
 
 			doAnswer[
-				scheduler.notifyChildFailed(mock(ExecutionException))
+				scheduler.notifyChildFailed(mock(IBehaviourException))
 				return null
 			].when(it).execute
 		]
