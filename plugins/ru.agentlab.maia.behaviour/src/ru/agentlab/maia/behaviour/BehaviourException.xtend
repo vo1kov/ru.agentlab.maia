@@ -10,5 +10,5 @@ class BehaviourException implements IBehaviourException {
 	new(String name) {
 		this.name = name
 	}
-
+	
 }

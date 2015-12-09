@@ -1,6 +1,7 @@
 package ru.agentlab.maia.behaviour
 
 import java.util.concurrent.atomic.AtomicReference
+import ru.agentlab.maia.behaviour.execution.NativeException
 
 abstract class BehaviourPrimitive extends Behaviour {
 
@@ -11,10 +12,10 @@ abstract class BehaviourPrimitive extends Behaviour {
 			doInject()
 			doRun()
 			doUninject()
-
-			state = BehaviourState.SUCCESS
+			
+			setSuccessState()
 		} catch (Exception e) {
-			state = BehaviourState.FAILED
+			setFailedState(new NativeException(e))
 		}
 	}
 

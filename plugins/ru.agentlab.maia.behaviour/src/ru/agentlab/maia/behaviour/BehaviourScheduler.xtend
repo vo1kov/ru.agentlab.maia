@@ -1,6 +1,7 @@
 package ru.agentlab.maia.behaviour
 
 import org.eclipse.xtend.lib.annotations.Accessors
+import ru.agentlab.maia.behaviour.execution.ExecutionException
 
 /**
  * <p>Abstract {@link IBehaviourScheduler} implementation.</p>
@@ -39,7 +40,7 @@ abstract class BehaviourScheduler extends Behaviour implements IBehaviourSchedul
 		}
 	}
 
-	override notifyChildFailed(IBehaviourException exception) {
+	override notifyChildFailed(ExecutionException exception) {
 		setFailedState(exception)
 	}
 

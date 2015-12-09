@@ -17,14 +17,15 @@ abstract class BehaviourOrdered extends BehaviourScheduler {
 		if (child == null) {
 			throw new NullPointerException("Node can't be null")
 		}
-		val added = childs += child
-		if (added) {
-			child.parent = this
-			if (childs.size == 1) {
-				state = BehaviourState.READY
-			}
+		if (childs.contains(child)) {
+			return false
 		}
-		return added
+		childs += child
+		child.parent = this
+		if (childs.size == 1) {
+			state = BehaviourState.READY
+		}
+		return true
 	}
 
 	override final removeChild(IBehaviour child) {
@@ -59,7 +60,7 @@ abstract class BehaviourOrdered extends BehaviourScheduler {
 	}
 
 	override protected finished() {
-		return index < childs.size - 1
+		return index == childs.size - 1
 	}
 
 	override protected schedule() {

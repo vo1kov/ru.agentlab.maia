@@ -1,5 +1,7 @@
 package ru.agentlab.maia.behaviour
 
+import ru.agentlab.maia.behaviour.execution.ExecutionException
+
 /**
  * <p>Execution node than delegate execution to one of subtasks.</p>
  * 
@@ -146,7 +148,7 @@ interface IBehaviourScheduler extends IBehaviour {
 	 * <p>Notifies that the current subtask was executed and it's state
 	 * changed to {@link ITask.State#FAILED FAILED}.</p>
 	 */
-	def void notifyChildFailed(IBehaviourException exception)
+	def void notifyChildFailed(ExecutionException exception)
 
 	/**
 	 * <p>Notifies that the current child was received some notification from 
