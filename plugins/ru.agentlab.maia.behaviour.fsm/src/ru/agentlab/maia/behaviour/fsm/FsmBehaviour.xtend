@@ -1,6 +1,7 @@
 package ru.agentlab.maia.behaviour.fsm
 
 import java.util.ArrayList
+import java.util.Collection
 import java.util.HashMap
 import java.util.List
 import java.util.Map
@@ -20,25 +21,37 @@ class FsmBehaviour extends BehaviourUnordered implements IFsmBehaviour {
 
 	val Map<IExecutionStep, IExecutionStep> transitions = new HashMap
 
+	val Map<IExecutionStep, Collection<IExecutionStep>> asyncTransitions = new HashMap
+
 	@Inject
 	new(IMaiaEventBroker broker) {
 		this.broker = broker
 	}
 
 	override addTransition(IExecutionStep from, IExecutionStep to) {
-		if (from == null || from == this) {
+		if (isInitial(from, to)) {
 			if (to instanceof IBehaviour) {
+				if (!childs.contains(to)) {
+					throw new IllegalArgumentException('''Behaviour [«to»] is not a child of scheduler''')
+				}
 				current = to
 			} else {
 				throw new IllegalArgumentException('''Initial transition can't have an exception target''')
 			}
 		}
-		if (to == null || to == this) {
+		if (isFinal(from, to)) {
 			if (to instanceof IBehaviourException) {
-				
 			}
 		}
 		transitions.put(from, to)
+	}
+
+	def private isInitial(IExecutionStep from, IExecutionStep to) {
+		return from == null || from == this
+	}
+
+	def private isFinal(IExecutionStep from, IExecutionStep to) {
+		return to == null || to == this
 	}
 
 	override addEventTransition(IBehaviour from, IBehaviour to, String topic) {
@@ -80,23 +93,27 @@ class FsmBehaviour extends BehaviourUnordered implements IFsmBehaviour {
 	}
 
 	override notifyChildSuccess() {
-		if (!transitions.containsKey(current)) {
-			throw new IllegalStateException('''Behaviour [«this»] have no default transition from state [«current»]''')
+		if (transitions.containsKey(current)) {
+			val next = transitions.get(current)
+			switch (next) {
+				IBehaviourException: {
+					setFailedState(next)
+				}
+				IBehaviour: {
+					current = next
+					setWorkingState()
+				}
+				default: {
+					// null indicate that it is final state
+					setSuccessState()
+				}
+			}
+		} else if (asyncTransitions.containsKey(current)) {
+			setBlockedState()
+		} else {
+			throw new IllegalStateException('''Behaviour [«this»] have no any transition from state [«current»]''')
 		}
-		val next = transitions.get(current)
-		switch (next) {
-			IBehaviourException: {
-				setFailedState(next)
-			}
-			IBehaviour: {
-				current = next
-				setWorkingState()
-			}
-			default: {
-				// null indicate that it is final state
-				setSuccessState()
-			}
-		}
+
 	}
 
 }
