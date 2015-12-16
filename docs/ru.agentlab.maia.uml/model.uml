@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_QmnQ8KOPEeWX1psEFGiS1Q" name="MAIA">
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_QmnQ8KOPEeWX1psEFGiS1Q" name="MAIA" viewpoint="">
   <packagedElement xmi:type="uml:Package" xmi:id="_5-sSwKOXEeWX1psEFGiS1Q" name="ru">
     <packagedElement xmi:type="uml:Package" xmi:id="_7GfBQKOXEeWX1psEFGiS1Q" name="agentlab">
       <packagedElement xmi:type="uml:Package" xmi:id="_9E5OsKOXEeWX1psEFGiS1Q" name="maia">
@@ -189,26 +189,31 @@
               <transition xmi:id="_SoYWkKOeEeWBdLebB9Krgg" source="_PO0ZwKOeEeWBdLebB9Krgg" target="_Q760wKOeEeWBdLebB9Krgg"/>
               <transition xmi:id="_eTPbMKOeEeWBdLebB9Krgg" source="_WG6S8KOeEeWBdLebB9Krgg" target="_dKaK4KOeEeWBdLebB9Krgg"/>
               <transition xmi:id="_ezY64KOeEeWBdLebB9Krgg" source="_i1mzIKOeEeWBdLebB9Krgg" target="_dKaK4KOeEeWBdLebB9Krgg"/>
-              <transition xmi:id="_uQwAwKOeEeWBdLebB9Krgg" source="_G2dyQKOfEeWBdLebB9Krgg" target="_VB2IUKOeEeWBdLebB9Krgg"/>
+              <transition xmi:id="_uQwAwKOeEeWBdLebB9Krgg" source="_G2dyQKOfEeWBdLebB9Krgg"/>
               <transition xmi:id="_utwF0KOeEeWBdLebB9Krgg" source="_G2dyQKOfEeWBdLebB9Krgg" target="_i1mzIKOeEeWBdLebB9Krgg"/>
-              <transition xmi:id="_vJzvsKOeEeWBdLebB9Krgg" source="_VB2IUKOeEeWBdLebB9Krgg" target="_G2dyQKOfEeWBdLebB9Krgg"/>
+              <transition xmi:id="_vJzvsKOeEeWBdLebB9Krgg" target="_G2dyQKOfEeWBdLebB9Krgg"/>
               <transition xmi:id="_viumAKOeEeWBdLebB9Krgg" target="_WG6S8KOeEeWBdLebB9Krgg"/>
               <transition xmi:id="_18p8gKOeEeWBdLebB9Krgg" source="_G2dyQKOfEeWBdLebB9Krgg" target="_WG6S8KOeEeWBdLebB9Krgg"/>
-              <transition xmi:id="_2WsNIKOeEeWBdLebB9Krgg" source="_Q760wKOeEeWBdLebB9Krgg" target="_G2dyQKOfEeWBdLebB9Krgg"/>
+              <transition xmi:id="_2WsNIKOeEeWBdLebB9Krgg" source="_Q760wKOeEeWBdLebB9Krgg" target="_f92bgKOhEeWBdLebB9Krgg"/>
               <transition xmi:id="_5O37MKOeEeWBdLebB9Krgg" source="_OWIeQKOeEeWBdLebB9Krgg" target="_PO0ZwKOeEeWBdLebB9Krgg"/>
               <transition xmi:id="_Ir0xYKOfEeWBdLebB9Krgg" source="_G2dyQKOfEeWBdLebB9Krgg" target="_hYDQAKOeEeWBdLebB9Krgg"/>
-              <transition xmi:id="_hiESMKOfEeWBdLebB9Krgg" source="_hYDQAKOeEeWBdLebB9Krgg" target="_VB2IUKOeEeWBdLebB9Krgg"/>
+              <transition xmi:id="_hiESMKOfEeWBdLebB9Krgg" source="_hYDQAKOeEeWBdLebB9Krgg"/>
               <transition xmi:id="_SyQZYKOgEeWBdLebB9Krgg" source="_Q760wKOeEeWBdLebB9Krgg" target="_PO0ZwKOeEeWBdLebB9Krgg"/>
               <transition xmi:id="_Xa_fEKOgEeWBdLebB9Krgg" source="_i1mzIKOeEeWBdLebB9Krgg" target="_Q760wKOeEeWBdLebB9Krgg"/>
+              <transition xmi:id="_shosMKOhEeWBdLebB9Krgg" source="_f92bgKOhEeWBdLebB9Krgg" target="_G2dyQKOfEeWBdLebB9Krgg"/>
+              <transition xmi:id="_1jxbEKOhEeWBdLebB9Krgg" source="_hYDQAKOeEeWBdLebB9Krgg" target="_f92bgKOhEeWBdLebB9Krgg"/>
+              <transition xmi:id="_3uvd0KOhEeWBdLebB9Krgg" source="_WG6S8KOeEeWBdLebB9Krgg" target="_Q760wKOeEeWBdLebB9Krgg"/>
+              <transition xmi:id="_6JFZUKOhEeWBdLebB9Krgg" source="_hYDQAKOeEeWBdLebB9Krgg" target="_Q760wKOeEeWBdLebB9Krgg"/>
+              <transition xmi:id="_BsjKwKOiEeWBdLebB9Krgg" source="_G2dyQKOfEeWBdLebB9Krgg" target="_f92bgKOhEeWBdLebB9Krgg"/>
               <subvertex xmi:type="uml:Pseudostate" xmi:id="_OWIeQKOeEeWBdLebB9Krgg" name="Initial1"/>
               <subvertex xmi:type="uml:State" xmi:id="_PO0ZwKOeEeWBdLebB9Krgg" name="UNKNOWN"/>
               <subvertex xmi:type="uml:State" xmi:id="_Q760wKOeEeWBdLebB9Krgg" name="READY"/>
-              <subvertex xmi:type="uml:State" xmi:id="_VB2IUKOeEeWBdLebB9Krgg" name="WORKING"/>
               <subvertex xmi:type="uml:State" xmi:id="_WG6S8KOeEeWBdLebB9Krgg" name="FAILED"/>
               <subvertex xmi:type="uml:FinalState" xmi:id="_dKaK4KOeEeWBdLebB9Krgg" name="Final1"/>
               <subvertex xmi:type="uml:State" xmi:id="_hYDQAKOeEeWBdLebB9Krgg" name="BLOCKED"/>
               <subvertex xmi:type="uml:State" xmi:id="_i1mzIKOeEeWBdLebB9Krgg" name="SUCCESS"/>
-              <subvertex xmi:type="uml:Pseudostate" xmi:id="_G2dyQKOfEeWBdLebB9Krgg" name="Choice2" kind="choice"/>
+              <subvertex xmi:type="uml:Pseudostate" xmi:id="_G2dyQKOfEeWBdLebB9Krgg" name="Choice Based on Child State" kind="choice"/>
+              <subvertex xmi:type="uml:State" xmi:id="_f92bgKOhEeWBdLebB9Krgg" name="WORKING"/>
             </region>
           </packagedElement>
         </packagedElement>
@@ -239,6 +244,36 @@
         </packagedElement>
         <packagedElement xmi:type="uml:Package" xmi:id="_p8HR4KOVEeWX1psEFGiS1Q" name="io"/>
       </packagedElement>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_R6EQUKOkEeWBdLebB9Krgg" name="Deployment">
+    <packagedElement xmi:type="uml:Artifact" xmi:id="_7MByIKOjEeWBdLebB9Krgg" name="ru.agentlab.maia.behaviour.pattern">
+      <manifestation xmi:id="_DA3AYKOkEeWBdLebB9Krgg" client="_7MByIKOjEeWBdLebB9Krgg" supplier="_yvpZgKOUEeWX1psEFGiS1Q" utilizedElement="_yvpZgKOUEeWX1psEFGiS1Q"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Device" xmi:id="_r--1oKOiEeWBdLebB9Krgg" name="Device1">
+      <nestedNode xmi:type="uml:ExecutionEnvironment" xmi:id="_tQdroKOiEeWBdLebB9Krgg" name="JVM">
+        <nestedNode xmi:id="_2RBtMKOiEeWBdLebB9Krgg" name="OSGI framework">
+          <deployment xmi:id="_Cl2U0KOjEeWBdLebB9Krgg" client="_2RBtMKOiEeWBdLebB9Krgg" supplier="_ACN6cKOjEeWBdLebB9Krgg" deployedArtifact="_ACN6cKOjEeWBdLebB9Krgg"/>
+          <deployment xmi:id="_riB-cKOjEeWBdLebB9Krgg" client="_2RBtMKOiEeWBdLebB9Krgg" supplier="_RDlJsKOjEeWBdLebB9Krgg" deployedArtifact="_RDlJsKOjEeWBdLebB9Krgg"/>
+          <deployment xmi:id="_r_XasKOjEeWBdLebB9Krgg" client="_2RBtMKOiEeWBdLebB9Krgg" supplier="_TnZxUKOjEeWBdLebB9Krgg" deployedArtifact="_TnZxUKOjEeWBdLebB9Krgg"/>
+          <deployment xmi:id="_yvLhoKOjEeWBdLebB9Krgg" client="_2RBtMKOiEeWBdLebB9Krgg" supplier="_vkjYsKOjEeWBdLebB9Krgg" deployedArtifact="_vkjYsKOjEeWBdLebB9Krgg"/>
+        </nestedNode>
+      </nestedNode>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Artifact" xmi:id="_vkjYsKOjEeWBdLebB9Krgg" name="ru.agentlab.maia.behaviour.parallel">
+      <manifestation xmi:id="_yckusKOjEeWBdLebB9Krgg" client="_vkjYsKOjEeWBdLebB9Krgg" supplier="_kPdtkKOUEeWX1psEFGiS1Q" utilizedElement="_kPdtkKOUEeWX1psEFGiS1Q"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Artifact" xmi:id="_ACN6cKOjEeWBdLebB9Krgg" name="ru.agentlab.maia.container">
+      <manifestation xmi:id="_HuV4oKOjEeWBdLebB9Krgg" client="_ACN6cKOjEeWBdLebB9Krgg" supplier="_mpFa4KOVEeWX1psEFGiS1Q" utilizedElement="_mpFa4KOVEeWX1psEFGiS1Q"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Artifact" xmi:id="_RDlJsKOjEeWBdLebB9Krgg" name="ru.agentlab.maia.behaviour">
+      <manifestation xmi:id="_nYNpYKOjEeWBdLebB9Krgg" client="_RDlJsKOjEeWBdLebB9Krgg" supplier="_aKuSMKOUEeWX1psEFGiS1Q" utilizedElement="_aKuSMKOUEeWX1psEFGiS1Q"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Artifact" xmi:id="_5mhz8KOjEeWBdLebB9Krgg" name="ru.agentlab.maia.behaviour.fsm">
+      <manifestation xmi:id="__W4pAKOjEeWBdLebB9Krgg" client="_5mhz8KOjEeWBdLebB9Krgg" supplier="_vkIfwKOUEeWX1psEFGiS1Q" utilizedElement="_vkIfwKOUEeWX1psEFGiS1Q"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Artifact" xmi:id="_TnZxUKOjEeWBdLebB9Krgg" name="ru.agentlab.maia.behaviour.sequential">
+      <manifestation xmi:id="_l9WN4KOjEeWBdLebB9Krgg" client="_TnZxUKOjEeWBdLebB9Krgg" supplier="_fkH_0KOUEeWX1psEFGiS1Q" utilizedElement="_fkH_0KOUEeWX1psEFGiS1Q"/>
     </packagedElement>
   </packagedElement>
 </uml:Model>
