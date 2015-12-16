@@ -43,6 +43,8 @@
 /features/*/classes/
 temp
 
+Thumbs.db
+
 # Binary Files #
 *.class
 *.dll
