@@ -15,7 +15,7 @@ class BehaviourParameter<T> {
 	@Accessors
 	val protected Class<T> type
 
-	val protected reference = new AtomicReference<AtomicReference<T>>
+	val transient protected reference = new AtomicReference<AtomicReference<T>>
 
 	val protected boolean isOptional
 
