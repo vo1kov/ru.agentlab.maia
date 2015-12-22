@@ -2,204 +2,105 @@ package ru.agentlab.maia.behaviour
 
 import java.util.ArrayList
 import java.util.List
-import java.util.concurrent.atomic.AtomicReference
-import org.eclipse.xtend.lib.annotations.Accessors
+import java.util.UUID
 
+/**
+ * 
+ * @author Dmitry Shishkin
+ */
 abstract class Behaviour implements IBehaviour {
 
-	@Accessors
-	var String label
+	val UUID uuid = UUID.randomUUID
 
-	@Accessors(PUBLIC_GETTER)
-	var List<IBehaviourParameter<?>> inputs = null
+	val List<BehaviourParameter<?>> inputs = new ArrayList<BehaviourParameter<?>>
 
-	@Accessors(PUBLIC_GETTER)
-	var List<IBehaviourParameter<?>> outputs = null
+	val List<BehaviourParameter<?>> outputs = new ArrayList<BehaviourParameter<?>>
 
-	@Accessors(PUBLIC_GETTER)
-	var List<IBehaviourException> exceptions = null
+	val List<BehaviourException<?>> exceptions = new ArrayList<BehaviourException<?>>
 
-	val protected parent = new AtomicReference<IBehaviourScheduler>(null)
+	var protected BehaviourState state = BehaviourState.UNKNOWN
 
-//	val protected owner = new AtomicReference<Thread>(null)
-	@Accessors
-	var BehaviourState state = BehaviourState.UNKNOWN
-
-	/**
-	 * ThreadSafe!
-	 */
-	override setParent(IBehaviourScheduler newParent) {
-		val oldParent = parent.getAndSet(newParent)
-		if (oldParent != null && oldParent != newParent) {
-			oldParent.removeChild(this)
-		}
+	override final UUID getUuid() {
+		return uuid
 	}
 
-	/**
-	 * ThreadSafe!
-	 */
-	override IBehaviourScheduler getParent() {
-		return parent.get
+	override final getState() {
+		return state
+	}
+
+	override final getInputs() {
+		return inputs
+	}
+
+	override final getOutputs() {
+		return outputs
+	}
+
+	override final getExceptions() {
+		return exceptions
 	}
 
 	/**
 	 * Add Input Parameter to behaviour 
 	 */
-	override void addInput(IBehaviourParameter<?> parameter) {
-		if (inputs === null) {
-			inputs = new ArrayList<IBehaviourParameter<?>>
-		}
+	override void addInput(BehaviourParameter<?> parameter) {
 		inputs += parameter
 	}
 
 	/**
 	 * Add Output Parameter to behaviour 
 	 */
-	override void addOutput(IBehaviourParameter<?> parameter) {
-		if (outputs === null) {
-			outputs = new ArrayList<IBehaviourParameter<?>>
-		}
+	override void addOutput(BehaviourParameter<?> parameter) {
 		outputs += parameter
 	}
 
 	/**
 	 * Add Exception to behaviour 
 	 */
-	override addException(IBehaviourException exception) {
-		if (exceptions === null) {
-			exceptions = new ArrayList<IBehaviourException>
-		}
+	override addException(BehaviourException<?> exception) {
 		exceptions += exception
 	}
 
 	/**
-	 * Remove Input Parameter from behaviour and if it is last then remove entire list
+	 * Remove Input Parameter from behaviour
 	 */
-	override removeInput(IBehaviourParameter<?> parameter) {
-		if (inputs != null) {
-			inputs.remove(parameter)
-			if (inputs.empty) {
-				inputs = null
-			}
-		}
+	override removeInput(BehaviourParameter<?> parameter) {
+		inputs -= parameter
 	}
 
 	/**
-	 * Remove Output Parameter from behaviour and if it is last then remove entire list
+	 * Remove Output Parameter from behaviour
 	 */
-	override removeOutput(IBehaviourParameter<?> parameter) {
-		if (outputs != null) {
-			outputs.remove(parameter)
-			if (outputs.empty) {
-				outputs = null
-			}
-		}
+	override removeOutput(BehaviourParameter<?> parameter) {
+		outputs -= parameter
 	}
 
 	/**
-	 * Remove Exception from behaviour and if it is last then remove entire list
+	 * Remove Exception from behaviour
 	 */
-	override removeException(IBehaviourException exception) {
-		if (exception != null) {
-			exceptions.remove(exception)
-			if (exceptions.empty) {
-				exceptions = null
-			}
-		}
+	override removeException(BehaviourException<?> exception) {
+		exceptions -= exception
 	}
 
 	/**
 	 * Remove all Inputs from behaviour
 	 */
-	override clearInputs() {
-		inputs = null
+	override final clearInputs() {
+		inputs.clear
 	}
 
 	/**
 	 * Remove all Outputs from behaviour
 	 */
-	override clearOutputs() {
-		outputs = null
+	override final clearOutputs() {
+		outputs.clear
 	}
 
 	/**
 	 * Remove all Exceptions from behaviour
 	 */
-	override clearExceptions() {
-		exceptions = null
+	override final clearExceptions() {
+		exceptions.clear
 	}
 
-//	/**
-//	 * ThreadSafe! But allow only 1 thread to execute node.
-//	 */
-//	override final execute() {
-//		val entered = owner.compareAndSet(null, Thread.currentThread)
-//		if (entered) {
-//			if (!(state === BehaviourState.READY || state === BehaviourState.WORKING)) {
-//				throw new IllegalStateException("Task in illegal state; " + state)
-//			}
-//			internalExecute()
-//			owner.set(null)
-//		} else {
-//			throw new ConcurrentModificationException("Execution node is executing by another thread")
-//		}
-//	}
-	def protected void setSuccessState() {
-		state = BehaviourState.SUCCESS
-		parent.get?.notifyChildSuccess
-	}
-
-	def protected void setFailedState(IBehaviourException e) {
-		state = BehaviourState.FAILED
-		parent.get?.notifyChildFailed(e)
-	}
-
-	def protected void setBlockedState() {
-		state = BehaviourState.BLOCKED
-		parent.get?.notifyChildBlocked
-	}
-
-	def protected void setWorkingState() {
-		state = BehaviourState.WORKING
-		parent.get?.notifyChildWorking
-	}
-
-	def protected void setReadyState() {
-		state = BehaviourState.READY
-		parent.get?.notifyChildReady(this)
-	}
-
-//	override setState(BehaviourState newState) {
-//		val old = state
-//		state = newState
-//		switch (newState) {
-//			case UNKNOWN: {
-//			}
-//			case READY: {
-//				parent.get?.notifyChildReady(this)
-//			}
-//			case WORKING: {
-//				parent.get?.notifyChildWorking
-//			}
-//			case BLOCKED: {
-//				parent.get?.notifyChildBlocked
-//			}
-//			case SUCCESS: {
-//				parent.get?.notifyChildSuccess
-//			}
-//			case FAILED: {
-//				parent.get?.notifyChildFailed
-//			}
-//		}
-//		println("Task " + this + " change state to " + newState)
-//		return old
-//	}
-//	def protected void internalExecute()
-//	override equals(Object obj) {
-//		if(obj instanceof Task){
-//			return false
-//		} else {
-//			return false
-//		}
-//	}
 }

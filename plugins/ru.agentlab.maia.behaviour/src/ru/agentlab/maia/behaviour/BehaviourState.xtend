@@ -1,5 +1,9 @@
 package ru.agentlab.maia.behaviour
 
+/**
+ * 
+ * @author Dmitry Shishkin
+ */
 enum BehaviourState {
 
 	/**

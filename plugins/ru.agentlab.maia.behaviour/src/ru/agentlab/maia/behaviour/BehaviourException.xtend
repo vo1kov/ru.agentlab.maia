@@ -2,13 +2,17 @@ package ru.agentlab.maia.behaviour
 
 import org.eclipse.xtend.lib.annotations.Accessors
 
-class BehaviourException implements IBehaviourException {
+/**
+ * 
+ * @author Dmitry Shishkin
+ */
+class BehaviourException<T> {
 
 	@Accessors
-	var String name
+	val protected Class<T> type
 
-	new(String name) {
-		this.name = name
+	new(Class<T> type) {
+		this.type = type
 	}
-	
+
 }

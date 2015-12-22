@@ -1,8 +1,8 @@
 package ru.agentlab.maia.behaviour.fsm
 
 import ru.agentlab.maia.behaviour.IBehaviour
-import ru.agentlab.maia.behaviour.IBehaviourScheduler
 import ru.agentlab.maia.behaviour.IExecutionStep
+import ru.agentlab.maia.behaviour.IBehaviourScheduler
 
 interface IFsmBehaviour extends IBehaviourScheduler {
 

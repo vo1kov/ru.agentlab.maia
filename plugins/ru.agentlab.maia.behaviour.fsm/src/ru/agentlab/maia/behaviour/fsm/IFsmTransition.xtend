@@ -1,6 +1,6 @@
 package ru.agentlab.maia.behaviour.fsm
 
-import ru.agentlab.maia.behaviour.IExecutionStep
+import ru.agentlab.maia.behaviour.execution.IExecutionStep
 
 interface IFsmTransition {
 

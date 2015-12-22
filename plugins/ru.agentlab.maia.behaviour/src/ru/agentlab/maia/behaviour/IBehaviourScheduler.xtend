@@ -1,5 +1,7 @@
 package ru.agentlab.maia.behaviour
 
+import ru.agentlab.maia.behaviour.Behaviour
+
 /**
  * <p>Execution node than delegate execution to one of subtasks.</p>
  * 
@@ -28,167 +30,39 @@ package ru.agentlab.maia.behaviour
  * for every scheduler instance by {@link Policy Policy} - some flag indicating 
  * how exactly react on child notification.</p>
  *  
- * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
+ * @author Dmitry Shishkin
  */
 interface IBehaviourScheduler extends IBehaviour {
 
 	/**
-	 * <p>Policy that control reaction on notification.</p>
-	 */
-	enum Policy {
-
-		/**
-		 * <p>The policy means that the scheduler should select next node and next 
-		 * time skip current subtask and notify own parent that is
-		 * still working.</p>
-		 */
-		SKIP,
-
-		/**
-		 * <p>The policy means that the scheduler should select next node and 
-		 * notify own parent that is still working.</p>
-		 */
-		SCHEDULING,
-
-		/**
-		 * <p>The policy means that the scheduler should do nothing, wait some 
-		 * another notification from subtask and notify own parent that 
-		 * is still working.</p>
-		 */
-		IDLE,
-
-		/**
-		 * <p>The policy means that the scheduler should wait notification that 
-		 * some subtask become ready and notify parent that is waiting.</p>
-		 */
-		BLOCKED,
-
-		/**
-		 * <p>The policy means that the scheduler successfully finish its work 
-		 * and should notify own parent about it.</p>
-		 */
-		SUCCESS,
-
-		/**
-		 * <p>The policy means that the scheduler can't execute other subtasks 
-		 * and should notify own parent about it.</p>
-		 */
-		FAILED,
-
-		/**
-		 * <p>The policy means that the scheduler should try to restart 
-		 * execution of its subtasks and notify own parent that is
-		 * still working.</p>
-		 */
-		RESTART,
-
-		/**
-		 * <p>The policy means that the scheduler should be deleted from its 
-		 * own parent.</p>
-		 */
-		DELETED
-	}
-
-	val public static long RETRIES_INFINITE = -1L
-
-	val public static long RETRIES_ONE_TIME = 1L
-
-	/**
-	 * <p>Get all subtasks.</p>
+	 * Get all subtasks.
 	 * 
 	 * @return					all subtasks as Iterable.
 	 */
-	def Iterable<IBehaviour> getChilds()
+	def Iterable<Behaviour> getChilds()
 
 	/**
-	 * <p>Add specified task as subtask of current scheduler.</p>
+	 * Add specified task as subtask of current scheduler.
 	 * 
 	 * @param task				task to be added.
 	 * @throws					NullPointerException
 	 * 							if task argument is {@code null}.
 	 */
-	def boolean addChild(IBehaviour task)
+	def boolean addChild(Behaviour child)
 
 	/**
-	 * <p>Remove specified task from subtasks list.</p>
+	 * Remove specified task from subtasks list.
 	 * 
 	 * @param task				task to be removed.
 	 * @return					boolean flag of removing.
 	 * @throws					NullPointerException
 	 * 							if task argument is {@code null}.
-	 * @throws 					IllegalArgumentException
-	 * 							if specified task doesn't contains 
-	 * 							in subtasks list.
 	 */
-	def boolean removeChild(IBehaviour task)
+	def boolean removeChild(Behaviour child)
 
 	/**
-	 * <p>Notifies that specified task asynchronously changed state
-	 * to {@link ITask.State#READY READY}.</p>
-	 * 
-	 * @param task				task that changed state.
+	 * Remove all childs 
 	 */
-	def void notifyChildReady(IBehaviour task)
-
-	/**
-	 * <p>Notifies that the current subtask was executed and it's state
-	 * changed to {@link ITask.State#BLOCKED BLOCKED}.</p>
-	 */
-	def void notifyChildBlocked()
-
-	/**
-	 * <p>Notifies that the current subtask was executed and it's state
-	 * changed to {@link ITask.State#SUCCESS SUCCESS}.</p>
-	 */
-	def void notifyChildSuccess()
-
-	/**
-	 * <p>Notifies that the current subtask was executed and it's state
-	 * changed to {@link ITask.State#FAILED FAILED}.</p>
-	 */
-	def void notifyChildFailed(IBehaviourException exception)
-
-	/**
-	 * <p>Notifies that the current child was received some notification from 
-	 * it's own child but did nothing. It is needed only for notifying
-	 * parent scheduler about child notification.</p>
-	 * 
-	 * <p>For reacting on that notification "Child Idle Policy" is used.</p>
-	 * 
-	 * <p>Current node should be a scheduler.</p>
-	 */
-	def void notifyChildWorking()
-
-//	def long getRetriesLimit()
-//
-//	def void setRetriesLimit(long newiterations)
-
-//	def Policy getPolicyOnChildBlocked()
-//
-//	def void setPolicyOnChildBlocked(Policy newPolicy)
-//
-//	def Policy getPolicyOnChildFailed()
-//
-//	def void setPolicyOnChildFailed(Policy newPolicy)
-//
-//	def Policy getPolicyOnChildSuccess()
-//
-//	def void setPolicyOnChildSuccess(Policy newPolicy)
-//
-//	def Policy getPolicyOnChildWorking()
-//
-//	def void setPolicyOnChildWorking(Policy newPolicy)
-//
-//	def Policy getPolicyOnAllChildsBlocked()
-//
-//	def void setPolicyOnAllChildsBlocked(Policy newPolicy)
-//
-//	def Policy getPolicyOnAllChildsSuccess()
-//
-//	def void setPolicyOnAllChildsSuccess(Policy newPolicy)
-
-//	def void restart()
-	
 	def void clear()
 
 }
