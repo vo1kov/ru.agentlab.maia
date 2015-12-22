@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Jade
-Bundle-SymbolicName: ru.agentlab.maia.adapter.behaviour.jade
+Bundle-SymbolicName: ru.agentlab.maia.adapter.jade.behaviour
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
