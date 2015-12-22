@@ -3,8 +3,8 @@ package ru.agentlab.maia.adapter.behaviour.json
 import java.util.List
 import java.util.Map
 import ru.agentlab.maia.adapter.behaviour.json.internal.Activator
-import ru.agentlab.maia.behaviour.BehaviourScheduler
 import ru.agentlab.maia.behaviour.IBehaviour
+import ru.agentlab.maia.behaviour.Scheduler
 import ru.agentlab.maia.behaviour.IBehaviourScheduler
 
 class BehaviourSchedulerJsonModifier extends BehaviourJsonModifier {
@@ -15,7 +15,7 @@ class BehaviourSchedulerJsonModifier extends BehaviourJsonModifier {
 
 	override modify(IBehaviour task, Object... objects) {
 		val parsed = objects.get(0) as Map<String, ?>
-		if (task instanceof BehaviourScheduler) {
+		if (task instanceof Scheduler) {
 			super.modify(task, parsed)
 			task.modifySubtasks(parsed)
 			task.modifyDataflow(parsed)
