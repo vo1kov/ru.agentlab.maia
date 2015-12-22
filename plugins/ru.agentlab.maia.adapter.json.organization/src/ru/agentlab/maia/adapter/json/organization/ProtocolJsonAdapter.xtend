@@ -1,4 +1,4 @@
-package ru.agentlab.maia.adapter.organization.json
+package ru.agentlab.maia.adapter.json.organization
 
 import com.jayway.jsonpath.Configuration
 import com.jayway.jsonpath.JsonPath
