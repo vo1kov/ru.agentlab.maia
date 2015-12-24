@@ -1,7 +1,5 @@
 package ru.agentlab.maia.behaviour
 
-import ru.agentlab.maia.behaviour.Behaviour
-
 /**
  * <p>Execution node than delegate execution to one of subtasks.</p>
  * 
@@ -39,7 +37,7 @@ interface IBehaviourScheduler extends IBehaviour {
 	 * 
 	 * @return					all subtasks as Iterable.
 	 */
-	def Iterable<Behaviour> getChilds()
+	def Iterable<IBehaviour> getChilds()
 
 	/**
 	 * Add specified task as subtask of current scheduler.
@@ -48,7 +46,7 @@ interface IBehaviourScheduler extends IBehaviour {
 	 * @throws					NullPointerException
 	 * 							if task argument is {@code null}.
 	 */
-	def boolean addChild(Behaviour child)
+	def boolean addChild(IBehaviour child)
 
 	/**
 	 * Remove specified task from subtasks list.
@@ -58,7 +56,7 @@ interface IBehaviourScheduler extends IBehaviour {
 	 * @throws					NullPointerException
 	 * 							if task argument is {@code null}.
 	 */
-	def boolean removeChild(Behaviour child)
+	def boolean removeChild(IBehaviour child)
 
 	/**
 	 * Remove all childs 

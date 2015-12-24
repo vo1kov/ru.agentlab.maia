@@ -1,4 +1,4 @@
-package ru.agentlab.maia.behaviour.primitive
+package ru.agentlab.maia.behaviour
 
 import ru.agentlab.maia.behaviour.IBehaviour
 
