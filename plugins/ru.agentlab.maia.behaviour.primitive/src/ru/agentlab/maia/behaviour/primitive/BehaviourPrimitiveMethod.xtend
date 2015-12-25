@@ -7,7 +7,7 @@ import ru.agentlab.maia.behaviour.BehaviourState
  * 
  * @author Dmitry Shishkin
  */
-class BehaviourPrimitiveMethod extends BehaviourPrimitive {
+class BehaviourPrimitiveMethod extends BehaviourPrimitiveReflection {
 
 	override setImplementation(Object impl) {
 		super.setImplementation(impl)

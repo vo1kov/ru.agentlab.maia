@@ -9,7 +9,7 @@ import ru.agentlab.maia.behaviour.annotation.Output
  * 
  * @author Dmitry Shishkin
  */
-class BehaviourPrimitiveFields extends BehaviourPrimitive {
+class BehaviourPrimitiveFields extends BehaviourPrimitiveReflection {
 
 	override setImplementation(Object impl) {
 		super.setImplementation(impl)

@@ -8,7 +8,7 @@ public class Test {
 
 	public static void main(String[] args) {
 		BehaviourPrimitiveLambda behaviour = new BehaviourPrimitiveLambda();
-		behaviour.setImplementation(a -> new Object[] { Arrays.asList(a).stream().count() });
+		behaviour.setLambda(a -> new Object[] { Arrays.asList(a).stream().count() });
 	}
 
 }

@@ -2,10 +2,10 @@ package ru.agentlab.maia.behaviour.pattern
 
 import java.util.HashMap
 import javax.inject.Inject
+import ru.agentlab.maia.behaviour.BehaviourScheduler
 import ru.agentlab.maia.behaviour.IBehaviour
-import ru.agentlab.maia.behaviour.BehaviourUnordered
 
-class PatternBehaviour extends BehaviourUnordered implements IPatternBehaviour {
+class BehaviourSchedulerPattern extends BehaviourScheduler implements IBehaviourSchedulerPattern {
 
 	val stateMapping = new HashMap<PatternState, IBehaviour>
 
@@ -46,28 +46,27 @@ class PatternBehaviour extends BehaviourUnordered implements IPatternBehaviour {
 	}
 
 	override clear() {
-		super.clear()
 		stateMapping.clear
 	}
-	
-	override notifyChildSuccess() {
+
+	def notifyChildSuccess() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
-//	override isFirst(IBehaviour subtask) {
-//		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-//	}
-//
-//	override isReady() {
-//		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-//	}
-	
-//	override protected finished() {
-//		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-//	}
-//	
-//	override protected schedule() {
-//		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-//	}
+	override protected getCurrent() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+
+	override getChilds() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+
+	override addChild(IBehaviour child) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+
+	override removeChild(IBehaviour child) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
 
 }

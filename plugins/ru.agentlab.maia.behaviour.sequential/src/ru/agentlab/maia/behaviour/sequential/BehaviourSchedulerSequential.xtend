@@ -1,7 +1,8 @@
 package ru.agentlab.maia.behaviour.sequential
 
 import java.util.ArrayList
-import ru.agentlab.maia.behaviour.Behaviour
+import ru.agentlab.maia.behaviour.BehaviourScheduler
+import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.behaviour.IBehaviourScheduler
 
 import static ru.agentlab.maia.behaviour.BehaviourState.*
@@ -12,9 +13,9 @@ import static ru.agentlab.maia.behaviour.BehaviourState.*
  * 
  * @author Dmitry Shishkin
  */
-class SequentialBehaviour extends Behaviour implements IBehaviourScheduler {
+class BehaviourSchedulerSequential extends BehaviourScheduler implements IBehaviourSchedulerSequential {
 
-	val protected childs = new ArrayList<Behaviour>
+	val protected childs = new ArrayList<IBehaviour>
 
 	var protected int index = 0
 
@@ -22,8 +23,8 @@ class SequentialBehaviour extends Behaviour implements IBehaviourScheduler {
 		return childs
 	}
 
-	override addChild(Behaviour child) {
-		if (child == null) {
+	override addChild(IBehaviour child) {
+		if (child === null) {
 			throw new NullPointerException("Node can't be null")
 		}
 		if (!childs.contains(child)) {
@@ -42,7 +43,7 @@ class SequentialBehaviour extends Behaviour implements IBehaviourScheduler {
 	 * If specified index less then current index then current index should be decreased.
 	 * If specified index indicates on last child then index should be reseted.
 	 */
-	override removeChild(Behaviour child) {
+	override removeChild(IBehaviour child) {
 		if (child === null) {
 			throw new NullPointerException("Node can't be null")
 		}
@@ -69,26 +70,16 @@ class SequentialBehaviour extends Behaviour implements IBehaviourScheduler {
 		state = UNKNOWN
 	}
 
-	override execute() throws Exception {
-		val current = childs.get(index)
-		try {
-			current.execute
-			switch (current.state) {
-				case SUCCESS: {
-					if (index === childs.size - 1) {
-						state = SUCCESS
-					} else {
-						index = index + 1
-						state = WORKING
-					}
-				}
-				default: {
-					state = current.state
-				}
-			}
-		} catch (Exception e) {
-			state = FAILED
-			throw e
+	override protected getCurrent() {
+		return childs.get(index)
+	}
+
+	override protected handleChildSuccess() {
+		if (index === childs.size - 1) {
+			state = SUCCESS
+		} else {
+			index = index + 1
+			state = WORKING
 		}
 	}
 

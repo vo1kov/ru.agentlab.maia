@@ -6,7 +6,8 @@ import java.util.Map
 import javax.inject.Inject
 import ru.agentlab.maia.behaviour.Behaviour
 import ru.agentlab.maia.behaviour.BehaviourException
-import ru.agentlab.maia.behaviour.IBehaviourScheduler
+import ru.agentlab.maia.behaviour.BehaviourScheduler
+import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.event.IMaiaEventBroker
 
 import static ru.agentlab.maia.behaviour.BehaviourState.*
@@ -15,17 +16,17 @@ import static ru.agentlab.maia.behaviour.BehaviourState.*
  * 
  * @author Dmitry Shishkin
  */
-class FsmBehaviour extends Behaviour implements IBehaviourScheduler {
+class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSchedulerFsm {
 
 	var IMaiaEventBroker broker
 
-	val Map<Behaviour, Object> behaviourTransitions = new HashMap
+	val Map<IBehaviour, Object> behaviourTransitions = new HashMap
 
 	val Map<BehaviourException<?>, Object> exceptionTransitions = new HashMap
 
-	val Map<Behaviour, Collection<Object>> eventTransitions = new HashMap
+	val Map<IBehaviour, Collection<Object>> eventTransitions = new HashMap
 
-	var Behaviour current = null
+	var IBehaviour current = null
 
 	@Inject
 	new(IMaiaEventBroker broker) {
@@ -36,7 +37,10 @@ class FsmBehaviour extends Behaviour implements IBehaviourScheduler {
 		return behaviourTransitions.keySet
 	}
 
-	override addChild(Behaviour child) {
+	override addChild(IBehaviour child) {
+		if (child === null) {
+			throw new NullPointerException("Node can't be null")
+		}
 		if (!behaviourTransitions.containsKey(child)) {
 			behaviourTransitions.put(child, null)
 			if (state === UNKNOWN) {
@@ -48,7 +52,10 @@ class FsmBehaviour extends Behaviour implements IBehaviourScheduler {
 		}
 	}
 
-	override removeChild(Behaviour child) {
+	override removeChild(IBehaviour child) {
+		if (child === null) {
+			throw new NullPointerException("Node can't be null")
+		}
 		if (behaviourTransitions.containsKey(child)) {
 			behaviourTransitions.remove(child)
 			if (behaviourTransitions.empty) {
@@ -67,92 +74,87 @@ class FsmBehaviour extends Behaviour implements IBehaviourScheduler {
 		state = UNKNOWN
 	}
 
-	override execute() {
+	override addBehaviourTransition(Behaviour from, Behaviour to) {
+		from.checkFrom
+		to.checkTo
+		behaviourTransitions.put(from, to)
+	}
+
+	override addBehaviourTransition(Behaviour from, BehaviourException<?> to) {
+		from.checkFrom
+		to.checkTo
+		behaviourTransitions.put(from, to)
+	}
+
+	override addExceptionTransition(BehaviourException<?> from, Behaviour to) {
+		from.checkFrom
+		to.checkTo
+		exceptionTransitions.put(from, to)
+	}
+
+	override addExceptionTransition(BehaviourException<?> from, BehaviourException<?> to) {
+		from.checkFrom
+		to.checkTo
+		exceptionTransitions.put(from, to)
+	}
+
+	override addEventTransition(Behaviour from, Behaviour to, String topic) {
+		from.checkFrom
+		to.checkTo
+		if (from === null) {
+			throw new IllegalArgumentException('''Event transition can't be initial''')
+		}
+//		val existing = asyncTransitions.findFirst[it.from == from && it.to == to]
+//		if (existing == null) {
+//			val transition = new EventFsmTransition(from, to, topic)
+//			asyncTransitions += transition
+//			return transition
+//		} else {
+//			return null
+//		}
+	}
+
+	override addEventTransition(Behaviour from, BehaviourException<?> to, String topic) {
+		from.checkFrom
+		to.checkTo
+		if (from === null) {
+			throw new IllegalArgumentException('''Event transition can't be initial''')
+		}
+//		val existing = asyncTransitions.findFirst[it.from == from && it.to == to]
+//		if (existing == null) {
+//			val transition = new EventFsmTransition(from, to, topic)
+//			asyncTransitions += transition
+//			return transition
+//		} else {
+//			return null
+//		}
+	}
+
+	override protected getCurrent() {
 		if (current === null) {
 			current = behaviourTransitions.get(null) as Behaviour
 		}
-		try {
-			current.execute
-			switch (current.state) {
-				case SUCCESS: {
-					val next = behaviourTransitions.get(current)
-					next.changeState
-				}
-				default: {
-					state = current.state
-				}
-			}
-		} catch (Exception e) {
-			val exception = current.exceptions.findFirst[type.isAssignableFrom(e.class)]
-			if (exception != null) {
-				state = WORKING
-				val next = exceptionTransitions.get(exception)
-				next.changeState
-			} else {
-				state = FAILED
-				throw e
-			}
+		return current
+	}
+
+	override protected handleChildSuccess() {
+		val next = behaviourTransitions.get(current)
+		next.changeState
+	}
+
+	override protected handleChildFailed(Exception e) throws Exception {
+		val exception = current.exceptions.findFirst[type.isAssignableFrom(e.class)]
+		if (exception != null) {
+			val next = exceptionTransitions.get(exception)
+			next.changeState
+		} else {
+			super.handleChildFailed(e)
 		}
-	}
 
-	def addBehaviourTransition(Behaviour from, Behaviour to) {
-		from.checkFrom
-		to.checkTo
-		behaviourTransitions.put(from, to)
-	}
-
-	def addBehaviourTransition(Behaviour from, BehaviourException<?> to) {
-		from.checkFrom
-		to.checkTo
-		behaviourTransitions.put(from, to)
-	}
-
-	def addExceptionTransition(BehaviourException<?> from, Behaviour to) {
-		from.checkFrom
-		to.checkTo
-		exceptionTransitions.put(from, to)
-	}
-
-	def addExceptionTransition(BehaviourException<?> from, BehaviourException<?> to) {
-		from.checkFrom
-		to.checkTo
-		exceptionTransitions.put(from, to)
-	}
-
-	def addEventTransition(Behaviour from, Behaviour to, String topic) {
-		from.checkFrom
-		to.checkTo
-		if (from === null) {
-			throw new IllegalArgumentException('''Event transition can't be initial''')
-		}
-//		val existing = asyncTransitions.findFirst[it.from == from && it.to == to]
-//		if (existing == null) {
-//			val transition = new EventFsmTransition(from, to, topic)
-//			asyncTransitions += transition
-//			return transition
-//		} else {
-//			return null
-//		}
-	}
-
-	def addEventTransition(Behaviour from, BehaviourException<?> to, String topic) {
-		from.checkFrom
-		to.checkTo
-		if (from === null) {
-			throw new IllegalArgumentException('''Event transition can't be initial''')
-		}
-//		val existing = asyncTransitions.findFirst[it.from == from && it.to == to]
-//		if (existing == null) {
-//			val transition = new EventFsmTransition(from, to, topic)
-//			asyncTransitions += transition
-//			return transition
-//		} else {
-//			return null
-//		}
 	}
 
 	def private void checkFrom(Behaviour from) {
-		if (!childs.exists[it === from]) {
+		if (from != null && !childs.exists[it === from]) {
 			throw new IllegalArgumentException('''BehaviourException [«from»] is not a child of scheduler''')
 		}
 	}
