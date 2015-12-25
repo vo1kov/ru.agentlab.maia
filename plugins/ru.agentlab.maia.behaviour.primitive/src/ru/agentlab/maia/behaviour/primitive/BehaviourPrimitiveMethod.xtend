@@ -11,8 +11,8 @@ class BehaviourPrimitiveMethod extends BehaviourPrimitiveReflection {
 
 	override setImplementation(Object impl) {
 		super.setImplementation(impl)
-		method.parameters.forEach [
-			addInput(new BehaviourParameter(name, type))
+		method.parameterTypes.forEach [ param, index |
+			addInput(new BehaviourParameter('''arg«index»''', param))
 		]
 		if (!method.returnType.equals(Void.TYPE)) {
 			addOutput(new BehaviourParameter(method.name, method.returnType))

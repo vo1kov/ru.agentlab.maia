@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: MAIA Simple Sequence-based Scheduler
 Bundle-SymbolicName: ru.agentlab.maia.behaviour.sequential
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
