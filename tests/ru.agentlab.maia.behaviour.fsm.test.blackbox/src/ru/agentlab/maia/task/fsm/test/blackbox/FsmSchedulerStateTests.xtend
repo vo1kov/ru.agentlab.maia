@@ -12,6 +12,7 @@ import static org.mockito.Mockito.*
 import ru.agentlab.maia.behaviour.fsm.FsmBehaviour
 import ru.agentlab.maia.behaviour.fsm.IFsmBehaviour
 import ru.agentlab.maia.event.IMaiaEventBroker
+import ru.agentlab.maia.behaviour.fsm.BehaviourSchedulerFsm
 
 @RunWith(MockitoJUnitRunner)
 class FsmSchedulerStateTests {
@@ -22,7 +23,7 @@ class FsmSchedulerStateTests {
 //	@Mock
 //	IMaiaContextInjector injector
 	@Spy @InjectMocks
-	IFsmBehaviour scheduler = new FsmBehaviour(mock(IMaiaEventBroker) )
+	BehaviourSchedulerFsm scheduler = new BehaviourSchedulerFsm(mock(IMaiaEventBroker) )
 
 	@Test
 	def void shouldBeUnknownWhenConstructed() {

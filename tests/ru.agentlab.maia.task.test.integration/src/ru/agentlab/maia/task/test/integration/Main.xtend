@@ -6,12 +6,12 @@ import java.util.Map
 import org.jbehave.core.annotations.Given
 import org.jbehave.core.annotations.Then
 import org.jbehave.core.annotations.When
-import ru.agentlab.maia.behaviour.BehaviourState
+import ru.agentlab.maia.behaviour.Behaviour
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.behaviour.IBehaviourScheduler
-import ru.agentlab.maia.behaviour.parallel.ParallelBehaviour
-import ru.agentlab.maia.behaviour.primitive.AnnotatedAction
-import ru.agentlab.maia.behaviour.sequential.SequentialBehaviour
+import ru.agentlab.maia.behaviour.parallel.BehaviourSchedulerParallel
+import ru.agentlab.maia.behaviour.primitive.BehaviourPrimitiveMethod
+import ru.agentlab.maia.behaviour.sequential.BehaviourSchedulerSequential
 import ru.agentlab.maia.task.test.integration.doubles.DummyAction
 
 import static org.hamcrest.Matchers.*
@@ -26,14 +26,14 @@ class Main {
 	@Given("a sequential schedulers $ids")
 	def void givenSequentialScheduler(List<String> ids) {
 		ids.forEach [
-			tasks.put(it, new SequentialBehaviour)
+			tasks.put(it, new BehaviourSchedulerSequential)
 		]
 	}
 
 	@Given("a parallel schedulers $ids")
 	def void givenParallelScheduler(List<String> ids) {
 		ids.forEach [
-			tasks.put(it, new ParallelBehaviour)
+			tasks.put(it, new BehaviourSchedulerParallel)
 		]
 	}
 
@@ -41,7 +41,9 @@ class Main {
 	def void givenPrimitiveBehaviour(List<String> ids) {
 		ids.forEach [
 			val impl = new DummyAction
-			val task = new AnnotatedAction(impl)
+			val task = new BehaviourPrimitiveMethod => [
+				implementation = impl
+			]
 			impls.put(it, impl)
 			tasks.put(it, task)
 		]
@@ -72,7 +74,7 @@ class Main {
 
 	@Then("task $id have $state state")
 	def void thenBehaviourHaveState(String id, String state) {
-		assertThat(tasks.get(id).state, equalTo(BehaviourState.valueOf(state)))
+		assertThat(tasks.get(id).state, equalTo(Behaviour.State.valueOf(state)))
 	}
 
 }

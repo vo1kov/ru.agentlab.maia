@@ -2,39 +2,28 @@ package ru.agentlab.maia.task.parallel.test.blackbox
 
 import org.junit.Ignore
 import org.junit.Test
-import ru.agentlab.maia.behaviour.BehaviourState
+import ru.agentlab.maia.behaviour.Behaviour
 import ru.agentlab.maia.behaviour.IBehaviour
-import ru.agentlab.maia.behaviour.IBehaviourException
-import ru.agentlab.maia.behaviour.parallel.ParallelBehaviour
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
+import ru.agentlab.maia.behaviour.parallel.BehaviourSchedulerParallel
 
 class ParallelScheduler_getNode_FunctionalTests {
 
-	val scheduler = new ParallelBehaviour
+	val scheduler = new BehaviourSchedulerParallel
 
 	def IBehaviour getSuccessNode() {
 		val result = mock(IBehaviour) => [
-			when(it.state).thenReturn(BehaviourState.SUCCESS)
-
-			doAnswer[
-				scheduler.notifyChildSuccess
-				return null
-			].when(it).execute
+			when(it.state).thenReturn(Behaviour.State.SUCCESS)
 		]
 		return result
 	}
 
 	def IBehaviour getFailedNode() {
 		val result = mock(IBehaviour) => [
-			when(it.state).thenReturn(BehaviourState.FAILED)
-
-			doAnswer[
-				scheduler.notifyChildFailed(mock(IBehaviourException))
-				return null
-			].when(it).execute
+			when(it.state).thenReturn(Behaviour.State.FAILED)
 		]
 		return result
 	}
@@ -50,7 +39,7 @@ class ParallelScheduler_getNode_FunctionalTests {
 		scheduler.execute
 		scheduler.execute
 
-		assertThat(scheduler.state, equalTo(BehaviourState.FAILED))
+		assertThat(scheduler.state, equalTo(Behaviour.State.FAILED))
 	}
 
 }
