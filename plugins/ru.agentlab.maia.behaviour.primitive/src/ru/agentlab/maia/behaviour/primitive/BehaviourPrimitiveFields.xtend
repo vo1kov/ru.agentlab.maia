@@ -1,7 +1,5 @@
 package ru.agentlab.maia.behaviour.primitive
 
-import ru.agentlab.maia.behaviour.BehaviourParameter
-import ru.agentlab.maia.behaviour.BehaviourState
 import ru.agentlab.maia.behaviour.annotation.Input
 import ru.agentlab.maia.behaviour.annotation.Output
 
@@ -15,12 +13,12 @@ class BehaviourPrimitiveFields extends BehaviourPrimitiveReflection {
 		super.setImplementation(impl)
 		implementation.class.declaredFields.forEach [
 			if (isAnnotationPresent(Input)) {
-				addInput(new BehaviourParameter(name, type))
+				addInput(new Parameter(name, type))
 			} else if (isAnnotationPresent(Output)) {
-				addOutput(new BehaviourParameter(name, type))
+				addOutput(new Parameter(name, type))
 			}
 		]
-		state = BehaviourState.READY
+		state = State.READY
 	}
 
 	override protected executeInternal(Object[] args) {

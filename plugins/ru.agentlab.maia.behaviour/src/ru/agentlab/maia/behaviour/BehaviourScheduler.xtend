@@ -2,7 +2,7 @@ package ru.agentlab.maia.behaviour
 
 abstract class BehaviourScheduler extends Behaviour implements IBehaviourScheduler {
 
-	override final execute() throws Exception {
+	override final execute() throws java.lang.Exception {
 		try {
 			current.execute
 			switch (current.state) {
@@ -22,36 +22,36 @@ abstract class BehaviourScheduler extends Behaviour implements IBehaviourSchedul
 					handleChildBlocked
 				}
 				case FAILED: {
-					throw new IllegalStateException("State [FAILED] is illegal. Behavior should throw some Exception")
+					throw new IllegalStateException("State [FAILED] is illegal. Failed behavior should throw some Exception")
 				}
 			}
-		} catch (Exception e) {
+		} catch (java.lang.Exception e) {
 			handleChildFailed(e)
 		}
 	}
 
 	def protected void handleChildSuccess() {
-		state = BehaviourState.SUCCESS
+		state = State.SUCCESS
 	}
 
 	def protected void handleChildUnknown() {
-		state = BehaviourState.UNKNOWN
+		state = State.UNKNOWN
 	}
 
 	def protected void handleChildBlocked() {
-		state = BehaviourState.BLOCKED
+		state = State.BLOCKED
 	}
 
 	def protected void handleChildReady() {
-		state = BehaviourState.READY
+		state = State.READY
 	}
 
 	def protected void handleChildWorking() {
-		state = BehaviourState.WORKING
+		state = State.WORKING
 	}
 
-	def protected void handleChildFailed(Exception e) throws Exception {
-		state = BehaviourState.FAILED
+	def protected void handleChildFailed(java.lang.Exception e) throws java.lang.Exception {
+		state = State.FAILED
 		throw e
 	}
 

@@ -2,10 +2,7 @@ package ru.agentlab.maia.behaviour.parallel
 
 import java.util.ArrayList
 import ru.agentlab.maia.behaviour.BehaviourScheduler
-import ru.agentlab.maia.behaviour.BehaviourState
 import ru.agentlab.maia.behaviour.IBehaviour
-
-import static ru.agentlab.maia.behaviour.BehaviourState.*
 
 /**
  * <p>Parallel implementation of {@link ITaskScheduler}.
@@ -47,8 +44,8 @@ class BehaviourSchedulerParallel extends BehaviourScheduler implements IBehaviou
 		}
 		if (!childs.contains(child)) {
 			childs.add(child)
-			if (state == UNKNOWN) {
-				state = READY
+			if (state == State.UNKNOWN) {
+				state = State.READY
 			}
 			return true
 		} else {
@@ -69,7 +66,7 @@ class BehaviourSchedulerParallel extends BehaviourScheduler implements IBehaviou
 				index = 0
 			}
 			if (childs.empty) {
-				state = UNKNOWN
+				state = State.UNKNOWN
 			}
 			return true
 		} else {
@@ -80,7 +77,7 @@ class BehaviourSchedulerParallel extends BehaviourScheduler implements IBehaviou
 	override clear() {
 		childs.clear
 		index = 0
-		state = UNKNOWN
+		state = State.UNKNOWN
 	}
 
 	override protected getCurrent() {
@@ -90,24 +87,24 @@ class BehaviourSchedulerParallel extends BehaviourScheduler implements IBehaviou
 	override protected handleChildSuccess() {
 		terminatedSubtasks += childs.remove(index)
 		if (childs.empty) {
-			state = BehaviourState.SUCCESS
+			state = State.SUCCESS
 		} else {
-			state = BehaviourState.WORKING
+			state = State.WORKING
 		}
 	}
 
 	override protected handleChildBlocked() {
 		blockedSubtasks += childs.remove(index)
 		if (childs.empty) {
-			state = BehaviourState.BLOCKED
+			state = State.BLOCKED
 		} else {
-			state = BehaviourState.WORKING
+			state = State.WORKING
 		}
 	}
 
 	override protected handleChildWorking() {
 		index = (index + 1) % childs.size
-		state = BehaviourState.WORKING
+		state = State.WORKING
 	}
 
 }

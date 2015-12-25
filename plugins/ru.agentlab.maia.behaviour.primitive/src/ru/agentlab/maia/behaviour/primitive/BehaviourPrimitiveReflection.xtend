@@ -1,7 +1,6 @@
 package ru.agentlab.maia.behaviour.primitive
 
 import java.lang.reflect.Method
-import ru.agentlab.maia.behaviour.BehaviourException
 import ru.agentlab.maia.behaviour.BehaviourPrimitive
 import ru.agentlab.maia.behaviour.annotation.Execute
 
@@ -22,7 +21,7 @@ abstract class BehaviourPrimitiveReflection extends BehaviourPrimitive implement
 			throw new IllegalArgumentException("Task have no method annotated with @" + Execute.simpleName)
 		}
 		method.exceptionTypes.forEach [
-			addException(new BehaviourException(it))
+			addException(new Exception(it))
 		]
 	}
 

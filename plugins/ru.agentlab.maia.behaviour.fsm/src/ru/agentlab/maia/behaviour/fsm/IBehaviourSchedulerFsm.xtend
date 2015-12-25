@@ -1,7 +1,6 @@
 package ru.agentlab.maia.behaviour.fsm
 
 import ru.agentlab.maia.behaviour.Behaviour
-import ru.agentlab.maia.behaviour.BehaviourException
 import ru.agentlab.maia.behaviour.IBehaviourScheduler
 
 interface IBehaviourSchedulerFsm extends IBehaviourScheduler {
@@ -22,15 +21,15 @@ interface IBehaviourSchedulerFsm extends IBehaviourScheduler {
 //	def void addTransition(IExecutionStep from, IExecutionStep to)
 	def void addBehaviourTransition(Behaviour from, Behaviour to)
 
-	def void addBehaviourTransition(Behaviour from, BehaviourException<?> to)
+	def void addBehaviourTransition(Behaviour from, Behaviour.Exception<?> to)
 
-	def void addExceptionTransition(BehaviourException<?> from, Behaviour to)
+	def void addExceptionTransition(Behaviour.Exception<?> from, Behaviour to)
 
-	def void addExceptionTransition(BehaviourException<?> from, BehaviourException<?> to)
+	def void addExceptionTransition(Behaviour.Exception<?> from, Behaviour.Exception<?> to)
 
 	def void addEventTransition(Behaviour from, Behaviour to, String topic)
 
-	def void addEventTransition(Behaviour from, BehaviourException<?> to, String topic)
+	def void addEventTransition(Behaviour from, Behaviour.Exception<?> to, String topic)
 
 //	def void registerFirstChild(IBehaviour behaviour)
 //	/**

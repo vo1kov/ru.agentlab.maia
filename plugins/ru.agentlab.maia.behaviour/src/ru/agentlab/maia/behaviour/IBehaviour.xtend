@@ -20,7 +20,7 @@ interface IBehaviour {
 	 * 
 	 * @return 					task state.
 	 */
-	def BehaviourState getState()
+	def Behaviour.State getState()
 
 	/**
 	 * <p>Retrieve all task inputs.</p>
@@ -28,7 +28,7 @@ interface IBehaviour {
 	 * @return 					collection of task inputs or
 	 * 							{@code null} if task have no inputs.
 	 */
-	def Iterable<BehaviourParameter<?>> getInputs()
+	def Iterable<Behaviour.Parameter<?>> getInputs()
 
 	/**
 	 * <p>Retrieve all task outputs.</p>
@@ -36,35 +36,35 @@ interface IBehaviour {
 	 * @return 					collection of task outputs or
 	 * 							{@code null} if task have no outputs.
 	 */
-	def Iterable<BehaviourParameter<?>> getOutputs()
+	def Iterable<Behaviour.Parameter<?>> getOutputs()
 
 	/**
 	 * <p>Add specified parameter as input to task.</p>
 	 * 
 	 * @param parameter			parameter to be added.
 	 */
-	def void addInput(BehaviourParameter<?> parameter)
+	def void addInput(Behaviour.Parameter<?> parameter)
 
 	/**
 	 * <p>Add specified parameter as output to task.</p>
 	 * 
 	 * @param parameter			parameter to be added.
 	 */
-	def void addOutput(BehaviourParameter<?> parameter)
+	def void addOutput(Behaviour.Parameter<?> parameter)
 
 	/**
 	 * <p>Remove specified parameter from task inputs.</p>
 	 * 
 	 * @param parameter			parameter to be removed.
 	 */
-	def void removeInput(BehaviourParameter<?> parameter)
+	def void removeInput(Behaviour.Parameter<?> parameter)
 
 	/**
 	 * <p>Remove specified parameter from task outputs.</p>
 	 * 
 	 * @param parameter			parameter to be removed.
 	 */
-	def void removeOutput(BehaviourParameter<?> parameter)
+	def void removeOutput(Behaviour.Parameter<?> parameter)
 
 	/**
 	 * <p>Remove all parameters from task inputs.</p>
@@ -76,11 +76,11 @@ interface IBehaviour {
 	 */
 	def void clearOutputs()
 
-	def Iterable<BehaviourException<?>> getExceptions()
+	def Iterable<Behaviour.Exception<?>> getExceptions()
 
-	def void addException(BehaviourException<?> exception)
+	def void addException(Behaviour.Exception<?> exception)
 
-	def void removeException(BehaviourException<?> exception)
+	def void removeException(Behaviour.Exception<?> exception)
 
 	def void clearExceptions()
 

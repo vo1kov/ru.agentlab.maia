@@ -5,12 +5,9 @@ import java.util.HashMap
 import java.util.Map
 import javax.inject.Inject
 import ru.agentlab.maia.behaviour.Behaviour
-import ru.agentlab.maia.behaviour.BehaviourException
 import ru.agentlab.maia.behaviour.BehaviourScheduler
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.event.IMaiaEventBroker
-
-import static ru.agentlab.maia.behaviour.BehaviourState.*
 
 /**
  * 
@@ -22,7 +19,7 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 
 	val Map<IBehaviour, Object> behaviourTransitions = new HashMap
 
-	val Map<BehaviourException<?>, Object> exceptionTransitions = new HashMap
+	val Map<ru.agentlab.maia.behaviour.Behaviour.Exception<?>, Object> exceptionTransitions = new HashMap
 
 	val Map<IBehaviour, Collection<Object>> eventTransitions = new HashMap
 
@@ -43,8 +40,8 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 		}
 		if (!behaviourTransitions.containsKey(child)) {
 			behaviourTransitions.put(child, null)
-			if (state === UNKNOWN) {
-				state = READY
+			if (state === State.UNKNOWN) {
+				state = State.READY
 			}
 			return true
 		} else {
@@ -59,7 +56,7 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 		if (behaviourTransitions.containsKey(child)) {
 			behaviourTransitions.remove(child)
 			if (behaviourTransitions.empty) {
-				state = UNKNOWN
+				state = State.UNKNOWN
 			}
 			return true
 		} else {
@@ -71,7 +68,7 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 		behaviourTransitions.clear
 		exceptionTransitions.clear
 		eventTransitions.clear
-		state = UNKNOWN
+		state = State.UNKNOWN
 	}
 
 	override addBehaviourTransition(Behaviour from, Behaviour to) {
@@ -80,19 +77,20 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 		behaviourTransitions.put(from, to)
 	}
 
-	override addBehaviourTransition(Behaviour from, BehaviourException<?> to) {
+	override addBehaviourTransition(Behaviour from, ru.agentlab.maia.behaviour.Behaviour.Exception<?> to) {
 		from.checkFrom
 		to.checkTo
 		behaviourTransitions.put(from, to)
 	}
 
-	override addExceptionTransition(BehaviourException<?> from, Behaviour to) {
+	override addExceptionTransition(ru.agentlab.maia.behaviour.Behaviour.Exception<?> from, Behaviour to) {
 		from.checkFrom
 		to.checkTo
 		exceptionTransitions.put(from, to)
 	}
 
-	override addExceptionTransition(BehaviourException<?> from, BehaviourException<?> to) {
+	override addExceptionTransition(ru.agentlab.maia.behaviour.Behaviour.Exception<?> from,
+		ru.agentlab.maia.behaviour.Behaviour.Exception<?> to) {
 		from.checkFrom
 		to.checkTo
 		exceptionTransitions.put(from, to)
@@ -114,7 +112,7 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 //		}
 	}
 
-	override addEventTransition(Behaviour from, BehaviourException<?> to, String topic) {
+	override addEventTransition(Behaviour from, ru.agentlab.maia.behaviour.Behaviour.Exception<?> to, String topic) {
 		from.checkFrom
 		to.checkTo
 		if (from === null) {
@@ -142,7 +140,7 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 		next.changeState
 	}
 
-	override protected handleChildFailed(Exception e) throws Exception {
+	override protected handleChildFailed(java.lang.Exception e) throws java.lang.Exception {
 		val exception = current.exceptions.findFirst[type.isAssignableFrom(e.class)]
 		if (exception != null) {
 			val next = exceptionTransitions.get(exception)
@@ -165,13 +163,13 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 		}
 	}
 
-	def private void checkFrom(BehaviourException<?> from) {
+	def private void checkFrom(ru.agentlab.maia.behaviour.Behaviour.Exception<?> from) {
 		if (!childs.exists[it.exceptions.exists[it === from]]) {
 			throw new IllegalArgumentException('''BehaviourException [«from»] is not a child of scheduler''')
 		}
 	}
 
-	def private void checkTo(BehaviourException<?> to) {
+	def private void checkTo(ru.agentlab.maia.behaviour.Behaviour.Exception<?> to) {
 		if (!childs.exists[it.exceptions.exists[it === to]]) {
 			throw new IllegalArgumentException('''BehaviourException [«to»] is not a child of scheduler''')
 		}
@@ -184,16 +182,16 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 		switch (next) {
 			Behaviour: {
 				current = next
-				state = WORKING
+				state = State.WORKING
 			}
-			BehaviourException<?>: {
+			ru.agentlab.maia.behaviour.Behaviour.Exception<?>: {
 				current = null
-				state = FAILED
-				throw ( next.type.newInstance as Exception)
+				state = State.FAILED
+				throw ( next.type.newInstance as java.lang.Exception)
 			}
 			default: {
 				current = null
-				state = SUCCESS
+				state = State.SUCCESS
 			}
 		}
 	}

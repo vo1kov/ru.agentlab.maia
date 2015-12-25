@@ -1,7 +1,6 @@
 package ru.agentlab.maia.behaviour.primitive.lambda
 
 import ru.agentlab.maia.behaviour.BehaviourPrimitive
-import ru.agentlab.maia.behaviour.BehaviourState
 
 /**
  * 
@@ -13,7 +12,7 @@ class BehaviourPrimitiveLambda extends BehaviourPrimitive implements IBehaviourP
 
 	override void setLambda(ILambda lambda) {
 		this.lambda = lambda
-		state = BehaviourState.READY
+		state = State.READY
 	}
 
 	override protected executeInternal(Object[] args) {

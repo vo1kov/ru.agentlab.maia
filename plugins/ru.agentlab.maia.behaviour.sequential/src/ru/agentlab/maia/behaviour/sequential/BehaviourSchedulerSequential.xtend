@@ -5,8 +5,6 @@ import ru.agentlab.maia.behaviour.BehaviourScheduler
 import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.behaviour.IBehaviourScheduler
 
-import static ru.agentlab.maia.behaviour.BehaviourState.*
-
 /**
  * Sequential implementation of {@link IBehaviourScheduler}.
  * Select child nodes in order of adding.
@@ -29,8 +27,8 @@ class BehaviourSchedulerSequential extends BehaviourScheduler implements IBehavi
 		}
 		if (!childs.contains(child)) {
 			childs.add(child)
-			if (state === UNKNOWN) {
-				state = READY
+			if (state === State.UNKNOWN) {
+				state = State.READY
 			}
 			return true
 		} else {
@@ -56,7 +54,7 @@ class BehaviourSchedulerSequential extends BehaviourScheduler implements IBehavi
 				index = 0
 			}
 			if (childs.empty) {
-				state = UNKNOWN
+				state = State.UNKNOWN
 			}
 			return true
 		} else {
@@ -67,7 +65,7 @@ class BehaviourSchedulerSequential extends BehaviourScheduler implements IBehavi
 	override clear() {
 		childs.clear
 		index = 0
-		state = UNKNOWN
+		state = State.UNKNOWN
 	}
 
 	override protected getCurrent() {
@@ -76,10 +74,10 @@ class BehaviourSchedulerSequential extends BehaviourScheduler implements IBehavi
 
 	override protected handleChildSuccess() {
 		if (index === childs.size - 1) {
-			state = SUCCESS
+			state = State.SUCCESS
 		} else {
 			index = index + 1
-			state = WORKING
+			state = State.WORKING
 		}
 	}
 

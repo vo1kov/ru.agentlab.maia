@@ -5,13 +5,15 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
  * 
  * @author Dmitry Shishkin
  */
+@Accessors
 class Agent implements IAgent {
-	
+
 	val UUID uuid = UUID.randomUUID
 
 	ExecutorService executor
@@ -24,10 +26,6 @@ class Agent implements IAgent {
 	new(ExecutorService executor) {
 		this.executor = executor
 	}
-	
-	override final UUID getUuid() {
-		return uuid
-	}
 
 	override void start() {
 		isActive.set(true)
@@ -36,7 +34,7 @@ class Agent implements IAgent {
 				override run() {
 					if (active) {
 						behaviour.get.execute
-						if (behaviour.get.state != BehaviourState.SUCCESS) {
+						if (behaviour.get.state != Behaviour.State.SUCCESS) {
 							executor.submit(this)
 						}
 					}
@@ -61,4 +59,23 @@ class Agent implements IAgent {
 		this.behaviour.get
 	}
 
+	/**
+	 * 
+	 * @author Dmitry Shishkin
+	 */
+	static enum State {
+
+		UNKNOWN,
+
+		WAITING,
+
+		ACTIVE,
+
+		SUSPENDED,
+
+		TRANSIT,
+
+		INITIATED
+
+	}
 }
