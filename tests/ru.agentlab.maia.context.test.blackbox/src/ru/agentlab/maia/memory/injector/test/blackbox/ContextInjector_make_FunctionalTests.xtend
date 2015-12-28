@@ -48,8 +48,8 @@ class ContextInjector_make_FunctionalTests {
 
 	@Test
 	def void shouldCallBiggestConstructor() {
-		when(context.getService(String)).thenReturn(STRING_VALUE)
-		when(context.getService(Integer)).thenReturn(INT_VALUE)
+		when(context.get(String)).thenReturn(STRING_VALUE)
+		when(context.get(Integer)).thenReturn(INT_VALUE)
 
 		val service = injector.make(FakeService_constructorsMany)
 
@@ -59,8 +59,8 @@ class ContextInjector_make_FunctionalTests {
 
 	@Test
 	def void shouldInjectToBiggestConstructor() {
-		when(context.getService(String)).thenReturn(STRING_VALUE)
-		when(context.getService(Integer)).thenReturn(INT_VALUE)
+		when(context.get(String)).thenReturn(STRING_VALUE)
+		when(context.get(Integer)).thenReturn(INT_VALUE)
 
 		val service = injector.make(FakeService_constructorsMany)
 
@@ -70,8 +70,8 @@ class ContextInjector_make_FunctionalTests {
 
 	@Test
 	def void shouldCreateServiceByBiggestConstructor() {
-		when(context.getService(String)).thenReturn(STRING_VALUE)
-		when(context.getService(Integer)).thenReturn(INT_VALUE)
+		when(context.get(String)).thenReturn(STRING_VALUE)
+		when(context.get(Integer)).thenReturn(INT_VALUE)
 
 		val service = injector.make(FakeService_constructorsMany)
 
@@ -80,8 +80,8 @@ class ContextInjector_make_FunctionalTests {
 
 	@Test
 	def void shouldCallRelevantConstructor() {
-		when(context.getService(String)).thenReturn(STRING_VALUE)
-		when(context.getService(Integer)).thenThrow(MaiaContextKeyNotFound)
+		when(context.get(String)).thenReturn(STRING_VALUE)
+		when(context.get(Integer)).thenThrow(MaiaContextKeyNotFound)
 
 		val service = injector.make(FakeService_constructorsMany)
 
@@ -91,8 +91,8 @@ class ContextInjector_make_FunctionalTests {
 
 	@Test
 	def void shouldCreateServiceByRelevantConstructor() {
-		when(context.getService(String)).thenReturn(STRING_VALUE)
-		when(context.getService(Integer)).thenThrow(MaiaContextKeyNotFound)
+		when(context.get(String)).thenReturn(STRING_VALUE)
+		when(context.get(Integer)).thenThrow(MaiaContextKeyNotFound)
 
 		val service = injector.make(FakeService_constructorsMany)
 

@@ -27,7 +27,7 @@ class ArrayContextSetByStringTests extends VariableSizeCotextTests<ArrayContext>
 
 	@Test
 	def void shouldKeysAndValuesHaveSameSize() {
-		context.putService(DummyService.name, service)
+		context.put(DummyService.name, service)
 
 		assertThat(context.keys.size, equalTo(context.values.size))
 	}
@@ -38,7 +38,7 @@ class ArrayContextSetByStringTests extends VariableSizeCotextTests<ArrayContext>
 		val keysSizeBefore = context.keys.size
 		val valuesSizeBefore = context.values.size
 
-		context.putService(DummyService.name, service)
+		context.put(DummyService.name, service)
 
 		assertThat(context.keys.size - keysSizeBefore, equalTo(1))
 		assertThat(context.values.size - valuesSizeBefore, equalTo(1))
@@ -50,7 +50,7 @@ class ArrayContextSetByStringTests extends VariableSizeCotextTests<ArrayContext>
 		val keysSizeBefore = context.keys.size
 		val valuesSizeBefore = context.values.size
 
-		context.putService(DummyService.name, service)
+		context.put(DummyService.name, service)
 
 		assertThat(context.keys.size, equalTo(keysSizeBefore))
 		assertThat(context.values.size, equalTo(valuesSizeBefore))
@@ -62,7 +62,7 @@ class ArrayContextSetByStringTests extends VariableSizeCotextTests<ArrayContext>
 		val keyIndex = context.keys.indexOf(DummyService.name)
 		val newService = new DummyService
 
-		context.putService(DummyService, newService)
+		context.put(DummyService, newService)
 
 		assertThat(context.keys.get(keyIndex), equalTo(DummyService.name))
 		assertThat(context.values.get(keyIndex) as DummyService, not(service))
@@ -73,7 +73,7 @@ class ArrayContextSetByStringTests extends VariableSizeCotextTests<ArrayContext>
 	def void shouldAddWhenNoValue() {
 		context.prepareWithOutService(DummyService.name)
 
-		context.putService(DummyService.name, service)
+		context.put(DummyService.name, service)
 
 		assertThat(context.keys.last, equalTo(DummyService.name))
 		assertThat(context.values.last, is(instanceOf(DummyService)))
@@ -83,7 +83,7 @@ class ArrayContextSetByStringTests extends VariableSizeCotextTests<ArrayContext>
 	@Test
 	def void shouldKeyEqualsToName() {
 		context.prepareWithOutService(DummyService.name)
-		context.putService(DummyService.name, service)
+		context.put(DummyService.name, service)
 		val keyIndex = context.keys.indexOf(DummyService.name)
 
 		assertThat(context.keys.get(keyIndex), equalTo(DummyService.name))

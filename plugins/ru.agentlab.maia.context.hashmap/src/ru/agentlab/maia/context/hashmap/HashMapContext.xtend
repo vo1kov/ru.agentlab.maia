@@ -27,7 +27,7 @@ class HashMapContext extends Context {
 
 	val Map<String, Object> map = new HashMap<String, Object>
 
-	override protected synchronized getInternal(String key) throws MaiaContextKeyNotFound  {
+	override protected synchronized getInternal(String key) {
 		if (map.containsKey(key)) {
 			return map.get(key)
 		} else {
@@ -37,7 +37,7 @@ class HashMapContext extends Context {
 		}
 	}
 
-	override protected synchronized getInternal(Class<?> key) throws MaiaContextKeyNotFound  {
+	override protected synchronized getInternal(Class<?> key) {
 		if (map.containsKey(key.name)) {
 			return map.get(key.name)
 		} else {

@@ -49,7 +49,7 @@ class MaiaContextInjector_resolveValues_UnitTests {
 
 		injector.resolveValues(keys)
 
-		verify(context, times(keys.length)).getService(Matchers.any(Class))
+		verify(context, times(keys.length)).get(Matchers.any(Class))
 	}
 
 	@Test
@@ -58,7 +58,7 @@ class MaiaContextInjector_resolveValues_UnitTests {
 
 		injector.resolveValues(keys)
 
-		verify(context, times(keys.length)).getService(anyString)
+		verify(context, times(keys.length)).get(anyString)
 	}
 
 	@Test

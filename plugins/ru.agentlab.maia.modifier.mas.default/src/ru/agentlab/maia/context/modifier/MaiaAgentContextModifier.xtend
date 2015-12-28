@@ -15,7 +15,7 @@ class MaiaAgentContextModifier {
 	@PostConstruct
 	def void setup() {
 		context => [
-			putService(IContext.KEY_TYPE, "agent")
+			put(IContext.KEY_TYPE, "agent")
 			getService(IInjector) => [
 				deploy(BehaviourSchedulerSequential, IBehaviour)
 			]

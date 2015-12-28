@@ -2,7 +2,6 @@ package ru.agentlab.maia.context
 
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
-import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.context.exception.MaiaContextKeyNotFound
 
@@ -32,16 +31,14 @@ abstract class Context implements IContext {
 		return parent.get
 	}
 
-	override getService(String key) throws MaiaContextKeyNotFound {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null")
-		}
+	override get(String key) {
+		key.check
 		try {
-			return getInternal(key).extractServiceFromObject
+			return getInternal(key)
 		} catch (MaiaContextKeyNotFound e) {
 			val p = parent.get
 			if (p != null) {
-				return p.getService(key)
+				return p.get(key)
 			} else {
 				throw new MaiaContextKeyNotFound(
 					'''Service for key [«key»] did not found in context [«this.toString»] and all their parents'''
@@ -50,16 +47,14 @@ abstract class Context implements IContext {
 		}
 	}
 
-	override <T> getService(Class<T> key) throws MaiaContextKeyNotFound {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null")
-		}
+	override <T> get(Class<T> key) {
+		key.check
 		try {
-			return getInternal(key).extractServiceFromObject
+			return getInternal(key) as T
 		} catch (MaiaContextKeyNotFound e) {
 			val p = parent.get
 			if (p != null) {
-				return p.getService(key)
+				return p.get(key)
 			} else {
 				throw new MaiaContextKeyNotFound(
 					'''Service for key [«key»] did not found in context [«this.toString»] and all their parents'''
@@ -68,135 +63,55 @@ abstract class Context implements IContext {
 		}
 	}
 
-	override getServiceLocal(String key) throws MaiaContextKeyNotFound {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null")
-		}
-		return getInternal(key).extractServiceFromObject
+	override getLocal(String key) {
+		key.check
+		return getInternal(key)
 	}
 
-	override <T> getServiceLocal(Class<T> key) throws MaiaContextKeyNotFound {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null")
-		}
-		return getInternal(key).extractServiceFromObject
+	override <T> getLocal(Class<T> key) {
+		key.check
+		return getInternal(key) as T
 	}
 
-	override getProvider(String key) throws MaiaContextKeyNotFound {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null")
-		}
-		try {
-			return getInternal(key).extractProviderFromObject
-		} catch (MaiaContextKeyNotFound e) {
-			val p = parent.get
-			if (p != null) {
-				return p.getProvider(key)
-			} else {
-				throw new MaiaContextKeyNotFound(
-					'''Provider for key [«key»] did not found in context [«this.toString»] and all their parents'''
-				)
-			}
-		}
-	}
-
-	override <T> getProvider(Class<T> key) throws MaiaContextKeyNotFound {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null")
-		}
-		try {
-			return getInternal(key).extractProviderFromObject
-		} catch (MaiaContextKeyNotFound e) {
-			val p = parent.get
-			if (p != null) {
-				return p.getProvider(key)
-			} else {
-				throw new MaiaContextKeyNotFound(
-					'''Provider for key [«key»] did not found in context [«this.toString»] and all their parents'''
-				)
-			}
-		}
-	}
-
-	override getProviderLocal(String key) throws MaiaContextKeyNotFound {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null")
-		}
-		return getInternal(key).extractProviderFromObject
-	}
-
-	override <T> getProviderLocal(Class<T> key) throws MaiaContextKeyNotFound {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null")
-		}
-		return getInternal(key).extractProviderFromObject
-	}
-
-	override putService(String key, Object value) {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null")
-		}
+	override put(String key, Object value) {
+		key.check
 		return putInternal(key, value)
 	}
 
-	override <T> putService(Class<T> key, T value) {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null")
-		}
+	override <T> put(Class<T> key, T value) {
+		key.check
 		return putInternal(key, value)
-	}
-
-	override putProvider(String key, Provider<?> provider) {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null")
-		}
-		return putInternal(key, provider)
-	}
-
-	override <T> putProvider(Class<T> key, Provider<T> provider) {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null")
-		}
-		return putInternal(key, provider)
 	}
 
 	override remove(String key) {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null")
-		}
+		key.check
 		return removeInternal(key)
 	}
 
 	override remove(Class<?> key) {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null")
-		}
+		key.check
 		return removeInternal(key)
 	}
 
 	override IContext setParent(IContext newParent) {
 		return parent.getAndSet(newParent)
 	}
-
-	def private <T> T extractServiceFromObject(Object value) {
-		if (value instanceof Provider<?>) {
-			return value.get as T
-		} else {
-			return value as T
+	
+	def private check(String key){
+		if (key == null) {
+			throw new IllegalArgumentException("Key must be not null")
+		}
+	}
+	
+	def private check(Class<?> key){
+		if (key == null) {
+			throw new IllegalArgumentException("Key must be not null")
 		}
 	}
 
-	def private <T> Provider<T> extractProviderFromObject(Object value) {
-		if (value instanceof Provider<?>) {
-			return value as Provider<T>
-		} else {
-			return null
-		}
-	}
+	def protected Object getInternal(String key)
 
-	def protected Object getInternal(String key) throws MaiaContextKeyNotFound
-
-	def protected Object getInternal(Class<?> key) throws MaiaContextKeyNotFound
+	def protected Object getInternal(Class<?> key)
 
 	def protected Object putInternal(String key, Object value)
 

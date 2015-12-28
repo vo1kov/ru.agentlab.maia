@@ -1,8 +1,6 @@
 package ru.agentlab.maia.context
 
 import java.util.Set
-import javax.inject.Provider
-import ru.agentlab.maia.context.exception.MaiaContextKeyNotFound
 
 /**
  * <p>
@@ -59,7 +57,7 @@ interface IContext {
 	 * 
 	 * @see #getService(Class)
 	 */
-	def Object getService(String key) throws MaiaContextKeyNotFound
+	def Object get(String key)
 
 	/**
 	 * <p>
@@ -79,7 +77,7 @@ interface IContext {
 	 * 
 	 * @see #getService(String)
 	 */
-	def <T> T getService(Class<T> key) throws MaiaContextKeyNotFound
+	def <T> T get(Class<T> key)
 
 	/**
 	 * <p>
@@ -98,7 +96,7 @@ interface IContext {
 	 * 
 	 * @see #getServiceLocal(Class)
 	 */
-	def Object getServiceLocal(String key) throws MaiaContextKeyNotFound
+	def Object getLocal(String key)
 
 	/**
 	 * <p>
@@ -119,33 +117,7 @@ interface IContext {
 	 * 
 	 * @see #getServiceLocal(String)
 	 */
-	def <T> T getServiceLocal(Class<T> key) throws MaiaContextKeyNotFound
-	
-	/**
-	 * @param key		key of registered service as plain string. If <code>null</code>
-	 * 					then IllegalArgumentException will be thrown.
-	 */
-	def Provider<?> getProvider(String key) throws MaiaContextKeyNotFound
-	
-	/**
-	 * @param key		key of registered service as type of the value to return. If <code>null</code>
-	 * 					then IllegalArgumentException will be thrown.
-	 * @param <T> 		type of returning value.
-	 */
-	def <T> Provider<T> getProvider(Class<T> clazz) throws MaiaContextKeyNotFound
-	
-	/**
-	 * @param key		key of registered service as plain string. If <code>null</code>
-	 * 					then IllegalArgumentException will be thrown.
-	 */
-	def Provider<?> getProviderLocal(String key) throws MaiaContextKeyNotFound
-	
-	/**
-	 * @param key		key of registered service as type of the value to return. If <code>null</code>
-	 * 					then IllegalArgumentException will be thrown.
-	 * @param <T> 		type of returning value.
-	 */
-	def <T> Provider<T> getProviderLocal(Class<T> key) throws MaiaContextKeyNotFound
+	def <T> T getLocal(Class<T> key)
 
 	/**
 	 * <p>
@@ -204,7 +176,7 @@ interface IContext {
 	 * 
 	 * @see #putService(Class, Object)
 	 */
-	def Object putService(String key, Object value)
+	def Object put(String key, Object value)
 
 	/**
 	 * <p>
@@ -219,34 +191,6 @@ interface IContext {
 	 * @see #putService(String, Object)
 	 * @see #putProvider(String, Provider)
 	 */
-	def <T> Object putService(Class<T> key, T value)
-
-	/**
-	 * <p>
-	 * Sets a value to be associated with a given {@link Provider} in this context.
-	 * Value can obtain lazily. The value may be <code>null</code>.
-	 * </p>
-	 * 
-	 * @param key		key of registered service as plain string. If <code>null</code>
-	 * 					then IllegalArgumentException will be thrown.
-	 * @param provider 	provider of value to be stored
-	 * 
-	 * @see #putProvider(Class, Provider)
-	 */
-	def Object putProvider(String key, Provider<?> provider)
-
-	/**
-	 * <p>
-	 * Sets a value to be associated with a given {@link Provider} in this context.
-	 * </p>
-	 * 
-	 * @param key		key of registered service as type of the value to return. If <code>null</code>
-	 * 					then IllegalArgumentException will be thrown.
-	 * @param provider 	provider of value to be stored.
-	 * @param <T> 		type of specified value
-	 * 
-	 * @see #putProvider(String, Provider)
-	 */
-	def <T> Object putProvider(Class<T> key, Provider<T> provider)
+	def <T> Object put(Class<T> key, T value)
 
 }

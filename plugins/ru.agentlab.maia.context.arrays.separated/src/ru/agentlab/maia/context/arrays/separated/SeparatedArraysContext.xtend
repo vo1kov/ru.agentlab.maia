@@ -44,7 +44,7 @@ class SeparatedArraysContext extends Context {
 	 */
 	var protected Class<?>[] classNulls = newArrayOfSize(0)
 
-	override protected synchronized getInternal(String key) throws MaiaContextKeyNotFound  {
+	override protected synchronized getInternal(String key) {
 		// try to find key in null string storage
 		if (stringNulls.indexOf(key) != UNKNOWN) {
 			return null
@@ -68,7 +68,7 @@ class SeparatedArraysContext extends Context {
 		)
 	}
 
-	override protected synchronized getInternal(Class<?> key) throws MaiaContextKeyNotFound  {
+	override protected synchronized getInternal(Class<?> key) {
 		// try to find key in null class storage
 		if (classNulls.indexOf(key) != UNKNOWN) {
 			return null

@@ -33,11 +33,11 @@ class ArrayContext extends Context {
 
 	var protected Object[] values = newArrayOfSize(0)
 
-	override protected synchronized getInternal(String name) throws MaiaContextKeyNotFound {
+	override protected synchronized getInternal(String name) {
 		return getValue(name)
 	}
 
-	override protected synchronized getInternal(Class<?> clazz) throws MaiaContextKeyNotFound {
+	override protected synchronized getInternal(Class<?> clazz) {
 		return getValue(clazz.name)
 	}
 
@@ -81,7 +81,7 @@ class ArrayContext extends Context {
 		return result
 	}
 
-	def private Object getValue(String key) throws MaiaContextKeyNotFound {
+	def private Object getValue(String key) {
 		val index = keys.indexOf(key)
 		if (index != UNKNOWN) {
 			return values.get(index)

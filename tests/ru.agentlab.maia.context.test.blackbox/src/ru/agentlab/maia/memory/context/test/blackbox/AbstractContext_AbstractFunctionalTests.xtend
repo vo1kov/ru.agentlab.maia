@@ -65,38 +65,38 @@ abstract class AbstractContext_AbstractFunctionalTests {
 			case NONE: {
 			}
 			case SERVICE_BY_CLASS: {
-				this.context.putService(KEY_CLASS_VALID, SERVICE_FAKE)
+				this.context.put(KEY_CLASS_VALID, SERVICE_FAKE)
 			}
 			case SERVICE_BY_STRING: {
-				this.context.putService(KEY_STRING_VALID, SERVICE_FAKE)
+				this.context.put(KEY_STRING_VALID, SERVICE_FAKE)
 			}
-			case PROVIDER_BY_CLASS: {
-				this.context.putProvider(KEY_CLASS_VALID, PROVIDER_FAKE)
-			}
-			case PROVIDER_BY_STRING: {
-				this.context.putProvider(KEY_STRING_VALID, PROVIDER_FAKE)
-			}
+//			case PROVIDER_BY_CLASS: {
+//				this.context.putProvider(KEY_CLASS_VALID, PROVIDER_FAKE)
+//			}
+//			case PROVIDER_BY_STRING: {
+//				this.context.putProvider(KEY_STRING_VALID, PROVIDER_FAKE)
+//			}
 		}
 		switch (parentServices) {
 			case NONE: {
 			}
 			case SERVICE_BY_CLASS: {
-				when(parent.getService(KEY_CLASS_VALID)).thenReturn(SERVICE_FAKE)
+				when(parent.get(KEY_CLASS_VALID)).thenReturn(SERVICE_FAKE)
 			}
 			case SERVICE_BY_STRING: {
-				when(parent.getService(KEY_STRING_VALID)).thenReturn(SERVICE_FAKE)
+				when(parent.get(KEY_STRING_VALID)).thenReturn(SERVICE_FAKE)
 			}
 			case PROVIDER_BY_CLASS: {
-				when(parent.getProvider(KEY_CLASS_VALID)).thenReturn(PROVIDER_FAKE)
-				when(parent.getProvider(KEY_STRING_VALID)).thenReturn(PROVIDER_FAKE)
-				when(parent.getService(KEY_CLASS_VALID)).thenReturn(SERVICE_FAKE)
-				when(parent.getService(KEY_STRING_VALID)).thenReturn(SERVICE_FAKE)
+//				when(parent.getProvider(KEY_CLASS_VALID)).thenReturn(PROVIDER_FAKE)
+//				when(parent.getProvider(KEY_STRING_VALID)).thenReturn(PROVIDER_FAKE)
+				when(parent.get(KEY_CLASS_VALID)).thenReturn(SERVICE_FAKE)
+				when(parent.get(KEY_STRING_VALID)).thenReturn(SERVICE_FAKE)
 			}
 			case PROVIDER_BY_STRING: {
-				when(parent.getProvider(KEY_CLASS_VALID)).thenReturn(PROVIDER_FAKE)
-				when(parent.getProvider(KEY_STRING_VALID)).thenReturn(PROVIDER_FAKE)
-				when(parent.getService(KEY_CLASS_VALID)).thenReturn(SERVICE_FAKE)
-				when(parent.getService(KEY_STRING_VALID)).thenReturn(SERVICE_FAKE)
+//				when(parent.getProvider(KEY_CLASS_VALID)).thenReturn(PROVIDER_FAKE)
+//				when(parent.getProvider(KEY_STRING_VALID)).thenReturn(PROVIDER_FAKE)
+				when(parent.get(KEY_CLASS_VALID)).thenReturn(SERVICE_FAKE)
+				when(parent.get(KEY_STRING_VALID)).thenReturn(SERVICE_FAKE)
 			}
 		}
 	}

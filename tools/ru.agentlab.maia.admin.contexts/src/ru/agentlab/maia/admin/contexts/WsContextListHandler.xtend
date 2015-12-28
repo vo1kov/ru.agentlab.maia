@@ -33,7 +33,7 @@ class WsContextListHandler extends ChannelHandlerAdapter {
 				{
 					"name" : "«context.toString»",
 					"uuid" : "«context.uuid»",
-					"type" : "«context.getService(IContext.KEY_TYPE)»"
+					"type" : "«context.get(IContext.KEY_TYPE)»"
 				}
 			'''
 		} else {
@@ -41,7 +41,7 @@ class WsContextListHandler extends ChannelHandlerAdapter {
 				{
 					"name" : "«context.toString»",
 					"uuid" : "«context.uuid»",
-					"type" : "«context.getService(IContext.KEY_TYPE)»",
+					"type" : "«context.get(IContext.KEY_TYPE)»",
 					"children" : [
 «««						«FOR child : context.childs SEPARATOR ","»
 «««							«child.serialize»

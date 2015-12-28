@@ -15,7 +15,7 @@ abstract class AbstractContextSetMemoryTests {
 		val results = newArrayOfSize(totalSize)
 
 		for (i : 0 ..< totalSize) {
-			context.putService(UUID.randomUUID.toString, new DummyService)
+			context.put(UUID.randomUUID.toString, new DummyService)
 			results.set(i, MemoryUtil.deepMemoryUsageOf(context))
 		}
 

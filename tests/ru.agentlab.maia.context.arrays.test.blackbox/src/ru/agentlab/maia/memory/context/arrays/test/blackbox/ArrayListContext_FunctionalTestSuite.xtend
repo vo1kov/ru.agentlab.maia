@@ -7,10 +7,8 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized.Parameters
 import org.junit.runners.Suite.SuiteClasses
 import ru.agentlab.maia.context.arrays.ArrayContext
-import ru.agentlab.maia.memory.context.test.blackbox.AbstractContext_putProviderByClass_FunctionalTests
-import ru.agentlab.maia.memory.context.test.blackbox.AbstractContext_putProviderByString_FunctionalTests
-import ru.agentlab.maia.memory.context.test.blackbox.AbstractContext_putServiceByClass_FunctionalTests
-import ru.agentlab.maia.memory.context.test.blackbox.AbstractContext_putServiceByString_FunctionalTests
+import ru.agentlab.maia.memory.context.test.blackbox.AbstractContext_putByClass_FunctionalTests
+import ru.agentlab.maia.memory.context.test.blackbox.AbstractContext_putByString_FunctionalTests
 import ru.agentlab.maia.memory.context.test.blackbox.AbstractContext_removeByClass_FunctionalTests
 import ru.agentlab.maia.memory.context.test.blackbox.AbstractContext_removeByString_FunctionalTests
 import ru.agentlab.maia.memory.context.test.blackbox.ServiceRegistrationExtension
@@ -19,10 +17,8 @@ import ru.agentlab.maia.memory.context.test.blackbox.ServiceRegistrationExtensio
 @SuiteClasses(#[
 	AbstractContext_removeByClass_FunctionalTests,
 	AbstractContext_removeByString_FunctionalTests,
-	AbstractContext_putServiceByClass_FunctionalTests,
-	AbstractContext_putServiceByString_FunctionalTests,
-	AbstractContext_putProviderByClass_FunctionalTests,
-	AbstractContext_putProviderByString_FunctionalTests
+	AbstractContext_putByClass_FunctionalTests,
+	AbstractContext_putByString_FunctionalTests
 ])
 class ArrayListContext_FunctionalTestSuite {
 

@@ -44,7 +44,7 @@ class WsContextServicesListHandler extends ChannelHandlerAdapter {
 				"name" : "«this.toString»",
 				"services" : [
 					«FOR p1 : list SEPARATOR ","»
-						«val value = context.getService(p1)»
+						«val value = context.get(p1)»
 						{
 							"key" : "«p1»",
 							"value" : "«IF value != null»«value.class.name + "@" + Integer.toHexString(System.identityHashCode(value))»«ENDIF»",

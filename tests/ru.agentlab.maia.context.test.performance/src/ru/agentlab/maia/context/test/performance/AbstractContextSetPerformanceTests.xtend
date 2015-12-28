@@ -31,7 +31,7 @@ abstract class AbstractContextSetPerformanceTests {
 			for (i : 0 ..< totalSize / bucketSize) {
 				val begin = System.nanoTime
 				for (j : 0 ..< bucketSize) {
-					context.putService(keys.get(index), services.get(index))
+					context.put(keys.get(index), services.get(index))
 					index++
 				}
 				results.set(i, System.nanoTime - begin)

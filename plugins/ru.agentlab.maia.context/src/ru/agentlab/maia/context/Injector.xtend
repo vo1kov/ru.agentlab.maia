@@ -149,14 +149,14 @@ class Injector implements IInjector {
 		val service = make(serviceClass)
 		inject(service)
 		invoke(service, PostConstruct, null)
-		context.putService(serviceClass, service)
+		context.put(serviceClass, service)
 		return service
 	}
 
 	override deploy(Object service) throws MaiaInjectionException {
 		inject(service)
 		invoke(service, PostConstruct, null)
-		context.putService(service.class.name, service)
+		context.put(service.class.name, service)
 		return service
 	}
 
@@ -164,7 +164,7 @@ class Injector implements IInjector {
 		val service = make(serviceClass)
 		inject(service)
 		invoke(service, PostConstruct, null)
-		context.putService(key, service)
+		context.put(key, service)
 		return service
 	}
 
@@ -172,21 +172,21 @@ class Injector implements IInjector {
 		val service = make(serviceClass)
 		inject(service)
 		invoke(service, PostConstruct, null)
-		context.putService(interf, service)
+		context.put(interf, service)
 		return service
 	}
 
 	override deploy(Object service, String key) throws MaiaInjectionException {
 		inject(service)
 		invoke(service, PostConstruct, null)
-		context.putService(key, service)
+		context.put(key, service)
 		return service
 	}
 
 	override <T> deploy(T service, Class<T> interf) throws MaiaInjectionException {
 		inject(service)
 		invoke(service, PostConstruct, null)
-		context.putService(interf, service)
+		context.put(interf, service)
 		return service
 	}
 
@@ -304,10 +304,10 @@ class Injector implements IInjector {
 		keys.forEach [
 			switch (it) {
 				String: {
-					result += context.getService(it)
+					result += context.get(it)
 				}
 				Class<?>: {
-					result += context.getService(it)
+					result += context.get(it)
 				}
 				default: {
 					throw new MaiaContextKeyNotFound
