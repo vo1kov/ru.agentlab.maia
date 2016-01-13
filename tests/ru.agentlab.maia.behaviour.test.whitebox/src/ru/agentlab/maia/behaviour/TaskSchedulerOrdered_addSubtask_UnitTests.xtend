@@ -11,7 +11,7 @@ class TaskSchedulerOrdered_addSubtask_UnitTests {
 	var protected IBehaviour task = createTask()
 
 	@Spy
-	var protected BehaviourOrdered scheduler
+	var protected BehaviourScheduler scheduler
 
 	def static IBehaviour createTask() {
 		return mock(IBehaviour)
