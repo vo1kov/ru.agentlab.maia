@@ -2,20 +2,19 @@ package ru.agentlab.maia.memory.context.test.blackbox
 
 import javax.inject.Provider
 import org.junit.Before
-import ru.agentlab.maia.context.IContext
+import ru.agentlab.maia.IContainer
 import ru.agentlab.maia.memory.context.test.blackbox.doubles.DummyService
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assume.*
 import static org.mockito.Mockito.*
-import static ru.agentlab.maia.memory.context.test.blackbox.AbstractContext_AbstractFunctionalTests.*
 import static ru.agentlab.maia.memory.context.test.blackbox.ServiceRegistration.*
 
 abstract class AbstractContext_AbstractFunctionalTests {
 
-	val protected IContext context
+	val protected IContainer context
 
-	val protected IContext parent
+	val protected IContainer parent
 
 	val protected static KEY_STRING_NULL = null as String
 
@@ -49,9 +48,9 @@ abstract class AbstractContext_AbstractFunctionalTests {
 
 	protected ServiceRegistration parentServices
 
-	new(IContext context, ServiceRegistration contextServices, ServiceRegistration parentServices) {
+	new(IContainer context, ServiceRegistration contextServices, ServiceRegistration parentServices) {
 		this.context = context
-		this.parent = mock(IContext)
+		this.parent = mock(IContainer)
 		this.context.parent = parent
 		this.contextServices = contextServices
 		this.parentServices = parentServices
@@ -86,18 +85,18 @@ abstract class AbstractContext_AbstractFunctionalTests {
 			case SERVICE_BY_STRING: {
 				when(parent.get(KEY_STRING_VALID)).thenReturn(SERVICE_FAKE)
 			}
-			case PROVIDER_BY_CLASS: {
-//				when(parent.getProvider(KEY_CLASS_VALID)).thenReturn(PROVIDER_FAKE)
-//				when(parent.getProvider(KEY_STRING_VALID)).thenReturn(PROVIDER_FAKE)
-				when(parent.get(KEY_CLASS_VALID)).thenReturn(SERVICE_FAKE)
-				when(parent.get(KEY_STRING_VALID)).thenReturn(SERVICE_FAKE)
-			}
-			case PROVIDER_BY_STRING: {
-//				when(parent.getProvider(KEY_CLASS_VALID)).thenReturn(PROVIDER_FAKE)
-//				when(parent.getProvider(KEY_STRING_VALID)).thenReturn(PROVIDER_FAKE)
-				when(parent.get(KEY_CLASS_VALID)).thenReturn(SERVICE_FAKE)
-				when(parent.get(KEY_STRING_VALID)).thenReturn(SERVICE_FAKE)
-			}
+//			case PROVIDER_BY_CLASS: {
+////				when(parent.getProvider(KEY_CLASS_VALID)).thenReturn(PROVIDER_FAKE)
+////				when(parent.getProvider(KEY_STRING_VALID)).thenReturn(PROVIDER_FAKE)
+//				when(parent.get(KEY_CLASS_VALID)).thenReturn(SERVICE_FAKE)
+//				when(parent.get(KEY_STRING_VALID)).thenReturn(SERVICE_FAKE)
+//			}
+//			case PROVIDER_BY_STRING: {
+////				when(parent.getProvider(KEY_CLASS_VALID)).thenReturn(PROVIDER_FAKE)
+////				when(parent.getProvider(KEY_STRING_VALID)).thenReturn(PROVIDER_FAKE)
+//				when(parent.get(KEY_CLASS_VALID)).thenReturn(SERVICE_FAKE)
+//				when(parent.get(KEY_STRING_VALID)).thenReturn(SERVICE_FAKE)
+//			}
 		}
 	}
 
@@ -108,9 +107,9 @@ abstract class AbstractContext_AbstractFunctionalTests {
 	def protected assumeKeyInContext() {
 		assumeThat(contextServices, anyOf(
 			equalTo(SERVICE_BY_CLASS),
-			equalTo(PROVIDER_BY_CLASS),
-			equalTo(SERVICE_BY_STRING),
-			equalTo(PROVIDER_BY_STRING)
+//			equalTo(PROVIDER_BY_CLASS),
+			equalTo(SERVICE_BY_STRING)
+//			equalTo(PROVIDER_BY_STRING)
 		))
 	}
 
@@ -121,9 +120,9 @@ abstract class AbstractContext_AbstractFunctionalTests {
 	def protected assumeKeyInParent() {
 		assumeThat(parentServices, anyOf(
 			equalTo(SERVICE_BY_CLASS),
-			equalTo(PROVIDER_BY_CLASS),
-			equalTo(SERVICE_BY_STRING),
-			equalTo(PROVIDER_BY_STRING)
+//			equalTo(PROVIDER_BY_CLASS),
+			equalTo(SERVICE_BY_STRING)
+//			equalTo(PROVIDER_BY_STRING)
 		))
 	}
 

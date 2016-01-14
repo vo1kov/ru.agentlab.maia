@@ -3,7 +3,7 @@ package ru.agentlab.maia.context.test.performance
 import java.io.PrintWriter
 import java.util.UUID
 import org.junit.Test
-import ru.agentlab.maia.context.IContext
+import ru.agentlab.maia.IContainer
 import ru.agentlab.maia.context.test.performance.doubles.DummyService
 
 abstract class AbstractContextSetPerformanceTests {
@@ -45,6 +45,6 @@ abstract class AbstractContextSetPerformanceTests {
 		writer.close
 	}
 
-	def IContext getContext()
+	def IContainer getContext()
 
 }

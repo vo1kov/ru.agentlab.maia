@@ -4,7 +4,7 @@ import com.javamex.classmexer.MemoryUtil
 import java.io.PrintWriter
 import java.util.UUID
 import org.junit.Test
-import ru.agentlab.maia.context.IContext
+import ru.agentlab.maia.IContainer
 import ru.agentlab.maia.context.test.performance.doubles.DummyService
 
 abstract class AbstractContextSetMemoryTests {
@@ -26,6 +26,6 @@ abstract class AbstractContextSetMemoryTests {
 		writer.close
 	}
 
-	def IContext getContext()
+	def IContainer getContext()
 
 }

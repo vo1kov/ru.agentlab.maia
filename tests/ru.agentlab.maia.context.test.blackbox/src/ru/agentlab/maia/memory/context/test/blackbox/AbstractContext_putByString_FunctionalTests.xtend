@@ -3,7 +3,7 @@ package ru.agentlab.maia.memory.context.test.blackbox
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import ru.agentlab.maia.context.IContext
+import ru.agentlab.maia.IContainer
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
@@ -12,7 +12,7 @@ import static org.mockito.Mockito.*
 @RunWith(Parameterized)
 class AbstractContext_putByString_FunctionalTests extends AbstractContext_AbstractFunctionalTests {
 
-	new(IContext context, ServiceRegistration contextServices, ServiceRegistration parentServices) {
+	new(IContainer context, ServiceRegistration contextServices, ServiceRegistration parentServices) {
 		super(context, contextServices, parentServices)
 	}
 
@@ -125,7 +125,6 @@ class AbstractContext_putByString_FunctionalTests extends AbstractContext_Abstra
 //
 //		assertThat(context.getProviderLocal(KEY_CLASS_VALID), nullValue)
 //	}
-
 	@Test
 	def void getServiceByString_returnValue_whenValidArgs() {
 		invokeWithValidArgs

@@ -6,7 +6,6 @@ import org.junit.parameterizedsuite.ParameterizedSuite
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized.Parameters
 import org.junit.runners.Suite.SuiteClasses
-import ru.agentlab.maia.context.arrays.ArrayContext
 import ru.agentlab.maia.memory.context.test.blackbox.AbstractContext_putByClass_FunctionalTests
 import ru.agentlab.maia.memory.context.test.blackbox.AbstractContext_putByString_FunctionalTests
 import ru.agentlab.maia.memory.context.test.blackbox.AbstractContext_removeByClass_FunctionalTests

@@ -3,7 +3,7 @@ package ru.agentlab.maia.memory.context.test.blackbox
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import ru.agentlab.maia.context.IContext
+import ru.agentlab.maia.IContainer
 import ru.agentlab.maia.context.exception.MaiaContextKeyNotFound
 
 import static org.hamcrest.Matchers.*
@@ -13,7 +13,7 @@ import static org.mockito.Mockito.*
 @RunWith(Parameterized)
 class AbstractContext_removeByClass_FunctionalTests extends AbstractContext_AbstractFunctionalTests {
 
-	new(IContext context, ServiceRegistration contextServices, ServiceRegistration parentServices) {
+	new(IContainer context, ServiceRegistration contextServices, ServiceRegistration parentServices) {
 		super(context, contextServices, parentServices)
 	}
 
@@ -220,7 +220,6 @@ class AbstractContext_removeByClass_FunctionalTests extends AbstractContext_Abst
 //
 //		assertThat(inContext, equalTo(before))
 //	}
-
 	@Test
 	def void getServiceByString_returnParentValue_whenValidArgs() {
 		val inParent = try {

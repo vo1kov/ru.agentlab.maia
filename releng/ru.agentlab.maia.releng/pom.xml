@@ -23,6 +23,7 @@
 		<profile>
 			<id>context-plugins</id>
 			<modules>
+				<module>../../plugins/ru.agentlab.maia</module>
 				<module>../../plugins/ru.agentlab.maia.container</module>
 				<module>../../plugins/ru.agentlab.maia.container.arrays</module>
 				<module>../../plugins/ru.agentlab.maia.container.arrays.separated</module>
@@ -32,6 +33,7 @@
 		<profile>
 			<id>context-aspects</id>
 			<modules>
+				<module>../../plugins/ru.agentlab.maia</module>
 				<module>../../plugins/ru.agentlab.maia.container</module>
 				<module>../../plugins/ru.agentlab.maia.event</module>
 				<module>../../plugins/ru.agentlab.maia.event.osgi</module>
@@ -51,6 +53,7 @@
 				</repository>
 			</repositories>
 			<modules>
+				<module>../../plugins/ru.agentlab.maia</module>
 				<module>../../plugins/ru.agentlab.maia.container</module>
 				<module>../../plugins/ru.agentlab.maia.context.arrays</module>
 				<module>../../plugins/ru.agentlab.maia.context.arrays.separated</module>
@@ -70,6 +73,7 @@
 				</repository>
 			</repositories>
 			<modules>
+				<module>../../plugins/ru.agentlab.maia</module>
 				<module>../../plugins/ru.agentlab.maia.container</module>
 				<module>../../plugins/ru.agentlab.maia.container.arrays</module>
 				<module>../../plugins/ru.agentlab.maia.container.arrays.separated</module>
@@ -92,6 +96,7 @@
 				</repository>
 			</repositories>
 			<modules>
+				<module>../../plugins/ru.agentlab.maia</module>
 				<module>../../plugins/ru.agentlab.maia.container</module>
 				<module>../../plugins/ru.agentlab.maia.container.arrays</module>
 				<module>../../plugins/ru.agentlab.maia.container.arrays.separated</module>
@@ -106,9 +111,9 @@
 		<profile>
 			<id>task-plugins</id>
 			<modules>
+				<module>../../plugins/ru.agentlab.maia</module>
 				<module>../../plugins/ru.agentlab.maia.behaviour</module>
 				<module>../../plugins/ru.agentlab.maia.behaviour.fsm</module>
-<!-- 				<module>../../plugins/ru.agentlab.maia.behaviour.jade</module> -->
 				<module>../../plugins/ru.agentlab.maia.behaviour.primitive</module>
 				<module>../../plugins/ru.agentlab.maia.behaviour.pattern</module>
 				<module>../../plugins/ru.agentlab.maia.behaviour.parallel</module>
@@ -118,6 +123,7 @@
 		<profile>
 			<id>task-aspects</id>
 			<modules>
+				<module>../../plugins/ru.agentlab.maia</module>
 				<module>../../plugins/ru.agentlab.maia.behaviour</module>
 				<module>../../plugins/ru.agentlab.maia.event</module>
 				<module>../../plugins/ru.agentlab.maia.event.osgi</module>

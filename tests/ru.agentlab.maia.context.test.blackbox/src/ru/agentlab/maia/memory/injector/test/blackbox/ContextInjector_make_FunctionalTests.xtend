@@ -4,9 +4,7 @@ import java.util.Random
 import java.util.UUID
 import org.junit.Before
 import org.junit.Test
-import ru.agentlab.maia.context.IContext
-import ru.agentlab.maia.context.IInjector
-import ru.agentlab.maia.context.Injector
+import ru.agentlab.maia.IContainer
 import ru.agentlab.maia.context.exception.MaiaContextKeyNotFound
 import ru.agentlab.maia.memory.injector.test.blackbox.doubles.FakeService_constructorsEmpty
 import ru.agentlab.maia.memory.injector.test.blackbox.doubles.FakeService_constructorsMany
@@ -23,9 +21,7 @@ class ContextInjector_make_FunctionalTests {
 
 	val static STRING_VALUE = UUID.randomUUID.toString
 
-	IContext context = mock(IContext)
-
-	IInjector injector = new Injector(context)
+	IContainer context = mock(IContainer)
 
 	@Before
 	def void before() {
@@ -34,14 +30,14 @@ class ContextInjector_make_FunctionalTests {
 
 	@Test
 	def void shouldCallEmptyConstructor() {
-		val service = injector.make(FakeService_constructorsEmpty)
+		val service = context.make(FakeService_constructorsEmpty)
 
 		assertThat(service.constructorCalled, equalTo(true))
 	}
 
 	@Test
 	def void shouldCreateServiceWithEmptyConstructor() {
-		val service = injector.make(FakeService_constructorsEmpty)
+		val service = context.make(FakeService_constructorsEmpty)
 
 		assertThat(service, notNullValue(FakeService_constructorsEmpty))
 	}
@@ -51,7 +47,7 @@ class ContextInjector_make_FunctionalTests {
 		when(context.get(String)).thenReturn(STRING_VALUE)
 		when(context.get(Integer)).thenReturn(INT_VALUE)
 
-		val service = injector.make(FakeService_constructorsMany)
+		val service = context.make(FakeService_constructorsMany)
 
 		assertThat(service.firstConstructorCalled, equalTo(false))
 		assertThat(service.secondConstructorCalled, equalTo(true))
@@ -62,7 +58,7 @@ class ContextInjector_make_FunctionalTests {
 		when(context.get(String)).thenReturn(STRING_VALUE)
 		when(context.get(Integer)).thenReturn(INT_VALUE)
 
-		val service = injector.make(FakeService_constructorsMany)
+		val service = context.make(FakeService_constructorsMany)
 
 		assertThat(service.stringValue, equalTo(STRING_VALUE))
 		assertThat(service.intValue, equalTo(INT_VALUE))
@@ -73,7 +69,7 @@ class ContextInjector_make_FunctionalTests {
 		when(context.get(String)).thenReturn(STRING_VALUE)
 		when(context.get(Integer)).thenReturn(INT_VALUE)
 
-		val service = injector.make(FakeService_constructorsMany)
+		val service = context.make(FakeService_constructorsMany)
 
 		assertThat(service, notNullValue(FakeService_constructorsMany))
 	}
@@ -83,7 +79,7 @@ class ContextInjector_make_FunctionalTests {
 		when(context.get(String)).thenReturn(STRING_VALUE)
 		when(context.get(Integer)).thenThrow(MaiaContextKeyNotFound)
 
-		val service = injector.make(FakeService_constructorsMany)
+		val service = context.make(FakeService_constructorsMany)
 
 		assertThat(service.firstConstructorCalled, equalTo(true))
 		assertThat(service.secondConstructorCalled, equalTo(false))
@@ -94,7 +90,7 @@ class ContextInjector_make_FunctionalTests {
 		when(context.get(String)).thenReturn(STRING_VALUE)
 		when(context.get(Integer)).thenThrow(MaiaContextKeyNotFound)
 
-		val service = injector.make(FakeService_constructorsMany)
+		val service = context.make(FakeService_constructorsMany)
 
 		assertThat(service, notNullValue(FakeService_constructorsMany))
 	}

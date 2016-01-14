@@ -6,7 +6,7 @@ import org.junit.parameterizedsuite.ParameterizedSuite
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized.Parameters
 import org.junit.runners.Suite.SuiteClasses
-import ru.agentlab.maia.context.arrays.separated.SeparatedArraysContext
+import ru.agentlab.maia.container.arrays.separated.SeparatedArraysContext
 import ru.agentlab.maia.memory.context.test.blackbox.ServiceRegistrationExtension
 
 @RunWith(ParameterizedSuite)

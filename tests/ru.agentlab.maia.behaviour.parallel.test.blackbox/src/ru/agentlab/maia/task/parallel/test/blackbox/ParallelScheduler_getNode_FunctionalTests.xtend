@@ -2,13 +2,12 @@ package ru.agentlab.maia.task.parallel.test.blackbox
 
 import org.junit.Ignore
 import org.junit.Test
-import ru.agentlab.maia.behaviour.Behaviour
-import ru.agentlab.maia.behaviour.IBehaviour
+import ru.agentlab.maia.IBehaviour
+import ru.agentlab.maia.behaviour.parallel.BehaviourSchedulerParallel
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
 import static org.mockito.Mockito.*
-import ru.agentlab.maia.behaviour.parallel.BehaviourSchedulerParallel
 
 class ParallelScheduler_getNode_FunctionalTests {
 
@@ -16,14 +15,14 @@ class ParallelScheduler_getNode_FunctionalTests {
 
 	def IBehaviour getSuccessNode() {
 		val result = mock(IBehaviour) => [
-			when(it.state).thenReturn(Behaviour.State.SUCCESS)
+			when(it.state).thenReturn(IBehaviour.State.SUCCESS)
 		]
 		return result
 	}
 
 	def IBehaviour getFailedNode() {
 		val result = mock(IBehaviour) => [
-			when(it.state).thenReturn(Behaviour.State.FAILED)
+			when(it.state).thenReturn(IBehaviour.State.FAILED)
 		]
 		return result
 	}
@@ -39,7 +38,7 @@ class ParallelScheduler_getNode_FunctionalTests {
 		scheduler.execute
 		scheduler.execute
 
-		assertThat(scheduler.state, equalTo(Behaviour.State.FAILED))
+		assertThat(scheduler.state, equalTo(IBehaviour.State.FAILED))
 	}
 
 }

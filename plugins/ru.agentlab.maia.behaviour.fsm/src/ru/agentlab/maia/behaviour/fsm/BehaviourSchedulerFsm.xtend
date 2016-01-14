@@ -71,13 +71,13 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 		state = State.UNKNOWN
 	}
 
-	override addBehaviourTransition(Behaviour from, Behaviour to) {
+	override addBehaviourTransition(IBehaviour from, IBehaviour to) {
 		from.checkFrom
 		to.checkTo
 		behaviourTransitions.put(from, to)
 	}
 
-	override addBehaviourTransition(Behaviour from, IBehaviour.Exception<?> to) {
+	override addBehaviourTransition(IBehaviour from, IBehaviour.Exception<?> to) {
 		from.checkFrom
 		to.checkTo
 		behaviourTransitions.put(from, to)
@@ -95,7 +95,7 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 		exceptionTransitions.put(from, to)
 	}
 
-	override addEventTransition(Behaviour from, Behaviour to, String topic) {
+	override addEventTransition(IBehaviour from, IBehaviour to, String topic) {
 		from.checkFrom
 		to.checkTo
 		if (from === null) {
@@ -111,7 +111,7 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 //		}
 	}
 
-	override addEventTransition(Behaviour from, IBehaviour.Exception<?> to, String topic) {
+	override addEventTransition(IBehaviour from, IBehaviour.Exception<?> to, String topic) {
 		from.checkFrom
 		to.checkTo
 		if (from === null) {
@@ -150,13 +150,13 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 
 	}
 
-	def private void checkFrom(Behaviour from) {
+	def private void checkFrom(IBehaviour from) {
 		if (from != null && !childs.exists[it === from]) {
 			throw new IllegalArgumentException('''BehaviourException [«from»] is not a child of scheduler''')
 		}
 	}
 
-	def private void checkTo(Behaviour to) {
+	def private void checkTo(IBehaviour to) {
 		if (!childs.exists[it === to]) {
 			throw new IllegalArgumentException('''BehaviourException [«to»] is not a child of scheduler''')
 		}

@@ -4,7 +4,7 @@ import java.util.UUID
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import ru.agentlab.maia.context.IContext
+import ru.agentlab.maia.IContainer
 import ru.agentlab.maia.context.exception.MaiaContextKeyNotFound
 
 import static org.hamcrest.Matchers.*
@@ -14,7 +14,7 @@ import static org.mockito.Mockito.*
 @RunWith(Parameterized)
 class AbstractContext_removeByString_FunctionalTests extends AbstractContext_AbstractFunctionalTests {
 
-	new(IContext context, ServiceRegistration contextServices, ServiceRegistration parentServices) {
+	new(IContainer context, ServiceRegistration contextServices, ServiceRegistration parentServices) {
 		super(context, contextServices, parentServices)
 	}
 

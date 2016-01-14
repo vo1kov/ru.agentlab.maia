@@ -3,7 +3,7 @@ package ru.agentlab.maia.memory.context.test.blackbox
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import ru.agentlab.maia.context.IContext
+import ru.agentlab.maia.IContainer
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
@@ -12,7 +12,7 @@ import static org.mockito.Mockito.*
 @RunWith(Parameterized)
 class AbstractContext_putByClass_FunctionalTests extends AbstractContext_AbstractFunctionalTests {
 
-	new(IContext context, ServiceRegistration contextServices, ServiceRegistration parentServices) {
+	new(IContainer context, ServiceRegistration contextServices, ServiceRegistration parentServices) {
 		super(context, contextServices, parentServices)
 	}
 
@@ -72,7 +72,8 @@ class AbstractContext_putByClass_FunctionalTests extends AbstractContext_Abstrac
 		assertThat(
 			"When putService(Class, Object) with null service that exist in context then getKeySet() size should be unchanged",
 			context.keySet.size,
-			equalTo(before)
+			equalTo(
+				before)
 		)
 	}
 
@@ -83,7 +84,8 @@ class AbstractContext_putByClass_FunctionalTests extends AbstractContext_Abstrac
 		assertThat(
 			"When putService(Class, Object) with non-null service then getKeySet() should contain key of service in any set of services contained in context before",
 			context.keySet,
-			hasItem(KEY_STRING_VALID)
+			hasItem(
+				KEY_STRING_VALID)
 		)
 	}
 
@@ -157,7 +159,6 @@ class AbstractContext_putByClass_FunctionalTests extends AbstractContext_Abstrac
 //
 //		assertThat(context.getProviderLocal(KEY_CLASS_VALID), nullValue)
 //	}
-
 	@Test
 	def void getServiceByString_returnValue_whenValidArgs() {
 		invokeWithValidArgs

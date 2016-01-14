@@ -49,8 +49,8 @@ class FsmSchedulerStateTests {
 //		(scheduler as AbstractExecutionNode).init
 //		assertThat(scheduler.state, equalTo(ITask.STATE_READY))
 		scheduler.addChild(child)
-		scheduler.addTransition(null, child)
-		scheduler.addTransition(child, null)
+		scheduler.addBehaviourTransition(null, child)
+		scheduler.addBehaviourTransition(child, null as IBehaviour)
 
 //		assertThat(scheduler.state, equalTo(ITask.STATE_WORKING))
 	}
@@ -61,7 +61,7 @@ class FsmSchedulerStateTests {
 //		(scheduler as AbstractExecutionNode).init
 //		assertThat(scheduler.state, equalTo(ITask.STATE_READY))
 		scheduler.addChild(child)
-		scheduler.addTransition(null, child)
+		scheduler.addBehaviourTransition(null, child)
 
 //		assertThat(scheduler.state, equalTo(ITask.STATE_READY))
 	}
