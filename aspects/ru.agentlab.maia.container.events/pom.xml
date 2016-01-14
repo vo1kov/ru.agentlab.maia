@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+	<artifactId>ru.agentlab.maia.container.events</artifactId>
+	<packaging>eclipse-plugin</packaging>
+	
+	<parent>
+		<groupId>ru.agentlab.maia</groupId>
+		<artifactId>ru.agentlab.maia.releng</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../../releng/ru.agentlab.maia.releng</relativePath>
+	</parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.xtend</groupId>
+				<artifactId>xtend-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>aspectj-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
