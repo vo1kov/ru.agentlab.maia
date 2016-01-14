@@ -23,22 +23,22 @@
 		<profile>
 			<id>context-plugins</id>
 			<modules>
-				<module>../../plugins/ru.agentlab.maia.context</module>
-				<module>../../plugins/ru.agentlab.maia.context.arrays</module>
-				<module>../../plugins/ru.agentlab.maia.context.arrays.separated</module>
-				<module>../../plugins/ru.agentlab.maia.context.hashmap</module>
+				<module>../../plugins/ru.agentlab.maia.container</module>
+				<module>../../plugins/ru.agentlab.maia.container.arrays</module>
+				<module>../../plugins/ru.agentlab.maia.container.arrays.separated</module>
+				<module>../../plugins/ru.agentlab.maia.container.hashmap</module>
 			</modules>
 		</profile>
 		<profile>
 			<id>context-aspects</id>
 			<modules>
-				<module>../../plugins/ru.agentlab.maia.context</module>
+				<module>../../plugins/ru.agentlab.maia.container</module>
 				<module>../../plugins/ru.agentlab.maia.event</module>
 				<module>../../plugins/ru.agentlab.maia.event.osgi</module>
 				
-				<module>../../aspects/ru.agentlab.maia.context.aspect</module>
-				<module>../../aspects/ru.agentlab.maia.context.events</module>
-				<module>../../aspects/ru.agentlab.maia.context.logs</module>
+				<module>../../aspects/ru.agentlab.maia.container.aspect</module>
+				<module>../../aspects/ru.agentlab.maia.container.events</module>
+				<module>../../aspects/ru.agentlab.maia.container.logs</module>
 			</modules>
 		</profile>
 		<profile>
@@ -51,7 +51,7 @@
 				</repository>
 			</repositories>
 			<modules>
-				<module>../../plugins/ru.agentlab.maia.context</module>
+				<module>../../plugins/ru.agentlab.maia.container</module>
 				<module>../../plugins/ru.agentlab.maia.context.arrays</module>
 				<module>../../plugins/ru.agentlab.maia.context.arrays.separated</module>
 				<module>../../plugins/ru.agentlab.maia.context.hashmap</module>
@@ -70,10 +70,10 @@
 				</repository>
 			</repositories>
 			<modules>
-				<module>../../plugins/ru.agentlab.maia.context</module>
-				<module>../../plugins/ru.agentlab.maia.context.arrays</module>
-				<module>../../plugins/ru.agentlab.maia.context.arrays.separated</module>
-				<module>../../plugins/ru.agentlab.maia.context.hashmap</module>
+				<module>../../plugins/ru.agentlab.maia.container</module>
+				<module>../../plugins/ru.agentlab.maia.container.arrays</module>
+				<module>../../plugins/ru.agentlab.maia.container.arrays.separated</module>
+				<module>../../plugins/ru.agentlab.maicontainerxt.hashmap</module>
 				<module>../../tests/org.junit.parameterizedsuite</module>
 
 				<module>../../tests/ru.agentlab.maia.context.test.blackbox</module>
@@ -92,10 +92,10 @@
 				</repository>
 			</repositories>
 			<modules>
-				<module>../../plugins/ru.agentlab.maia.context</module>
-				<module>../../plugins/ru.agentlab.maia.context.arrays</module>
-				<module>../../plugins/ru.agentlab.maia.context.arrays.separated</module>
-				<module>../../plugins/ru.agentlab.maia.context.hashmap</module>
+				<module>../../plugins/ru.agentlab.maia.container</module>
+				<module>../../plugins/ru.agentlab.maia.container.arrays</module>
+				<module>../../plugins/ru.agentlab.maia.container.arrays.separated</module>
+				<module>../../plugins/ru.agentlab.maia.container.hashmap</module>
 <!-- 				<module>../../tests/ru.agentlab.maia.javaagent.classmexer</module> -->
 
 <!-- 				<module>../../tests/ru.agentlab.maia.context.test.performance</module> -->
