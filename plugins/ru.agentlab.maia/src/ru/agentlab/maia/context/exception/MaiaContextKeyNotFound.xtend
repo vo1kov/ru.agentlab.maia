@@ -16,10 +16,6 @@ class MaiaContextKeyNotFound extends Exception {
 		super(message, cause)
 	}
 	
-	protected new(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace)
-	}
-	
 	new(Throwable cause) {
 		super(cause)
 	}
