@@ -1,9 +1,9 @@
 package ru.agentlab.maia.behaviour.sequential
 
 import java.util.ArrayList
+import ru.agentlab.maia.IBehaviour
+import ru.agentlab.maia.IBehaviourScheduler
 import ru.agentlab.maia.behaviour.BehaviourScheduler
-import ru.agentlab.maia.behaviour.IBehaviour
-import ru.agentlab.maia.behaviour.IBehaviourScheduler
 
 /**
  * Sequential implementation of {@link IBehaviourScheduler}.

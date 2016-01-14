@@ -1,7 +1,7 @@
 package ru.agentlab.maia.behaviour.pattern
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.behaviour.IBehaviour
+import ru.agentlab.maia.IBehaviour
 
 @Accessors
 class PatternState implements IPatternState {

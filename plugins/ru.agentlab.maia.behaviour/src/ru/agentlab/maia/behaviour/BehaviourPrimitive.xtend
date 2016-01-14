@@ -1,5 +1,7 @@
 package ru.agentlab.maia.behaviour
 
+import ru.agentlab.maia.IBehaviourPrimitive
+
 abstract class BehaviourPrimitive extends Behaviour implements IBehaviourPrimitive {
 
 	override final execute() throws java.lang.Exception {

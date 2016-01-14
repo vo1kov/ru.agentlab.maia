@@ -4,9 +4,9 @@ import java.util.Collection
 import java.util.HashMap
 import java.util.Map
 import javax.inject.Inject
+import ru.agentlab.maia.IBehaviour
 import ru.agentlab.maia.behaviour.Behaviour
 import ru.agentlab.maia.behaviour.BehaviourScheduler
-import ru.agentlab.maia.behaviour.IBehaviour
 import ru.agentlab.maia.event.IMaiaEventBroker
 
 /**
@@ -19,7 +19,7 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 
 	val Map<IBehaviour, Object> behaviourTransitions = new HashMap
 
-	val Map<ru.agentlab.maia.behaviour.Behaviour.Exception<?>, Object> exceptionTransitions = new HashMap
+	val Map<IBehaviour.Exception<?>, Object> exceptionTransitions = new HashMap
 
 	val Map<IBehaviour, Collection<Object>> eventTransitions = new HashMap
 
@@ -77,20 +77,19 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 		behaviourTransitions.put(from, to)
 	}
 
-	override addBehaviourTransition(Behaviour from, ru.agentlab.maia.behaviour.Behaviour.Exception<?> to) {
+	override addBehaviourTransition(Behaviour from, IBehaviour.Exception<?> to) {
 		from.checkFrom
 		to.checkTo
 		behaviourTransitions.put(from, to)
 	}
 
-	override addExceptionTransition(ru.agentlab.maia.behaviour.Behaviour.Exception<?> from, Behaviour to) {
+	override addExceptionTransition(IBehaviour.Exception<?> from, Behaviour to) {
 		from.checkFrom
 		to.checkTo
 		exceptionTransitions.put(from, to)
 	}
 
-	override addExceptionTransition(ru.agentlab.maia.behaviour.Behaviour.Exception<?> from,
-		ru.agentlab.maia.behaviour.Behaviour.Exception<?> to) {
+	override addExceptionTransition(IBehaviour.Exception<?> from, IBehaviour.Exception<?> to) {
 		from.checkFrom
 		to.checkTo
 		exceptionTransitions.put(from, to)
@@ -112,7 +111,7 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 //		}
 	}
 
-	override addEventTransition(Behaviour from, ru.agentlab.maia.behaviour.Behaviour.Exception<?> to, String topic) {
+	override addEventTransition(Behaviour from, IBehaviour.Exception<?> to, String topic) {
 		from.checkFrom
 		to.checkTo
 		if (from === null) {
@@ -163,13 +162,13 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 		}
 	}
 
-	def private void checkFrom(ru.agentlab.maia.behaviour.Behaviour.Exception<?> from) {
+	def private void checkFrom(IBehaviour.Exception<?> from) {
 		if (!childs.exists[it.exceptions.exists[it === from]]) {
 			throw new IllegalArgumentException('''BehaviourException [«from»] is not a child of scheduler''')
 		}
 	}
 
-	def private void checkTo(ru.agentlab.maia.behaviour.Behaviour.Exception<?> to) {
+	def private void checkTo(IBehaviour.Exception<?> to) {
 		if (!childs.exists[it.exceptions.exists[it === to]]) {
 			throw new IllegalArgumentException('''BehaviourException [«to»] is not a child of scheduler''')
 		}
@@ -184,7 +183,7 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 				current = next
 				state = State.WORKING
 			}
-			ru.agentlab.maia.behaviour.Behaviour.Exception<?>: {
+			IBehaviour.Exception<?>: {
 				current = null
 				state = State.FAILED
 				throw ( next.type.newInstance as java.lang.Exception)

@@ -20,5 +20,5 @@ class BehaviourPrimitiveMethod extends BehaviourPrimitiveReflection {
 	override protected executeInternal(Object[] args) {
 		return #[method.invoke(implementation, args)]
 	}
-
+	
 }

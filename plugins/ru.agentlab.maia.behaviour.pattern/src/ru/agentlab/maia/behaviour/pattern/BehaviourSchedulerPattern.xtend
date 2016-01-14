@@ -2,8 +2,8 @@ package ru.agentlab.maia.behaviour.pattern
 
 import java.util.HashMap
 import javax.inject.Inject
+import ru.agentlab.maia.IBehaviour
 import ru.agentlab.maia.behaviour.BehaviourScheduler
-import ru.agentlab.maia.behaviour.IBehaviour
 
 class BehaviourSchedulerPattern extends BehaviourScheduler implements IBehaviourSchedulerPattern {
 

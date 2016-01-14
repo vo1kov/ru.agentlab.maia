@@ -54,5 +54,5 @@ class BehaviourPrimitiveFields extends BehaviourPrimitiveReflection {
 		}
 		return result
 	}
-
+	
 }

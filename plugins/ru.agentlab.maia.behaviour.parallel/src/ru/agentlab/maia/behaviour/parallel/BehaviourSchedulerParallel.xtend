@@ -1,8 +1,8 @@
 package ru.agentlab.maia.behaviour.parallel
 
 import java.util.ArrayList
+import ru.agentlab.maia.IBehaviour
 import ru.agentlab.maia.behaviour.BehaviourScheduler
-import ru.agentlab.maia.behaviour.IBehaviour
 
 /**
  * <p>Parallel implementation of {@link ITaskScheduler}.

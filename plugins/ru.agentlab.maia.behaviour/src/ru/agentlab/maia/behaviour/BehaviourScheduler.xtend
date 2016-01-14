@@ -1,5 +1,8 @@
 package ru.agentlab.maia.behaviour
 
+import ru.agentlab.maia.IBehaviourScheduler
+import ru.agentlab.maia.IBehaviour
+
 abstract class BehaviourScheduler extends Behaviour implements IBehaviourScheduler {
 
 	override final execute() throws java.lang.Exception {

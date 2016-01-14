@@ -1,6 +1,6 @@
 package ru.agentlab.maia.behaviour.sequential
 
-import ru.agentlab.maia.behaviour.IBehaviourScheduler
+import ru.agentlab.maia.IBehaviourScheduler
 
 /**
  * 

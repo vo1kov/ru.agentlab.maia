@@ -1,6 +1,6 @@
 package ru.agentlab.maia.behaviour.primitive
 
-import ru.agentlab.maia.behaviour.IBehaviourPrimitive
+import ru.agentlab.maia.IBehaviourPrimitive
 
 interface IBehaviourPrimitiveReflection extends IBehaviourPrimitive {
 
