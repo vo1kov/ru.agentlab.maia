@@ -5,8 +5,8 @@ import com.jayway.jsonpath.JsonPath
 import com.jayway.jsonpath.Option
 import java.util.Map
 import java.util.UUID
+import ru.agentlab.maia.IBehaviour
 import ru.agentlab.maia.adapter.Adapter
-import ru.agentlab.maia.behaviour.IBehaviour
 
 class BehaviourJsonAdapter extends Adapter<String, IBehaviour> {
 

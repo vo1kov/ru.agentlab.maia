@@ -9,4 +9,4 @@ Require-Bundle: org.junit;bundle-version="4.11.0",
  org.hamcrest;bundle-version="1.1.0"
 Export-Package: ru.agentlab.maia.context,
  ru.agentlab.maia.context.test.whitebox.doubles
-Fragment-Host: ru.agentlab.maia.context
+Fragment-Host: ru.agentlab.maia.container

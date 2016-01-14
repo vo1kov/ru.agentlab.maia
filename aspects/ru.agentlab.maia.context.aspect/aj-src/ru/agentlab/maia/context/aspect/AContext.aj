@@ -1,9 +1,9 @@
 package ru.agentlab.maia.context.aspect;
 
-import ru.agentlab.maia.context.IContext;
+import ru.agentlab.maia.IContainer;
 
 /**
- * Abstract aspect with pointcuts of {@link IContext} methods
+ * Abstract aspect with pointcuts of {@link IContainer} methods
  * 
  * @author Shishkin Dmitriy
  *
@@ -11,39 +11,39 @@ import ru.agentlab.maia.context.IContext;
 public abstract aspect AContext {
 
 	/**
-	 * When actual {@link IContext} object is created
+	 * When actual {@link IContainer} object is created
 	 */
 	public pointcut onConstruct() : 
-		execution(IContext+.new(..));
+		execution(IContainer+.new(..));
 
 	/**
-	 * When {@link IContext} get service object by string identifier
+	 * When {@link IContainer} get service object by string identifier
 	 * 
 	 * @param context
 	 *            - current context
 	 * @param id
 	 *            - string identifier of context service
 	 */
-	public pointcut onGetByString(IContext context, String id) : 
-		execution(Object IContext+.getService(String)) && 
+	public pointcut onGetByString(IContainer context, String id) : 
+		execution(Object IContainer+.getService(String)) && 
 		target(context) && 
 		args(id);
 
 	/**
-	 * When {@link IContext} get service object by it's type
+	 * When {@link IContainer} get service object by it's type
 	 * 
 	 * @param context
 	 *            - current context
 	 * @param id
 	 *            - type of context service
 	 */
-	public pointcut onGetByClass(IContext context, Class<?> id) : 
-		execution(Object IContext+.getService(Class)) && 
+	public pointcut onGetByClass(IContainer context, Class<?> id) : 
+		execution(Object IContainer+.getService(Class)) && 
 		target(context) && 
 		args(id);
 
 	/**
-	 * When {@link IContext} set service object by string identifier
+	 * When {@link IContainer} set service object by string identifier
 	 * 
 	 * @param context
 	 *            - current context
@@ -52,13 +52,13 @@ public abstract aspect AContext {
 	 * @param obj
 	 *            - service object
 	 */
-	public pointcut onSetByString(IContext context, String id, Object obj) : 
-		execution(void IContext+.putService(String, Object)) && 
+	public pointcut onSetByString(IContainer context, String id, Object obj) : 
+		execution(void IContainer+.putService(String, Object)) && 
 		target(context) && 
 		args(id, obj);
 
 	/**
-	 * When {@link IContext} set service object by it's type
+	 * When {@link IContainer} set service object by it's type
 	 * 
 	 * @param context
 	 *            - current context
@@ -67,82 +67,82 @@ public abstract aspect AContext {
 	 * @param obj
 	 *            - service object
 	 */
-	public pointcut onSetByClass(IContext context, Class<?> id,
+	public pointcut onSetByClass(IContainer context, Class<?> id,
 			Object obj) : 
-		execution(void IContext+.putService(Class, Object)) && 
+		execution(void IContainer+.putService(Class, Object)) && 
 		target(context) && 
 		args(id, obj);
 
 	/**
-	 * When {@link IContext} get service object locally by string identifier
+	 * When {@link IContainer} get service object locally by string identifier
 	 * 
 	 * @param context
 	 *            - current context
 	 * @param id
 	 *            - string identifier of context service
 	 */
-	public pointcut onGetLocalByString(IContext context, String id) : 
-		execution(Object IContext+.getServiceLocal(String)) && 
+	public pointcut onGetLocalByString(IContainer context, String id) : 
+		execution(Object IContainer+.getServiceLocal(String)) && 
 		target(context) && 
 		args(id);
 
 	/**
-	 * When {@link IContext} get service object locally by it's type
+	 * When {@link IContainer} get service object locally by it's type
 	 * 
 	 * @param context
 	 *            - current context
 	 * @param id
 	 *            - type of context service
 	 */
-	public pointcut onGetLocalByClass(IContext context, Class<?> id) : 
-		execution(Object IContext+.getServiceLocal(Class)) && 
+	public pointcut onGetLocalByClass(IContainer context, Class<?> id) : 
+		execution(Object IContainer+.getServiceLocal(Class)) && 
 		target(context) && 
 		args(id);
 
 	/**
-	 * When {@link IContext} remove service object by string identifier
+	 * When {@link IContainer} remove service object by string identifier
 	 * 
 	 * @param context
 	 *            - current context
 	 * @param id
 	 *            - string identifier of context service to be removed
 	 */
-	public pointcut onRemoveByString(IContext context, String id) : 
-		execution(void IContext+.remove(String)) && 
+	public pointcut onRemoveByString(IContainer context, String id) : 
+		execution(void IContainer+.remove(String)) && 
 		target(context) && 
 		args(id);
 
 	/**
-	 * When {@link IContext} remove service object by it's type
+	 * When {@link IContainer} remove service object by it's type
 	 * 
 	 * @param context
 	 *            - current context
 	 * @param id
 	 *            - type of context service
 	 */
-	public pointcut onRemoveByClass(IContext context, Class<?> id) : 
-		execution(void IContext+.remove(Class)) && 
+	public pointcut onRemoveByClass(IContainer context, Class<?> id) : 
+		execution(void IContainer+.remove(Class)) && 
 		target(context) && 
 		args(id);
 
 	/**
-	 * When {@link IContext} retrieve all it's childs contexts
+	 * When {@link IContainer} retrieve all it's childs contexts
 	 * 
 	 * @param context
 	 *            - current context
 	 */
-	public pointcut onGetChilds(IContext context) : 
-		execution(Iterable<IContext>  IContext+.getChilds()) && 
+	public pointcut onGetChilds(IContainer context) : 
+		execution(Iterable<IContainer>  IContainer+.getChilds()) && 
 		target(context);
 
 	/**
-	 * When {@link IContext} retrieve parent context
+	 * When {@link IContainer} retrieve parent context
 	 * 
 	 * @param context
 	 *            - current context
 	 */
-	public pointcut onGetParent(IContext context) : 
-		execution(IContext IContext+.getParent(..)) && 
+	public pointcut onGetParent(IContainer context) : 
+		execution(IContainer IContainer+.getParent(..)) && 
 		target(context);
 
 }

@@ -138,5 +138,9 @@ class Agent implements IAgent {
 	override getContainer() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
+	
+	override getRoles() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
 
 }

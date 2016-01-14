@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MAIA Context
+Bundle-SymbolicName: ru.agentlab.maia.container
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ javax.inject;bundle-version="1.0.0";visibility:=reexport,
+ ru.agentlab.maia;bundle-version="1.0.0";visibility:=reexport
+Import-Package: org.osgi.framework;version="1.8.0"
+Export-Package: ru.agentlab.maia.container
+Bundle-Vendor: http://www.agentlab.ru/
+

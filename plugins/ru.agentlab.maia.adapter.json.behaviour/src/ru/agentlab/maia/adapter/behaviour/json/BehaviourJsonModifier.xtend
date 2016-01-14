@@ -3,12 +3,8 @@ package ru.agentlab.maia.adapter.behaviour.json
 import java.util.HashMap
 import java.util.List
 import java.util.Map
+import ru.agentlab.maia.IBehaviour
 import ru.agentlab.maia.adapter.IModifier
-import ru.agentlab.maia.behaviour.BehaviourException
-import ru.agentlab.maia.behaviour.BehaviourParameter
-import ru.agentlab.maia.behaviour.IBehaviour
-import ru.agentlab.maia.behaviour.IBehaviourException
-import ru.agentlab.maia.behaviour.IBehaviourParameter
 
 class BehaviourJsonModifier implements IModifier<IBehaviour> {
 
@@ -20,9 +16,9 @@ class BehaviourJsonModifier implements IModifier<IBehaviour> {
 
 	val public static String KEY_OUTPUTS = "outputs"
 
-	val protected parametersCache = new HashMap<String, IBehaviourParameter<?>>
+	val protected parametersCache = new HashMap<String, IBehaviour.Parameter<?>>
 
-	val protected exceptionsCache = new HashMap<String, IBehaviourException>
+	val protected exceptionsCache = new HashMap<String, IBehaviour.Exception<?>>
 
 	val protected subtasksCache = new HashMap<String, IBehaviour>
 
@@ -36,9 +32,9 @@ class BehaviourJsonModifier implements IModifier<IBehaviour> {
 
 	def protected void modifyLabel(IBehaviour task, Map<String, ?> parsed) {
 		val label = parsed.get(KEY_LABEL) as String
-		if (task.label != label) {
-			task.label = label
-		}
+//		if (task.label != label) {
+//			task.label = label
+//		}
 	}
 
 	def protected void modifyExceptions(IBehaviour task, Map<String, ?> parsed) {
@@ -48,7 +44,7 @@ class BehaviourJsonModifier implements IModifier<IBehaviour> {
 			val label = get(KEY_LABEL)
 			var exception = task.exceptions?.findFirst[it.name == label]
 			if (exception == null) {
-				exception = new BehaviourException(label)
+				exception = new IBehaviour.Exception(label)
 				task.addException(exception)
 			}
 			exceptionsCache.put(uuid, exception)
@@ -64,7 +60,7 @@ class BehaviourJsonModifier implements IModifier<IBehaviour> {
 			val javaType = Class.forName(type)
 			var input = task.inputs?.findFirst[it.name == label && it.type == javaType]
 			if (input == null) {
-				input = new BehaviourParameter(label, javaType)
+				input = new IBehaviour.Parameter(label, javaType)
 				task.addInput(input)
 			}
 			parametersCache.put(uuid, input)
@@ -80,7 +76,7 @@ class BehaviourJsonModifier implements IModifier<IBehaviour> {
 			val javaType = Class.forName(type)
 			var output = task.outputs?.findFirst[it.name == label && it.type == javaType]
 			if (output == null) {
-				output = new BehaviourParameter(label, javaType)
+				output = new IBehaviour.Parameter(label, javaType)
 				task.addOutput(output)
 			}
 			parametersCache.put(uuid, output)

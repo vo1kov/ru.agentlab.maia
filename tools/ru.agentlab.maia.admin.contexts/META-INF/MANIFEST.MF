@@ -10,7 +10,7 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib.macro,
  io.netty;bundle-version="4.0.26",
  com.jayway.jsonpath;bundle-version="1.0.0",
- ru.agentlab.maia.context;bundle-version="1.0.0",
+ ru.agentlab.maia.container;bundle-version="1.0.0",
  ru.agentlab.maia.event;bundle-version="1.0.0"
 Import-Package: org.osgi.framework;version="1.8.0"
 Bundle-Activator: ru.agentlab.maia.admin.contexts.internal.Activator

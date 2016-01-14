@@ -1,5 +1,6 @@
 package ru.agentlab.maia
 
+import java.util.List
 import java.util.UUID
 
 /**
@@ -9,6 +10,8 @@ import java.util.UUID
 interface IAgent {
 
 	def UUID getUuid()
+	
+	def List<IRole> getRoles()
 
 	def void start()
 

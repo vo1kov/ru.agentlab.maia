@@ -2,7 +2,7 @@ package ru.agentlab.maia.context.events
 
 import java.util.HashMap
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.context.IContext
+import ru.agentlab.maia.IContainer
 import ru.agentlab.maia.event.IMaiaEvent
 
 class MaiaContextSetObjectEvent implements IMaiaEvent {
@@ -16,7 +16,7 @@ class MaiaContextSetObjectEvent implements IMaiaEvent {
 	@Accessors
 	val data = new HashMap<String, Object>
 
-	new(IContext context, Object object) {
+	new(IContainer context, Object object) {
 		data.put(KEY_CONTEXT, context)
 		data.put(KEY_OBJECT, object)
 	}
@@ -25,8 +25,8 @@ class MaiaContextSetObjectEvent implements IMaiaEvent {
 		return TOPIC
 	}
 
-	def IContext getContext() {
-		return data.get(KEY_CONTEXT) as IContext
+	def IContainer getContext() {
+		return data.get(KEY_CONTEXT) as IContainer
 	}
 
 	def Object getObject() {

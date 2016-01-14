@@ -2,10 +2,9 @@ package ru.agentlab.maia.adapter.behaviour.json
 
 import java.util.List
 import java.util.Map
+import ru.agentlab.maia.IBehaviour
+import ru.agentlab.maia.IBehaviourScheduler
 import ru.agentlab.maia.adapter.behaviour.json.internal.Activator
-import ru.agentlab.maia.behaviour.IBehaviour
-import ru.agentlab.maia.behaviour.Scheduler
-import ru.agentlab.maia.behaviour.IBehaviourScheduler
 
 class BehaviourSchedulerJsonModifier extends BehaviourJsonModifier {
 
@@ -15,7 +14,7 @@ class BehaviourSchedulerJsonModifier extends BehaviourJsonModifier {
 
 	override modify(IBehaviour task, Object... objects) {
 		val parsed = objects.get(0) as Map<String, ?>
-		if (task instanceof Scheduler) {
+		if (task instanceof IBehaviourScheduler) {
 			super.modify(task, parsed)
 			task.modifySubtasks(parsed)
 			task.modifyDataflow(parsed)
@@ -36,7 +35,7 @@ class BehaviourSchedulerJsonModifier extends BehaviourJsonModifier {
 				val uuid = it.get("uuid") as String
 				subtasksCache.put(uuid, child)
 			} else {
-				throw new RuntimeException('''Adapter for [«language»] is not registered''')
+				throw new RuntimeException('''Adapter for [ï¿½languageï¿½] is not registered''')
 			}
 		]
 	}
@@ -46,7 +45,7 @@ class BehaviourSchedulerJsonModifier extends BehaviourJsonModifier {
 		links?.forEach [ link |
 			for (uuid : link) {
 				if (!parametersCache.containsKey(uuid)) {
-					throw new IllegalStateException('''Loaded task have no any parameter with UUID: [«uuid»]''')
+					throw new IllegalStateException('''Loaded task have no any parameter with UUID: [ï¿½uuidï¿½]''')
 				}
 //				val parameter = parametersCache.get(uuid)
 //				parameter.link()

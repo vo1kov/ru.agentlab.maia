@@ -4,7 +4,7 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
 import java.lang.reflect.Type
-import ru.agentlab.maia.behaviour.IBehaviour
+import ru.agentlab.maia.IBehaviour
 
 class BehaviourSerializer implements JsonSerializer<IBehaviour> {
 

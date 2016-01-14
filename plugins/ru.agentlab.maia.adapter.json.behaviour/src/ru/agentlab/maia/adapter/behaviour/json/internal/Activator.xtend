@@ -4,12 +4,11 @@ import java.util.Hashtable
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
+import ru.agentlab.maia.IBehaviour
 import ru.agentlab.maia.adapter.IAdapter
 import ru.agentlab.maia.adapter.IModifier
 import ru.agentlab.maia.adapter.behaviour.json.BehaviourJsonAdapter
 import ru.agentlab.maia.adapter.behaviour.json.BehaviourSchedulerJsonModifier
-import ru.agentlab.maia.behaviour.IBehaviour
-import ru.agentlab.maia.behaviour.IBehaviourRegistry
 
 class Activator implements BundleActivator {
 
@@ -27,7 +26,7 @@ class Activator implements BundleActivator {
 	def static IAdapter<String, IBehaviour> getAdapter(String language) {
 		val refs = Activator.context.getServiceReferences(
 			IAdapter,
-			'''(«IAdapter.KEY_LANGUAGE»=«language»)'''
+			'''(Â«IAdapter.KEY_LANGUAGEÂ»=Â«languageÂ»)'''
 		)
 		if (!refs.empty) {
 			return Activator.context.getService(refs.get(0))

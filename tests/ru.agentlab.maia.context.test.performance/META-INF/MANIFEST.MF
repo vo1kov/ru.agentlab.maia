@@ -11,7 +11,7 @@ Require-Bundle: com.google.guava,
  org.junit;bundle-version="4.11.0",
  org.mockito;bundle-version="1.9.5",
  org.hamcrest;bundle-version="1.1.0",
- ru.agentlab.maia.context;bundle-version="1.0.0"
+ ru.agentlab.maia.container;bundle-version="1.0.0"
 Export-Package: ru.agentlab.maia.context.test.performance,
  ru.agentlab.maia.context.test.performance.doubles
 Import-Package: com.javamex.classmexer

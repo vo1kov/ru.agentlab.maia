@@ -1,6 +1,6 @@
 package ru.agentlab.maia.behaviour.aspect;
 
-import ru.agentlab.maia.behaviour.IBehaviourScheduler;
+import ru.agentlab.maia.IBehaviourScheduler;
 
 public abstract aspect AMaiaExecutorScheduler {
 
