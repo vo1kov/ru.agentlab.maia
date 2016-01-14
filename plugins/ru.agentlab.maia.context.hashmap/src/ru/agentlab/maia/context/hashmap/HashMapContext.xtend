@@ -2,8 +2,8 @@ package ru.agentlab.maia.context.hashmap
 
 import java.util.HashMap
 import java.util.Map
-import ru.agentlab.maia.context.Context
 import ru.agentlab.maia.context.exception.MaiaContextKeyNotFound
+import ru.agentlab.maia.context.Container
 
 /**
  * <p>{@link IMaiaContext} realization based on {@link HashMap} for storing keys and values.</p>
@@ -23,7 +23,7 @@ import ru.agentlab.maia.context.exception.MaiaContextKeyNotFound
  * 
  * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
-class HashMapContext extends Context {
+class HashMapContext extends Container {
 
 	val Map<String, Object> map = new HashMap<String, Object>
 

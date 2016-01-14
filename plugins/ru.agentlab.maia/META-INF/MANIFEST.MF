@@ -8,5 +8,6 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro
-Export-Package: ru.agentlab.maia
+Export-Package: ru.agentlab.maia,
+ ru.agentlab.maia.context.exception
 

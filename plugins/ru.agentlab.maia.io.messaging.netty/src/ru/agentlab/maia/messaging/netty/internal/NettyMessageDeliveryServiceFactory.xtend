@@ -7,15 +7,15 @@ import io.netty.handler.codec.http.HttpClientCodec
 import io.netty.handler.codec.http.HttpServerCodec
 import javax.annotation.PostConstruct
 import javax.inject.Inject
-import ru.agentlab.maia.context.IContext
-import ru.agentlab.maia.context.IInjector
+import ru.agentlab.maia.IContainer
+import ru.agentlab.maia.IInjector
 import ru.agentlab.maia.messaging.IMessageDeliveryServiceFactory
 import ru.agentlab.maia.messaging.netty.INettyMessageDeliveryService
 
 class NettyMessageDeliveryServiceFactory implements IMessageDeliveryServiceFactory {
 
 	@Inject
-	IContext context
+	IContainer context
 
 	@Inject
 	IInjector injector

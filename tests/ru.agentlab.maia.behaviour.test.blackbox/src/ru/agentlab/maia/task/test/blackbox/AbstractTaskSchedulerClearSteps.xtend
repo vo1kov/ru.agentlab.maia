@@ -2,7 +2,7 @@ package ru.agentlab.maia.task.test.blackbox
 
 import javax.inject.Provider
 import org.jbehave.core.annotations.When
-import ru.agentlab.maia.behaviour.IBehaviourScheduler
+import ru.agentlab.maia.IBehaviourScheduler
 
 class AbstractTaskSchedulerClearSteps {
 

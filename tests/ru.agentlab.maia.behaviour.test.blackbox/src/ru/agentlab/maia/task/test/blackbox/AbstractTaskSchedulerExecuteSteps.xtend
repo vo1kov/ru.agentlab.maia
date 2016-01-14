@@ -4,10 +4,8 @@ import javax.inject.Provider
 import org.jbehave.core.annotations.Given
 import org.jbehave.core.annotations.Then
 import org.jbehave.core.annotations.When
-import ru.agentlab.maia.behaviour.BehaviourState
-import ru.agentlab.maia.behaviour.IBehaviour
-import ru.agentlab.maia.behaviour.IBehaviourException
-import ru.agentlab.maia.behaviour.IBehaviourScheduler
+import ru.agentlab.maia.IBehaviour
+import ru.agentlab.maia.IBehaviourScheduler
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*

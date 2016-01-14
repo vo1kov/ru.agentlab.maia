@@ -1,13 +1,15 @@
 package ru.agentlab.maia.context
 
 import java.util.UUID
+import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.atomic.AtomicReference
 import org.eclipse.xtend.lib.annotations.Accessors
+import ru.agentlab.maia.IContainer
 import ru.agentlab.maia.context.exception.MaiaContextKeyNotFound
 
 /**
  * <p>
- * Abstract {@link IMaiaContext} implementation.
+ * Abstract {@link IContainer} implementation.
  * </p>
  * <p>Implementation guarantee that:
  * </p>
@@ -18,14 +20,16 @@ import ru.agentlab.maia.context.exception.MaiaContextKeyNotFound
  * <li>Context disable <code>null</code> keys for storing services;</li>
  * </ul>
  * 
- * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
+ * @author Dmitry Shishkin
  */
-abstract class Context implements IContext {
+abstract class Container implements IContainer {
 
 	@Accessors
 	val private uuid = UUID.randomUUID.toString
 
-	var protected parent = new AtomicReference<IContext>(null)
+	var protected parent = new AtomicReference<IContainer>(null)
+
+	val protected childs = new ConcurrentSkipListSet<IContainer>
 
 	override getParent() {
 		return parent.get
@@ -93,20 +97,27 @@ abstract class Context implements IContext {
 		return removeInternal(key)
 	}
 
-	override IContext setParent(IContext newParent) {
-		return parent.getAndSet(newParent)
+	override setParent(IContainer container) {
+		parent.getAndSet(container)
 	}
-	
-	def private check(String key){
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null")
-		}
+
+	override getChilds() {
+		return childs
 	}
-	
-	def private check(Class<?> key){
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null")
-		}
+
+	override addChild(IContainer container) {
+		childs += container
+		container.parent = this
+	}
+
+	override removeChild(IContainer container) {
+		childs -= container
+		container.parent = null
+	}
+
+	override clearChilds() {
+		childs.forEach[parent = null]
+		childs.clear
 	}
 
 	def protected Object getInternal(String key)
@@ -121,4 +132,15 @@ abstract class Context implements IContext {
 
 	def protected Object removeInternal(Class<?> key)
 
+	def private check(String key) {
+		if (key == null) {
+			throw new IllegalArgumentException("Key must be not null")
+		}
+	}
+
+	def private check(Class<?> key) {
+		if (key == null) {
+			throw new IllegalArgumentException("Key must be not null")
+		}
+	}
 }

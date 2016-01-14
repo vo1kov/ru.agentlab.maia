@@ -4,8 +4,8 @@ import com.jayway.jsonpath.JsonPath
 import io.netty.channel.ChannelHandlerAdapter
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame
+import ru.agentlab.maia.IContainer
 import ru.agentlab.maia.admin.contexts.internal.Activator
-import ru.agentlab.maia.context.IContext
 
 class WsContextListHandler extends ChannelHandlerAdapter {
 
@@ -27,13 +27,12 @@ class WsContextListHandler extends ChannelHandlerAdapter {
 		}
 	}
 
-	def String serialize(IContext context) {
+	def String serialize(IContainer context) {
 		if (context.childs.empty) {
 			return '''
 				{
 					"name" : "«context.toString»",
 					"uuid" : "«context.uuid»",
-					"type" : "«context.get(IContext.KEY_TYPE)»"
 				}
 			'''
 		} else {
@@ -41,9 +40,8 @@ class WsContextListHandler extends ChannelHandlerAdapter {
 				{
 					"name" : "«context.toString»",
 					"uuid" : "«context.uuid»",
-					"type" : "«context.get(IContext.KEY_TYPE)»",
 					"children" : [
-«««						«FOR child : context.childs SEPARATOR ","»
+				«««						«FOR child : context.childs SEPARATOR ","»
 «««							«child.serialize»
 «««						«ENDFOR»
 					]

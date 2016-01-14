@@ -1,6 +1,7 @@
 package ru.agentlab.maia.behaviour
 
 import org.mockito.Spy
+import ru.agentlab.maia.IBehaviour
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*

@@ -3,8 +3,8 @@ package ru.agentlab.maia.task.test.blackbox
 import java.util.Random
 import javax.inject.Provider
 import org.jbehave.core.annotations.When
-import ru.agentlab.maia.behaviour.IBehaviour
-import ru.agentlab.maia.behaviour.IBehaviourScheduler
+import ru.agentlab.maia.IBehaviour
+import ru.agentlab.maia.IBehaviourScheduler
 
 import static org.mockito.Mockito.*
 

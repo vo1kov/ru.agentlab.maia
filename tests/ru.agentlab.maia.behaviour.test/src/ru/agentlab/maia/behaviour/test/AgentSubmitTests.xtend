@@ -3,7 +3,8 @@ package ru.agentlab.maia.behaviour.test
 import java.util.Random
 import java.util.concurrent.Executors
 import org.junit.Test
-import ru.agentlab.maia.behaviour.Agent
+import ru.agentlab.maia.IBehaviour
+import ru.agentlab.maia.agent.Agent
 import ru.agentlab.maia.behaviour.Behaviour
 
 class AgentSubmitTests {
@@ -41,7 +42,7 @@ class AgentSubmitTests {
 				println("START Behaviour " + " with duration " + duration)
 				Thread.sleep(duration)
 				println("END Behaviour ")
-				state = ru.agentlab.maia.behaviour.Behaviour.State.WORKING
+				state = IBehaviour.State.WORKING
 			}
 
 			override toString() {

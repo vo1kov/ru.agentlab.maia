@@ -2,8 +2,8 @@ package ru.agentlab.maia.context.arrays.separated
 
 import java.util.Arrays
 import java.util.HashSet
-import ru.agentlab.maia.context.Context
 import ru.agentlab.maia.context.exception.MaiaContextKeyNotFound
+import ru.agentlab.maia.context.Container
 
 /**
  * TODO: migrate from ArrayLists to Object[]. 
@@ -12,7 +12,7 @@ import ru.agentlab.maia.context.exception.MaiaContextKeyNotFound
  * to avoid that size fluctuations it is need to change to Object[]
  *  
  */
-class SeparatedArraysContext extends Context {
+class SeparatedArraysContext extends Container {
 
 	val static UNKNOWN = -1
 

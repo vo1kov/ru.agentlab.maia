@@ -8,9 +8,9 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- javax.inject;bundle-version="1.0.0";visibility:=reexport
+ javax.inject;bundle-version="1.0.0";visibility:=reexport,
+ ru.agentlab.maia;bundle-version="1.0.0";visibility:=reexport
 Import-Package: org.osgi.framework;version="1.8.0"
-Export-Package: ru.agentlab.maia.context,
- ru.agentlab.maia.context.exception
+Export-Package: ru.agentlab.maia.context
 Bundle-Vendor: http://www.agentlab.ru/
 

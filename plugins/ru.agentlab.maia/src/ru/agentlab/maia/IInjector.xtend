@@ -1,4 +1,4 @@
-package ru.agentlab.maia.context
+package ru.agentlab.maia
 
 import java.lang.annotation.Annotation
 import java.lang.reflect.Method

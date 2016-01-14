@@ -2,8 +2,8 @@ package ru.agentlab.maia.context.arrays
 
 import java.util.Arrays
 import java.util.HashSet
-import ru.agentlab.maia.context.Context
 import ru.agentlab.maia.context.exception.MaiaContextKeyNotFound
+import ru.agentlab.maia.context.Container
 
 /**
  * <p>{@link IMaiaContext} realization based on 2 arrays for storing keys and values.</p>
@@ -25,7 +25,7 @@ import ru.agentlab.maia.context.exception.MaiaContextKeyNotFound
  * 
  * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
-class ArrayContext extends Context {
+class ArrayContext extends Container {
 
 	val static UNKNOWN = -1
 

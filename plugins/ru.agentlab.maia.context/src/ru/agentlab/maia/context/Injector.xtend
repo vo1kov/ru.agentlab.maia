@@ -10,14 +10,16 @@ import java.util.ArrayList
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import javax.inject.Named
+import ru.agentlab.maia.IContainer
+import ru.agentlab.maia.IInjector
 import ru.agentlab.maia.context.exception.MaiaContextKeyNotFound
 import ru.agentlab.maia.context.exception.MaiaInjectionException
 
 class Injector implements IInjector {
 
-	protected IContext context
+	protected IContainer context
 
-	new(IContext context) {
+	new(IContainer context) {
 		this.context = context
 	}
 

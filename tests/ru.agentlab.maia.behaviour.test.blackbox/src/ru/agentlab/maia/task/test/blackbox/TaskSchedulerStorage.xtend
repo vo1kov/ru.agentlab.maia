@@ -1,7 +1,7 @@
 package ru.agentlab.maia.task.test.blackbox
 
 import javax.inject.Provider
-import ru.agentlab.maia.behaviour.IBehaviourScheduler
+import ru.agentlab.maia.IBehaviourScheduler
 
 class TaskSchedulerStorage implements Provider<IBehaviourScheduler> {
 

@@ -1,13 +1,14 @@
 package ru.agentlab.maia.behaviour.test
 
 import java.util.Random
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import org.junit.Test
-import ru.agentlab.maia.behaviour.Agent
+import ru.agentlab.maia.IBehaviour
+import ru.agentlab.maia.agent.Agent
 import ru.agentlab.maia.behaviour.Behaviour
-import ru.agentlab.maia.context.hashmap.HashMapContext
-import java.util.concurrent.ExecutorService
 import ru.agentlab.maia.context.Injector
+import ru.agentlab.maia.context.hashmap.HashMapContext
 
 class AgentContainerTests {
 
@@ -16,9 +17,9 @@ class AgentContainerTests {
 		val random = new Random
 		val container = new HashMapContext
 		val injector = new Injector(container)
-		val executor = container.put(ExecutorService, Executors.newFixedThreadPool(2))
+		container.put(ExecutorService, Executors.newFixedThreadPool(2))
 		val agent = injector.deploy(Agent)
-		
+
 //		val executor = Executors.newFixedThreadPool(2)
 //		val agent = new Agent(executor)
 //		val tasks = new ArrayList<Runnable>
@@ -49,7 +50,7 @@ class AgentContainerTests {
 				println("START Behaviour " + " with duration " + duration)
 				Thread.sleep(duration)
 				println("END Behaviour ")
-				state = Behaviour.State.WORKING
+				state = IBehaviour.State.WORKING
 			}
 
 			override toString() {
