@@ -5,23 +5,18 @@ import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.SocketChannel
 import io.netty.handler.codec.http.HttpClientCodec
 import io.netty.handler.codec.http.HttpServerCodec
-import javax.annotation.PostConstruct
 import javax.inject.Inject
 import ru.agentlab.maia.IContainer
-import ru.agentlab.maia.IInjector
 import ru.agentlab.maia.messaging.IMessageDeliveryServiceFactory
 import ru.agentlab.maia.messaging.netty.INettyMessageDeliveryService
 
 class NettyMessageDeliveryServiceFactory implements IMessageDeliveryServiceFactory {
 
 	@Inject
-	IContainer context
-
-	@Inject
-	IInjector injector
+	IContainer container
 
 	override create() {
-		context => [
+		container => [
 			put(INettyMessageDeliveryService.KEY_BOSS_GROUP, new NioEventLoopGroup)
 			put(INettyMessageDeliveryService.KEY_WORKER_GROUP, new NioEventLoopGroup)
 			put(INettyMessageDeliveryService.KEY_CLIENT_HANDLER, new ChannelInitializer<SocketChannel>() { // (4)
@@ -47,9 +42,7 @@ class NettyMessageDeliveryServiceFactory implements IMessageDeliveryServiceFacto
 			put(INettyMessageDeliveryService.KEY_PORT, port)
 		]
 
-		val service = injector.make(NettyMessageDeliveryService)
-		injector.invoke(service, PostConstruct, null)
-		return service
+		return container.deploy(NettyMessageDeliveryService)
 	}
 
 }
