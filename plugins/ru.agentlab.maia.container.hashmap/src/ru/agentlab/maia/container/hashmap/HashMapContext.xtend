@@ -4,6 +4,7 @@ import java.util.HashMap
 import java.util.Map
 import ru.agentlab.maia.context.exception.MaiaContextKeyNotFound
 import ru.agentlab.maia.container.Container
+import ru.agentlab.maia.IContainer
 
 /**
  * <p>{@link IMaiaContext} realization based on {@link HashMap} for storing keys and values.</p>
@@ -23,7 +24,7 @@ import ru.agentlab.maia.container.Container
  * 
  * @author <a href='shishkindimon@gmail.com'>Shishkin Dmitriy</a> - Initial contribution.
  */
-class HashMapContext extends Container {
+class HashMapContext extends Container implements IContainer {
 
 	val Map<String, Object> map = new HashMap<String, Object>
 

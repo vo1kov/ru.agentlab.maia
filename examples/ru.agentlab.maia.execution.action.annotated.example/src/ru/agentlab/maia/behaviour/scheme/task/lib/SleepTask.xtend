@@ -1,6 +1,6 @@
 package ru.agentlab.maia.behaviour.scheme.task.lib
 
-import ru.agentlab.maia.execution.action.annotation.Action
+import ru.agentlab.maia.behaviour.annotation.Execute
 
 class SleepTask {
 
@@ -10,7 +10,7 @@ class SleepTask {
 //	@Inject
 //	IMaiaExecutorScheduler behaviour
 
-	@Action
+	@Execute
 	def void action() {
 //		scheduler.block(behaviour)
 	}
