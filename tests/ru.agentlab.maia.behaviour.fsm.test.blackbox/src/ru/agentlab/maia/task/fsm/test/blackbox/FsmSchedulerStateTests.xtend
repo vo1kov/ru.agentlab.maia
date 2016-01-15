@@ -3,13 +3,13 @@ package ru.agentlab.maia.task.fsm.test.blackbox
 import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.InjectMocks
-import org.mockito.Spy
 import org.mockito.runners.MockitoJUnitRunner
 import ru.agentlab.maia.IBehaviour
+import ru.agentlab.maia.IBehaviour.State
 import ru.agentlab.maia.behaviour.fsm.BehaviourSchedulerFsm
-import ru.agentlab.maia.event.IMaiaEventBroker
 
+import static org.hamcrest.Matchers.*
+import static org.junit.Assert.*
 import static org.mockito.Mockito.*
 
 @RunWith(MockitoJUnitRunner)
@@ -20,12 +20,12 @@ class FsmSchedulerStateTests {
 //
 //	@Mock
 //	IMaiaContextInjector injector
-	@Spy @InjectMocks
-	BehaviourSchedulerFsm scheduler = new BehaviourSchedulerFsm(mock(IMaiaEventBroker))
+//	@Spy @InjectMocks
+	BehaviourSchedulerFsm scheduler = new BehaviourSchedulerFsm
 
 	@Test
 	def void shouldBeUnknownWhenConstructed() {
-//		assertThat(scheduler.state, equalTo(State.UNKNOWN))
+		assertThat(scheduler.state, equalTo(State.UNKNOWN))
 	}
 
 	@Test
@@ -49,8 +49,8 @@ class FsmSchedulerStateTests {
 //		(scheduler as AbstractExecutionNode).init
 //		assertThat(scheduler.state, equalTo(ITask.STATE_READY))
 		scheduler.addChild(child)
-		scheduler.addBehaviourTransition(null, child)
-		scheduler.addBehaviourTransition(child, null as IBehaviour)
+		scheduler.addTransition(null, child)
+		scheduler.addTransition(child, null as IBehaviour)
 
 //		assertThat(scheduler.state, equalTo(ITask.STATE_WORKING))
 	}
@@ -61,7 +61,7 @@ class FsmSchedulerStateTests {
 //		(scheduler as AbstractExecutionNode).init
 //		assertThat(scheduler.state, equalTo(ITask.STATE_READY))
 		scheduler.addChild(child)
-		scheduler.addBehaviourTransition(null, child)
+		scheduler.addTransition(null, child)
 
 //		assertThat(scheduler.state, equalTo(ITask.STATE_READY))
 	}

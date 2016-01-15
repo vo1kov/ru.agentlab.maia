@@ -1,13 +1,10 @@
 package ru.agentlab.maia.behaviour.fsm
 
-import java.util.Collection
 import java.util.HashMap
 import java.util.Map
-import javax.inject.Inject
 import ru.agentlab.maia.IBehaviour
 import ru.agentlab.maia.behaviour.Behaviour
 import ru.agentlab.maia.behaviour.BehaviourScheduler
-import ru.agentlab.maia.event.IMaiaEventBroker
 
 /**
  * 
@@ -15,31 +12,22 @@ import ru.agentlab.maia.event.IMaiaEventBroker
  */
 class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSchedulerFsm {
 
-	var IMaiaEventBroker broker
+	val private static EMPTY = new Object
 
-	val Map<IBehaviour, Object> behaviourTransitions = new HashMap
-
-	val Map<IBehaviour.Exception<?>, Object> exceptionTransitions = new HashMap
-
-	val Map<IBehaviour, Collection<Object>> eventTransitions = new HashMap
+	val Map<Object, Object> transitions = new HashMap
 
 	var IBehaviour current = null
 
-	@Inject
-	new(IMaiaEventBroker broker) {
-		this.broker = broker
-	}
-
 	override getChilds() {
-		return behaviourTransitions.keySet
+		return transitions.keySet.filter(IBehaviour)
 	}
 
 	override addChild(IBehaviour child) {
 		if (child === null) {
 			throw new NullPointerException("Node can't be null")
 		}
-		if (!behaviourTransitions.containsKey(child)) {
-			behaviourTransitions.put(child, null)
+		if (!transitions.containsKey(child)) {
+			transitions.put(child, EMPTY)
 			if (state === State.UNKNOWN) {
 				state = State.READY
 			}
@@ -53,9 +41,9 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 		if (child === null) {
 			throw new NullPointerException("Node can't be null")
 		}
-		if (behaviourTransitions.containsKey(child)) {
-			behaviourTransitions.remove(child)
-			if (behaviourTransitions.empty) {
+		if (transitions.containsKey(child)) {
+			transitions.remove(child)
+			if (transitions.empty) {
 				state = State.UNKNOWN
 			}
 			return true
@@ -65,84 +53,71 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 	}
 
 	override clear() {
-		behaviourTransitions.clear
-		exceptionTransitions.clear
-		eventTransitions.clear
+		transitions.clear
 		state = State.UNKNOWN
 	}
 
-	override addBehaviourTransition(IBehaviour from, IBehaviour to) {
+	override addTransition(IBehaviour from, IBehaviour to) {
 		from.checkFrom
 		to.checkTo
-		behaviourTransitions.put(from, to)
-	}
-
-	override addBehaviourTransition(IBehaviour from, IBehaviour.Exception<?> to) {
-		from.checkFrom
-		to.checkTo
-		behaviourTransitions.put(from, to)
-	}
-
-	override addExceptionTransition(IBehaviour.Exception<?> from, Behaviour to) {
-		from.checkFrom
-		to.checkTo
-		exceptionTransitions.put(from, to)
-	}
-
-	override addExceptionTransition(IBehaviour.Exception<?> from, IBehaviour.Exception<?> to) {
-		from.checkFrom
-		to.checkTo
-		exceptionTransitions.put(from, to)
-	}
-
-	override addEventTransition(IBehaviour from, IBehaviour to, String topic) {
-		from.checkFrom
-		to.checkTo
-		if (from === null) {
-			throw new IllegalArgumentException('''Event transition can't be initial''')
+		transitions.put(from, to)
+		if (state == State.UNKNOWN && !transitions.values.contains(EMPTY)) {
+			state = State.READY
 		}
-//		val existing = asyncTransitions.findFirst[it.from == from && it.to == to]
-//		if (existing == null) {
-//			val transition = new EventFsmTransition(from, to, topic)
-//			asyncTransitions += transition
-//			return transition
-//		} else {
-//			return null
-//		}
 	}
 
-	override addEventTransition(IBehaviour from, IBehaviour.Exception<?> to, String topic) {
+	override addTransition(IBehaviour from, IBehaviour.Exception<?> to) {
 		from.checkFrom
 		to.checkTo
-		if (from === null) {
-			throw new IllegalArgumentException('''Event transition can't be initial''')
+		transitions.put(from, to)
+		if (state == State.UNKNOWN && !transitions.values.contains(EMPTY)) {
+			state = State.READY
 		}
-//		val existing = asyncTransitions.findFirst[it.from == from && it.to == to]
-//		if (existing == null) {
-//			val transition = new EventFsmTransition(from, to, topic)
-//			asyncTransitions += transition
-//			return transition
-//		} else {
-//			return null
-//		}
+	}
+
+	override addTransition(IBehaviour.Exception<?> from, Behaviour to) {
+		from.checkFrom
+		to.checkTo
+		transitions.put(from, to)
+		if (state == State.UNKNOWN && !transitions.values.contains(EMPTY)) {
+			state = State.READY
+		}
+	}
+
+	override addTransition(IBehaviour.Exception<?> from, IBehaviour.Exception<?> to) {
+		from.checkFrom
+		to.checkTo
+		transitions.put(from, to)
+		if (state == State.UNKNOWN && !transitions.values.contains(EMPTY)) {
+			state = State.READY
+		}
+	}
+
+	override void removeTransition(IBehaviour.Exception<?> from) {
+		transitions.remove(from)
+	}
+
+	override void removeTransition(IBehaviour from) {
+		transitions.put(from, EMPTY)
+		state = State.UNKNOWN
 	}
 
 	override protected getCurrent() {
 		if (current === null) {
-			current = behaviourTransitions.get(null) as Behaviour
+			current = transitions.get(null) as Behaviour
 		}
 		return current
 	}
 
 	override protected handleChildSuccess() {
-		val next = behaviourTransitions.get(current)
+		val next = transitions.get(current)
 		next.changeState
 	}
 
 	override protected handleChildFailed(java.lang.Exception e) throws java.lang.Exception {
 		val exception = current.exceptions.findFirst[type.isAssignableFrom(e.class)]
 		if (exception != null) {
-			val next = exceptionTransitions.get(exception)
+			val next = transitions.get(exception)
 			next.changeState
 		} else {
 			super.handleChildFailed(e)
@@ -185,7 +160,6 @@ class BehaviourSchedulerFsm extends BehaviourScheduler implements IBehaviourSche
 			}
 			IBehaviour.Exception<?>: {
 				current = null
-				state = State.FAILED
 				throw ( next.type.newInstance as java.lang.Exception)
 			}
 			default: {

@@ -9,7 +9,9 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  javax.inject;bundle-version="1.0.0",
- ru.agentlab.maia;bundle-version="1.0.0";visibility:=reexport
+ ru.agentlab.maia;bundle-version="1.0.0";visibility:=reexport,
+ ru.agentlab.maia.event;bundle-version="1.0.0",
+ ru.agentlab.maia.agent;bundle-version="1.0.0"
 Export-Package: ru.agentlab.maia.behaviour,
  ru.agentlab.maia.behaviour.annotation
 Bundle-Vendor: http://www.agentlab.ru/

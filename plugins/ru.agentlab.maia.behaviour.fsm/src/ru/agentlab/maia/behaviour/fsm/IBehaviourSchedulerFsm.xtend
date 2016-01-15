@@ -20,18 +20,20 @@ interface IBehaviourSchedulerFsm extends IBehaviourScheduler {
 //	 * some transition with same parameters.
 //	 */
 //	def void addTransition(IExecutionStep from, IExecutionStep to)
-	def void addBehaviourTransition(IBehaviour from, IBehaviour to)
+	def void addTransition(IBehaviour from, IBehaviour to)
 
-	def void addBehaviourTransition(IBehaviour from, IBehaviour.Exception<?> to)
+	def void addTransition(IBehaviour from, IBehaviour.Exception<?> to)
 
-	def void addExceptionTransition(IBehaviour.Exception<?> from, Behaviour to)
+	def void addTransition(IBehaviour.Exception<?> from, Behaviour to)
 
-	def void addExceptionTransition(IBehaviour.Exception<?> from, IBehaviour.Exception<?> to)
+	def void addTransition(IBehaviour.Exception<?> from, IBehaviour.Exception<?> to)
 
-	def void addEventTransition(IBehaviour from, IBehaviour to, String topic)
+	def void removeTransition(IBehaviour.Exception<?> from)
 
-	def void addEventTransition(IBehaviour from, IBehaviour.Exception<?> to, String topic)
+	def void removeTransition(IBehaviour from)
 
+//	def void addEventTransition(IBehaviour from, IBehaviour to, String topic)
+//	def void addEventTransition(IBehaviour from, IBehaviour.Exception<?> to, String topic)
 //	def void registerFirstChild(IBehaviour behaviour)
 //	/**
 //	 * Add new Exception-based transition to scheduler.
