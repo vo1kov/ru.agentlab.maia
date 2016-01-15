@@ -1,4 +1,4 @@
-package ru.agentlab.maia.admin.contexts.internal
+package ru.agentlab.maia.admin.containers.internal
 
 import io.netty.channel.ChannelHandler
 import java.util.ArrayList
@@ -6,9 +6,9 @@ import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import org.osgi.framework.ServiceRegistration
 import ru.agentlab.maia.IContainer
-import ru.agentlab.maia.admin.contexts.WsContextListHandler
-import ru.agentlab.maia.admin.contexts.WsContextServicesListHandler
-import ru.agentlab.maia.admin.contexts.WsContextSubscribeHandler
+import ru.agentlab.maia.admin.containers.WsContextListHandler
+import ru.agentlab.maia.admin.containers.WsContextServicesListHandler
+import ru.agentlab.maia.admin.containers.WsContextSubscribeHandler
 
 class Activator implements BundleActivator {
 

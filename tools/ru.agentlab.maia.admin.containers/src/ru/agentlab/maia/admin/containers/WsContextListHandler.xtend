@@ -1,11 +1,11 @@
-package ru.agentlab.maia.admin.contexts
+package ru.agentlab.maia.admin.containers
 
 import com.jayway.jsonpath.JsonPath
 import io.netty.channel.ChannelHandlerAdapter
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame
 import ru.agentlab.maia.IContainer
-import ru.agentlab.maia.admin.contexts.internal.Activator
+import ru.agentlab.maia.admin.containers.internal.Activator
 
 class WsContextListHandler extends ChannelHandlerAdapter {
 

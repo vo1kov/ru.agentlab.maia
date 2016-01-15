@@ -1,4 +1,4 @@
-package ru.agentlab.maia.admin.contexts
+package ru.agentlab.maia.admin.containers
 
 import io.netty.channel.ChannelHandlerAdapter
 import io.netty.channel.ChannelHandlerContext
@@ -22,9 +22,9 @@ class WsContextSubscribeHandler extends ChannelHandlerAdapter {
 //					{
 //						"command" : "context-list", 
 //						"content" : {
-//							"name" : "«child.toString»",
-//							"uuid" : "«child.uuid»",
-//							"type" : "«child.get(IMaiaContextTyping.KEY_TYPE)»"
+//							"name" : "ï¿½child.toStringï¿½",
+//							"uuid" : "ï¿½child.uuidï¿½",
+//							"type" : "ï¿½child.get(IMaiaContextTyping.KEY_TYPE)ï¿½"
 //						}
 //					}
 //				'''))
