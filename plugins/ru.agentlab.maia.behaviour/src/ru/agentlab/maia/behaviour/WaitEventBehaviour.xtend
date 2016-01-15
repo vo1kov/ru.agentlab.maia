@@ -1,7 +1,6 @@
 package ru.agentlab.maia.behaviour
 
 import java.util.Map
-import ru.agentlab.maia.agent.Agent
 import ru.agentlab.maia.event.IMaiaEventBroker
 
 class WaitEventBehaviour extends Behaviour {
@@ -21,12 +20,12 @@ class WaitEventBehaviour extends Behaviour {
 
 	override execute() {
 		// Add listener
-		broker.subscribe(topic.value, [ event |
-			val agent = new Agent(null)
-			agent.submit [
-				this.data.value = event.data
-				this.state = State.READY
-			]
+		broker.subscribe(topic.value, [event |
+//			val agent = new Agent(null)
+//			agent.submit [
+//				this.data.value = event.data
+//				this.state = State.READY
+//			]
 		])
 
 		// Change state to clocked

@@ -23,7 +23,7 @@ class AbstractTaskSchedulerExecuteSteps {
 	def void givenSchedulerWithSubtasks(String statesString) {
 		val String[] states = statesString.split(",")
 		for (stateString : states) {
-			val state = BehaviourState.valueOf(stateString.trim)
+			val state = IBehaviour.State.valueOf(stateString.trim)
 			val task = mock(IBehaviour) => [
 				when(it.state).thenReturn(state)
 				doAnswer[
@@ -38,7 +38,7 @@ class AbstractTaskSchedulerExecuteSteps {
 							provider.get.notifyChildSuccess
 						}
 						case FAILED: {
-							provider.get.notifyChildFailed(mock(IBehaviourException))
+							provider.get.notifyChildFailed(mock(IBehaviour.Exception))
 						}
 						default: {
 							throw new IllegalArgumentException
@@ -60,7 +60,7 @@ class AbstractTaskSchedulerExecuteSteps {
 
 	@Then("scheduler have $state state")
 	def void thenSchedulerState(String state) {
-		assertThat(provider.get.state, equalTo(BehaviourState.valueOf(state)))
+		assertThat(provider.get.state, equalTo(IBehaviour.State.valueOf(state)))
 	}
 
 }
