@@ -77,7 +77,7 @@
 				<module>../../plugins/ru.agentlab.maia.container</module>
 				<module>../../plugins/ru.agentlab.maia.container.arrays</module>
 				<module>../../plugins/ru.agentlab.maia.container.arrays.separated</module>
-				<module>../../plugins/ru.agentlab.maicontainerxt.hashmap</module>
+				<module>../../plugins/ru.agentlab.maia.container.hashmap</module>
 				<module>../../tests/org.junit.parameterizedsuite</module>
 
 				<module>../../tests/ru.agentlab.maia.container.test.blackbox</module>
