@@ -1,4 +1,4 @@
-package ru.agentlab.maia.context
+package ru.agentlab.maia.container
 
 import java.lang.reflect.Field
 import javax.inject.Inject
@@ -17,9 +17,41 @@ import static org.mockito.Mockito.*
 @RunWith(Parameterized)
 class MaiaContextInjector_inject_UnitTests {
 
-	val context = mock(IContext)
+	val container = new Container {
 
-	val injector = spy(new Injector(context))
+		override protected getInternal(String key) {
+			throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		}
+
+		override protected getInternal(Class<?> key) {
+			throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		}
+
+		override protected putInternal(String key, Object value) {
+			throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		}
+
+		override protected putInternal(Class<?> key, Object value) {
+			throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		}
+
+		override protected removeInternal(String key) {
+			throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		}
+
+		override protected removeInternal(Class<?> key) {
+			throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		}
+
+		override getKeySet() {
+			throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		}
+
+		override clear() {
+			throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		}
+
+	}
 
 	val Object[] keys
 
@@ -56,10 +88,10 @@ class MaiaContextInjector_inject_UnitTests {
 
 	@Test
 	def void test() {
-		when(injector.resolveKeys(anyCollectionOf(Field))).thenReturn(keys)
-		when(injector.resolveValues(anyCollectionOf(Object))).thenReturn(values)
+		when(container.resolveKeys(anyCollectionOf(Field))).thenReturn(keys)
+		when(container.resolveValues(anyCollectionOf(Object))).thenReturn(values)
 
-		injector.inject(service)
+		container.inject(service)
 
 		val fields = service.class.declaredFields.filter[isAnnotationPresent(Inject)]
 		val fieldValues = fields.map [

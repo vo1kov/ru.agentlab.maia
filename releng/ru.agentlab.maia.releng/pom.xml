@@ -21,6 +21,67 @@
 
 	<profiles>
 		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<repositories>
+				<repository>
+					<id>eclipse-luna</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/releases/luna/</url>
+				</repository>
+			</repositories>
+			<modules>
+				<module>../../plugins/io.netty</module>
+				<module>../../plugins/ru.agentlab.maia</module>
+				<module>../../plugins/ru.agentlab.maia.agent</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.fsm</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.primitive</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.pattern</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.parallel</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour.sequential</module>
+				<module>../../plugins/ru.agentlab.maia.container</module>
+				<module>../../plugins/ru.agentlab.maia.container.arrays</module>
+				<module>../../plugins/ru.agentlab.maia.container.arrays.separated</module>
+				<module>../../plugins/ru.agentlab.maia.container.hashmap</module>
+				<module>../../plugins/ru.agentlab.maia.event</module>
+				<module>../../plugins/ru.agentlab.maia.event.osgi</module>
+
+				<module>../../aspects/ru.agentlab.maia.behaviour.aspect</module>
+				<module>../../aspects/ru.agentlab.maia.behaviour.events</module>
+				<module>../../aspects/ru.agentlab.maia.behaviour.logs</module>
+				<module>../../aspects/ru.agentlab.maia.container.aspect</module>
+				<module>../../aspects/ru.agentlab.maia.container.events</module>
+				<module>../../aspects/ru.agentlab.maia.container.logs</module>
+
+				<module>../../tests/org.jbehave</module>
+				<module>../../tests/org.junit.parameterizedsuite</module>
+				<module>../../tests/ru.agentlab.maia.container.test.whitebox</module>
+				<module>../../tests/ru.agentlab.maia.container.arrays.test.whitebox</module>
+				<module>../../tests/ru.agentlab.maia.agent.test</module>
+				<module>../../tests/ru.agentlab.maia.behaviour.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.behaviour.sequential.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.behaviour.parallel.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.behaviour.fsm.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.behaviour.pattern.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.container.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.container.hashmap.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.container.arrays.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.container.arrays.separated.test.blackbox</module>
+			
+				<module>../../tools/com.jayway.jsonpath</module>
+				<module>../../tools/ru.agentlab.maia.admin</module>
+				<module>../../tools/ru.agentlab.maia.admin.bundles</module>
+				<module>../../tools/ru.agentlab.maia.admin.containers</module>
+				
+				<module>../../features/ru.agentlab.maia.sdk.feature</module>
+
+				<module>../../releng/ru.agentlab.maia.repository</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>agent-tests</id>
 			<repositories>
 				<repository>
@@ -38,7 +99,8 @@
 
 				<module>../../tests/ru.agentlab.maia.agent.test</module>
 			</modules>
-		</profile><profile>
+		</profile>
+		<profile>
 			<id>behaviour-plugins</id>
 			<modules>
 				<module>../../plugins/ru.agentlab.maia</module>
@@ -49,19 +111,21 @@
 				<module>../../plugins/ru.agentlab.maia.behaviour.parallel</module>
 				<module>../../plugins/ru.agentlab.maia.behaviour.sequential</module>
 			</modules>
-		</profile><profile>
+		</profile>
+		<profile>
 			<id>behaviour-aspects</id>
 			<modules>
 				<module>../../plugins/ru.agentlab.maia</module>
 				<module>../../plugins/ru.agentlab.maia.behaviour</module>
 				<module>../../plugins/ru.agentlab.maia.event</module>
 				<module>../../plugins/ru.agentlab.maia.event.osgi</module>
-				
+
 				<module>../../aspects/ru.agentlab.maia.behaviour.aspect</module>
 				<module>../../aspects/ru.agentlab.maia.behaviour.events</module>
 				<module>../../aspects/ru.agentlab.maia.behaviour.logs</module>
 			</modules>
-		</profile><profile>
+		</profile>
+		<profile>
 			<id>behaviour-whitebox-tests</id>
 			<repositories>
 				<repository>
@@ -73,13 +137,13 @@
 			<modules>
 				<module>../../plugins/ru.agentlab.maia.behaviour</module>
 				<module>../../plugins/ru.agentlab.maia.behaviour.fsm</module>
-<!-- 				<module>../../plugins/ru.agentlab.maia.behaviour.jade</module> -->
 				<module>../../plugins/ru.agentlab.maia.behaviour.primitive</module>
 				<module>../../plugins/ru.agentlab.maia.behaviour.pattern</module>
 				<module>../../plugins/ru.agentlab.maia.behaviour.parallel</module>
 				<module>../../plugins/ru.agentlab.maia.behaviour.sequential</module>
 			</modules>
-		</profile><profile>
+		</profile>
+		<profile>
 			<id>behaviour-blackbox-tests</id>
 			<repositories>
 				<repository>
@@ -91,7 +155,7 @@
 			<modules>
 				<module>../../plugins/ru.agentlab.maia.behaviour</module>
 				<module>../../plugins/ru.agentlab.maia.behaviour.fsm</module>
-<!-- 				<module>../../plugins/ru.agentlab.maia.behaviour.jade</module> -->
+				<!-- <module>../../plugins/ru.agentlab.maia.behaviour.jade</module> -->
 				<module>../../plugins/ru.agentlab.maia.behaviour.primitive</module>
 				<module>../../plugins/ru.agentlab.maia.behaviour.pattern</module>
 				<module>../../plugins/ru.agentlab.maia.behaviour.parallel</module>
@@ -105,7 +169,8 @@
 				<module>../../tests/ru.agentlab.maia.behaviour.fsm.test.blackbox</module>
 				<module>../../tests/ru.agentlab.maia.behaviour.pattern.test.blackbox</module>
 			</modules>
-		</profile><profile>
+		</profile>
+		<profile>
 			<id>behaviour-integration-tests</id>
 			<repositories>
 				<repository>
@@ -125,7 +190,8 @@
 
 				<module>../../tests/ru.agentlab.maia.behaviour.test.integration</module>
 			</modules>
-		</profile><profile>
+		</profile>
+		<profile>
 			<id>behaviour-performance-tests</id>
 			<repositories>
 				<repository>
@@ -137,7 +203,7 @@
 			<modules>
 				<module>../../plugins/ru.agentlab.maia.behaviour</module>
 				<module>../../plugins/ru.agentlab.maia.behaviour.fsm</module>
-<!-- 				<module>../../plugins/ru.agentlab.maia.behaviour.jade</module> -->
+				<!-- <module>../../plugins/ru.agentlab.maia.behaviour.jade</module> -->
 				<module>../../plugins/ru.agentlab.maia.behaviour.primitive</module>
 				<module>../../plugins/ru.agentlab.maia.behaviour.pattern</module>
 				<module>../../plugins/ru.agentlab.maia.behaviour.parallel</module>
@@ -149,7 +215,8 @@
 				<!-- <module>../../tests/ru.agentlab.maia.behaviour.pattern.test</module> -->
 				<!-- <module>../../tests/ru.agentlab.maia.behaviour.sequential.test</module> -->
 			</modules>
-		</profile><profile>
+		</profile>
+		<profile>
 			<id>container-plugins</id>
 			<modules>
 				<module>../../plugins/ru.agentlab.maia</module>
@@ -166,7 +233,7 @@
 				<module>../../plugins/ru.agentlab.maia.container</module>
 				<module>../../plugins/ru.agentlab.maia.event</module>
 				<module>../../plugins/ru.agentlab.maia.event.osgi</module>
-				
+
 				<module>../../aspects/ru.agentlab.maia.container.aspect</module>
 				<module>../../aspects/ru.agentlab.maia.container.events</module>
 				<module>../../aspects/ru.agentlab.maia.container.logs</module>
@@ -230,20 +297,20 @@
 				<module>../../plugins/ru.agentlab.maia.container.arrays</module>
 				<module>../../plugins/ru.agentlab.maia.container.arrays.separated</module>
 				<module>../../plugins/ru.agentlab.maia.container.hashmap</module>
-<!-- 				<module>../../tests/ru.agentlab.maia.javaagent.classmexer</module> -->
+				<!-- <module>../../tests/ru.agentlab.maia.javaagent.classmexer</module> -->
 
-<!-- 				<module>../../tests/ru.agentlab.maia.container.test.performance</module> -->
-<!-- 				<module>../../tests/ru.agentlab.maia.container.hashmap.test.performance</module> -->
-<!-- 				<module>../../tests/ru.agentlab.maia.container.arrays.test.performance</module> -->
+				<!-- <module>../../tests/ru.agentlab.maia.container.test.performance</module> -->
+				<!-- <module>../../tests/ru.agentlab.maia.container.hashmap.test.performance</module> -->
+				<!-- <module>../../tests/ru.agentlab.maia.container.arrays.test.performance</module> -->
 			</modules>
 		</profile>
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
 		<profile>
 			<id>io-plugins</id>
 			<modules>

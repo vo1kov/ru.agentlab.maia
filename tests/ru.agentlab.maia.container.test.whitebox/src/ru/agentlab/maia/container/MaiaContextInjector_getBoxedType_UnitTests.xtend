@@ -1,4 +1,4 @@
-package ru.agentlab.maia.context
+package ru.agentlab.maia.container
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -8,11 +8,46 @@ import ru.agentlab.maia.context.test.whitebox.doubles.DummyObject
 
 import static org.hamcrest.Matchers.*
 import static org.junit.Assert.*
+import ru.agentlab.maia.container.Container
 
 @RunWith(Parameterized)
 class MaiaContextInjector_getBoxedType_UnitTests {
 
-	val injector = new Injector(null)
+	val container = new Container {
+
+		override protected getInternal(String key) {
+			throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		}
+
+		override protected getInternal(Class<?> key) {
+			throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		}
+
+		override protected putInternal(String key, Object value) {
+			throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		}
+
+		override protected putInternal(Class<?> key, Object value) {
+			throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		}
+
+		override protected removeInternal(String key) {
+			throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		}
+
+		override protected removeInternal(Class<?> key) {
+			throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		}
+
+		override getKeySet() {
+			throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		}
+
+		override clear() {
+			throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		}
+
+	}
 
 	val Class<?> inputType
 
@@ -50,13 +85,7 @@ class MaiaContextInjector_getBoxedType_UnitTests {
 
 	@Test
 	def void self_returnExpectedValues() {
-		assertThat(injector.getBoxedType(inputType), equalTo(expectedOutput))
+		assertThat(container.getBoxedType(inputType), equalTo(expectedOutput))
 	}
 
-	@Test
-	def void context_unchanged() {
-		val before = injector.context
-		injector.getBoxedType(inputType)
-		assertThat(injector.context, equalTo(before))
-	}
 }
