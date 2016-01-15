@@ -21,7 +21,7 @@
 
 	<profiles>
 		<profile>
-			<id>context-plugins</id>
+			<id>container-plugins</id>
 			<modules>
 				<module>../../plugins/ru.agentlab.maia</module>
 				<module>../../plugins/ru.agentlab.maia.container</module>
@@ -31,7 +31,7 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>context-aspects</id>
+			<id>container-aspects</id>
 			<modules>
 				<module>../../plugins/ru.agentlab.maia</module>
 				<module>../../plugins/ru.agentlab.maia.container</module>
@@ -44,7 +44,7 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>context-whitebox-tests</id>
+			<id>container-whitebox-tests</id>
 			<repositories>
 				<repository>
 					<id>eclipse-luna</id>
@@ -55,16 +55,16 @@
 			<modules>
 				<module>../../plugins/ru.agentlab.maia</module>
 				<module>../../plugins/ru.agentlab.maia.container</module>
-				<module>../../plugins/ru.agentlab.maia.context.arrays</module>
-				<module>../../plugins/ru.agentlab.maia.context.arrays.separated</module>
-				<module>../../plugins/ru.agentlab.maia.context.hashmap</module>
+				<module>../../plugins/ru.agentlab.maia.container.arrays</module>
+				<module>../../plugins/ru.agentlab.maia.container.arrays.separated</module>
+				<module>../../plugins/ru.agentlab.maia.container.hashmap</module>
 
-				<module>../../tests/ru.agentlab.maia.context.test.whitebox</module>
-				<module>../../tests/ru.agentlab.maia.context.arrays.test.whitebox</module>
+				<module>../../tests/ru.agentlab.maia.container.test.whitebox</module>
+				<module>../../tests/ru.agentlab.maia.container.arrays.test.whitebox</module>
 			</modules>
 		</profile>
 		<profile>
-			<id>context-blackbox-tests</id>
+			<id>container-blackbox-tests</id>
 			<repositories>
 				<repository>
 					<id>eclipse-luna</id>
@@ -80,14 +80,14 @@
 				<module>../../plugins/ru.agentlab.maicontainerxt.hashmap</module>
 				<module>../../tests/org.junit.parameterizedsuite</module>
 
-				<module>../../tests/ru.agentlab.maia.context.test.blackbox</module>
-				<module>../../tests/ru.agentlab.maia.context.hashmap.test.blackbox</module>
-				<module>../../tests/ru.agentlab.maia.context.arrays.test.blackbox</module>
-				<module>../../tests/ru.agentlab.maia.context.arrays.separated.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.container.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.container.hashmap.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.container.arrays.test.blackbox</module>
+				<module>../../tests/ru.agentlab.maia.container.arrays.separated.test.blackbox</module>
 			</modules>
 		</profile>
 		<profile>
-			<id>context-performance-tests</id>
+			<id>container-performance-tests</id>
 			<repositories>
 				<repository>
 					<id>eclipse-luna</id>
@@ -103,13 +103,32 @@
 				<module>../../plugins/ru.agentlab.maia.container.hashmap</module>
 <!-- 				<module>../../tests/ru.agentlab.maia.javaagent.classmexer</module> -->
 
-<!-- 				<module>../../tests/ru.agentlab.maia.context.test.performance</module> -->
-<!-- 				<module>../../tests/ru.agentlab.maia.context.hashmap.test.performance</module> -->
-<!-- 				<module>../../tests/ru.agentlab.maia.context.arrays.test.performance</module> -->
+<!-- 				<module>../../tests/ru.agentlab.maia.container.test.performance</module> -->
+<!-- 				<module>../../tests/ru.agentlab.maia.container.hashmap.test.performance</module> -->
+<!-- 				<module>../../tests/ru.agentlab.maia.container.arrays.test.performance</module> -->
 			</modules>
 		</profile>
 		<profile>
-			<id>task-plugins</id>
+			<id>agent-tests</id>
+			<repositories>
+				<repository>
+					<id>eclipse-luna</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/releases/luna/</url>
+				</repository>
+			</repositories>
+			<modules>
+				<module>../../plugins/ru.agentlab.maia</module>
+				<module>../../plugins/ru.agentlab.maia.agent</module>
+				<module>../../plugins/ru.agentlab.maia.behaviour</module>
+				<module>../../plugins/ru.agentlab.maia.container</module>
+				<module>../../plugins/ru.agentlab.maia.container.hashmap</module>
+
+				<module>../../tests/ru.agentlab.maia.agent.test</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>behaviour-plugins</id>
 			<modules>
 				<module>../../plugins/ru.agentlab.maia</module>
 				<module>../../plugins/ru.agentlab.maia.behaviour</module>
@@ -121,7 +140,7 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>task-aspects</id>
+			<id>behaviour-aspects</id>
 			<modules>
 				<module>../../plugins/ru.agentlab.maia</module>
 				<module>../../plugins/ru.agentlab.maia.behaviour</module>
@@ -134,7 +153,7 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>task-whitebox-tests</id>
+			<id>behaviour-whitebox-tests</id>
 			<repositories>
 				<repository>
 					<id>eclipse-luna</id>
@@ -153,7 +172,7 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>task-blackbox-tests</id>
+			<id>behaviour-blackbox-tests</id>
 			<repositories>
 				<repository>
 					<id>eclipse-luna</id>
@@ -180,7 +199,7 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>task-integration-tests</id>
+			<id>behaviour-integration-tests</id>
 			<repositories>
 				<repository>
 					<id>eclipse-luna</id>
@@ -197,11 +216,11 @@
 				<module>../../plugins/ru.agentlab.maia.behaviour.sequential</module>
 				<module>../../tests/org.jbehave</module>
 
-				<module>../../tests/ru.agentlab.maia.task.test.integration</module>
+				<module>../../tests/ru.agentlab.maia.behaviour.test.integration</module>
 			</modules>
 		</profile>
 		<profile>
-			<id>task-performance-tests</id>
+			<id>behaviour-performance-tests</id>
 			<repositories>
 				<repository>
 					<id>eclipse-luna</id>
@@ -265,7 +284,7 @@
 
 				<module>../../tools/ru.agentlab.maia.admin</module>
 				<module>../../tools/ru.agentlab.maia.admin.bundles</module>
-				<module>../../tools/ru.agentlab.maia.admin.contexts</module>
+				<module>../../tools/ru.agentlab.maia.admin.containers</module>
 				<!-- <module>../../tools/ru.agentlab.maia.admin.ui</module> -->
 			</modules>
 		</profile>
@@ -277,7 +296,6 @@
 			<id>repository</id>
 			<modules>
 				<module>../../features/ru.agentlab.maia.sdk.feature</module>
-				<!-- <module>../../features/ru.agentlab.maia.context.e4.feature</module> -->
 
 				<module>../../releng/ru.agentlab.maia.repository</module>
 			</modules>
