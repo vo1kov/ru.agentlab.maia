@@ -3,11 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Maia
 Bundle-SymbolicName: ru.agentlab.maia
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Require-Bundle: com.google.guava,
- org.eclipse.xtext.xbase.lib,
- org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: ru.agentlab.maia,
+ ru.agentlab.maia.annotation,
  ru.agentlab.maia.context.exception
 
