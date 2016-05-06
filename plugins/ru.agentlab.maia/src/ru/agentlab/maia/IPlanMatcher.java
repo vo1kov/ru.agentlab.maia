@@ -8,10 +8,8 @@
  *******************************************************************************/
 package ru.agentlab.maia;
 
-import ru.agentlab.maia.event.match.Match;
-
 public interface IPlanMatcher {
 
-	Match match(IEvent event);
+	IMatch match(IEvent event);
 	
 }

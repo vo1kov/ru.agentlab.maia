@@ -8,14 +8,60 @@
  *******************************************************************************/
 package ru.agentlab.maia;
 
-import org.semanticweb.owlapi.model.IRI;
-
 public interface IBeliefBase {
 
-	void addClassAssertion(IRI object, IRI subject);
+	void addClassDeclaration(String object);
 
-	void addClass(String name);
+	void addIndividualDeclaration(String object);
 
-	void addObjectPropertyAssertion(IRI object, IRI predicate, IRI subject);
+	void addClassAssertion(String object, String subject);
+
+	void addObjectPropertyAssertion(String object, String predicate, String subject);
+
+	void addDataPropertyAssertion(String object, String predicate, String subject);
+
+	void addDataPropertyAssertion(String object, String predicate, boolean subject);
+
+	void addDataPropertyAssertion(String object, String predicate, int subject);
+
+	void addDataPropertyAssertion(String object, String predicate, float subject);
+
+	void addDataPropertyAssertion(String object, String predicate, double subject);
+
+	void removeClassDeclaration(String object);
+
+	void removeIndividualDeclaration(String object);
+	
+	void removeClassAssertion(String object, String subject);
+
+	void removeObjectPropertyAssertion(String object, String predicate, String subject);
+
+	void removeDataPropertyAssertion(String object, String predicate, String subject);
+
+	void removeDataPropertyAssertion(String object, String predicate, boolean subject);
+
+	void removeDataPropertyAssertion(String object, String predicate, int subject);
+
+	void removeDataPropertyAssertion(String object, String predicate, float subject);
+
+	void removeDataPropertyAssertion(String object, String predicate, double subject);
+
+	boolean containsClassDeclaration(String object);
+
+	boolean containsIndividualDeclaration(String object);
+
+	boolean containsClassAssertion(String object, String subject);
+
+	boolean containsObjectPropertyAssertion(String object, String predicate, String subject);
+
+	boolean containsDataPropertyAssertion(String object, String predicate, String subject);
+
+	boolean containsDataPropertyAssertion(String object, String predicate, boolean subject);
+
+	boolean containsDataPropertyAssertion(String object, String predicate, int subject);
+
+	boolean containsDataPropertyAssertion(String object, String predicate, float subject);
+
+	boolean containsDataPropertyAssertion(String object, String predicate, double subject);
 
 }

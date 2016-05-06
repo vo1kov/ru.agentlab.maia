@@ -1,4 +1,4 @@
-package ru.agentlab.maia.event;
+package ru.agentlab.maia;
 
 public enum EventType {
 

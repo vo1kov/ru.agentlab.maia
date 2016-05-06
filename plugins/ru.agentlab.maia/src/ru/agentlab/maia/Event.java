@@ -1,6 +1,4 @@
-package ru.agentlab.maia.event;
-
-import ru.agentlab.maia.IEvent;
+package ru.agentlab.maia;
 
 public class Event implements IEvent {
 
