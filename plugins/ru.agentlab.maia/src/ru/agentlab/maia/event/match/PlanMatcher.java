@@ -6,16 +6,32 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package ru.agentlab.maia;
+package ru.agentlab.maia.event.match;
 
 import org.semanticweb.owlapi.model.IRI;
 
-public interface IBeliefBase {
+import ru.agentlab.maia.IEvent;
+import ru.agentlab.maia.IPlanMatcher;
 
-	void addClassAssertion(IRI object, IRI subject);
+public class PlanMatcher implements IPlanMatcher {
 
-	void addClass(String name);
+	String object;
 
-	void addObjectPropertyAssertion(IRI object, IRI predicate, IRI subject);
+	String predicate;
+
+	String subject;
+	
+	IRI obj; 
+	
+	public PlanMatcher(String object, String predicate, String subject) {
+		this.object = object;
+		this.predicate = predicate;
+		this.subject = subject;
+	}
+
+	@Override
+	public Match match(IEvent event) {
+		return null;
+	}
 
 }

@@ -8,14 +8,23 @@
  *******************************************************************************/
 package ru.agentlab.maia;
 
-import java.util.Collection;
+/**
+ * 
+ * @author Dmitriy Shishkin
+ *
+ */
+public enum AgentState {
+	UNKNOWN,
 
-import ru.agentlab.maia.IProtocolParticipant;
-import ru.agentlab.maia.IRole;
+	WAITING,
 
-@SuppressWarnings("all")
-public interface IProtocol {
-  public abstract IRole getInitiator();
-  
-  public abstract Collection<IProtocolParticipant> getParticipants();
+	ACTIVE,
+
+	SUSPENDED,
+
+	TRANSIT,
+
+	INITIATED;
+
+
 }

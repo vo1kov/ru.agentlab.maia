@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2016 AgentLab.
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,39 +14,17 @@ import java.util.UUID;
 /**
  * @author Dmitry Shishkin
  */
-@SuppressWarnings("all")
 public interface IAgent {
 	
-	/**
-	 * @author Dmitry Shishkin
-	 */
-	public enum State {
-		UNKNOWN,
-
-		WAITING,
-
-		ACTIVE,
-
-		SUSPENDED,
-
-		TRANSIT,
-
-		INITIATED;
-	}
-
-	UUID getUuid();
-
-	List<IRole> getRoles();
-
 	void start();
 
 	void stop();
 
-	boolean isActive();
-
-	void setBehaviour(final IBehaviour behaviour);
-
-	IBehaviour getBehaviour();
+	UUID getUuid();
 
 	IContainer getContainer();
+
+	AgentState getState();
+
+	List<IRole> getRoles();
 }
