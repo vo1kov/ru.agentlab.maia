@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2016 AgentLab.
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,6 +23,12 @@ import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import ru.agentlab.maia.IContainer;
+import ru.agentlab.maia.IInjector;
+import ru.agentlab.maia.exception.ContainerException;
+import ru.agentlab.maia.exception.InjectorException;
+import ru.agentlab.maia.exception.ServiceNotFound;
 
 /**
  * 
