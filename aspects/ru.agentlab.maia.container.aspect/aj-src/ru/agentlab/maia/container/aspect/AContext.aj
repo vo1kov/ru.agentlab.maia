@@ -1,6 +1,6 @@
 package ru.agentlab.maia.container.aspect;
 
-import ru.agentlab.maia.container.IContainer;
+import ru.agentlab.maia.IContainer;
 
 /**
  * Abstract aspect with pointcuts of {@link IContainer} methods

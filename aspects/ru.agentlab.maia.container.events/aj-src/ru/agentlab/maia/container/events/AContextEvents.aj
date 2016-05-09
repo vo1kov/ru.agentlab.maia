@@ -4,7 +4,7 @@ import ru.agentlab.maia.container.events.MaiaContextChangeObjectEvent;
 import ru.agentlab.maia.container.events.MaiaContextRemoveObjectEvent;
 import ru.agentlab.maia.container.events.MaiaContextSetObjectEvent;
 import ru.agentlab.maia.event.IMaiaEventBroker;
-import ru.agentlab.maia.container.IContainer;
+import ru.agentlab.maia.IContainer;
 import ru.agentlab.maia.container.aspect.AContext;
 
 public aspect AContextEvents extends AContext {
