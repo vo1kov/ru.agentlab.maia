@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="ru.agentlab.maia.target" sequenceNumber="81">
+<?pde version="3.8"?><target name="ru.agentlab.maia.target" sequenceNumber="82">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.sdk.ide" version="4.5.0.I20150603-2000"/>
 <repository location="http://download.eclipse.org/eclipse/updates/4.5"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.equinox.weaving.sdk.feature.group" version="1.1.0.weaving-hook-20140821"/>
-<unit id="org.eclipse.ajdt.feature.group" version="2.2.4.e45x-20150610-1700"/>
-<repository location="http://download.eclipse.org/tools/ajdt/45/dev/update"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.slf4j.impl.log4j12" version="1.7.2.v20131105-2200"/>
@@ -52,6 +47,11 @@
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.jbehave.eclipse.feature.feature.group" version="1.0.0.20140605-0717"/>
 <repository location="http://jbehave.org/reference/eclipse/updates/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.equinox.weaving.sdk.feature.group" version="1.2.0.201604061446"/>
+<unit id="org.eclipse.ajdt.feature.group" version="2.2.4.201604061446"/>
+<repository location="http://download.eclipse.org/tools/ajdt/45/dev/update"/>
 </location>
 </locations>
 <includeBundles>
