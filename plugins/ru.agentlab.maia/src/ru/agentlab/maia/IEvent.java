@@ -10,4 +10,10 @@ package ru.agentlab.maia;
 
 public interface IEvent {
 
+	Object getSource();
+
+	Object getPayload();
+
+	EventType getType();
+
 }

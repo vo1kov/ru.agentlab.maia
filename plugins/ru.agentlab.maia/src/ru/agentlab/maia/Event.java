@@ -14,14 +14,17 @@ public class Event implements IEvent {
 		this.payload = payload;
 	}
 
+	@Override
 	public EventType getType() {
 		return type;
 	}
 
+	@Override
 	public Object getPayload() {
 		return payload;
 	}
 
+	@Override
 	public Object getSource() {
 		return source;
 	}

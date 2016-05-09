@@ -10,7 +10,7 @@ package ru.agentlab.maia;
 
 public interface IPlan {
 	
-	IPlanMatcher getMatcher();
+	IEventMatcher getMatcher();
 
 	Object execute();
 
