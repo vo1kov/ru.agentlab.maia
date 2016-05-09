@@ -36,22 +36,22 @@
 				<module>../../plugins/io.netty</module>
 				<module>../../plugins/ru.agentlab.maia</module>
 				<module>../../plugins/ru.agentlab.maia.agent</module>
-				<module>../../plugins/ru.agentlab.maia.behaviour</module>
-				<module>../../plugins/ru.agentlab.maia.behaviour.fsm</module>
-				<module>../../plugins/ru.agentlab.maia.behaviour.primitive</module>
-				<module>../../plugins/ru.agentlab.maia.behaviour.pattern</module>
-				<module>../../plugins/ru.agentlab.maia.behaviour.parallel</module>
-				<module>../../plugins/ru.agentlab.maia.behaviour.sequential</module>
+<!-- 				<module>../../plugins/ru.agentlab.maia.behaviour</module> -->
+<!-- 				<module>../../plugins/ru.agentlab.maia.behaviour.fsm</module> -->
+<!-- 				<module>../../plugins/ru.agentlab.maia.behaviour.primitive</module> -->
+<!-- 				<module>../../plugins/ru.agentlab.maia.behaviour.pattern</module> -->
+<!-- 				<module>../../plugins/ru.agentlab.maia.behaviour.parallel</module> -->
+<!-- 				<module>../../plugins/ru.agentlab.maia.behaviour.sequential</module> -->
 				<module>../../plugins/ru.agentlab.maia.container</module>
-				<module>../../plugins/ru.agentlab.maia.container.arrays</module>
-				<module>../../plugins/ru.agentlab.maia.container.arrays.separated</module>
-				<module>../../plugins/ru.agentlab.maia.container.hashmap</module>
+<!-- 				<module>../../plugins/ru.agentlab.maia.container.arrays</module> -->
+<!-- 				<module>../../plugins/ru.agentlab.maia.container.arrays.separated</module> -->
+<!-- 				<module>../../plugins/ru.agentlab.maia.container.hashmap</module> -->
 				<module>../../plugins/ru.agentlab.maia.event</module>
 				<module>../../plugins/ru.agentlab.maia.event.osgi</module>
 
-				<module>../../aspects/ru.agentlab.maia.behaviour.aspect</module>
-				<module>../../aspects/ru.agentlab.maia.behaviour.events</module>
-				<module>../../aspects/ru.agentlab.maia.behaviour.logs</module>
+<!-- 				<module>../../aspects/ru.agentlab.maia.behaviour.aspect</module> -->
+<!-- 				<module>../../aspects/ru.agentlab.maia.behaviour.events</module> -->
+<!-- 				<module>../../aspects/ru.agentlab.maia.behaviour.logs</module> -->
 				<module>../../aspects/ru.agentlab.maia.container.aspect</module>
 				<module>../../aspects/ru.agentlab.maia.container.events</module>
 				<module>../../aspects/ru.agentlab.maia.container.logs</module>
@@ -61,11 +61,11 @@
 				<module>../../tests/ru.agentlab.maia.container.test.whitebox</module>
 				<module>../../tests/ru.agentlab.maia.container.arrays.test.whitebox</module>
 				<module>../../tests/ru.agentlab.maia.agent.test</module>
-				<module>../../tests/ru.agentlab.maia.behaviour.test.blackbox</module>
-				<module>../../tests/ru.agentlab.maia.behaviour.sequential.test.blackbox</module>
-				<module>../../tests/ru.agentlab.maia.behaviour.parallel.test.blackbox</module>
-				<module>../../tests/ru.agentlab.maia.behaviour.fsm.test.blackbox</module>
-				<module>../../tests/ru.agentlab.maia.behaviour.pattern.test.blackbox</module>
+<!-- 				<module>../../tests/ru.agentlab.maia.behaviour.test.blackbox</module> -->
+<!-- 				<module>../../tests/ru.agentlab.maia.behaviour.sequential.test.blackbox</module> -->
+<!-- 				<module>../../tests/ru.agentlab.maia.behaviour.parallel.test.blackbox</module> -->
+<!-- 				<module>../../tests/ru.agentlab.maia.behaviour.fsm.test.blackbox</module> -->
+<!-- 				<module>../../tests/ru.agentlab.maia.behaviour.pattern.test.blackbox</module> -->
 				<module>../../tests/ru.agentlab.maia.container.test.blackbox</module>
 				<module>../../tests/ru.agentlab.maia.container.hashmap.test.blackbox</module>
 				<module>../../tests/ru.agentlab.maia.container.arrays.test.blackbox</module>
@@ -93,9 +93,9 @@
 			<modules>
 				<module>../../plugins/ru.agentlab.maia</module>
 				<module>../../plugins/ru.agentlab.maia.agent</module>
-				<module>../../plugins/ru.agentlab.maia.behaviour</module>
+				<module>../../plugins/ru.agentlab.maia.annotation</module>
 				<module>../../plugins/ru.agentlab.maia.container</module>
-				<module>../../plugins/ru.agentlab.maia.container.hashmap</module>
+<!-- 				<module>../../plugins/ru.agentlab.maia.container.hashmap</module> -->
 
 				<module>../../tests/ru.agentlab.maia.agent.test</module>
 			</modules>
@@ -638,7 +638,7 @@
 										<artifactId>
 											xtend-maven-plugin
 										</artifactId>
-										<versionRange>[2.8.4,)</versionRange>
+										<versionRange>[2.7.3,)</versionRange>
 										<goals>
 											<goal>compile</goal>
 										</goals>
