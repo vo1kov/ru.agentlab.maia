@@ -14,8 +14,8 @@ Require-Bundle: com.google.guava,
  javax.inject;bundle-version="1.0.0",
  org.slf4j.api;bundle-version="1.7.2",
  ru.agentlab.maia.container;bundle-version="1.0.0",
- ru.agentlab.maia.modifier.mas.default;bundle-version="1.0.0",
- ru.agentlab.maia.behaviour;bundle-version="1.0.0",
- ru.agentlab.maia.behaviour.primitive;bundle-version="1.0.0",
- ru.agentlab.maia.task.annotation;bundle-version="1.0.0"
+ ru.agentlab.maia,
+ ru.agentlab.maia.io.messaging,
+ ru.agentlab.maia.io.messaging.acl,
+ ru.agentlab.maia.annotation
 
