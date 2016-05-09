@@ -6,13 +6,14 @@ import java.util.Properties
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.messaging.IMessage
 import ru.agentlab.maia.messaging.IMessageEnvelope
+import java.util.UUID
 
 @Accessors
 class AclMessage implements IMessage {
 
-	private String sender
+	private UUID sender
 
-	private List<String> receivers = new ArrayList<String>
+	private List<UUID> receivers = new ArrayList<UUID>
 
 	private List<String> replyTo = new ArrayList<String>
 
@@ -29,6 +30,8 @@ class AclMessage implements IMessage {
 	private String language
 
 	private String ontology
+
+	private String performative
 
 	private long replyByInMillisec = 0
 

@@ -2,6 +2,7 @@ package ru.agentlab.maia.messaging
 
 import java.util.List
 import java.util.Properties
+import java.util.UUID
 
 interface IMessage {
 
@@ -120,13 +121,13 @@ interface IMessage {
 	 */
 	val static String UNKNOWN = "UNKNOWN"
 
-	def String getSender()
+	def UUID getSender()
 
-	def void setSender(String sender)
+	def void setSender(UUID sender)
 
-	def List<String> getReceivers()
+	def List<UUID> getReceivers()
 
-	def void setReceivers(List<String> receivers)
+	def void setReceivers(List<UUID> receivers)
 
 	def List<String> getReplyTo()
 
@@ -183,5 +184,7 @@ interface IMessage {
 	def IMessageEnvelope getEnvelope()
 
 	def void setEnvelope(IMessageEnvelope envelope)
+	
+	def void setPerformative(String performative) 
 
 }
