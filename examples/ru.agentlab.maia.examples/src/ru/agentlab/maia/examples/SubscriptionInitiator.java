@@ -5,8 +5,11 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package ru.agentlab.maia.launcher;
+package ru.agentlab.maia.examples;
 
+import static ru.agentlab.maia.CheckType.MESSAGE_HAVE_PERFORMATIVE;
+import static ru.agentlab.maia.CheckType.MESSAGE_HAVE_PROTOCOL;
+import static ru.agentlab.maia.EventType.AGENT_MESSAGE_ADDED;
 import static ru.agentlab.maia.IMessage.AGREE;
 import static ru.agentlab.maia.IMessage.CANCEL;
 import static ru.agentlab.maia.IMessage.INFORM;
@@ -22,6 +25,8 @@ import javax.inject.Inject;
 
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IMessage;
+import ru.agentlab.maia.annotation.Filter;
+import ru.agentlab.maia.annotation.Trigger;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
 
 public abstract class SubscriptionInitiator {
@@ -51,33 +56,33 @@ public abstract class SubscriptionInitiator {
 		messaging.send(message);
 	}
 
-	@TriggerAddMessage
-	@FilterMessagePerformative(AGREE)
-	@FilterMessageProtocol(PROTOCOL_NAME)
+	@Trigger(type = AGENT_MESSAGE_ADDED)
+	@Filter(type = MESSAGE_HAVE_PERFORMATIVE, template = AGREE)
+	@Filter(type = MESSAGE_HAVE_PROTOCOL, template = PROTOCOL_NAME)
 	public void onAgree(IMessage message) {
 		if (!message.getConversationId().equals(conversationId)) {
 			return;
 		}
 		UUID sender = message.getSender();
-		beliefBase.addIndividual("this", "maia:haveSubscription", sender.toString());
+		beliefBase.addObjectPropertyAssertion("this", "maia:haveSubscription", sender.toString());
 	}
 
-	@TriggerAddMessage
-	@FilterMessagePerformative(REFUSE)
-	@FilterMessageProtocol(PROTOCOL_NAME)
+	@Trigger(type = AGENT_MESSAGE_ADDED)
+	@Filter(type = MESSAGE_HAVE_PERFORMATIVE, template = REFUSE)
+	@Filter(type = MESSAGE_HAVE_PROTOCOL, template = PROTOCOL_NAME)
 	public void onRefuse(IMessage message) {
 	}
 
-	@TriggerAddMessage
-	@FilterMessagePerformative(INFORM)
-	@FilterMessageProtocol(PROTOCOL_NAME)
+	@Trigger(type = AGENT_MESSAGE_ADDED)
+	@Filter(type = MESSAGE_HAVE_PERFORMATIVE, template = INFORM)
+	@Filter(type = MESSAGE_HAVE_PROTOCOL, template = PROTOCOL_NAME)
 	public void onInform(IMessage message) {
 		if (!message.getConversationId().equals(conversationId)) {
 			return;
 		}
 		UUID sender = message.getSender();
 		// String content = message.getContent();
-		beliefBase.addIndividual("this", "haveSubscription", sender.toString());
+		beliefBase.addObjectPropertyAssertion("this", "maia:haveSubscription", sender.toString());
 	}
 
 	@PreDestroy

@@ -42,7 +42,7 @@ class NettyMessageDeliveryServiceFactory implements IMessageDeliveryServiceFacto
 			put(INettyMessageDeliveryService.KEY_PORT, port)
 		]
 
-		return container.deploy(NettyMessageDeliveryService)
+		return container.injector.deploy(NettyMessageDeliveryService)
 	}
 
 }

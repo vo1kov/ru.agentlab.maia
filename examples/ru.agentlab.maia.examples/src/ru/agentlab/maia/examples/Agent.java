@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package ru.agentlab.maia.launcher;
+package ru.agentlab.maia.examples;
 
 import static ru.agentlab.maia.CheckType.AGENT_HAVE_BELIEF;
 import static ru.agentlab.maia.CheckType.MESSAGE_HAVE_PERFORMATIVE;
@@ -16,6 +16,8 @@ import static ru.agentlab.maia.EventType.CONTAINER_SERVICE_ADDED;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IGoalBase;
