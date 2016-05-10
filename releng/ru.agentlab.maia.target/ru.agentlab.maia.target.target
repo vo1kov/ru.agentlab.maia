@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="ru.agentlab.maia.target" sequenceNumber="82">
+<?pde version="3.8"?><target name="ru.agentlab.maia.target" sequenceNumber="83">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.sdk.ide" version="4.5.0.I20150603-2000"/>
@@ -50,6 +50,7 @@
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.equinox.weaving.sdk.feature.group" version="1.2.0.201604061446"/>
+<unit id="org.aspectj.feature.group" version="1.8.9.201604061446"/>
 <unit id="org.eclipse.ajdt.feature.group" version="2.2.4.201604061446"/>
 <repository location="http://download.eclipse.org/tools/ajdt/45/dev/update"/>
 </location>
@@ -83,10 +84,7 @@
 <plugin id="org.eclipse.equinox.event"/>
 <plugin id="org.eclipse.equinox.event.source"/>
 <plugin id="org.eclipse.equinox.weaving.aspectj"/>
-<plugin id="org.eclipse.equinox.weaving.aspectj.source"/>
 <plugin id="org.eclipse.equinox.weaving.caching"/>
-<plugin id="org.eclipse.equinox.weaving.caching.j9"/>
-<plugin id="org.eclipse.equinox.weaving.caching.j9.source"/>
 <plugin id="org.eclipse.equinox.weaving.caching.source"/>
 <plugin id="org.eclipse.equinox.weaving.hook"/>
 <plugin id="org.eclipse.equinox.weaving.hook.source"/>
@@ -113,8 +111,8 @@
 <plugin id="org.hamcrest.text.source"/>
 <plugin id="org.jbehave.eclipse"/>
 <plugin id="org.junit" version="4.12.0.v201504281640"/>
-<plugin id="org.junit.source" version="4.11.0.v201303080030"/>
 <plugin id="org.junit.source" version="4.12.0.v201504281640"/>
+<plugin id="org.junit.source" version="4.11.0.v201303080030"/>
 <plugin id="org.mockito"/>
 <plugin id="org.mockito.source"/>
 <plugin id="org.objenesis"/>
