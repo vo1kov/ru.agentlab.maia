@@ -76,12 +76,12 @@ public class Container implements IContainer {
 	}
 
 	@Override
-	public Object get(Class<?> key) throws ServiceNotFound {
+	public <T> T get(Class<T> key) throws ServiceNotFound {
 		check(key);
 
 		Object result = map.get(key);
 		if (result != null) {
-			return result;
+			return key.cast(result);
 		}
 		IContainer p = parent.get();
 		if (p != null) {

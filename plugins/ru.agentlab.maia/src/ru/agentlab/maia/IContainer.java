@@ -100,7 +100,7 @@ public interface IContainer {
 	 * 
 	 * @see #getService(String)
 	 */
-	Object get(Class<?> key) throws ServiceNotFound;
+	<T> T get(Class<T> key) throws ServiceNotFound;
 
 	/**
 	 * <p>
