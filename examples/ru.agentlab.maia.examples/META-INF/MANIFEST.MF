@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Launcher
-Bundle-SymbolicName: ru.agentlab.maia.launcher
+Bundle-SymbolicName: ru.agentlab.maia.examples
 Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: ru.agentlab.maia.launcher.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
