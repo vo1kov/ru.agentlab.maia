@@ -10,6 +10,5 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib.macro,
  ru.agentlab.maia.container;bundle-version="1.0.0"
 Export-Package: ru.agentlab.maia.messaging,
- ru.agentlab.maia.messaging.matching,
- ru.agentlab.maia.messaging.queue
+ ru.agentlab.maia.messaging.matching
 
