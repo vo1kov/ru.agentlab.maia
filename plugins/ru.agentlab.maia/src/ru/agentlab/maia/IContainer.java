@@ -151,7 +151,7 @@ public interface IContainer {
 	 * 
 	 * @see #getServiceLocal(String)
 	 */
-	Object getLocal(Class<?> key) throws ServiceNotFound;
+	<T> T getLocal(Class<T> key) throws ServiceNotFound;
 
 	/**
 	 * <p>

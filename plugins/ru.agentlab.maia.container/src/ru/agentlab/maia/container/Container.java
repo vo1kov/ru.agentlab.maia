@@ -29,7 +29,7 @@ import ru.agentlab.maia.exception.ServiceNotFound;
  * <li>Context disable <code>null</code> keys for storing services;</li>
  * </ul>
  * 
- * @author Dmitriy Shishkin
+ * @author Dmitriy Shishkin <shishkindimon@gmail.com>
  */
 public class Container implements IContainer {
 
@@ -103,9 +103,9 @@ public class Container implements IContainer {
 	}
 
 	@Override
-	public Object getLocal(Class<?> key) {
+	public <T> T getLocal(Class<T> key) {
 		check(key);
-		return map.get(key.getName());
+		return key.cast(map.get(key.getName()));
 	}
 
 	@Override
@@ -115,7 +115,7 @@ public class Container implements IContainer {
 	}
 
 	@Override
-	public <T extends Object> Object put(Class<T> key, T value) {
+	public <T> Object put(Class<T> key, T value) {
 		check(key);
 		return map.put(key.getName(), value);
 	}
