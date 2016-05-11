@@ -31,8 +31,9 @@ import ru.agentlab.maia.exception.InjectorException;
 import ru.agentlab.maia.exception.ServiceNotFound;
 
 /**
+ * Injector for Dependency Injection.
  * 
- * @author Dmitriy Shishkin
+ * @author Dmitriy Shishkin <shishkindimon@gmail.com>
  */
 public class Injector implements IInjector {
 
