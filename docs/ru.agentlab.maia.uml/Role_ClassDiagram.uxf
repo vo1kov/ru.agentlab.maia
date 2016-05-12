@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2.0">
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>91</x>
+      <y>112</y>
+      <w>154</w>
+      <h>217</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Class&gt;&gt;
+Role
+bg=orange
+fontsize=18
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>98</x>
+      <y>322</y>
+      <w>49</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=[&lt;&lt;field&gt;&gt;]-(
+layer=4
+bg=orange</panel_attributes>
+    <additional_attributes>30.0;10.0;30.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>147</x>
+      <y>322</y>
+      <w>49</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=[&lt;&lt;field&gt;&gt;]-(
+layer=4
+bg=orange</panel_attributes>
+    <additional_attributes>30.0;10.0;30.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>196</x>
+      <y>322</y>
+      <w>49</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=[&lt;&lt;field&gt;&gt;]-(
+layer=4
+bg=orange</panel_attributes>
+    <additional_attributes>30.0;10.0;30.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>105</x>
+      <y>154</y>
+      <w>126</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Method&gt;&gt;
+Plan Body
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>105</x>
+      <y>210</y>
+      <w>126</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Method&gt;&gt;
+Plan Body
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>105</x>
+      <y>266</y>
+      <w>126</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Method&gt;&gt;
+Plan Body
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
