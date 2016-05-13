@@ -79,7 +79,7 @@ public class Agent implements IAgent {
 
 	@Override
 	public void stop() {
-		state = AgentState.SUSPENDED;
+		state = AgentState.TERMINATED;
 	}
 
 	@Override

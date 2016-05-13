@@ -14,17 +14,35 @@ package ru.agentlab.maia;
  *
  */
 public enum AgentState {
-	UNKNOWN,
 
-	WAITING,
+	UNKNOWN(0),
 
-	ACTIVE,
+	DEPLOYED(1),
 
-	SUSPENDED,
+	UNRESOLVED(2),
 
-	TRANSIT,
+	RESOLVED(3),
 
-	INITIATED;
+	ACTIVE(4),
 
+	WAITING(5),
+
+	TERMINATED(6),
+
+	TRANSIT(10);
+
+	public boolean isDeployed() {
+		return this.level > 1;
+	}
+
+	public boolean isResolved() {
+		return this.level > 3;
+	}
+
+	int level;
+
+	AgentState(int level) {
+		this.level = level;
+	}
 
 }
