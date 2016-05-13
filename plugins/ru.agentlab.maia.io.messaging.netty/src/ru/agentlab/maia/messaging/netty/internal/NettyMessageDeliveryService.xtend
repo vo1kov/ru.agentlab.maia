@@ -14,9 +14,9 @@ import javax.annotation.PostConstruct
 import javax.inject.Inject
 import javax.inject.Named
 import org.slf4j.LoggerFactory
+import ru.agentlab.maia.IMessage
 import ru.agentlab.maia.io.IClientFactory
 import ru.agentlab.maia.io.IServerFactory
-import ru.agentlab.maia.messaging.IMessage
 import ru.agentlab.maia.messaging.IMessageDeliveryEventListener
 import ru.agentlab.maia.messaging.netty.INettyMessageDeliveryService
 
