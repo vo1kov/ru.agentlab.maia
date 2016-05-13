@@ -10,8 +10,8 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 
 import ru.agentlab.maia.EventType;
 import ru.agentlab.maia.IEvent;
-import ru.agentlab.maia.IEventMatcher;
-import ru.agentlab.maia.IEventMatch;
+import ru.agentlab.maia.agent.IEventMatch;
+import ru.agentlab.maia.agent.IEventMatcher;
 
 public class BeliefBaseEventMatcher implements IEventMatcher {
 

@@ -6,14 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package ru.agentlab.maia;
+package ru.agentlab.maia.agent;
 
-public interface IPlan {
-
-	Object execute();
-
-	boolean isRelevant(IEvent event);
-
-	boolean isApplicable();
+public interface IEventMatch {
 
 }

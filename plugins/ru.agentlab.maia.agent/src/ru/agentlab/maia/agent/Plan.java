@@ -11,12 +11,12 @@ package ru.agentlab.maia.agent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IPlan;
-import ru.agentlab.maia.IEventMatcher;
 
 public class Plan implements IPlan {
 
-	Object planPackage;
+	Object role;
 
 	Method method;
 
@@ -24,14 +24,14 @@ public class Plan implements IPlan {
 
 	public Plan(Object object, Method method) {
 		super();
-		this.planPackage = object;
+		this.role = object;
 		this.method = method;
 	}
 
 	@Override
 	public Object execute() {
 		try {
-			return method.invoke(planPackage);
+			return method.invoke(role);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 			return null;
@@ -39,8 +39,14 @@ public class Plan implements IPlan {
 	}
 
 	@Override
-	public IEventMatcher getMatcher() {
-		return matcher;
+	public boolean isRelevant(IEvent event) {
+		IEventMatch match = matcher.match(event);
+		return match != null;
+	}
+
+	@Override
+	public boolean isApplicable() {
+		return false;
 	}
 
 }

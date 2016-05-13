@@ -6,29 +6,12 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package ru.agentlab.maia.event.match;
+package ru.agentlab.maia.agent;
 
 import ru.agentlab.maia.IEvent;
-import ru.agentlab.maia.agent.IEventMatch;
-import ru.agentlab.maia.agent.IEventMatcher;
 
-public class EventMatcher implements IEventMatcher {
+public interface IEventMatcher {
 
-	String object;
-
-	String predicate;
-
-	String subject;
+	IEventMatch match(IEvent event);
 	
-	public EventMatcher(String object, String predicate, String subject) {
-		this.object = object;
-		this.predicate = predicate;
-		this.subject = subject;
-	}
-
-	@Override
-	public IEventMatch match(IEvent event) {
-		return null;
-	}
-
 }
