@@ -26,8 +26,10 @@ import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IMessageQueue;
 import ru.agentlab.maia.IPlanBase;
 import ru.agentlab.maia.IRole;
+import ru.agentlab.maia.IRoleBase;
 import ru.agentlab.maia.exception.ContainerException;
 import ru.agentlab.maia.exception.InjectorException;
+import ru.agentlab.maia.exception.ResolveException;
 
 /**
  * @author Dmitriy Shishkin
@@ -54,10 +56,12 @@ public class Agent implements IAgent {
 
 	protected IMessageQueue messageQueue;
 
+	protected IRoleBase roleBase;
+
 	@PostConstruct
 	public void setup() {
-//		final PlanExtractor extractor = new PlanExtractor();
-//		contributors.stream().map(object -> extractor.extract(object));
+		// final PlanExtractor extractor = new PlanExtractor();
+		// contributors.stream().map(object -> extractor.extract(object));
 	}
 
 	public void addContributor(Class<?> clazz) throws InjectorException, ContainerException {
@@ -108,5 +112,21 @@ public class Agent implements IAgent {
 
 	protected List<Plan> selectApplicablePlans(List<Plan> relevantPlans) {
 		return null;
+	}
+
+	@Override
+	public void deployTo(IContainer container) {
+		container.put(uuid.toString(), this);
+		this.container = container;
+	}
+
+	@Override
+	public void addRole(Class<?> role) {
+		roleBase.addRole(role);
+	}
+
+	@Override
+	public void resolve() throws ResolveException {
+		roleBase.resolve();
 	}
 }

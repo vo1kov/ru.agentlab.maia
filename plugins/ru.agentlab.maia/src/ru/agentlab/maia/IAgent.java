@@ -11,11 +11,15 @@ package ru.agentlab.maia;
 import java.util.List;
 import java.util.UUID;
 
+import ru.agentlab.maia.exception.ResolveException;
+
 /**
  * @author Dmitry Shishkin
  */
 public interface IAgent {
-	
+
+	void resolve() throws ResolveException;
+
 	void start();
 
 	void stop();
@@ -27,4 +31,9 @@ public interface IAgent {
 	AgentState getState();
 
 	List<IRole> getRoles();
+
+	void deployTo(IContainer container);
+
+	void addRole(Class<?> role);
+
 }
