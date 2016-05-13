@@ -3,10 +3,10 @@ package org.maia.messaging.acl
 import java.util.ArrayList
 import java.util.List
 import java.util.Properties
-import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.messaging.IMessage
-import ru.agentlab.maia.messaging.IMessageEnvelope
 import java.util.UUID
+import org.eclipse.xtend.lib.annotations.Accessors
+import ru.agentlab.maia.messaging.IMessageEnvelope
+import ru.agentlab.maia.IMessage
 
 @Accessors
 class AclMessage implements IMessage {
