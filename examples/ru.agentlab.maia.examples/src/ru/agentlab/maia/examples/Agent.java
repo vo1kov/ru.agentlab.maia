@@ -9,9 +9,8 @@ package ru.agentlab.maia.examples;
 
 import static ru.agentlab.maia.CheckType.AGENT_HAVE_BELIEF;
 import static ru.agentlab.maia.CheckType.MESSAGE_HAVE_PERFORMATIVE;
-import static ru.agentlab.maia.EventType.AGENT_BELIEF_ADDED;
-import static ru.agentlab.maia.EventType.AGENT_MESSAGE_ADDED;
-import static ru.agentlab.maia.EventType.CONTAINER_SERVICE_ADDED;
+import static ru.agentlab.maia.EventType.BELIEF_ADDED;
+import static ru.agentlab.maia.EventType.MESSAGE_ADDED;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -56,7 +55,7 @@ public class Agent {
 		desireBase.addGoal("init");
 	}
 
-	@Trigger(type = AGENT_BELIEF_ADDED, template = "?classified rdf:type ?classifier")
+	@Trigger(type = BELIEF_ADDED, template = "?classified rdf:type ?classifier")
 	@Filter(type = AGENT_HAVE_BELIEF, template = "?classified rdf:type ?classifier")
 	@Filter(type = AGENT_HAVE_BELIEF, template = "?classifier ?b ?c")
 	@Filter(type = AGENT_HAVE_BELIEF, template = "?classifier ?b ?c")
@@ -64,20 +63,20 @@ public class Agent {
 
 	}
 	
-	@Trigger(type = AGENT_BELIEF_ADDED, template = "?classified rdf:type ?classifier")
+	@Trigger(type = BELIEF_ADDED, template = "?classified rdf:type ?classifier")
 	@Filter(type = AGENT_HAVE_BELIEF, template = "?classified rdf:type ?classifier")
 	@Filter(type = AGENT_HAVE_BELIEF, template = "?classifier ?b ?c")
 	public void onSomeClassifiedw() {
 
 	}
 
-	@Trigger(type = AGENT_MESSAGE_ADDED)
+	@Trigger(type = MESSAGE_ADDED)
 	@Filter(type = MESSAGE_HAVE_PERFORMATIVE, template = "INFO")
 	public void sdf() {
 
 	}
 
-	@Trigger(type = CONTAINER_SERVICE_ADDED, template = "ru.agentlab.maia.messaging.IMessageDeliveryService")
+	@Trigger(type = MESSAGE_ADDED, template = "ru.agentlab.maia.messaging.IMessageDeliveryService")
 	@Filter(type = AGENT_HAVE_BELIEF, template = "?classifier ?b ?c")
 	@Filter(type = AGENT_HAVE_BELIEF, template = "?classifier ?b ?c")
 	public void destroy() {

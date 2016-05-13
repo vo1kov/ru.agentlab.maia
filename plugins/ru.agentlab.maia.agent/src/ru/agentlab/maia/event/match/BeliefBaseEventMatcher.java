@@ -29,7 +29,7 @@ public class BeliefBaseEventMatcher implements IEventMatcher {
 
 	@Override
 	public IEventMatch match(IEvent event) {
-		if (event.getType() != EventType.AGENT_BELIEF_ADDED) {
+		if (event.getType() != EventType.BELIEF_ADDED) {
 
 		}
 		Object payload = event.getPayload();

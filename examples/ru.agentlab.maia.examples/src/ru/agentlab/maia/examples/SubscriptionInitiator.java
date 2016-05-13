@@ -9,7 +9,7 @@ package ru.agentlab.maia.examples;
 
 import static ru.agentlab.maia.CheckType.MESSAGE_HAVE_PERFORMATIVE;
 import static ru.agentlab.maia.CheckType.MESSAGE_HAVE_PROTOCOL;
-import static ru.agentlab.maia.EventType.AGENT_MESSAGE_ADDED;
+import static ru.agentlab.maia.EventType.MESSAGE_ADDED;
 import static ru.agentlab.maia.IMessage.AGREE;
 import static ru.agentlab.maia.IMessage.CANCEL;
 import static ru.agentlab.maia.IMessage.INFORM;
@@ -56,7 +56,7 @@ public abstract class SubscriptionInitiator {
 		messaging.send(message);
 	}
 
-	@Trigger(type = AGENT_MESSAGE_ADDED)
+	@Trigger(type = MESSAGE_ADDED)
 	@Filter(type = MESSAGE_HAVE_PERFORMATIVE, template = AGREE)
 	@Filter(type = MESSAGE_HAVE_PROTOCOL, template = PROTOCOL_NAME)
 	public void onAgree(IMessage message) {
@@ -67,13 +67,13 @@ public abstract class SubscriptionInitiator {
 		beliefBase.addObjectPropertyAssertion("this", "maia:haveSubscription", sender.toString());
 	}
 
-	@Trigger(type = AGENT_MESSAGE_ADDED)
+	@Trigger(type = MESSAGE_ADDED)
 	@Filter(type = MESSAGE_HAVE_PERFORMATIVE, template = REFUSE)
 	@Filter(type = MESSAGE_HAVE_PROTOCOL, template = PROTOCOL_NAME)
 	public void onRefuse(IMessage message) {
 	}
 
-	@Trigger(type = AGENT_MESSAGE_ADDED)
+	@Trigger(type = MESSAGE_ADDED)
 	@Filter(type = MESSAGE_HAVE_PERFORMATIVE, template = INFORM)
 	@Filter(type = MESSAGE_HAVE_PROTOCOL, template = PROTOCOL_NAME)
 	public void onInform(IMessage message) {

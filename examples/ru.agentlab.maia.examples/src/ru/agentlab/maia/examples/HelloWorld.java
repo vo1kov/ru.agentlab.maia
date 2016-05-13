@@ -1,6 +1,6 @@
 package ru.agentlab.maia.examples;
 
-import static ru.agentlab.maia.EventType.AGENT_GOAL_ADDED;
+import static ru.agentlab.maia.EventType.GOAL_ADDED;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -24,7 +24,7 @@ public class HelloWorld {
 		goalBase.addGoal("init");
 	}
 
-	@Trigger(type = AGENT_GOAL_ADDED, template = "init")
+	@Trigger(type = GOAL_ADDED, template = "init")
 	public void onSomeClassified() {
 		IMessage message = new AclMessage();
 		message.setContent("Hello World");

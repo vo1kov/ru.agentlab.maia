@@ -17,63 +17,51 @@ public class Trigger2PlanMatcher {
 	public IEventMatcher convert(Trigger trigger) {
 		String template = trigger.template();
 		switch (trigger.type()) {
-		case AGENT_BELIEF_ADDED:
+		case BELIEF_ADDED:
 			break;
-		case AGENT_BELIEF_CLASS_ADDED:
+		case BELIEF_CLASS_ADDED:
 			break;
-		case AGENT_BELIEF_CLASS_ASSERTION_ADDED:
+		case BELIEF_CLASS_ASSERTION_ADDED:
 			break;
-		case AGENT_BELIEF_CLASS_ASSERTION_REMOVED:
+		case BELIEF_CLASS_ASSERTION_REMOVED:
 			break;
-		case AGENT_BELIEF_DATA_PROPERTY_ASSERTION_ADDED:
+		case BELIEF_DATA_PROPERTY_ASSERTION_ADDED:
 			String[] atoms = template.split(" ");
 			if (atoms.length != 3) {
 				throw new IllegalArgumentException("@Trigger have wrong template");
 			}
 			return new EventMatcher(atoms[0], atoms[1], atoms[2]);
-		case AGENT_BELIEF_DATA_PROPERTY_ASSERTION_REMOVED:
+		case BELIEF_DATA_PROPERTY_ASSERTION_REMOVED:
 			break;
-		case AGENT_BELIEF_OBJECT_PROPERTY_ASSERTION_ADDED:
+		case BELIEF_OBJECT_PROPERTY_ASSERTION_ADDED:
 			break;
-		case AGENT_BELIEF_OBJECT_PROPERTY_ASSERTION_REMOVED:
+		case BELIEF_OBJECT_PROPERTY_ASSERTION_REMOVED:
 			break;
-		case AGENT_BELIEF_REMOVED:
+		case BELIEF_REMOVED:
 			break;
-		case AGENT_GOAL_ADDED:
+		case GOAL_ADDED:
 			break;
-		case AGENT_GOAL_FAILED:
+		case GOAL_FAILED:
 			break;
-		case AGENT_GOAL_FINISHED:
+		case GOAL_FINISHED:
 			break;
-		case AGENT_GOAL_REMOVED:
+		case GOAL_REMOVED:
 			break;
-		case AGENT_GOAL_STARTED:
+		case GOAL_STARTED:
 			break;
-		case AGENT_MESSAGE_ADDED:
+		case MESSAGE_ADDED:
 			break;
-		case AGENT_MESSAGE_REMOVED:
+		case MESSAGE_REMOVED:
 			break;
-		case AGENT_PLAN_ADDED:
+		case PLAN_ADDED:
 			break;
-		case AGENT_PLAN_FAILED:
+		case PLAN_FAILED:
 			break;
-		case AGENT_PLAN_FINISHED:
+		case PLAN_FINISHED:
 			break;
-		case AGENT_PLAN_REMOVED:
+		case PLAN_REMOVED:
 			break;
-		case AGENT_PLAN_STARTED:
-			break;
-		case CONTAINER_AGENT_ADDED:
-			break;
-		case CONTAINER_AGENT_REMOVED:
-			break;
-		case CONTAINER_CHILD_ADDED:
-			break;
-		case CONTAINER_CHILD_REMOVED:
-			break;
-		case CONTAINER_SERVICE_ADDED:
-			break;
-		case CONTAINER_SERVICE_REMOVED:
+		case PLAN_STARTED:
 			break;
 		default:
 			break;
