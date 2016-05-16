@@ -1,130 +1,168 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="ru.agentlab.maia.target" sequenceNumber="84">
-<locations>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.sdk.ide" version="4.5.0.I20150603-2000"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.5"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.slf4j.impl.log4j12" version="1.7.2.v20131105-2200"/>
-<unit id="org.apache.commons.logging.source" version="1.1.1.v201101211721"/>
-<unit id="javax.inject" version="1.0.0.v20091030"/>
-<unit id="com.google.guava" version="15.0.0.v201403281430"/>
-<unit id="org.apache.log4j.source" version="1.2.15.v201012070815"/>
-<unit id="org.apache.commons.logging" version="1.1.1.v201101211721"/>
-<unit id="javax.inject.source" version="1.0.0.v20091030"/>
-<unit id="javax.annotation.source" version="1.2.0.v201401042248"/>
-<unit id="org.hamcrest.library" version="1.3.0.v201305281000"/>
-<unit id="com.google.guava.source" version="15.0.0.v201403281430"/>
-<unit id="org.hamcrest" version="1.1.0.v20090501071000"/>
-<unit id="org.hamcrest.library.source" version="1.3.0.v201305281000"/>
-<unit id="org.junit" version="4.11.0.v201303080030"/>
-<unit id="com.google.gerrit.common" version="2.1.5.v201112241444"/>
-<unit id="javax.annotation" version="1.2.0.v201401042248"/>
-<unit id="org.slf4j.impl.log4j12.source" version="1.7.2.v20131105-2200"/>
-<unit id="org.mockito" version="1.9.5.v201311280930"/>
-<unit id="org.mockito.source" version="1.9.5.v201311280930"/>
-<unit id="org.apache.log4j" version="1.2.15.v201012070815"/>
-<unit id="org.junit.source" version="4.11.0.v201303080030"/>
-<unit id="org.slf4j.api.source" version="1.7.2.v20121108-1250"/>
-<unit id="org.objenesis" version="1.0.0.v201105211943"/>
-<unit id="org.slf4j.api" version="1.7.2.v20121108-1250"/>
-<unit id="org.objenesis.source" version="1.0.0.v201105211943"/>
-<unit id="org.hamcrest.generator.source" version="1.3.0.v201305210900"/>
-<unit id="org.hamcrest.text.source" version="1.1.0.v20090501071000"/>
-<unit id="org.hamcrest.text" version="1.1.0.v20090501071000"/>
-<unit id="org.hamcrest.integration" version="1.3.0.v201305210900"/>
-<unit id="org.hamcrest.integration.source" version="1.3.0.v201305210900"/>
-<unit id="org.hamcrest.generator" version="1.3.0.v201305210900"/>
-<unit id="com.google.gson.source" version="2.2.4.v201311231704"/>
-<unit id="com.google.gson" version="2.2.4.v201311231704"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150124073747/repository/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.xtend.sdk.feature.group" version="2.8.4.v201508050135"/>
-<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.jbehave.eclipse.feature.feature.group" version="1.0.0.20140605-0717"/>
-<repository location="http://jbehave.org/reference/eclipse/updates/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.equinox.weaving.sdk.feature.group" version="1.2.0.201604061446"/>
-<unit id="org.aspectj.feature.group" version="1.8.9.201604061446"/>
-<unit id="org.eclipse.ajdt.feature.group" version="2.2.4.201604061446"/>
-<repository location="http://download.eclipse.org/tools/ajdt/45/dev/update"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.semanticweb.owlapi.feature.feature.group" version="4.0.0.201602051203"/>
-<unit id="org.semanticweb.owlapi.feature.source.feature.group" version="4.0.0.201602051203"/>
-<repository location="http://agentlab.ru/p2/orbit/org.semanticweb.owlapi/updates/nightly/latest/"/>
-</location>
-</locations>
-<includeBundles>
-<plugin id="com.google.gson"/>
-<plugin id="com.google.gson.source"/>
-<plugin id="com.google.guava"/>
-<plugin id="com.google.guava.source"/>
-<plugin id="javax.annotation" version="1.2.0.v201401042248"/>
-<plugin id="javax.annotation.source" version="1.2.0.v201401042248"/>
-<plugin id="javax.annotation.source" version="1.2.0.v201401042248"/>
-<plugin id="javax.inject" version="1.0.0.v20091030"/>
-<plugin id="javax.inject.source" version="1.0.0.v20091030"/>
-<plugin id="javax.inject.source" version="1.0.0.v20091030"/>
-<plugin id="org.apache.felix.gogo.command"/>
-<plugin id="org.apache.felix.gogo.command.source"/>
-<plugin id="org.apache.felix.gogo.runtime"/>
-<plugin id="org.apache.felix.gogo.runtime.source"/>
-<plugin id="org.apache.felix.gogo.shell"/>
-<plugin id="org.apache.felix.gogo.shell.source"/>
-<plugin id="org.apache.log4j" version="1.2.15.v201012070815"/>
-<plugin id="org.apache.log4j.source" version="1.2.15.v201012070815"/>
-<plugin id="org.apache.log4j.source" version="1.2.15.v201012070815"/>
-<plugin id="org.aspectj.runtime"/>
-<plugin id="org.aspectj.runtime.source"/>
-<plugin id="org.aspectj.weaver"/>
-<plugin id="org.aspectj.weaver.source"/>
-<plugin id="org.eclipse.equinox.console"/>
-<plugin id="org.eclipse.equinox.console.source"/>
-<plugin id="org.eclipse.equinox.event"/>
-<plugin id="org.eclipse.equinox.event.source"/>
-<plugin id="org.eclipse.equinox.weaving.aspectj"/>
-<plugin id="org.eclipse.equinox.weaving.caching"/>
-<plugin id="org.eclipse.equinox.weaving.caching.source"/>
-<plugin id="org.eclipse.equinox.weaving.hook"/>
-<plugin id="org.eclipse.equinox.weaving.hook.source"/>
-<plugin id="org.eclipse.osgi"/>
-<plugin id="org.eclipse.osgi.services"/>
-<plugin id="org.eclipse.osgi.services.source"/>
-<plugin id="org.eclipse.osgi.source"/>
-<plugin id="org.eclipse.xtend.lib"/>
-<plugin id="org.eclipse.xtend.lib.macro"/>
-<plugin id="org.eclipse.xtend.lib.macro.source"/>
-<plugin id="org.eclipse.xtend.lib.source"/>
-<plugin id="org.eclipse.xtext.xbase.lib"/>
-<plugin id="org.eclipse.xtext.xbase.lib.source"/>
-<plugin id="org.hamcrest"/>
-<plugin id="org.hamcrest.core"/>
-<plugin id="org.hamcrest.core.source"/>
-<plugin id="org.hamcrest.generator"/>
-<plugin id="org.hamcrest.generator.source"/>
-<plugin id="org.hamcrest.integration"/>
-<plugin id="org.hamcrest.integration.source"/>
-<plugin id="org.hamcrest.library"/>
-<plugin id="org.hamcrest.library.source"/>
-<plugin id="org.hamcrest.text"/>
-<plugin id="org.hamcrest.text.source"/>
-<plugin id="org.jbehave.eclipse"/>
-<plugin id="org.junit" version="4.12.0.v201504281640"/>
-<plugin id="org.junit.source" version="4.12.0.v201504281640"/>
-<plugin id="org.junit.source" version="4.11.0.v201303080030"/>
-<plugin id="org.mockito"/>
-<plugin id="org.mockito.source"/>
-<plugin id="org.objenesis"/>
-<plugin id="org.objenesis.source"/>
-<plugin id="org.slf4j.api"/>
-<plugin id="org.slf4j.api.source"/>
-<plugin id="org.slf4j.impl.log4j12"/>
-<plugin id="org.slf4j.impl.log4j12.source"/>
-</includeBundles>
+<?pde version="3.8"?><target name="ru.agentlab.maia.target" sequenceNumber="87">
+  <locations>
+    <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+      <unit id="org.eclipse.sdk.ide" version="4.5.0.I20150603-2000"/>
+      <repository location="http://download.eclipse.org/eclipse/updates/4.5"/>
+    </location>
+    <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+      <unit id="org.slf4j.impl.log4j12" version="1.7.2.v20131105-2200"/>
+      <unit id="org.apache.commons.logging.source" version="1.1.1.v201101211721"/>
+      <unit id="javax.inject" version="1.0.0.v20091030"/>
+      <unit id="com.google.guava" version="15.0.0.v201403281430"/>
+      <unit id="org.apache.log4j.source" version="1.2.15.v201012070815"/>
+      <unit id="org.apache.commons.logging" version="1.1.1.v201101211721"/>
+      <unit id="javax.inject.source" version="1.0.0.v20091030"/>
+      <unit id="javax.annotation.source" version="1.2.0.v201401042248"/>
+      <unit id="org.hamcrest.library" version="1.3.0.v201305281000"/>
+      <unit id="com.google.guava.source" version="15.0.0.v201403281430"/>
+      <unit id="org.hamcrest" version="1.1.0.v20090501071000"/>
+      <unit id="org.hamcrest.library.source" version="1.3.0.v201305281000"/>
+      <unit id="org.junit" version="4.11.0.v201303080030"/>
+      <unit id="com.google.gerrit.common" version="2.1.5.v201112241444"/>
+      <unit id="javax.annotation" version="1.2.0.v201401042248"/>
+      <unit id="org.slf4j.impl.log4j12.source" version="1.7.2.v20131105-2200"/>
+      <unit id="org.mockito" version="1.9.5.v201311280930"/>
+      <unit id="org.mockito.source" version="1.9.5.v201311280930"/>
+      <unit id="org.apache.log4j" version="1.2.15.v201012070815"/>
+      <unit id="org.junit.source" version="4.11.0.v201303080030"/>
+      <unit id="org.slf4j.api.source" version="1.7.2.v20121108-1250"/>
+      <unit id="org.objenesis" version="1.0.0.v201105211943"/>
+      <unit id="org.slf4j.api" version="1.7.2.v20121108-1250"/>
+      <unit id="org.objenesis.source" version="1.0.0.v201105211943"/>
+      <unit id="org.hamcrest.generator.source" version="1.3.0.v201305210900"/>
+      <unit id="org.hamcrest.text.source" version="1.1.0.v20090501071000"/>
+      <unit id="org.hamcrest.text" version="1.1.0.v20090501071000"/>
+      <unit id="org.hamcrest.integration" version="1.3.0.v201305210900"/>
+      <unit id="org.hamcrest.integration.source" version="1.3.0.v201305210900"/>
+      <unit id="org.hamcrest.generator" version="1.3.0.v201305210900"/>
+      <unit id="com.google.gson.source" version="2.2.4.v201311231704"/>
+      <unit id="com.google.gson" version="2.2.4.v201311231704"/>
+      <unit id="org.apache.commons.io.source" version="2.2.0.v201405211200"/>
+      <unit id="org.apache.commons.io" version="2.2.0.v201405211200"/>
+      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150124073747/repository/"/>
+    </location>
+    <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+      <unit id="org.eclipse.xtend.sdk.feature.group" version="2.8.4.v201508050135"/>
+      <repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
+    </location>
+    <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+      <unit id="org.jbehave.eclipse.feature.feature.group" version="1.0.0.20140605-0717"/>
+      <repository location="http://jbehave.org/reference/eclipse/updates/"/>
+    </location>
+    <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+      <unit id="org.eclipse.equinox.weaving.sdk.feature.group" version="1.2.0.201604061446"/>
+      <unit id="org.aspectj.feature.group" version="1.8.9.201604061446"/>
+      <unit id="org.eclipse.ajdt.feature.group" version="2.2.4.201604061446"/>
+      <repository location="http://download.eclipse.org/tools/ajdt/45/dev/update"/>
+    </location>
+    <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+      <unit id="org.semanticweb.owlapi.feature.feature.group" version="4.0.0.201602051203"/>
+      <unit id="org.semanticweb.owlapi.feature.source.feature.group" version="4.0.0.201602051203"/>
+      <repository location="http://agentlab.ru/p2/orbit/org.semanticweb.owlapi/updates/nightly/latest/"/>
+    </location>
+    <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+      <unit id="com.google.guava.feature.source.feature.group" version="18.0.0.201502021635"/>
+      <unit id="com.google.guava.feature.feature.group" version="18.0.0.201502021635"/>
+      <repository location="http://www.agentlab.ru/eclipse/update/com.google.guava/18.0.0.201502021635/"/>
+    </location>
+    <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+      <unit id="net.sf.trove4j.feature.source.feature.group" version="3.0.3.201602051202"/>
+      <unit id="net.sf.trove4j.feature.feature.group" version="3.0.3.201602051202"/>
+      <repository location="http://agentlab.ru/p2/orbit/net.sf.trove4j/drops/nightly/3.0.3.201602051202/"/>
+    </location>
+  </locations>
+  <includeBundles>
+    <plugin id="com.google.gson"/>
+    <plugin id="com.google.gson.source"/>
+    <plugin id="com.google.guava" version="18.0.0.201502021635"/>
+    <plugin id="com.google.guava.source" version="15.0.0.v201403281430"/>
+    <plugin id="com.google.guava.source" version="18.0.0.201502021635"/>
+    <plugin id="javax.annotation" version="1.2.0.v201401042248"/>
+    <plugin id="javax.annotation.source" version="1.0.0.v201209060030"/>
+    <plugin id="javax.annotation.source" version="1.2.0.v201401042248"/>
+    <plugin id="javax.annotation.source" version="1.2.0.v201401042248"/>
+    <plugin id="javax.inject" version="1.0.0.v20091030"/>
+    <plugin id="javax.inject.source" version="1.0.0.v20091030"/>
+    <plugin id="javax.inject.source" version="1.0.0.v20091030"/>
+    <plugin id="net.sf.trove4j"/>
+    <plugin id="net.sf.trove4j.source"/>
+    <plugin id="org.apache.commons.io"/>
+    <plugin id="org.apache.commons.io.source"/>
+    <plugin id="org.apache.felix.gogo.command"/>
+    <plugin id="org.apache.felix.gogo.command.source"/>
+    <plugin id="org.apache.felix.gogo.runtime"/>
+    <plugin id="org.apache.felix.gogo.runtime.source"/>
+    <plugin id="org.apache.felix.gogo.shell"/>
+    <plugin id="org.apache.felix.gogo.shell.source"/>
+    <plugin id="org.apache.log4j" version="1.2.15.v201012070815"/>
+    <plugin id="org.apache.log4j.source" version="1.2.15.v201012070815"/>
+    <plugin id="org.apache.log4j.source" version="1.2.15.v201012070815"/>
+    <plugin id="org.aspectj.runtime"/>
+    <plugin id="org.aspectj.runtime.source"/>
+    <plugin id="org.aspectj.weaver"/>
+    <plugin id="org.aspectj.weaver.source"/>
+    <plugin id="org.eclipse.equinox.console"/>
+    <plugin id="org.eclipse.equinox.console.source"/>
+    <plugin id="org.eclipse.equinox.event"/>
+    <plugin id="org.eclipse.equinox.event.source"/>
+    <plugin id="org.eclipse.equinox.weaving.aspectj"/>
+    <plugin id="org.eclipse.equinox.weaving.caching"/>
+    <plugin id="org.eclipse.equinox.weaving.caching.source"/>
+    <plugin id="org.eclipse.equinox.weaving.hook"/>
+    <plugin id="org.eclipse.equinox.weaving.hook.source"/>
+    <plugin id="org.eclipse.osgi"/>
+    <plugin id="org.eclipse.osgi.services"/>
+    <plugin id="org.eclipse.osgi.services.source"/>
+    <plugin id="org.eclipse.osgi.source"/>
+    <plugin id="org.eclipse.xtend.lib"/>
+    <plugin id="org.eclipse.xtend.lib.macro"/>
+    <plugin id="org.eclipse.xtend.lib.macro.source"/>
+    <plugin id="org.eclipse.xtend.lib.source"/>
+    <plugin id="org.eclipse.xtext.xbase.lib"/>
+    <plugin id="org.eclipse.xtext.xbase.lib.source"/>
+    <plugin id="org.hamcrest"/>
+    <plugin id="org.hamcrest.core"/>
+    <plugin id="org.hamcrest.core.source"/>
+    <plugin id="org.hamcrest.generator"/>
+    <plugin id="org.hamcrest.generator.source"/>
+    <plugin id="org.hamcrest.integration"/>
+    <plugin id="org.hamcrest.integration.source"/>
+    <plugin id="org.hamcrest.library"/>
+    <plugin id="org.hamcrest.library.source"/>
+    <plugin id="org.hamcrest.text"/>
+    <plugin id="org.hamcrest.text.source"/>
+    <plugin id="org.jbehave.eclipse"/>
+    <plugin id="org.junit" version="4.12.0.v201504281640"/>
+    <plugin id="org.junit.source" version="4.12.0.v201504281640"/>
+    <plugin id="org.junit.source" version="4.11.0.v201303080030"/>
+    <plugin id="org.mockito"/>
+    <plugin id="org.mockito.source"/>
+    <plugin id="org.objenesis"/>
+    <plugin id="org.objenesis.source"/>
+    <plugin id="org.semanticweb.owlapi.api"/>
+    <plugin id="org.semanticweb.owlapi.api.source"/>
+    <plugin id="org.semanticweb.owlapi.apibinding"/>
+    <plugin id="org.semanticweb.owlapi.apibinding.source"/>
+    <plugin id="org.semanticweb.owlapi.compatibility"/>
+    <plugin id="org.semanticweb.owlapi.compatibility.source"/>
+    <plugin id="org.semanticweb.owlapi.contract"/>
+    <plugin id="org.semanticweb.owlapi.contract.source"/>
+    <plugin id="org.semanticweb.owlapi.fixers"/>
+    <plugin id="org.semanticweb.owlapi.fixers.source"/>
+    <plugin id="org.semanticweb.owlapi.impl"/>
+    <plugin id="org.semanticweb.owlapi.impl.source"/>
+    <plugin id="org.semanticweb.owlapi.oboformat"/>
+    <plugin id="org.semanticweb.owlapi.oboformat.source"/>
+    <plugin id="org.semanticweb.owlapi.parsers"/>
+    <plugin id="org.semanticweb.owlapi.parsers.source"/>
+    <plugin id="org.semanticweb.owlapi.rio"/>
+    <plugin id="org.semanticweb.owlapi.rio.source"/>
+    <plugin id="org.semanticweb.owlapi.tools"/>
+    <plugin id="org.semanticweb.owlapi.tools.source"/>
+    <plugin id="org.slf4j.api"/>
+    <plugin id="org.slf4j.api.source"/>
+    <plugin id="org.slf4j.impl.log4j12"/>
+    <plugin id="org.slf4j.impl.log4j12.source"/>
+  </includeBundles>
 </target>
