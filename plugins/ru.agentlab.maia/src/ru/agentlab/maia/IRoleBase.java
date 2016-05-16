@@ -4,8 +4,20 @@ import ru.agentlab.maia.exception.ResolveException;
 
 public interface IRoleBase {
 
-	void addRole(Class<?> role);
+	void add(Class<?> roleClass);
 
-	void resolve() throws ResolveException;
+	void add(Class<?>... roleClasses);
+
+	void resolve(Class<?> roleClass) throws ResolveException;
+
+	void resolve(Class<?>... roleClasses) throws ResolveException;
+
+	void resolveAll() throws ResolveException;
+
+	boolean contains(Class<?> roleClass);
+
+	void remove(Class<?> roleClass);
+
+	void remove(Class<?>... roleClasses);
 
 }

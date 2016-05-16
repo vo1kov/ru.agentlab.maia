@@ -8,12 +8,10 @@
  *******************************************************************************/
 package ru.agentlab.maia;
 
+import ru.agentlab.maia.exception.PlanExecutionException;
+
 public interface IPlan {
 
-	Object execute();
-
-	boolean isRelevant(IEvent event);
-
-	boolean isApplicable();
+	Object execute() throws PlanExecutionException;
 
 }

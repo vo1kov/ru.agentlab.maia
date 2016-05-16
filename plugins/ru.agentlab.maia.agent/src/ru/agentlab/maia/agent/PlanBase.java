@@ -8,32 +8,43 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent;
 
-import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 
-import ru.agentlab.maia.IContainer;
-import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
-import ru.agentlab.maia.exception.ContainerException;
-import ru.agentlab.maia.exception.InjectorException;
+import ru.agentlab.maia.agent.event.PlanAddedEvent;
+import ru.agentlab.maia.agent.event.PlanRemovedEvent;
 
 public class PlanBase implements IPlanBase {
 
-	@Inject
-	protected IContainer container;
+	protected final Map<Class<? extends IEvent<?>>, List<IPlan>> plans = new HashMap<>();
 
-	@Override
-	public void addPlan(IPlan plan) {
-		// TODO Auto-generated method stub
-		
+	protected final Queue<IEvent<?>> eventQueue;
+
+	public PlanBase(Queue<IEvent<?>> eventQueue) {
+		this.eventQueue = eventQueue;
 	}
 
 	@Override
-	public void addPlanPackage(Class<?> planPackage) throws InjectorException, ContainerException {
-		IInjector injector = container.getInjector();
-		Object contributor = injector.make(planPackage);
-		injector.inject(contributor);
-		
+	public void add(IPlan plan) {
+		Class<? extends IEvent<?>> type = plan.getType();
+		List<IPlan> eventPlans = plans.get(type);
+		if (eventPlans == null) {
+			eventPlans = new ArrayList<IPlan>();
+		}
+		eventPlans.add(plan);
+		eventQueue.offer(new PlanAddedEvent(plan));
+	}
+
+	@Override
+	public void remove(IPlan plan) {
+		List<IPlan> eventPlans = plans.get(plan.getType());
+		eventPlans.remove(plan);
+		eventQueue.offer(new PlanRemovedEvent(plan));
 	}
 
 }

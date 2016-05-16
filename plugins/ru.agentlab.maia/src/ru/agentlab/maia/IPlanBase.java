@@ -8,13 +8,10 @@
  *******************************************************************************/
 package ru.agentlab.maia;
 
-import ru.agentlab.maia.exception.ContainerException;
-import ru.agentlab.maia.exception.InjectorException;
-
 public interface IPlanBase {
 
-	void addPlan(IPlan plan);
+	void add(IPlan plan);
 
-	void addPlanPackage(Class<?> planPackage) throws InjectorException, ContainerException;
+	void remove(IPlan plan);
 
 }

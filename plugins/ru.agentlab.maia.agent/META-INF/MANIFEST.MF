@@ -8,9 +8,7 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  ru.agentlab.maia;bundle-version="1.0.0";visibility:=reexport,
  ru.agentlab.maia.annotation;bundle-version="1.0.0"
 Export-Package: org.semanticweb.owlapi.model,
- ru.agentlab.maia.agent,
- ru.agentlab.maia.converter,
- ru.agentlab.maia.event.match
+ ru.agentlab.maia.agent
 Bundle-ClassPath: libs/owlapi-distribution-4.1.4.jar,
  .
 

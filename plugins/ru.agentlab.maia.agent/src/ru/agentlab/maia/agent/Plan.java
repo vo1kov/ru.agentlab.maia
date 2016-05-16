@@ -10,9 +10,11 @@ package ru.agentlab.maia.agent;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
-import ru.agentlab.maia.IEvent;
+import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IPlan;
+import ru.agentlab.maia.exception.PlanExecutionException;
 
 public class Plan implements IPlan {
 
@@ -20,7 +22,15 @@ public class Plan implements IPlan {
 
 	Method method;
 
-	IEventMatcher matcher;
+	IAgent agent;
+
+	IEventMatcher<?> eventMatcher;
+
+	List<IStateMatcher> stateMatchers;
+
+	public Plan() {
+		super();
+	}
 
 	public Plan(Object object, Method method) {
 		super();
@@ -28,25 +38,44 @@ public class Plan implements IPlan {
 		this.method = method;
 	}
 
+	public IEventMatcher<?> getEventMatcher() {
+		return eventMatcher;
+	}
+
+	public void setEventMatcher(IEventMatcher<?> eventMatcher) {
+		this.eventMatcher = eventMatcher;
+	}
+
+	public List<IStateMatcher> getStateMatchers() {
+		return stateMatchers;
+	}
+
+	public void addStateMatcher(IStateMatcher matcher) {
+		stateMatchers.add(matcher);
+	}
+
 	@Override
-	public Object execute() {
+	public Object execute() throws PlanExecutionException {
 		try {
 			return method.invoke(role);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			e.printStackTrace();
-			return null;
+			throw new PlanExecutionException(e);
 		}
 	}
 
-	@Override
-	public boolean isRelevant(IEvent event) {
-		IEventMatch match = matcher.match(event);
-		return match != null;
-	}
-
-	@Override
-	public boolean isApplicable() {
-		return false;
-	}
+	// @Override
+	// public boolean isRelevant(IEvent event) {
+	// return eventMatcher.match(event.getPayload());
+	// }
+	//
+	// @Override
+	// public boolean isApplicable() {
+	// for (IStateMatcher stateMatcher : stateMatchers) {
+	// if (stateMatcher.match(agent)) {
+	// return false;
+	// }
+	// }
+	// return true;
+	// }
 
 }

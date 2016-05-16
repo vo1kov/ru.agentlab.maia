@@ -11,6 +11,8 @@ package ru.agentlab.maia;
 import java.util.List;
 import java.util.UUID;
 
+import ru.agentlab.maia.exception.ContainerException;
+import ru.agentlab.maia.exception.InjectorException;
 import ru.agentlab.maia.exception.ResolveException;
 
 /**
@@ -32,8 +34,10 @@ public interface IAgent {
 
 	List<IRole> getRoles();
 
-	void deployTo(IContainer container);
+	void deployTo(IContainer container) throws InjectorException, ContainerException;
 
 	void addRole(Class<?> role);
+
+	void send(IMessage message);
 
 }

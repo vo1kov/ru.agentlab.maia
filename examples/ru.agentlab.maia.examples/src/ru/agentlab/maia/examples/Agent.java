@@ -7,11 +7,6 @@
  *******************************************************************************/
 package ru.agentlab.maia.examples;
 
-import static ru.agentlab.maia.CheckType.AGENT_HAVE_BELIEF;
-import static ru.agentlab.maia.CheckType.MESSAGE_HAVE_PERFORMATIVE;
-import static ru.agentlab.maia.EventType.BELIEF_ADDED;
-import static ru.agentlab.maia.EventType.MESSAGE_ADDED;
-
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,12 +16,15 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IInjector;
-import ru.agentlab.maia.annotation.Filter;
+import ru.agentlab.maia.annotation.BeliefAdded;
+import ru.agentlab.maia.annotation.HaveBelief;
+import ru.agentlab.maia.annotation.MessageAdded;
+import ru.agentlab.maia.annotation.Optional;
 import ru.agentlab.maia.annotation.Prefix;
-import ru.agentlab.maia.annotation.Trigger;
+import ru.agentlab.maia.annotation.RoleAdded;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
 
-@Prefix(name="rdf", namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns")
+@Prefix(name = "rdf", namespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns")
 public class Agent {
 
 	@Inject
@@ -43,6 +41,7 @@ public class Agent {
 	String namespace;
 
 	@Inject
+	@Optional
 	@Named("http://www.w3.org/2001/vcard-rdf/3.0")
 	OWLOntology ontology;
 
@@ -55,32 +54,25 @@ public class Agent {
 		desireBase.addGoal("init");
 	}
 
-	@Trigger(type = BELIEF_ADDED, template = "?classified rdf:type ?classifier")
-	@Filter(type = AGENT_HAVE_BELIEF, template = "?classified rdf:type ?classifier")
-	@Filter(type = AGENT_HAVE_BELIEF, template = "?classifier ?b ?c")
-	@Filter(type = AGENT_HAVE_BELIEF, template = "?classifier ?b ?c")
+	@BeliefAdded("?classified rdf:type ?classifier")
+	@HaveBelief("?classifier ?b ?c")
 	public void onSomeClassified() {
 
 	}
-	
-	@Trigger(type = BELIEF_ADDED, template = "?classified rdf:type ?classifier")
-	@Filter(type = AGENT_HAVE_BELIEF, template = "?classified rdf:type ?classifier")
-	@Filter(type = AGENT_HAVE_BELIEF, template = "?classifier ?b ?c")
+
+	@BeliefAdded("?classified rdf:type ?classifier")
+	@HaveBelief("?classifier ?b ?c")
 	public void onSomeClassifiedw() {
 
 	}
 
-	@Trigger(type = MESSAGE_ADDED)
-	@Filter(type = MESSAGE_HAVE_PERFORMATIVE, template = "INFO")
+	@MessageAdded(performative = "INFO")
 	public void sdf() {
 
 	}
 
-	@Trigger(type = MESSAGE_ADDED, template = "ru.agentlab.maia.messaging.IMessageDeliveryService")
-	@Filter(type = AGENT_HAVE_BELIEF, template = "?classifier ?b ?c")
-	@Filter(type = AGENT_HAVE_BELIEF, template = "?classifier ?b ?c")
-	public void destroy() {
-		// messaging.send("Good Buy");
+	@RoleAdded(HelloWorld.class)
+	public void onHelloWorldAdded() {
 	}
 
 }

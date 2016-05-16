@@ -189,5 +189,7 @@ public interface IMessage {
 
 	void setPostTimeStamp(final long postTimeStamp);
 
+	String getPerformative();
+
 	void setPerformative(final String performative);
 }

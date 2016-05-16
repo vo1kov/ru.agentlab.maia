@@ -8,10 +8,8 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent;
 
-import ru.agentlab.maia.IEvent;
+public interface IEventMatcher<T> {
 
-public interface IEventMatcher {
-
-	IEventMatch match(IEvent event);
+	boolean match(T payload);
 	
 }

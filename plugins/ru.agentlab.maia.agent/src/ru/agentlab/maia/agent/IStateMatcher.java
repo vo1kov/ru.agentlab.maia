@@ -8,8 +8,10 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent;
 
+import ru.agentlab.maia.IAgent;
+
 public interface IStateMatcher {
 
-	IEventMatch match();
+	boolean match(IAgent agent);
 	
 }

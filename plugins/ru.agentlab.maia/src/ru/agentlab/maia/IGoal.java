@@ -10,6 +10,6 @@ package ru.agentlab.maia;
 
 public interface IGoal {
 
-	void addDesire(String string);
+	void get();
 
 }

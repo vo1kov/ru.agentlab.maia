@@ -10,6 +10,7 @@ package ru.agentlab.maia.agent;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
 
 import ru.agentlab.maia.IBeliefBase;
-import ru.agentlab.maia.IEventQueue;
+import ru.agentlab.maia.agent.event.BeliefAddedEvent;
 
 public class BeliefBase implements IBeliefBase {
 
@@ -42,7 +43,26 @@ public class BeliefBase implements IBeliefBase {
 
 	OWLDataFactory factory = manager.getOWLDataFactory();
 
-	IEventQueue eventBase;
+	private final Queue<IEvent<?>> eventQueue;
+
+	public BeliefBase(Queue<IEvent<?>> eventQueue, String namespace) {
+		this.eventQueue = eventQueue;
+		ontologyIRI = IRI.create(namespace);
+		try {
+			ontology = manager.createOntology(ontologyIRI);
+		} catch (OWLOntologyCreationException e) {
+			e.printStackTrace();
+		}
+		manager.addOntologyChangeListener(changes -> {
+			changes.forEach((OWLOntologyChange change) -> {
+				this.eventQueue.offer(new BeliefAddedEvent(change.getAxiom()));
+			});
+		}, (listener, changes) -> {
+			List<? extends OWLOntologyChange> filtered = changes.stream()
+					.filter(change -> change.getOntology() == ontology).collect(Collectors.toList());
+			listener.ontologiesChanged(filtered);
+		});
+	}
 
 	boolean onAddIndividual = false;
 	boolean onAddClass = false;
@@ -52,23 +72,28 @@ public class BeliefBase implements IBeliefBase {
 
 	OWLOntology ontology;
 
-	public BeliefBase(String namespace) throws OWLOntologyCreationException {
-		ontologyIRI = IRI.create(namespace);
-		ontology = manager.createOntology(ontologyIRI);
-		manager.addOntologyChangeListener(changes -> {
-			changes.forEach(change -> {
-
-			});
-			// if (onAddIndividual) {
-			// eventBase.offer(new Event(this,
-			// EventType.AGENT_BELIEF_CLASS_ASSERTION_ADDED, classAssertion));
-			// }
-		}, (listener, changes) -> {
-			List<? extends OWLOntologyChange> filtered = changes.stream()
-					.filter(change -> change.getOntology() == ontology).collect(Collectors.toList());
-			listener.ontologiesChanged(filtered);
-		});
-	}
+	// public BeliefBase(String namespace) {
+	// ontologyIRI = IRI.create(namespace);
+	// try {
+	// ontology = manager.createOntology(ontologyIRI);
+	// } catch (OWLOntologyCreationException e) {
+	// e.printStackTrace();
+	// }
+	// manager.addOntologyChangeListener(changes -> {
+	// changes.forEach(change -> {
+	//
+	// });
+	// // if (onAddIndividual) {
+	// // eventBase.offer(new Event(this,
+	// // EventType.AGENT_BELIEF_CLASS_ASSERTION_ADDED, classAssertion));
+	// // }
+	// }, (listener, changes) -> {
+	// List<? extends OWLOntologyChange> filtered = changes.stream()
+	// .filter(change -> change.getOntology() ==
+	// ontology).collect(Collectors.toList());
+	// listener.ontologiesChanged(filtered);
+	// });
+	// }
 
 	@Override
 	public void addClassDeclaration(String object) {
