@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="ru.agentlab.maia.target" sequenceNumber="83">
+<?pde version="3.8"?><target name="ru.agentlab.maia.target" sequenceNumber="84">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.sdk.ide" version="4.5.0.I20150603-2000"/>
@@ -53,6 +53,11 @@
 <unit id="org.aspectj.feature.group" version="1.8.9.201604061446"/>
 <unit id="org.eclipse.ajdt.feature.group" version="2.2.4.201604061446"/>
 <repository location="http://download.eclipse.org/tools/ajdt/45/dev/update"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.semanticweb.owlapi.feature.feature.group" version="4.0.0.201602051203"/>
+<unit id="org.semanticweb.owlapi.feature.source.feature.group" version="4.0.0.201602051203"/>
+<repository location="http://agentlab.ru/p2/orbit/org.semanticweb.owlapi/updates/nightly/latest/"/>
 </location>
 </locations>
 <includeBundles>
