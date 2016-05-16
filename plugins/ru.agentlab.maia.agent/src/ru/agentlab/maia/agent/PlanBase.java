@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
 import ru.agentlab.maia.agent.event.PlanAddedEvent;
@@ -31,7 +32,7 @@ public class PlanBase implements IPlanBase {
 
 	@Override
 	public void add(IPlan plan) {
-		Class<? extends IEvent<?>> type = plan.getType();
+		Class<? extends IEvent<?>> type = plan.getEventType();
 		List<IPlan> eventPlans = plans.get(type);
 		if (eventPlans == null) {
 			eventPlans = new ArrayList<IPlan>();
@@ -42,7 +43,7 @@ public class PlanBase implements IPlanBase {
 
 	@Override
 	public void remove(IPlan plan) {
-		List<IPlan> eventPlans = plans.get(plan.getType());
+		List<IPlan> eventPlans = plans.get(plan.getEventType());
 		eventPlans.remove(plan);
 		eventQueue.offer(new PlanRemovedEvent(plan));
 	}

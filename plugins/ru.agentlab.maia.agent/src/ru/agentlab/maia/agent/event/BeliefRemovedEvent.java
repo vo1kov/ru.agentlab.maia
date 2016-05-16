@@ -4,15 +4,10 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 
 import ru.agentlab.maia.agent.EventType;
 
-public class BeliefRemovedEvent extends BeliefBaseEvent {
+public class BeliefRemovedEvent extends AbstractBeliefBaseEvent {
 
 	public BeliefRemovedEvent(EventType type, OWLAxiom axiom) {
 		super(axiom);
-	}
-
-	@Override
-	public EventType getType() {
-		return EventType.BELIEF_REMOVED;
 	}
 
 }

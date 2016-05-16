@@ -9,12 +9,12 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 
 import ru.agentlab.maia.agent.IEventMatcher;
-import ru.agentlab.maia.agent.event.BeliefBaseEvent;
+import ru.agentlab.maia.agent.event.AbstractBeliefBaseEvent;
 
 @SuppressWarnings("rawtypes")
 public class BeliefBaseEventMatcher implements IEventMatcher {
 
-	Class<? extends BeliefBaseEvent> eventType;
+	Class<? extends AbstractBeliefBaseEvent> eventType;
 
 	String subject;
 
@@ -22,7 +22,7 @@ public class BeliefBaseEventMatcher implements IEventMatcher {
 
 	String object;
 
-	public BeliefBaseEventMatcher(Class<? extends BeliefBaseEvent> eventType, String subject, String predicate,
+	public BeliefBaseEventMatcher(Class<? extends AbstractBeliefBaseEvent> eventType, String subject, String predicate,
 			String object) {
 		this.eventType = eventType;
 		this.subject = subject;

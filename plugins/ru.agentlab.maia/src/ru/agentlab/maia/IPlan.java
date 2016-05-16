@@ -14,4 +14,6 @@ public interface IPlan {
 
 	Object execute() throws PlanExecutionException;
 
+	Class<? extends IEvent<?>> getEventType();
+
 }

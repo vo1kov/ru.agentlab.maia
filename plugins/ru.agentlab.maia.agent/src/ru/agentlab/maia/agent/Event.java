@@ -1,5 +1,7 @@
 package ru.agentlab.maia.agent;
 
+import ru.agentlab.maia.IEvent;
+
 public abstract class Event<T> implements IEvent<T> {
 
 	protected T payload;

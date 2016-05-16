@@ -10,11 +10,11 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 
 import ru.agentlab.maia.agent.IEventMatcher;
-import ru.agentlab.maia.agent.event.GoalBaseEvent;
+import ru.agentlab.maia.agent.event.AbstractGoalBaseEvent;
 
 public class GoalBaseEventMatcher implements IEventMatcher<OWLAxiom> {
 
-	Class<? extends GoalBaseEvent> eventType;
+	Class<? extends AbstractGoalBaseEvent> eventType;
 
 	String subject;
 
@@ -22,7 +22,7 @@ public class GoalBaseEventMatcher implements IEventMatcher<OWLAxiom> {
 
 	String object;
 
-	public GoalBaseEventMatcher(Class<? extends GoalBaseEvent> eventType, String subject, String predicate,
+	public GoalBaseEventMatcher(Class<? extends AbstractGoalBaseEvent> eventType, String subject, String predicate,
 			String object) {
 		this.eventType = eventType;
 		this.subject = subject;

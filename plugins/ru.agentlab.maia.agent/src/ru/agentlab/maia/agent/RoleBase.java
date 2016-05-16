@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 
+import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IRoleBase;
 import ru.agentlab.maia.agent.event.RoleAddedEvent;

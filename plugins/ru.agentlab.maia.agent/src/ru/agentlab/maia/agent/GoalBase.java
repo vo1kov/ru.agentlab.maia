@@ -2,6 +2,7 @@ package ru.agentlab.maia.agent;
 
 import java.util.Queue;
 
+import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.agent.event.GoalAddedEvent;
 

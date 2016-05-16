@@ -13,6 +13,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import ru.agentlab.maia.IAgent;
+import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.exception.PlanExecutionException;
 
@@ -61,6 +62,12 @@ public class Plan implements IPlan {
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			throw new PlanExecutionException(e);
 		}
+	}
+
+	@Override
+	public Class<? extends IEvent<?>> getEventType() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	// @Override

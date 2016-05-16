@@ -19,6 +19,7 @@ import ru.agentlab.maia.AgentState;
 import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IContainer;
+import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.IPlanBase;

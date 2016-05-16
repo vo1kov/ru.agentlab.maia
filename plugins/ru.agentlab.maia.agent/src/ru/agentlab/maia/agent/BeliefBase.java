@@ -34,6 +34,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
 
 import ru.agentlab.maia.IBeliefBase;
+import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.agent.event.BeliefAddedEvent;
 
 public class BeliefBase implements IBeliefBase {

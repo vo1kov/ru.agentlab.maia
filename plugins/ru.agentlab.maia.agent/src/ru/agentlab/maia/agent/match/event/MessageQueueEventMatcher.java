@@ -1,15 +1,15 @@
 package ru.agentlab.maia.agent.match.event;
 
 import ru.agentlab.maia.agent.IEventMatcher;
-import ru.agentlab.maia.agent.event.MessageQueueEvent;
+import ru.agentlab.maia.agent.event.AbstractMessageQueueEvent;
 
 public class MessageQueueEventMatcher implements IEventMatcher<Class<?>> {
 
-	Class<? extends MessageQueueEvent> eventType;
+	Class<? extends AbstractMessageQueueEvent> eventType;
 
 	Class<?> clazz;
 
-	public MessageQueueEventMatcher(Class<? extends MessageQueueEvent> eventType, Class<?> template) {
+	public MessageQueueEventMatcher(Class<? extends AbstractMessageQueueEvent> eventType, Class<?> template) {
 		this.eventType = eventType;
 		this.clazz = template;
 	}
