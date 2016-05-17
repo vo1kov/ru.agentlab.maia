@@ -4,6 +4,7 @@ import ru.agentlab.maia.container.events.MaiaContextChangeObjectEvent;
 import ru.agentlab.maia.container.events.MaiaContextRemoveObjectEvent;
 import ru.agentlab.maia.container.events.MaiaContextSetObjectEvent;
 import ru.agentlab.maia.event.IMaiaEventBroker;
+import ru.agentlab.maia.exception.ServiceNotFound;
 import ru.agentlab.maia.IContainer;
 import ru.agentlab.maia.container.aspect.AContext;
 
@@ -12,8 +13,11 @@ public aspect AContextEvents extends AContext {
 	void around(IContainer context, String id): onRemoveByString(context, id) {
 		IMaiaEventBroker broker = null;
 		Object old = null;
-		broker = context.get(IMaiaEventBroker.class);
-		old = context.getLocal(id);
+		try {
+			broker = context.get(IMaiaEventBroker.class);
+			old = context.getLocal(id);
+		} catch (ServiceNotFound e){
+		}
 
 		proceed(context, id);
 
@@ -27,8 +31,11 @@ public aspect AContextEvents extends AContext {
 	void around(IContainer context, Class<?> id): onRemoveByClass(context, id) {
 		IMaiaEventBroker broker = null;
 		Object old = null;
-		broker = context.get(IMaiaEventBroker.class);
-		old = context.getLocal(id);
+		try {
+			broker = context.get(IMaiaEventBroker.class);
+			old = context.getLocal(id);
+		} catch (ServiceNotFound e){
+		}
 
 		proceed(context, id);
 
@@ -42,8 +49,11 @@ public aspect AContextEvents extends AContext {
 	void around(IContainer context, String id, Object value): onSetByString(context, id, value) {
 		IMaiaEventBroker broker = null;
 		Object old = null;
-		broker = context.get(IMaiaEventBroker.class);
-		old = context.getLocal(id);
+		try {
+			broker = context.get(IMaiaEventBroker.class);
+			old = context.getLocal(id);
+		} catch (ServiceNotFound e){
+		}
 
 		proceed(context, id, value);
 
@@ -59,8 +69,11 @@ public aspect AContextEvents extends AContext {
 	void around(IContainer context, Class<?> id, Object value): onSetByClass(context, id, value) {
 		IMaiaEventBroker broker = null;
 		Object old = null;
-		broker = context.get(IMaiaEventBroker.class);
-		old = context.getLocal(id);
+		try {
+			broker = context.get(IMaiaEventBroker.class);
+			old = context.getLocal(id);
+		} catch (ServiceNotFound e){
+		}
 
 		proceed(context, id, value);
 
