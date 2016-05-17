@@ -44,5 +44,9 @@ class AclMessage implements IMessage {
 	private long postTimeStamp = -1
 
 	private IMessageEnvelope envelope
+	
+	override createReply() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
 
 }
