@@ -10,6 +10,8 @@ package ru.agentlab.maia;
 
 public interface IGoalBase {
 
-	void addGoal(String string);
+	IGoal addGoal(String string);
+
+	boolean removeGoal(String property);
 
 }

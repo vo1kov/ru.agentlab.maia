@@ -192,4 +192,6 @@ public interface IMessage {
 	String getPerformative();
 
 	void setPerformative(final String performative);
+	
+	IMessage createReply();
 }
