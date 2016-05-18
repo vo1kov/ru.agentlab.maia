@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.1.0">
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>21</x>
+      <y>168</y>
+      <w>196</w>
+      <h>238</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+*ru.agentlab.maia::IContainer*
+--
++getParent() : IContainer
++getInjector() : IInjector
++getChilds() : Iterable&lt;IContainer&gt;
++addChild(container : IContainer)
++removeChild(container : IContainer)
++clearChilds()
++setParent(parent : IContainer) : IContainer
++getUuid() : String
++get(key : String) : Object
++get(key : Class&lt;T&gt;) : T
++getLocal(key : String) : Object
++getLocal(key : Class&lt;T&gt;) : T
++getKeySet() : Set&lt;String&gt;
++remove(key : String) : Object
++remove(key : Class&lt;T&gt;) : Object
++clear() : boolean
++put(key : String, Object value) : Object
++put(key : Class&lt;T&gt;, T value) : Object
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>161</x>
+      <y>364</y>
+      <w>126</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=parent
+m2=child
+fg=gray</panel_attributes>
+    <additional_attributes>80.0;10.0;160.0;10.0;160.0;120.0;10.0;120.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>21</x>
+      <y>504</y>
+      <w>420</w>
+      <h>189</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+*ru.agentlab.maia::IInjector*
+--
++make(clazz : Class&lt;T&gt;) : T
++inject(object : Object)
++deploy(clazz : Class&lt;T&gt;) : T
++deploy(clazz : Class&lt;T&gt;, key : String) : T
++deploy(clazz : Class&lt;? extends T&gt;, interf : Class&lt;T&gt;) : T
++deploy(service : Object) : Object
++deploy(service : Object, key : String) : Object
++deploy(service : T, interf : Class&lt;T&gt;) : T
++invoke(object : Object, method : Method, defaultValue : Object) : Object
++invoke(object : Object, methodName : String, defaultValue : Object) : Object
++invoke(object : Object, qualifier : Class&lt;? extends Annotation&gt;, defaultValue : Object) : Object
++invoke(object : Object, method : Method) : Object
++invoke(object : Object, methodName : String) : Object
++invoke(object : Object, qualifier : Class&lt;? extends Annotation&gt;) : Object
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>70</x>
+      <y>399</y>
+      <w>63</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=container
+m2=injector
+fg=gray</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+</diagram>

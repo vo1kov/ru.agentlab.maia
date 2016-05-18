@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/ru.agentlab.maia.context.e4.feature_1.0.0.qualifier.jar" id="ru.agentlab.maia.context.e4.feature" version="1.0.0.qualifier">
-      <category name="ru.agentlab.maia"/>
-   </feature>
    <feature url="features/ru.agentlab.maia.sdk.feature_1.0.0.qualifier.jar" id="ru.agentlab.maia.sdk.feature" version="1.0.0.qualifier">
       <category name="ru.agentlab.maia"/>
    </feature>

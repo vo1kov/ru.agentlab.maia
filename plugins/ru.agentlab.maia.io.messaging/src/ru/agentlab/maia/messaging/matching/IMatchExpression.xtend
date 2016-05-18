@@ -1,6 +1,6 @@
 package ru.agentlab.maia.messaging.matching
 
-import ru.agentlab.maia.messaging.IMessage
+import ru.agentlab.maia.IMessage
 
 /**
  * 	 This interface must be overriden in order to define an application 

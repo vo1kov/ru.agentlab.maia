@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.1.0">
+  <zoom_level>11</zoom_level>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>99</x>
+      <y>209</y>
+      <w>374</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Class&gt;&gt;
+Role
+bg=orange
+fontsize=18
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>242</x>
+      <y>275</y>
+      <w>209</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Method&gt;&gt;
+Plan Body
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>352</x>
+      <y>330</y>
+      <w>99</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=[&lt;&lt;parameter&gt;&gt;]-(
+layer=4
+bg=orange</panel_attributes>
+    <additional_attributes>40.0;10.0;40.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>253</x>
+      <y>330</y>
+      <w>99</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=[&lt;&lt;parameter&gt;&gt;]-(
+layer=4
+bg=orange</panel_attributes>
+    <additional_attributes>40.0;10.0;40.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>121</x>
+      <y>275</y>
+      <w>110</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Method&gt;&gt;
+Plan Body
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>132</x>
+      <y>330</y>
+      <w>99</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=[&lt;&lt;parameter&gt;&gt;]-(
+layer=4
+bg=orange</panel_attributes>
+    <additional_attributes>40.0;10.0;40.0;70.0</additional_attributes>
+  </element>
+</diagram>
