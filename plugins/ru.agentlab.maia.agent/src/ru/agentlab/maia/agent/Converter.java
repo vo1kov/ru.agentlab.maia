@@ -3,6 +3,7 @@ package ru.agentlab.maia.agent;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.agent.event.BeliefAddedEvent;
 import ru.agentlab.maia.agent.event.BeliefRemovedEvent;
 import ru.agentlab.maia.agent.event.GoalAddedEvent;
@@ -35,7 +36,7 @@ import ru.agentlab.maia.annotation.RoleUnresolved;
 
 public class Converter {
 
-	public static void toMatcher(Method method) {
+	public static IPlan toPlan(Method method) {
 		Plan plan = new Plan();
 		for (Annotation annotation : method.getAnnotations()) {
 			if (annotation instanceof BeliefAdded) {
@@ -66,6 +67,7 @@ public class Converter {
 				plan.addStateMatcher(toMatcher((HaveRole) annotation));
 			}
 		}
+		return plan;
 	}
 
 	private static IStateMatcher toMatcher(HaveRole ann) {
