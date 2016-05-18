@@ -16,4 +16,12 @@ public class BeliefAddedDummy {
 	public void onlyTwoParameter() {
 	}
 
+	@BeliefAdded("one two three")
+	public void exactlyThreeParameter() {
+	}
+
+	@BeliefAdded("?one ?two ?three")
+	public void exactlyThreeVariables() {
+	}
+
 }
