@@ -23,6 +23,7 @@ import ru.agentlab.maia.agent.event.RoleAddedEvent;
 import ru.agentlab.maia.agent.event.RoleRemovedEvent;
 import ru.agentlab.maia.agent.event.RoleResolvedEvent;
 import ru.agentlab.maia.agent.event.RoleUnresolvedEvent;
+import ru.agentlab.maia.agent.test.doubles.BeliefAddedDummy;
 import ru.agentlab.maia.annotation.BeliefAdded;
 import ru.agentlab.maia.annotation.BeliefRemoved;
 import ru.agentlab.maia.annotation.GoalAdded;
@@ -141,7 +142,7 @@ public class ConverterToPlanTest {
     }
 
 	@DataPoints("template parameters")
-	public static String[] beliefParameters() {
+	public static String[] templateParameters() {
 		return new String[] {
 			"",
 			"one",
@@ -154,11 +155,57 @@ public class ConverterToPlanTest {
 			"?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?c"
 		};
 	}
+
+	@DataPoints("method reference parameters")
+	public static String[] planParameters() {
+		return new String[] {
+			"",
+			"BeliefAddedDummy::valid",
+			"BeliefAddedDummy::aaaa",
+			"BeliefAddedDummy::",
+			"::valid"
+		};
+	}
+
+	@DataPoints("class parameters")
+	public static Class<?>[] classParameters() {
+		return new Class<?>[] {
+			byte.class,
+			short.class,
+			int.class,
+			long.class,
+			float.class,
+			double.class,
+			boolean.class,
+			char.class,
+			Object.class,
+			BeliefAddedDummy.class
+		};
+	}
 	// @formatter:on
 
 	@Theory
-	public void sumShouldBeCommutative(@FromDataPoints("belief annotations") Class<?> annotation,
+	public void testBeliefAnnotations(@FromDataPoints("belief annotations") Class<?> annotation,
 			@FromDataPoints("template parameters") String parameter) {
+		System.out.println(annotation + "   " + parameter);
+	}
+
+	@Theory
+	public void testGoalAnnotations(@FromDataPoints("goal annotations") Class<?> annotation,
+			@FromDataPoints("template parameters") String parameter) {
+		System.out.println(annotation + "   " + parameter);
+	}
+
+	@Theory
+	public void testPlanAnnotations(@FromDataPoints("plan annotations") Class<?> annotation,
+			@FromDataPoints("method reference parameters") String parameter) {
+		System.out.println(annotation + "   " + parameter);
+	}
+
+	@Theory
+	public void testRoleAnnotations(@FromDataPoints("role annotations") Class<?> annotation,
+			@FromDataPoints("class parameters") Class<?> parameter) {
+		System.out.println(annotation + "   " + parameter);
 	}
 
 }
