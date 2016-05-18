@@ -24,4 +24,8 @@ public class BeliefAddedDummy {
 	public void exactlyThreeVariables() {
 	}
 
+	@BeliefAdded("?one ?two ?three")
+	public void valid() {
+	}
+
 }
