@@ -1,22 +1,24 @@
 package ru.agentlab.maia.agent.match.event;
 
-import ru.agentlab.maia.agent.IEventMatcher;
-import ru.agentlab.maia.agent.event.AbstractRoleBaseEvent;
+import ru.agentlab.maia.agent.match.IMatch;
+import ru.agentlab.maia.agent.match.IMatcher;
+import ru.agentlab.maia.agent.match.common.JavaClassMatcher;
+import ru.agentlab.maia.event.AbstractRoleBaseEvent;
 
-public class RoleBaseEventMatcher implements IEventMatcher<Class<?>> {
+public class RoleBaseEventMatcher implements IMatcher<Class<?>> {
 
 	Class<? extends AbstractRoleBaseEvent> eventType;
 
-	Class<?> clazz;
+	JavaClassMatcher template;
 
-	public RoleBaseEventMatcher(Class<? extends AbstractRoleBaseEvent> eventType, Class<?> template) {
+	public RoleBaseEventMatcher(Class<? extends AbstractRoleBaseEvent> eventType, JavaClassMatcher template) {
 		this.eventType = eventType;
-		this.clazz = template;
+		this.template = template;
 	}
 
 	@Override
-	public boolean match(Class<?> payload) {
-		return payload == clazz;
+	public IMatch match(Class<?> payload) {
+		return template.match(payload);
 	}
 
 }

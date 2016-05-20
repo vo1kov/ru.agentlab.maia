@@ -17,7 +17,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ru.agentlab.maia.IMessage;
-import ru.agentlab.maia.annotation.BeliefAdded;
+import ru.agentlab.maia.annotation.BeliefDataPropertyAdded;
 import ru.agentlab.maia.annotation.HaveBelief;
 import ru.agentlab.maia.annotation.MessageAdded;
 import ru.agentlab.maia.annotation.Prefix;
@@ -66,7 +66,7 @@ public class BundleSubscriptionResponder {
 		}
 	}
 
-	@BeliefAdded("?bundle ?property ?value")
+	@BeliefDataPropertyAdded("?bundle ?property ?value")
 	@HaveBelief("?bundle rdf:type osgi:Bundle")
 	@Prefix(name = "osgi", namespace = "http://www.agentlab.ru/ontologies/osgi")
 	public void onPropertyChanged(@Named("bundle") String bundle, @Named("property") String property,

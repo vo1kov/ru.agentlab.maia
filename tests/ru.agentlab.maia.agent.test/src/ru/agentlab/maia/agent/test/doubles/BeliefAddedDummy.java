@@ -1,30 +1,30 @@
 package ru.agentlab.maia.agent.test.doubles;
 
-import ru.agentlab.maia.annotation.BeliefAdded;
+import ru.agentlab.maia.annotation.BeliefDataPropertyAdded;
 
 public class BeliefAddedDummy {
 
-	@BeliefAdded("")
+	@BeliefDataPropertyAdded("")
 	public void emptyParameter() {
 	}
 
-	@BeliefAdded("one")
+	@BeliefDataPropertyAdded("one")
 	public void onlyOneParameter() {
 	}
 
-	@BeliefAdded("one two")
+	@BeliefDataPropertyAdded("one two")
 	public void onlyTwoParameter() {
 	}
 
-	@BeliefAdded("one two three")
+	@BeliefDataPropertyAdded("one two three")
 	public void exactlyThreeParameter() {
 	}
 
-	@BeliefAdded("?one ?two ?three")
+	@BeliefDataPropertyAdded("?one ?two ?three")
 	public void exactlyThreeVariables() {
 	}
 
-	@BeliefAdded("?one ?two ?three")
+	@BeliefDataPropertyAdded("?one ?two ?three")
 	public void valid() {
 	}
 

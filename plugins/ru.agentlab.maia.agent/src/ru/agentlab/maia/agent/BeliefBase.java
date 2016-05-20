@@ -35,7 +35,7 @@ import org.semanticweb.owlapi.util.OWLEntityRemover;
 
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IEvent;
-import ru.agentlab.maia.agent.event.BeliefAddedEvent;
+import ru.agentlab.maia.event.BeliefClassificationAddedEvent;
 
 public class BeliefBase implements IBeliefBase {
 
@@ -56,7 +56,7 @@ public class BeliefBase implements IBeliefBase {
 		}
 		manager.addOntologyChangeListener(changes -> {
 			changes.forEach((OWLOntologyChange change) -> {
-				this.eventQueue.offer(new BeliefAddedEvent(change.getAxiom()));
+				this.eventQueue.offer(new BeliefClassificationAddedEvent(change.getAxiom()));
 			});
 		}, (listener, changes) -> {
 			List<? extends OWLOntologyChange> filtered = changes.stream()

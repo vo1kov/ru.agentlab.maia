@@ -15,8 +15,8 @@ import javax.inject.Inject;
 import ru.agentlab.maia.IGoal;
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IMessage;
-import ru.agentlab.maia.annotation.GoalFailed;
-import ru.agentlab.maia.annotation.GoalFinished;
+import ru.agentlab.maia.annotation.GoalClassificationFailed;
+import ru.agentlab.maia.annotation.GoalClassificationFinished;
 import ru.agentlab.maia.annotation.MessageAdded;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
 
@@ -51,7 +51,7 @@ public class BundleRequestResponder {
 		}
 	}
 
-	@GoalFinished("")
+	@GoalClassificationFinished("")
 	public void onGoalFinished(IGoal goal) {
 		IMessage message = requests.get(goal);
 		if (message != null) {
@@ -59,7 +59,7 @@ public class BundleRequestResponder {
 		}
 	}
 
-	@GoalFailed("")
+	@GoalClassificationFailed("")
 	public void onGoalFailed(IGoal goal) {
 		IMessage message = requests.get(goal);
 		if (message != null) {

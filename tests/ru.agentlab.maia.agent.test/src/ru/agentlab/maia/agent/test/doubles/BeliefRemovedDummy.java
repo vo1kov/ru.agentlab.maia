@@ -1,26 +1,26 @@
 package ru.agentlab.maia.agent.test.doubles;
 
-import ru.agentlab.maia.annotation.BeliefRemoved;
+import ru.agentlab.maia.annotation.BeliefDataPropertyRemoved;
 
 public class BeliefRemovedDummy {
 
-	@BeliefRemoved("")
+	@BeliefDataPropertyRemoved("")
 	public void emptyParameter() {
 	}
 
-	@BeliefRemoved("one")
+	@BeliefDataPropertyRemoved("one")
 	public void onlyOneParameter() {
 	}
 
-	@BeliefRemoved("one two")
+	@BeliefDataPropertyRemoved("one two")
 	public void onlyTwoParameter() {
 	}
 
-	@BeliefRemoved("one two three")
+	@BeliefDataPropertyRemoved("one two three")
 	public void exactlyThreeParameter() {
 	}
 
-	@BeliefRemoved("?one ?two ?three")
+	@BeliefDataPropertyRemoved("?one ?two ?three")
 	public void exactlyThreeVariables() {
 	}
 

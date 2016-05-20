@@ -5,7 +5,7 @@ import javax.inject.Inject;
 
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IMessage;
-import ru.agentlab.maia.annotation.GoalAdded;
+import ru.agentlab.maia.annotation.GoalClassificationAdded;
 import ru.agentlab.maia.annotation.InitialBelief;
 import ru.agentlab.maia.annotation.InitialGoal;
 import ru.agentlab.maia.messaging.AclMessage;
@@ -28,7 +28,7 @@ public class HelloWorld {
 		goalBase.addGoal("init");
 	}
 
-	@GoalAdded("init")
+	@GoalClassificationAdded("init")
 	public void onInit() {
 		IMessage message = new AclMessage();
 		message.setContent("Hello World");

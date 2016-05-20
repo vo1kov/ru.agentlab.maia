@@ -1,7 +1,7 @@
 package ru.agentlab.maia.agent.match.event;
 
-import ru.agentlab.maia.agent.IEventMatcher;
-import ru.agentlab.maia.agent.event.AbstractMessageQueueEvent;
+import ru.agentlab.maia.agent.match.IEventMatcher;
+import ru.agentlab.maia.event.AbstractMessageQueueEvent;
 
 public class MessageQueueEventMatcher implements IEventMatcher<Class<?>> {
 

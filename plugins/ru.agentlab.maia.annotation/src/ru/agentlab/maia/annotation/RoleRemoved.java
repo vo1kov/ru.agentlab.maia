@@ -11,6 +11,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface RoleRemoved {
 
-	Class<?> value();
+	Class<? extends Object> value();
 
 }

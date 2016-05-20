@@ -15,6 +15,8 @@ import java.util.List;
 import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IPlan;
+import ru.agentlab.maia.agent.match.IEventMatcher;
+import ru.agentlab.maia.agent.match.IStateMatcher;
 import ru.agentlab.maia.exception.PlanExecutionException;
 
 public class Plan implements IPlan {

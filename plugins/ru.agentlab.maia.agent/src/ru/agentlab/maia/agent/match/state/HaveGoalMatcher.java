@@ -1,20 +1,15 @@
 package ru.agentlab.maia.agent.match.state;
 
 import ru.agentlab.maia.IAgent;
-import ru.agentlab.maia.agent.IStateMatcher;
+import ru.agentlab.maia.agent.match.IStateMatcher;
+import ru.agentlab.maia.agent.match.common.OWLAxiomMatcher;
 
 public class HaveGoalMatcher implements IStateMatcher {
 
-	String subject;
+	OWLAxiomMatcher template;
 
-	String predicate;
-
-	String object;
-
-	public HaveGoalMatcher(String subject, String predicate, String object) {
-		this.subject = subject;
-		this.predicate = predicate;
-		this.object = object;
+	public HaveGoalMatcher(OWLAxiomMatcher template) {
+		this.template = template;
 	}
 
 	@Override

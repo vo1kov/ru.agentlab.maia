@@ -1,58 +1,25 @@
 package ru.agentlab.maia.agent.match.event;
 
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
-import org.semanticweb.owlapi.model.OWLIndividual;
-import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
+import org.semanticweb.owlapi.model.OWLAxiom;
 
-import ru.agentlab.maia.agent.IEventMatcher;
-import ru.agentlab.maia.agent.event.AbstractBeliefBaseEvent;
+import ru.agentlab.maia.agent.match.IMatch;
+import ru.agentlab.maia.agent.match.IMatcher;
+import ru.agentlab.maia.event.AbstractBeliefBaseEvent;
 
-@SuppressWarnings("rawtypes")
-public class BeliefBaseEventMatcher implements IEventMatcher {
+public class BeliefBaseEventMatcher implements IMatcher<OWLAxiom> {
 
 	Class<? extends AbstractBeliefBaseEvent> eventType;
 
-	String subject;
+	OWLAxiomMatcher template;
 
-	String predicate;
-
-	String object;
-
-	public BeliefBaseEventMatcher(Class<? extends AbstractBeliefBaseEvent> eventType, String subject, String predicate,
-			String object) {
+	public BeliefBaseEventMatcher(Class<? extends AbstractBeliefBaseEvent> eventType, OWLAxiomMatcher template) {
 		this.eventType = eventType;
-		this.subject = subject;
-		this.predicate = predicate;
-		this.object = object;
+		this.template = template;
 	}
 
-	@SuppressWarnings("unused")
 	@Override
-	public boolean match(Object eventData) {
-		if (eventData instanceof OWLObjectPropertyAssertionAxiom) {
-			OWLObjectPropertyAssertionAxiom axiom = (OWLObjectPropertyAssertionAxiom) eventData;
-			OWLIndividual subjectIndividual = axiom.getSubject();
-			if (subjectIndividual.isNamed()) {
-				IRI subjectIRI = subjectIndividual.asOWLNamedIndividual().getIRI();
-				if (subject != null) {
-					if (!subjectIRI.toString().equalsIgnoreCase(subject)) {
-						return false;
-					}
-				}
-			}
-			OWLObjectPropertyExpression property = axiom.getProperty();
-			OWLIndividual object = axiom.getObject();
-		} else if (eventData instanceof OWLDataPropertyAssertionAxiom) {
-			OWLDataPropertyAssertionAxiom axiom = (OWLDataPropertyAssertionAxiom) eventData;
-			OWLIndividual subject = axiom.getSubject();
-			OWLDataPropertyExpression property = axiom.getProperty();
-			OWLLiteral object = axiom.getObject();
-		}
-		return false;
+	public IMatch match(OWLAxiom owlAxiom) {
+		return template.match(owlAxiom);
 	}
 
 }

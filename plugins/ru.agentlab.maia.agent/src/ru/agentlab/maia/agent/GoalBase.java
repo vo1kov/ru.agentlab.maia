@@ -5,7 +5,7 @@ import java.util.Queue;
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IGoal;
 import ru.agentlab.maia.IGoalBase;
-import ru.agentlab.maia.agent.event.GoalAddedEvent;
+import ru.agentlab.maia.event.GoalClassificationAddedEvent;
 
 public class GoalBase implements IGoalBase {
 
@@ -18,7 +18,7 @@ public class GoalBase implements IGoalBase {
 	@Override
 	public IGoal addGoal(String string) {
 		Goal goal = new Goal(string);
-		eventQueue.offer(new GoalAddedEvent(goal));
+		eventQueue.offer(new GoalClassificationAddedEvent(goal));
 		return null;
 	}
 

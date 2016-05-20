@@ -1,7 +1,7 @@
 package ru.agentlab.maia.agent.match.state;
 
 import ru.agentlab.maia.IAgent;
-import ru.agentlab.maia.agent.IStateMatcher;
+import ru.agentlab.maia.agent.match.IStateMatcher;
 
 public class HaveRoleMatcher implements IStateMatcher {
 
