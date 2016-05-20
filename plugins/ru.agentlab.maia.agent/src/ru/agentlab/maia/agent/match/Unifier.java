@@ -25,4 +25,9 @@ public class Unifier implements IUnifier {
 		return values.put(key, value);
 	}
 
+	@Override
+	public void remove(String key) {
+		values.remove(key);
+	}
+
 }

@@ -33,4 +33,10 @@ public class OWLObjectPropertyAssertionAxiomMatcher implements IMatcher<OWLObjec
 				&& objectMatcher.match(object.asOWLNamedIndividual(), unifier);
 	}
 
+	@Override
+	public String toString() {
+		return "ObjectPropertyMatcher " + "(" + subjectMatcher.toString() + " " + propertyMatcher.toString()
+				+ objectMatcher.toString() + ")";
+	}
+
 }

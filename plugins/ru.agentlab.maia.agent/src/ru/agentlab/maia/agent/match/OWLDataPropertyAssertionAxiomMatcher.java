@@ -33,4 +33,10 @@ public class OWLDataPropertyAssertionAxiomMatcher implements IMatcher<OWLDataPro
 				&& propertyMatcher.match(property.asOWLDataProperty(), unifier) && objectMatcher.match(object, unifier);
 	}
 
+	@Override
+	public String toString() {
+		return "DataPropertyMatcher " + "(" + subjectMatcher.toString() + " " + propertyMatcher.toString()
+				+ objectMatcher.toString() + ")";
+	}
+
 }

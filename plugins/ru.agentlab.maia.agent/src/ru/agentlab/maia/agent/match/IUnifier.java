@@ -6,4 +6,6 @@ public interface IUnifier {
 
 	Object put(String key, Object value);
 
+	void remove(String value);
+
 }

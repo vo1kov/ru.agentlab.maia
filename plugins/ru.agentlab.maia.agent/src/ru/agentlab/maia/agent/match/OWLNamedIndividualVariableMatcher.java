@@ -22,4 +22,9 @@ public class OWLNamedIndividualVariableMatcher implements IMatcher<OWLNamedIndiv
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "?" + value;
+	}
+
 }

@@ -15,4 +15,9 @@ public class OWLNamedIndividualMatcher implements IMatcher<OWLNamedIndividual> {
 		return object.equals(value);
 	}
 
+	@Override
+	public String toString() {
+		return value.getIRI().toQuotedString();
+	}
+
 }

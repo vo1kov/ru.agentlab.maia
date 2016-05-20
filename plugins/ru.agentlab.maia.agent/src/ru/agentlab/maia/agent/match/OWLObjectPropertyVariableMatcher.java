@@ -22,4 +22,9 @@ public class OWLObjectPropertyVariableMatcher implements IMatcher<OWLObjectPrope
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "?" + value;
+	}
+
 }

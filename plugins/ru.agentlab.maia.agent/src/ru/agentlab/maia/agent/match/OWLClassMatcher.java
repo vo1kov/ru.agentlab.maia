@@ -15,4 +15,9 @@ public class OWLClassMatcher implements IMatcher<OWLClass> {
 		return object.equals(value);
 	}
 
+	@Override
+	public String toString() {
+		return value.getIRI().toQuotedString();
+	}
+
 }

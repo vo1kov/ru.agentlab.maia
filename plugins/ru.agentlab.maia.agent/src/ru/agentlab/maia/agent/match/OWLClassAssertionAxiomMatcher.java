@@ -28,4 +28,9 @@ public class OWLClassAssertionAxiomMatcher implements IMatcher<OWLClassAssertion
 				&& objectMatcher.match(object.asOWLClass(), unifier);
 	}
 
+	@Override
+	public String toString() {
+		return "ClassAssertionMatcher " + "(" + subjectMatcher.toString() + " " + objectMatcher.toString() + ")";
+	}
+
 }
