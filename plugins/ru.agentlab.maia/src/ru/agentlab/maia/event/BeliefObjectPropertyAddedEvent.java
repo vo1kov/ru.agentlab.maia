@@ -1,12 +1,12 @@
 package ru.agentlab.maia.event;
 
-import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 
 import ru.agentlab.maia.EventType;
 
-public class BeliefObjectPropertyAddedEvent extends Event<OWLClassAssertionAxiom> {
+public class BeliefObjectPropertyAddedEvent extends Event<OWLObjectPropertyAssertionAxiom> {
 
-	public BeliefObjectPropertyAddedEvent(OWLClassAssertionAxiom axiom) {
+	public BeliefObjectPropertyAddedEvent(OWLObjectPropertyAssertionAxiom axiom) {
 		super(axiom);
 	}
 
