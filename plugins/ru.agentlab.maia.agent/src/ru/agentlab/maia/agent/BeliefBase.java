@@ -18,6 +18,7 @@ import javax.inject.Inject;
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -36,6 +37,11 @@ import org.semanticweb.owlapi.util.OWLEntityRemover;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.event.BeliefClassificationAddedEvent;
+import ru.agentlab.maia.event.BeliefClassificationRemovedEvent;
+import ru.agentlab.maia.event.BeliefDataPropertyAddedEvent;
+import ru.agentlab.maia.event.BeliefDataPropertyRemovedEvent;
+import ru.agentlab.maia.event.BeliefObjectPropertyAddedEvent;
+import ru.agentlab.maia.event.BeliefObjectPropertyRemovedEvent;
 
 public class BeliefBase implements IBeliefBase {
 
@@ -56,7 +62,27 @@ public class BeliefBase implements IBeliefBase {
 		}
 		manager.addOntologyChangeListener(changes -> {
 			changes.forEach((OWLOntologyChange change) -> {
-				this.eventQueue.offer(new BeliefClassificationAddedEvent(change.getAxiom()));
+				OWLAxiom axiom = change.getAxiom();
+				if (change.isAddAxiom()) {
+					if (axiom instanceof OWLClassAssertionAxiom) {
+						this.eventQueue.offer(new BeliefClassificationAddedEvent((OWLClassAssertionAxiom) axiom));
+					} else if (axiom instanceof OWLDataPropertyAssertionAxiom) {
+						this.eventQueue.offer(new BeliefDataPropertyAddedEvent((OWLDataPropertyAssertionAxiom) axiom));
+					} else if (axiom instanceof OWLObjectPropertyAssertionAxiom) {
+						this.eventQueue
+								.offer(new BeliefObjectPropertyAddedEvent((OWLObjectPropertyAssertionAxiom) axiom));
+					}
+				} else if (change.isRemoveAxiom()) {
+					if (axiom instanceof OWLClassAssertionAxiom) {
+						this.eventQueue.offer(new BeliefClassificationRemovedEvent((OWLClassAssertionAxiom) axiom));
+					} else if (axiom instanceof OWLDataPropertyAssertionAxiom) {
+						this.eventQueue
+								.offer(new BeliefDataPropertyRemovedEvent((OWLDataPropertyAssertionAxiom) axiom));
+					} else if (axiom instanceof OWLObjectPropertyAssertionAxiom) {
+						this.eventQueue
+								.offer(new BeliefObjectPropertyRemovedEvent((OWLObjectPropertyAssertionAxiom) axiom));
+					}
+				}
 			});
 		}, (listener, changes) -> {
 			List<? extends OWLOntologyChange> filtered = changes.stream()

@@ -8,6 +8,21 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent.match;
 
-public interface IEventMatch {
+import java.util.HashMap;
+import java.util.Map;
+
+public class Unifier implements IUnifier {
+
+	Map<String, Object> values = new HashMap<String, Object>();
+
+	@Override
+	public Object get(String key) {
+		return values.get(key);
+	}
+
+	@Override
+	public Object put(String key, Object value) {
+		return values.put(key, value);
+	}
 
 }

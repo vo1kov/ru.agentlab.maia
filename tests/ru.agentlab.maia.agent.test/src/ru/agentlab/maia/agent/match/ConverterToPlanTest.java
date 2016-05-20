@@ -14,14 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
 import ru.agentlab.maia.agent.converter.Converter;
-import ru.agentlab.maia.agent.match.event.BeliefBaseEventMatcher;
 import ru.agentlab.maia.agent.test.doubles.BeliefAddedDummy;
-import ru.agentlab.maia.annotation.BeliefAdded;
-import ru.agentlab.maia.annotation.BeliefRemoved;
-import ru.agentlab.maia.annotation.GoalAdded;
-import ru.agentlab.maia.annotation.GoalFailed;
-import ru.agentlab.maia.annotation.GoalFinished;
-import ru.agentlab.maia.annotation.GoalRemoved;
 import ru.agentlab.maia.annotation.PlanAdded;
 import ru.agentlab.maia.annotation.PlanFailed;
 import ru.agentlab.maia.annotation.PlanFinished;
@@ -30,12 +23,6 @@ import ru.agentlab.maia.annotation.RoleAdded;
 import ru.agentlab.maia.annotation.RoleRemoved;
 import ru.agentlab.maia.annotation.RoleResolved;
 import ru.agentlab.maia.annotation.RoleUnresolved;
-import ru.agentlab.maia.event.BeliefAddedEvent;
-import ru.agentlab.maia.event.BeliefRemovedEvent;
-import ru.agentlab.maia.event.GoalAddedEvent;
-import ru.agentlab.maia.event.GoalFailedEvent;
-import ru.agentlab.maia.event.GoalFinishedEvent;
-import ru.agentlab.maia.event.GoalRemovedEvent;
 import ru.agentlab.maia.event.PlanAddedEvent;
 import ru.agentlab.maia.event.PlanFailedEvent;
 import ru.agentlab.maia.event.PlanFinishedEvent;
@@ -51,47 +38,50 @@ import ru.agentlab.maia.event.RoleUnresolvedEvent;
  * Test cases:
  * 
  * <pre>
- * ╔════╦════════════════════════════════════════════╦══════════════════════════╗
- * ║    ║                                      input ║                   output ║
- * ║ ## ╠════════════════╦═══════════════════════════╬══════════════════════════╣
- * ║    ║    annotations ║                 parameter ║                   result ║
- * ╚════╩════════════════╩═══════════════════════════╩══════════════════════════╝
- * │  0 │   @BeliefAdded │                        "" │  TemplateFormatException │
- * │  1 │ @BeliefRemoved │                     "one" │  TemplateFormatException │
- * │  2 │                │                 "one two" │  TemplateFormatException │
- * │  3 │                │           "one two three" │   LiteralFormatException │
- * │  4 │                │            "?a two three" │   LiteralFormatException │
- * │  5 │                │             "?a ?b three" │   LiteralFormatException │
- * │  6 │                │                "?a ?b ?c" │   BeliefBaseEventMatcher │
- * │  7 │                │    "?a <http...#type> ?c" │   BeliefBaseEventMatcher │
- * ├────┼────────────────┼───────────────────────────┼──────────────────────────┤
- * │  0 │     @GoalAdded │                        "" │  TemplateFormatException │
- * │  1 │   @GoalRemoved │                     "one" │  TemplateFormatException │
- * │  2 │    @GoalFailed │                 "one two" │  TemplateFormatException │
- * │  3 │  @GoalFinished │           "one two three" │   LiteralFormatException │
- * │  4 │                │            "?a two three" │   LiteralFormatException │
- * │  5 │                │             "?a ?b three" │   LiteralFormatException │
- * │  6 │                │                "?a ?b ?c" │     GoalBaseEventMatcher │
- * │  7 │                │    "?a <http...#type> ?c" │     GoalBaseEventMatcher │
- * ├────┼────────────────┼───────────────────────────┼──────────────────────────┤
- * │  0 │     @RoleAdded │                byte.class │ IllegalArgumentException │
- * │  1 │   @RoleRemoved │               short.class │ IllegalArgumentException │
- * │  2 │  @RoleResolved │                 int.class │ IllegalArgumentException │
- * │  3 │ @RoleUnesolved │                long.class │ IllegalArgumentException │
- * │  4 │                │               float.class │ IllegalArgumentException │
- * │  5 │                │              double.class │ IllegalArgumentException │
- * │  5 │                │             boolean.class │ IllegalArgumentException │
- * │  5 │                │                char.class │ IllegalArgumentException │
- * │  6 │                │              Object.class │ IllegalArgumentException │
- * │  7 │                │    BeliefAddedDummy.class │                    valid │
- * ├────┼────────────────┼───────────────────────────┼──────────────────────────┤
- * │  0 │     @PlanAdded │                        "" │  TemplateFormatException │
- * │  1 │   @PlanRemoved │ "BeliefAddedDummy::valid" │                    valid │
- * │  2 │    @PlanFailed │  "BeliefAddedDummy::aaaa" │  TemplateFormatException │
- * │  3 │  @PlanFinished │      "BeliefAddedDummy::" │  TemplateFormatException │
- * │  3 │                │                 "::valid" │  TemplateFormatException │
- * └────┴────────────────┴───────────────────────────┴──────────────────────────┘
- *  * - record marked as deleted
+ * ╔════╦══════════════════════════════════════════════════════════╦═══════════╗
+ * ║    ║                                                    input ║    output ║
+ * ║ ## ╠══════════════════════════════╦═══════════════════════════╬═══════════╣
+ * ║    ║                  annotations ║                 parameter ║    result ║
+ * ╚════╩══════════════════════════════╩═══════════════════════════╩═══════════╝
+ * │  0 │   @BeliefClassificationAdded │                        "" │ Exception │
+ * │  1 │ @BeliefClassificationRemoved │                     "one" │ Exception │
+ * │  2 │     @BeliefDataPropertyAdded │                 "one two" │ Exception │
+ * │  3 │   @BeliefDataPropertyRemoved │           "one two three" │ Exception │
+ * │  4 │   @BeliefObjectPropertyAdded │            "?a two three" │ Exception │
+ * │  5 │ @BeliefObjectPropertyRemoved │             "?a ?b three" │ Exception │
+ * │  6 │                              │                "?a ?b ?c" │   Matcher │
+ * │  7 │                              │    "?a <http...#type> ?c" │   Matcher │
+ * ├────┼──────────────────────────────┼───────────────────────────┼───────────┤
+ * │  8 │     @GoalClassificationAdded │                        "" │ Exception │
+ * │  9 │    @GoalClassificationFailed │                     "one" │ Exception │
+ * │ 10 │  @GoalClassificationFinished │                 "one two" │ Exception │
+ * │ 11 │   @GoalClassificationRemoved │           "one two three" │ Exception │
+ * │ 12 │       @GoalDataPropertyAdded │            "?a two three" │ Exception │
+ * │ 13 │      @GoalDataPropertyFailed │             "?a ?b three" │ Exception │
+ * │ 14 │    @GoalDataPropertyFinished │                "?a ?b ?c" │   Matcher │
+ * │ 15 │     @GoalDataPropertyRemoved │    "?a <http...#type> ?c" │   Matcher │
+ * │ 16 │     @GoalObjectPropertyAdded │                           │           │
+ * │ 17 │    @GoalObjectPropertyFailed │                           │           │
+ * │ 18 │  @GoalObjectPropertyFinished │                           │           │
+ * │ 19 │   @GoalObjectPropertyRemoved │                           │           │
+ * ├────┼──────────────────────────────┼───────────────────────────┼───────────┤
+ * │ 20 │                   @RoleAdded │                byte.class │ Exception │
+ * │ 21 │                 @RoleRemoved │               short.class │ Exception │
+ * │ 22 │                @RoleResolved │                 int.class │ Exception │
+ * │ 23 │               @RoleUnesolved │                long.class │ Exception │
+ * │ 24 │                              │               float.class │ Exception │
+ * │ 25 │                              │              double.class │ Exception │
+ * │ 26 │                              │             boolean.class │ Exception │
+ * │ 27 │                              │                char.class │ Exception │
+ * │ 28 │                              │              Object.class │ Exception │
+ * │ 29 │                              │    BeliefAddedDummy.class │   Matcher │
+ * ├────┼──────────────────────────────┼───────────────────────────┼───────────┤
+ * │ 30 │                   @PlanAdded │                        "" │ Exception │
+ * │ 31 │                 @PlanRemoved │ "BeliefAddedDummy::valid" │   Matcher │
+ * │ 32 │                  @PlanFailed │  "BeliefAddedDummy::aaaa" │ Exception │
+ * │ 33 │                @PlanFinished │      "BeliefAddedDummy::" │ Exception │
+ * │ 34 │                              │                 "::valid" │ Exception │
+ * └────┴──────────────────────────────┴───────────────────────────┴───────────┘
  * </pre>
  * 
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
@@ -119,69 +109,37 @@ public class ConverterToPlanTest {
 
 	// @formatter:off
 	@DataPoints("belief annotations")
-    public static Class<?>[] beliefAnnotations() {
-		return new Class<?>[] {
-			BeliefAdded.class,
-			BeliefRemoved.class
-		};
-    }
-	
+	public static Class<?>[] beliefAnnotations() {
+		return new Class<?>[] { BeliefAdded.class, BeliefRemoved.class };
+	}
+
 	@DataPoints("goal annotations")
-    public static Class<?>[] goalAnnotations() {
-		return new Class<?>[] {
-			GoalAdded.class,
-			GoalRemoved.class,
-			GoalFailed.class,
-			GoalFinished.class
-		};
-    }
-	
+	public static Class<?>[] goalAnnotations() {
+		return new Class<?>[] { GoalAdded.class, GoalRemoved.class, GoalFailed.class, GoalFinished.class };
+	}
+
 	@DataPoints("plan annotations")
-    public static Class<?>[] planAnnotations() {
-		return new Class<?>[] {
-			PlanAdded.class,
-			PlanRemoved.class,
-			PlanFailed.class,
-			PlanFinished.class
-		};
-    }
-	
+	public static Class<?>[] planAnnotations() {
+		return new Class<?>[] { PlanAdded.class, PlanRemoved.class, PlanFailed.class, PlanFinished.class };
+	}
+
 	@DataPoints("role annotations")
-    public static Class<?>[] roleAnnotations() {
-		return new Class<?>[] {
-			RoleAdded.class,
-			RoleRemoved.class,
-			RoleResolved.class,
-			RoleUnresolved.class
-		};
-    }
+	public static Class<?>[] roleAnnotations() {
+		return new Class<?>[] { RoleAdded.class, RoleRemoved.class, RoleResolved.class, RoleUnresolved.class };
+	}
 
 	@DataPoints("template parameters")
 	public static String[] templateParameters() {
-		return new String[] {
-			"",
-			"one",
-			"one two",
-			"one two three",
-			"?a two three",
-			"?a two three",
-			"?a ?b three",
-			"?a ?b ?c",
-			"?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?c"
-		};
+		return new String[] { "", "one", "one two", "one two three", "?a two three", "?a two three", "?a ?b three",
+				"?a ?b ?c", "?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?c" };
 	}
 
 	@DataPoints("method reference parameters")
 	public static String[] planParameters() {
-		return new String[] {
-			"",
-			"BeliefAddedDummy::valid",
-			"BeliefAddedDummy::aaaa",
-			"BeliefAddedDummy::",
-			"::valid"
-		};
+		return new String[] { "", "BeliefAddedDummy::valid", "BeliefAddedDummy::aaaa", "BeliefAddedDummy::",
+				"::valid" };
 	}
-	
+
 	private static Map<String, IEventMatcher<?>> 
 
 	@DataPoints("class parameters")
@@ -230,9 +188,9 @@ public class ConverterToPlanTest {
 			@FromDataPoints("class parameters") Class<?> parameter) {
 		System.out.println(annotation + "   " + parameter);
 	}
-	
+
 	class Triple {
-		
+
 	}
 
 }

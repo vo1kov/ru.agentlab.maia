@@ -217,9 +217,9 @@ public class Agent implements IAgent {
 			applicablePlans.forEach(plan -> {
 				try {
 					plan.execute();
-					eventQueue.offer(new PlanFinishedEvent(plan));
+					eventQueue.offer(new PlanFinishedEvent(plan.getMethod()));
 				} catch (Exception e) {
-					eventQueue.offer(new PlanFailedEvent(plan));
+					eventQueue.offer(new PlanFailedEvent(plan.getMethod()));
 				}
 			});
 

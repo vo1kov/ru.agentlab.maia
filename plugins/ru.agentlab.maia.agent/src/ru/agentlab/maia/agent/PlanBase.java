@@ -24,11 +24,9 @@ import ru.agentlab.maia.event.PlanRemovedEvent;
 
 public class PlanBase implements IPlanBase {
 
-	protected final Map<Class<? extends IEvent<?>>, List<IPlan>> plans = new HashMap<>();
-
 	protected final Queue<IEvent<?>> eventQueue;
 
-	EnumMap<EventType, List<IPlan>> planss = new EnumMap<>(EventType.class);
+	EnumMap<EventType, List<IPlan>> plans = new EnumMap<>(EventType.class);
 
 	public PlanBase(Queue<IEvent<?>> eventQueue) {
 		this.eventQueue = eventQueue;
@@ -36,19 +34,19 @@ public class PlanBase implements IPlanBase {
 
 	@Override
 	public void add(EventType type, IPlan plan) {
-		List<IPlan> eventPlans = planss.get(type);
+		List<IPlan> eventPlans = plans.get(type);
 		if (eventPlans == null) {
 			eventPlans = new ArrayList<IPlan>();
 		}
 		eventPlans.add(plan);
-		eventQueue.offer(new PlanAddedEvent(plan));
+		eventQueue.offer(new PlanAddedEvent(plan.getMethod()));
 	}
 
 	@Override
 	public void remove(IPlan plan) {
 		List<IPlan> eventPlans = plans.get(plan.getEventType());
 		eventPlans.remove(plan);
-		eventQueue.offer(new PlanRemovedEvent(plan));
+		eventQueue.offer(new PlanRemovedEvent(plan.getMethod()));
 	}
 
 }
