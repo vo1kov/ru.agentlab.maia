@@ -17,46 +17,41 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLNamedObject;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /**
- * 
- * <p>
  * Test cases:
+ * <!-- @formatter:off -->
+ * <table border="thin single black collapse">
+ * 	<thead>
+ * 		<tr><th rowspan="2">##</th><th colspan="4">Input</th><th colspan="2">Output</th></tr>
+ * 		<tr><th>Matcher Individual</th><th>Matcher Class</th><th>Axiom Individual</th><th>Axiom Class</th><th>Result</th><th>Unifier</th></tr>
+ * 	<thead>
+ * 	<tbody>
+ * 		<tr><td>0</td>  <td>URI1#test1</td> <td>URI1#class1</td> <td>URI1#test1</td> <td>URI1#class1</td> <td>true</td>  <td>empty</td></tr>
+ * 		<tr><td>1</td>  <td>URI1#test1</td> <td>URI1#class1</td> <td>URI1#test1</td> <td>URI1#xxxxxx</td> <td>false</td> <td>no matter</td></tr>
+ * 		<tr><td>2</td>  <td>URI1#test1</td> <td>URI1#class1</td> <td>URI1#xxxxx</td> <td>URI1#class1</td> <td>false</td> <td>no matter</td></tr>
+ * 		<tr><td>3</td>  <td>URI1#test1</td> <td>URI1#class1</td> <td>URI1#xxxxx</td> <td>URI1#xxxxxx</td> <td>false</td> <td>no matter</td></tr>
  * 
- * <pre>
+ * 		<tr><td>4</td>  <td>URI1#test1</td> <td>?class</td>      <td>URI1#test1</td> <td>URI1#class1</td> <td>true</td>  <td>?class=URI1#class1</td></tr>
+ * 		<tr><td>5</td>  <td>URI1#test1</td> <td>?class</td>      <td>URI1#test1</td> <td>URI1#xxxxxx</td> <td>true</td>  <td>?class=URI1#xxxxx</td></tr>
+ * 		<tr><td>6</td>  <td>URI1#test1</td> <td>?class</td>      <td>URI1#xxxxx</td> <td>URI1#class1</td> <td>false</td> <td>no matter</td></tr>
+ * 		<tr><td>7</td>  <td>URI1#test1</td> <td>?class</td>      <td>URI1#xxxxx</td> <td>URI1#xxxxxx</td> <td>false</td> <td>no matter</td></tr>
+ * 
+ * 		<tr><td>8</td>  <td>?indiv</td>     <td>URI1#class1</td> <td>URI1#test1</td> <td>URI1#class1</td> <td>true</td>  <td>?indiv=URI1#test1</td></tr>
+ * 		<tr><td>9</td>  <td>?indiv</td>     <td>URI1#class1</td> <td>URI1#test1</td> <td>URI1#xxxxxx</td> <td>false</td> <td>no matter</td></tr>
+ * 		<tr><td>10</td> <td>?indiv</td>     <td>URI1#class1</td> <td>URI1#xxxxx</td> <td>URI1#class1</td> <td>true</td>  <td>?indiv=URI1#xxxxx</td></tr>
+ * 		<tr><td>11</td> <td>?indiv</td>     <td>URI1#class1</td> <td>URI1#xxxxx</td> <td>URI1#xxxxxx</td> <td>false</td> <td>no matter</td></tr>
+ * 
+ * 		<tr><td>12</td> <td>?indiv</td>     <td>?class</td>      <td>URI1#test1</td> <td>URI1#class1</td> <td>true</td>  <td>?indiv=URI1#test1 ?class=URI1#class1</td></tr>
+ * 		<tr><td>13</td> <td>?indiv</td>     <td>?class</td>      <td>URI1#test1</td> <td>URI1#xxxxxx</td> <td>true</td>  <td>?indiv=URI1#test1 ?class=URI1#xxxxxx</td></tr>
+ * 		<tr><td>14</td> <td>?indiv</td>     <td>?class</td>      <td>URI1#xxxxx</td> <td>URI1#class1</td> <td>true</td>  <td>?indiv=URI1#xxxxx ?class=URI1#class1</td></tr>
+ * 		<tr><td>15</td> <td>?indiv</td>     <td>?class</td>      <td>URI1#xxxxx</td> <td>URI1#xxxxxx</td> <td>true</td>  <td>?indiv=URI1#xxxxx ?class=URI1#xxxxxx</td></tr>
+ * 	</tbody>
+ * </table>
+ * <!-- @formatter:on -->
  * URI1 = http://example.com#
- * ╔════╦═══════════════════════════════════════════════════════╦══════════════════════════════════╗
- * ║    ║                                                 input ║                           output ║
- * ║ ## ╠═════════════╦═════════════╦═════════════╦═════════════╬═════════════╦════════════════════╣
- * ║    ║    template ║    template ║       axiom ║       axiom ║             ║                    ║
- * ║    ║  individual ║       class ║  individual ║       class ║      result ║            unifier ║
- * ╚════╩═════════════╩═════════════╩═════════════╩═════════════╩═════════════╩════════════════════╝
- * │  0 │  URI1#test1 │ URI1#class1 │  URI1#test1 │ URI1#class1 │        true │              empty │
- * │  1 │  URI1#test1 │ URI1#class1 │  URI1#xxxxx │ URI1#class1 │       false │          no matter │
- * │  2 │  URI1#test1 │ URI1#class1 │  URI1#test1 │ URI1#xxxxxx │       false │          no matter │
- * │  3 │  URI1#test1 │ URI1#class1 │  URI1#xxxxx │ URI1#xxxxxx │       false │          no matter │
- * ├────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────────────┤
- * │  4 │  URI1#test1 │      ?class │  URI1#test1 │ URI1#class1 │        true │ ?class=URI1#class1 │
- * │  5 │  URI1#test1 │      ?class │  URI1#xxxxx │ URI1#class1 │       false │          no matter │
- * │  6 │  URI1#test1 │      ?class │  URI1#test1 │ URI1#xxxxxx │        true │ ?class=URI1#xxxxxx │
- * │  7 │  URI1#test1 │      ?class │  URI1#xxxxx │ URI1#xxxxxx │       false │          no matter │
- * ├────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────────────┤
- * │  8 │      ?indiv │ URI1#class1 │  URI1#test1 │ URI1#class1 │        true │  ?indiv=URI1#test1 │
- * │  9 │      ?indiv │ URI1#class1 │  URI1#xxxxx │ URI1#class1 │        true │  ?indiv=URI1#xxxxx │
- * │ 10 │      ?indiv │ URI1#class1 │  URI1#test1 │ URI1#xxxxxx │       false │          no matter │
- * │ 11 │      ?indiv │ URI1#class1 │  URI1#xxxxx │ URI1#xxxxxx │       false │          no matter │
- * ├────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────────────┤
- * │ 12 │      ?indiv │      ?class │  URI1#test1 │ URI1#class1 │        true │  ?indiv=URI1#test1 │
- * │    │             │             │             │             │             │ ?class=URI1#class1 │
- * │ 13 │      ?indiv │      ?class │  URI1#xxxxx │ URI1#class1 │        true │  ?indiv=URI1#xxxxx │
- * │    │             │             │             │             │             │ ?class=URI1#class1 │
- * │ 14 │      ?indiv │      ?class │  URI1#test1 │ URI1#xxxxxx │        true │  ?indiv=URI1#test1 │
- * │    │             │             │             │             │             │ ?class=URI1#xxxxxx │
- * │ 15 │      ?indiv │      ?class │  URI1#xxxxx │ URI1#xxxxxx │        true │  ?indiv=URI1#xxxxx │
- * │    │             │             │             │             │             │ ?class=URI1#xxxxxx │
- * └────┴─────────────┴─────────────┴─────────────┴─────────────┴─────────────┴────────────────────┘
- * </pre>
  * 
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
  */
@@ -74,10 +69,10 @@ public class OWLClassAssertionAxiomMatcherTest {
 	private static OWLClass CLASS1 = factory.getOWLClass(IRI.create(NAMESPACE + "class1"));
 	private static OWLClass XXXXXX = factory.getOWLClass(IRI.create(NAMESPACE + "xxxxxx"));
 
-	private static IMatcher<OWLNamedIndividual> INDIV_STATIC_MATCHER = new OWLNamedIndividualMatcher(TEST1);
-	private static IMatcher<OWLNamedIndividual> INDIV_VAR_MATCHER = new OWLNamedIndividualVariableMatcher("indiv");
-	private static IMatcher<OWLClass> CLASS_STATIC_MATCHER = new OWLClassMatcher(CLASS1);
-	private static IMatcher<OWLClass> CLASS_VAR_MATCHER = new OWLClassVariableMatcher("class");
+	private static IMatcher<OWLNamedObject> INDIV_STATIC_MATCHER = new OWLNamedObjectStaticMatcher(TEST1);
+	private static IMatcher<OWLNamedObject> INDIV_VAR_MATCHER = new OWLNamedObjectVariableMatcher("indiv");
+	private static IMatcher<OWLNamedObject> CLASS_STATIC_MATCHER = new OWLNamedObjectStaticMatcher(CLASS1);
+	private static IMatcher<OWLNamedObject> CLASS_VAR_MATCHER = new OWLNamedObjectVariableMatcher("class");
 
 	private static Map<String, Object> EMPTY = new HashMap<>();
 	private static Map<String, Object> ONLY_TEST1 = new HashMap<>();
@@ -109,33 +104,33 @@ public class OWLClassAssertionAxiomMatcherTest {
 	public static Collection<Object[]> data() {
 		return Arrays.asList(new Object[][] { 
 			/*  0 */ { INDIV_STATIC_MATCHER, CLASS_STATIC_MATCHER, TEST1, CLASS1, true,  EMPTY },
-			/*  1 */ { INDIV_STATIC_MATCHER, CLASS_STATIC_MATCHER, XXXXX, CLASS1, false, null },
-			/*  2 */ { INDIV_STATIC_MATCHER, CLASS_STATIC_MATCHER, TEST1, XXXXXX, false, null },
+			/*  1 */ { INDIV_STATIC_MATCHER, CLASS_STATIC_MATCHER, TEST1, XXXXXX, false, null },
+			/*  2 */ { INDIV_STATIC_MATCHER, CLASS_STATIC_MATCHER, XXXXX, CLASS1, false, null },
 			/*  3 */ { INDIV_STATIC_MATCHER, CLASS_STATIC_MATCHER, XXXXX, XXXXXX, false, null },
 			
 			/*  4 */ { INDIV_STATIC_MATCHER, CLASS_VAR_MATCHER,    TEST1, CLASS1, true,  ONLY_CLASS1 },
-			/*  5 */ { INDIV_STATIC_MATCHER, CLASS_VAR_MATCHER,    XXXXX, CLASS1, false, null },
-			/*  6 */ { INDIV_STATIC_MATCHER, CLASS_VAR_MATCHER,    TEST1, XXXXXX, true,  ONLY_XXXXXX },
+			/*  5 */ { INDIV_STATIC_MATCHER, CLASS_VAR_MATCHER,    TEST1, XXXXXX, true,  ONLY_XXXXXX },
+			/*  6 */ { INDIV_STATIC_MATCHER, CLASS_VAR_MATCHER,    XXXXX, CLASS1, false, null },
 			/*  7 */ { INDIV_STATIC_MATCHER, CLASS_VAR_MATCHER,    XXXXX, XXXXXX, false, null },
 			
 			/*  8 */ { INDIV_VAR_MATCHER,    CLASS_STATIC_MATCHER, TEST1, CLASS1, true,  ONLY_TEST1 },
-			/*  9 */ { INDIV_VAR_MATCHER,    CLASS_STATIC_MATCHER, XXXXX, CLASS1, true,  ONLY_XXXXX },
-			/* 10 */ { INDIV_VAR_MATCHER,    CLASS_STATIC_MATCHER, TEST1, XXXXXX, false, null },
+			/*  9 */ { INDIV_VAR_MATCHER,    CLASS_STATIC_MATCHER, TEST1, XXXXXX, false, null },
+			/* 10 */ { INDIV_VAR_MATCHER,    CLASS_STATIC_MATCHER, XXXXX, CLASS1, true,  ONLY_XXXXX },
 			/* 11 */ { INDIV_VAR_MATCHER,    CLASS_STATIC_MATCHER, XXXXX, XXXXXX, false, null },
 			
 			/* 12 */ { INDIV_VAR_MATCHER,    CLASS_VAR_MATCHER,    TEST1, CLASS1, true, TEST1_CLASS1 },
-			/* 13 */ { INDIV_VAR_MATCHER,    CLASS_VAR_MATCHER,    XXXXX, CLASS1, true, XXXXX_CLASS1 },
-			/* 14 */ { INDIV_VAR_MATCHER,    CLASS_VAR_MATCHER,    TEST1, XXXXXX, true, TEST1_XXXXXX },
+			/* 13 */ { INDIV_VAR_MATCHER,    CLASS_VAR_MATCHER,    TEST1, XXXXXX, true, TEST1_XXXXXX },
+			/* 14 */ { INDIV_VAR_MATCHER,    CLASS_VAR_MATCHER,    XXXXX, CLASS1, true, XXXXX_CLASS1 },
 			/* 15 */ { INDIV_VAR_MATCHER,    CLASS_VAR_MATCHER,    XXXXX, XXXXXX, true, XXXXX_XXXXXX },
 		});
 	}
 	// @formatter:on
 
 	@Parameter(0)
-	public IMatcher<OWLNamedIndividual> indivMatcher;
+	public IMatcher<OWLNamedObject> indivMatcher;
 
 	@Parameter(1)
-	public IMatcher<OWLClass> classMatcher;
+	public IMatcher<OWLNamedObject> classMatcher;
 
 	@Parameter(2)
 	public OWLNamedIndividual indivAxiom;
