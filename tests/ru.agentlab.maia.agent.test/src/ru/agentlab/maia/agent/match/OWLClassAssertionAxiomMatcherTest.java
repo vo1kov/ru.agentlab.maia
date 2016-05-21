@@ -25,33 +25,33 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  * <!-- @formatter:off -->
  * <table border="thin single black collapse">
  * 	<thead>
- * 		<tr><th rowspan="2">##</th><th colspan="4">Input</th><th colspan="2">Output</th></tr>
- * 		<tr><th>Matcher Individual</th><th>Matcher Class</th><th>Axiom Individual</th><th>Axiom Class</th><th>Result</th><th>Unifier</th></tr>
+ * 		<tr><th rowspan="2">##<th colspan="4">Input<th colspan="2">Output
+ * 		<tr><th>Matcher Individual<th>Matcher Class<th>Axiom Individual<th>Axiom Class<th>Result<th>Unifier
  * 	<thead>
  * 	<tbody>
- * 		<tr><td>0</td>  <td>URI1#test1</td> <td>URI1#class1</td> <td>URI1#test1</td> <td>URI1#class1</td> <td>true</td>  <td>empty</td></tr>
- * 		<tr><td>1</td>  <td>URI1#test1</td> <td>URI1#class1</td> <td>URI1#test1</td> <td>URI1#xxxxxx</td> <td>false</td> <td>no matter</td></tr>
- * 		<tr><td>2</td>  <td>URI1#test1</td> <td>URI1#class1</td> <td>URI1#xxxxx</td> <td>URI1#class1</td> <td>false</td> <td>no matter</td></tr>
- * 		<tr><td>3</td>  <td>URI1#test1</td> <td>URI1#class1</td> <td>URI1#xxxxx</td> <td>URI1#xxxxxx</td> <td>false</td> <td>no matter</td></tr>
+ * 		<tr><td>0  <td>URI1#test1 <td>URI1#class1 <td>URI1#test1 <td>URI1#class1 <td>true  <td>empty
+ * 		<tr><td>1  <td>URI1#test1 <td>URI1#class1 <td>URI1#test1 <td>URI1#xxxxxx <td>false <td>no matter
+ * 		<tr><td>2  <td>URI1#test1 <td>URI1#class1 <td>URI1#xxxxx <td>URI1#class1 <td>false <td>no matter
+ * 		<tr><td>3  <td>URI1#test1 <td>URI1#class1 <td>URI1#xxxxx <td>URI1#xxxxxx <td>false <td>no matter
  * 
- * 		<tr><td>4</td>  <td>URI1#test1</td> <td>?class</td>      <td>URI1#test1</td> <td>URI1#class1</td> <td>true</td>  <td>?class=URI1#class1</td></tr>
- * 		<tr><td>5</td>  <td>URI1#test1</td> <td>?class</td>      <td>URI1#test1</td> <td>URI1#xxxxxx</td> <td>true</td>  <td>?class=URI1#xxxxx</td></tr>
- * 		<tr><td>6</td>  <td>URI1#test1</td> <td>?class</td>      <td>URI1#xxxxx</td> <td>URI1#class1</td> <td>false</td> <td>no matter</td></tr>
- * 		<tr><td>7</td>  <td>URI1#test1</td> <td>?class</td>      <td>URI1#xxxxx</td> <td>URI1#xxxxxx</td> <td>false</td> <td>no matter</td></tr>
+ * 		<tr><td>4  <td>URI1#test1 <td>?class      <td>URI1#test1 <td>URI1#class1 <td>true  <td>?class=URI1#class1
+ * 		<tr><td>5  <td>URI1#test1 <td>?class      <td>URI1#test1 <td>URI1#xxxxxx <td>true  <td>?class=URI1#xxxxx
+ * 		<tr><td>6  <td>URI1#test1 <td>?class      <td>URI1#xxxxx <td>URI1#class1 <td>false <td>no matter
+ * 		<tr><td>7  <td>URI1#test1 <td>?class      <td>URI1#xxxxx <td>URI1#xxxxxx <td>false <td>no matter
  * 
- * 		<tr><td>8</td>  <td>?indiv</td>     <td>URI1#class1</td> <td>URI1#test1</td> <td>URI1#class1</td> <td>true</td>  <td>?indiv=URI1#test1</td></tr>
- * 		<tr><td>9</td>  <td>?indiv</td>     <td>URI1#class1</td> <td>URI1#test1</td> <td>URI1#xxxxxx</td> <td>false</td> <td>no matter</td></tr>
- * 		<tr><td>10</td> <td>?indiv</td>     <td>URI1#class1</td> <td>URI1#xxxxx</td> <td>URI1#class1</td> <td>true</td>  <td>?indiv=URI1#xxxxx</td></tr>
- * 		<tr><td>11</td> <td>?indiv</td>     <td>URI1#class1</td> <td>URI1#xxxxx</td> <td>URI1#xxxxxx</td> <td>false</td> <td>no matter</td></tr>
+ * 		<tr><td>8  <td>?indiv     <td>URI1#class1 <td>URI1#test1 <td>URI1#class1 <td>true  <td>?indiv=URI1#test1
+ * 		<tr><td>9  <td>?indiv     <td>URI1#class1 <td>URI1#test1 <td>URI1#xxxxxx <td>false <td>no matter
+ * 		<tr><td>10 <td>?indiv     <td>URI1#class1 <td>URI1#xxxxx <td>URI1#class1 <td>true  <td>?indiv=URI1#xxxxx
+ * 		<tr><td>11 <td>?indiv     <td>URI1#class1 <td>URI1#xxxxx <td>URI1#xxxxxx <td>false <td>no matter
  * 
- * 		<tr><td>12</td> <td>?indiv</td>     <td>?class</td>      <td>URI1#test1</td> <td>URI1#class1</td> <td>true</td>  <td>?indiv=URI1#test1 ?class=URI1#class1</td></tr>
- * 		<tr><td>13</td> <td>?indiv</td>     <td>?class</td>      <td>URI1#test1</td> <td>URI1#xxxxxx</td> <td>true</td>  <td>?indiv=URI1#test1 ?class=URI1#xxxxxx</td></tr>
- * 		<tr><td>14</td> <td>?indiv</td>     <td>?class</td>      <td>URI1#xxxxx</td> <td>URI1#class1</td> <td>true</td>  <td>?indiv=URI1#xxxxx ?class=URI1#class1</td></tr>
- * 		<tr><td>15</td> <td>?indiv</td>     <td>?class</td>      <td>URI1#xxxxx</td> <td>URI1#xxxxxx</td> <td>true</td>  <td>?indiv=URI1#xxxxx ?class=URI1#xxxxxx</td></tr>
+ * 		<tr><td>12 <td>?indiv     <td>?class      <td>URI1#test1 <td>URI1#class1 <td>true  <td>?indiv=URI1#test1 ?class=URI1#class1
+ * 		<tr><td>13 <td>?indiv     <td>?class      <td>URI1#test1 <td>URI1#xxxxxx <td>true  <td>?indiv=URI1#test1 ?class=URI1#xxxxxx
+ * 		<tr><td>14 <td>?indiv     <td>?class      <td>URI1#xxxxx <td>URI1#class1 <td>true  <td>?indiv=URI1#xxxxx ?class=URI1#class1
+ * 		<tr><td>15 <td>?indiv     <td>?class      <td>URI1#xxxxx <td>URI1#xxxxxx <td>true  <td>?indiv=URI1#xxxxx ?class=URI1#xxxxxx
  * 	</tbody>
  * </table>
  * <!-- @formatter:on -->
- * URI1 = http://example.com#
+ * URI1 = http://www.agentlab.ru/test/ontology#
  * 
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
  */
@@ -62,7 +62,7 @@ public class OWLClassAssertionAxiomMatcherTest {
 
 	private static OWLDataFactory factory = manager.getOWLDataFactory();
 
-	private static String NAMESPACE = "http://example.com#";
+	private static String NAMESPACE = "http://www.agentlab.ru/test/ontology#";
 
 	private static OWLNamedIndividual TEST1 = factory.getOWLNamedIndividual(IRI.create(NAMESPACE + "test1"));
 	private static OWLNamedIndividual XXXXX = factory.getOWLNamedIndividual(IRI.create(NAMESPACE + "xxxxx"));
