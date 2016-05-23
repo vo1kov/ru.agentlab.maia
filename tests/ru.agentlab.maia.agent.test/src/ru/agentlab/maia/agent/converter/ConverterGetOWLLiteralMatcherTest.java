@@ -41,66 +41,91 @@ public class ConverterGetOWLLiteralMatcherTest {
 	final static String RDFS = Namespaces.RDFS.toString();
 	final static String OWL = Namespaces.OWL.toString();
 	final static String XSD = Namespaces.XSD.toString();
+	
+	private static IMatcher<OWLLiteral> staticMatcher(String string){
+		return new OWLLiteralMatcher(factory.getOWLLiteral(string));
+	}
+	private static IMatcher<OWLLiteral> staticMatcher(String string, String lang){
+		return new OWLLiteralMatcher(factory.getOWLLiteral(string, lang));
+	}
+	private static IMatcher<OWLLiteral> staticMatcher(String string, OWL2Datatype datatype){
+		return new OWLLiteralMatcher(factory.getOWLLiteral(string, datatype));
+	}
+	private static IMatcher<OWLLiteral> staticMatcher(boolean value){
+		return new OWLLiteralMatcher(factory.getOWLLiteral(value));
+	}
+	private static IMatcher<OWLLiteral> staticMatcher(double value){
+		return new OWLLiteralMatcher(factory.getOWLLiteral(value));
+	}
+	private static IMatcher<OWLLiteral> staticMatcher(float value){
+		return new OWLLiteralMatcher(factory.getOWLLiteral(value));
+	}
+	private static IMatcher<OWLLiteral> staticMatcher(int value){
+		return new OWLLiteralMatcher(factory.getOWLLiteral(value));
+	}
 
 	// @formatter:off
 	// Name is not working because some of the test strings have \r\n symbols
 	@Parameters//(name="When parameter is [{0}] then result is [{1}]")
 	public static Collection<Object[]> data() {
 		return Arrays.asList(new Object[][] { 
-			/* ---------------------------------------------------------------------------------------------------------------------------------------------------------
-			 *| ##		| Input Parameter 							| Result Literal														| Comment					|
-			  ---------------------------------------------------------------------------------------------------------------------------------------------------------*/
+			/* -------------------------------------------------------------------------------------------------------------------------------------------------
+			 *| ##		| Input Parameter 							| Result Literal												| Comment					|
+			  --------------------------------------------------------------------------------------------------------------------------------------------------*/
 			// rdf:XMLLiteral
-			/*  0 */ 	{ "^^rdf:XMLLiteral", 						factory.getOWLLiteral("", OWL2Datatype.RDF_XML_LITERAL) },				// test empty string
-			/*  1 */ 	{ "true^^rdf:XMLLiteral", 					factory.getOWLLiteral("true", OWL2Datatype.RDF_XML_LITERAL) },
-			/*  2 */ 	{ "2.3^^rdf:XMLLiteral", 					factory.getOWLLiteral("2.3", OWL2Datatype.RDF_XML_LITERAL) },
-			/*  3 */ 	{ "test string^^rdf:XMLLiteral", 			factory.getOWLLiteral("test string", OWL2Datatype.RDF_XML_LITERAL) },
-			/*  4 */ 	{ "test string^^<" + RDF + "XMLLiteral>", 	factory.getOWLLiteral("test string", OWL2Datatype.RDF_XML_LITERAL) }, 	// test full name
+			/*  0 */ 	{ "^^rdf:XMLLiteral", 						staticMatcher("", OWL2Datatype.RDF_XML_LITERAL) },				// test empty string
+			/*  1 */ 	{ "true^^rdf:XMLLiteral", 					staticMatcher("true", OWL2Datatype.RDF_XML_LITERAL) },
+			/*  2 */ 	{ "2.3^^rdf:XMLLiteral", 					staticMatcher("2.3", OWL2Datatype.RDF_XML_LITERAL) },
+			/*  3 */ 	{ "test string^^rdf:XMLLiteral", 			staticMatcher("test string", OWL2Datatype.RDF_XML_LITERAL) },
+			/*  4 */ 	{ "test string^^<" + RDF + "XMLLiteral>", 	staticMatcher("test string", OWL2Datatype.RDF_XML_LITERAL) }, 	// test full name
+			/*  0 */ 	{ "test string^^<" + RDFS + "XMLLiteral>",	AnnotationFormatException.class }, 								// wrong namespace
 			// rdfs:Literal
-			/*  5 */ 	{ "^^rdfs:Literal", 						factory.getOWLLiteral("", OWL2Datatype.RDFS_LITERAL) },
-			/*  6 */ 	{ "test string^^rdfs:Literal",				factory.getOWLLiteral("test string", OWL2Datatype.RDFS_LITERAL) },
-			/*  7 */ 	{ "test string^^<" + RDFS + "Literal>", 	factory.getOWLLiteral("test string", OWL2Datatype.RDFS_LITERAL) }, 		// test full name
+			/*  5 */ 	{ "^^rdfs:Literal", 						staticMatcher("", OWL2Datatype.RDFS_LITERAL) },
+			/*  6 */ 	{ "test string^^rdfs:Literal",				staticMatcher("test string", OWL2Datatype.RDFS_LITERAL) },
+			/*  7 */ 	{ "test string^^<" + RDFS + "Literal>", 	staticMatcher("test string", OWL2Datatype.RDFS_LITERAL) }, 		// test full name
+			/*  0 */ 	{ "test string^^<" + OWL + "Literal>", 		AnnotationFormatException.class }, 								// wrong namespace
 			// rdf:PlainLiteral
-			/*  8 */ 	{ "^^rdf:PlainLiteral", 					factory.getOWLLiteral("", OWL2Datatype.RDF_PLAIN_LITERAL) }, 			// test empty string
-			/*  8 */ 	{ "^^rdf:PlainLiteral", 					factory.getOWLLiteral("", OWL2Datatype.RDF_PLAIN_LITERAL) }, 			// test empty string
-			/*  9 */ 	{ "test string^^rdf:PlainLiteral",			factory.getOWLLiteral("test string", OWL2Datatype.RDF_PLAIN_LITERAL) },
-			/* 10 */ 	{ "test string^^<" + RDF + "PlainLiteral>",	factory.getOWLLiteral("test string", OWL2Datatype.RDF_PLAIN_LITERAL) },	// test full name
-			/* 11 */ 	{ "Padre de familia@es", 					factory.getOWLLiteral("Padre de familia", "es") }, 						// test language tag
-			/* 12 */ 	{ "Padre de familia@es^^rdf:PlainLiteral",	factory.getOWLLiteral("Padre de familia", "es") }, 						// test language tag
-			/* 13 */ 	{ "Family Guy@", 							factory.getOWLLiteral("Family Guy", "") }, 								// test language tag
-			/* 14 */ 	{ "Family Guy@en", 							factory.getOWLLiteral("Family Guy", "en") }, 							// test language tag
-			/* 15 */ 	{ "Тестовая строка@ru^^xsd:string", 		factory.getOWLLiteral("Тестовая строка@ru") }, 							// test language tag
-			/* 16 */ 	{ "Тестовая строка@ru^^xsd:PlainLiteral",	factory.getOWLLiteral("Тестовая строка", "ru") }, 						// test language tag
-			/* 16 */ 	{ "Тестовая@строка@ru^^xsd:PlainLiteral",	factory.getOWLLiteral("Тестовая@строка", "ru") }, 						// test language tag
+			/*  8 */ 	{ "^^rdf:PlainLiteral", 					staticMatcher("", OWL2Datatype.RDF_PLAIN_LITERAL) }, 			// test empty string
+			/*  8 */ 	{ "^^rdf:PlainLiteral", 					staticMatcher("", OWL2Datatype.RDF_PLAIN_LITERAL) }, 			// test empty string
+			/*  9 */ 	{ "test string^^rdf:PlainLiteral",			staticMatcher("test string", OWL2Datatype.RDF_PLAIN_LITERAL) },
+			/* 10 */ 	{ "test string^^<" + RDF + "PlainLiteral>",	staticMatcher("test string", OWL2Datatype.RDF_PLAIN_LITERAL) },	// test full name
+			/* 11 */ 	{ "Padre de familia@es", 					staticMatcher("Padre de familia", "es") }, 						// test language tag
+			/* 12 */ 	{ "Padre de familia@es^^rdf:PlainLiteral",	staticMatcher("Padre de familia", "es") }, 						// test language tag
+			/* 13 */ 	{ "Family Guy@", 							staticMatcher("Family Guy", "") }, 								// test language tag
+			/* 14 */ 	{ "Family Guy@en", 							staticMatcher("Family Guy", "en") }, 							// test language tag
+			/* 15 */ 	{ "Тестовая строка@ru^^xsd:string", 		staticMatcher("Тестовая строка@ru") }, 							// test language tag
+			/* 16 */ 	{ "Тестовая строка@ru^^xsd:PlainLiteral",	staticMatcher("Тестовая строка", "ru") }, 						// test language tag
+			/* 16 */ 	{ "Тестовая@строка@ru^^xsd:PlainLiteral",	staticMatcher("Тестовая@строка", "ru") }, 						// test language tag
 			// owl:real
-			/* 17 */ 	{ "^^owl:real", 							factory.getOWLLiteral("", OWL2Datatype.OWL_REAL) },						// test empty string
-			/* 18 */ 	{ "test string^^owl:real",					factory.getOWLLiteral("test string", OWL2Datatype.OWL_REAL) },
-			/* 19 */ 	{ "test string^^<" + OWL + "real>", 		factory.getOWLLiteral("test string", OWL2Datatype.OWL_REAL) }, 			// test full name
+			/* 17 */ 	{ "^^owl:real", 							staticMatcher("", OWL2Datatype.OWL_REAL) },						// test empty string
+			/* 18 */ 	{ "test string^^owl:real",					staticMatcher("test string", OWL2Datatype.OWL_REAL) },
+			/* 19 */ 	{ "test string^^<" + OWL + "real>", 		staticMatcher("test string", OWL2Datatype.OWL_REAL) }, 			// test full name
+			/*  0 */ 	{ "test string^^<" + RDF + "real>", 		AnnotationFormatException.class }, 								// wrong namespace
 			// owl:rational
-			/* 20 */ 	{ "2/3^^owl:rational",						factory.getOWLLiteral("2/3", OWL2Datatype.OWL_RATIONAL) },
-			/* 21 */ 	{ "2 / 3^^owl:rational",					factory.getOWLLiteral("2/3", OWL2Datatype.OWL_RATIONAL) },
-			/* 22 */ 	{ "-2 /3^^owl:rational",					factory.getOWLLiteral("-2/3", OWL2Datatype.OWL_RATIONAL) },
-			/* 23 */ 	{ "+2/ 3^^owl:rational",					factory.getOWLLiteral("+2/3", OWL2Datatype.OWL_RATIONAL) },
-			/* 24 */ 	{ "45/7^^<" + OWL + "rational>", 			factory.getOWLLiteral("45/7", OWL2Datatype.OWL_RATIONAL) }, 			// test full name
-			/* 25 */ 	{ "2^^owl:rational",						AnnotationFormatException.class },										// test empty string
-			/* 26 */ 	{ "2.5/3.21^^owl:rational",					AnnotationFormatException.class },										// test empty string
-			/* 27 */ 	{ "^^owl:rational", 						AnnotationFormatException.class },										// test empty string
+			/* 20 */ 	{ "2/3^^owl:rational",						staticMatcher("2/3", OWL2Datatype.OWL_RATIONAL) },
+			/* 21 */ 	{ "2 / 3^^owl:rational",					staticMatcher("2/3", OWL2Datatype.OWL_RATIONAL) },
+			/* 22 */ 	{ "-2 /3^^owl:rational",					staticMatcher("-2/3", OWL2Datatype.OWL_RATIONAL) },
+			/* 23 */ 	{ "+2/ 3^^owl:rational",					staticMatcher("+2/3", OWL2Datatype.OWL_RATIONAL) },
+			/* 24 */ 	{ "45/7^^<" + OWL + "rational>", 			staticMatcher("45/7", OWL2Datatype.OWL_RATIONAL) }, 			// test full name
+			/* 25 */ 	{ "2^^owl:rational",						AnnotationFormatException.class },								// test empty string
+			/* 26 */ 	{ "2.5/3.21^^owl:rational",					AnnotationFormatException.class },								// test empty string
+			/* 27 */ 	{ "^^owl:rational", 						AnnotationFormatException.class },								// test empty string
 			// xsd:string
-			/*  0 */ 	{ "", 										factory.getOWLLiteral("") },											// test empty string
-			/*  0 */ 	{ "^^xsd:string", 							factory.getOWLLiteral("") },
-			/*  0 */ 	{ "test string^^xsd:string", 				factory.getOWLLiteral("test string") },
-			/*  0 */ 	{ "test \rstring^^xsd:string", 				factory.getOWLLiteral("test \rstring") },
-			/*  0 */ 	{ "test \nstring^^xsd:string", 				factory.getOWLLiteral("test \nstring") },
-			/*  0 */ 	{ "test\tstring^^xsd:string", 				factory.getOWLLiteral("test\tstring") },
+			/*  0 */ 	{ "", 										staticMatcher("") },											// test empty string
+			/*  0 */ 	{ "^^xsd:string", 							staticMatcher("") },
+			/*  0 */ 	{ "test string^^xsd:string", 				staticMatcher("test string") },
+			/*  0 */ 	{ "test \rstring^^xsd:string", 				staticMatcher("test \rstring") },
+			/*  0 */ 	{ "test \nstring^^xsd:string", 				staticMatcher("test \nstring") },
+			/*  0 */ 	{ "test\tstring^^xsd:string", 				staticMatcher("test\tstring") },
 			/*  0 */ 	{ "^^xsd:string", 							AnnotationFormatException.class },
-			/*  0 */ 	{ "test string^^<" + XSD + "string>", 		factory.getOWLLiteral("test string") }, 								// test full name
+			/*  0 */ 	{ "test string^^<" + XSD + "string>", 		staticMatcher("test string") }, 								// test full name
 			// xsd:normalizedString
-			/*  0 */ 	{ "^^xsd:normalizedString", 				factory.getOWLLiteral("", OWL2Datatype.XSD_NORMALIZED_STRING) },
-			/*  0 */ 	{ "test string^^xsd:normalizedString", 		factory.getOWLLiteral("test string", OWL2Datatype.XSD_NORMALIZED_STRING) },
-			/*  0 */ 	{ "string^^<" + XSD + "normalizedString>",	factory.getOWLLiteral("test string", OWL2Datatype.XSD_NORMALIZED_STRING) }, // test full name
-			/*  0 */ 	{ "test \rstring^^xsd:normalizedString", 	AnnotationFormatException.class },										// wrong value format
-			/*  0 */ 	{ "test \nstring^^xsd:normalizedString", 	AnnotationFormatException.class },										// wrong value format
-			/*  0 */ 	{ "test\tstring^^xsd:normalizedString", 	AnnotationFormatException.class },										// wrong value format
+			/*  0 */ 	{ "^^xsd:normalizedString", 				staticMatcher("", OWL2Datatype.XSD_NORMALIZED_STRING) },
+			/*  0 */ 	{ "test string^^xsd:normalizedString", 		staticMatcher("test string", OWL2Datatype.XSD_NORMALIZED_STRING) },
+			/*  0 */ 	{ "string^^<" + XSD + "normalizedString>",	staticMatcher("test string", OWL2Datatype.XSD_NORMALIZED_STRING) }, // test full name
+			/*  0 */ 	{ "test \rstring^^xsd:normalizedString", 	AnnotationFormatException.class },								// wrong value format
+			/*  0 */ 	{ "test \nstring^^xsd:normalizedString", 	AnnotationFormatException.class },								// wrong value format
+			/*  0 */ 	{ "test\tstring^^xsd:normalizedString", 	AnnotationFormatException.class },								// wrong value format
 			// xsd:token
 			// xsd:language
 			// xsd:Name
@@ -123,43 +148,40 @@ public class ConverterGetOWLLiteralMatcherTest {
 			// xsd:double
 			// xsd:float
 			// xsd:boolean
-			/*  0 */ 	{ "^^rdf:boolean", 							AnnotationFormatException.class },										// wrong empty value
-			/*  0 */ 	{ "true^^xsd:boolean", 						factory.getOWLLiteral(true) },
-			/*  0 */ 	{ "false^^xsd:boolean", 					factory.getOWLLiteral(false) },
-			/*  0 */ 	{ "1^^xsd:boolean", 						factory.getOWLLiteral(true) },
-			/*  0 */ 	{ "0^^xsd:boolean", 						factory.getOWLLiteral(false) },
-			/*  0 */ 	{ "true^^<" + XSD + "boolean>",				factory.getOWLLiteral(true) }, 											// test full name
-			/*  0 */ 	{ "false^^<" + XSD + "boolean>",			factory.getOWLLiteral(false) }, 										// test full name
-			/*  0 */ 	{ "+1^^xsd:boolean", 						AnnotationFormatException.class },										// wrong value format
-			/*  0 */ 	{ "-1^^xsd:boolean", 						AnnotationFormatException.class },										// wrong value format
-			/*  0 */ 	{ "+0^^xsd:boolean", 						AnnotationFormatException.class },										// wrong value format
-			/*  0 */ 	{ "-0^^xsd:boolean", 						AnnotationFormatException.class },										// wrong value format
-			/*  0 */ 	{ "^^xsd:boolean", 							AnnotationFormatException.class },										// wrong value format
-			/*  0 */ 	{ "test string^^xsd:boolean", 				AnnotationFormatException.class },										// wrong value format
-			/*  0 */ 	{ "2^^xsd:boolean", 						AnnotationFormatException.class },										// wrong value format
+			/*  0 */ 	{ "^^rdf:boolean", 							AnnotationFormatException.class },								// wrong empty value
+			/*  0 */ 	{ "true^^xsd:boolean", 						staticMatcher(true) },
+			/*  0 */ 	{ "false^^xsd:boolean", 					staticMatcher(false) },
+			/*  0 */ 	{ "1^^xsd:boolean", 						staticMatcher(true) },
+			/*  0 */ 	{ "0^^xsd:boolean", 						staticMatcher(false) },
+			/*  0 */ 	{ "true^^<" + XSD + "boolean>",				staticMatcher(true) }, 											// test full name
+			/*  0 */ 	{ "false^^<" + XSD + "boolean>",			staticMatcher(false) }, 										// test full name
+			/*  0 */ 	{ "+1^^xsd:boolean", 						AnnotationFormatException.class },								// wrong value format
+			/*  0 */ 	{ "-1^^xsd:boolean", 						AnnotationFormatException.class },								// wrong value format
+			/*  0 */ 	{ "+0^^xsd:boolean", 						AnnotationFormatException.class },								// wrong value format
+			/*  0 */ 	{ "-0^^xsd:boolean", 						AnnotationFormatException.class },								// wrong value format
+			/*  0 */ 	{ "^^xsd:boolean", 							AnnotationFormatException.class },								// wrong value format
+			/*  0 */ 	{ "test string^^xsd:boolean", 				AnnotationFormatException.class },								// wrong value format
+			/*  0 */ 	{ "2^^xsd:boolean", 						AnnotationFormatException.class },								// wrong value format
+			/*  0 */ 	{ "true^^<" + OWL + "boolean>",				AnnotationFormatException.class }, 								// wrong namespace
 			// xsd:hexBinary
-			/*  0 */ 	{ "^^xsd:hexBinary", 						factory.getOWLLiteral("", OWL2Datatype.XSD_HEX_BINARY) },
-			/*  0 */ 	{ "a1^^xsd:hexBinary", 						factory.getOWLLiteral("a1", OWL2Datatype.XSD_HEX_BINARY) },
-			/*  0 */ 	{ "a1e2ff^^xsd:hexBinary", 					factory.getOWLLiteral("a1e2ff", OWL2Datatype.XSD_HEX_BINARY) },
-			/*  0 */ 	{ "f^^xsd:hexBinary", 						AnnotationFormatException.class },										// wrong value format
-			/*  0 */ 	{ "a1e2f^^xsd:hexBinary", 					AnnotationFormatException.class },										// wrong value format
+			/*  0 */ 	{ "^^xsd:hexBinary", 						staticMatcher("", OWL2Datatype.XSD_HEX_BINARY) },
+			/*  0 */ 	{ "a1^^xsd:hexBinary", 						staticMatcher("a1", OWL2Datatype.XSD_HEX_BINARY) },
+			/*  0 */ 	{ "a1e2ff^^xsd:hexBinary", 					staticMatcher("a1e2ff", OWL2Datatype.XSD_HEX_BINARY) },
+			/*  0 */ 	{ "f^^xsd:hexBinary", 						AnnotationFormatException.class },								// wrong value format
+			/*  0 */ 	{ "a1e2f^^xsd:hexBinary", 					AnnotationFormatException.class },								// wrong value format
 			// xsd:base64Binary
 			// xsd:anyURI
 			// xsd:dateTime
 			// xsd:dateTimeStamp
 			// Misc
-			/*  0 */ 	{ "test string^^<" + RDFS + "XMLLiteral>",	AnnotationFormatException.class }, 										// wrong namespace
-			/*  0 */ 	{ "test string^^<" + OWL + "Literal>", 		AnnotationFormatException.class }, 										// wrong namespace
-			/*  0 */ 	{ "test string^^<" + RDF + "real>", 		AnnotationFormatException.class }, 										// wrong namespace
-			/*  0 */ 	{ "true^^<" + OWL + "boolean>",				AnnotationFormatException.class }, 										// wrong namespace
-			/*  0 */ 	{ "test string^rdf:XMLLiteral", 			AnnotationFormatException.class }, 										// wrong separator, should be ^^
-			/*  0 */ 	{ "test string^rdf:Literal", 				AnnotationFormatException.class }, 										// wrong separator, should be ^^
-			/*  0 */ 	{ "test string^rdf:real", 					AnnotationFormatException.class }, 										// wrong separator, should be ^^
-			/*  0 */ 	{ "true^xsd:boolean", 						AnnotationFormatException.class }, 										// wrong separator, should be ^^
-			/*  0 */ 	{ "test string^^^rdf:XMLLiteral", 			AnnotationFormatException.class }, 										// wrong separator, should be ^^
-			/*  0 */ 	{ "test string^^^rdf:Literal", 				AnnotationFormatException.class }, 										// wrong separator, should be ^^
-			/*  0 */ 	{ "test string^^^rdf:real", 				AnnotationFormatException.class }, 										// wrong separator, should be ^^
-			/*  0 */ 	{ "false^^^xsd:boolean", 					AnnotationFormatException.class }, 										// wrong separator, should be ^^
+			/*  0 */ 	{ "test string^rdf:XMLLiteral", 			AnnotationFormatException.class }, 								// wrong separator, should be ^^
+			/*  0 */ 	{ "test string^rdf:Literal", 				AnnotationFormatException.class }, 								// wrong separator, should be ^^
+			/*  0 */ 	{ "test string^rdf:real", 					AnnotationFormatException.class }, 								// wrong separator, should be ^^
+			/*  0 */ 	{ "true^xsd:boolean", 						AnnotationFormatException.class }, 								// wrong separator, should be ^^
+			/*  0 */ 	{ "test string^^^rdf:XMLLiteral", 			AnnotationFormatException.class }, 								// wrong separator, should be ^^
+			/*  0 */ 	{ "test string^^^rdf:Literal", 				AnnotationFormatException.class }, 								// wrong separator, should be ^^
+			/*  0 */ 	{ "test string^^^rdf:real", 				AnnotationFormatException.class }, 								// wrong separator, should be ^^
+			/*  0 */ 	{ "false^^^xsd:boolean", 					AnnotationFormatException.class }, 								// wrong separator, should be ^^
 		});
 	}
 	// @formatter:on

@@ -52,8 +52,8 @@ import ru.agentlab.maia.agent.match.JavaClassMatcher;
 import ru.agentlab.maia.agent.match.OWLClassAssertionAxiomMatcher;
 import ru.agentlab.maia.agent.match.OWLDataPropertyAssertionAxiomMatcher;
 import ru.agentlab.maia.agent.match.OWLLiteralMatcher;
-import ru.agentlab.maia.agent.match.OWLNamedObjectStaticMatcher;
-import ru.agentlab.maia.agent.match.OWLNamedObjectVariableMatcher;
+import ru.agentlab.maia.agent.match.IRIMatcher;
+import ru.agentlab.maia.agent.match.VariableMatcher;
 import ru.agentlab.maia.agent.match.OWLObjectPropertyAssertionAxiomMatcher;
 import ru.agentlab.maia.annotation.BeliefClassificationAdded;
 import ru.agentlab.maia.annotation.BeliefClassificationRemoved;
@@ -207,9 +207,9 @@ public class Converter {
 	 * <small>Visualized with
 	 * <a href="https://jex.im/regulex/">https://jex.im/regulex/</a></small>
 	 * 
-	 * @see {@link #LITERAL_STATIC_PATTERN}
 	 */
-	protected static final Pattern LITERAL_DATATYPE_PATTERN = Pattern
+	@Deprecated
+	protected static final Pattern DATA_VALUE_PATTERN = Pattern
 			.compile("(?s)^(([^?].*?)|(\\?(\\w+)))(@([a-zA-Z-]*|(\\?(\\w+))))?(\\^\\^([^@]*))?$");
 
 	/**
@@ -217,7 +217,7 @@ public class Converter {
 	 * <img src="./doc-files/ClassAssertionRegExp.png" style=
 	 * "max-width: 100%;" alt="ClassAssertionRegExp" >
 	 */
-	protected static final Pattern CLASS_ASSERTION_PATTERN = Pattern.compile("^(\\S+)\\s+(\\S+)$");
+	protected static final Pattern ASSERTION_CLASS_PATTERN = Pattern.compile("^(\\S+)\\s+(\\S+)$");
 
 	/**
 	 * <p>
@@ -227,7 +227,7 @@ public class Converter {
 	 * <small>Visualized with
 	 * <a href="https://jex.im/regulex/">https://jex.im/regulex/</a></small>
 	 */
-	protected static final Pattern DATA_PROPERTY_ASSERTION_PATTERN = Pattern.compile("(?s)^(\\S+)\\s+(\\S+)\\s+(.*?)$");
+	protected static final Pattern ASSERTION_DATA_PROPERTY_PATTERN = Pattern.compile("(?s)^(\\S+)\\s+(\\S+)\\s+(.*?)$");
 
 	/**
 	 * <p>
@@ -237,7 +237,7 @@ public class Converter {
 	 * <small>Visualized with
 	 * <a href="https://jex.im/regulex/">https://jex.im/regulex/</a></small>
 	 */
-	protected static final Pattern OBJECT_PROPERTY_ASSERTION_PATTERN = Pattern
+	protected static final Pattern ASSERTION_OBJECT_PROPERTY_PATTERN = Pattern
 			.compile("(?s)^(\\S+)\\s+(\\S+)\\s+(\\S+)$");
 
 	protected static PrefixManager prefixManager = new DefaultPrefixManager();
@@ -377,39 +377,38 @@ public class Converter {
 
 	protected static IMatcher<OWLClassAssertionAxiom> getOWLClassAssertionAxiomMatcher(String template)
 			throws AnnotationFormatException {
-		Matcher match = CLASS_ASSERTION_PATTERN.matcher(template);
+		Matcher match = ASSERTION_CLASS_PATTERN.matcher(template);
 		if (!match.matches()) {
 			throw new AnnotationFormatException("@ have wrong template");
 		}
-		return new OWLClassAssertionAxiomMatcher(getOWLNamedObjectMatcher(match.group(1)), getOWLNamedObjectMatcher(match.group(2)));
+		return new OWLClassAssertionAxiomMatcher(getIRIMatcher(match.group(1)), getIRIMatcher(match.group(2)));
 	}
 
 	protected static IMatcher<OWLDataPropertyAssertionAxiom> getOWLDataPropertyAssertionAxiomMatcher(String template)
 			throws AnnotationFormatException {
-		Matcher match = DATA_PROPERTY_ASSERTION_PATTERN.matcher(template);
+		Matcher match = ASSERTION_DATA_PROPERTY_PATTERN.matcher(template);
 		if (!match.matches()) {
 			throw new AnnotationFormatException("@ have wrong template");
 		}
-		return new OWLDataPropertyAssertionAxiomMatcher(getOWLNamedObjectMatcher(match.group(1)),
-				getOWLNamedObjectMatcher(match.group(2)), getOWLLiteralMatcher(match.group(3)));
+		return new OWLDataPropertyAssertionAxiomMatcher(getIRIMatcher(match.group(1)), getIRIMatcher(match.group(2)),
+				getOWLLiteralMatcher(match.group(3)));
 	}
 
 	protected static IMatcher<OWLObjectPropertyAssertionAxiom> getOWLObjectPropertyAssertionAxiomMatcher(
 			String template) throws AnnotationFormatException {
-		Matcher match = OBJECT_PROPERTY_ASSERTION_PATTERN.matcher(template);
+		Matcher match = ASSERTION_OBJECT_PROPERTY_PATTERN.matcher(template);
 		if (!match.matches()) {
 			throw new AnnotationFormatException("@ have wrong template");
 		}
-		return new OWLObjectPropertyAssertionAxiomMatcher(getOWLNamedObjectMatcher(match.group(1)),
-				getOWLNamedObjectMatcher(match.group(1)), getOWLNamedObjectMatcher(match.group(2)));
+		return new OWLObjectPropertyAssertionAxiomMatcher(getIRIMatcher(match.group(1)), getIRIMatcher(match.group(1)),
+				getIRIMatcher(match.group(2)));
 	}
 
-	protected static IMatcher<OWLNamedObject> getOWLNamedObjectMatcher(String string) throws AnnotationFormatException {
+	protected static IMatcher<? super IRI> getIRIMatcher(String string) throws AnnotationFormatException {
 		if (string.startsWith("?")) {
-			return new OWLNamedObjectVariableMatcher(string.substring(1));
+			return new VariableMatcher(string.substring(1));
 		} else if (string.startsWith("<") && string.endsWith(">")) {
-			OWLNamedIndividual individual = factory.getOWLNamedIndividual(IRI.create(string));
-			return new OWLNamedObjectStaticMatcher(individual);
+			return new IRIMatcher(IRI.create(string));
 		} else {
 			throw new AnnotationFormatException();
 		}
@@ -480,7 +479,7 @@ public class Converter {
 	}
 
 	private static Matcher matchLiteral(String string) {
-		return LITERAL_PATTERN.matcher(string);
+		return IRI_PATTERN.matcher(string);
 	}
 
 	private static boolean isFullIRI(Matcher match) {
