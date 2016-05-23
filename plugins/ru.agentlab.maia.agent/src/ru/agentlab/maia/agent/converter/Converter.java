@@ -138,6 +138,10 @@ public class Converter {
 	// CLASS_ANNOTATIONS.put(RoleUnresolved.class, EventType.ROLE_UNRESOLVED);
 	// }
 
+	private static final String LANGUAGE_SEPARATOR = "@";
+
+	private static final String DATATYPE_SEPARATOR = "^^";
+
 	protected static final String IRI_PREFIXED_REGEXP = "((\\w*:)?(\\S+))";
 
 	protected static final String IRI_FULL_REGEXP = "(<(\\S+#)(\\S+)>)";
@@ -515,14 +519,14 @@ public class Converter {
 		String value = string;
 		String language = null;
 		String datatype = null;
-		int datatypeIndex = string.lastIndexOf("^^");
+		int datatypeIndex = string.lastIndexOf(DATATYPE_SEPARATOR);
 		if (datatypeIndex != -1) {
 			value = string.substring(0, datatypeIndex);
-			datatype = string.substring(datatypeIndex + 2, string.length());
+			datatype = string.substring(datatypeIndex + DATATYPE_SEPARATOR.length(), string.length());
 		}
-		int languageIndex = value.lastIndexOf("@");
+		int languageIndex = value.lastIndexOf(LANGUAGE_SEPARATOR);
 		if (languageIndex != -1) {
-			language = value.substring(languageIndex + 1, value.length());
+			language = value.substring(languageIndex + LANGUAGE_SEPARATOR.length(), value.length());
 			value = value.substring(0, languageIndex);
 		}
 		return new String[] { value, language, datatype };
