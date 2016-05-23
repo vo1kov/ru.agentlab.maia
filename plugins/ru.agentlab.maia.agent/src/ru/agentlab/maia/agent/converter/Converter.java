@@ -252,7 +252,7 @@ public class Converter {
 	 * <a href="https://jex.im/regulex/">https://jex.im/regulex/</a></small>
 	 */
 	protected static final Pattern ASSERTION_OBJECT_PROPERTY_PATTERN = Pattern
-			.compile("(?s)^(\\S+)\\s+(\\S+)\\s+(\\S+)$");
+			.compile("(?s)^\\s*?(\\S+)\\s+(\\S+)\\s+(\\S+)\\s*?$");
 
 	protected static PrefixManager prefixManager = new DefaultPrefixManager();
 
