@@ -211,7 +211,7 @@ public class Converter {
 	 * <img src="./doc-files/ClassAssertionRegExp.png" style=
 	 * "max-width: 100%;" alt="ClassAssertionRegExp" >
 	 */
-	protected static final Pattern ASSERTION_CLASS_PATTERN = Pattern.compile("^(\\S+)\\s+(\\S+)$");
+	protected static final Pattern ASSERTION_CLASS_PATTERN = Pattern.compile("^\\s*?(\\S+)\\s+(\\S+)\\s*?$");
 
 	/**
 	 * <p>
