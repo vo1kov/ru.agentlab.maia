@@ -13,4 +13,9 @@ public class JavaClassMatcher implements IMatcher<Class<?>> {
 		return clazz == value;
 	}
 
+	@Override
+	public Class<?> getType() {
+		return Class.class;
+	}
+
 }

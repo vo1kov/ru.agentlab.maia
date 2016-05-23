@@ -1,20 +1,20 @@
 package ru.agentlab.maia.agent.match;
 
 import org.semanticweb.owlapi.model.OWLIndividual;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLNamedObject;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 
 public class OWLObjectPropertyAssertionAxiomMatcher implements IMatcher<OWLObjectPropertyAssertionAxiom> {
 
-	IMatcher<OWLIndividual> subjectMatcher;
+	IMatcher<OWLNamedObject> subjectMatcher;
 
-	IMatcher<OWLObjectProperty> propertyMatcher;
+	IMatcher<OWLNamedObject> propertyMatcher;
 
-	IMatcher<OWLIndividual> objectMatcher;
+	IMatcher<OWLNamedObject> objectMatcher;
 
-	public OWLObjectPropertyAssertionAxiomMatcher(IMatcher<OWLIndividual> subject,
-			IMatcher<OWLObjectProperty> predicate, IMatcher<OWLIndividual> object) {
+	public OWLObjectPropertyAssertionAxiomMatcher(IMatcher<OWLNamedObject> subject, IMatcher<OWLNamedObject> predicate,
+			IMatcher<OWLNamedObject> object) {
 		super();
 		this.subjectMatcher = subject;
 		this.propertyMatcher = predicate;
@@ -37,6 +37,11 @@ public class OWLObjectPropertyAssertionAxiomMatcher implements IMatcher<OWLObjec
 	public String toString() {
 		return "ObjectPropertyMatcher " + "(" + subjectMatcher.toString() + " " + propertyMatcher.toString()
 				+ objectMatcher.toString() + ")";
+	}
+
+	@Override
+	public Class<?> getType() {
+		return OWLObjectPropertyAssertionAxiom.class;
 	}
 
 }

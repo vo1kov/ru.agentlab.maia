@@ -163,4 +163,9 @@ public class MessageMatcher implements IMatcher<IMessage> {
 		this.postTimeStamp = postTimeStamp;
 	}
 
+	@Override
+	public Class<?> getType() {
+		return IMessage.class;
+	}
+
 }

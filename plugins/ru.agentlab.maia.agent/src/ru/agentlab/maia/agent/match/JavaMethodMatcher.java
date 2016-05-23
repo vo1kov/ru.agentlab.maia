@@ -15,4 +15,9 @@ public class JavaMethodMatcher implements IMatcher<Method> {
 		return method == value;
 	}
 
+	@Override
+	public Class<?> getType() {
+		return Method.class;
+	}
+
 }
