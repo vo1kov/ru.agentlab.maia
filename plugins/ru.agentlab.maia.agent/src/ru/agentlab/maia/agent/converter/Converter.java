@@ -465,7 +465,7 @@ public class Converter {
 
 	/**
 	 * <p>
-	 * Splits input string into 3 parts separated by whitespaces:
+	 * Splits input string into 2 parts separated by whitespaces:
 	 * <ol>
 	 * <li>Individual template (required, can't be empty);
 	 * <li>Class template (required, can't be empty);
