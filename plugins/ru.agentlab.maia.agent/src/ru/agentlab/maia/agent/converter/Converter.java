@@ -76,6 +76,14 @@ import ru.agentlab.maia.annotation.RoleUnresolved;
 
 public class Converter {
 
+	private static final int TEMPLATE_PREFIXEDIRI_NAME = 4;
+
+	private static final int TEMPLATE_PREFIXEDIRI_PREFIX = 3;
+
+	private static final int TEMPLATE_PREFIXEDIRI_GROUP = 2;
+
+	private static final int TEMPLATE_FULLIRI_NAME = 7;
+
 	// private static final Map<Class<?>, EventType> CLASSIFICATION_ANNOTATIONS
 	// = new HashMap<>(6);
 	// private static final Map<Class<?>, EventType> DATA_PROPERTY_ANNOTATIONS =
@@ -137,6 +145,14 @@ public class Converter {
 	// CLASS_ANNOTATIONS.put(RoleResolved.class, EventType.ROLE_RESOLVED);
 	// CLASS_ANNOTATIONS.put(RoleUnresolved.class, EventType.ROLE_UNRESOLVED);
 	// }
+
+	private static final int TEMPLATE_FULLIRI_NAMESPACE = 6;
+
+	private static final int TEMPLATE_FULLIRI_GROUP = 5;
+
+	private static final int TEMPLATE_VARIABLE_VALUE = 9;
+
+	private static final int TEMPLATE_VARIABLE_GROUP = 8;
 
 	private static final String LANGUAGE_SEPARATOR = "@";
 
@@ -419,18 +435,19 @@ public class Converter {
 			throw new AnnotationFormatException("Literal [" + string + "] has wrong format. "
 					+ "Should be in form either namespace:name, <htt://full.com#name> or ?variable.");
 		}
-		if (match.group(5) != null) {
-			return new IRIMatcher(IRI.create(match.group(6), match.group(7)));
-		} else if (match.group(2) != null) {
-			String prefix = prefixManager.getPrefix(match.group(3));
+		if (match.group(TEMPLATE_FULLIRI_GROUP) != null) {
+			return new IRIMatcher(
+					IRI.create(match.group(TEMPLATE_FULLIRI_NAMESPACE), match.group(TEMPLATE_FULLIRI_NAME)));
+		} else if (match.group(TEMPLATE_PREFIXEDIRI_GROUP) != null) {
+			String prefix = prefixManager.getPrefix(match.group(TEMPLATE_PREFIXEDIRI_PREFIX));
 			if (prefix == null) {
 				throw new AnnotationFormatException(
 						"Literal [" + string + "] has wrong format. " + "Prefix [" + prefix + "] is unknown. Use @"
 								+ Prefix.class.getName() + " annotation to register not build-in prefixes.");
 			}
-			return new IRIMatcher(IRI.create(prefix, match.group(4)));
-		} else if (match.group(8) != null) {
-			return new VariableMatcher(match.group(9));
+			return new IRIMatcher(IRI.create(prefix, match.group(TEMPLATE_PREFIXEDIRI_NAME)));
+		} else if (match.group(TEMPLATE_VARIABLE_GROUP) != null) {
+			return new VariableMatcher(match.group(TEMPLATE_VARIABLE_VALUE));
 		} else {
 			throw new AnnotationFormatException("Literal [" + string + "] has wrong format. "
 					+ "Should be in form either [namespace:name], [<htt://full.com#name>] or [?variable].");
