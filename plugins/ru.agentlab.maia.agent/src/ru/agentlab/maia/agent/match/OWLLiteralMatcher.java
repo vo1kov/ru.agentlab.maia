@@ -3,7 +3,7 @@ package ru.agentlab.maia.agent.match;
 import java.util.Map;
 import java.util.Objects;
 
-import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLLiteral;
 
 public class OWLLiteralMatcher implements IMatcher<OWLLiteral> {
@@ -12,10 +12,10 @@ public class OWLLiteralMatcher implements IMatcher<OWLLiteral> {
 
 	IMatcher<? super String> languageMatcher;
 
-	IMatcher<? super IRI> datatypeMatcher;
+	IMatcher<? super OWLDatatype> datatypeMatcher;
 
 	public OWLLiteralMatcher(IMatcher<? super String> literalMatcher, IMatcher<? super String> languageMatcher,
-			IMatcher<? super IRI> datatypeMatcher) {
+			IMatcher<? super OWLDatatype> datatypeMatcher) {
 		this.literalMatcher = literalMatcher;
 		this.languageMatcher = languageMatcher;
 		this.datatypeMatcher = datatypeMatcher;
@@ -24,7 +24,7 @@ public class OWLLiteralMatcher implements IMatcher<OWLLiteral> {
 	@Override
 	public boolean match(OWLLiteral literal, Map<String, Object> map) {
 		return literalMatcher.match(literal.getLiteral(), map) && languageMatcher.match(literal.getLang(), map)
-				&& datatypeMatcher.match(literal.getDatatype().getIRI(), map);
+				&& datatypeMatcher.match(literal.getDatatype(), map);
 	}
 
 	@Override

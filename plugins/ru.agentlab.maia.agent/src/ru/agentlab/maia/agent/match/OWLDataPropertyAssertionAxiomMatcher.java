@@ -2,22 +2,23 @@ package ru.agentlab.maia.agent.match;
 
 import java.util.Map;
 
-import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 public class OWLDataPropertyAssertionAxiomMatcher implements IMatcher<OWLDataPropertyAssertionAxiom> {
 
-	IMatcher<? super IRI> subjectMatcher;
+	IMatcher<? super OWLNamedIndividual> subjectMatcher;
 
-	IMatcher<? super IRI> propertyMatcher;
+	IMatcher<? super OWLDataProperty> propertyMatcher;
 
 	IMatcher<? super OWLLiteral> objectMatcher;
 
-	public OWLDataPropertyAssertionAxiomMatcher(IMatcher<? super IRI> subject, IMatcher<? super IRI> predicate,
-			IMatcher<? super OWLLiteral> object) {
+	public OWLDataPropertyAssertionAxiomMatcher(IMatcher<? super OWLNamedIndividual> subject,
+			IMatcher<? super OWLDataProperty> predicate, IMatcher<? super OWLLiteral> object) {
 		super();
 		this.subjectMatcher = subject;
 		this.propertyMatcher = predicate;
@@ -31,9 +32,8 @@ public class OWLDataPropertyAssertionAxiomMatcher implements IMatcher<OWLDataPro
 		if (!subject.isNamed()) {
 			return false;
 		}
-		return subjectMatcher.match(subject.asOWLNamedIndividual().getIRI(), map)
-				&& propertyMatcher.match(property.asOWLDataProperty().getIRI(), map)
-				&& objectMatcher.match(object, map);
+		return subjectMatcher.match(subject.asOWLNamedIndividual(), map)
+				&& propertyMatcher.match(property.asOWLDataProperty(), map) && objectMatcher.match(object, map);
 	}
 
 	@Override

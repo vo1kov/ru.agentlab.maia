@@ -64,15 +64,20 @@ public class OWLClassAssertionAxiomMatcherTest {
 
 	private static String NAMESPACE = "http://www.agentlab.ru/test/ontology#";
 
-	private static OWLNamedIndividual TEST1 = factory.getOWLNamedIndividual(IRI.create(NAMESPACE + "test1"));
-	private static OWLNamedIndividual XXXXX = factory.getOWLNamedIndividual(IRI.create(NAMESPACE + "xxxxx"));
-	private static OWLClass CLASS1 = factory.getOWLClass(IRI.create(NAMESPACE + "class1"));
-	private static OWLClass XXXXXX = factory.getOWLClass(IRI.create(NAMESPACE + "xxxxxx"));
+	private static IRI TEST1_IRI = IRI.create(NAMESPACE + "test1");
+	private static IRI XXXXX_IRI = IRI.create(NAMESPACE + "xxxxx");
+	private static IRI CLASS1_IRI = IRI.create(NAMESPACE + "class1");
+	private static IRI XXXXXX_IRI = IRI.create(NAMESPACE + "xxxxxx");
 
-	private static IMatcher<OWLNamedObject> INDIV_STATIC_MATCHER = new IRIMatcher(TEST1);
-	private static IMatcher<OWLNamedObject> INDIV_VAR_MATCHER = new VariableMatcher("indiv");
-	private static IMatcher<OWLNamedObject> CLASS_STATIC_MATCHER = new IRIMatcher(CLASS1);
-	private static IMatcher<OWLNamedObject> CLASS_VAR_MATCHER = new VariableMatcher("class");
+	private static OWLNamedIndividual TEST1 = factory.getOWLNamedIndividual(TEST1_IRI);
+	private static OWLNamedIndividual XXXXX = factory.getOWLNamedIndividual(XXXXX_IRI);
+	private static OWLClass CLASS1 = factory.getOWLClass(CLASS1_IRI);
+	private static OWLClass XXXXXX = factory.getOWLClass(XXXXXX_IRI);
+
+	private static IMatcher<OWLNamedObject> INDIV_STATIC_MATCHER = new OWLNamedObjectMatcher(TEST1_IRI);
+	private static IMatcher<Object> INDIV_VAR_MATCHER = new VariableMatcher("indiv");
+	private static IMatcher<OWLNamedObject> CLASS_STATIC_MATCHER = new OWLNamedObjectMatcher(CLASS1_IRI);
+	private static IMatcher<Object> CLASS_VAR_MATCHER = new VariableMatcher("class");
 
 	private static Map<String, Object> EMPTY = new HashMap<>();
 	private static Map<String, Object> ONLY_TEST1 = new HashMap<>();
@@ -103,25 +108,28 @@ public class OWLClassAssertionAxiomMatcherTest {
 	@Parameters
 	public static Collection<Object[]> data() {
 		return Arrays.asList(new Object[][] { 
-			/*  0 */ { INDIV_STATIC_MATCHER, CLASS_STATIC_MATCHER, TEST1, CLASS1, true,  EMPTY },
-			/*  1 */ { INDIV_STATIC_MATCHER, CLASS_STATIC_MATCHER, TEST1, XXXXXX, false, null },
-			/*  2 */ { INDIV_STATIC_MATCHER, CLASS_STATIC_MATCHER, XXXXX, CLASS1, false, null },
-			/*  3 */ { INDIV_STATIC_MATCHER, CLASS_STATIC_MATCHER, XXXXX, XXXXXX, false, null },
+			/* ---------------------------------------------------------------------------------------------
+			 *| ##	| Matcher 										| Axiom Individual	| Result			|
+			 *----------------------------------------------------------------------------------------------*/
+			/*  0 */ { INDIV_STATIC_MATCHER, CLASS_STATIC_MATCHER, 	TEST1, CLASS1, 		true,  EMPTY },
+			/*  1 */ { INDIV_STATIC_MATCHER, CLASS_STATIC_MATCHER, 	TEST1, XXXXXX, 		false, null },
+			/*  2 */ { INDIV_STATIC_MATCHER, CLASS_STATIC_MATCHER, 	XXXXX, CLASS1, 		false, null },
+			/*  3 */ { INDIV_STATIC_MATCHER, CLASS_STATIC_MATCHER, 	XXXXX, XXXXXX, 		false, null },
 			
-			/*  4 */ { INDIV_STATIC_MATCHER, CLASS_VAR_MATCHER,    TEST1, CLASS1, true,  ONLY_CLASS1 },
-			/*  5 */ { INDIV_STATIC_MATCHER, CLASS_VAR_MATCHER,    TEST1, XXXXXX, true,  ONLY_XXXXXX },
-			/*  6 */ { INDIV_STATIC_MATCHER, CLASS_VAR_MATCHER,    XXXXX, CLASS1, false, null },
-			/*  7 */ { INDIV_STATIC_MATCHER, CLASS_VAR_MATCHER,    XXXXX, XXXXXX, false, null },
+			/*  4 */ { INDIV_STATIC_MATCHER, CLASS_VAR_MATCHER,		TEST1, CLASS1, 		true,  ONLY_CLASS1 },
+			/*  5 */ { INDIV_STATIC_MATCHER, CLASS_VAR_MATCHER, 	TEST1, XXXXXX, 		true,  ONLY_XXXXXX },
+			/*  6 */ { INDIV_STATIC_MATCHER, CLASS_VAR_MATCHER, 	XXXXX, CLASS1, 		false, null },
+			/*  7 */ { INDIV_STATIC_MATCHER, CLASS_VAR_MATCHER, 	XXXXX, XXXXXX, 		false, null },
 			
-			/*  8 */ { INDIV_VAR_MATCHER,    CLASS_STATIC_MATCHER, TEST1, CLASS1, true,  ONLY_TEST1 },
-			/*  9 */ { INDIV_VAR_MATCHER,    CLASS_STATIC_MATCHER, TEST1, XXXXXX, false, null },
-			/* 10 */ { INDIV_VAR_MATCHER,    CLASS_STATIC_MATCHER, XXXXX, CLASS1, true,  ONLY_XXXXX },
-			/* 11 */ { INDIV_VAR_MATCHER,    CLASS_STATIC_MATCHER, XXXXX, XXXXXX, false, null },
+			/*  8 */ { INDIV_VAR_MATCHER,    CLASS_STATIC_MATCHER, 	TEST1, CLASS1, 		true,  ONLY_TEST1 },
+			/*  9 */ { INDIV_VAR_MATCHER,    CLASS_STATIC_MATCHER, 	TEST1, XXXXXX, 		false, null },
+			/* 10 */ { INDIV_VAR_MATCHER,    CLASS_STATIC_MATCHER, 	XXXXX, CLASS1, 		true,  ONLY_XXXXX },
+			/* 11 */ { INDIV_VAR_MATCHER,    CLASS_STATIC_MATCHER, 	XXXXX, XXXXXX, 		false, null },
 			
-			/* 12 */ { INDIV_VAR_MATCHER,    CLASS_VAR_MATCHER,    TEST1, CLASS1, true, TEST1_CLASS1 },
-			/* 13 */ { INDIV_VAR_MATCHER,    CLASS_VAR_MATCHER,    TEST1, XXXXXX, true, TEST1_XXXXXX },
-			/* 14 */ { INDIV_VAR_MATCHER,    CLASS_VAR_MATCHER,    XXXXX, CLASS1, true, XXXXX_CLASS1 },
-			/* 15 */ { INDIV_VAR_MATCHER,    CLASS_VAR_MATCHER,    XXXXX, XXXXXX, true, XXXXX_XXXXXX },
+			/* 12 */ { INDIV_VAR_MATCHER,    CLASS_VAR_MATCHER, 	TEST1, CLASS1, 		true,  TEST1_CLASS1 },
+			/* 13 */ { INDIV_VAR_MATCHER,    CLASS_VAR_MATCHER, 	TEST1, XXXXXX, 		true,  TEST1_XXXXXX },
+			/* 14 */ { INDIV_VAR_MATCHER,    CLASS_VAR_MATCHER, 	XXXXX, CLASS1, 		true,  XXXXX_CLASS1 },
+			/* 15 */ { INDIV_VAR_MATCHER,    CLASS_VAR_MATCHER, 	XXXXX, XXXXXX, 		true,  XXXXX_XXXXXX },
 		});
 	}
 	// @formatter:on
@@ -149,19 +157,19 @@ public class OWLClassAssertionAxiomMatcherTest {
 		// Given
 		OWLClassAssertionAxiomMatcher matcher = new OWLClassAssertionAxiomMatcher(indivMatcher, classMatcher);
 		OWLClassAssertionAxiom axiom = factory.getOWLClassAssertionAxiom(classAxiom, indivAxiom);
-		Unifier unifier = new Unifier();
+		Map<String, Object> unifier = new HashMap<>();
 
 		// When
 		System.out.println("Match " + axiom + " by " + matcher);
 		boolean match = matcher.match(axiom, unifier);
-		unifier.values.forEach((k, v) -> {
+		unifier.forEach((k, v) -> {
 			System.out.println("	" + k + "=" + v);
 		});
 
 		// Then
 		Assert.assertEquals(result, match);
 		if (match) {
-			Assert.assertEquals(resultUnifier.size(), unifier.values.size());
+			Assert.assertEquals(resultUnifier.size(), unifier.size());
 			resultUnifier.forEach((k, v) -> {
 				Assert.assertEquals(v, unifier.get(k));
 			});

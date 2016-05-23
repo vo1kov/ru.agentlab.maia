@@ -32,6 +32,7 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLNamedObject;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
@@ -42,12 +43,12 @@ import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
 import ru.agentlab.maia.agent.Plan;
 import ru.agentlab.maia.agent.match.IMatcher;
-import ru.agentlab.maia.agent.match.IRIMatcher;
 import ru.agentlab.maia.agent.match.JavaClassMatcher;
 import ru.agentlab.maia.agent.match.JavaStringMatcher;
 import ru.agentlab.maia.agent.match.OWLClassAssertionAxiomMatcher;
 import ru.agentlab.maia.agent.match.OWLDataPropertyAssertionAxiomMatcher;
 import ru.agentlab.maia.agent.match.OWLLiteralMatcher;
+import ru.agentlab.maia.agent.match.OWLNamedObjectMatcher;
 import ru.agentlab.maia.agent.match.OWLObjectPropertyAssertionAxiomMatcher;
 import ru.agentlab.maia.agent.match.VariableMatcher;
 import ru.agentlab.maia.annotation.BeliefClassificationAdded;
@@ -413,9 +414,9 @@ public class Converter {
 		String literal = parts[0];
 		String language = parts[1];
 		String datatype = parts[2];
-		IMatcher<? super IRI> datatypeMatcher = getIRIMatcher(datatype);
-		if (datatypeMatcher instanceof IRIMatcher) {
-			IRI datatypeIRI = ((IRIMatcher) datatypeMatcher).getValue();
+		IMatcher<? super OWLNamedObject> datatypeMatcher = getIRIMatcher(datatype);
+		if (datatypeMatcher instanceof OWLNamedObjectMatcher) {
+			IRI datatypeIRI = ((OWLNamedObjectMatcher) datatypeMatcher).getValue();
 			if (OWL2Datatype.isBuiltIn(datatypeIRI)) {
 				OWL2Datatype owl2datatype = OWL2Datatype.getDatatype(datatypeIRI);
 				if (!owl2datatype.isInLexicalSpace(literal)) {
@@ -429,14 +430,14 @@ public class Converter {
 		return new OWLLiteralMatcher(literalMatcher, languageMatcher, datatypeMatcher);
 	}
 
-	protected static IMatcher<? super IRI> getIRIMatcher(String string) throws AnnotationFormatException {
+	protected static IMatcher<? super OWLNamedObject> getIRIMatcher(String string) throws AnnotationFormatException {
 		Matcher match = IRI_PATTERN.matcher(string);
 		if (!match.matches()) {
 			throw new AnnotationFormatException("Literal [" + string + "] has wrong format. "
 					+ "Should be in form either namespace:name, <htt://full.com#name> or ?variable.");
 		}
 		if (match.group(TEMPLATE_FULLIRI_GROUP) != null) {
-			return new IRIMatcher(
+			return new OWLNamedObjectMatcher(
 					IRI.create(match.group(TEMPLATE_FULLIRI_NAMESPACE), match.group(TEMPLATE_FULLIRI_NAME)));
 		} else if (match.group(TEMPLATE_PREFIXEDIRI_GROUP) != null) {
 			String prefix = prefixManager.getPrefix(match.group(TEMPLATE_PREFIXEDIRI_PREFIX));
@@ -445,7 +446,7 @@ public class Converter {
 						"Literal [" + string + "] has wrong format. " + "Prefix [" + prefix + "] is unknown. Use @"
 								+ Prefix.class.getName() + " annotation to register not build-in prefixes.");
 			}
-			return new IRIMatcher(IRI.create(prefix, match.group(TEMPLATE_PREFIXEDIRI_NAME)));
+			return new OWLNamedObjectMatcher(IRI.create(prefix, match.group(TEMPLATE_PREFIXEDIRI_NAME)));
 		} else if (match.group(TEMPLATE_VARIABLE_GROUP) != null) {
 			return new VariableMatcher(match.group(TEMPLATE_VARIABLE_VALUE));
 		} else {

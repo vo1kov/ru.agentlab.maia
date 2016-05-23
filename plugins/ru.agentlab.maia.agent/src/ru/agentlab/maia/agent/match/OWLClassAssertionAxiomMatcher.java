@@ -2,18 +2,19 @@ package ru.agentlab.maia.agent.match;
 
 import java.util.Map;
 
-import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 public class OWLClassAssertionAxiomMatcher implements IMatcher<OWLClassAssertionAxiom> {
 
-	IMatcher<? super IRI> subjectMatcher;
+	IMatcher<? super OWLNamedIndividual> subjectMatcher;
 
-	IMatcher<? super IRI> objectMatcher;
+	IMatcher<? super OWLClass> objectMatcher;
 
-	public OWLClassAssertionAxiomMatcher(IMatcher<? super IRI> subject, IMatcher<? super IRI> object) {
+	public OWLClassAssertionAxiomMatcher(IMatcher<? super OWLNamedIndividual> subject, IMatcher<? super OWLClass> object) {
 		super();
 		this.subjectMatcher = subject;
 		this.objectMatcher = object;
@@ -25,8 +26,8 @@ public class OWLClassAssertionAxiomMatcher implements IMatcher<OWLClassAssertion
 		if (!subject.isNamed() || object.isAnonymous()) {
 			return false;
 		}
-		return subjectMatcher.match(subject.asOWLNamedIndividual().getIRI(), map)
-				&& objectMatcher.match(object.asOWLClass().getIRI(), map);
+		return subjectMatcher.match(subject.asOWLNamedIndividual(), map)
+				&& objectMatcher.match(object.asOWLClass(), map);
 	}
 
 	@Override
