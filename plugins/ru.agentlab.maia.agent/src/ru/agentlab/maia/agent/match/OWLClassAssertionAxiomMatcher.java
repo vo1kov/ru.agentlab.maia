@@ -10,14 +10,15 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 public class OWLClassAssertionAxiomMatcher implements IMatcher<OWLClassAssertionAxiom> {
 
-	IMatcher<? super OWLNamedIndividual> subjectMatcher;
+	IMatcher<? super OWLNamedIndividual> individualMatcher;
 
-	IMatcher<? super OWLClass> objectMatcher;
+	IMatcher<? super OWLClass> classMatcher;
 
-	public OWLClassAssertionAxiomMatcher(IMatcher<? super OWLNamedIndividual> subject, IMatcher<? super OWLClass> object) {
+	public OWLClassAssertionAxiomMatcher(IMatcher<? super OWLClass> classMatcher,
+			IMatcher<? super OWLNamedIndividual> individualMatcher) {
 		super();
-		this.subjectMatcher = subject;
-		this.objectMatcher = object;
+		this.classMatcher = classMatcher;
+		this.individualMatcher = individualMatcher;
 	}
 
 	public boolean match(OWLClassAssertionAxiom axiom, Map<String, Object> map) {
@@ -26,13 +27,13 @@ public class OWLClassAssertionAxiomMatcher implements IMatcher<OWLClassAssertion
 		if (!subject.isNamed() || object.isAnonymous()) {
 			return false;
 		}
-		return subjectMatcher.match(subject.asOWLNamedIndividual(), map)
-				&& objectMatcher.match(object.asOWLClass(), map);
+		return classMatcher.match(object.asOWLClass(), map)
+				&& individualMatcher.match(subject.asOWLNamedIndividual(), map);
 	}
 
 	@Override
 	public String toString() {
-		return "ClassAssertionMatcher " + "(" + subjectMatcher.toString() + " " + objectMatcher.toString() + ")";
+		return "ClassAssertionMatcher " + "(" + individualMatcher.toString() + " " + classMatcher.toString() + ")";
 	}
 
 	@Override

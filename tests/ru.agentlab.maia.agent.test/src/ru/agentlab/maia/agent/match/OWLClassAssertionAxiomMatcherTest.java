@@ -155,7 +155,7 @@ public class OWLClassAssertionAxiomMatcherTest {
 	@Test
 	public void test() {
 		// Given
-		OWLClassAssertionAxiomMatcher matcher = new OWLClassAssertionAxiomMatcher(indivMatcher, classMatcher);
+		OWLClassAssertionAxiomMatcher matcher = new OWLClassAssertionAxiomMatcher(classMatcher, indivMatcher);
 		OWLClassAssertionAxiom axiom = factory.getOWLClassAssertionAxiom(classAxiom, indivAxiom);
 		Map<String, Object> unifier = new HashMap<>();
 

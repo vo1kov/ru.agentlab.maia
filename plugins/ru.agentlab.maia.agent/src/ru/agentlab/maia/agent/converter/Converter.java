@@ -391,7 +391,7 @@ public class Converter {
 		String[] parts = splitClassAssertioin(template);
 		String individual = parts[0];
 		String clazz = parts[1];
-		return new OWLClassAssertionAxiomMatcher(getOWLNamedIndividualMatcher(individual), getOWLClassMatcher(clazz));
+		return new OWLClassAssertionAxiomMatcher(getOWLClassMatcher(clazz), getOWLNamedIndividualMatcher(individual));
 	}
 
 	protected static IMatcher<OWLDataPropertyAssertionAxiom> getOWLDataPropertyAssertionAxiomMatcher(String template)
