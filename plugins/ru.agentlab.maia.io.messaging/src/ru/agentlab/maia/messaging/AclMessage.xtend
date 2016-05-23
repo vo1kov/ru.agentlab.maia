@@ -7,6 +7,7 @@ import java.util.UUID
 import org.eclipse.xtend.lib.annotations.Accessors
 import ru.agentlab.maia.messaging.IMessageEnvelope
 import ru.agentlab.maia.IMessage
+import java.time.LocalDateTime
 
 @Accessors
 class AclMessage implements IMessage {
@@ -15,7 +16,7 @@ class AclMessage implements IMessage {
 
 	private List<UUID> receivers = new ArrayList<UUID>
 
-	private List<String> replyTo = new ArrayList<String>
+	private List<UUID> replyTo = new ArrayList<UUID>
 
 	private String content
 
@@ -33,7 +34,7 @@ class AclMessage implements IMessage {
 
 	private String performative
 
-	private long replyByInMillisec = 0
+	private LocalDateTime replyBy
 
 	private String protocol
 
@@ -41,12 +42,12 @@ class AclMessage implements IMessage {
 
 	private Properties userDefinedProps
 
-	private long postTimeStamp = -1
+	private LocalDateTime postTimeStamp
 
 	private IMessageEnvelope envelope
 	
 	override createReply() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-
+	
 }

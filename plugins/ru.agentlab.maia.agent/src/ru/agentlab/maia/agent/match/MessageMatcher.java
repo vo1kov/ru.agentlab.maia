@@ -35,7 +35,7 @@ public class MessageMatcher implements IMatcher<IMessage> {
 
 	private IMatcher<? super String> conversationIdMatcher;
 
-	private IMatcher<? super Long> postTimeStampMatcher;
+	private IMatcher<? super LocalDateTime> postTimeStampMatcher;
 
 	@Override
 	public boolean match(IMessage object, Map<String, Object> map) {
@@ -146,11 +146,11 @@ public class MessageMatcher implements IMatcher<IMessage> {
 		this.conversationIdMatcher = conversationId;
 	}
 
-	public IMatcher<? super Long> getPostTimeStamp() {
+	public IMatcher<? super LocalDateTime> getPostTimeStamp() {
 		return postTimeStampMatcher;
 	}
 
-	public void setPostTimeStamp(IMatcher<? super Long> postTimeStampMatcher) {
+	public void setPostTimeStamp(IMatcher<? super LocalDateTime> postTimeStampMatcher) {
 		this.postTimeStampMatcher = postTimeStampMatcher;
 	}
 
