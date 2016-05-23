@@ -135,10 +135,10 @@ public class OWLClassAssertionAxiomMatcherTest {
 	// @formatter:on
 
 	@Parameter(0)
-	public IMatcher<OWLNamedObject> indivMatcher;
+	public IMatcher<? super OWLNamedIndividual> indivMatcher;
 
 	@Parameter(1)
-	public IMatcher<OWLNamedObject> classMatcher;
+	public IMatcher<? super OWLClass> classMatcher;
 
 	@Parameter(2)
 	public OWLNamedIndividual indivAxiom;
