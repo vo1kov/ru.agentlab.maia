@@ -8,14 +8,14 @@ import org.semanticweb.owlapi.model.OWLLiteral;
 
 public class OWLLiteralMatcher implements IMatcher<OWLLiteral> {
 
-	IMatcher<String> literalMatcher;
+	IMatcher<? super String> literalMatcher;
 
-	IMatcher<String> languageMatcher;
+	IMatcher<? super String> languageMatcher;
 
-	IMatcher<IRI> datatypeMatcher;
+	IMatcher<? super IRI> datatypeMatcher;
 
-	public OWLLiteralMatcher(IMatcher<String> literalMatcher, IMatcher<String> languageMatcher,
-			IMatcher<IRI> datatypeMatcher) {
+	public OWLLiteralMatcher(IMatcher<? super String> literalMatcher, IMatcher<? super String> languageMatcher,
+			IMatcher<? super IRI> datatypeMatcher) {
 		this.literalMatcher = literalMatcher;
 		this.languageMatcher = languageMatcher;
 		this.datatypeMatcher = datatypeMatcher;
