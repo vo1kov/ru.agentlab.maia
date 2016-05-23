@@ -29,10 +29,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLNamedObject;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
@@ -386,7 +391,7 @@ public class Converter {
 		String[] parts = splitClassAssertioin(template);
 		String individual = parts[0];
 		String clazz = parts[1];
-		return new OWLClassAssertionAxiomMatcher(getIRIMatcher(individual), getIRIMatcher(clazz));
+		return new OWLClassAssertionAxiomMatcher(getOWLNamedIndividualMatcher(individual), getOWLClassMatcher(clazz));
 	}
 
 	protected static IMatcher<OWLDataPropertyAssertionAxiom> getOWLDataPropertyAssertionAxiomMatcher(String template)
@@ -395,8 +400,8 @@ public class Converter {
 		String subject = parts[0];
 		String property = parts[1];
 		String object = parts[2];
-		return new OWLDataPropertyAssertionAxiomMatcher(getIRIMatcher(subject), getIRIMatcher(property),
-				getOWLLiteralMatcher(object));
+		return new OWLDataPropertyAssertionAxiomMatcher(getOWLNamedIndividualMatcher(subject),
+				getOWLDataPropertyMatcher(property), getOWLLiteralMatcher(object));
 	}
 
 	protected static IMatcher<OWLObjectPropertyAssertionAxiom> getOWLObjectPropertyAssertionAxiomMatcher(
@@ -405,16 +410,16 @@ public class Converter {
 		String subject = parts[0];
 		String property = parts[1];
 		String data = parts[2];
-		return new OWLObjectPropertyAssertionAxiomMatcher(getIRIMatcher(subject), getIRIMatcher(property),
-				getIRIMatcher(data));
+		return new OWLObjectPropertyAssertionAxiomMatcher(getOWLNamedIndividualMatcher(subject),
+				getOWLObjectPropertyMatcher(property), getOWLNamedIndividualMatcher(data));
 	}
 
-	protected static IMatcher<OWLLiteral> getOWLLiteralMatcher(String string) throws AnnotationFormatException {
+	protected static IMatcher<? super OWLLiteral> getOWLLiteralMatcher(String string) throws AnnotationFormatException {
 		String[] parts = splitDatatypeLiteral(string);
 		String literal = parts[0];
 		String language = parts[1];
 		String datatype = parts[2];
-		IMatcher<? super OWLNamedObject> datatypeMatcher = getIRIMatcher(datatype);
+		IMatcher<? super OWLDatatype> datatypeMatcher = getOWLDatatypeMatcher(datatype);
 		if (datatypeMatcher instanceof OWLNamedObjectMatcher) {
 			IRI datatypeIRI = ((OWLNamedObjectMatcher) datatypeMatcher).getValue();
 			if (OWL2Datatype.isBuiltIn(datatypeIRI)) {
@@ -430,7 +435,32 @@ public class Converter {
 		return new OWLLiteralMatcher(literalMatcher, languageMatcher, datatypeMatcher);
 	}
 
-	protected static IMatcher<? super OWLNamedObject> getIRIMatcher(String string) throws AnnotationFormatException {
+	protected static IMatcher<? super OWLDatatype> getOWLDatatypeMatcher(String string)
+			throws AnnotationFormatException {
+		return getOWLNamedObjectMatcher(string);
+	}
+
+	protected static IMatcher<? super OWLNamedIndividual> getOWLNamedIndividualMatcher(String string)
+			throws AnnotationFormatException {
+		return getOWLNamedObjectMatcher(string);
+	}
+
+	protected static IMatcher<? super OWLClass> getOWLClassMatcher(String string) throws AnnotationFormatException {
+		return getOWLNamedObjectMatcher(string);
+	}
+
+	protected static IMatcher<? super OWLObjectProperty> getOWLObjectPropertyMatcher(String string)
+			throws AnnotationFormatException {
+		return getOWLNamedObjectMatcher(string);
+	}
+
+	protected static IMatcher<? super OWLDataProperty> getOWLDataPropertyMatcher(String string)
+			throws AnnotationFormatException {
+		return getOWLNamedObjectMatcher(string);
+	}
+
+	protected static IMatcher<? super OWLNamedObject> getOWLNamedObjectMatcher(String string)
+			throws AnnotationFormatException {
 		Matcher match = IRI_PATTERN.matcher(string);
 		if (!match.matches()) {
 			throw new AnnotationFormatException("Literal [" + string + "] has wrong format. "
