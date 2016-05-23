@@ -13,8 +13,15 @@ import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
+import ru.agentlab.maia.agent.converter.AnnotationFormatException;
 import ru.agentlab.maia.agent.converter.Converter;
 import ru.agentlab.maia.agent.test.doubles.BeliefAddedDummy;
+import ru.agentlab.maia.annotation.BeliefClassificationAdded;
+import ru.agentlab.maia.annotation.BeliefClassificationRemoved;
+import ru.agentlab.maia.annotation.GoalClassificationAdded;
+import ru.agentlab.maia.annotation.GoalClassificationFailed;
+import ru.agentlab.maia.annotation.GoalClassificationFinished;
+import ru.agentlab.maia.annotation.GoalClassificationRemoved;
 import ru.agentlab.maia.annotation.PlanAdded;
 import ru.agentlab.maia.annotation.PlanFailed;
 import ru.agentlab.maia.annotation.PlanFinished;
@@ -23,6 +30,8 @@ import ru.agentlab.maia.annotation.RoleAdded;
 import ru.agentlab.maia.annotation.RoleRemoved;
 import ru.agentlab.maia.annotation.RoleResolved;
 import ru.agentlab.maia.annotation.RoleUnresolved;
+import ru.agentlab.maia.event.BeliefClassificationAddedEvent;
+import ru.agentlab.maia.event.BeliefClassificationRemovedEvent;
 import ru.agentlab.maia.event.PlanAddedEvent;
 import ru.agentlab.maia.event.PlanFailedEvent;
 import ru.agentlab.maia.event.PlanFinishedEvent;
@@ -34,55 +43,120 @@ import ru.agentlab.maia.event.RoleUnresolvedEvent;
 
 /**
  * 
- * <p>
  * Test cases:
+ * URI = http://www.agentlab.ru/test/ontology#
+ * <!-- @formatter:off -->
+ * <table border="thin single black collapse">
+ * 	<thead>
+ * 		<tr><th rowspan="2">##<th colspan="2">Input<th colspan="2">Output
+ * 		<tr><th>Annotations<th>Parameter<th>Result<th>Fields
+ * 	<thead>
+ * 	<tbody>
+ * 		<tr><td colspan="5">Negative tests
+ * 		<tr><td>0  <td rowspan="5">
+ * 			{@link BeliefClassificationAdded @BeliefClassificationAdded}<br>
+ * 			{@link BeliefClassificationRemoved @BeliefClassificationRemoved}<br>
+ * 			{@link GoalClassificationAdded @GoalClassificationAdded}<br>
+ * 			{@link GoalClassificationFailed @GoalClassificationFailed}<br>
+ * 			{@link GoalClassificationFinished @GoalClassificationFinished}<br>
+ * 			{@link GoalClassificationRemoved @GoalClassificationRemoved}<br>
+ * 				   <td>"" 						<td>{@link AnnotationFormatException}		<td>
+ * 		<tr><td>1  <td>"a" 						<td>{@link AnnotationFormatException}		<td>
+ * 		<tr><td>2  <td>"a b c" 					<td>{@link AnnotationFormatException}		<td>
+ * 		<tr><td>1  <td>"?a" 					<td>{@link AnnotationFormatException}		<td>
+ * 		<tr><td>2  <td>"?a ?b ?c" 				<td>{@link AnnotationFormatException}		<td>
+ * 		<tr><td>0  <td rowspan="6">
+ * 			{@link GoalClassificationAdded @GoalClassificationAdded}<br>
+ * 			{@link GoalClassificationFailed @GoalClassificationFailed}<br>
+ * 			{@link GoalClassificationFinished @GoalClassificationFinished}<br>
+ * 			{@link GoalClassificationRemoved @GoalClassificationRemoved}<br>
+ * 				   <td>"?a b" 					<td>{@link AnnotationFormatException}		<td>
+ * 		<tr><td>2  <td>"a ?b" 					<td>{@link AnnotationFormatException}		<td>
+ * 		<tr><td>2  <td>"?a ?b" 					<td>{@link AnnotationFormatException}		<td>
+ * 		<tr><td>2  <td>"?a &lt;http://www.w3.org/2002/07/owl#Class&gt;" 		<td>{@link AnnotationFormatException}		<td>
+ * 		<tr><td>2  <td>"&lt;http://www.agentlab.ru/test/ontology#a&gt; ?b" 		<td>{@link AnnotationFormatException}		<td>
+ * 		<tr><td>2  <td>"?a ?b" 					<td>{@link AnnotationFormatException}		<td>
  * 
- * <pre>
- * ╔════╦══════════════════════════════════════════════════════════╦═══════════╗
- * ║    ║                                                    input ║    output ║
- * ║ ## ╠══════════════════════════════╦═══════════════════════════╬═══════════╣
- * ║    ║                  annotations ║                 parameter ║    result ║
- * ╚════╩══════════════════════════════╩═══════════════════════════╩═══════════╝
- * │  0 │   @BeliefClassificationAdded │                        "" │ Exception │
- * │  1 │ @BeliefClassificationRemoved │                     "one" │ Exception │
- * │  2 │     @BeliefDataPropertyAdded │                 "one two" │ Exception │
- * │  3 │   @BeliefDataPropertyRemoved │           "one two three" │ Exception │
- * │  4 │   @BeliefObjectPropertyAdded │            "?a two three" │ Exception │
- * │  5 │ @BeliefObjectPropertyRemoved │             "?a ?b three" │ Exception │
- * │  6 │                              │                "?a ?b ?c" │   Matcher │
- * │  7 │                              │    "?a <http...#type> ?c" │   Matcher │
- * ├────┼──────────────────────────────┼───────────────────────────┼───────────┤
- * │  8 │     @GoalClassificationAdded │                        "" │ Exception │
- * │  9 │    @GoalClassificationFailed │                     "one" │ Exception │
- * │ 10 │  @GoalClassificationFinished │                 "one two" │ Exception │
- * │ 11 │   @GoalClassificationRemoved │           "one two three" │ Exception │
- * │ 12 │       @GoalDataPropertyAdded │            "?a two three" │ Exception │
- * │ 13 │      @GoalDataPropertyFailed │             "?a ?b three" │ Exception │
- * │ 14 │    @GoalDataPropertyFinished │                "?a ?b ?c" │   Matcher │
- * │ 15 │     @GoalDataPropertyRemoved │    "?a <http...#type> ?c" │   Matcher │
- * │ 16 │     @GoalObjectPropertyAdded │                           │           │
- * │ 17 │    @GoalObjectPropertyFailed │                           │           │
- * │ 18 │  @GoalObjectPropertyFinished │                           │           │
- * │ 19 │   @GoalObjectPropertyRemoved │                           │           │
- * ├────┼──────────────────────────────┼───────────────────────────┼───────────┤
- * │ 20 │                   @RoleAdded │                byte.class │ Exception │
- * │ 21 │                 @RoleRemoved │               short.class │ Exception │
- * │ 22 │                @RoleResolved │                 int.class │ Exception │
- * │ 23 │               @RoleUnesolved │                long.class │ Exception │
- * │ 24 │                              │               float.class │ Exception │
- * │ 25 │                              │              double.class │ Exception │
- * │ 26 │                              │             boolean.class │ Exception │
- * │ 27 │                              │                char.class │ Exception │
- * │ 28 │                              │              Object.class │ Exception │
- * │ 29 │                              │    BeliefAddedDummy.class │   Matcher │
- * ├────┼──────────────────────────────┼───────────────────────────┼───────────┤
- * │ 30 │                   @PlanAdded │                        "" │ Exception │
- * │ 31 │                 @PlanRemoved │ "BeliefAddedDummy::valid" │   Matcher │
- * │ 32 │                  @PlanFailed │  "BeliefAddedDummy::aaaa" │ Exception │
- * │ 33 │                @PlanFinished │      "BeliefAddedDummy::" │ Exception │
- * │ 34 │                              │                 "::valid" │ Exception │
- * └────┴──────────────────────────────┴───────────────────────────┴───────────┘
- * </pre>
+ * 		<tr><td>8  <td rowspan="4">
+ * 			{@link BeliefDataPropertyAdded @BeliefDataPropertyAdded}<br>
+ * 			{@link BeliefDataPropertyRemoved @BeliefDataPropertyRemoved}<br>
+ * 			{@link BeliefObjectPropertyAdded @BeliefObjectPropertyAdded}<br>
+ * 			{@link BeliefObjectPropertyRemoved @BeliefObjectPropertyRemoved}<br>
+ * 			{@link GoalDataPropertyAdded @GoalDataPropertyAdded}<br>
+ * 			{@link GoalDataPropertyFailed @GoalDataPropertyFailed}<br>
+ * 			{@link GoalDataPropertyFinished @GoalDataPropertyFinished}<br>
+ * 			{@link GoalDataPropertyRemoved @GoalDataPropertyRemoved}<br>
+ * 			{@link GoalObjectPropertyAdded @GoalObjectPropertyAdded}<br>
+ * 			{@link GoalObjectPropertyFailed @GoalObjectPropertyFailed}<br>
+ * 			{@link GoalObjectPropertyFinished @GoalObjectPropertyFinished}<br>
+ * 			{@link GoalObjectPropertyRemoved @GoalObjectPropertyRemoved}<br>
+ * 				   <td>"" 						<td>{@link AnnotationFormatException}	<td>
+ * 		<tr><td>9  <td>"a" 					<td>{@link AnnotationFormatException}	<td>
+ * 		<tr><td>10 <td>"a b" 				<td>{@link AnnotationFormatException}	<td>
+ * 		<tr><td>11 <td>"a b c d" 			<td>Exception	<td>
+ * 
+ * 		<tr><td colspan="5">Positive tests
+ * 		<tr><td>3  <td rowspan="6">
+ * 			{@link BeliefClassificationAdded @BeliefClassificationAdded}<br>
+ * 			{@link BeliefClassificationRemoved @BeliefClassificationRemoved}<br>
+ * 				   <td>"a b" 					<td>{@link OWLClassAssertionAxiomMatcher}	<td>
+ * 		<tr><td>4  <td>"?a b" 					<td>{@link OWLClassAssertionAxiomMatcher}	<td>
+ * 		<tr><td>5  <td>"a ?b" 					<td>{@link OWLClassAssertionAxiomMatcher}	<td>
+ * 		<tr><td>6  <td>"?a ?b" 					<td>{@link OWLClassAssertionAxiomMatcher}	<td>
+ * 		<tr><td>7  <td>"?a &lt;http://www.w3.org/2002/07/owl#Class&gt;" 	<td>{@link OWLClassAssertionAxiomMatcher}	<td>
+ * 		<tr><td>8  <td>"a &lt;http://www.w3.org/2002/07/owl#Class&gt;" 		<td>{@link OWLClassAssertionAxiomMatcher}	<td>
+ * 
+ * 		<tr><td>8  <td rowspan="8">
+ * 			{@link BeliefDataPropertyAdded @BeliefDataPropertyAdded}<br>
+ * 			{@link BeliefDataPropertyRemoved @BeliefDataPropertyRemoved}<br>
+ * 			{@link BeliefObjectPropertyAdded @BeliefObjectPropertyAdded}<br>
+ * 			{@link BeliefObjectPropertyRemoved @BeliefObjectPropertyRemoved}<br>
+ * 			{@link GoalDataPropertyAdded @GoalDataPropertyAdded}<br>
+ * 			{@link GoalDataPropertyFailed @GoalDataPropertyFailed}<br>
+ * 			{@link GoalDataPropertyFinished @GoalDataPropertyFinished}<br>
+ * 			{@link GoalDataPropertyRemoved @GoalDataPropertyRemoved}<br>
+ * 			{@link GoalObjectPropertyAdded @GoalObjectPropertyAdded}<br>
+ * 			{@link GoalObjectPropertyFailed @GoalObjectPropertyFailed}<br>
+ * 			{@link GoalObjectPropertyFinished @GoalObjectPropertyFinished}<br>
+ * 			{@link GoalObjectPropertyRemoved @GoalObjectPropertyRemoved}<br>
+ * 				   <td>"" 						<td>{@link AnnotationFormatException}	<td>
+ * 		<tr><td>9  <td>"one" 					<td>{@link AnnotationFormatException}	<td>
+ * 		<tr><td>10 <td>"one two" 				<td>{@link AnnotationFormatException}	<td>
+ * 		<tr><td>11 <td>"one two three" 			<td>Exception	<td>
+ * 		<tr><td>12 <td>"?a two three" 			<td>Exception	<td>
+ * 		<tr><td>13 <td>"?a ?b three" 			<td>Exception	<td>
+ * 		<tr><td>14 <td>"?a ?b ?c" 				<td>Matcher	<td>
+ * 		<tr><td>15 <td>"?a http...#type ?c" 	<td>Matcher	<td>
+ * 
+ * 		<tr><td>16  <td rowspan="4">
+ * 			{@link PlanAdded @PlanAdded}<br>
+ * 			{@link PlanFailed @PlanFailed}<br>
+ * 			{@link PlanFinished @PlanFinished}<br>
+ * 			{@link PlanRemoved @PlanRemoved}<br>
+ * 				   <td>"" 						<td>Exception	<td>
+ * 		<tr><td>17 <td>"::"						<td>Exception	<td>
+ * 		<tr><td>18 <td>"::valid" 				<td>Exception	<td>
+ * 		<tr><td>19 <td>"BeliefAddedDummy::"		<td>Exception	<td>
+ * 
+ * 		<tr><td>16  <td rowspan="10">
+ * 			{@link RoleAdded @RoleAdded}<br>
+ * 			{@link RoleResolved @RoleResolved}<br>
+ * 			{@link RoleResolved @RoleFinished}<br>
+ * 			{@link RoleUnresolved @RoleUnresolved}<br>
+ * 				   <td>byte.class 				<td>Exception	<td>
+ * 		<tr><td>18 <td>short.class 				<td>Exception	<td>
+ * 		<tr><td>19 <td>int.class 				<td>Exception	<td>
+ * 		<tr><td>20 <td>long.class 				<td>Exception	<td>
+ * 		<tr><td>21 <td>float.class 				<td>Exception	<td>
+ * 		<tr><td>22 <td>double.class 			<td>Exception	<td>
+ * 		<tr><td>23 <td>boolean.class		 	<td>Exception	<td>
+ * 		<tr><td>24 <td>char.class 				<td>Exception	<td>
+ * 		<tr><td>25 <td>Object.class		 		<td>Exception	<td>
+ * 		<tr><td>26 <td>BeliefAddedDummy.class	<td>JavaClassMatcher	<td>
+ * 
+ * 	</tbody>
+ * </table>
+ * <!-- @formatter:on -->
  * 
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
  */
@@ -91,8 +165,8 @@ public class ConverterToPlanTest {
 
 	static Map<Class<?>, Class<?>> annotation2event = new HashMap<>();
 	static {
-		annotation2event.put(BeliefAdded.class, BeliefAddedEvent.class);
-		annotation2event.put(BeliefRemoved.class, BeliefRemovedEvent.class);
+		annotation2event.put(BeliefClassificationAdded.class, BeliefClassificationAddedEvent.class);
+		annotation2event.put(BeliefClassificationRemoved.class, BeliefClassificationRemovedEvent.class);
 		annotation2event.put(GoalAdded.class, GoalAddedEvent.class);
 		annotation2event.put(GoalRemoved.class, GoalRemovedEvent.class);
 		annotation2event.put(GoalFailed.class, GoalFailedEvent.class);
