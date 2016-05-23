@@ -442,11 +442,27 @@ public class Converter {
 		}
 	}
 
+	/**
+	 * <p>
+	 * Splits input string into 3 parts separated by whitespaces:
+	 * <ol>
+	 * <li>Individual template (required, can't be empty);
+	 * <li>Class template (required, can't be empty);
+	 * </ol>
+	 * 
+	 * @param string
+	 *            input string
+	 * @return string array containing Individual and Class template.
+	 * @throws AnnotationFormatException
+	 *             if input string is not matches by patter, e.g. not in form of
+	 *             pair: {@code [<individual_template> <class_template>]}.
+	 * @see {@link #ASSERTION_CLASS_PATTERN}
+	 */
 	protected static String[] splitClassAssertioin(String string) throws AnnotationFormatException {
 		Matcher match = ASSERTION_CLASS_PATTERN.matcher(string);
 		if (!match.matches()) {
 			throw new AnnotationFormatException("Class Assertion template [" + string + "] has wrong format. "
-					+ "Should be in form of pair: [<individual template> <class template>]");
+					+ "Should be in form of pair: [<individual_template> <class_template>]");
 		}
 		return new String[] { match.group(1), match.group(2) };
 	}
@@ -473,15 +489,15 @@ public class Converter {
 
 	/**
 	 * <p>
-	 * Split input string into 3 parts:
+	 * Splits input string into 3 parts:
 	 * <ol>
-	 * <li>Literal value (required, but can be empty);
-	 * <li>Literal language (optional);
-	 * <li>Literal datatype (optional);
+	 * <li>Literal value template (required, but can be empty);
+	 * <li>Literal language template (optional);
+	 * <li>Literal datatype template (optional);
 	 * </ol>
 	 * <p>
-	 * String should have format:
-	 * {@code <value> ['@' <language>] ['^^' <datatype>]}
+	 * String should have format: {@code <value> ['@' <language>] ['^^' 
+	 * <datatype>]}
 	 * <p>
 	 * For example for string: [<i>some string@en^^xsd:string</i>]
 	 * <ol>
