@@ -31,7 +31,7 @@ import ru.agentlab.maia.agent.match.OWLLiteralMatcher;
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
  */
 @RunWith(Parameterized.class)
-public class ConverterGetLiteralMatcherTest {
+public class ConverterGetOWLLiteralMatcherTest {
 
 	private static OWLOntologyManager manager = OWLManager.createConcurrentOWLOntologyManager();
 
@@ -174,7 +174,7 @@ public class ConverterGetLiteralMatcherTest {
 	public void anyEmptyLiteralShouldThrow() {
 		System.out.println(parameter);
 		try {
-			IMatcher<OWLLiteral> matcher = Converter.getLiteralMatcher(parameter);
+			IMatcher<OWLLiteral> matcher = Converter.getOWLLiteralMatcher(parameter);
 			if (result instanceof OWLLiteral) {
 				OWLLiteral literal = (OWLLiteral) result;
 				IMatcher<OWLLiteral> ethalon = new OWLLiteralMatcher(literal);

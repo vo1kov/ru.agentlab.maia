@@ -51,7 +51,7 @@ import org.junit.runner.RunWith;
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
  */
 @RunWith(Theories.class)
-public class ConverterGetClassificationMatcherTest {
+public class ConverterGetOWLClassAssertionAxiomMatcherTest {
 
 	private static final String SEPARATOR = " ";
 
