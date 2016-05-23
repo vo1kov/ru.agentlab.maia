@@ -1,6 +1,6 @@
 package ru.agentlab.maia.agent.match;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -9,159 +9,149 @@ import ru.agentlab.maia.IMessage;
 
 public class MessageMatcher implements IMatcher<IMessage> {
 
-	private UUID sender;
+	private IMatcher<? super UUID> senderMatcher;
 
-	private List<UUID> receivers = new ArrayList<UUID>();
+	private IMatcher<? super List<UUID>> receiversMatcher;
 
-	private List<String> replyTo = new ArrayList<String>();
+	private IMatcher<? super List<UUID>> replyToMatcher;
 
-	private String content;
+	private IMatcher<? super String> contentMatcher;
 
-	private byte[] byteSequenceContent;
+	private IMatcher<? super String> replyWithMatcher;
 
-	private String replyWith;
+	private IMatcher<? super String> inReplyToMatcher;
 
-	private String inReplyTo;
+	private IMatcher<? super String> encodingMatcher;
 
-	private String encoding;
+	private IMatcher<? super String> languageMatcher;
 
-	private String language;
+	private IMatcher<? super String> ontologyMatcher;
 
-	private String ontology;
+	private IMatcher<? super String> performativeMatcher;
 
-	private String performative;
+	private IMatcher<? super LocalDateTime> replyByMatcher;
 
-	private long replyByInMillisec = 0;
+	private IMatcher<? super String> protocolMatcher;
 
-	private String protocol;
+	private IMatcher<? super String> conversationIdMatcher;
 
-	private String conversationId;
-
-	private long postTimeStamp = -1;
+	private IMatcher<? super Long> postTimeStampMatcher;
 
 	@Override
 	public boolean match(IMessage object, Map<String, Object> map) {
 		return false;
 	}
 
-	public UUID getSender() {
-		return sender;
+	public IMatcher<? super UUID> getSenderMatcher() {
+		return senderMatcher;
 	}
 
-	public void setSender(UUID sender) {
-		this.sender = sender;
+	public void setSenderMatcher(IMatcher<? super UUID> senderMatcher) {
+		this.senderMatcher = senderMatcher;
 	}
 
-	public List<UUID> getReceivers() {
-		return receivers;
+	public IMatcher<? super List<UUID>> getReceiversMatcher() {
+		return receiversMatcher;
 	}
 
-	public void setReceivers(List<UUID> receivers) {
-		this.receivers = receivers;
+	public void setReceiversMatcher(IMatcher<? super List<UUID>> receiversMatcher) {
+		this.receiversMatcher = receiversMatcher;
 	}
 
-	public List<String> getReplyTo() {
-		return replyTo;
+	public IMatcher<? super List<UUID>> getReplyToMatcher() {
+		return replyToMatcher;
 	}
 
-	public void setReplyTo(List<String> replyTo) {
-		this.replyTo = replyTo;
+	public void setReplyToMatcher(IMatcher<? super List<UUID>> replyToMatcher) {
+		this.replyToMatcher = replyToMatcher;
 	}
 
-	public String getContent() {
-		return content;
+	public IMatcher<? super String> getContentMatcher() {
+		return contentMatcher;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setContentMatcher(IMatcher<? super String> contentMatcher) {
+		this.contentMatcher = contentMatcher;
 	}
 
-	public byte[] getByteSequenceContent() {
-		return byteSequenceContent;
+	public IMatcher<? super String> getReplyWithMatcher() {
+		return replyWithMatcher;
 	}
 
-	public void setByteSequenceContent(byte[] byteSequenceContent) {
-		this.byteSequenceContent = byteSequenceContent;
+	public void setReplyWithMatcher(IMatcher<? super String> replyWithMatcher) {
+		this.replyWithMatcher = replyWithMatcher;
 	}
 
-	public String getReplyWith() {
-		return replyWith;
+	public IMatcher<? super String> getInReplyToMatcher() {
+		return inReplyToMatcher;
 	}
 
-	public void setReplyWith(String replyWith) {
-		this.replyWith = replyWith;
+	public void setInReplyToMatcher(IMatcher<? super String> inReplyToMatcher) {
+		this.inReplyToMatcher = inReplyToMatcher;
 	}
 
-	public String getInReplyTo() {
-		return inReplyTo;
+	public IMatcher<? super String> getEncodingMatcher() {
+		return encodingMatcher;
 	}
 
-	public void setInReplyTo(String inReplyTo) {
-		this.inReplyTo = inReplyTo;
+	public void setEncodingMatcher(IMatcher<? super String> encodingMatcher) {
+		this.encodingMatcher = encodingMatcher;
 	}
 
-	public String getEncoding() {
-		return encoding;
+	public IMatcher<? super String> getLanguageMatcher() {
+		return languageMatcher;
 	}
 
-	public void setEncoding(String encoding) {
-		this.encoding = encoding;
+	public void setLanguageMatcher(IMatcher<? super String> languageMatcher) {
+		this.languageMatcher = languageMatcher;
 	}
 
-	public String getLanguage() {
-		return language;
+	public IMatcher<? super String> getOntologyMatcher() {
+		return ontologyMatcher;
 	}
 
-	public void setLanguage(String language) {
-		this.language = language;
+	public void setOntologyMatcher(IMatcher<? super String> ontologyMatcher) {
+		this.ontologyMatcher = ontologyMatcher;
 	}
 
-	public String getOntology() {
-		return ontology;
+	public IMatcher<? super String> getPerformativeMatcher() {
+		return performativeMatcher;
 	}
 
-	public void setOntology(String ontology) {
-		this.ontology = ontology;
+	public void setPerformativeMatcher(IMatcher<? super String> performativeMatcher) {
+		this.performativeMatcher = performativeMatcher;
 	}
 
-	public String getPerformative() {
-		return performative;
+	public IMatcher<? super LocalDateTime> getReplyByMatcher() {
+		return replyByMatcher;
 	}
 
-	public void setPerformative(String performative) {
-		this.performative = performative;
+	public void setReplyByMatcher(IMatcher<? super LocalDateTime> replyByMatcher) {
+		this.replyByMatcher = replyByMatcher;
 	}
 
-	public long getReplyByInMillisec() {
-		return replyByInMillisec;
+	public IMatcher<? super String> getProtocolMatcher() {
+		return protocolMatcher;
 	}
 
-	public void setReplyByInMillisec(long replyByInMillisec) {
-		this.replyByInMillisec = replyByInMillisec;
+	public void setProtocolMatcher(IMatcher<? super String> protocol) {
+		this.protocolMatcher = protocol;
 	}
 
-	public String getProtocol() {
-		return protocol;
+	public IMatcher<? super String> getConversationIdMatcher() {
+		return conversationIdMatcher;
 	}
 
-	public void setProtocol(String protocol) {
-		this.protocol = protocol;
+	public void setConversationIdMatcher(IMatcher<? super String> conversationId) {
+		this.conversationIdMatcher = conversationId;
 	}
 
-	public String getConversationId() {
-		return conversationId;
+	public IMatcher<? super Long> getPostTimeStamp() {
+		return postTimeStampMatcher;
 	}
 
-	public void setConversationId(String conversationId) {
-		this.conversationId = conversationId;
-	}
-
-	public long getPostTimeStamp() {
-		return postTimeStamp;
-	}
-
-	public void setPostTimeStamp(long postTimeStamp) {
-		this.postTimeStamp = postTimeStamp;
+	public void setPostTimeStamp(IMatcher<? super Long> postTimeStampMatcher) {
+		this.postTimeStampMatcher = postTimeStampMatcher;
 	}
 
 	@Override
