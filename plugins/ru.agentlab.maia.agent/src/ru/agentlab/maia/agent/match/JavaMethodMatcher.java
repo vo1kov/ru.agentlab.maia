@@ -1,6 +1,7 @@
 package ru.agentlab.maia.agent.match;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 public class JavaMethodMatcher implements IMatcher<Method> {
 
@@ -11,7 +12,7 @@ public class JavaMethodMatcher implements IMatcher<Method> {
 	}
 
 	@Override
-	public boolean match(Method method, IUnifier unifier) {
+	public boolean match(Method method, Map<String, Object> map) {
 		return method == value;
 	}
 

@@ -2,6 +2,7 @@ package ru.agentlab.maia.agent.match;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import ru.agentlab.maia.IMessage;
@@ -39,7 +40,7 @@ public class MessageMatcher implements IMatcher<IMessage> {
 	private long postTimeStamp = -1;
 
 	@Override
-	public boolean match(IMessage object, IUnifier unifier) {
+	public boolean match(IMessage object, Map<String, Object> map) {
 		return false;
 	}
 
