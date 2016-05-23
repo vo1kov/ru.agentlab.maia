@@ -27,4 +27,8 @@ public class IRIMatcher implements IMatcher<IRI> {
 		return IRI.class;
 	}
 
+	public IRI getValue() {
+		return value;
+	}
+
 }

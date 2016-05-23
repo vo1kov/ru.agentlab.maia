@@ -28,17 +28,11 @@ import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.model.OWLNamedIndividual;
-import org.semanticweb.owlapi.model.OWLNamedObject;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
@@ -48,13 +42,14 @@ import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
 import ru.agentlab.maia.agent.Plan;
 import ru.agentlab.maia.agent.match.IMatcher;
+import ru.agentlab.maia.agent.match.IRIMatcher;
 import ru.agentlab.maia.agent.match.JavaClassMatcher;
+import ru.agentlab.maia.agent.match.JavaStringMatcher;
 import ru.agentlab.maia.agent.match.OWLClassAssertionAxiomMatcher;
 import ru.agentlab.maia.agent.match.OWLDataPropertyAssertionAxiomMatcher;
 import ru.agentlab.maia.agent.match.OWLLiteralMatcher;
-import ru.agentlab.maia.agent.match.IRIMatcher;
-import ru.agentlab.maia.agent.match.VariableMatcher;
 import ru.agentlab.maia.agent.match.OWLObjectPropertyAssertionAxiomMatcher;
+import ru.agentlab.maia.agent.match.VariableMatcher;
 import ru.agentlab.maia.annotation.BeliefClassificationAdded;
 import ru.agentlab.maia.annotation.BeliefClassificationRemoved;
 import ru.agentlab.maia.annotation.BeliefDataPropertyAdded;
@@ -73,16 +68,13 @@ import ru.agentlab.maia.annotation.GoalObjectPropertyAdded;
 import ru.agentlab.maia.annotation.GoalObjectPropertyFailed;
 import ru.agentlab.maia.annotation.GoalObjectPropertyFinished;
 import ru.agentlab.maia.annotation.GoalObjectPropertyRemoved;
+import ru.agentlab.maia.annotation.Prefix;
 import ru.agentlab.maia.annotation.RoleAdded;
 import ru.agentlab.maia.annotation.RoleRemoved;
 import ru.agentlab.maia.annotation.RoleResolved;
 import ru.agentlab.maia.annotation.RoleUnresolved;
 
 public class Converter {
-
-	private static OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-
-	private static OWLDataFactory factory = manager.getOWLDataFactory();
 
 	// private static final Map<Class<?>, EventType> CLASSIFICATION_ANNOTATIONS
 	// = new HashMap<>(6);
@@ -150,7 +142,7 @@ public class Converter {
 
 	protected static final String IRI_FULL_REGEXP = "(<(\\S+#)(\\S+)>)";
 
-	protected static final String IRI_VARIABLE_REGEXP = "(\\?(\\S+))";
+	protected static final String VARIABLE_REGEXP = "(\\?(\\S+))";
 
 	/**
 	 * Determines whether input string is either a literal with prefix, literal
@@ -181,7 +173,9 @@ public class Converter {
 	 * <a href="https://jex.im/regulex/">https://jex.im/regulex/</a></small>
 	 */
 	protected static final Pattern IRI_PATTERN = Pattern
-			.compile("(?s)^(" + IRI_PREFIXED_REGEXP + "|" + IRI_FULL_REGEXP + "|" + IRI_VARIABLE_REGEXP + ")$");
+			.compile("(?s)^(" + IRI_PREFIXED_REGEXP + "|" + IRI_FULL_REGEXP + "|" + VARIABLE_REGEXP + ")$");
+
+	protected static final Pattern VARIABLE_PATTERN = Pattern.compile("(?s)^(" + VARIABLE_REGEXP + ")$");
 
 	/**
 	 * Determines whether input string is datatype literal:
@@ -366,85 +360,142 @@ public class Converter {
 		return plan;
 	}
 
-	// private static <T> T getMethodValue(Object object, String methodName,
-	// Class<T> clazz) throws NoSuchMethodException,
-	// SecurityException, IllegalAccessException, IllegalArgumentException,
-	// InvocationTargetException {
-	// Method valueMethod = object.getClass().getMethod(methodName);
-	// Object result = valueMethod.invoke(object);
-	// return clazz.cast(result);
-	// }
-
 	protected static IMatcher<OWLClassAssertionAxiom> getOWLClassAssertionAxiomMatcher(String template)
 			throws AnnotationFormatException {
-		Matcher match = ASSERTION_CLASS_PATTERN.matcher(template);
-		if (!match.matches()) {
-			throw new AnnotationFormatException("@ have wrong template");
-		}
-		return new OWLClassAssertionAxiomMatcher(getIRIMatcher(match.group(1)), getIRIMatcher(match.group(2)));
+		String[] parts = splitClassAssertioin(template);
+		String individual = parts[0];
+		String clazz = parts[1];
+		return new OWLClassAssertionAxiomMatcher(getIRIMatcher(individual), getIRIMatcher(clazz));
 	}
 
 	protected static IMatcher<OWLDataPropertyAssertionAxiom> getOWLDataPropertyAssertionAxiomMatcher(String template)
 			throws AnnotationFormatException {
-		Matcher match = ASSERTION_DATA_PROPERTY_PATTERN.matcher(template);
-		if (!match.matches()) {
-			throw new AnnotationFormatException("@ have wrong template");
-		}
-		return new OWLDataPropertyAssertionAxiomMatcher(getIRIMatcher(match.group(1)), getIRIMatcher(match.group(2)),
-				getOWLLiteralMatcher(match.group(3)));
+		String[] parts = splitDataPropertyAssertioin(template);
+		String subject = parts[0];
+		String property = parts[1];
+		String object = parts[2];
+		return new OWLDataPropertyAssertionAxiomMatcher(getIRIMatcher(subject), getIRIMatcher(property),
+				getOWLLiteralMatcher(object));
 	}
 
 	protected static IMatcher<OWLObjectPropertyAssertionAxiom> getOWLObjectPropertyAssertionAxiomMatcher(
 			String template) throws AnnotationFormatException {
-		Matcher match = ASSERTION_OBJECT_PROPERTY_PATTERN.matcher(template);
-		if (!match.matches()) {
-			throw new AnnotationFormatException("@ have wrong template");
-		}
-		return new OWLObjectPropertyAssertionAxiomMatcher(getIRIMatcher(match.group(1)), getIRIMatcher(match.group(1)),
-				getIRIMatcher(match.group(2)));
-	}
-
-	protected static IMatcher<? super IRI> getIRIMatcher(String string) throws AnnotationFormatException {
-		if (string.startsWith("?")) {
-			return new VariableMatcher(string.substring(1));
-		} else if (string.startsWith("<") && string.endsWith(">")) {
-			return new IRIMatcher(IRI.create(string));
-		} else {
-			throw new AnnotationFormatException();
-		}
+		String[] parts = splitObjectPropertyAssertioin(template);
+		String subject = parts[0];
+		String property = parts[1];
+		String data = parts[2];
+		return new OWLObjectPropertyAssertionAxiomMatcher(getIRIMatcher(subject), getIRIMatcher(property),
+				getIRIMatcher(data));
 	}
 
 	protected static IMatcher<OWLLiteral> getOWLLiteralMatcher(String string) throws AnnotationFormatException {
-		String[] split = splitDatatypeLiteral(string);
-		String literal = split[0];
-		String language = split[1];
-		String datatype = split[2];
-		IRI datatypeIRI = null;
-		Matcher matcher = matchLiteral(datatype);
-		if (!matcher.matches()) {
-			throw new AnnotationFormatException(
-					"Literal [" + string + "] has wrong format. Datatype [" + datatype + "] does not match pattern.");
+		String[] parts = splitDatatypeLiteral(string);
+		String literal = parts[0];
+		String language = parts[1];
+		String datatype = parts[2];
+		IMatcher<? super IRI> datatypeMatcher = getIRIMatcher(datatype);
+		if (datatypeMatcher instanceof IRIMatcher) {
+			IRI datatypeIRI = ((IRIMatcher) datatypeMatcher).getValue();
+			if (OWL2Datatype.isBuiltIn(datatypeIRI)) {
+				OWL2Datatype owl2datatype = OWL2Datatype.getDatatype(datatypeIRI);
+				if (!owl2datatype.isInLexicalSpace(literal)) {
+					throw new AnnotationFormatException("Literal [" + string + "] has wrong format. [" + literal
+							+ "] is not in lexical space of datatype [" + datatypeIRI.toQuotedString() + "]");
+				}
+			}
 		}
-		if (!isVariable(matcher)) {
-			datatypeIRI = getIRI(matcher);
-		}
-		OWL2Datatype owl2datatype;
-		try {
-			owl2datatype = OWL2Datatype.getDatatype(datatypeIRI);
-		} catch (OWLRuntimeException e) {
-			throw new AnnotationFormatException("Literal [" + string + "] has wrong format. Datatype [" + datatypeIRI
-					+ "] is not build-in datatype");
-		}
-		if (!owl2datatype.isInLexicalSpace(literal)) {
-			throw new AnnotationFormatException("Literal [" + string + "] has wrong format. [" + literal
-					+ "] is not in lexical space of datatype [" + datatypeIRI + "]");
-		}
-		OWLLiteral owlliteral = factory.getOWLLiteral(literal, owl2datatype);
-		return new OWLLiteralMatcher(owlliteral);
+		IMatcher<? super String> literalMatcher = getStringMatcher(literal);
+		IMatcher<? super String> languageMatcher = getStringMatcher(language);
+		return new OWLLiteralMatcher(literalMatcher, languageMatcher, datatypeMatcher);
 	}
 
+	protected static IMatcher<? super IRI> getIRIMatcher(String string) throws AnnotationFormatException {
+		Matcher match = IRI_PATTERN.matcher(string);
+		if (!match.matches()) {
+			throw new AnnotationFormatException("Literal [" + string + "] has wrong format. "
+					+ "Should be in form either namespace:name, <htt://full.com#name> or ?variable.");
+		}
+		if (match.group(5) != null) {
+			return new IRIMatcher(IRI.create(match.group(6), match.group(7)));
+		} else if (match.group(2) != null) {
+			String prefix = prefixManager.getPrefix(match.group(3));
+			if (prefix == null) {
+				throw new AnnotationFormatException(
+						"Literal [" + string + "] has wrong format. " + "Prefix [" + prefix + "] is unknown. Use @"
+								+ Prefix.class.getName() + " annotation to register not build-in prefixes.");
+			}
+			return new IRIMatcher(IRI.create(prefix, match.group(4)));
+		} else if (match.group(8) != null) {
+			return new VariableMatcher(match.group(9));
+		} else {
+			throw new AnnotationFormatException("Literal [" + string + "] has wrong format. "
+					+ "Should be in form either [namespace:name], [<htt://full.com#name>] or [?variable].");
+		}
+	}
+
+	protected static IMatcher<? super String> getStringMatcher(String string) {
+		Matcher match = VARIABLE_PATTERN.matcher(string);
+		if (match.matches()) {
+			return new VariableMatcher(match.group(1));
+		} else {
+			return new JavaStringMatcher(string);
+		}
+	}
+
+	protected static String[] splitClassAssertioin(String string) throws AnnotationFormatException {
+		Matcher match = ASSERTION_CLASS_PATTERN.matcher(string);
+		if (!match.matches()) {
+			throw new AnnotationFormatException("Class Assertion template [" + string + "] has wrong format. "
+					+ "Should be in form of pair: [<individual template> <class template>]");
+		}
+		return new String[] { match.group(1), match.group(2) };
+	}
+
+	protected static String[] splitDataPropertyAssertioin(String string) throws AnnotationFormatException {
+		Matcher match = ASSERTION_DATA_PROPERTY_PATTERN.matcher(string);
+		if (!match.matches()) {
+			throw new AnnotationFormatException(
+					"DataProperty Assertioin template [" + string + "] have wrong format. Should be in form of triple: "
+							+ "[<individual template> <property template> <data template>]");
+		}
+		return new String[] { match.group(1), match.group(2), match.group(3) };
+	}
+
+	protected static String[] splitObjectPropertyAssertioin(String string) throws AnnotationFormatException {
+		Matcher match = ASSERTION_OBJECT_PROPERTY_PATTERN.matcher(string);
+		if (!match.matches()) {
+			throw new AnnotationFormatException("ObjectProperty Assertioin template [" + string
+					+ "] have wrong format. Should be in form of triple: "
+					+ "[<individual template> <property template> <individual template>]");
+		}
+		return new String[] { match.group(1), match.group(2), match.group(3) };
+	}
+
+	/**
+	 * <p>
+	 * Split input string into 3 parts:
+	 * <ol>
+	 * <li>Literal value (required, but can be empty);
+	 * <li>Literal language (optional);
+	 * <li>Literal datatype (optional);
+	 * </ol>
+	 * <p>
+	 * String should have format:
+	 * {@code <value> ['@' <language>] ['^^' <datatype>]}
+	 * <p>
+	 * For example for string: [<i>some string@en^^xsd:string</i>]
+	 * <ol>
+	 * <li><i>some string</i> - is a value;
+	 * <li><i>en</i> - is a language;
+	 * <li><i>xsd:string</i> - is a datatype;
+	 * </ol>
+	 * 
+	 * @param string
+	 *            input string
+	 * @return string array containing value, language and datatype parts of
+	 *         input string.
+	 */
 	protected static String[] splitDatatypeLiteral(String string) {
-		String[] result = new String[3];
 		String value = string;
 		String language = null;
 		String datatype = null;
@@ -458,52 +509,7 @@ public class Converter {
 			language = value.substring(languageIndex + 1, value.length());
 			value = value.substring(0, languageIndex);
 		}
-		result[0] = value;
-		result[1] = language;
-		result[2] = datatype;
-		return result;
-	}
-
-	private static IRI getIRI(Matcher match) throws AnnotationFormatException {
-		if (match.group(5) != null) {
-			return IRI.create(match.group(6), match.group(7));
-		} else if (match.group(2) != null) {
-			String prefix = prefixManager.getPrefix(match.group(3));
-			if (prefix == null) {
-				throw new AnnotationFormatException(""); // TODO: add message
-			}
-			return IRI.create(prefix, match.group(4));
-		} else {
-			return null;
-		}
-	}
-
-	private static Matcher matchLiteral(String string) {
-		return IRI_PATTERN.matcher(string);
-	}
-
-	private static boolean isFullIRI(Matcher match) {
-		return match.group(5) != null;
-	}
-
-	private static IRI getFullIRI(Matcher match) {
-		return IRI.create(match.group(6), match.group(7));
-	}
-
-	private static boolean isPrefixedIRI(Matcher match) {
-		return match.group(2) != null;
-	}
-
-	private static IRI getPrefixedIRI(Matcher match) {
-		return IRI.create(match.group(3), match.group(4));
-	}
-
-	private static boolean isVariable(Matcher match) {
-		return match.group(8) != null;
-	}
-
-	private static String getVariable(Matcher match) {
-		return match.group(8);
+		return new String[] { value, language, datatype };
 	}
 
 }
