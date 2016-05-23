@@ -1,21 +1,30 @@
 package ru.agentlab.maia.agent.match;
 
+import java.util.Map;
 import java.util.Objects;
 
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLLiteral;
 
 public class OWLLiteralMatcher implements IMatcher<OWLLiteral> {
 
-	private final OWLLiteral object;
+	IMatcher<String> literalMatcher;
 
-	public OWLLiteralMatcher(OWLLiteral object) {
-		this.object = object;
+	IMatcher<String> languageMatcher;
+
+	IMatcher<IRI> datatypeMatcher;
+
+	public OWLLiteralMatcher(IMatcher<String> literalMatcher, IMatcher<String> languageMatcher,
+			IMatcher<IRI> datatypeMatcher) {
+		this.literalMatcher = literalMatcher;
+		this.languageMatcher = languageMatcher;
+		this.datatypeMatcher = datatypeMatcher;
 	}
 
 	@Override
-	public boolean match(OWLLiteral object, IUnifier unifier) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean match(OWLLiteral literal, Map<String, Object> map) {
+		return literalMatcher.match(literal.getLiteral(), map) && languageMatcher.match(literal.getLang(), map)
+				&& datatypeMatcher.match(literal.getDatatype().getIRI(), map);
 	}
 
 	@Override
@@ -25,7 +34,8 @@ public class OWLLiteralMatcher implements IMatcher<OWLLiteral> {
 
 	@Override
 	public String toString() {
-		return "OWLLiteralMatcher " + object.toString();
+		return "OWLLiteralMatcher (" + literalMatcher.toString() + "@" + languageMatcher.toString() + "^^"
+				+ datatypeMatcher.toString() + ")";
 	}
 
 	@Override
@@ -33,8 +43,13 @@ public class OWLLiteralMatcher implements IMatcher<OWLLiteral> {
 		if (obj == null) {
 			return false;
 		}
+		if (obj == this) {
+			return true;
+		}
 		if (obj instanceof OWLLiteralMatcher) {
-			return object.equals(((OWLLiteralMatcher) obj).object);
+			OWLLiteralMatcher other = (OWLLiteralMatcher) obj;
+			return literalMatcher.equals(other.literalMatcher) && languageMatcher.equals(other.languageMatcher)
+					&& datatypeMatcher.equals(other.datatypeMatcher);
 		} else {
 			return false;
 		}
@@ -42,7 +57,7 @@ public class OWLLiteralMatcher implements IMatcher<OWLLiteral> {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(object);
+		return Objects.hash(literalMatcher, languageMatcher, datatypeMatcher);
 	}
 
 }

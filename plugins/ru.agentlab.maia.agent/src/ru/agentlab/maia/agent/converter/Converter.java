@@ -146,11 +146,11 @@ public class Converter {
 	// CLASS_ANNOTATIONS.put(RoleUnresolved.class, EventType.ROLE_UNRESOLVED);
 	// }
 
-	protected static final String LITERAL_PREFIXED_REGEXP = "((\\w*:)?(\\S+))";
+	protected static final String IRI_PREFIXED_REGEXP = "((\\w*:)?(\\S+))";
 
-	protected static final String LITERAL_NAMESPACED_REGEXP = "(<(\\S+#)(\\S+)>)";
+	protected static final String IRI_FULL_REGEXP = "(<(\\S+#)(\\S+)>)";
 
-	protected static final String LITERAL_VARIABLE_REGEXP = "(\\?(\\S+))";
+	protected static final String IRI_VARIABLE_REGEXP = "(\\?(\\S+))";
 
 	/**
 	 * Determines whether input string is either a literal with prefix, literal
@@ -179,40 +179,9 @@ public class Converter {
 	 * <p align="right">
 	 * <small>Visualized with
 	 * <a href="https://jex.im/regulex/">https://jex.im/regulex/</a></small>
-	 * 
-	 * @see {@link #LITERAL_STATIC_PATTERN}
 	 */
-	protected static final Pattern LITERAL_PATTERN = Pattern.compile("(?s)^(" + LITERAL_PREFIXED_REGEXP + "|"
-			+ LITERAL_NAMESPACED_REGEXP + "|" + LITERAL_VARIABLE_REGEXP + ")$");
-
-	/**
-	 * Determines whether input string is either a literal with prefix or
-	 * literal with full name. Available groups:
-	 * <ul>
-	 * <li><b>Group #2</b> - literal with prefix;
-	 * <ul>
-	 * <li><b>Group #3</b> - optional prefix name, ends with '<code>:</code>';
-	 * <li><b>Group #4</b> - local name of literal;
-	 * </ul>
-	 * <li><b>Group #5</b> - literal with full name, surrounded by angled
-	 * brackets;
-	 * <ul>
-	 * <li><b>Group #6</b> - namespace, ends with '<code>#</code>';
-	 * <li><b>Group #7</b> - local name of literal;
-	 * </ul>
-	 * </ul>
-	 * 
-	 * <p>
-	 * <img src="./doc-files/LiteralStaticRegExp.png" style=
-	 * "max-width: 100%;" alt="LiteralStaticRegExp" >
-	 * <p align="right">
-	 * <small>Visualized with
-	 * <a href="https://jex.im/regulex/">https://jex.im/regulex/</a></small>
-	 * 
-	 * @see {@link #LITERAL_PATTERN}
-	 */
-	protected static final Pattern LITERAL_STATIC_PATTERN = Pattern
-			.compile("(?s)^(" + LITERAL_PREFIXED_REGEXP + "|" + LITERAL_NAMESPACED_REGEXP + ")$");
+	protected static final Pattern IRI_PATTERN = Pattern
+			.compile("(?s)^(" + IRI_PREFIXED_REGEXP + "|" + IRI_FULL_REGEXP + "|" + IRI_VARIABLE_REGEXP + ")$");
 
 	/**
 	 * Determines whether input string is datatype literal:

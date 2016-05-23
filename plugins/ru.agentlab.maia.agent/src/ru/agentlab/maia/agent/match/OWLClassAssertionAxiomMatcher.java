@@ -1,30 +1,32 @@
 package ru.agentlab.maia.agent.match;
 
+import java.util.Map;
+
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLIndividual;
-import org.semanticweb.owlapi.model.OWLNamedObject;
 
 public class OWLClassAssertionAxiomMatcher implements IMatcher<OWLClassAssertionAxiom> {
 
-	IMatcher<OWLNamedObject> subjectMatcher;
+	IMatcher<? super IRI> subjectMatcher;
 
-	IMatcher<OWLNamedObject> objectMatcher;
+	IMatcher<? super IRI> objectMatcher;
 
-	public OWLClassAssertionAxiomMatcher(IMatcher<OWLNamedObject> subject, IMatcher<OWLNamedObject> object) {
+	public OWLClassAssertionAxiomMatcher(IMatcher<? super IRI> subject, IMatcher<? super IRI> object) {
 		super();
 		this.subjectMatcher = subject;
 		this.objectMatcher = object;
 	}
 
-	public boolean match(OWLClassAssertionAxiom axiom, IUnifier unifier) {
+	public boolean match(OWLClassAssertionAxiom axiom, Map<String, Object> map) {
 		OWLIndividual subject = axiom.getIndividual();
 		OWLClassExpression object = axiom.getClassExpression();
-		if (!subject.isNamed()) {
+		if (!subject.isNamed() || object.isAnonymous()) {
 			return false;
 		}
-		return subjectMatcher.match(subject.asOWLNamedIndividual(), unifier)
-				&& objectMatcher.match(object.asOWLClass(), unifier);
+		return subjectMatcher.match(subject.asOWLNamedIndividual().getIRI(), map)
+				&& objectMatcher.match(object.asOWLClass().getIRI(), map);
 	}
 
 	@Override

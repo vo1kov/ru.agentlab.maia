@@ -1,23 +1,23 @@
 package ru.agentlab.maia.agent.match;
 
-import org.semanticweb.owlapi.model.OWLNamedObject;
+import java.util.Map;
 
-public class OWLNamedObjectVariableMatcher implements IMatcher<OWLNamedObject> {
+public class VariableMatcher implements IMatcher<Object> {
 
 	private final String value;
 
-	public OWLNamedObjectVariableMatcher(String value) {
+	public VariableMatcher(String value) {
 		this.value = value;
 	}
 
 	@Override
-	public boolean match(OWLNamedObject object, IUnifier unifier) {
-		Object val = unifier.get(value);
+	public boolean match(Object object, Map<String, Object> map) {
+		Object val = map.get(value);
 		if (val != null) {
 			// unifier contains value for variable, object should be the same
 			return object.equals(val);
 		} else {
-			unifier.put(value, object);
+			map.put(value, object);
 			return true;
 		}
 	}
@@ -29,7 +29,7 @@ public class OWLNamedObjectVariableMatcher implements IMatcher<OWLNamedObject> {
 
 	@Override
 	public Class<?> getType() {
-		return OWLNamedObject.class;
+		return Object.class;
 	}
 
 }

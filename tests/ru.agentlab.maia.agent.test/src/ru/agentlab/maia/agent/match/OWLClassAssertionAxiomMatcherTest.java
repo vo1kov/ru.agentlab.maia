@@ -69,10 +69,10 @@ public class OWLClassAssertionAxiomMatcherTest {
 	private static OWLClass CLASS1 = factory.getOWLClass(IRI.create(NAMESPACE + "class1"));
 	private static OWLClass XXXXXX = factory.getOWLClass(IRI.create(NAMESPACE + "xxxxxx"));
 
-	private static IMatcher<OWLNamedObject> INDIV_STATIC_MATCHER = new OWLNamedObjectStaticMatcher(TEST1);
-	private static IMatcher<OWLNamedObject> INDIV_VAR_MATCHER = new OWLNamedObjectVariableMatcher("indiv");
-	private static IMatcher<OWLNamedObject> CLASS_STATIC_MATCHER = new OWLNamedObjectStaticMatcher(CLASS1);
-	private static IMatcher<OWLNamedObject> CLASS_VAR_MATCHER = new OWLNamedObjectVariableMatcher("class");
+	private static IMatcher<OWLNamedObject> INDIV_STATIC_MATCHER = new IRIMatcher(TEST1);
+	private static IMatcher<OWLNamedObject> INDIV_VAR_MATCHER = new VariableMatcher("indiv");
+	private static IMatcher<OWLNamedObject> CLASS_STATIC_MATCHER = new IRIMatcher(CLASS1);
+	private static IMatcher<OWLNamedObject> CLASS_VAR_MATCHER = new VariableMatcher("class");
 
 	private static Map<String, Object> EMPTY = new HashMap<>();
 	private static Map<String, Object> ONLY_TEST1 = new HashMap<>();

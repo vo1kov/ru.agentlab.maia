@@ -1,36 +1,39 @@
 package ru.agentlab.maia.agent.match;
 
+import java.util.Map;
+
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.model.OWLNamedObject;
 
 public class OWLDataPropertyAssertionAxiomMatcher implements IMatcher<OWLDataPropertyAssertionAxiom> {
 
-	IMatcher<OWLNamedObject> subjectMatcher;
+	IMatcher<? super IRI> subjectMatcher;
 
-	IMatcher<OWLNamedObject> propertyMatcher;
+	IMatcher<? super IRI> propertyMatcher;
 
-	IMatcher<OWLLiteral> objectMatcher;
+	IMatcher<? super OWLLiteral> objectMatcher;
 
-	public OWLDataPropertyAssertionAxiomMatcher(IMatcher<OWLNamedObject> subject, IMatcher<OWLNamedObject> predicate,
-			IMatcher<OWLLiteral> object) {
+	public OWLDataPropertyAssertionAxiomMatcher(IMatcher<? super IRI> subject, IMatcher<? super IRI> predicate,
+			IMatcher<? super OWLLiteral> object) {
 		super();
 		this.subjectMatcher = subject;
 		this.propertyMatcher = predicate;
 		this.objectMatcher = object;
 	}
 
-	public boolean match(OWLDataPropertyAssertionAxiom axiom, IUnifier unifier) {
+	public boolean match(OWLDataPropertyAssertionAxiom axiom, Map<String, Object> map) {
 		OWLIndividual subject = axiom.getSubject();
 		OWLDataPropertyExpression property = axiom.getProperty();
 		OWLLiteral object = axiom.getObject();
 		if (!subject.isNamed()) {
 			return false;
 		}
-		return subjectMatcher.match(subject.asOWLNamedIndividual(), unifier)
-				&& propertyMatcher.match(property.asOWLDataProperty(), unifier) && objectMatcher.match(object, unifier);
+		return subjectMatcher.match(subject.asOWLNamedIndividual().getIRI(), map)
+				&& propertyMatcher.match(property.asOWLDataProperty().getIRI(), map)
+				&& objectMatcher.match(object, map);
 	}
 
 	@Override
