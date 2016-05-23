@@ -39,6 +39,48 @@ public class MessageMatcher implements IMatcher<IMessage> {
 
 	@Override
 	public boolean match(IMessage object, Map<String, Object> map) {
+		if (senderMatcher != null && !senderMatcher.match(object.getSender(), map)) {
+			return false;
+		}
+		if (receiversMatcher != null && !receiversMatcher.match(object.getReceivers(), map)) {
+			return false;
+		}
+		if (replyToMatcher != null && !replyToMatcher.match(object.getReplyTo(), map)) {
+			return false;
+		}
+		if (contentMatcher != null && !contentMatcher.match(object.getContent(), map)) {
+			return false;
+		}
+		if (replyWithMatcher != null && !replyWithMatcher.match(object.getReplyWith(), map)) {
+			return false;
+		}
+		if (inReplyToMatcher != null && !inReplyToMatcher.match(object.getInReplyTo(), map)) {
+			return false;
+		}
+		if (encodingMatcher != null && !encodingMatcher.match(object.getEncoding(), map)) {
+			return false;
+		}
+		if (languageMatcher != null && !languageMatcher.match(object.getLanguage(), map)) {
+			return false;
+		}
+		if (ontologyMatcher != null && !ontologyMatcher.match(object.getOntology(), map)) {
+			return false;
+		}
+		if (performativeMatcher != null && !performativeMatcher.match(object.getPerformative(), map)) {
+			return false;
+		}
+		if (replyByMatcher != null && !replyByMatcher.match(object.getReplyBy(), map)) {
+			return false;
+		}
+		if (protocolMatcher != null && !protocolMatcher.match(object.getProtocol(), map)) {
+			return false;
+		}
+		if (conversationIdMatcher != null && !conversationIdMatcher.match(object.getConversationId(), map)) {
+			return false;
+		}
+		if (postTimeStampMatcher != null && !postTimeStampMatcher.match(object.getPostTimeStamp(), map)) {
+			return false;
+		}
 		return false;
 	}
 
