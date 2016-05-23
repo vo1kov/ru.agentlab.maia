@@ -43,32 +43,48 @@ import org.semanticweb.owlapi.vocab.Namespaces;
  *		<tr><td> 4 <td>"^^rdf:XMLLiteral" 			<td>AnnotationFormatException	<td>test 1 word
  *		<tr><td> 5 <td>"&lt;RDF#XMLLiteral&gt;"		<td>AnnotationFormatException	<td>test 1 word
  *		<tr><td colspan="4">
- *		<tr><td> 6 <td>"xxx xxx xxx" 				<td>AnnotationFormatException	<td>3 words with space         
- *		<tr><td> 7 <td>"xxx\rxxx\rxxx" 				<td>AnnotationFormatException	<td>3 words with caret return  
- *		<tr><td> 8 <td>"xxx\nxxx\nxxx" 				<td>AnnotationFormatException	<td>3 words with new line      
- *		<tr><td> 9 <td>"xxx\txxx\txxx" 				<td>AnnotationFormatException	<td>3 words with new tabulation
- *		<tr><td>10 <td>"xxx	xxx	xxx" 				<td>AnnotationFormatException	<td>3 words with new tabulation
- *		<tr><td>11 <td>"xxx\r\nxxx\txxx" 			<td>AnnotationFormatException	<td>3 words all
+ *		<tr><td> 6 <td>"xxx xxx" 					<td>AnnotationFormatException	<td>2 words with space
+ *		<tr><td> 7 <td>"123 456" 					<td>AnnotationFormatException	<td>2 words with space
+ *		<tr><td> 8 <td>"  123  456" 				<td>AnnotationFormatException	<td>2 words with first spaces
+ *		<tr><td> 9 <td>"123  456  " 				<td>AnnotationFormatException	<td>2 words with last spaces
+ *		<tr><td>10 <td>"  123  456    " 			<td>AnnotationFormatException	<td>2 words with surrounded by spaces
+ *		<tr><td>11 <td>"123 456" 					<td>AnnotationFormatException	<td>2 words with space
+ *		<tr><td>12 <td>"123\r\n456" 				<td>AnnotationFormatException	<td>2 words with caret return
+ *		<tr><td>13 <td>"123\n456" 					<td>AnnotationFormatException	<td>2 words with new line
+ *		<tr><td>14 <td>"\r\n123  456" 				<td>AnnotationFormatException	<td>2 words with first new line
+ *		<tr><td>15 <td>"123  456\r\n" 				<td>AnnotationFormatException	<td>2 words with last new line
+ *		<tr><td>16 <td>"\r\n123  456\r\n" 			<td>AnnotationFormatException	<td>2 words with surrounded by new lines
+ *		<tr><td>17 <td>"123\t456" 					<td>AnnotationFormatException	<td>2 words with tabulation
+ *		<tr><td>18 <td>"123	456" 					<td>AnnotationFormatException	<td>2 words with tabulation
+ *		<tr><td>19 <td>"123\t\t\t456" 				<td>AnnotationFormatException	<td>2 words with multiple tabulations
+ *		<tr><td>20 <td>"123			456" 			<td>AnnotationFormatException	<td>2 words with multiple tabulations
  *		<tr><td colspan="4">
- *		<tr><td>12 <td>"xxx xxx" 					<td>{"xxx", "xxx"}				<td>2 words with space
- *		<tr><td>13 <td>"123 456" 					<td>{"123", "456"}				<td>2 words with space
- *		<tr><td>14 <td>"  123  456" 				<td>{"123", "456"}				<td>2 words with first spaces
- *		<tr><td>15 <td>"123  456  " 				<td>{"123", "456"}				<td>2 words with last spaces
- *		<tr><td>16 <td>"  123  456    " 			<td>{"123", "456"}				<td>2 words with surrounded by spaces
- *		<tr><td>17 <td>"123 456" 					<td>{"123", "456"}				<td>2 words with space
- *		<tr><td>18 <td>"123\r\n456" 				<td>{"123", "456"}				<td>2 words with caret return
- *		<tr><td>19 <td>"123\n456" 					<td>{"123", "456"}				<td>2 words with new line
- *		<tr><td>20 <td>"\r\n123  456" 				<td>{"123", "456"}				<td>2 words with first new line
- *		<tr><td>21 <td>"123  456\r\n" 				<td>{"123", "456"}				<td>2 words with last new line
- *		<tr><td>22 <td>"\r\n123  456\r\n" 			<td>{"123", "456"}				<td>2 words with surrounded by new lines
- *		<tr><td>23 <td>"123\t456" 					<td>{"123", "456"}				<td>2 words with tabulation
- *		<tr><td>24 <td>"123	456" 					<td>{"123", "456"}				<td>2 words with tabulation
- *		<tr><td>25 <td>"123\t\t\t456" 				<td>{"123", "456"}				<td>2 words with multiple tabulations
- *		<tr><td>26 <td>"123			456" 			<td>{"123", "456"}				<td>2 words with multiple tabulations
+ *		<tr><td>21 <td>"xxx xxx xxx" 				<td>{"xxx", "xxx", "xxx"}		<td>3 words with space
+ *		<tr><td>22 <td>"123 456 789" 				<td>{"123", "456", "789"}		<td>3 words with space
+ *		<tr><td>23 <td>"  123  456 789" 			<td>{"123", "456", "789"}		<td>3 words with first spaces
+ *		<tr><td>24 <td>"123  456 789  " 			<td>{"123", "456", "789"}		<td>3 words with last spaces
+ *		<tr><td>25 <td>"  123  456  789  " 			<td>{"123", "456", "789"}		<td>3 words with surrounded by spaces
+ *		<tr><td>26 <td>"123 456 789" 				<td>{"123", "456", "789"}		<td>3 words with space
+ *		<tr><td>27 <td>"123\r\n456\r\n789" 			<td>{"123", "456", "789"}		<td>3 words with caret return
+ *		<tr><td>28 <td>"123\n456\n789" 				<td>{"123", "456", "789"}		<td>3 words with new line
+ *		<tr><td>29 <td>"\r\n123  456 789" 			<td>{"123", "456", "789"}		<td>3 words with first new line
+ *		<tr><td>30 <td>"123  456 789\r\n" 			<td>{"123", "456", "789"}		<td>3 words with last new line
+ *		<tr><td>31 <td>"\r\n123  456 789\r\n" 		<td>{"123", "456", "789"}		<td>3 words with surrounded by new lines
+ *		<tr><td>32 <td>"123\t456\t789" 				<td>{"123", "456", "789"}		<td>3 words with tabulation
+ *		<tr><td>33 <td>"123	456	789" 				<td>{"123", "456", "789"}		<td>3 words with tabulation
+ *		<tr><td>34 <td>"123\t\t\t456\t\t789" 		<td>{"123", "456", "789"}		<td>3 words with multiple tabulations
+ *		<tr><td>35 <td>"123			456		789"	<td>{"123", "456", "789"}		<td>3 words with multiple tabulations
  *		<tr><td colspan="4">
- *		<tr><td>27 <td>"ns:some rdf:type owl:Class" <td>{"ns:some", "rdf:type", "owl:Class"}	<td>test : in literal
- *		<tr><td>28 <td>"xxx rdf:type &lt;OWL#Class&gt;" <td>{"xxx", "rdf:type", "&lt;OWL#Class&gt;"}<td>test < # > in literal
- *		<tr><td>29 <td>"&lt;htt://s@s:www.a#Class&gt; rdf:type xxx"<td>{"&lt;htt://s@s:www.a#Class&gt;", "rdf:type", "xxx"}<td>test @ in literal
+ *		<tr><td>36 <td>"xxx xxx xxx xxx" 			<td>AnnotationFormatException	<td>4 words with space
+ *		<tr><td>37 <td>"xxx\rxxx\rxxx\rxxx" 		<td>AnnotationFormatException	<td>4 words with caret return
+ *		<tr><td>38 <td>"xxx\nxxx\nxxx\nxxx"			<td>AnnotationFormatException	<td>4 words with new line
+ *		<tr><td>39 <td>"xxx\txxx\txxx\txxx"			<td>AnnotationFormatException	<td>4 words with new tabulation
+ *		<tr><td>40 <td>"xxx	xxx	xxx	xxx"			<td>AnnotationFormatException	<td>4 words with new tabulation
+ *		<tr><td>41 <td>"xxx\r\nxxx\txxx\txxx"		<td>AnnotationFormatException	<td>4 words with all
+ *		<tr><td colspan="4">
+ *		<tr><td>42 <td>"ns:some rdf:type owl:Class" <td>{"ns:some", "rdf:type", "owl:Class"}	<td>test : in literal
+ *		<tr><td>43 <td>"xxx rdf:type &lt;OWL#Class&gt;" <td>{"xxx", "rdf:type", "&lt;OWL#Class&gt;"}<td>test < # > in literal
+ *		<tr><td>44 <td>"&lt;htt://s@s:www.a#Class&gt; rdf:type xxx"<td>{"&lt;htt://s@s:www.a#Class&gt;", "rdf:type", "xxx"}<td>test @ in literal
  * 	</tbody>
  * </table>
  * <!-- @formatter:on -->
