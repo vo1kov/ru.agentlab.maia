@@ -239,11 +239,13 @@ public class ConverterGetOWLLiteralMatcherTest {
 
 	private static int i = 0;
 
+	Converter converter = new Converter();
+
 	@Test
 	public void anyEmptyLiteralShouldThrow() {
 		System.out.println(i++ + " " + parameter);
 		try {
-			IMatcher<? super OWLLiteral> matcher = Converter.getOWLLiteralMatcher(parameter);
+			IMatcher<? super OWLLiteral> matcher = converter.getOWLLiteralMatcher(parameter);
 			if (result instanceof OWLLiteralMatcher) {
 				OWLLiteralMatcher ethalon = (OWLLiteralMatcher) result;
 				System.out.println("	" + ethalon);

@@ -244,9 +244,9 @@ public class Converter {
 		BUILDIN_DATATYPE_NAMESPACES.add(Namespaces.XSD.toString());
 	}
 
-	protected static PrefixManager prefixManager = new DefaultPrefixManager();
+	protected PrefixManager prefixManager = new DefaultPrefixManager();
 
-	public static IPlan addPlan(Method method, IPlanBase planBase) {
+	public IPlan addPlan(Method method, IPlanBase planBase) {
 		Plan plan = new Plan();
 		EventType type = null;
 		try {
@@ -370,7 +370,7 @@ public class Converter {
 		return plan;
 	}
 
-	protected static IMatcher<OWLClassAssertionAxiom> getOWLClassAssertionAxiomMatcher(String template)
+	protected IMatcher<OWLClassAssertionAxiom> getOWLClassAssertionAxiomMatcher(String template)
 			throws AnnotationFormatException {
 		String[] parts = splitClassAssertioin(template);
 		String individual = parts[0];
@@ -378,7 +378,7 @@ public class Converter {
 		return new OWLClassAssertionAxiomMatcher(getOWLClassMatcher(clazz), getOWLNamedIndividualMatcher(individual));
 	}
 
-	protected static IMatcher<OWLDataPropertyAssertionAxiom> getOWLDataPropertyAssertionAxiomMatcher(String template)
+	protected IMatcher<OWLDataPropertyAssertionAxiom> getOWLDataPropertyAssertionAxiomMatcher(String template)
 			throws AnnotationFormatException {
 		String[] parts = splitDataPropertyAssertioin(template);
 		String subject = parts[0];
@@ -388,8 +388,8 @@ public class Converter {
 				getOWLDataPropertyMatcher(property), getOWLLiteralMatcher(object));
 	}
 
-	protected static IMatcher<OWLObjectPropertyAssertionAxiom> getOWLObjectPropertyAssertionAxiomMatcher(
-			String template) throws AnnotationFormatException {
+	protected IMatcher<OWLObjectPropertyAssertionAxiom> getOWLObjectPropertyAssertionAxiomMatcher(String template)
+			throws AnnotationFormatException {
 		String[] parts = splitObjectPropertyAssertioin(template);
 		String subject = parts[0];
 		String property = parts[1];
@@ -398,7 +398,7 @@ public class Converter {
 				getOWLObjectPropertyMatcher(property), getOWLNamedIndividualMatcher(data));
 	}
 
-	protected static IMatcher<? super OWLLiteral> getOWLLiteralMatcher(String string) throws LiteralFormatException {
+	protected IMatcher<? super OWLLiteral> getOWLLiteralMatcher(String string) throws LiteralFormatException {
 		String[] parts = splitDatatypeLiteral(string);
 		String literal = parts[0];
 		String language = parts[1];
@@ -427,34 +427,32 @@ public class Converter {
 		return new OWLLiteralMatcher(literalMatcher, languageMatcher, datatypeMatcher);
 	}
 
-	protected static IMatcher<? super OWLDatatype> getOWLDatatypeMatcher(String string) throws LiteralFormatException {
+	protected IMatcher<? super OWLDatatype> getOWLDatatypeMatcher(String string) throws LiteralFormatException {
 		if (string == null) {
 			return new OWLNamedObjectMatcher(OWL2Datatype.RDF_PLAIN_LITERAL.getIRI());
 		}
 		return getOWLNamedObjectMatcher(string);
 	}
 
-	protected static IMatcher<? super OWLNamedIndividual> getOWLNamedIndividualMatcher(String string)
+	protected IMatcher<? super OWLNamedIndividual> getOWLNamedIndividualMatcher(String string)
 			throws LiteralFormatException {
 		return getOWLNamedObjectMatcher(string);
 	}
 
-	protected static IMatcher<? super OWLClass> getOWLClassMatcher(String string) throws LiteralFormatException {
+	protected IMatcher<? super OWLClass> getOWLClassMatcher(String string) throws LiteralFormatException {
 		return getOWLNamedObjectMatcher(string);
 	}
 
-	protected static IMatcher<? super OWLObjectProperty> getOWLObjectPropertyMatcher(String string)
+	protected IMatcher<? super OWLObjectProperty> getOWLObjectPropertyMatcher(String string)
 			throws LiteralFormatException {
 		return getOWLNamedObjectMatcher(string);
 	}
 
-	protected static IMatcher<? super OWLDataProperty> getOWLDataPropertyMatcher(String string)
-			throws LiteralFormatException {
+	protected IMatcher<? super OWLDataProperty> getOWLDataPropertyMatcher(String string) throws LiteralFormatException {
 		return getOWLNamedObjectMatcher(string);
 	}
 
-	protected static IMatcher<? super OWLNamedObject> getOWLNamedObjectMatcher(String string)
-			throws LiteralFormatException {
+	protected IMatcher<? super OWLNamedObject> getOWLNamedObjectMatcher(String string) throws LiteralFormatException {
 		Matcher match = PATTERN_LITERAL.matcher(string);
 		if (!match.matches()) {
 			throw new LiteralWrongFormatException("Literal [" + string + "] has wrong format. "
@@ -486,7 +484,7 @@ public class Converter {
 		}
 	}
 
-	protected static IMatcher<? super String> getStringMatcher(String string) {
+	protected IMatcher<? super String> getStringMatcher(String string) {
 		if (string == null) {
 			return JavaAnyMatcher.getInstance();
 		}
@@ -514,7 +512,7 @@ public class Converter {
 	 *             pair: {@code [<individual_template> <class_template>]}.
 	 * @see {@link #PATTERN_CLASS_ASSERTION}
 	 */
-	protected static String[] splitClassAssertioin(String string) throws AssertionFormatException {
+	protected String[] splitClassAssertioin(String string) throws AssertionFormatException {
 		Matcher match = PATTERN_CLASS_ASSERTION.matcher(string);
 		if (!match.matches()) {
 			throw new AssertionWrongFormatException("Class Assertion template [" + string + "] has wrong format. "
@@ -524,7 +522,7 @@ public class Converter {
 				match.group(PATTERN_CLASS_ASSERTION_INDIVIDUAL) };
 	}
 
-	protected static String[] splitDataPropertyAssertioin(String string) throws AssertionFormatException {
+	protected String[] splitDataPropertyAssertioin(String string) throws AssertionFormatException {
 		Matcher match = PATTERN_DATA_PROPERTY_ASSERTION.matcher(string);
 		if (!match.matches()) {
 			throw new AssertionWrongFormatException(
@@ -536,7 +534,7 @@ public class Converter {
 				match.group(PATTERN_DATA_PROPERTY_ASSERTION_OBJECT) };
 	}
 
-	protected static String[] splitObjectPropertyAssertioin(String string) throws AssertionFormatException {
+	protected String[] splitObjectPropertyAssertioin(String string) throws AssertionFormatException {
 		Matcher match = PATTERN_OBJECT_PROPERTY_ASSERTION.matcher(string);
 		if (!match.matches()) {
 			throw new AssertionWrongFormatException("ObjectProperty Assertioin template [" + string
@@ -572,7 +570,7 @@ public class Converter {
 	 * @return string array containing value, language and datatype parts of
 	 *         input string.
 	 */
-	protected static String[] splitDatatypeLiteral(String string) {
+	protected String[] splitDatatypeLiteral(String string) {
 		String value = string;
 		String language = null;
 		String datatype = null;

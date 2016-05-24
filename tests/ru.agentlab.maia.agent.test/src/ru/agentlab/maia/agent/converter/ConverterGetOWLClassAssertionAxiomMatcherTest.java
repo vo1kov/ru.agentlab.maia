@@ -9,7 +9,6 @@
 package ru.agentlab.maia.agent.converter;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 import org.junit.Assert;
@@ -121,14 +120,17 @@ public class ConverterGetOWLClassAssertionAxiomMatcherTest {
 		};
 	}
 	// @formatter:on
-	
-	static int i=0;
+
+	static int i = 0;
+
+	Converter converter = new Converter();
 
 	@Theory
-	public void anyEmptyLiteralShouldThrow() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	public void anyEmptyLiteralShouldThrow()
+			throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		System.out.println(i++ + "@BeliefAdded(\"\")");
 		try {
-			Converter.getOWLClassAssertionAxiomMatcher("");
+			converter.getOWLClassAssertionAxiomMatcher("");
 			Assert.fail("Empty parameter shold throw " + AnnotationFormatException.class.getName());
 		} catch (AnnotationFormatException e) {
 			Assert.assertNotNull(e);
@@ -141,7 +143,7 @@ public class ConverterGetOWLClassAssertionAxiomMatcherTest {
 		String parameter = firstLiteral;
 		System.out.println(i++ + "@BeliefAdded(\"" + parameter + "\")");
 		try {
-			Converter.getOWLClassAssertionAxiomMatcher(parameter);
+			converter.getOWLClassAssertionAxiomMatcher(parameter);
 			Assert.fail("Empty parameter shold throw " + AnnotationFormatException.class.getName());
 		} catch (AnnotationFormatException e) {
 			Assert.assertNotNull(e);
@@ -155,7 +157,7 @@ public class ConverterGetOWLClassAssertionAxiomMatcherTest {
 		String parameter = firstLiteral + SEPARATOR + secondLiteral + SEPARATOR + thirdLiteral;
 		System.out.println(i++ + "@BeliefAdded(\"" + parameter + "\")");
 		try {
-			Converter.getOWLClassAssertionAxiomMatcher(parameter);
+			converter.getOWLClassAssertionAxiomMatcher(parameter);
 			Assert.fail("Empty parameter shold throw " + AnnotationFormatException.class.getName());
 		} catch (AnnotationFormatException e) {
 			Assert.assertNotNull(e);

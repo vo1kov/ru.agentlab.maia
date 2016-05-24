@@ -172,11 +172,13 @@ public class ConverterSplitObjectPropertyAssertionTest {
 	@Parameter(1)
 	public Object result;
 
+	Converter converter = new Converter();
+
 	@Test
 	public void anyEmptyLiteralShouldThrow() {
 		System.out.println("[" + parameter + "]");
 		try {
-			String[] splitted = Converter.splitObjectPropertyAssertioin(parameter);
+			String[] splitted = converter.splitObjectPropertyAssertioin(parameter);
 			Stream.of(splitted).forEach(s -> System.out.println("	[" + s + "]"));
 			if (result.getClass().isArray()) {
 				String[] array = (String[]) result;

@@ -158,11 +158,13 @@ public class ConverterSplitClassAssertionTest {
 	@Parameter(1)
 	public Object result;
 
+	Converter converter = new Converter();
+
 	@Test
 	public void anyEmptyLiteralShouldThrow() {
 		System.out.println("[" + parameter + "]");
 		try {
-			String[] splitted = Converter.splitClassAssertioin(parameter);
+			String[] splitted = converter.splitClassAssertioin(parameter);
 			Stream.of(splitted).forEach(s -> System.out.println("	[" + s + "]"));
 			if (result.getClass().isArray()) {
 				String[] array = (String[]) result;
