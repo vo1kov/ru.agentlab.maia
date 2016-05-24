@@ -25,6 +25,8 @@ import static ru.agentlab.maia.EventType.ROLE_UNRESOLVED;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,6 +43,7 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
+import org.semanticweb.owlapi.vocab.Namespaces;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 import ru.agentlab.maia.EventType;
@@ -82,14 +85,6 @@ import ru.agentlab.maia.annotation.RoleResolved;
 import ru.agentlab.maia.annotation.RoleUnresolved;
 
 public class Converter {
-
-	private static final int TEMPLATE_PREFIXEDIRI_NAME = 4;
-
-	private static final int TEMPLATE_PREFIXEDIRI_PREFIX = 3;
-
-	private static final int TEMPLATE_PREFIXEDIRI_GROUP = 2;
-
-	private static final int TEMPLATE_FULLIRI_NAME = 7;
 
 	// private static final Map<Class<?>, EventType> CLASSIFICATION_ANNOTATIONS
 	// = new HashMap<>(6);
@@ -153,13 +148,16 @@ public class Converter {
 	// CLASS_ANNOTATIONS.put(RoleUnresolved.class, EventType.ROLE_UNRESOLVED);
 	// }
 
-	private static final int TEMPLATE_FULLIRI_NAMESPACE = 6;
+	private static final int TEMPLATE_VARIABLE_GROUP = 2;
+	private static final int TEMPLATE_VARIABLE_VALUE = 3;
 
-	private static final int TEMPLATE_FULLIRI_GROUP = 5;
+	private static final int TEMPLATE_FULLIRI_GROUP = 4;
+	private static final int TEMPLATE_FULLIRI_NAMESPACE = 5;
+	private static final int TEMPLATE_FULLIRI_NAME = 6;
 
-	private static final int TEMPLATE_VARIABLE_VALUE = 9;
-
-	private static final int TEMPLATE_VARIABLE_GROUP = 8;
+	private static final int TEMPLATE_PREFIXEDIRI_GROUP = 7;
+	private static final int TEMPLATE_PREFIXEDIRI_PREFIX = 8;
+	private static final int TEMPLATE_PREFIXEDIRI_NAME = 9;
 
 	private static final String LANGUAGE_SEPARATOR = "@";
 
@@ -200,7 +198,7 @@ public class Converter {
 	 * <a href="https://jex.im/regulex/">https://jex.im/regulex/</a></small>
 	 */
 	protected static final Pattern IRI_PATTERN = Pattern
-			.compile("(?s)^(" + IRI_PREFIXED_REGEXP + "|" + IRI_FULL_REGEXP + "|" + VARIABLE_REGEXP + ")$");
+			.compile("(?s)^(" + VARIABLE_REGEXP + "|" + IRI_FULL_REGEXP + "|" + IRI_PREFIXED_REGEXP + ")$");
 
 	protected static final Pattern VARIABLE_PATTERN = Pattern.compile("(?s)^" + VARIABLE_REGEXP + "$");
 
@@ -262,6 +260,14 @@ public class Converter {
 			.compile("(?s)^\\s*?(\\S+)\\s+(\\S+)\\s+(\\S+)\\s*?$");
 
 	protected static PrefixManager prefixManager = new DefaultPrefixManager();
+
+	static Set<String> buildinOntos = new HashSet<>();
+	static {
+		buildinOntos.add(Namespaces.OWL.toString());
+		buildinOntos.add(Namespaces.RDF.toString());
+		buildinOntos.add(Namespaces.RDFS.toString());
+		buildinOntos.add(Namespaces.XSD.toString());
+	}
 
 	public static IPlan addPlan(Method method, IPlanBase planBase) {
 		Plan plan = new Plan();
@@ -415,29 +421,37 @@ public class Converter {
 				getOWLObjectPropertyMatcher(property), getOWLNamedIndividualMatcher(data));
 	}
 
-	protected static IMatcher<? super OWLLiteral> getOWLLiteralMatcher(String string) throws AnnotationFormatException {
+	protected static IMatcher<? super OWLLiteral> getOWLLiteralMatcher(String string) throws LiteralFormatException {
 		String[] parts = splitDatatypeLiteral(string);
 		String literal = parts[0];
 		String language = parts[1];
 		String datatype = parts[2];
 		IMatcher<? super OWLDatatype> datatypeMatcher = getOWLDatatypeMatcher(datatype);
-		if (datatypeMatcher instanceof OWLNamedObjectMatcher) {
+		IMatcher<? super String> literalMatcher = getStringMatcher(literal);
+		IMatcher<? super String> languageMatcher = getStringMatcher(language);
+		if ((datatypeMatcher instanceof OWLNamedObjectMatcher)) {
 			IRI datatypeIRI = ((OWLNamedObjectMatcher) datatypeMatcher).getValue();
-			if (OWL2Datatype.isBuiltIn(datatypeIRI)) {
-				OWL2Datatype owl2datatype = OWL2Datatype.getDatatype(datatypeIRI);
-				if (!owl2datatype.isInLexicalSpace(literal)) {
-					throw new AnnotationFormatException("Literal [" + string + "] has wrong format. [" + literal
-							+ "] is not in lexical space of datatype [" + datatypeIRI.toQuotedString() + "]");
+			String datatypeNamespace = datatypeIRI.getNamespace();
+			if (buildinOntos.contains(datatypeNamespace)) {
+				if (OWL2Datatype.isBuiltIn(datatypeIRI)) {
+					OWL2Datatype owl2datatype = OWL2Datatype.getDatatype(datatypeIRI);
+					if (!(literalMatcher instanceof VariableMatcher) && !owl2datatype.isInLexicalSpace(literal)) {
+						throw new LiteralNotInLexicalSpaceException("Literal [" + string + "] has wrong format. Value ["
+								+ literal + "] is not in lexical space of datatype [" + datatypeIRI.toQuotedString()
+								+ "]");
+					}
+				} else {
+					throw new LiteralWrongBuildInDatatypeException(
+							"Literal [" + string + "] has wrong format. Ontology [" + datatypeNamespace
+									+ "] does not contain build-in datatype [" + datatypeIRI.toQuotedString() + "]");
 				}
 			}
 		}
-		IMatcher<? super String> literalMatcher = getStringMatcher(literal);
-		IMatcher<? super String> languageMatcher = getStringMatcher(language);
 		return new OWLLiteralMatcher(literalMatcher, languageMatcher, datatypeMatcher);
 	}
 
 	protected static IMatcher<? super OWLDatatype> getOWLDatatypeMatcher(String string)
-			throws AnnotationFormatException {
+			throws LiteralFormatException {
 		if (string == null) {
 			return new OWLNamedObjectMatcher(OWL2Datatype.RDF_PLAIN_LITERAL.getIRI());
 		}
@@ -445,46 +459,53 @@ public class Converter {
 	}
 
 	protected static IMatcher<? super OWLNamedIndividual> getOWLNamedIndividualMatcher(String string)
-			throws AnnotationFormatException {
+			throws LiteralFormatException {
 		return getOWLNamedObjectMatcher(string);
 	}
 
-	protected static IMatcher<? super OWLClass> getOWLClassMatcher(String string) throws AnnotationFormatException {
+	protected static IMatcher<? super OWLClass> getOWLClassMatcher(String string) throws LiteralFormatException {
 		return getOWLNamedObjectMatcher(string);
 	}
 
 	protected static IMatcher<? super OWLObjectProperty> getOWLObjectPropertyMatcher(String string)
-			throws AnnotationFormatException {
+			throws LiteralFormatException {
 		return getOWLNamedObjectMatcher(string);
 	}
 
 	protected static IMatcher<? super OWLDataProperty> getOWLDataPropertyMatcher(String string)
-			throws AnnotationFormatException {
+			throws LiteralFormatException {
 		return getOWLNamedObjectMatcher(string);
 	}
 
 	protected static IMatcher<? super OWLNamedObject> getOWLNamedObjectMatcher(String string)
-			throws AnnotationFormatException {
+			throws LiteralFormatException {
 		Matcher match = IRI_PATTERN.matcher(string);
 		if (!match.matches()) {
-			throw new AnnotationFormatException("Literal [" + string + "] has wrong format. "
+			throw new LiteralWrongFormatException("Literal [" + string + "] has wrong format. "
 					+ "Should be in form either namespace:name, <htt://full.com#name> or ?variable.");
 		}
-		if (match.group(TEMPLATE_FULLIRI_GROUP) != null) {
-			return new OWLNamedObjectMatcher(
-					IRI.create(match.group(TEMPLATE_FULLIRI_NAMESPACE), match.group(TEMPLATE_FULLIRI_NAME)));
-		} else if (match.group(TEMPLATE_PREFIXEDIRI_GROUP) != null) {
-			String prefix = prefixManager.getPrefix(match.group(TEMPLATE_PREFIXEDIRI_PREFIX));
+		String fullURI = match.group(TEMPLATE_FULLIRI_GROUP);
+		String prefixedURI = match.group(TEMPLATE_PREFIXEDIRI_GROUP);
+		String variable = match.group(TEMPLATE_VARIABLE_GROUP);
+		if (fullURI != null) {
+			String fullIRInamespace = match.group(TEMPLATE_FULLIRI_NAMESPACE);
+			String fullIRIname = match.group(TEMPLATE_FULLIRI_NAME);
+			return new OWLNamedObjectMatcher(IRI.create(fullIRInamespace, fullIRIname));
+		} else if (prefixedURI != null) {
+			String prefixedIRIprefix = match.group(TEMPLATE_PREFIXEDIRI_PREFIX);
+			String prefix = prefixManager.getPrefix(prefixedIRIprefix);
 			if (prefix == null) {
-				throw new AnnotationFormatException(
+				throw new LiteralUnknownPrefixException(
 						"Literal [" + string + "] has wrong format. " + "Prefix [" + prefix + "] is unknown. Use @"
 								+ Prefix.class.getName() + " annotation to register not build-in prefixes.");
 			}
-			return new OWLNamedObjectMatcher(IRI.create(prefix, match.group(TEMPLATE_PREFIXEDIRI_NAME)));
-		} else if (match.group(TEMPLATE_VARIABLE_GROUP) != null) {
-			return new VariableMatcher(match.group(TEMPLATE_VARIABLE_VALUE));
+			String prefixedIRIname = match.group(TEMPLATE_PREFIXEDIRI_NAME);
+			return new OWLNamedObjectMatcher(IRI.create(prefix, prefixedIRIname));
+		} else if (variable != null) {
+			String variableName = match.group(TEMPLATE_VARIABLE_VALUE);
+			return new VariableMatcher(variableName);
 		} else {
-			throw new AnnotationFormatException("Literal [" + string + "] has wrong format. "
+			throw new LiteralWrongFormatException("Literal [" + string + "] has wrong format. "
 					+ "Should be in form either [namespace:name], [<htt://full.com#name>] or [?variable].");
 		}
 	}
@@ -517,29 +538,29 @@ public class Converter {
 	 *             pair: {@code [<individual_template> <class_template>]}.
 	 * @see {@link #ASSERTION_CLASS_PATTERN}
 	 */
-	protected static String[] splitClassAssertioin(String string) throws AnnotationFormatException {
+	protected static String[] splitClassAssertioin(String string) throws AssertionFormatException {
 		Matcher match = ASSERTION_CLASS_PATTERN.matcher(string);
 		if (!match.matches()) {
-			throw new AnnotationFormatException("Class Assertion template [" + string + "] has wrong format. "
+			throw new AssertionWrongFormatException("Class Assertion template [" + string + "] has wrong format. "
 					+ "Should be in form of pair: [<individual_template> <class_template>]");
 		}
 		return new String[] { match.group(1), match.group(2) };
 	}
 
-	protected static String[] splitDataPropertyAssertioin(String string) throws AnnotationFormatException {
+	protected static String[] splitDataPropertyAssertioin(String string) throws AssertionFormatException {
 		Matcher match = ASSERTION_DATA_PROPERTY_PATTERN.matcher(string);
 		if (!match.matches()) {
-			throw new AnnotationFormatException(
+			throw new AssertionWrongFormatException(
 					"DataProperty Assertioin template [" + string + "] have wrong format. Should be in form of triple: "
 							+ "[<individual template> <property template> <data template>]");
 		}
 		return new String[] { match.group(1), match.group(2), match.group(3) };
 	}
 
-	protected static String[] splitObjectPropertyAssertioin(String string) throws AnnotationFormatException {
+	protected static String[] splitObjectPropertyAssertioin(String string) throws AssertionFormatException {
 		Matcher match = ASSERTION_OBJECT_PROPERTY_PATTERN.matcher(string);
 		if (!match.matches()) {
-			throw new AnnotationFormatException("ObjectProperty Assertioin template [" + string
+			throw new AssertionWrongFormatException("ObjectProperty Assertioin template [" + string
 					+ "] have wrong format. Should be in form of triple: "
 					+ "[<individual template> <property template> <individual template>]");
 		}

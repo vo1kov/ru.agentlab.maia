@@ -31,52 +31,52 @@ import org.semanticweb.owlapi.vocab.Namespaces;
  * <!-- @formatter:off -->
  * <table border="thin single black collapse">
  * 	<thead>
- * 		<tr><th rowspan="2">##  <th>Input     		<th>Output						<th rowspan="2">Comment
+ * 		<tr><th rowspan="2">##  <th>Input     		<th>Output							<th rowspan="2">Comment
  * 		<tr>		<th>Parameter 					<th>Literal
  * 	<thead>
  * 	<tbody>
- *		<tr><td> 0 <td>"" 							<td>AnnotationFormatException	<td>test empty string
- *		<tr><td> 1 <td>"  " 						<td>AnnotationFormatException	<td>test empty string
+ *		<tr><td> 0 <td>"" 							<td>AssertionWrongFormatException	<td>test empty string
+ *		<tr><td> 1 <td>"  " 						<td>AssertionWrongFormatException	<td>test empty string
  *		<tr><td colspan="4">
- *		<tr><td> 2 <td>"xxx" 						<td>AnnotationFormatException	<td>test 1 word
- *		<tr><td> 3 <td>" xxx" 						<td>AnnotationFormatException	<td>test 1 word with first space
- *		<tr><td> 4 <td>"^^rdf:XMLLiteral" 			<td>AnnotationFormatException	<td>test 1 word
- *		<tr><td> 5 <td>"&lt;RDF#XMLLiteral&gt;"		<td>AnnotationFormatException	<td>test 1 word
+ *		<tr><td> 2 <td>"xxx" 						<td>AssertionWrongFormatException	<td>test 1 word
+ *		<tr><td> 3 <td>" xxx" 						<td>AssertionWrongFormatException	<td>test 1 word with first space
+ *		<tr><td> 4 <td>"^^rdf:XMLLiteral" 			<td>AssertionWrongFormatException	<td>test 1 word
+ *		<tr><td> 5 <td>"&lt;RDF#XMLLiteral&gt;"		<td>AssertionWrongFormatException	<td>test 1 word
  *		<tr><td colspan="4">
- *		<tr><td> 6 <td>"xxx xxx" 					<td>{"xxx", "xxx"}				<td>2 words with space
- *		<tr><td> 7 <td>"123 456" 					<td>{"123", "456"}				<td>2 words with space
- *		<tr><td> 8 <td>"  123  456" 				<td>{"123", "456"}				<td>2 words with first spaces
- *		<tr><td> 9 <td>"123  456  " 				<td>{"123", "456"}				<td>2 words with last spaces
- *		<tr><td>10 <td>"  123  456    " 			<td>{"123", "456"}				<td>2 words with surrounded by spaces
- *		<tr><td>11 <td>"123 456" 					<td>{"123", "456"}				<td>2 words with space
- *		<tr><td>12 <td>"123\r\n456" 				<td>{"123", "456"}				<td>2 words with caret return
- *		<tr><td>13 <td>"123\n456" 					<td>{"123", "456"}				<td>2 words with new line
- *		<tr><td>14 <td>"\r\n123  456" 				<td>{"123", "456"}				<td>2 words with first new line
- *		<tr><td>15 <td>"123  456\r\n" 				<td>{"123", "456"}				<td>2 words with last new line
- *		<tr><td>16 <td>"\r\n123  456\r\n" 			<td>{"123", "456"}				<td>2 words with surrounded by new lines
- *		<tr><td>17 <td>"123\t456" 					<td>{"123", "456"}				<td>2 words with tabulation
- *		<tr><td>18 <td>"123	456" 					<td>{"123", "456"}				<td>2 words with tabulation
- *		<tr><td>19 <td>"123\t\t\t456" 				<td>{"123", "456"}				<td>2 words with multiple tabulations
- *		<tr><td>20 <td>"123			456" 			<td>{"123", "456"}				<td>2 words with multiple tabulations
+ *		<tr><td> 6 <td>"xxx xxx" 					<td>{"xxx", "xxx"}					<td>2 words with space
+ *		<tr><td> 7 <td>"123 456" 					<td>{"123", "456"}					<td>2 words with space
+ *		<tr><td> 8 <td>"  123  456" 				<td>{"123", "456"}					<td>2 words with first spaces
+ *		<tr><td> 9 <td>"123  456  " 				<td>{"123", "456"}					<td>2 words with last spaces
+ *		<tr><td>10 <td>"  123  456    " 			<td>{"123", "456"}					<td>2 words with surrounded by spaces
+ *		<tr><td>11 <td>"123 456" 					<td>{"123", "456"}					<td>2 words with space
+ *		<tr><td>12 <td>"123\r\n456" 				<td>{"123", "456"}					<td>2 words with caret return
+ *		<tr><td>13 <td>"123\n456" 					<td>{"123", "456"}					<td>2 words with new line
+ *		<tr><td>14 <td>"\r\n123  456" 				<td>{"123", "456"}					<td>2 words with first new line
+ *		<tr><td>15 <td>"123  456\r\n" 				<td>{"123", "456"}					<td>2 words with last new line
+ *		<tr><td>16 <td>"\r\n123  456\r\n" 			<td>{"123", "456"}					<td>2 words with surrounded by new lines
+ *		<tr><td>17 <td>"123\t456" 					<td>{"123", "456"}					<td>2 words with tabulation
+ *		<tr><td>18 <td>"123	456" 					<td>{"123", "456"}					<td>2 words with tabulation
+ *		<tr><td>19 <td>"123\t\t\t456" 				<td>{"123", "456"}					<td>2 words with multiple tabulations
+ *		<tr><td>20 <td>"123			456" 			<td>{"123", "456"}					<td>2 words with multiple tabulations
  *		<tr><td colspan="4">
- *		<tr><td>21 <td>"xxx xxx xxx" 				<td>AnnotationFormatException	<td>3 words with space
- *		<tr><td>22 <td>"123 456 789" 				<td>AnnotationFormatException	<td>3 words with space
- *		<tr><td>23 <td>"  123  456 789" 			<td>AnnotationFormatException	<td>3 words with first spaces
- *		<tr><td>24 <td>"123  456 789  " 			<td>AnnotationFormatException	<td>3 words with last spaces
- *		<tr><td>25 <td>"  123  456  789  " 			<td>AnnotationFormatException	<td>3 words with surrounded by spaces
- *		<tr><td>26 <td>"123 456 789" 				<td>AnnotationFormatException	<td>3 words with space
- *		<tr><td>27 <td>"123\r\n456\r\n789" 			<td>AnnotationFormatException	<td>3 words with caret return
- *		<tr><td>28 <td>"123\n456\n789" 				<td>AnnotationFormatException	<td>3 words with new line
- *		<tr><td>29 <td>"\r\n123  456 789" 			<td>AnnotationFormatException	<td>3 words with first new line
- *		<tr><td>30 <td>"123  456 789\r\n" 			<td>AnnotationFormatException	<td>3 words with last new line
- *		<tr><td>31 <td>"\r\n123  456 789\r\n" 		<td>AnnotationFormatException	<td>3 words with surrounded by new lines
- *		<tr><td>32 <td>"123\t456\t789" 				<td>AnnotationFormatException	<td>3 words with tabulation
- *		<tr><td>33 <td>"123	456	789" 				<td>AnnotationFormatException	<td>3 words with tabulation
- *		<tr><td>34 <td>"123\t\t\t456\t\t789" 		<td>AnnotationFormatException	<td>3 words with multiple tabulations
- *		<tr><td>35 <td>"123			456		789"	<td>AnnotationFormatException	<td>3 words with multiple tabulations
+ *		<tr><td>21 <td>"xxx xxx xxx" 				<td>AssertionWrongFormatException	<td>3 words with space
+ *		<tr><td>22 <td>"123 456 789" 				<td>AssertionWrongFormatException	<td>3 words with space
+ *		<tr><td>23 <td>"  123  456 789" 			<td>AssertionWrongFormatException	<td>3 words with first spaces
+ *		<tr><td>24 <td>"123  456 789  " 			<td>AssertionWrongFormatException	<td>3 words with last spaces
+ *		<tr><td>25 <td>"  123  456  789  " 			<td>AssertionWrongFormatException	<td>3 words with surrounded by spaces
+ *		<tr><td>26 <td>"123 456 789" 				<td>AssertionWrongFormatException	<td>3 words with space
+ *		<tr><td>27 <td>"123\r\n456\r\n789" 			<td>AssertionWrongFormatException	<td>3 words with caret return
+ *		<tr><td>28 <td>"123\n456\n789" 				<td>AssertionWrongFormatException	<td>3 words with new line
+ *		<tr><td>29 <td>"\r\n123  456 789" 			<td>AssertionWrongFormatException	<td>3 words with first new line
+ *		<tr><td>30 <td>"123  456 789\r\n" 			<td>AssertionWrongFormatException	<td>3 words with last new line
+ *		<tr><td>31 <td>"\r\n123  456 789\r\n" 		<td>AssertionWrongFormatException	<td>3 words with surrounded by new lines
+ *		<tr><td>32 <td>"123\t456\t789" 				<td>AssertionWrongFormatException	<td>3 words with tabulation
+ *		<tr><td>33 <td>"123	456	789" 				<td>AssertionWrongFormatException	<td>3 words with tabulation
+ *		<tr><td>34 <td>"123\t\t\t456\t\t789" 		<td>AssertionWrongFormatException	<td>3 words with multiple tabulations
+ *		<tr><td>35 <td>"123			456		789"	<td>AssertionWrongFormatException	<td>3 words with multiple tabulations
  *		<tr><td colspan="4">
- *		<tr><td>36 <td>"ns:some owl:Class" 			<td>{"ns:some", "owl:Class"}	<td>test : in literal
- *		<tr><td>37 <td>"xxx &lt;OWL#Class&gt;" 		<td>{"xxx", "&lt;OWL#Class&gt;"}<td>test < # > in literal
+ *		<tr><td>36 <td>"ns:some owl:Class" 			<td>{"ns:some", "owl:Class"}		<td>test : in literal
+ *		<tr><td>37 <td>"xxx &lt;OWL#Class&gt;" 		<td>{"xxx", "&lt;OWL#Class&gt;"}	<td>test < # > in literal
  *		<tr><td>38 <td>"&lt;htt://s@s:www.a#Class&gt; xxx"<td>{"&lt;htt://s@s:www.a#Class&gt;", "xxx"}<td>test @ in literal
  * 	</tbody>
  * </table>
@@ -105,13 +105,13 @@ public class ConverterSplitClassAssertionTest {
 			 *| ##	| Input Parameter 				| Result								| Comment						|
 			 *--------------------------------------------------------------------------------------------------------------*/
 			// 0 words
-			/*  0 */ { "", 							AnnotationFormatException.class },		// test empty string
-			/*  1 */ { "  ", 						AnnotationFormatException.class },		// test empty string
+			/*  0 */ { "", 							AssertionWrongFormatException.class },	// test empty string
+			/*  1 */ { "  ", 						AssertionWrongFormatException.class },	// test empty string
 			// 1 word
-			/*  2 */ { "xxx", 						AnnotationFormatException.class },		// test 1 word
-			/*  3 */ { " xxx", 						AnnotationFormatException.class },		// test 1 word with first space
-			/*  4 */ { "^^rdf:XMLLiteral", 			AnnotationFormatException.class },		// test 1 word
-			/*  5 */ { "<" + RDF + "XMLLiteral>", 	AnnotationFormatException.class },		// test 1 word
+			/*  2 */ { "xxx", 						AssertionWrongFormatException.class },	// test 1 word
+			/*  3 */ { " xxx", 						AssertionWrongFormatException.class },	// test 1 word with first space
+			/*  4 */ { "^^rdf:XMLLiteral", 			AssertionWrongFormatException.class },	// test 1 word
+			/*  5 */ { "<" + RDF + "XMLLiteral>", 	AssertionWrongFormatException.class },	// test 1 word
 			// 2 words
 			/*  6 */ { "xxx xxx", 					new String[] {"xxx", "xxx"} },			// 2 words with space
 			/*  7 */ { "123 456", 					new String[] {"123", "456"} },			// 2 words with space
@@ -129,21 +129,21 @@ public class ConverterSplitClassAssertionTest {
 			/* 19 */ { "123\t\t\t456", 				new String[] {"123", "456"} },			// 2 words with multiple tabulations
 			/* 20 */ { "123			456", 			new String[] {"123", "456"} },			// 2 words with multiple tabulations
 			// 3 words
-			/* 21 */ { "xxx xxx xxx", 				AnnotationFormatException.class },		// 3 words with space
-			/* 22 */ { "123 456 789", 				AnnotationFormatException.class },		// 3 words with space
-			/* 23 */ { "  123  456 789", 			AnnotationFormatException.class },		// 3 words with first spaces
-			/* 24 */ { "123  456 789  ", 			AnnotationFormatException.class },		// 3 words with last spaces
-			/* 25 */ { "  123  456  789  ", 		AnnotationFormatException.class },		// 3 words with surrounded by spaces
-			/* 26 */ { "123 456 789", 				AnnotationFormatException.class },		// 3 words with space
-			/* 27 */ { "123\r\n456\r\n789", 		AnnotationFormatException.class },		// 3 words with caret return
-			/* 28 */ { "123\n456\n789", 			AnnotationFormatException.class },		// 3 words with new line
-			/* 29 */ { "\r\n123  456 789", 			AnnotationFormatException.class },		// 3 words with first new line
-			/* 30 */ { "123  456 789\r\n", 			AnnotationFormatException.class },		// 3 words with last new line
-			/* 31 */ { "\r\n123  456 789\r\n", 		AnnotationFormatException.class },		// 3 words with surrounded by new lines
-			/* 32 */ { "123\t456\t789", 			AnnotationFormatException.class },		// 3 words with tabulation
-			/* 33 */ { "123	456	789", 				AnnotationFormatException.class },		// 3 words with tabulation
-			/* 34 */ { "123\t\t\t456\t\t789", 		AnnotationFormatException.class },		// 3 words with multiple tabulations
-			/* 35 */ { "123			456		789",	AnnotationFormatException.class },		// 3 words with multiple tabulations
+			/* 21 */ { "xxx xxx xxx", 				AssertionWrongFormatException.class },	// 3 words with space
+			/* 22 */ { "123 456 789", 				AssertionWrongFormatException.class },	// 3 words with space
+			/* 23 */ { "  123  456 789", 			AssertionWrongFormatException.class },	// 3 words with first spaces
+			/* 24 */ { "123  456 789  ", 			AssertionWrongFormatException.class },	// 3 words with last spaces
+			/* 25 */ { "  123  456  789  ", 		AssertionWrongFormatException.class },	// 3 words with surrounded by spaces
+			/* 26 */ { "123 456 789", 				AssertionWrongFormatException.class },	// 3 words with space
+			/* 27 */ { "123\r\n456\r\n789", 		AssertionWrongFormatException.class },	// 3 words with caret return
+			/* 28 */ { "123\n456\n789", 			AssertionWrongFormatException.class },	// 3 words with new line
+			/* 29 */ { "\r\n123  456 789", 			AssertionWrongFormatException.class },	// 3 words with first new line
+			/* 30 */ { "123  456 789\r\n", 			AssertionWrongFormatException.class },	// 3 words with last new line
+			/* 31 */ { "\r\n123  456 789\r\n", 		AssertionWrongFormatException.class },	// 3 words with surrounded by new lines
+			/* 32 */ { "123\t456\t789", 			AssertionWrongFormatException.class },	// 3 words with tabulation
+			/* 33 */ { "123	456	789", 				AssertionWrongFormatException.class },	// 3 words with tabulation
+			/* 34 */ { "123\t\t\t456\t\t789", 		AssertionWrongFormatException.class },	// 3 words with multiple tabulations
+			/* 35 */ { "123			456		789",	AssertionWrongFormatException.class },	// 3 words with multiple tabulations
 			// Special characters
 			/* 36 */ { "ns:some owl:Class", 		new String[] {"ns:some", "owl:Class"} },// test : in literal
 			/* 37 */ { "xxx <" + OWL + "Class>", 	new String[] {"xxx", "<" + OWL + "Class>"} },// test < # > in literal
