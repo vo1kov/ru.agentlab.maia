@@ -58,6 +58,8 @@ public enum EventType {
 
 	ROLE_UNRESOLVED,
 
-	ROLE_REMOVED
+	ROLE_REMOVED,
+	
+	EXTERNAL_EVENT
 
 }

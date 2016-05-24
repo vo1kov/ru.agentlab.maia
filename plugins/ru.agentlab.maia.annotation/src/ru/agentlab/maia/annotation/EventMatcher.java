@@ -10,10 +10,9 @@ import ru.agentlab.maia.EventType;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-@EventMatcher(EventType.GOAL_CLASSIFICATION_ADDED)
-public @interface GoalClassificationAdded {
-
-	String value();
+@Target(ElementType.ANNOTATION_TYPE)
+public @interface EventMatcher {
+	
+	EventType value();
 
 }

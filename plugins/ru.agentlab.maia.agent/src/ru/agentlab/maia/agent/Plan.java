@@ -29,10 +29,6 @@ public class Plan implements IPlan {
 
 	IMatcher<?> stateMatchers;
 
-	public Plan() {
-		super();
-	}
-
 	public Plan(Object object, Method method) {
 		super();
 		this.role = object;

@@ -1,34 +1,15 @@
 package ru.agentlab.maia.agent.converter;
 
-import static ru.agentlab.maia.EventType.BELIEF_CLASSIFICATION_ADDED;
-import static ru.agentlab.maia.EventType.BELIEF_CLASSIFICATION_REMOVED;
-import static ru.agentlab.maia.EventType.BELIEF_DATA_PROPERTY_ADDED;
-import static ru.agentlab.maia.EventType.BELIEF_DATA_PROPERTY_REMOVED;
-import static ru.agentlab.maia.EventType.BELIEF_OBJECT_PROPERTY_ADDED;
-import static ru.agentlab.maia.EventType.BELIEF_OBJECT_PROPERTY_REMOVED;
-import static ru.agentlab.maia.EventType.GOAL_CLASSIFICATION_ADDED;
-import static ru.agentlab.maia.EventType.GOAL_CLASSIFICATION_FAILED;
-import static ru.agentlab.maia.EventType.GOAL_CLASSIFICATION_FINISHED;
-import static ru.agentlab.maia.EventType.GOAL_CLASSIFICATION_REMOVED;
-import static ru.agentlab.maia.EventType.GOAL_DATA_PROPERTY_ADDED;
-import static ru.agentlab.maia.EventType.GOAL_DATA_PROPERTY_FAILED;
-import static ru.agentlab.maia.EventType.GOAL_DATA_PROPERTY_FINISHED;
-import static ru.agentlab.maia.EventType.GOAL_DATA_PROPERTY_REMOVED;
-import static ru.agentlab.maia.EventType.GOAL_OBJECT_PROPERTY_ADDED;
-import static ru.agentlab.maia.EventType.GOAL_OBJECT_PROPERTY_FAILED;
-import static ru.agentlab.maia.EventType.GOAL_OBJECT_PROPERTY_FINISHED;
-import static ru.agentlab.maia.EventType.GOAL_OBJECT_PROPERTY_REMOVED;
-import static ru.agentlab.maia.EventType.ROLE_ADDED;
-import static ru.agentlab.maia.EventType.ROLE_REMOVED;
-import static ru.agentlab.maia.EventType.ROLE_RESOLVED;
-import static ru.agentlab.maia.EventType.ROLE_UNRESOLVED;
-
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -46,6 +27,8 @@ import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.vocab.Namespaces;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
+import com.google.common.collect.ImmutableSet;
+
 import ru.agentlab.maia.EventType;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
@@ -53,6 +36,7 @@ import ru.agentlab.maia.agent.Plan;
 import ru.agentlab.maia.agent.match.IMatcher;
 import ru.agentlab.maia.agent.match.JavaAnyMatcher;
 import ru.agentlab.maia.agent.match.JavaClassMatcher;
+import ru.agentlab.maia.agent.match.JavaMethodMatcher;
 import ru.agentlab.maia.agent.match.JavaStringMatcher;
 import ru.agentlab.maia.agent.match.OWLClassAssertionAxiomMatcher;
 import ru.agentlab.maia.agent.match.OWLDataPropertyAssertionAxiomMatcher;
@@ -66,6 +50,8 @@ import ru.agentlab.maia.annotation.BeliefDataPropertyAdded;
 import ru.agentlab.maia.annotation.BeliefDataPropertyRemoved;
 import ru.agentlab.maia.annotation.BeliefObjectPropertyAdded;
 import ru.agentlab.maia.annotation.BeliefObjectPropertyRemoved;
+import ru.agentlab.maia.annotation.EventMatcher;
+import ru.agentlab.maia.annotation.ExternalEventAdded;
 import ru.agentlab.maia.annotation.GoalClassificationAdded;
 import ru.agentlab.maia.annotation.GoalClassificationFailed;
 import ru.agentlab.maia.annotation.GoalClassificationFinished;
@@ -78,6 +64,10 @@ import ru.agentlab.maia.annotation.GoalObjectPropertyAdded;
 import ru.agentlab.maia.annotation.GoalObjectPropertyFailed;
 import ru.agentlab.maia.annotation.GoalObjectPropertyFinished;
 import ru.agentlab.maia.annotation.GoalObjectPropertyRemoved;
+import ru.agentlab.maia.annotation.PlanAdded;
+import ru.agentlab.maia.annotation.PlanFailed;
+import ru.agentlab.maia.annotation.PlanFinished;
+import ru.agentlab.maia.annotation.PlanRemoved;
 import ru.agentlab.maia.annotation.Prefix;
 import ru.agentlab.maia.annotation.RoleAdded;
 import ru.agentlab.maia.annotation.RoleRemoved;
@@ -86,67 +76,47 @@ import ru.agentlab.maia.annotation.RoleUnresolved;
 
 public class Converter {
 
-	// private static final Map<Class<?>, EventType> CLASSIFICATION_ANNOTATIONS
-	// = new HashMap<>(6);
-	// private static final Map<Class<?>, EventType> DATA_PROPERTY_ANNOTATIONS =
-	// new HashMap<>(6);
-	// private static final Map<Class<?>, EventType> OBJECT_PROPERTY_ANNOTATIONS
-	// = new HashMap<>(6);
-	// private static final Map<Class<?>, EventType> METHOD_ANNOTATIONS = new
-	// HashMap<>(4);
-	// private static final Map<Class<?>, EventType> CLASS_ANNOTATIONS = new
-	// HashMap<>(4);
-	//
-	// static {
-	// CLASSIFICATION_ANNOTATIONS.put(BeliefClassificationAdded.class,
-	// EventType.BELIEF_CLASSIFICATION_ADDED);
-	// CLASSIFICATION_ANNOTATIONS.put(BeliefClassificationRemoved.class,
-	// EventType.BELIEF_CLASSIFICATION_REMOVED);
-	// CLASSIFICATION_ANNOTATIONS.put(GoalClassificationAdded.class,
-	// EventType.GOAL_CLASSIFICATION_ADDED);
-	// CLASSIFICATION_ANNOTATIONS.put(GoalClassificationFailed.class,
-	// EventType.GOAL_CLASSIFICATION_FAILED);
-	// CLASSIFICATION_ANNOTATIONS.put(GoalClassificationFinished.class,
-	// EventType.GOAL_CLASSIFICATION_FINISHED);
-	// CLASSIFICATION_ANNOTATIONS.put(GoalClassificationRemoved.class,
-	// EventType.GOAL_CLASSIFICATION_REMOVED);
-	//
-	// DATA_PROPERTY_ANNOTATIONS.put(BeliefDataPropertyAdded.class,
-	// EventType.BELIEF_DATA_PROPERTY_ADDED);
-	// DATA_PROPERTY_ANNOTATIONS.put(BeliefDataPropertyRemoved.class,
-	// EventType.BELIEF_DATA_PROPERTY_REMOVED);
-	// DATA_PROPERTY_ANNOTATIONS.put(GoalDataPropertyAdded.class,
-	// EventType.GOAL_DATA_PROPERTY_ADDED);
-	// DATA_PROPERTY_ANNOTATIONS.put(GoalDataPropertyFailed.class,
-	// EventType.GOAL_DATA_PROPERTY_FAILED);
-	// DATA_PROPERTY_ANNOTATIONS.put(GoalDataPropertyFinished.class,
-	// EventType.GOAL_DATA_PROPERTY_FINISHED);
-	// DATA_PROPERTY_ANNOTATIONS.put(GoalDataPropertyRemoved.class,
-	// EventType.GOAL_DATA_PROPERTY_REMOVED);
-	//
-	// OBJECT_PROPERTY_ANNOTATIONS.put(BeliefObjectPropertyAdded.class,
-	// EventType.BELIEF_OBJECT_PROPERTY_ADDED);
-	// OBJECT_PROPERTY_ANNOTATIONS.put(BeliefObjectPropertyRemoved.class,
-	// EventType.BELIEF_OBJECT_PROPERTY_REMOVED);
-	// OBJECT_PROPERTY_ANNOTATIONS.put(GoalObjectPropertyAdded.class,
-	// EventType.GOAL_OBJECT_PROPERTY_ADDED);
-	// OBJECT_PROPERTY_ANNOTATIONS.put(GoalObjectPropertyFailed.class,
-	// EventType.GOAL_OBJECT_PROPERTY_FAILED);
-	// OBJECT_PROPERTY_ANNOTATIONS.put(GoalObjectPropertyFinished.class,
-	// EventType.GOAL_OBJECT_PROPERTY_FINISHED);
-	// OBJECT_PROPERTY_ANNOTATIONS.put(GoalObjectPropertyRemoved.class,
-	// EventType.GOAL_OBJECT_PROPERTY_REMOVED);
-	//
-	// METHOD_ANNOTATIONS.put(PlanAdded.class, EventType.PLAN_ADDED);
-	// METHOD_ANNOTATIONS.put(PlanFailed.class, EventType.PLAN_FAILED);
-	// METHOD_ANNOTATIONS.put(PlanFinished.class, EventType.PLAN_FINISHED);
-	// METHOD_ANNOTATIONS.put(PlanRemoved.class, EventType.PLAN_REMOVED);
-	//
-	// CLASS_ANNOTATIONS.put(RoleAdded.class, EventType.ROLE_ADDED);
-	// CLASS_ANNOTATIONS.put(RoleRemoved.class, EventType.ROLE_REMOVED);
-	// CLASS_ANNOTATIONS.put(RoleResolved.class, EventType.ROLE_RESOLVED);
-	// CLASS_ANNOTATIONS.put(RoleUnresolved.class, EventType.ROLE_UNRESOLVED);
-	// }
+	private static final String METHOD_NAME = "value";
+
+	// @formatter:off
+	private static final Set<Class<?>> CLASSIFICATION_ANNOTATIONS = ImmutableSet.of(
+		BeliefClassificationAdded.class,
+		BeliefClassificationRemoved.class, 
+		GoalClassificationAdded.class, 
+		GoalClassificationFailed.class,
+		GoalClassificationFinished.class, 
+		GoalClassificationRemoved.class
+	);
+	private static final Set<Class<?>> DATA_PROPERTY_ANNOTATIONS = ImmutableSet.of(
+		BeliefDataPropertyAdded.class,
+		BeliefDataPropertyRemoved.class, 
+		GoalDataPropertyAdded.class, 
+		GoalDataPropertyFailed.class,
+		GoalDataPropertyFinished.class, 
+		GoalDataPropertyRemoved.class
+	);
+	private static final Set<Class<?>> OBJECT_PROPERTY_ANNOTATIONS = ImmutableSet.of(
+		BeliefObjectPropertyAdded.class,
+		BeliefObjectPropertyRemoved.class, 
+		GoalObjectPropertyAdded.class, 
+		GoalObjectPropertyFailed.class,
+		GoalObjectPropertyFinished.class, 
+		GoalObjectPropertyRemoved.class
+	);
+	private static final Set<Class<?>> METHOD_ANNOTATIONS = ImmutableSet.of(
+		PlanAdded.class,
+		PlanFailed.class, 
+		PlanFinished.class, 
+		PlanRemoved.class
+	);
+	private static final Set<Class<?>> CLASS_ANNOTATIONS = ImmutableSet.of(
+		RoleAdded.class,
+		RoleRemoved.class, 
+		RoleResolved.class, 
+		RoleUnresolved.class,
+		ExternalEventAdded.class
+	);
+	// @formatter:on
 
 	private static final String SEPARATOR_LANGUAGE = "@";
 
@@ -236,138 +206,98 @@ public class Converter {
 	protected static final int PATTERN_OBJECT_PROPERTY_ASSERTION_PROPERTY = 2;
 	protected static final int PATTERN_OBJECT_PROPERTY_ASSERTION_OBJECT = 3;
 
-	static Set<String> BUILDIN_DATATYPE_NAMESPACES = new HashSet<>();
-	static {
-		BUILDIN_DATATYPE_NAMESPACES.add(Namespaces.OWL.toString());
-		BUILDIN_DATATYPE_NAMESPACES.add(Namespaces.RDF.toString());
-		BUILDIN_DATATYPE_NAMESPACES.add(Namespaces.RDFS.toString());
-		BUILDIN_DATATYPE_NAMESPACES.add(Namespaces.XSD.toString());
-	}
+	protected static final Pattern PATTERN_METHOD = Pattern.compile("^\\s*?(\\S+)\\s*?::\\s*?(\\S+)\\s*?$");
+	protected static final int PATTERN_METHOD_CLASS = 1;
+	protected static final int PATTERN_METHOD_NAME = 2;
+
+	// @formatter:off
+	static Set<String> BUILDIN_DATATYPE_NAMESPACES = ImmutableSet.of(
+		Namespaces.OWL.toString(),
+		Namespaces.RDF.toString(),
+		Namespaces.RDFS.toString(),
+		Namespaces.XSD.toString()
+	);
+	// @formatter:on
 
 	protected PrefixManager prefixManager = new DefaultPrefixManager();
 
-	public IPlan addPlan(Method method, IPlanBase planBase) {
-		Plan plan = new Plan();
-		EventType type = null;
+	public void addPlan(Object role, IPlanBase planBase) {
+		Map<IPlan, EventType> registrations = new HashMap<>();
 		try {
-			for (Annotation annotation : method.getAnnotations()) {
-				if (annotation instanceof BeliefClassificationAdded) {
-					String value = ((BeliefClassificationAdded) annotation).value();
-					IMatcher<?> matcher = getOWLClassAssertionAxiomMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = BELIEF_CLASSIFICATION_ADDED;
-				} else if (annotation instanceof BeliefClassificationRemoved) {
-					String value = ((BeliefClassificationRemoved) annotation).value();
-					IMatcher<?> matcher = getOWLClassAssertionAxiomMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = BELIEF_CLASSIFICATION_REMOVED;
-				} else if (annotation instanceof BeliefDataPropertyAdded) {
-					String value = ((BeliefDataPropertyAdded) annotation).value();
-					IMatcher<?> matcher = getOWLDataPropertyAssertionAxiomMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = BELIEF_DATA_PROPERTY_ADDED;
-				} else if (annotation instanceof BeliefDataPropertyRemoved) {
-					String value = ((BeliefDataPropertyRemoved) annotation).value();
-					IMatcher<?> matcher = getOWLDataPropertyAssertionAxiomMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = BELIEF_DATA_PROPERTY_REMOVED;
-				} else if (annotation instanceof BeliefObjectPropertyAdded) {
-					String value = ((BeliefObjectPropertyAdded) annotation).value();
-					IMatcher<?> matcher = getOWLObjectPropertyAssertionAxiomMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = BELIEF_OBJECT_PROPERTY_ADDED;
-				} else if (annotation instanceof BeliefObjectPropertyRemoved) {
-					String value = ((BeliefObjectPropertyRemoved) annotation).value();
-					IMatcher<?> matcher = getOWLObjectPropertyAssertionAxiomMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = BELIEF_OBJECT_PROPERTY_REMOVED;
-				} else if (annotation instanceof GoalClassificationAdded) {
-					String value = ((GoalClassificationAdded) annotation).value();
-					IMatcher<?> matcher = getOWLClassAssertionAxiomMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = GOAL_CLASSIFICATION_ADDED;
-				} else if (annotation instanceof GoalClassificationRemoved) {
-					String value = ((GoalClassificationRemoved) annotation).value();
-					IMatcher<?> matcher = getOWLClassAssertionAxiomMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = GOAL_CLASSIFICATION_REMOVED;
-				} else if (annotation instanceof GoalClassificationFailed) {
-					String value = ((GoalClassificationFailed) annotation).value();
-					IMatcher<?> matcher = getOWLClassAssertionAxiomMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = GOAL_CLASSIFICATION_FAILED;
-				} else if (annotation instanceof GoalClassificationFinished) {
-					String value = ((GoalClassificationFinished) annotation).value();
-					IMatcher<?> matcher = getOWLClassAssertionAxiomMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = GOAL_CLASSIFICATION_FINISHED;
-				} else if (annotation instanceof GoalDataPropertyAdded) {
-					String value = ((GoalDataPropertyAdded) annotation).value();
-					IMatcher<?> matcher = getOWLDataPropertyAssertionAxiomMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = GOAL_DATA_PROPERTY_ADDED;
-				} else if (annotation instanceof GoalDataPropertyRemoved) {
-					String value = ((GoalDataPropertyRemoved) annotation).value();
-					IMatcher<?> matcher = getOWLDataPropertyAssertionAxiomMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = GOAL_DATA_PROPERTY_REMOVED;
-				} else if (annotation instanceof GoalDataPropertyFailed) {
-					String value = ((GoalDataPropertyFailed) annotation).value();
-					IMatcher<?> matcher = getOWLDataPropertyAssertionAxiomMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = GOAL_DATA_PROPERTY_FAILED;
-				} else if (annotation instanceof GoalDataPropertyFinished) {
-					String value = ((GoalDataPropertyFinished) annotation).value();
-					IMatcher<?> matcher = getOWLDataPropertyAssertionAxiomMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = GOAL_DATA_PROPERTY_FINISHED;
-				} else if (annotation instanceof GoalObjectPropertyAdded) {
-					String value = ((GoalObjectPropertyAdded) annotation).value();
-					IMatcher<?> matcher = getOWLObjectPropertyAssertionAxiomMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = GOAL_OBJECT_PROPERTY_ADDED;
-				} else if (annotation instanceof GoalObjectPropertyRemoved) {
-					String value = ((GoalObjectPropertyRemoved) annotation).value();
-					IMatcher<?> matcher = getOWLObjectPropertyAssertionAxiomMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = GOAL_OBJECT_PROPERTY_REMOVED;
-				} else if (annotation instanceof GoalObjectPropertyFailed) {
-					String value = ((GoalObjectPropertyFailed) annotation).value();
-					IMatcher<?> matcher = getOWLObjectPropertyAssertionAxiomMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = GOAL_OBJECT_PROPERTY_FAILED;
-				} else if (annotation instanceof GoalObjectPropertyFinished) {
-					String value = ((GoalObjectPropertyFinished) annotation).value();
-					IMatcher<?> matcher = getOWLObjectPropertyAssertionAxiomMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = GOAL_OBJECT_PROPERTY_FINISHED;
-				} else if (annotation instanceof RoleAdded) {
-					Class<?> value = ((RoleAdded) annotation).value();
-					IMatcher<?> matcher = new JavaClassMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = ROLE_ADDED;
-				} else if (annotation instanceof RoleRemoved) {
-					Class<?> value = ((RoleRemoved) annotation).value();
-					IMatcher<?> matcher = new JavaClassMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = ROLE_REMOVED;
-				} else if (annotation instanceof RoleResolved) {
-					Class<?> value = ((RoleResolved) annotation).value();
-					IMatcher<?> matcher = new JavaClassMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = ROLE_RESOLVED;
-				} else if (annotation instanceof RoleUnresolved) {
-					Class<?> value = ((RoleUnresolved) annotation).value();
-					IMatcher<?> matcher = new JavaClassMatcher(value);
-					plan.setEventMatcher(matcher);
-					type = ROLE_UNRESOLVED;
+			Method[] methods = role.getClass().getMethods();
+			for (Method method : methods) {
+				Optional<Annotation> eventAnnotation = Stream.of(method.getAnnotations())
+						.filter(ann -> ann.annotationType().isAnnotationPresent(EventMatcher.class)).findFirst();
+				if (!eventAnnotation.isPresent()) {
+					return;
 				}
+				Annotation ann = eventAnnotation.get();
+				EventType type = ann.annotationType().getAnnotation(EventMatcher.class).value();
+				Plan plan = new Plan(role, method);
+				plan.setEventMatcher(getEventMatcher(ann));
+				registrations.put(plan, type);
 			}
 		} catch (AnnotationFormatException e) {
 			e.printStackTrace();
+			return;
 		}
-		planBase.add(type, plan);
-		return plan;
+		registrations.forEach((plan, event) -> planBase.add(event, plan));
+	}
+
+	protected IMatcher<?> getEventMatcher(Annotation ann) throws AnnotationFormatException {
+		if (CLASSIFICATION_ANNOTATIONS.contains(ann)) {
+			String value = getMethodValue(ann, METHOD_NAME, String.class);
+			return getOWLClassAssertionAxiomMatcher(value);
+		} else if (DATA_PROPERTY_ANNOTATIONS.contains(ann)) {
+			String value = getMethodValue(ann, METHOD_NAME, String.class);
+			return getOWLDataPropertyAssertionAxiomMatcher(value);
+		} else if (OBJECT_PROPERTY_ANNOTATIONS.contains(ann)) {
+			String value = getMethodValue(ann, METHOD_NAME, String.class);
+			return getOWLObjectPropertyAssertionAxiomMatcher(value);
+		} else if (METHOD_ANNOTATIONS.contains(ann)) {
+			String value = getMethodValue(ann, METHOD_NAME, String.class);
+			return getJavaMethodMatcher(value);
+		} else if (CLASS_ANNOTATIONS.contains(ann)) {
+			Class<?> value = getMethodValue(ann, METHOD_NAME, Class.class);
+			return getJavaClassMatcher(value);
+		} else {
+			throw new RuntimeException();
+		}
+	}
+
+	protected JavaMethodMatcher getJavaMethodMatcher(String value) throws MethodWrongFormatException {
+		Matcher match = PATTERN_METHOD.matcher(value);
+		if (!match.matches()) {
+			throw new MethodWrongFormatException();
+		}
+		String clazzName = match.group(PATTERN_METHOD_CLASS);
+		String methodName = match.group(PATTERN_METHOD_NAME);
+		try {
+			Class<?> clazz = Class.forName(clazzName);
+			Optional<Method> method = Stream.of(clazz.getMethods()).filter(methodName::equals).findFirst();
+			if (!method.isPresent()) {
+				throw new MethodWrongFormatException();
+			}
+			return new JavaMethodMatcher(method.get());
+		} catch (ClassNotFoundException e) {
+			throw new MethodWrongFormatException();
+		}
+	}
+
+	protected JavaClassMatcher getJavaClassMatcher(Class<?> value) {
+		return new JavaClassMatcher(value);
+	}
+
+	private static <T> T getMethodValue(Object object, String methodName, Class<T> clazz) {
+		try {
+			Method valueMethod = object.getClass().getMethod(methodName);
+			Object result = valueMethod.invoke(object);
+			return clazz.cast(result);
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	protected IMatcher<OWLClassAssertionAxiom> getOWLClassAssertionAxiomMatcher(String template)
