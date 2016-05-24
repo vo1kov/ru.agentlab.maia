@@ -109,12 +109,12 @@ public class ConverterGetOWLLiteralMatcherTest {
 			/* 25 */ 	{ "Family Guy@", 							matcher(_str("Family Guy"),		_str(""), 		_typ(RDF, PLAIN_LITERAL)) }, 	// test language tag
 			/* 26 */ 	{ "Family Guy@en", 							matcher(_str("Family Guy"),		_str("en"), 	_typ(RDF, PLAIN_LITERAL)) }, 	// test language tag
 			/* 27 */ 	{ "Тестовая строка@ru^^xsd:string", 		matcher(_str("Тестовая строка@ru"),_any(),	 	_typ(XSD, STRING)) }, 			// test language tag
-			/* 28 */ 	{ "Тестовая строка@ru^^xsd:PlainLiteral",	matcher(_str("Тестовая строка"),_str("ru"), 	_typ(RDF, PLAIN_LITERAL)) }, 	// test language tag
-			/* 29 */ 	{ "Тестовая@строка@ru^^xsd:PlainLiteral",	matcher(_str("Тестовая@строка"),_str("ru"), 	_typ(RDF, PLAIN_LITERAL)) }, 	// test language tag
-			/* 30 */ 	{ "?var^^xsd:PlainLiteral", 				matcher(_var("var"),			_any(),		 	_typ(RDF, LITERAL)) }, 			// test variable
-			/* 31 */ 	{ "?var@?lang^^xsd:PlainLiteral", 			matcher(_var("var"),			_str("lang"), 	_typ(RDF, LITERAL)) }, 			// test variable value and lang
-			/* 32 */ 	{ "?var@?lang", 							matcher(_var("var"),			_var("lang"), 	_typ(RDF, LITERAL)) }, 			// test variable value, lang and no type
-			/* 33 */ 	{ "?var", 									matcher(_var("var"),			_var(null), 	_typ(RDF, LITERAL)) }, 			// test variable value only
+			/* 28 */ 	{ "Тестовая строка@ru^^rdf:PlainLiteral",	matcher(_str("Тестовая строка"),_str("ru"), 	_typ(RDF, PLAIN_LITERAL)) }, 	// test language tag
+			/* 29 */ 	{ "Тестовая@строка@ru^^rdf:PlainLiteral",	matcher(_str("Тестовая@строка"),_str("ru"), 	_typ(RDF, PLAIN_LITERAL)) }, 	// test language tag
+			/* 30 */ 	{ "?var^^rdf:PlainLiteral", 				matcher(_var("var"),			_any(),		 	_typ(RDF, PLAIN_LITERAL)) }, 	// test variable
+			/* 31 */ 	{ "?var@?lang^^rdf:PlainLiteral", 			matcher(_var("var"),			_var("lang"), 	_typ(RDF, PLAIN_LITERAL)) }, 	// test variable value and lang
+			/* 32 */ 	{ "?var@?lang", 							matcher(_var("var"),			_var("lang"), 	_typ(RDF, PLAIN_LITERAL)) }, 	// test variable value, lang and no type
+			/* 33 */ 	{ "?var", 									matcher(_var("var"),			_any(), 		_typ(RDF, PLAIN_LITERAL)) }, 	// test variable value only
 			/* 34 */ 	{ "?var@?lang^^?type", 						matcher(_var("var"),			_var("lang"), 	_var("type")) }, 				// test variable value, lang and type
 //			/* 35 */ 	{ "Padre de familia@es^^owl:PlainLiteral",	AnnotationFormatException.class }, 												// wrong namespace
 //			/* 36 */ 	{ "test string^^<" + OWL + "PlainLiteral>",	AnnotationFormatException.class }, 												// wrong namespace
@@ -236,9 +236,11 @@ public class ConverterGetOWLLiteralMatcherTest {
 	@Parameter(1)
 	public Object result;
 
+	private static int i = 0;
+
 	@Test
 	public void anyEmptyLiteralShouldThrow() {
-		System.out.println(parameter);
+		System.out.println(i++ + " " + parameter);
 		try {
 			IMatcher<? super OWLLiteral> matcher = Converter.getOWLLiteralMatcher(parameter);
 			if (result instanceof OWLLiteralMatcher) {
