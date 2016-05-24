@@ -32,4 +32,26 @@ public class VariableMatcher implements IMatcher<Object> {
 		return Object.class;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (obj instanceof VariableMatcher) {
+			VariableMatcher other = (VariableMatcher) obj;
+			boolean result = value.equals(other.value);
+			return result;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return value.hashCode();
+	}
+
 }

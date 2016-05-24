@@ -19,6 +19,28 @@ public class OWLNamedObjectMatcher implements IMatcher<OWLNamedObject> {
 	}
 
 	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (obj instanceof OWLNamedObjectMatcher) {
+			OWLNamedObjectMatcher other = (OWLNamedObjectMatcher) obj;
+			boolean result = value.equals(other.value);
+			return result;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return value.hashCode();
+	}
+
+	@Override
 	public String toString() {
 		return value.toQuotedString();
 	}

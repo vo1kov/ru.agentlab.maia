@@ -48,6 +48,7 @@ import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
 import ru.agentlab.maia.agent.Plan;
 import ru.agentlab.maia.agent.match.IMatcher;
+import ru.agentlab.maia.agent.match.JavaAnyMatcher;
 import ru.agentlab.maia.agent.match.JavaClassMatcher;
 import ru.agentlab.maia.agent.match.JavaStringMatcher;
 import ru.agentlab.maia.agent.match.OWLClassAssertionAxiomMatcher;
@@ -201,7 +202,7 @@ public class Converter {
 	protected static final Pattern IRI_PATTERN = Pattern
 			.compile("(?s)^(" + IRI_PREFIXED_REGEXP + "|" + IRI_FULL_REGEXP + "|" + VARIABLE_REGEXP + ")$");
 
-	protected static final Pattern VARIABLE_PATTERN = Pattern.compile("(?s)^(" + VARIABLE_REGEXP + ")$");
+	protected static final Pattern VARIABLE_PATTERN = Pattern.compile("(?s)^" + VARIABLE_REGEXP + "$");
 
 	/**
 	 * Determines whether input string is datatype literal:
@@ -437,6 +438,9 @@ public class Converter {
 
 	protected static IMatcher<? super OWLDatatype> getOWLDatatypeMatcher(String string)
 			throws AnnotationFormatException {
+		if (string == null) {
+			return new OWLNamedObjectMatcher(OWL2Datatype.RDF_PLAIN_LITERAL.getIRI());
+		}
 		return getOWLNamedObjectMatcher(string);
 	}
 
@@ -486,9 +490,12 @@ public class Converter {
 	}
 
 	protected static IMatcher<? super String> getStringMatcher(String string) {
+		if (string == null) {
+			return JavaAnyMatcher.getInstance();
+		}
 		Matcher match = VARIABLE_PATTERN.matcher(string);
 		if (match.matches()) {
-			return new VariableMatcher(match.group(1));
+			return new VariableMatcher(match.group(2));
 		} else {
 			return new JavaStringMatcher(string);
 		}
