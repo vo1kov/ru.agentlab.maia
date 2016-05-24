@@ -148,26 +148,15 @@ public class Converter {
 	// CLASS_ANNOTATIONS.put(RoleUnresolved.class, EventType.ROLE_UNRESOLVED);
 	// }
 
-	private static final int TEMPLATE_VARIABLE_GROUP = 2;
-	private static final int TEMPLATE_VARIABLE_VALUE = 3;
+	private static final String SEPARATOR_LANGUAGE = "@";
 
-	private static final int TEMPLATE_FULLIRI_GROUP = 4;
-	private static final int TEMPLATE_FULLIRI_NAMESPACE = 5;
-	private static final int TEMPLATE_FULLIRI_NAME = 6;
+	private static final String SEPARATOR_DATATYPE = "^^";
 
-	private static final int TEMPLATE_PREFIXEDIRI_GROUP = 7;
-	private static final int TEMPLATE_PREFIXEDIRI_PREFIX = 8;
-	private static final int TEMPLATE_PREFIXEDIRI_NAME = 9;
+	protected static final String REGEXP_LITERAL_PREFIXED = "((\\w*:)?(\\S+))";
 
-	private static final String LANGUAGE_SEPARATOR = "@";
+	protected static final String REGEXP_LITERAL_FULL = "(<(\\S+#)(\\S+)>)";
 
-	private static final String DATATYPE_SEPARATOR = "^^";
-
-	protected static final String IRI_PREFIXED_REGEXP = "((\\w*:)?(\\S+))";
-
-	protected static final String IRI_FULL_REGEXP = "(<(\\S+#)(\\S+)>)";
-
-	protected static final String VARIABLE_REGEXP = "(\\?(\\S+))";
+	protected static final String REGEXP_VARIABLE = "(\\?(\\S+))";
 
 	/**
 	 * Determines whether input string is either a literal with prefix, literal
@@ -197,46 +186,28 @@ public class Converter {
 	 * <small>Visualized with
 	 * <a href="https://jex.im/regulex/">https://jex.im/regulex/</a></small>
 	 */
-	protected static final Pattern IRI_PATTERN = Pattern
-			.compile("(?s)^(" + VARIABLE_REGEXP + "|" + IRI_FULL_REGEXP + "|" + IRI_PREFIXED_REGEXP + ")$");
+	protected static final Pattern PATTERN_LITERAL = Pattern
+			.compile("(?s)^(" + REGEXP_VARIABLE + "|" + REGEXP_LITERAL_FULL + "|" + REGEXP_LITERAL_PREFIXED + ")$");
+	protected static final int PATTERN_LITERAL_VARIABLE_GROUP = 2;
+	protected static final int PATTERN_LITERAL_VARIABLE_VALUE = 3;
+	protected static final int PATTERN_LITERAL_FULLIRI_GROUP = 4;
+	protected static final int PATTERN_LITERAL_FULLIRI_NAMESPACE = 5;
+	protected static final int PATTERN_LITERAL_FULLIRI_NAME = 6;
+	protected static final int PATTERN_LITERAL_PREFIXEDIRI_GROUP = 7;
+	protected static final int PATTERN_LITERAL_PREFIXEDIRI_PREFIX = 8;
+	protected static final int PATTERN_LITERAL_PREFIXEDIRI_NAME = 9;
 
-	protected static final Pattern VARIABLE_PATTERN = Pattern.compile("(?s)^" + VARIABLE_REGEXP + "$");
-
-	/**
-	 * Determines whether input string is datatype literal:
-	 * <ul>
-	 * <li><b>Group #1</b> - literal value with escaped '<code>@</code>'
-	 * symbols;
-	 * <li><b>Group #2</b> - literal language tag, starts with '<code>@</code>';
-	 * <ul>
-	 * <li><b>Group #3</b> - language tag value without '<code>@</code>';
-	 * </ul>
-	 * <li><b>Group #4</b> - literal datatype IRI, starts with '<code>^^</code>
-	 * '; brackets;
-	 * <ul>
-	 * <li><b>Group #5</b> - literal datatype IRI without '<code>@</code>'; Has
-	 * {@link #LITERAL_STATIC_PATTERN} format;
-	 * </ul>
-	 * </ul>
-	 * 
-	 * <p>
-	 * <img src="./doc-files/DataTypeLiteralOrVarRegExp.png" style=
-	 * "max-width: 100%;" alt="DataTypeLiteralOrVarRegExp" >
-	 * <p align="right">
-	 * <small>Visualized with
-	 * <a href="https://jex.im/regulex/">https://jex.im/regulex/</a></small>
-	 * 
-	 */
-	@Deprecated
-	protected static final Pattern DATA_VALUE_PATTERN = Pattern
-			.compile("(?s)^(([^?].*?)|(\\?(\\w+)))(@([a-zA-Z-]*|(\\?(\\w+))))?(\\^\\^([^@]*))?$");
+	protected static final Pattern PATTERN_VARIABLE = Pattern.compile("(?s)^" + REGEXP_VARIABLE + "$");
+	protected static final int PATTERN_VARIABLE_NAME = 2;
 
 	/**
 	 * <p>
 	 * <img src="./doc-files/ClassAssertionRegExp.png" style=
 	 * "max-width: 100%;" alt="ClassAssertionRegExp" >
 	 */
-	protected static final Pattern ASSERTION_CLASS_PATTERN = Pattern.compile("^\\s*?(\\S+)\\s+(\\S+)\\s*?$");
+	protected static final Pattern PATTERN_CLASS_ASSERTION = Pattern.compile("^\\s*?(\\S+)\\s+(\\S+)\\s*?$");
+	protected static final int PATTERN_CLASS_ASSERTION_CLASS = 1;
+	protected static final int PATTERN_CLASS_ASSERTION_INDIVIDUAL = 2;
 
 	/**
 	 * <p>
@@ -246,7 +217,10 @@ public class Converter {
 	 * <small>Visualized with
 	 * <a href="https://jex.im/regulex/">https://jex.im/regulex/</a></small>
 	 */
-	protected static final Pattern ASSERTION_DATA_PROPERTY_PATTERN = Pattern.compile("(?s)^(\\S+)\\s+(\\S+)\\s+(.*?)$");
+	protected static final Pattern PATTERN_DATA_PROPERTY_ASSERTION = Pattern.compile("(?s)^(\\S+)\\s+(\\S+)\\s+(.*?)$");
+	protected static final int PATTERN_DATA_PROPERTY_ASSERTION_SUBJECT = 1;
+	protected static final int PATTERN_DATA_PROPERTY_ASSERTION_PROPERTY = 2;
+	protected static final int PATTERN_DATA_PROPERTY_ASSERTION_OBJECT = 3;
 
 	/**
 	 * <p>
@@ -256,18 +230,21 @@ public class Converter {
 	 * <small>Visualized with
 	 * <a href="https://jex.im/regulex/">https://jex.im/regulex/</a></small>
 	 */
-	protected static final Pattern ASSERTION_OBJECT_PROPERTY_PATTERN = Pattern
+	protected static final Pattern PATTERN_OBJECT_PROPERTY_ASSERTION = Pattern
 			.compile("(?s)^\\s*?(\\S+)\\s+(\\S+)\\s+(\\S+)\\s*?$");
+	protected static final int PATTERN_OBJECT_PROPERTY_ASSERTION_SUBJECT = 1;
+	protected static final int PATTERN_OBJECT_PROPERTY_ASSERTION_PROPERTY = 2;
+	protected static final int PATTERN_OBJECT_PROPERTY_ASSERTION_OBJECT = 3;
+
+	static Set<String> BUILDIN_DATATYPE_NAMESPACES = new HashSet<>();
+	static {
+		BUILDIN_DATATYPE_NAMESPACES.add(Namespaces.OWL.toString());
+		BUILDIN_DATATYPE_NAMESPACES.add(Namespaces.RDF.toString());
+		BUILDIN_DATATYPE_NAMESPACES.add(Namespaces.RDFS.toString());
+		BUILDIN_DATATYPE_NAMESPACES.add(Namespaces.XSD.toString());
+	}
 
 	protected static PrefixManager prefixManager = new DefaultPrefixManager();
-
-	static Set<String> buildinOntos = new HashSet<>();
-	static {
-		buildinOntos.add(Namespaces.OWL.toString());
-		buildinOntos.add(Namespaces.RDF.toString());
-		buildinOntos.add(Namespaces.RDFS.toString());
-		buildinOntos.add(Namespaces.XSD.toString());
-	}
 
 	public static IPlan addPlan(Method method, IPlanBase planBase) {
 		Plan plan = new Plan();
@@ -432,7 +409,7 @@ public class Converter {
 		if ((datatypeMatcher instanceof OWLNamedObjectMatcher)) {
 			IRI datatypeIRI = ((OWLNamedObjectMatcher) datatypeMatcher).getValue();
 			String datatypeNamespace = datatypeIRI.getNamespace();
-			if (buildinOntos.contains(datatypeNamespace)) {
+			if (BUILDIN_DATATYPE_NAMESPACES.contains(datatypeNamespace)) {
 				if (OWL2Datatype.isBuiltIn(datatypeIRI)) {
 					OWL2Datatype owl2datatype = OWL2Datatype.getDatatype(datatypeIRI);
 					if (!(literalMatcher instanceof VariableMatcher) && !owl2datatype.isInLexicalSpace(literal)) {
@@ -450,8 +427,7 @@ public class Converter {
 		return new OWLLiteralMatcher(literalMatcher, languageMatcher, datatypeMatcher);
 	}
 
-	protected static IMatcher<? super OWLDatatype> getOWLDatatypeMatcher(String string)
-			throws LiteralFormatException {
+	protected static IMatcher<? super OWLDatatype> getOWLDatatypeMatcher(String string) throws LiteralFormatException {
 		if (string == null) {
 			return new OWLNamedObjectMatcher(OWL2Datatype.RDF_PLAIN_LITERAL.getIRI());
 		}
@@ -479,30 +455,30 @@ public class Converter {
 
 	protected static IMatcher<? super OWLNamedObject> getOWLNamedObjectMatcher(String string)
 			throws LiteralFormatException {
-		Matcher match = IRI_PATTERN.matcher(string);
+		Matcher match = PATTERN_LITERAL.matcher(string);
 		if (!match.matches()) {
 			throw new LiteralWrongFormatException("Literal [" + string + "] has wrong format. "
 					+ "Should be in form either namespace:name, <htt://full.com#name> or ?variable.");
 		}
-		String fullURI = match.group(TEMPLATE_FULLIRI_GROUP);
-		String prefixedURI = match.group(TEMPLATE_PREFIXEDIRI_GROUP);
-		String variable = match.group(TEMPLATE_VARIABLE_GROUP);
+		String fullURI = match.group(PATTERN_LITERAL_FULLIRI_GROUP);
+		String prefixedURI = match.group(PATTERN_LITERAL_PREFIXEDIRI_GROUP);
+		String variable = match.group(PATTERN_LITERAL_VARIABLE_GROUP);
 		if (fullURI != null) {
-			String fullIRInamespace = match.group(TEMPLATE_FULLIRI_NAMESPACE);
-			String fullIRIname = match.group(TEMPLATE_FULLIRI_NAME);
+			String fullIRInamespace = match.group(PATTERN_LITERAL_FULLIRI_NAMESPACE);
+			String fullIRIname = match.group(PATTERN_LITERAL_FULLIRI_NAME);
 			return new OWLNamedObjectMatcher(IRI.create(fullIRInamespace, fullIRIname));
 		} else if (prefixedURI != null) {
-			String prefixedIRIprefix = match.group(TEMPLATE_PREFIXEDIRI_PREFIX);
+			String prefixedIRIprefix = match.group(PATTERN_LITERAL_PREFIXEDIRI_PREFIX);
 			String prefix = prefixManager.getPrefix(prefixedIRIprefix);
 			if (prefix == null) {
 				throw new LiteralUnknownPrefixException(
 						"Literal [" + string + "] has wrong format. " + "Prefix [" + prefix + "] is unknown. Use @"
 								+ Prefix.class.getName() + " annotation to register not build-in prefixes.");
 			}
-			String prefixedIRIname = match.group(TEMPLATE_PREFIXEDIRI_NAME);
+			String prefixedIRIname = match.group(PATTERN_LITERAL_PREFIXEDIRI_NAME);
 			return new OWLNamedObjectMatcher(IRI.create(prefix, prefixedIRIname));
 		} else if (variable != null) {
-			String variableName = match.group(TEMPLATE_VARIABLE_VALUE);
+			String variableName = match.group(PATTERN_LITERAL_VARIABLE_VALUE);
 			return new VariableMatcher(variableName);
 		} else {
 			throw new LiteralWrongFormatException("Literal [" + string + "] has wrong format. "
@@ -514,9 +490,9 @@ public class Converter {
 		if (string == null) {
 			return JavaAnyMatcher.getInstance();
 		}
-		Matcher match = VARIABLE_PATTERN.matcher(string);
+		Matcher match = PATTERN_VARIABLE.matcher(string);
 		if (match.matches()) {
-			return new VariableMatcher(match.group(2));
+			return new VariableMatcher(match.group(PATTERN_VARIABLE_NAME));
 		} else {
 			return new JavaStringMatcher(string);
 		}
@@ -536,35 +512,40 @@ public class Converter {
 	 * @throws AnnotationFormatException
 	 *             if input string is not matches by patter, e.g. not in form of
 	 *             pair: {@code [<individual_template> <class_template>]}.
-	 * @see {@link #ASSERTION_CLASS_PATTERN}
+	 * @see {@link #PATTERN_CLASS_ASSERTION}
 	 */
 	protected static String[] splitClassAssertioin(String string) throws AssertionFormatException {
-		Matcher match = ASSERTION_CLASS_PATTERN.matcher(string);
+		Matcher match = PATTERN_CLASS_ASSERTION.matcher(string);
 		if (!match.matches()) {
 			throw new AssertionWrongFormatException("Class Assertion template [" + string + "] has wrong format. "
 					+ "Should be in form of pair: [<individual_template> <class_template>]");
 		}
-		return new String[] { match.group(1), match.group(2) };
+		return new String[] { match.group(PATTERN_CLASS_ASSERTION_CLASS),
+				match.group(PATTERN_CLASS_ASSERTION_INDIVIDUAL) };
 	}
 
 	protected static String[] splitDataPropertyAssertioin(String string) throws AssertionFormatException {
-		Matcher match = ASSERTION_DATA_PROPERTY_PATTERN.matcher(string);
+		Matcher match = PATTERN_DATA_PROPERTY_ASSERTION.matcher(string);
 		if (!match.matches()) {
 			throw new AssertionWrongFormatException(
 					"DataProperty Assertioin template [" + string + "] have wrong format. Should be in form of triple: "
 							+ "[<individual template> <property template> <data template>]");
 		}
-		return new String[] { match.group(1), match.group(2), match.group(3) };
+		return new String[] { match.group(PATTERN_DATA_PROPERTY_ASSERTION_SUBJECT),
+				match.group(PATTERN_DATA_PROPERTY_ASSERTION_PROPERTY),
+				match.group(PATTERN_DATA_PROPERTY_ASSERTION_OBJECT) };
 	}
 
 	protected static String[] splitObjectPropertyAssertioin(String string) throws AssertionFormatException {
-		Matcher match = ASSERTION_OBJECT_PROPERTY_PATTERN.matcher(string);
+		Matcher match = PATTERN_OBJECT_PROPERTY_ASSERTION.matcher(string);
 		if (!match.matches()) {
 			throw new AssertionWrongFormatException("ObjectProperty Assertioin template [" + string
 					+ "] have wrong format. Should be in form of triple: "
 					+ "[<individual template> <property template> <individual template>]");
 		}
-		return new String[] { match.group(1), match.group(2), match.group(3) };
+		return new String[] { match.group(PATTERN_OBJECT_PROPERTY_ASSERTION_SUBJECT),
+				match.group(PATTERN_OBJECT_PROPERTY_ASSERTION_PROPERTY),
+				match.group(PATTERN_OBJECT_PROPERTY_ASSERTION_OBJECT) };
 	}
 
 	/**
@@ -595,14 +576,14 @@ public class Converter {
 		String value = string;
 		String language = null;
 		String datatype = null;
-		int datatypeIndex = string.lastIndexOf(DATATYPE_SEPARATOR);
+		int datatypeIndex = string.lastIndexOf(SEPARATOR_DATATYPE);
 		if (datatypeIndex != -1) {
 			value = string.substring(0, datatypeIndex);
-			datatype = string.substring(datatypeIndex + DATATYPE_SEPARATOR.length(), string.length());
+			datatype = string.substring(datatypeIndex + SEPARATOR_DATATYPE.length(), string.length());
 		}
-		int languageIndex = value.lastIndexOf(LANGUAGE_SEPARATOR);
+		int languageIndex = value.lastIndexOf(SEPARATOR_LANGUAGE);
 		if (languageIndex != -1) {
-			language = value.substring(languageIndex + LANGUAGE_SEPARATOR.length(), value.length());
+			language = value.substring(languageIndex + SEPARATOR_LANGUAGE.length(), value.length());
 			value = value.substring(0, languageIndex);
 		}
 		return new String[] { value, language, datatype };
