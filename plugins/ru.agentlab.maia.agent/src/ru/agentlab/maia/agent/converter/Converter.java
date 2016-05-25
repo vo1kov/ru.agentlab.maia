@@ -3,10 +3,13 @@ package ru.agentlab.maia.agent.converter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -42,6 +45,8 @@ import ru.agentlab.maia.agent.match.JavaFloatMatcher;
 import ru.agentlab.maia.agent.match.JavaIntegerMatcher;
 import ru.agentlab.maia.agent.match.JavaMethodMatcher;
 import ru.agentlab.maia.agent.match.JavaStringMatcher;
+import ru.agentlab.maia.agent.match.JavaUUIDMatcher;
+import ru.agentlab.maia.agent.match.MessageMatcher;
 import ru.agentlab.maia.agent.match.OWLClassAssertionAxiomMatcher;
 import ru.agentlab.maia.agent.match.OWLDataPropertyAssertionAxiomMatcher;
 import ru.agentlab.maia.agent.match.OWLLiteralBooleanMatcher;
@@ -73,6 +78,9 @@ import ru.agentlab.maia.annotation.GoalObjectPropertyAdded;
 import ru.agentlab.maia.annotation.GoalObjectPropertyFailed;
 import ru.agentlab.maia.annotation.GoalObjectPropertyFinished;
 import ru.agentlab.maia.annotation.GoalObjectPropertyRemoved;
+import ru.agentlab.maia.annotation.MessageAdded;
+import ru.agentlab.maia.annotation.MessageRemoved;
+import ru.agentlab.maia.annotation.MessageUnhandled;
 import ru.agentlab.maia.annotation.PlanAdded;
 import ru.agentlab.maia.annotation.PlanFailed;
 import ru.agentlab.maia.annotation.PlanFinished;
@@ -134,6 +142,11 @@ public class Converter implements IConverter {
 		RoleResolved.class, 
 		RoleUnresolved.class,
 		ExternalEventAdded.class
+	);
+	private static final Set<Class<?>> ANNOTATIONS_MESSAGE = ImmutableSet.of(
+		MessageAdded.class,
+		MessageRemoved.class, 
+		MessageUnhandled.class
 	);
 	private static Set<String> BUILDIN_DATATYPE_NAMESPACES = ImmutableSet.of(
 		Namespaces.OWL.toString(),
@@ -279,9 +292,61 @@ public class Converter implements IConverter {
 		} else if (ANNOTATIONS_CLASS.contains(ann)) {
 			Class<?> value = getMethodValue(ann, METHOD_NAME, Class.class);
 			return getJavaClassMatcher(value);
+		} else if (ANNOTATIONS_MESSAGE.contains(ann)) {
+			return getMessageMatcher(ann);
 		} else {
 			throw new RuntimeException();
 		}
+	}
+
+	protected IMatcher<?> getMessageMatcher(Annotation ann) {
+		MessageMatcher matcher = new MessageMatcher();
+		String performative = getMethodValue(ann, "performative", String.class);
+		if (!performative.equals("")) {
+			matcher.setPerformativeMatcher(new JavaStringMatcher(performative));
+		}
+		String sender = getMethodValue(ann, "sender", String.class);
+		if (!sender.equals("")) {
+			matcher.setSenderMatcher(new JavaUUIDMatcher(UUID.fromString(sender)));
+		}
+		IMatcher<? super List<UUID>> receiversMatcher;
+		IMatcher<? super List<UUID>> replyToMatcher;
+
+		String content = getMethodValue(ann, "content", String.class);
+		if (!content.equals("")) {
+			matcher.setPerformativeMatcher(new JavaStringMatcher(content));
+		}
+		String replyWith = getMethodValue(ann, "replyWith", String.class);
+		if (!replyWith.equals("")) {
+			matcher.setPerformativeMatcher(new JavaStringMatcher(replyWith));
+		}
+		String inReplyTo = getMethodValue(ann, "inReplyTo", String.class);
+		if (!inReplyTo.equals("")) {
+			matcher.setPerformativeMatcher(new JavaStringMatcher(inReplyTo));
+		}
+		String encoding = getMethodValue(ann, "encoding", String.class);
+		if (!encoding.equals("")) {
+			matcher.setPerformativeMatcher(new JavaStringMatcher(encoding));
+		}
+		String language = getMethodValue(ann, "language", String.class);
+		if (!language.equals("")) {
+			matcher.setPerformativeMatcher(new JavaStringMatcher(language));
+		}
+		String ontology = getMethodValue(ann, "ontology", String.class);
+		if (!ontology.equals("")) {
+			matcher.setPerformativeMatcher(new JavaStringMatcher(ontology));
+		}
+		IMatcher<? super LocalDateTime> replyByMatcher;
+		String protocol = getMethodValue(ann, "protocol", String.class);
+		if (!protocol.equals("")) {
+			matcher.setPerformativeMatcher(new JavaStringMatcher(protocol));
+		}
+		String conversationId = getMethodValue(ann, "conversationId", String.class);
+		if (!conversationId.equals("")) {
+			matcher.setPerformativeMatcher(new JavaStringMatcher(conversationId));
+		}
+		IMatcher<? super LocalDateTime> postTimeStampMatcher;
+		return matcher;
 	}
 
 	protected JavaMethodMatcher getJavaMethodMatcher(String value) throws MethodWrongFormatException {
