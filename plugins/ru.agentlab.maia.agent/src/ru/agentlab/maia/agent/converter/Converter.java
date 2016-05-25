@@ -208,7 +208,7 @@ public class Converter {
 	 * <small>Visualized with
 	 * <a href="https://jex.im/regulex/">https://jex.im/regulex/</a></small>
 	 */
-	protected static final Pattern PATTERN_DATA_PROPERTY_ASSERTION = Pattern.compile("(?s)^(\\S+)\\s+(\\S+)\\s+(.*?)$");
+	protected static final Pattern PATTERN_DATA_PROPERTY_ASSERTION = Pattern.compile("(?s)^\\s*(\\S+)\\s+(\\S+)\\s+(\\S.*)$");
 	protected static final int PATTERN_DATA_PROPERTY_ASSERTION_SUBJECT = 1;
 	protected static final int PATTERN_DATA_PROPERTY_ASSERTION_PROPERTY = 2;
 	protected static final int PATTERN_DATA_PROPERTY_ASSERTION_OBJECT = 3;
