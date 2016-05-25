@@ -35,12 +35,21 @@ import ru.agentlab.maia.IPlanBase;
 import ru.agentlab.maia.agent.Plan;
 import ru.agentlab.maia.agent.match.IMatcher;
 import ru.agentlab.maia.agent.match.JavaAnyMatcher;
+import ru.agentlab.maia.agent.match.JavaBooleanMatcher;
 import ru.agentlab.maia.agent.match.JavaClassMatcher;
+import ru.agentlab.maia.agent.match.JavaDoubleMatcher;
+import ru.agentlab.maia.agent.match.JavaFloatMatcher;
+import ru.agentlab.maia.agent.match.JavaIntegerMatcher;
 import ru.agentlab.maia.agent.match.JavaMethodMatcher;
 import ru.agentlab.maia.agent.match.JavaStringMatcher;
 import ru.agentlab.maia.agent.match.OWLClassAssertionAxiomMatcher;
 import ru.agentlab.maia.agent.match.OWLDataPropertyAssertionAxiomMatcher;
-import ru.agentlab.maia.agent.match.OWLLiteralMatcher;
+import ru.agentlab.maia.agent.match.OWLLiteralBooleanMatcher;
+import ru.agentlab.maia.agent.match.OWLLiteralDoubleMatcher;
+import ru.agentlab.maia.agent.match.OWLLiteralFloatMatcher;
+import ru.agentlab.maia.agent.match.OWLLiteralIntegerMatcher;
+import ru.agentlab.maia.agent.match.OWLLiteralPlainMatcher;
+import ru.agentlab.maia.agent.match.OWLLiteralTypedMatcher;
 import ru.agentlab.maia.agent.match.OWLNamedObjectMatcher;
 import ru.agentlab.maia.agent.match.OWLObjectPropertyAssertionAxiomMatcher;
 import ru.agentlab.maia.agent.match.VariableMatcher;
@@ -76,10 +85,14 @@ import ru.agentlab.maia.annotation.RoleUnresolved;
 
 public class Converter {
 
+	private static final String INF_NEG = "-INF";
+
+	private static final String INF = "INF";
+
+	private static final String NaN = "NaN";
+
 	private static final String METHOD_NAME = "value";
 
-	// @formatter:on
-	
 	private static final String SEPARATOR_LANGUAGE = "@";
 
 	private static final String SEPARATOR_DATATYPE = "^^";
@@ -122,14 +135,12 @@ public class Converter {
 		RoleUnresolved.class,
 		ExternalEventAdded.class
 	);
-	// @formatter:off
 	private static Set<String> BUILDIN_DATATYPE_NAMESPACES = ImmutableSet.of(
 		Namespaces.OWL.toString(),
 		Namespaces.RDF.toString(),
 		Namespaces.RDFS.toString(),
 		Namespaces.XSD.toString()
 	);
-
 	// @formatter:on
 
 	protected static final String REGEXP_LITERAL_PREFIXED = "((\\w*:)?(\\S+))";
@@ -336,28 +347,100 @@ public class Converter {
 		String literal = parts[0];
 		String language = parts[1];
 		String datatype = parts[2];
-		IMatcher<? super OWLDatatype> datatypeMatcher = getOWLDatatypeMatcher(datatype);
-		IMatcher<? super String> literalMatcher = getStringMatcher(literal);
-		IMatcher<? super String> languageMatcher = getStringMatcher(language);
-		if ((datatypeMatcher instanceof OWLNamedObjectMatcher)) {
-			IRI datatypeIRI = ((OWLNamedObjectMatcher) datatypeMatcher).getValue();
-			String datatypeNamespace = datatypeIRI.getNamespace();
-			if (BUILDIN_DATATYPE_NAMESPACES.contains(datatypeNamespace)) {
-				if (OWL2Datatype.isBuiltIn(datatypeIRI)) {
+		if (datatype == null) {
+			// Plain Literal
+			// [static@en] || [static@?lang] || [?val@en] || [?val@?lang]
+			IMatcher<? super String> literalMatcher = getStringMatcher(literal);
+			IMatcher<? super String> languageMatcher = getStringMatcher(language);
+			return new OWLLiteralPlainMatcher(literalMatcher, languageMatcher);
+		} else {
+			// Typed Literal
+			// [static^^some:type] || [static^^?type] || [?val^^some:type] ||
+			// [?val^^?type]
+			Matcher match = PATTERN_LITERAL.matcher(datatype);
+			if (!match.matches()) {
+				throw new LiteralWrongFormatException("Literal [" + datatype + "] has wrong format. "
+						+ "Should be in form either namespace:name, <htt://full.com#name> or ?variable.");
+			}
+			String variableName = getOWLNamedObjectVariableName(match);
+			if (variableName != null) {
+				// [static^^?type] || [?val^^?type]
+				return new OWLLiteralTypedMatcher(getStringMatcher(literal), new VariableMatcher(variableName));
+			} else {
+				// [static^^some:type] || [?val^^some:type]
+				IRI datatypeIRI = getOWLNamedObjectIRI(match);
+				if (language != null && language.startsWith("?")
+						&& !datatypeIRI.equals(OWL2Datatype.RDF_PLAIN_LITERAL.getIRI())) {
+					throw new LiteralIllelgalLanguageTagException(
+							"Cannot build a literal matcher with type: " + datatypeIRI + " and language: " + language
+									+ ". Only " + OWL2Datatype.RDF_PLAIN_LITERAL.getIRI() + " can use language tag.");
+				}
+				String datatypeNamespace = datatypeIRI.getNamespace();
+				if (BUILDIN_DATATYPE_NAMESPACES.contains(datatypeNamespace)) {
+					if (!OWL2Datatype.isBuiltIn(datatypeIRI)) {
+						throw new LiteralWrongBuildInDatatypeException("Literal [" + string
+								+ "] has wrong format. Ontology [" + datatypeNamespace
+								+ "] does not contain build-in datatype [" + datatypeIRI.toQuotedString() + "]");
+					}
 					OWL2Datatype owl2datatype = OWL2Datatype.getDatatype(datatypeIRI);
-					if (!(literalMatcher instanceof VariableMatcher) && !owl2datatype.isInLexicalSpace(literal)) {
+					// if value is not variable then check lexical space
+					if (!literal.startsWith("?") && !owl2datatype.isInLexicalSpace(literal)) {
 						throw new LiteralNotInLexicalSpaceException("Literal [" + string + "] has wrong format. Value ["
 								+ literal + "] is not in lexical space of datatype [" + datatypeIRI.toQuotedString()
 								+ "]");
 					}
-				} else {
-					throw new LiteralWrongBuildInDatatypeException(
-							"Literal [" + string + "] has wrong format. Ontology [" + datatypeNamespace
-									+ "] does not contain build-in datatype [" + datatypeIRI.toQuotedString() + "]");
+					switch (owl2datatype) {
+					case XSD_BOOLEAN:
+						return new OWLLiteralBooleanMatcher(getBooleanMatcher(literal));
+					case XSD_FLOAT:
+						return new OWLLiteralFloatMatcher(getFloatMatcher(literal));
+					case XSD_DOUBLE:
+						return new OWLLiteralDoubleMatcher(getDoubleMatcher(literal));
+					case XSD_INT:
+					case XSD_INTEGER:
+						return new OWLLiteralIntegerMatcher(getIntegerMatcher(literal));
+					case RDF_PLAIN_LITERAL:
+						return new OWLLiteralPlainMatcher(getStringMatcher(literal), getStringMatcher(language));
+					default:
+						break;
+					}
 				}
+				return new OWLLiteralTypedMatcher(
+						getStringMatcher(language == null ? literal : literal + SEPARATOR_LANGUAGE + language),
+						new OWLNamedObjectMatcher(datatypeIRI));
 			}
 		}
-		return new OWLLiteralMatcher(literalMatcher, languageMatcher, datatypeMatcher);
+		// IMatcher<? super OWLDatatype> datatypeMatcher =
+		// getOWLDatatypeMatcher(datatype);
+		// IMatcher<? super String> literalMatcher = getStringMatcher(literal);
+		// IMatcher<? super String> languageMatcher =
+		// getStringMatcher(language);
+		// if ((datatypeMatcher instanceof OWLNamedObjectMatcher)) {
+		// IRI datatypeIRI = ((OWLNamedObjectMatcher)
+		// datatypeMatcher).getValue();
+		// String datatypeNamespace = datatypeIRI.getNamespace();
+		// if (BUILDIN_DATATYPE_NAMESPACES.contains(datatypeNamespace)) {
+		// if (OWL2Datatype.isBuiltIn(datatypeIRI)) {
+		// OWL2Datatype owl2datatype = OWL2Datatype.getDatatype(datatypeIRI);
+		// if (!(literalMatcher instanceof VariableMatcher) &&
+		// !owl2datatype.isInLexicalSpace(literal)) {
+		// throw new LiteralNotInLexicalSpaceException("Literal [" + string + "]
+		// has wrong format. Value ["
+		// + literal + "] is not in lexical space of datatype [" +
+		// datatypeIRI.toQuotedString()
+		// + "]");
+		// }
+		// } else {
+		// throw new LiteralWrongBuildInDatatypeException(
+		// "Literal [" + string + "] has wrong format. Ontology [" +
+		// datatypeNamespace
+		// + "] does not contain build-in datatype [" +
+		// datatypeIRI.toQuotedString() + "]");
+		// }
+		// }
+		// }
+		// return new OWLLiteralPlainMatcher(literalMatcher, languageMatcher,
+		// datatypeMatcher);
 	}
 
 	protected IMatcher<? super OWLDatatype> getOWLDatatypeMatcher(String string) throws LiteralFormatException {
@@ -391,29 +474,38 @@ public class Converter {
 			throw new LiteralWrongFormatException("Literal [" + string + "] has wrong format. "
 					+ "Should be in form either namespace:name, <htt://full.com#name> or ?variable.");
 		}
-		String fullURI = match.group(PATTERN_LITERAL_FULLIRI_GROUP);
-		String prefixedURI = match.group(PATTERN_LITERAL_PREFIXEDIRI_GROUP);
-		String variable = match.group(PATTERN_LITERAL_VARIABLE_GROUP);
-		if (fullURI != null) {
+		String variableName = getOWLNamedObjectVariableName(match);
+		if (variableName != null) {
+			return new VariableMatcher(variableName);
+		}
+		IRI iri = getOWLNamedObjectIRI(match);
+		return new OWLNamedObjectMatcher(iri);
+	}
+
+	private String getOWLNamedObjectVariableName(Matcher match) {
+		if (match.group(PATTERN_LITERAL_VARIABLE_GROUP) != null) {
+			return match.group(PATTERN_LITERAL_VARIABLE_VALUE);
+		} else {
+			return null;
+		}
+	}
+
+	private IRI getOWLNamedObjectIRI(Matcher match) throws LiteralUnknownPrefixException {
+		if (match.group(PATTERN_LITERAL_FULLIRI_GROUP) != null) {
 			String fullIRInamespace = match.group(PATTERN_LITERAL_FULLIRI_NAMESPACE);
 			String fullIRIname = match.group(PATTERN_LITERAL_FULLIRI_NAME);
-			return new OWLNamedObjectMatcher(IRI.create(fullIRInamespace, fullIRIname));
-		} else if (prefixedURI != null) {
+			return IRI.create(fullIRInamespace, fullIRIname);
+		} else if (match.group(PATTERN_LITERAL_PREFIXEDIRI_GROUP) != null) {
 			String prefixedIRIprefix = match.group(PATTERN_LITERAL_PREFIXEDIRI_PREFIX);
 			String prefix = prefixManager.getPrefix(prefixedIRIprefix);
 			if (prefix == null) {
-				throw new LiteralUnknownPrefixException(
-						"Literal [" + string + "] has wrong format. " + "Prefix [" + prefix + "] is unknown. Use @"
-								+ Prefix.class.getName() + " annotation to register not build-in prefixes.");
+				throw new LiteralUnknownPrefixException("Prefix [" + prefix + "] is unknown. Use @"
+						+ Prefix.class.getName() + " annotation to register not build-in prefixes.");
 			}
 			String prefixedIRIname = match.group(PATTERN_LITERAL_PREFIXEDIRI_NAME);
-			return new OWLNamedObjectMatcher(IRI.create(prefix, prefixedIRIname));
-		} else if (variable != null) {
-			String variableName = match.group(PATTERN_LITERAL_VARIABLE_VALUE);
-			return new VariableMatcher(variableName);
+			return IRI.create(prefix, prefixedIRIname);
 		} else {
-			throw new LiteralWrongFormatException("Literal [" + string + "] has wrong format. "
-					+ "Should be in form either [namespace:name], [<htt://full.com#name>] or [?variable].");
+			throw new RuntimeException();
 		}
 	}
 
@@ -426,6 +518,81 @@ public class Converter {
 			return new VariableMatcher(match.group(PATTERN_VARIABLE_NAME));
 		} else {
 			return new JavaStringMatcher(string);
+		}
+	}
+
+	protected IMatcher<? super Boolean> getBooleanMatcher(String string) throws LiteralNotInValueSpaceException {
+		if (string == null) {
+			return JavaAnyMatcher.getInstance();
+		}
+		Matcher match = PATTERN_VARIABLE.matcher(string);
+		if (match.matches()) {
+			return new VariableMatcher(match.group(PATTERN_VARIABLE_NAME));
+		} else {
+			if (string.equals("true") || string.equals("1")) {
+				return new JavaBooleanMatcher(true);
+			} else if (string.equals("false") || string.equals("0")) {
+				return new JavaBooleanMatcher(false);
+			} else {
+				throw new LiteralNotInValueSpaceException("Argument should be [true|false|1|0]");
+			}
+		}
+	}
+
+	private IMatcher<? super Float> getFloatMatcher(String string) throws LiteralNotInValueSpaceException {
+		if (string == null) {
+			return JavaAnyMatcher.getInstance();
+		}
+		Matcher match = PATTERN_VARIABLE.matcher(string);
+		if (match.matches()) {
+			return new VariableMatcher(match.group(PATTERN_VARIABLE_NAME));
+		} else {
+			if (string.equals(NaN)) {
+				return new JavaFloatMatcher(Float.NaN);
+			}
+			if (string.equals(INF)) {
+				return new JavaFloatMatcher(Float.POSITIVE_INFINITY);
+			}
+			if (string.equals(INF_NEG)) {
+				return new JavaFloatMatcher(Float.NEGATIVE_INFINITY);
+			}
+			float floatValue = Float.parseFloat(string);
+			return new JavaFloatMatcher(floatValue);
+		}
+	}
+
+	private IMatcher<? super Double> getDoubleMatcher(String string) throws LiteralNotInValueSpaceException {
+		if (string == null) {
+			return JavaAnyMatcher.getInstance();
+		}
+		Matcher match = PATTERN_VARIABLE.matcher(string);
+		if (match.matches()) {
+			return new VariableMatcher(match.group(PATTERN_VARIABLE_NAME));
+		} else {
+			if (string.equals(NaN)) {
+				return new JavaDoubleMatcher(Double.NaN);
+			}
+			if (string.equals(INF)) {
+				return new JavaDoubleMatcher(Double.POSITIVE_INFINITY);
+			}
+			if (string.equals(INF_NEG)) {
+				return new JavaDoubleMatcher(Double.NEGATIVE_INFINITY);
+			}
+			double doubleValue = Double.parseDouble(string);
+			return new JavaDoubleMatcher(doubleValue);
+		}
+	}
+
+	private IMatcher<? super Integer> getIntegerMatcher(String string) throws LiteralNotInValueSpaceException {
+		if (string == null) {
+			return JavaAnyMatcher.getInstance();
+		}
+		Matcher match = PATTERN_VARIABLE.matcher(string);
+		if (match.matches()) {
+			return new VariableMatcher(match.group(PATTERN_VARIABLE_NAME));
+		} else {
+			int floatValue = Integer.parseInt(string);
+			return new JavaIntegerMatcher(floatValue);
 		}
 	}
 
