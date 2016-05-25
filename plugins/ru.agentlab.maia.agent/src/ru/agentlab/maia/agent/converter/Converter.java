@@ -31,7 +31,7 @@ import com.google.common.collect.ImmutableSet;
 
 import ru.agentlab.maia.EventType;
 import ru.agentlab.maia.IPlan;
-import ru.agentlab.maia.IPlanBase;
+import ru.agentlab.maia.agent.IConverter;
 import ru.agentlab.maia.agent.Plan;
 import ru.agentlab.maia.agent.match.IMatcher;
 import ru.agentlab.maia.agent.match.JavaAnyMatcher;
@@ -83,7 +83,7 @@ import ru.agentlab.maia.annotation.RoleRemoved;
 import ru.agentlab.maia.annotation.RoleResolved;
 import ru.agentlab.maia.annotation.RoleUnresolved;
 
-public class Converter {
+public class Converter implements IConverter {
 
 	private static final String INF_NEG = "-INF";
 
@@ -208,7 +208,8 @@ public class Converter {
 	 * <small>Visualized with
 	 * <a href="https://jex.im/regulex/">https://jex.im/regulex/</a></small>
 	 */
-	protected static final Pattern PATTERN_DATA_PROPERTY_ASSERTION = Pattern.compile("(?s)^\\s*(\\S+)\\s+(\\S+)\\s+(\\S.*)$");
+	protected static final Pattern PATTERN_DATA_PROPERTY_ASSERTION = Pattern
+			.compile("(?s)^\\s*(\\S+)\\s+(\\S+)\\s+(\\S.*)$");
 	protected static final int PATTERN_DATA_PROPERTY_ASSERTION_SUBJECT = 1;
 	protected static final int PATTERN_DATA_PROPERTY_ASSERTION_PROPERTY = 2;
 	protected static final int PATTERN_DATA_PROPERTY_ASSERTION_OBJECT = 3;
@@ -231,11 +232,16 @@ public class Converter {
 	protected static final int PATTERN_METHOD_CLASS = 1;
 	protected static final int PATTERN_METHOD_NAME = 2;
 
-	// @formatter:on
-
 	protected PrefixManager prefixManager = new DefaultPrefixManager();
 
-	public void addPlan(Object role, IPlanBase planBase) {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * ru.agentlab.maia.agent.converter.IConverter#getPlans(java.lang.Object)
+	 */
+	@Override
+	public Map<IPlan, EventType> getPlans(Object role) throws ConverterException {
 		Map<IPlan, EventType> registrations = new HashMap<>();
 		try {
 			Method[] methods = role.getClass().getMethods();
@@ -243,7 +249,7 @@ public class Converter {
 				Optional<Annotation> eventAnnotation = Stream.of(method.getAnnotations())
 						.filter(ann -> ann.annotationType().isAnnotationPresent(EventMatcher.class)).findFirst();
 				if (!eventAnnotation.isPresent()) {
-					return;
+					continue;
 				}
 				Annotation ann = eventAnnotation.get();
 				EventType type = ann.annotationType().getAnnotation(EventMatcher.class).value();
@@ -251,11 +257,10 @@ public class Converter {
 				plan.setEventMatcher(getEventMatcher(ann));
 				registrations.put(plan, type);
 			}
+			return registrations;
 		} catch (AnnotationFormatException e) {
-			e.printStackTrace();
-			return;
+			throw new ConverterException(e);
 		}
-		registrations.forEach((plan, event) -> planBase.add(event, plan));
 	}
 
 	protected IMatcher<?> getEventMatcher(Annotation ann) throws AnnotationFormatException {
