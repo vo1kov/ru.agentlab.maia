@@ -78,8 +78,14 @@ public class Converter {
 
 	private static final String METHOD_NAME = "value";
 
+	// @formatter:on
+	
+	private static final String SEPARATOR_LANGUAGE = "@";
+
+	private static final String SEPARATOR_DATATYPE = "^^";
+
 	// @formatter:off
-	private static final Set<Class<?>> CLASSIFICATION_ANNOTATIONS = ImmutableSet.of(
+	private static final Set<Class<?>> ANNOTATIONS_CLASSIFICATION_ASSERTION = ImmutableSet.of(
 		BeliefClassificationAdded.class,
 		BeliefClassificationRemoved.class, 
 		GoalClassificationAdded.class, 
@@ -87,7 +93,7 @@ public class Converter {
 		GoalClassificationFinished.class, 
 		GoalClassificationRemoved.class
 	);
-	private static final Set<Class<?>> DATA_PROPERTY_ANNOTATIONS = ImmutableSet.of(
+	private static final Set<Class<?>> ANNOTATIONS_DATA_PROPERTY_ASSERTION = ImmutableSet.of(
 		BeliefDataPropertyAdded.class,
 		BeliefDataPropertyRemoved.class, 
 		GoalDataPropertyAdded.class, 
@@ -95,7 +101,7 @@ public class Converter {
 		GoalDataPropertyFinished.class, 
 		GoalDataPropertyRemoved.class
 	);
-	private static final Set<Class<?>> OBJECT_PROPERTY_ANNOTATIONS = ImmutableSet.of(
+	private static final Set<Class<?>> ANNOTATIONS_OBJECT_PROPERTY_ASSERTION = ImmutableSet.of(
 		BeliefObjectPropertyAdded.class,
 		BeliefObjectPropertyRemoved.class, 
 		GoalObjectPropertyAdded.class, 
@@ -103,24 +109,28 @@ public class Converter {
 		GoalObjectPropertyFinished.class, 
 		GoalObjectPropertyRemoved.class
 	);
-	private static final Set<Class<?>> METHOD_ANNOTATIONS = ImmutableSet.of(
+	private static final Set<Class<?>> ANNOTATIONS_METHOD = ImmutableSet.of(
 		PlanAdded.class,
 		PlanFailed.class, 
 		PlanFinished.class, 
 		PlanRemoved.class
 	);
-	private static final Set<Class<?>> CLASS_ANNOTATIONS = ImmutableSet.of(
+	private static final Set<Class<?>> ANNOTATIONS_CLASS = ImmutableSet.of(
 		RoleAdded.class,
 		RoleRemoved.class, 
 		RoleResolved.class, 
 		RoleUnresolved.class,
 		ExternalEventAdded.class
 	);
+	// @formatter:off
+	private static Set<String> BUILDIN_DATATYPE_NAMESPACES = ImmutableSet.of(
+		Namespaces.OWL.toString(),
+		Namespaces.RDF.toString(),
+		Namespaces.RDFS.toString(),
+		Namespaces.XSD.toString()
+	);
+
 	// @formatter:on
-
-	private static final String SEPARATOR_LANGUAGE = "@";
-
-	private static final String SEPARATOR_DATATYPE = "^^";
 
 	protected static final String REGEXP_LITERAL_PREFIXED = "((\\w*:)?(\\S+))";
 
@@ -210,13 +220,6 @@ public class Converter {
 	protected static final int PATTERN_METHOD_CLASS = 1;
 	protected static final int PATTERN_METHOD_NAME = 2;
 
-	// @formatter:off
-	static Set<String> BUILDIN_DATATYPE_NAMESPACES = ImmutableSet.of(
-		Namespaces.OWL.toString(),
-		Namespaces.RDF.toString(),
-		Namespaces.RDFS.toString(),
-		Namespaces.XSD.toString()
-	);
 	// @formatter:on
 
 	protected PrefixManager prefixManager = new DefaultPrefixManager();
@@ -245,19 +248,19 @@ public class Converter {
 	}
 
 	protected IMatcher<?> getEventMatcher(Annotation ann) throws AnnotationFormatException {
-		if (CLASSIFICATION_ANNOTATIONS.contains(ann)) {
+		if (ANNOTATIONS_CLASSIFICATION_ASSERTION.contains(ann)) {
 			String value = getMethodValue(ann, METHOD_NAME, String.class);
 			return getOWLClassAssertionAxiomMatcher(value);
-		} else if (DATA_PROPERTY_ANNOTATIONS.contains(ann)) {
+		} else if (ANNOTATIONS_DATA_PROPERTY_ASSERTION.contains(ann)) {
 			String value = getMethodValue(ann, METHOD_NAME, String.class);
 			return getOWLDataPropertyAssertionAxiomMatcher(value);
-		} else if (OBJECT_PROPERTY_ANNOTATIONS.contains(ann)) {
+		} else if (ANNOTATIONS_OBJECT_PROPERTY_ASSERTION.contains(ann)) {
 			String value = getMethodValue(ann, METHOD_NAME, String.class);
 			return getOWLObjectPropertyAssertionAxiomMatcher(value);
-		} else if (METHOD_ANNOTATIONS.contains(ann)) {
+		} else if (ANNOTATIONS_METHOD.contains(ann)) {
 			String value = getMethodValue(ann, METHOD_NAME, String.class);
 			return getJavaMethodMatcher(value);
-		} else if (CLASS_ANNOTATIONS.contains(ann)) {
+		} else if (ANNOTATIONS_CLASS.contains(ann)) {
 			Class<?> value = getMethodValue(ann, METHOD_NAME, Class.class);
 			return getJavaClassMatcher(value);
 		} else {
