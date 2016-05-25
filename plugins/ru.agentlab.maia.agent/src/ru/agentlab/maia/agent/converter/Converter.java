@@ -277,22 +277,22 @@ public class Converter implements IConverter {
 	}
 
 	protected IMatcher<?> getEventMatcher(Annotation ann) throws AnnotationFormatException {
-		if (ANNOTATIONS_CLASSIFICATION_ASSERTION.contains(ann)) {
+		if (ANNOTATIONS_CLASSIFICATION_ASSERTION.contains(ann.annotationType())) {
 			String value = getMethodValue(ann, METHOD_NAME, String.class);
 			return getOWLClassAssertionAxiomMatcher(value);
-		} else if (ANNOTATIONS_DATA_PROPERTY_ASSERTION.contains(ann)) {
+		} else if (ANNOTATIONS_DATA_PROPERTY_ASSERTION.contains(ann.annotationType())) {
 			String value = getMethodValue(ann, METHOD_NAME, String.class);
 			return getOWLDataPropertyAssertionAxiomMatcher(value);
-		} else if (ANNOTATIONS_OBJECT_PROPERTY_ASSERTION.contains(ann)) {
+		} else if (ANNOTATIONS_OBJECT_PROPERTY_ASSERTION.contains(ann.annotationType())) {
 			String value = getMethodValue(ann, METHOD_NAME, String.class);
 			return getOWLObjectPropertyAssertionAxiomMatcher(value);
-		} else if (ANNOTATIONS_METHOD.contains(ann)) {
+		} else if (ANNOTATIONS_METHOD.contains(ann.annotationType())) {
 			String value = getMethodValue(ann, METHOD_NAME, String.class);
 			return getJavaMethodMatcher(value);
-		} else if (ANNOTATIONS_CLASS.contains(ann)) {
+		} else if (ANNOTATIONS_CLASS.contains(ann.annotationType())) {
 			Class<?> value = getMethodValue(ann, METHOD_NAME, Class.class);
 			return getJavaClassMatcher(value);
-		} else if (ANNOTATIONS_MESSAGE.contains(ann)) {
+		} else if (ANNOTATIONS_MESSAGE.contains(ann.annotationType())) {
 			return getMessageMatcher(ann);
 		} else {
 			throw new RuntimeException();
