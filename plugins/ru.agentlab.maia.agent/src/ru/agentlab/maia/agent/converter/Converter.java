@@ -126,7 +126,7 @@ public class Converter {
 
 	protected static final String REGEXP_LITERAL_FULL = "(<(\\S+#)(\\S+)>)";
 
-	protected static final String REGEXP_VARIABLE = "(\\?(\\S+))";
+	protected static final String REGEXP_VARIABLE = "(\\?(\\w+))";
 
 	/**
 	 * Determines whether input string is either a literal with prefix, literal

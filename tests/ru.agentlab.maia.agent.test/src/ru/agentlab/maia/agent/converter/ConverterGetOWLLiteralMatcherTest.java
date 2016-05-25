@@ -222,11 +222,14 @@ public class ConverterGetOWLLiteralMatcherTest {
 			/*  0 */ 	{ "test string^rdf:real", 					matcher(_str("test string^rdf:real"),_any(),	_typ(RDF, PLAIN_LITERAL)) }, 	// wrong separator, should be ^^
 			/*  0 */ 	{ "true^xsd:boolean", 						matcher(_str("true^xsd:boolean"),_any(),		_typ(RDF, PLAIN_LITERAL)) }, 	// wrong separator, should be ^^
 			/*  0 */ 	{ "test string^^^rdf:XMLLiteral", 			matcher(_str("test string^"),	_any(),			_typ(RDF, XML_LITERAL)) }, 		// wrong separator, should be ^^
-			/*  0 */ 	{ "test string^^^rdf:Literal", 				matcher(_str("test string^"),	_any(),			_typ(RDF, LITERAL)) }, 			// wrong separator, should be ^^
-			/*  0 */ 	{ "test string^^^rdf:real", 				matcher(_str("test string^"),	_any(),			_typ(RDF, REAL)) }, 			// wrong separator, should be ^^
-			/*  0 */ 	{ "false^^^xsd:boolean", 					LiteralNotInLexicalSpaceException.class }, 										// wrong value [true^] format
+			/*  0 */ 	{ "test string^^^rdfs:Literal", 			matcher(_str("test string^"),	_any(),			_typ(RDFS, LITERAL)) }, 		// wrong separator, should be ^^
+			/*  0 */ 	{ "test string^^^owl:real", 				matcher(_str("test string^"),	_any(),			_typ(OWL, REAL)) }, 			// wrong separator, should be ^^
 			/*  0 */ 	{ "?var^^?type", 							matcher(_var("var"),			_any(),		 	_var("type")) }, 				// test variable value and type
 			/* 34 */ 	{ "?var@?lang^^?type", 						matcher(_var("var"),			_var("lang"), 	_var("type")) }, 				// test variable value, lang and type
+			/*  0 */ 	{ "false^^^xsd:boolean", 					LiteralNotInLexicalSpaceException.class }, 										// wrong value [true^] format
+			/*  0 */ 	{ "false^^some:type", 						LiteralUnknownPrefixException.class }, 											// unknown prefix
+			/*  0 */ 	{ "false^^xsd : b o o lean:boolean", 		LiteralWrongFormatException.class }, 											// wrong format
+			/*  0 */ 	{ "?v ar^^?t; pe", 							LiteralWrongFormatException.class }, 											// test variable value and type
 		});
 	}
 	// @formatter:on
