@@ -20,10 +20,6 @@ public class AbstractGetOWLLiteralMatcherTest {
 
 	Converter converter = new Converter();
 
-	public AbstractGetOWLLiteralMatcherTest() {
-		super();
-	}
-
 	@Test
 	public void anyEmptyLiteralShouldThrow() {
 		System.out.println("--------------------------- Test Case [" + i++ + "] ---------------------------");

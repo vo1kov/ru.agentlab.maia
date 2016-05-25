@@ -141,11 +141,15 @@ public class ConverterSplitDatatypeLiteralTest {
 	@Parameter(3)
 	public String datatype;
 
+	private static int i = 0;
+
 	Converter converter = new Converter();
 
 	@Test
 	public void anyEmptyLiteralShouldThrow() {
-		System.out.println("[" + parameter + "]");
+		System.out.println("--------------------------- Test Case [" + i++ + "] ---------------------------");
+		System.out.println("Input parameter: [" + parameter + "]");
+		System.out.println("Expected result: [" + Arrays.toString(new String[] { value, language, datatype }) + "]");
 		String[] splitted = converter.splitDatatypeLiteral(parameter);
 		Stream.of(splitted).forEach(s -> System.out.println("	[" + s + "]"));
 		Assert.assertEquals(3, splitted.length);

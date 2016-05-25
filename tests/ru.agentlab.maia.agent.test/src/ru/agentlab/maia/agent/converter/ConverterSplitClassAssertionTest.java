@@ -158,11 +158,15 @@ public class ConverterSplitClassAssertionTest {
 	@Parameter(1)
 	public Object result;
 
+	private static int i = 0;
+
 	Converter converter = new Converter();
 
 	@Test
 	public void anyEmptyLiteralShouldThrow() {
-		System.out.println("[" + parameter + "]");
+		System.out.println("--------------------------- Test Case [" + i++ + "] ---------------------------");
+		System.out.println("Input parameter: [" + parameter + "]");
+		System.out.println("Expected result: [" + toString(result) + "]");
 		try {
 			String[] splitted = converter.splitClassAssertioin(parameter);
 			Stream.of(splitted).forEach(s -> System.out.println("	[" + s + "]"));
@@ -180,6 +184,14 @@ public class ConverterSplitClassAssertionTest {
 			} else {
 				Assert.fail("Expected [" + result + "], but was: [" + e.getMessage() + "]");
 			}
+		}
+	}
+
+	private String toString(Object object) {
+		if (object.getClass().isArray()) {
+			return Arrays.toString((String[]) object);
+		} else {
+			return object.toString();
 		}
 	}
 
