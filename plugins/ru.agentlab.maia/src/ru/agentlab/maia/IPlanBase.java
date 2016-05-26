@@ -10,7 +10,7 @@ package ru.agentlab.maia;
 
 public interface IPlanBase {
 
-	void add(IPlan plan);
+	void add(EventType type, IPlan plan);
 
 	void remove(IPlan plan);
 

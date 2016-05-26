@@ -11,5 +11,7 @@ package ru.agentlab.maia;
 public interface IEvent<T> {
 
 	T getPayload();
+	
+	EventType getType();
 
 }

@@ -10,11 +10,11 @@ package ru.agentlab.maia.agent;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
 
 import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IPlan;
+import ru.agentlab.maia.agent.match.IMatcher;
 import ru.agentlab.maia.exception.PlanExecutionException;
 
 public class Plan implements IPlan {
@@ -25,13 +25,9 @@ public class Plan implements IPlan {
 
 	IAgent agent;
 
-	IEventMatcher<?> eventMatcher;
+	IMatcher<?> eventMatcher;
 
-	List<IStateMatcher> stateMatchers;
-
-	public Plan() {
-		super();
-	}
+	IMatcher<?> stateMatchers;
 
 	public Plan(Object object, Method method) {
 		super();
@@ -39,20 +35,20 @@ public class Plan implements IPlan {
 		this.method = method;
 	}
 
-	public IEventMatcher<?> getEventMatcher() {
+	public IMatcher<?> getEventMatcher() {
 		return eventMatcher;
 	}
 
-	public void setEventMatcher(IEventMatcher<?> eventMatcher) {
+	public void setEventMatcher(IMatcher<?> eventMatcher) {
 		this.eventMatcher = eventMatcher;
 	}
 
-	public List<IStateMatcher> getStateMatchers() {
+	public IMatcher<?> getStateMatcher() {
 		return stateMatchers;
 	}
 
-	public void addStateMatcher(IStateMatcher matcher) {
-		stateMatchers.add(matcher);
+	public void setStateMatcher(IMatcher<?> matcher) {
+		this.stateMatchers = matcher;
 	}
 
 	@Override
@@ -65,24 +61,19 @@ public class Plan implements IPlan {
 	}
 
 	@Override
-	public Class<? extends IEvent<?>> getEventType() {
-		// TODO Auto-generated method stub
-		return null;
+	public Method getMethod() {
+		return method;
 	}
 
-	// @Override
-	// public boolean isRelevant(IEvent event) {
-	// return eventMatcher.match(event.getPayload());
-	// }
-	//
-	// @Override
-	// public boolean isApplicable() {
-	// for (IStateMatcher stateMatcher : stateMatchers) {
-	// if (stateMatcher.match(agent)) {
-	// return false;
-	// }
-	// }
-	// return true;
-	// }
+	@Override
+	public boolean isRelevant(IEvent<?> event) {
+		return eventMatcher.match(event.getPayload());
+	}
+
+	@Override
+	public boolean isApplicable() {
+		stateMatchers.match(object);
+		return true;
+	}
 
 }

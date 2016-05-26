@@ -5,7 +5,8 @@ import javax.inject.Inject;
 
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IMessage;
-import ru.agentlab.maia.annotation.GoalAdded;
+import ru.agentlab.maia.annotation.BeliefDataPropertyAdded;
+import ru.agentlab.maia.annotation.GoalClassificationAdded;
 import ru.agentlab.maia.annotation.InitialBelief;
 import ru.agentlab.maia.annotation.InitialGoal;
 import ru.agentlab.maia.messaging.AclMessage;
@@ -24,11 +25,13 @@ public class HelloWorld {
 
 	@Inject
 	@PostConstruct
+	@BeliefDataPropertyAdded("?some hasLength some string value^^xsd:string")
 	public void setup(IGoalBase goalBase) {
 		goalBase.addGoal("init");
 	}
 
-	@GoalAdded("init")
+	@GoalClassificationAdded("init")
+	@BeliefDataPropertyAdded("?some hasLength 2^^xsd:float")
 	public void onInit() {
 		IMessage message = new AclMessage();
 		message.setContent("Hello World");

@@ -8,6 +8,7 @@
  *******************************************************************************/
 package ru.agentlab.maia;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
@@ -17,181 +18,181 @@ public interface IMessage {
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String ACCEPT_PROPOSAL = "ACCEPT_PROPOSAL";
+	String ACCEPT_PROPOSAL = "ACCEPT_PROPOSAL";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String AGREE = "AGREE";
+	String AGREE = "AGREE";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String CANCEL = "CANCEL";
+	String CANCEL = "CANCEL";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String CFP = "CFP";
+	String CFP = "CFP";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String CONFIRM = "CONFIRM";
+	String CONFIRM = "CONFIRM";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String DISCONFIRM = "DISCONFIRM";
+	String DISCONFIRM = "DISCONFIRM";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String FAILURE = "FAILURE";
+	String FAILURE = "FAILURE";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String INFORM = "INFORM";
+	String INFORM = "INFORM";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String INFORM_IF = "INFORM_IF";
+	String INFORM_IF = "INFORM_IF";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String INFORM_REF = "INFORM_REF";
+	String INFORM_REF = "INFORM_REF";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String NOT_UNDERSTOOD = "NOT_UNDERSTOOD";
+	String NOT_UNDERSTOOD = "NOT_UNDERSTOOD";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String PROPOSE = "PROPOSE";
+	String PROPOSE = "PROPOSE";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String QUERY_IF = "QUERY_IF";
+	String QUERY_IF = "QUERY_IF";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String QUERY_REF = "QUERY_REF";
+	String QUERY_REF = "QUERY_REF";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String REFUSE = "REFUSE";
+	String REFUSE = "REFUSE";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String REJECT_PROPOSAL = "REJECT_PROPOSAL";
+	String REJECT_PROPOSAL = "REJECT_PROPOSAL";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String REQUEST = "REQUEST";
+	String REQUEST = "REQUEST";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String REQUEST_WHEN = "REQUEST_WHEN";
+	String REQUEST_WHEN = "REQUEST_WHEN";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String REQUEST_WHENEVER = "REQUEST_WHENEVER";
+	String REQUEST_WHENEVER = "REQUEST_WHENEVER";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String SUBSCRIBE = "SUBSCRIBE";
+	String SUBSCRIBE = "SUBSCRIBE";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String PROXY = "PROXY";
+	String PROXY = "PROXY";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String PROPAGATE = "PROPAGATE";
+	String PROPAGATE = "PROPAGATE";
 
 	/**
 	 * Constant identifying the FIPA performative
 	 */
-	public final static String UNKNOWN = "UNKNOWN";
+	String UNKNOWN = "UNKNOWN";
 
 	UUID getSender();
 
-	void setSender(final UUID sender);
+	void setSender(UUID sender);
 
 	List<UUID> getReceivers();
 
-	void setReceivers(final List<UUID> receivers);
+	void setReceivers(List<UUID> receivers);
 
-	List<String> getReplyTo();
+	List<UUID> getReplyTo();
 
-	void setReplyTo(final List<String> replyTo);
+	void setReplyTo(List<UUID> replyTo);
 
 	String getContent();
 
-	void setContent(final String content);
+	void setContent(String content);
 
 	byte[] getByteSequenceContent();
 
-	void setByteSequenceContent(final byte[] byteSequenceContent);
+	void setByteSequenceContent(byte[] byteSequenceContent);
 
 	String getReplyWith();
 
-	void setReplyWith(final String reply_with);
+	void setReplyWith(String reply_with);
 
 	String getInReplyTo();
 
-	void setInReplyTo(final String inReplyTo);
+	void setInReplyTo(String inReplyTo);
 
 	String getEncoding();
 
-	void setEncoding(final String encoding);
+	void setEncoding(String encoding);
 
 	String getLanguage();
 
-	void setLanguage(final String language);
+	void setLanguage(String language);
 
 	String getOntology();
 
-	void setOntology(final String ontology);
+	void setOntology(String ontology);
 
-	long getReplyByInMillisec();
+	LocalDateTime getReplyBy();
 
-	void setReplyByInMillisec(final long replyByInMillisec);
+	void setReplyBy(LocalDateTime replyByInMillisec);
 
 	String getProtocol();
 
-	void setProtocol(final String protocol);
+	void setProtocol(String protocol);
 
 	String getConversationId();
 
-	void setConversationId(final String conversationId);
+	void setConversationId(String conversationId);
 
 	Properties getUserDefinedProps();
 
-	void setUserDefinedProps(final Properties userDefinedProps);
+	void setUserDefinedProps(Properties userDefinedProps);
 
-	long getPostTimeStamp();
+	LocalDateTime getPostTimeStamp();
 
-	void setPostTimeStamp(final long postTimeStamp);
+	void setPostTimeStamp(LocalDateTime postTimeStamp);
 
 	String getPerformative();
 
-	void setPerformative(final String performative);
+	void setPerformative(String performative);
 	
 	IMessage createReply();
 }

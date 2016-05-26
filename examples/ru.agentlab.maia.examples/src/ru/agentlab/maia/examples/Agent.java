@@ -16,7 +16,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IInjector;
-import ru.agentlab.maia.annotation.BeliefAdded;
+import ru.agentlab.maia.annotation.BeliefDataPropertyAdded;
 import ru.agentlab.maia.annotation.HaveBelief;
 import ru.agentlab.maia.annotation.MessageAdded;
 import ru.agentlab.maia.annotation.Optional;
@@ -54,13 +54,13 @@ public class Agent {
 		desireBase.addGoal("init");
 	}
 
-	@BeliefAdded("?classified rdf:type ?classifier")
+	@BeliefDataPropertyAdded("?classified rdf:type ?classifier")
 	@HaveBelief("?classifier ?b ?c")
 	public void onSomeClassified() {
 
 	}
 
-	@BeliefAdded("?classified rdf:type ?classifier")
+	@BeliefDataPropertyAdded("?classified rdf:type ?classifier")
 	@HaveBelief("?classifier ?b ?c")
 	public void onSomeClassifiedw() {
 

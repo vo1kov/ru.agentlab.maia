@@ -6,11 +6,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import ru.agentlab.maia.EventType;
+
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
+@EventMatcher(EventType.ROLE_REMOVED)
 public @interface RoleRemoved {
 
-	Class<?> value();
+	Class<? extends Object> value();
 
 }

@@ -25,8 +25,8 @@ import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.IPlanBase;
 import ru.agentlab.maia.IRole;
 import ru.agentlab.maia.IRoleBase;
-import ru.agentlab.maia.agent.event.PlanFailedEvent;
-import ru.agentlab.maia.agent.event.PlanFinishedEvent;
+import ru.agentlab.maia.event.PlanFailedEvent;
+import ru.agentlab.maia.event.PlanFinishedEvent;
 import ru.agentlab.maia.exception.ContainerException;
 import ru.agentlab.maia.exception.InjectorException;
 import ru.agentlab.maia.exception.ResolveException;
@@ -217,9 +217,9 @@ public class Agent implements IAgent {
 			applicablePlans.forEach(plan -> {
 				try {
 					plan.execute();
-					eventQueue.offer(new PlanFinishedEvent(plan));
+					eventQueue.offer(new PlanFinishedEvent(plan.getMethod()));
 				} catch (Exception e) {
-					eventQueue.offer(new PlanFailedEvent(plan));
+					eventQueue.offer(new PlanFailedEvent(plan.getMethod()));
 				}
 			});
 
