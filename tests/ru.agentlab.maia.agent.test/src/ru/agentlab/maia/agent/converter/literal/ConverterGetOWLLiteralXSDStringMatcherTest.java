@@ -33,6 +33,8 @@ import ru.agentlab.maia.agent.converter.LiteralWrongBuildInDatatypeException;
 @RunWith(Parameterized.class)
 public class ConverterGetOWLLiteralXSDStringMatcherTest extends AbstractGetOWLLiteralMatcherTest {
 
+	protected static int i = 0;
+
 	// Name is not working because some of the test strings have \r\n symbols
 	@Parameters // (name="When parameter is [{0}] then result is [{1}]")
 	public static Collection<Object[]> data() {

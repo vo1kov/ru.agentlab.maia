@@ -8,7 +8,7 @@ import org.semanticweb.owlapi.model.OWLLiteral;
 import ru.agentlab.maia.agent.match.IMatcher;
 import ru.agentlab.maia.agent.match.OWLLiteralMatcher;
 
-public class AbstractGetOWLLiteralMatcherTest {
+public abstract class AbstractGetOWLLiteralMatcherTest {
 
 	@Parameter(0)
 	public String parameter;
@@ -21,8 +21,11 @@ public class AbstractGetOWLLiteralMatcherTest {
 	Converter converter = new Converter();
 
 	@Test
-	public void anyEmptyLiteralShouldThrow() {
-		System.out.println("--------------------------- Test Case [" + i++ + "] ---------------------------");
+	public void testCase() {
+		System.out.println();
+		// @formatter:off
+		System.out.println("--------------------------- " + this.getClass().getSimpleName() + " [Test Case " + i++ + "] ---------------------------");
+		// @formatter:on
 		System.out.println("Input parameter: [" + parameter + "]");
 		System.out.println("Expected result: [" + result + "]");
 		try {

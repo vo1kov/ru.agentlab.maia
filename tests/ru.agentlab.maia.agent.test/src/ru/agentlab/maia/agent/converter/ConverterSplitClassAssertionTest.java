@@ -163,8 +163,11 @@ public class ConverterSplitClassAssertionTest {
 	Converter converter = new Converter();
 
 	@Test
-	public void anyEmptyLiteralShouldThrow() {
-		System.out.println("--------------------------- Test Case [" + i++ + "] ---------------------------");
+	public void testCase() {
+		System.out.println();
+		// @formatter:off
+		System.out.println("--------------------------- " + this.getClass().getSimpleName() + " [Test Case " + i++ + "] ---------------------------");
+		// @formatter:on
 		System.out.println("Input parameter: [" + parameter + "]");
 		System.out.println("Expected result: [" + toString(result) + "]");
 		try {
