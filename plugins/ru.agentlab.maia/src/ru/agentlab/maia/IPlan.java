@@ -22,4 +22,6 @@ public interface IPlan {
 
 	boolean isApplicable();
 
+	Object getRole();
+
 }

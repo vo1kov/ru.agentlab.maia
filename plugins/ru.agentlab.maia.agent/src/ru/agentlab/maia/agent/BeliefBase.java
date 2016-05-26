@@ -322,6 +322,12 @@ public class BeliefBase implements IBeliefBase {
 		return false;
 	}
 
+	@Override
+	public void addAxiom(OWLAxiom axiom) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	// private IRI getLocalIRI(String object) {
 	// return IRI.create(ontologyIRI + SEPARATOR + object);
 	// }

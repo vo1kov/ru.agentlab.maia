@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataProperty;
@@ -274,6 +275,18 @@ public class Converter implements IConverter {
 		} catch (AnnotationFormatException e) {
 			throw new ConverterException(e);
 		}
+	}
+
+	@Override
+	public List<OWLAxiom> getInitialBeliefs(Object role) throws ConverterException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<OWLAxiom> getInitialGoals(Object role) throws ConverterException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	protected IMatcher<?> getEventMatcher(Annotation ann) throws AnnotationFormatException {

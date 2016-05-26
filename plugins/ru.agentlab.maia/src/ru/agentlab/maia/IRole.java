@@ -8,11 +8,16 @@
  *******************************************************************************/
 package ru.agentlab.maia;
 
-import ru.agentlab.maia.IGroup;
+import java.util.Map;
 
-@SuppressWarnings("all")
 public interface IRole {
-  public abstract String getName();
-  
-  public abstract IGroup getGroup();
+
+//	String getName();
+//
+//	IGroup getGroup();
+
+	Class<?> getRoleClass();
+
+	Map<String, Object> getParameters();
+
 }

@@ -9,11 +9,12 @@
 package ru.agentlab.maia.agent;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import ru.agentlab.maia.EventType;
 import ru.agentlab.maia.IEvent;
@@ -47,6 +48,16 @@ public class PlanBase implements IPlanBase {
 		List<IPlan> eventPlans = plans.get(plan.getEventType());
 		eventPlans.remove(plan);
 		eventQueue.offer(new PlanRemovedEvent(plan.getMethod()));
+	}
+
+	@Override
+	public Stream<IPlan> getAllPlansStream() {
+		return plans.values().stream().flatMap(list -> list.stream());
+	}
+
+	@Override
+	public List<IPlan> getAllPlans() {
+		return plans.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
 	}
 
 }

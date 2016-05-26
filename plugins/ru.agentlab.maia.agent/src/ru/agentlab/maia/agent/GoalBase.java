@@ -2,6 +2,8 @@ package ru.agentlab.maia.agent;
 
 import java.util.Queue;
 
+import org.semanticweb.owlapi.model.OWLAxiom;
+
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IGoal;
 import ru.agentlab.maia.IGoalBase;
@@ -26,6 +28,12 @@ public class GoalBase implements IGoalBase {
 	public boolean removeGoal(String property) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void addAxiom(OWLAxiom axiom) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

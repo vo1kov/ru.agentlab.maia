@@ -61,6 +61,11 @@ public class Plan implements IPlan {
 	}
 
 	@Override
+	public Object getRole() {
+		return role;
+	}
+
+	@Override
 	public Method getMethod() {
 		return method;
 	}

@@ -8,8 +8,24 @@
  *******************************************************************************/
 package ru.agentlab.maia;
 
+import org.semanticweb.owlapi.model.OWLAxiom;
+
 public interface IGoalBase {
 
+	void addAxiom(OWLAxiom axiom);
+
+	default void addAxioms(OWLAxiom... axioms) {
+		for (OWLAxiom axiom : axioms) {
+			addAxiom(axiom);
+		}
+	}
+
+	default void addAxioms(Iterable<OWLAxiom> axioms) {
+		for (OWLAxiom axiom : axioms) {
+			addAxiom(axiom);
+		}
+	}
+	
 	IGoal addGoal(String string);
 
 	boolean removeGoal(String property);

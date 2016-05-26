@@ -8,25 +8,37 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveAction;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.semanticweb.owlapi.model.OWLAxiom;
+
 import ru.agentlab.maia.AgentState;
+import ru.agentlab.maia.EventType;
 import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IContainer;
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IGoalBase;
+import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IMessage;
+import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
 import ru.agentlab.maia.IRole;
 import ru.agentlab.maia.IRoleBase;
+import ru.agentlab.maia.agent.converter.ConverterException;
 import ru.agentlab.maia.event.PlanFailedEvent;
 import ru.agentlab.maia.event.PlanFinishedEvent;
+import ru.agentlab.maia.event.RoleResolvedEvent;
+import ru.agentlab.maia.event.RoleUnresolvedEvent;
 import ru.agentlab.maia.exception.ContainerException;
 import ru.agentlab.maia.exception.InjectorException;
 import ru.agentlab.maia.exception.ResolveException;
@@ -58,6 +70,8 @@ public class Agent implements IAgent {
 
 	protected final IRoleBase roleBase = new RoleBase(eventQueue, container.getInjector());
 
+	IConverter converter;
+
 	@Override
 	public void start() {
 		state = AgentState.ACTIVE;
@@ -66,7 +80,7 @@ public class Agent implements IAgent {
 
 	@Override
 	public void stop() {
-		state = AgentState.TERMINATED;
+		state = AgentState.IDLE;
 	}
 
 	@Override
@@ -94,111 +108,67 @@ public class Agent implements IAgent {
 		return uuid;
 	}
 
-	// protected List<IPlan> extract(Class<?> clazz) throws InjectorException,
-	// ContainerException {
-	//
-	// Object contributor = container.getInjector().make(clazz);
-	//
-	// List<IPlan> result = Arrays.stream(clazz.getMethods())
-	// .filter(method ->
-	// method.isAnnotationPresent(ru.agentlab.maia.agent.Plan.class)).map(method
-	// -> {
-	// EventType type =
-	// method.getAnnotation(ru.agentlab.maia.agent.Plan.class).value();
-	// IEventMatcher<?> matcher;
-	// switch (type) {
-	// case BELIEF_ADDED:
-	// case BELIEF_CLASS_ADDED:
-	// case BELIEF_CLASS_ASSERTION_ADDED:
-	// case BELIEF_CLASS_ASSERTION_REMOVED:
-	// case BELIEF_DATA_PROPERTY_ASSERTION_ADDED:
-	// case BELIEF_DATA_PROPERTY_ASSERTION_REMOVED:
-	// case BELIEF_OBJECT_PROPERTY_ASSERTION_ADDED:
-	// case BELIEF_OBJECT_PROPERTY_ASSERTION_REMOVED:
-	// case BELIEF_REMOVED:
-	// matcher = extractBeliefEventMatcher(method);
-	// break;
-	// case GOAL_ADDED:
-	// case GOAL_FAILED:
-	// case GOAL_FINISHED:
-	// case GOAL_REMOVED:
-	// matcher = extractGoalEventMatcher(method);
-	// break;
-	// case MESSAGE_ADDED:
-	// case MESSAGE_REMOVED:
-	//
-	// break;
-	// case PLAN_ADDED:
-	// case PLAN_FAILED:
-	// case PLAN_FINISHED:
-	// case PLAN_REMOVED:
-	//
-	// break;
-	// case ROLE_ADDED:
-	// case ROLE_REMOVED:
-	// case ROLE_RESOLVED:
-	// case ROLE_UNRESOLVED:
-	// matcher = extractRoleEventMatcher(method);
-	// break;
-	// }
-	// return new Plan(contributor, method);
-	// }).collect(Collectors.toList());
-	// return result;
-	// }
-
-	// private IEventMatcher<?> extractBeliefEventMatcher(Method method) {
-	// EventBelief beliefAnnotation = method.getAnnotation(EventBelief.class);
-	// if (beliefAnnotation != null) {
-	// String template = beliefAnnotation.value();
-	// String[] atoms = template.split(" ");
-	// if (atoms.length != 3) {
-	// throw new IllegalArgumentException("@" + EventBelief.class.getName() + "
-	// have wrong template");
-	// }
-	// return new BeliefBaseEventMatcher(atoms[0], atoms[1], atoms[2]);
-	// }
-	// return null;
-	// }
-	//
-	// private IEventMatcher<?> extractGoalEventMatcher(Method method) {
-	// GoalAdded goalAnnotation = method.getAnnotation(GoalAdded.class);
-	// if (goalAnnotation != null) {
-	// String template = goalAnnotation.value();
-	// String[] atoms = template.split(" ");
-	// if (atoms.length != 3) {
-	// throw new IllegalArgumentException("@" + EventBelief.class.getName() + "
-	// have wrong template");
-	// }
-	// return new BeliefBaseEventMatcher(atoms[0], atoms[1], atoms[2]);
-	// }
-	// return null;
-	// }
-	//
-	// private IEventMatcher<?> extractRoleEventMatcher(Method method) {
-	// RoleAdded goalAnnotation = method.getAnnotation(RoleAdded.class);
-	// if (goalAnnotation != null) {
-	// Class<?> template = goalAnnotation.value();
-	// return new RoleBaseEventMatcher(template);
-	// }
-	// return null;
-	// }
-
 	@Override
 	public void deployTo(IContainer container) throws InjectorException, ContainerException {
 		container.getInjector().inject(this);
 		container.put(uuid.toString(), this);
-		state = AgentState.DEPLOYED;
+		state = AgentState.IDLE;
 	}
 
 	@Override
-	public void addRole(Class<?> roleClass) {
-		roleBase.add(roleClass);
-
+	public Object addRole(Class<?> roleClass, Map<String, Object> parameters) throws ResolveException {
+		switch (state) {
+		case UNKNOWN:
+			throw new IllegalStateException("Agent should be deployed into container before adding new roles.");
+		case ACTIVE:
+		case WAITING:
+			throw new IllegalStateException("Agent is in ACTIVE state, use submit method instead.");
+		case TRANSIT:
+			throw new IllegalStateException("Agent transit, can't add new roles.");
+		case STOPPING:
+			throw new IllegalStateException("Agent stopping, can't add new roles.");
+		case IDLE:
+		default:
+			return internalAddRole(roleClass, parameters);
+		}
 	}
 
-	@Override
-	public void resolve() throws ResolveException {
-		roleBase.resolveAll();
+	public Future<Object> submitRole(Class<?> roleClass, Map<String, Object> parameters) {
+		return null;
+	}
+
+	protected Object internalAddRole(Class<?> roleClass, Map<String, Object> parameters) throws ResolveException {
+		try {
+			IInjector injector = container.getInjector();
+			// Create instance of role object
+			Object roleObject = injector.make(roleClass);
+			// Inject services
+			injector.inject(roleObject);
+			// Convert role object to plans
+			Map<IPlan, EventType> planRegistrations = converter.getPlans(roleObject);
+			// Add plans to agent plan base
+			planRegistrations.forEach((plan, type) -> planBase.add(type, plan));
+			// Convert initial beliefs from the role object
+			List<OWLAxiom> initialBeliefs = converter.getInitialBeliefs(roleObject);
+			// Add initial beliefs
+			beliefBase.addAxioms(initialBeliefs);
+			// Convert initial beliefs from the role object
+			List<OWLAxiom> initialGoals = converter.getInitialGoals(roleObject);
+			// Add initial goals
+			goalBase.addAxioms(initialGoals);
+			// Invoke @PostConstruct to initialize role object
+			injector.invoke(roleObject, PostConstruct.class);
+			// Generate internal event
+			eventQueue.offer(new RoleResolvedEvent(roleClass));
+			return roleObject;
+		} catch (InjectorException | ContainerException | ConverterException e) {
+			eventQueue.offer(new RoleUnresolvedEvent(roleClass));
+			throw new ResolveException(e);
+		}
+	}
+	
+	protected Collection<IPlan> getRolePlans(){
+		return null;
 	}
 
 	protected class ExecuteAction extends RecursiveAction {
