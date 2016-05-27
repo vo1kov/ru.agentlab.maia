@@ -2,9 +2,9 @@ package ru.agentlab.maia.event;
 
 import ru.agentlab.maia.EventType;
 
-public class RoleResolvedEvent extends Event<Class<?>> {
+public class RoleResolvedEvent extends Event<Object> {
 
-	public RoleResolvedEvent(Class<?> role) {
+	public RoleResolvedEvent(Object role) {
 		super(role);
 	}
 

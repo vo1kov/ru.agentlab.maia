@@ -1,11 +1,12 @@
 package ru.agentlab.maia.event;
 
+import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
+
 import ru.agentlab.maia.EventType;
-import ru.agentlab.maia.IGoal;
 
-public class GoalClassificationFailedEvent extends Event<IGoal> {
+public class GoalClassificationFailedEvent extends Event<OWLClassAssertionAxiom> {
 
-	public GoalClassificationFailedEvent(IGoal goal) {
+	public GoalClassificationFailedEvent(OWLClassAssertionAxiom goal) {
 		super(goal);
 	}
 
