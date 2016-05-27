@@ -72,7 +72,7 @@ public class Agent implements IAgent {
 
 	protected final IPlanBase planBase = new PlanBase(eventQueue);
 
-	protected final IRoleBase roleBase = new RoleBase(eventQueue, container.getInjector());
+	protected final IRoleBase roleBase = new RoleBase(eventQueue);
 
 	IConverter converter;
 
@@ -150,20 +150,26 @@ public class Agent implements IAgent {
 			injector.inject(roleObject);
 			// Convert role object to plans
 			Map<IPlan, EventType> planRegistrations = converter.getPlans(roleObject);
-			// Add plans to agent plan base
-			planRegistrations.forEach((plan, type) -> planBase.add(type, plan));
 			// Convert initial beliefs from the role object
 			List<OWLAxiom> initialBeliefs = converter.getInitialBeliefs(roleObject);
-			// Add initial beliefs
-			beliefBase.addAxioms(initialBeliefs);
 			// Convert initial beliefs from the role object
 			List<OWLAxiom> initialGoals = converter.getInitialGoals(roleObject);
-			// Add initial goals
-			goalBase.addAxioms(initialGoals);
+			// Add plans to agent plan base
+			planRegistrations.forEach((plan, type) -> planBase.add(type, plan));
+			// Add role object to the role base
+			roleBase.addRole(roleObject);
+			if (initialBeliefs != null) {
+				// Add initial beliefs
+				beliefBase.addAxioms(initialBeliefs);
+			}
+			if (initialGoals != null) {
+				// Add initial goals
+				goalBase.addAxioms(initialGoals);
+			}
 			// Invoke @PostConstruct to initialize role object
 			injector.invoke(roleObject, PostConstruct.class);
 			// Generate internal event
-			eventQueue.offer(new RoleResolvedEvent(roleClass));
+			eventQueue.offer(new RoleResolvedEvent(roleObject));
 			return roleObject;
 		} catch (InjectorException | ContainerException | ConverterException e) {
 			eventQueue.offer(new RoleUnresolvedEvent(roleClass));

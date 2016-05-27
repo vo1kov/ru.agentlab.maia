@@ -2,12 +2,18 @@ package ru.agentlab.maia.agent;
 
 import java.util.Queue;
 
-import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 
 import ru.agentlab.maia.IEvent;
-import ru.agentlab.maia.IGoal;
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.event.GoalClassificationAddedEvent;
+import ru.agentlab.maia.event.GoalClassificationRemovedEvent;
+import ru.agentlab.maia.event.GoalDataPropertyAddedEvent;
+import ru.agentlab.maia.event.GoalDataPropertyRemovedEvent;
+import ru.agentlab.maia.event.GoalObjectPropertyAddedEvent;
+import ru.agentlab.maia.event.GoalObjectPropertyRemovedEvent;
 
 public class GoalBase implements IGoalBase {
 
@@ -18,22 +24,45 @@ public class GoalBase implements IGoalBase {
 	}
 
 	@Override
-	public IGoal addGoal(String string) {
-		Goal goal = new Goal(string);
-		eventQueue.offer(new GoalClassificationAddedEvent(goal));
-		return null;
-	}
-
-	@Override
-	public boolean removeGoal(String property) {
-		// TODO Auto-generated method stub
+	public boolean addGoalClassAsertion(OWLClassAssertionAxiom axiom) {
+		// TODO: implement this
+		eventQueue.offer(new GoalClassificationAddedEvent(axiom));
 		return false;
 	}
 
 	@Override
-	public void addAxiom(OWLAxiom axiom) {
+	public boolean addGoalDataPropertyAsertion(OWLDataPropertyAssertionAxiom axiom) {
+		// TODO: implement this
+		eventQueue.offer(new GoalDataPropertyAddedEvent(axiom));
+		return false;
+	}
+
+	@Override
+	public boolean addGoalObjectPropertyAsertion(OWLObjectPropertyAssertionAxiom axiom) {
+		// TODO: implement this
+		eventQueue.offer(new GoalObjectPropertyAddedEvent(axiom));
+		return false;
+	}
+
+	@Override
+	public boolean removeGoalClassAsertion(OWLClassAssertionAxiom axiom) {
 		// TODO Auto-generated method stub
-		
+		eventQueue.offer(new GoalClassificationRemovedEvent(axiom));
+		return false;
+	}
+
+	@Override
+	public boolean removeGoalDataPropertyAsertion(OWLDataPropertyAssertionAxiom axiom) {
+		// TODO Auto-generated method stub
+		eventQueue.offer(new GoalDataPropertyRemovedEvent(axiom));
+		return false;
+	}
+
+	@Override
+	public boolean removeObjectPropertyAsertion(OWLObjectPropertyAssertionAxiom axiom) {
+		// TODO Auto-generated method stub
+		eventQueue.offer(new GoalObjectPropertyRemovedEvent(axiom));
+		return false;
 	}
 
 }

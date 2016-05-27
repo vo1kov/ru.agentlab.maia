@@ -10,22 +10,20 @@ package ru.agentlab.maia.agent;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Map;
 
-import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IEvent;
-import ru.agentlab.maia.IPlan;
+import ru.agentlab.maia.IRolePlan;
 import ru.agentlab.maia.agent.match.IMatcher;
 import ru.agentlab.maia.exception.PlanExecutionException;
 
-public class Plan implements IPlan {
+public class Plan implements IRolePlan {
 
 	Object role;
 
 	Method method;
 
-	IAgent agent;
-
-	IMatcher<?> eventMatcher;
+	IMatcher<? extends Object> eventMatcher;
 
 	IMatcher<?> stateMatchers;
 
@@ -71,14 +69,18 @@ public class Plan implements IPlan {
 	}
 
 	@Override
-	public boolean isRelevant(IEvent<?> event) {
-		return eventMatcher.match(event.getPayload());
+	public boolean relevant(IEvent<?> event, Map<String, Object> map) {
+		Object eventData = event.getPayload();
+		return match(eventMatcher, eventData, map);
 	}
 
-	@Override
-	public boolean isApplicable() {
-		stateMatchers.match(object);
-		return true;
+	private <M> boolean match(IMatcher<M> matcher, Object eventData, Map<String, Object> map) {
+		Class<M> eventMatcherClass = matcher.getType();
+		if (eventMatcherClass.isAssignableFrom(eventData.getClass())) {
+			return matcher.match(eventMatcherClass.cast(eventData), map);
+		} else {
+			return false;
+		}
 	}
 
 }

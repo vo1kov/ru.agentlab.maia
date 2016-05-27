@@ -5,12 +5,6 @@ Bundle-SymbolicName: ru.agentlab.maia.agent.test
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
- org.eclipse.xtext.xbase.lib,
- org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro,
- org.junit;bundle-version="4.12.0",
- org.mockito;bundle-version="1.9.5",
- org.hamcrest;bundle-version="1.1.0",
  ru.agentlab.maia.container;bundle-version="1.0.0",
  ru.agentlab.maia.annotation;bundle-version="1.0.0",
  com.google.inject;bundle-version="3.0.0",
@@ -21,6 +15,7 @@ Require-Bundle: com.google.guava,
  org.semanticweb.owlapi.parsers;bundle-version="4.1.3",
  org.semanticweb.owlapi.rio;bundle-version="4.1.3",
  org.semanticweb.owlapi.tools;bundle-version="4.1.3",
- org.slf4j.api;bundle-version="1.7.2"
+ org.slf4j.api;bundle-version="1.7.2",
+ net.sf.trove4j;bundle-version="3.0.3"
 Fragment-Host: ru.agentlab.maia.agent
 
