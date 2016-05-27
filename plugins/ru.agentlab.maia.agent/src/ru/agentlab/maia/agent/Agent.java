@@ -143,32 +143,34 @@ public class Agent implements IAgent {
 
 	protected Object internalAddRole(Class<?> roleClass, Map<String, Object> parameters) throws ResolveException {
 		try {
-			IInjector injector = container.getInjector();
 			// Create instance of role object
+			IInjector injector = container.getInjector();
 			Object roleObject = injector.make(roleClass);
-			// Inject services
 			injector.inject(roleObject);
-			// Convert role object to plans
-			Map<IPlan, EventType> planRegistrations = converter.getPlans(roleObject);
-			// Convert initial beliefs from the role object
+			injector.invoke(roleObject, PostConstruct.class);
+
+			// Now role object have resolved all field dependencies. Need to
+			// convert role object to initial beliefs, goals and plans.
 			List<OWLAxiom> initialBeliefs = converter.getInitialBeliefs(roleObject);
-			// Convert initial beliefs from the role object
 			List<OWLAxiom> initialGoals = converter.getInitialGoals(roleObject);
-			// Add plans to agent plan base
-			planRegistrations.forEach((plan, type) -> planBase.add(type, plan));
-			// Add role object to the role base
-			roleBase.addRole(roleObject);
+			Map<IPlan, EventType> initialPlans = converter.getPlans(roleObject);
+
+			// If no exceptions was thrown by this moment then we can add
+			// beliefs, goals and plans converted from role object and
+			// role object themselves
 			if (initialBeliefs != null) {
-				// Add initial beliefs
 				beliefBase.addAxioms(initialBeliefs);
 			}
 			if (initialGoals != null) {
-				// Add initial goals
 				goalBase.addAxioms(initialGoals);
 			}
-			// Invoke @PostConstruct to initialize role object
-			injector.invoke(roleObject, PostConstruct.class);
-			// Generate internal event
+			if (initialPlans != null) {
+				initialPlans.forEach((plan, type) -> planBase.add(type, plan));
+			}
+
+			// Add role object to the role base and generate event about
+			// successful resolving
+			roleBase.addRole(roleObject);
 			eventQueue.offer(new RoleResolvedEvent(roleObject));
 			return roleObject;
 		} catch (InjectorException | ContainerException | ConverterException e) {

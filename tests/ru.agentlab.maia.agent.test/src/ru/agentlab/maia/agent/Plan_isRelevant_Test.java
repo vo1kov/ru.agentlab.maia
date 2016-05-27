@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 
 import org.junit.Test;
 
+import ru.agentlab.maia.agent.doubles.DummyService;
+
 public class Plan_isRelevant_Test {
 
 	@Test
@@ -12,14 +14,6 @@ public class Plan_isRelevant_Test {
 		Object role = new DummyService();
 		Method method = role.getClass().getMethod("method");
 		Plan plan = new Plan(role, method);
-	}
-
-}
-
-class DummyService {
-
-	public void method() {
-
 	}
 
 }
