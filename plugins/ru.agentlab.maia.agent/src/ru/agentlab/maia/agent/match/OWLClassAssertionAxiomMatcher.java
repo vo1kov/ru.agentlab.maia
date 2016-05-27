@@ -37,7 +37,7 @@ public class OWLClassAssertionAxiomMatcher implements IMatcher<OWLClassAssertion
 	}
 
 	@Override
-	public Class<?> getType() {
+	public Class<OWLClassAssertionAxiom> getType() {
 		return OWLClassAssertionAxiom.class;
 	}
 

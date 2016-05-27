@@ -19,11 +19,6 @@ public class OWLLiteralDoubleMatcher extends OWLLiteralMatcher {
 	}
 
 	@Override
-	public Class<?> getType() {
-		return OWLLiteral.class;
-	}
-
-	@Override
 	public String toString() {
 		return "OWLLiteralDoubleMatcher (" + doubleMatcher.toString() + ")";
 	}

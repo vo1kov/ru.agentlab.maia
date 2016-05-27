@@ -197,7 +197,7 @@ public class MessageMatcher implements IMatcher<IMessage> {
 	}
 
 	@Override
-	public Class<?> getType() {
+	public Class<IMessage> getType() {
 		return IMessage.class;
 	}
 

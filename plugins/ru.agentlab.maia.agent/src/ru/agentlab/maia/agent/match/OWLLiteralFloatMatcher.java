@@ -24,11 +24,6 @@ public class OWLLiteralFloatMatcher extends OWLLiteralMatcher {
 	}
 
 	@Override
-	public Class<?> getType() {
-		return OWLLiteral.class;
-	}
-
-	@Override
 	public String toString() {
 		return "OWLLiteralFloatMatcher (" + floatMatcher.toString() + ")";
 	}

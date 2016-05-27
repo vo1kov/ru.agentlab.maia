@@ -17,7 +17,7 @@ public class JavaUUIDMatcher implements IMatcher<UUID> {
 	}
 
 	@Override
-	public Class<?> getType() {
+	public Class<UUID> getType() {
 		return UUID.class;
 	}
 

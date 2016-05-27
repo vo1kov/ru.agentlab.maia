@@ -17,8 +17,8 @@ public class JavaDoubleMatcher implements IMatcher<Double> {
 	}
 
 	@Override
-	public Class<?> getType() {
-		return Integer.class;
+	public Class<Double> getType() {
+		return Double.class;
 	}
 
 	@Override
