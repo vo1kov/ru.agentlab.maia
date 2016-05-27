@@ -1,13 +1,11 @@
-package ru.agentlab.maia.agent;
+package ru.agentlab.maia;
 
 import java.util.List;
 import java.util.Map;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
 
-import ru.agentlab.maia.EventType;
-import ru.agentlab.maia.IPlan;
-import ru.agentlab.maia.agent.converter.ConverterException;
+import ru.agentlab.maia.exception.ConverterException;
 
 public interface IConverter {
 

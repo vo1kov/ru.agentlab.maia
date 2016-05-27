@@ -34,8 +34,8 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import com.google.common.collect.ImmutableSet;
 
 import ru.agentlab.maia.EventType;
+import ru.agentlab.maia.IConverter;
 import ru.agentlab.maia.IPlan;
-import ru.agentlab.maia.agent.IConverter;
 import ru.agentlab.maia.agent.Plan;
 import ru.agentlab.maia.agent.match.IMatcher;
 import ru.agentlab.maia.agent.match.JavaAnyMatcher;
@@ -91,6 +91,7 @@ import ru.agentlab.maia.annotation.RoleAdded;
 import ru.agentlab.maia.annotation.RoleRemoved;
 import ru.agentlab.maia.annotation.RoleResolved;
 import ru.agentlab.maia.annotation.RoleUnresolved;
+import ru.agentlab.maia.exception.ConverterException;
 
 public class Converter implements IConverter {
 

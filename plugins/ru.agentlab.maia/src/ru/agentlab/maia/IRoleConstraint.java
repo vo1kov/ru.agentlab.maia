@@ -8,8 +8,6 @@
  *******************************************************************************/
 package ru.agentlab.maia;
 
-import ru.agentlab.maia.IRole;
-
 @SuppressWarnings("all")
 public interface IRoleConstraint {
   public abstract IRole getSource();

@@ -10,8 +10,6 @@ package ru.agentlab.maia;
 
 import java.util.Collection;
 
-import ru.agentlab.maia.IRole;
-
 public interface IGroup {
   public abstract Collection<IRole> getRoles();
   

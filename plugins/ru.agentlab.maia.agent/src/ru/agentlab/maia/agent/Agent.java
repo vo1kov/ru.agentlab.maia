@@ -9,9 +9,12 @@
 package ru.agentlab.maia.agent;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveAction;
@@ -26,6 +29,7 @@ import ru.agentlab.maia.EventType;
 import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IContainer;
+import ru.agentlab.maia.IConverter;
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IInjector;
@@ -34,12 +38,12 @@ import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
 import ru.agentlab.maia.IRole;
 import ru.agentlab.maia.IRoleBase;
-import ru.agentlab.maia.agent.converter.ConverterException;
 import ru.agentlab.maia.event.PlanFailedEvent;
 import ru.agentlab.maia.event.PlanFinishedEvent;
 import ru.agentlab.maia.event.RoleResolvedEvent;
 import ru.agentlab.maia.event.RoleUnresolvedEvent;
 import ru.agentlab.maia.exception.ContainerException;
+import ru.agentlab.maia.exception.ConverterException;
 import ru.agentlab.maia.exception.InjectorException;
 import ru.agentlab.maia.exception.ResolveException;
 
@@ -58,9 +62,9 @@ public class Agent implements IAgent {
 
 	protected AgentState state = AgentState.UNKNOWN;
 
-	protected final IMessageQueue messageQueue = new MessageQueue();
+	protected final Queue<IMessage> messageQueue = new ConcurrentLinkedQueue<>();
 
-	protected final IEventQueue eventQueue = new EventQueue();
+	protected final Queue<IEvent<?>> eventQueue = new LinkedList<>();
 
 	protected final IBeliefBase beliefBase = new BeliefBase(eventQueue, uuid.toString());
 
@@ -80,7 +84,7 @@ public class Agent implements IAgent {
 
 	@Override
 	public void stop() {
-		state = AgentState.IDLE;
+		state = AgentState.STOPPING;
 	}
 
 	@Override
@@ -124,9 +128,9 @@ public class Agent implements IAgent {
 		case WAITING:
 			throw new IllegalStateException("Agent is in ACTIVE state, use submit method instead.");
 		case TRANSIT:
-			throw new IllegalStateException("Agent transit, can't add new roles.");
+			throw new IllegalStateException("Agent is in TRANSIT state, can't add new roles.");
 		case STOPPING:
-			throw new IllegalStateException("Agent stopping, can't add new roles.");
+			throw new IllegalStateException("Agent is in STOPPING state, can't add new roles.");
 		case IDLE:
 		default:
 			return internalAddRole(roleClass, parameters);
@@ -166,8 +170,8 @@ public class Agent implements IAgent {
 			throw new ResolveException(e);
 		}
 	}
-	
-	protected Collection<IPlan> getRolePlans(){
+
+	protected Collection<IPlan> getRolePlans() {
 		return null;
 	}
 

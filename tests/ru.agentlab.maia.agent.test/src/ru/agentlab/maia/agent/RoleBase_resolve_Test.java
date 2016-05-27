@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import ru.agentlab.maia.IBeliefBase;
+import ru.agentlab.maia.IConverter;
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IInjector;
