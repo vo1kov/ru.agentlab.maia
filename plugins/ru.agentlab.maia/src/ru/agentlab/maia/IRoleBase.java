@@ -1,18 +1,17 @@
 package ru.agentlab.maia;
 
 import java.util.Collection;
-import java.util.Map;
-
-import ru.agentlab.maia.exception.ResolveException;
 
 public interface IRoleBase {
 
-	Object addRole(Class<?> roleClass, Map<String, Object> parameters) throws ResolveException;
+	boolean addRole(Object roleObject);
 
-	boolean contains(Class<?> roleClass);
+	boolean contains(Object roleObject);
 
-	void remove(Class<?> roleClass);
+	boolean remove(Object roleObject);
 
 	Collection<Object> getRoles();
+
+	void clear();
 
 }

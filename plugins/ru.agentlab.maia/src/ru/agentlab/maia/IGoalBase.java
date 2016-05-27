@@ -9,10 +9,35 @@
 package ru.agentlab.maia;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 
 public interface IGoalBase {
 
-	void addAxiom(OWLAxiom axiom);
+	boolean addGoalClassAsertion(OWLClassAssertionAxiom axiom);
+
+	boolean addGoalDataPropertyAsertion(OWLDataPropertyAssertionAxiom axiom);
+
+	boolean addGoalObjectPropertyAsertion(OWLObjectPropertyAssertionAxiom axiom);
+
+	boolean removeGoalClassAsertion(OWLClassAssertionAxiom axiom);
+
+	boolean removeGoalDataPropertyAsertion(OWLDataPropertyAssertionAxiom axiom);
+
+	boolean removeObjectPropertyAsertion(OWLObjectPropertyAssertionAxiom axiom);
+
+	default void addAxiom(OWLAxiom axiom) {
+		if (axiom instanceof OWLClassAssertionAxiom) {
+			addGoalClassAsertion((OWLClassAssertionAxiom) axiom);
+		} else if (axiom instanceof OWLDataPropertyAssertionAxiom) {
+			addGoalDataPropertyAsertion((OWLDataPropertyAssertionAxiom) axiom);
+		} else if (axiom instanceof OWLObjectPropertyAssertionAxiom) {
+			addGoalObjectPropertyAsertion((OWLObjectPropertyAssertionAxiom) axiom);
+		} else {
+			throw new RuntimeException();
+		}
+	}
 
 	default void addAxioms(OWLAxiom... axioms) {
 		for (OWLAxiom axiom : axioms) {
@@ -25,9 +50,5 @@ public interface IGoalBase {
 			addAxiom(axiom);
 		}
 	}
-	
-	IGoal addGoal(String string);
-
-	boolean removeGoal(String property);
 
 }

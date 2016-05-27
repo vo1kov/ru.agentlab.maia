@@ -8,20 +8,14 @@
  *******************************************************************************/
 package ru.agentlab.maia;
 
-import java.lang.reflect.Method;
+import java.util.Map;
 
 import ru.agentlab.maia.exception.PlanExecutionException;
 
-public interface IPlan {
+public interface IPlan  {
 
 	Object execute() throws PlanExecutionException;
 
-	Method getMethod();
-
-	boolean isRelevant(IEvent<?> event);
-
-	boolean isApplicable();
-
-	Object getRole();
+	boolean relevant(IEvent<?> event, Map<String, Object> map);
 
 }
