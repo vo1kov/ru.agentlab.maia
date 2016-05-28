@@ -111,9 +111,11 @@ public class Agent_internalAddRole_Test {
 		return Arrays.asList(new Object[][] {
 		// @formatter:off
 		/* ----------------------------------------------------------------------------------------------------------------------------------------------------
-		 *|  	| IInjector                              | IConverter                                                                  | Result                |
-		/*  ##  -----------------------------------------------------------------------------------------------------------------------------------------------
-		 *|  	| make          | invoke                 | getInitialBeliefs       | getInitialGoals         | getInitialPlans         | result                |
+		 *|      | State                                                                                                               | Outputs               |
+		 *|      |---------------------------------------------------------------------------------------------------------------------------------------------|
+		 *|  	 | IInjector                             | IConverter                                                                  | Result                |
+		 *| ##   |---------------------------------------------------------------------------------------------------------------------------------------------|
+		 *|  	 | make         | invoke                 | getInitialBeliefs       | getInitialGoals         | getInitialPlans         | result                |
 		 *----------------------------------------------------------------------------------------------------------------------------------------------------*/
 		/*  0 */ { ROLE_MOCK,   null,                    INITIAL_BELIEFS_3,        INITIAL_GOALS_3,          INITIAL_PLANS_3,          ROLE_MOCK },
 		/*  1 */ { ROLE_MOCK,   null,                    INITIAL_BELIEFS_0,        INITIAL_GOALS_1,          INITIAL_PLANS_3,          ROLE_MOCK },
@@ -182,7 +184,7 @@ public class Agent_internalAddRole_Test {
 
 			// Then
 			if (result instanceof Class) {
-				Assert.fail("Expected [" + result + "], but was: [" + result + "]");
+				Assert.fail("Expected [" + result + "], but was: [" + role + "]");
 			}
 			checkBeliefBase(agent);
 			checkGoalBase(agent);

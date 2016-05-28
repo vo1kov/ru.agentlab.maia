@@ -121,6 +121,9 @@ public class Agent implements IAgent {
 
 	@Override
 	public Object addRole(Class<?> roleClass, Map<String, Object> parameters) throws ResolveException {
+		if (roleClass == null) {
+			throw new NullPointerException("Role class can't be null");
+		}
 		switch (state) {
 		case UNKNOWN:
 			throw new IllegalStateException("Agent should be deployed into container before adding new roles.");
