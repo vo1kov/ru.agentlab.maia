@@ -6,13 +6,13 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-// @formatter:off
+	// @formatter:off
 	ConverterSplitClassAssertionTest.class,
 	ConverterSplitDataPropertyAssertionTest.class,
 	ConverterSplitObjectPropertyAssertionTest.class,
 	ConverterSplitDatatypeLiteralTest.class,
 	ConverterGetOWLLiteralMatcherTest.class
-// @formatter:on
+	// @formatter:on
 })
 public class ConverterTestSuite {
 

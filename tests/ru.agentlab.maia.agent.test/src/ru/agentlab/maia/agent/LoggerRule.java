@@ -25,10 +25,10 @@ public class LoggerRule implements TestRule {
 				System.out.println(
 						"--------------------------- " + description.getDisplayName() + " ---------------------------");
 				System.out.println();
-				Stream.of(test.getClass().getDeclaredFields()).filter(f -> f.isAnnotationPresent(Parameter.class))
+				Stream.of(test.getClass().getFields()).filter(f -> f.isAnnotationPresent(Parameter.class))
 						.forEach(f -> {
 							try {
-								System.out.println("Input parameter [" + f.getName() + "] = ["
+								System.out.println("Input parameter: [" + f.getName() + "] = ["
 										+ LoggerRule.this.toString(f.get(test)) + "]");
 							} catch (Exception e) {
 

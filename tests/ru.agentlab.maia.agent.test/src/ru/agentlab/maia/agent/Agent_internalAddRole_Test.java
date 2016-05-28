@@ -193,7 +193,6 @@ public class Agent_internalAddRole_Test {
 		} catch (Exception e) {
 			// Then
 			if (!(result instanceof Class)) {
-				e.printStackTrace();
 				Assert.fail("Expected [" + result + "], but was: [" + e + "]");
 			}
 			assertThat(e, instanceOf((Class<?>) result));
