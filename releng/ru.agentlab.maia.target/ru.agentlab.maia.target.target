@@ -85,18 +85,20 @@
 <plugin id="com.google.gson"/>
 <plugin id="com.google.gson.source"/>
 <plugin id="com.google.guava" version="18.0.0.201502021635"/>
-<plugin id="com.google.guava.source" version="15.0.0.v201403281430"/>
 <plugin id="com.google.guava.source" version="18.0.0.201502021635"/>
+<plugin id="com.google.guava.source" version="15.0.0.v201403281430"/>
 <plugin id="com.google.inject"/>
 <plugin id="com.google.inject.assistedinject"/>
 <plugin id="com.google.inject.assistedinject.source"/>
 <plugin id="com.google.inject.multibindings"/>
 <plugin id="com.google.inject.multibindings.source"/>
 <plugin id="com.google.inject.source"/>
+<plugin id="com.google.jsr305"/>
+<plugin id="com.google.jsr305.source"/>
 <plugin id="javax.annotation" version="1.2.0.v201401042248"/>
-<plugin id="javax.annotation.source" version="1.2.0.v201401042248"/>
-<plugin id="javax.annotation.source" version="1.2.0.v201401042248"/>
 <plugin id="javax.annotation.source" version="1.0.0.v201209060030"/>
+<plugin id="javax.annotation.source" version="1.2.0.v201401042248"/>
+<plugin id="javax.annotation.source" version="1.2.0.v201401042248"/>
 <plugin id="javax.inject" version="1.0.0.v20091030"/>
 <plugin id="javax.inject.source" version="1.0.0.v20091030"/>
 <plugin id="javax.inject.source" version="1.0.0.v20091030"/>
@@ -147,7 +149,6 @@
 <plugin id="org.hamcrest.library.source"/>
 <plugin id="org.hamcrest.text"/>
 <plugin id="org.hamcrest.text.source"/>
-<plugin id="org.jbehave.eclipse"/>
 <plugin id="org.junit" version="4.12.0.v201504281640"/>
 <plugin id="org.junit.source" version="4.11.0.v201303080030"/>
 <plugin id="org.junit.source" version="4.12.0.v201504281640"/>

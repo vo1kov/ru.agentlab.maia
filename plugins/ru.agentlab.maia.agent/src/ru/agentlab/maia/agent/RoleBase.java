@@ -1,101 +1,59 @@
 package ru.agentlab.maia.agent;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Queue;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import ru.agentlab.maia.IEvent;
-import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IRoleBase;
 import ru.agentlab.maia.event.RoleAddedEvent;
-import ru.agentlab.maia.event.RoleResolvedEvent;
-import ru.agentlab.maia.event.RoleUnresolvedEvent;
-import ru.agentlab.maia.exception.ContainerException;
-import ru.agentlab.maia.exception.InjectorException;
-import ru.agentlab.maia.exception.ResolveException;
+import ru.agentlab.maia.event.RoleRemovedEvent;
 
 public class RoleBase implements IRoleBase {
 
-	IInjector injector;
+	protected final Set<Object> map = new HashSet<>();
 
-	private Map<Class<?>, Object> map = new HashMap<>();
+	protected final Queue<IEvent<?>> eventQueue;
 
-	private final Queue<IEvent<?>> eventQueue;
-
-	public RoleBase(Queue<IEvent<?>> eventQueue, IInjector injector) {
+	public RoleBase(Queue<IEvent<?>> eventQueue) {
 		this.eventQueue = eventQueue;
-		this.injector = injector;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see ru.agentlab.maia.agent.IRoleBase#addRole(java.lang.Class)
-	 */
-	@Override
-	public void add(Class<?> role) {
-		map.put(role, null);
-		eventQueue.offer(new RoleAddedEvent(role));
 	}
 
 	@Override
-	public void add(Class<?>... roles) {
-		for (Class<?> role : roles) {
-			add(role);
+	public boolean addRole(Object roleObject) {
+		boolean result = map.add(roleObject);
+		if (result) {
+			eventQueue.offer(new RoleAddedEvent(roleObject));
 		}
+		return result;
 	}
 
 	@Override
-	public void resolve(Class<?> roleClass) throws ResolveException {
-		try {
-			injector.make(roleClass);
-			eventQueue.offer(new RoleResolvedEvent(roleClass));
-		} catch (InjectorException | ContainerException e) {
-			eventQueue.offer(new RoleUnresolvedEvent(roleClass));
-			throw new ResolveException();
+	public boolean contains(Object roleObject) {
+		return map.contains(roleObject);
+	}
+
+	@Override
+	public boolean remove(Object roleObject) {
+		boolean result = map.remove(roleObject);
+		if (result) {
+			eventQueue.offer(new RoleRemovedEvent(roleObject));
 		}
+		return result;
 	}
 
 	@Override
-	public void resolve(Class<?>... roleClasses) throws ResolveException {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see ru.agentlab.maia.agent.IRoleBase#resolve()
-	 */
-	@Override
-	public void resolveAll() throws ResolveException {
-		for (Map.Entry<Class<?>, Object> entry : map.entrySet()) {
-			if (entry.getValue() == null) {
-				try {
-					Object role = injector.make(entry.getKey());
-					entry.setValue(role);
-				} catch (InjectorException | ContainerException e) {
-					// e.printStackTrace();
-				}
-			}
-		}
+	public void clear() {
+		Stream<RoleRemovedEvent> events = map.stream().map(role -> new RoleRemovedEvent(role));
+		map.clear();
+		events.forEach(eventQueue::offer);
 	}
 
 	@Override
-	public boolean contains(Class<?> clazz) {
-		return map.containsKey(clazz);
-	}
-
-	@Override
-	public void remove(Class<?> roleClass) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void remove(Class<?>... roleClasses) {
-		// TODO Auto-generated method stub
-
+	public Collection<Object> getRoles() {
+		return map;
 	}
 
 }

@@ -1,4 +1,4 @@
-package ru.agentlab.maia.agent.converter;
+package ru.agentlab.maia.exception;
 
 public class ConverterException extends Exception {
 

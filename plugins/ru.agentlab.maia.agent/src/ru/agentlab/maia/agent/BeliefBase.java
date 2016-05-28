@@ -97,6 +97,26 @@ public class BeliefBase implements IBeliefBase {
 
 	private final IRI ontologyIRI;
 
+	@Override
+	public OWLOntologyManager getManager() {
+		return manager;
+	}
+
+	@Override
+	public OWLDataFactory getFactory() {
+		return factory;
+	}
+
+	@Override
+	public IRI getOntologyIRI() {
+		return ontologyIRI;
+	}
+
+	@Override
+	public OWLOntology getOntology() {
+		return ontology;
+	}
+
 	OWLOntology ontology;
 
 	// public BeliefBase(String namespace) {
@@ -320,6 +340,12 @@ public class BeliefBase implements IBeliefBase {
 	public boolean containsDataPropertyAssertion(String object, String predicate, double subject) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void addAxiom(OWLAxiom axiom) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	// private IRI getLocalIRI(String object) {

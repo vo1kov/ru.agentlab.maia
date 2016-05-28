@@ -46,8 +46,8 @@ public class OWLNamedObjectMatcher implements IMatcher<OWLNamedObject> {
 	}
 
 	@Override
-	public Class<?> getType() {
-		return IRI.class;
+	public Class<OWLNamedObject> getType() {
+		return OWLNamedObject.class;
 	}
 
 	public IRI getValue() {

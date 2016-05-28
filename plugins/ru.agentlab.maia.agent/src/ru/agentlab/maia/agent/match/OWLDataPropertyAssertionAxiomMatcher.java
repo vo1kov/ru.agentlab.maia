@@ -43,7 +43,7 @@ public class OWLDataPropertyAssertionAxiomMatcher implements IMatcher<OWLDataPro
 	}
 
 	@Override
-	public Class<?> getType() {
+	public Class<OWLDataPropertyAssertionAxiom> getType() {
 		return OWLDataPropertyAssertionAxiom.class;
 	}
 

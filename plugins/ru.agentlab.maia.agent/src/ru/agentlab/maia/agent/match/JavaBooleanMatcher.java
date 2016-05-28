@@ -17,7 +17,7 @@ public class JavaBooleanMatcher implements IMatcher<Boolean> {
 	}
 
 	@Override
-	public Class<?> getType() {
+	public Class<Boolean> getType() {
 		return Boolean.class;
 	}
 

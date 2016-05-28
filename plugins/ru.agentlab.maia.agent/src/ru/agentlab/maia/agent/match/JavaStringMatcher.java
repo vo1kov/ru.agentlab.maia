@@ -16,7 +16,7 @@ public class JavaStringMatcher implements IMatcher<String> {
 	}
 
 	@Override
-	public Class<?> getType() {
+	public Class<String> getType() {
 		return String.class;
 	}
 

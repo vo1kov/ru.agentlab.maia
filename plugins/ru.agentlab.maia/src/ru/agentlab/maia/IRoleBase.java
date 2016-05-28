@@ -1,23 +1,17 @@
 package ru.agentlab.maia;
 
-import ru.agentlab.maia.exception.ResolveException;
+import java.util.Collection;
 
 public interface IRoleBase {
 
-	void add(Class<?> roleClass);
+	boolean addRole(Object roleObject);
 
-	void add(Class<?>... roleClasses);
+	boolean contains(Object roleObject);
 
-	void resolve(Class<?> roleClass) throws ResolveException;
+	boolean remove(Object roleObject);
 
-	void resolve(Class<?>... roleClasses) throws ResolveException;
+	Collection<Object> getRoles();
 
-	void resolveAll() throws ResolveException;
-
-	boolean contains(Class<?> roleClass);
-
-	void remove(Class<?> roleClass);
-
-	void remove(Class<?>... roleClasses);
+	void clear();
 
 }

@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataProperty;
@@ -33,8 +34,8 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import com.google.common.collect.ImmutableSet;
 
 import ru.agentlab.maia.EventType;
+import ru.agentlab.maia.IConverter;
 import ru.agentlab.maia.IPlan;
-import ru.agentlab.maia.agent.IConverter;
 import ru.agentlab.maia.agent.Plan;
 import ru.agentlab.maia.agent.match.IMatcher;
 import ru.agentlab.maia.agent.match.JavaAnyMatcher;
@@ -90,6 +91,7 @@ import ru.agentlab.maia.annotation.RoleAdded;
 import ru.agentlab.maia.annotation.RoleRemoved;
 import ru.agentlab.maia.annotation.RoleResolved;
 import ru.agentlab.maia.annotation.RoleUnresolved;
+import ru.agentlab.maia.exception.ConverterException;
 
 public class Converter implements IConverter {
 
@@ -274,6 +276,18 @@ public class Converter implements IConverter {
 		} catch (AnnotationFormatException e) {
 			throw new ConverterException(e);
 		}
+	}
+
+	@Override
+	public List<OWLAxiom> getInitialBeliefs(Object role) throws ConverterException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<OWLAxiom> getInitialGoals(Object role) throws ConverterException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	protected IMatcher<?> getEventMatcher(Annotation ann) throws AnnotationFormatException {

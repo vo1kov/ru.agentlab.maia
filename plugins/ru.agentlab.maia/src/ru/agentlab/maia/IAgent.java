@@ -9,6 +9,7 @@
 package ru.agentlab.maia;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import ru.agentlab.maia.exception.ContainerException;
@@ -19,8 +20,6 @@ import ru.agentlab.maia.exception.ResolveException;
  * @author Dmitry Shishkin
  */
 public interface IAgent {
-
-	void resolve() throws ResolveException;
 
 	void start();
 
@@ -36,7 +35,7 @@ public interface IAgent {
 
 	void deployTo(IContainer container) throws InjectorException, ContainerException;
 
-	void addRole(Class<?> role);
+	Object addRole(Class<?> roleClass, Map<String, Object> parameters) throws ResolveException;
 
 	void send(IMessage message);
 

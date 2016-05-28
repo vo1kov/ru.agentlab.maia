@@ -23,7 +23,7 @@ public class IRIMatcher implements IMatcher<IRI> {
 	}
 
 	@Override
-	public Class<?> getType() {
+	public Class<IRI> getType() {
 		return IRI.class;
 	}
 

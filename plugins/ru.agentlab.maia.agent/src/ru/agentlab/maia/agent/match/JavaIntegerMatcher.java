@@ -17,7 +17,7 @@ public class JavaIntegerMatcher implements IMatcher<Integer> {
 	}
 
 	@Override
-	public Class<?> getType() {
+	public Class<Integer> getType() {
 		return Integer.class;
 	}
 

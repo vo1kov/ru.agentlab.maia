@@ -10,9 +10,6 @@ package ru.agentlab.maia;
 
 import java.util.Collection;
 
-import ru.agentlab.maia.IProtocolParticipant;
-import ru.agentlab.maia.IRole;
-
 @SuppressWarnings("all")
 public interface IProtocol {
   public abstract IRole getInitiator();

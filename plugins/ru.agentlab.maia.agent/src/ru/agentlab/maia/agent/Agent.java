@@ -8,28 +8,54 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent;
 
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.atomic.AtomicReference;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
+
+import com.google.common.collect.ImmutableSet;
+
 import ru.agentlab.maia.AgentState;
+import ru.agentlab.maia.EventType;
 import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IContainer;
+import ru.agentlab.maia.IConverter;
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IGoalBase;
+import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IMessage;
+import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
 import ru.agentlab.maia.IRole;
 import ru.agentlab.maia.IRoleBase;
+import ru.agentlab.maia.agent.converter.Converter;
+import ru.agentlab.maia.container.Injector;
 import ru.agentlab.maia.event.PlanFailedEvent;
 import ru.agentlab.maia.event.PlanFinishedEvent;
+import ru.agentlab.maia.event.RoleResolvedEvent;
+import ru.agentlab.maia.event.RoleUnresolvedEvent;
 import ru.agentlab.maia.exception.ContainerException;
+import ru.agentlab.maia.exception.ConverterException;
 import ru.agentlab.maia.exception.InjectorException;
 import ru.agentlab.maia.exception.ResolveException;
+import ru.agentlab.maia.exception.ServiceNotFound;
 
 /**
  * @author Dmitriy Shishkin
@@ -41,14 +67,11 @@ public class Agent implements IAgent {
 	@Inject
 	protected ForkJoinPool executor;
 
-	@Inject
-	protected IContainer container;
-
 	protected AgentState state = AgentState.UNKNOWN;
 
-	protected final IMessageQueue messageQueue = new MessageQueue();
+	protected final Queue<IMessage> messageQueue = new ConcurrentLinkedQueue<>();
 
-	protected final IEventQueue eventQueue = new EventQueue();
+	protected final Queue<IEvent<?>> eventQueue = new LinkedList<>();
 
 	protected final IBeliefBase beliefBase = new BeliefBase(eventQueue, uuid.toString());
 
@@ -56,7 +79,148 @@ public class Agent implements IAgent {
 
 	protected final IPlanBase planBase = new PlanBase(eventQueue);
 
-	protected final IRoleBase roleBase = new RoleBase(eventQueue, container.getInjector());
+	protected final IRoleBase roleBase = new RoleBase(eventQueue);
+
+	protected IConverter converter = new Converter();
+
+	protected final IContainer agentContainer = new IContainer() {
+
+		@Inject
+		protected final AtomicReference<IContainer> parent = new AtomicReference<IContainer>(null);
+
+		final IInjector injector = new Injector(this);
+
+		@Override
+		public IContainer getParent() {
+			return parent.get();
+		}
+
+		@Override
+		public IInjector getInjector() {
+			return injector;
+		}
+
+		@Override
+		public Iterable<IContainer> getChilds() {
+			return null;
+		}
+
+		@Override
+		public void addChild(IContainer container) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public void removeChild(IContainer container) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public void clearChilds() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public IContainer setParent(IContainer parent) {
+			return this.parent.getAndSet(parent);
+		}
+
+		@Override
+		public UUID getUuid() {
+			return uuid;
+		}
+
+		@Override
+		public Object getLocal(String key) throws ServiceNotFound {
+			if (key.equals(UUID.class.getName())) {
+				return uuid;
+			} else if (key.equals(IAgent.class.getName())) {
+				return this;
+			} else if (key.equals(IContainer.class.getName())) {
+				return getParent();
+			} else if (key.equals(IBeliefBase.class.getName())) {
+				return beliefBase;
+			} else if (key.equals(IGoalBase.class.getName())) {
+				return goalBase;
+			} else if (key.equals(IPlanBase.class.getName())) {
+				return planBase;
+			} else if (key.equals(IRoleBase.class.getName())) {
+				return roleBase;
+			} else if (key.equals(IRI.class.getName())) {
+				return beliefBase.getOntologyIRI();
+			} else if (key.equals(OWLOntology.class.getName())) {
+				return beliefBase.getOntology();
+			} else if (key.equals(OWLDataFactory.class.getName())) {
+				return beliefBase.getFactory();
+			} else {
+				return null;
+			}
+		}
+
+		public <T> T get(Class<T> key) throws ServiceNotFound {
+			if (key == UUID.class) {
+				return key.cast(uuid);
+			} else if (key == IAgent.class) {
+				return key.cast(this);
+			} else if (key == IContainer.class) {
+				return key.cast(getParent());
+			} else if (key == IBeliefBase.class) {
+				return key.cast(beliefBase);
+			} else if (key == IGoalBase.class) {
+				return key.cast(goalBase);
+			} else if (key == IPlanBase.class) {
+				return key.cast(planBase);
+			} else if (key == IRoleBase.class) {
+				return key.cast(roleBase);
+			} else if (key == IRI.class) {
+				return key.cast(beliefBase.getOntologyIRI());
+			} else if (key == OWLOntology.class) {
+				return key.cast(beliefBase.getOntology());
+			} else if (key == OWLDataFactory.class) {
+				return key.cast(beliefBase.getFactory());
+			} else {
+				return null;
+			}
+		};
+
+		@Override
+		public Set<String> getKeySet() {
+			return ImmutableSet.of(
+				// @formatter:off
+				UUID.class.getName(),
+				IAgent.class.getName(),
+				IContainer.class.getName(),
+				IBeliefBase.class.getName(),
+				IGoalBase.class.getName(),
+				IPlanBase.class.getName(),
+				IRoleBase.class.getName(),
+				IRI.class.getName(),
+				OWLOntology.class.getName(),
+				OWLDataFactory.class.getName()
+				// @formatter:on
+			);
+		}
+
+		@Override
+		public Object remove(String key) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public boolean clear() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Object put(String key, Object value) {
+			throw new UnsupportedOperationException();
+		}
+
+	};
+
+	public IInjector getInjector() {
+		return agentContainer.getInjector();
+	}
 
 	@Override
 	public void start() {
@@ -66,7 +230,7 @@ public class Agent implements IAgent {
 
 	@Override
 	public void stop() {
-		state = AgentState.TERMINATED;
+		state = AgentState.STOPPING;
 	}
 
 	@Override
@@ -76,7 +240,7 @@ public class Agent implements IAgent {
 
 	@Override
 	public IContainer getContainer() {
-		return container;
+		return agentContainer.getParent();
 	}
 
 	@Override
@@ -94,111 +258,79 @@ public class Agent implements IAgent {
 		return uuid;
 	}
 
-	// protected List<IPlan> extract(Class<?> clazz) throws InjectorException,
-	// ContainerException {
-	//
-	// Object contributor = container.getInjector().make(clazz);
-	//
-	// List<IPlan> result = Arrays.stream(clazz.getMethods())
-	// .filter(method ->
-	// method.isAnnotationPresent(ru.agentlab.maia.agent.Plan.class)).map(method
-	// -> {
-	// EventType type =
-	// method.getAnnotation(ru.agentlab.maia.agent.Plan.class).value();
-	// IEventMatcher<?> matcher;
-	// switch (type) {
-	// case BELIEF_ADDED:
-	// case BELIEF_CLASS_ADDED:
-	// case BELIEF_CLASS_ASSERTION_ADDED:
-	// case BELIEF_CLASS_ASSERTION_REMOVED:
-	// case BELIEF_DATA_PROPERTY_ASSERTION_ADDED:
-	// case BELIEF_DATA_PROPERTY_ASSERTION_REMOVED:
-	// case BELIEF_OBJECT_PROPERTY_ASSERTION_ADDED:
-	// case BELIEF_OBJECT_PROPERTY_ASSERTION_REMOVED:
-	// case BELIEF_REMOVED:
-	// matcher = extractBeliefEventMatcher(method);
-	// break;
-	// case GOAL_ADDED:
-	// case GOAL_FAILED:
-	// case GOAL_FINISHED:
-	// case GOAL_REMOVED:
-	// matcher = extractGoalEventMatcher(method);
-	// break;
-	// case MESSAGE_ADDED:
-	// case MESSAGE_REMOVED:
-	//
-	// break;
-	// case PLAN_ADDED:
-	// case PLAN_FAILED:
-	// case PLAN_FINISHED:
-	// case PLAN_REMOVED:
-	//
-	// break;
-	// case ROLE_ADDED:
-	// case ROLE_REMOVED:
-	// case ROLE_RESOLVED:
-	// case ROLE_UNRESOLVED:
-	// matcher = extractRoleEventMatcher(method);
-	// break;
-	// }
-	// return new Plan(contributor, method);
-	// }).collect(Collectors.toList());
-	// return result;
-	// }
-
-	// private IEventMatcher<?> extractBeliefEventMatcher(Method method) {
-	// EventBelief beliefAnnotation = method.getAnnotation(EventBelief.class);
-	// if (beliefAnnotation != null) {
-	// String template = beliefAnnotation.value();
-	// String[] atoms = template.split(" ");
-	// if (atoms.length != 3) {
-	// throw new IllegalArgumentException("@" + EventBelief.class.getName() + "
-	// have wrong template");
-	// }
-	// return new BeliefBaseEventMatcher(atoms[0], atoms[1], atoms[2]);
-	// }
-	// return null;
-	// }
-	//
-	// private IEventMatcher<?> extractGoalEventMatcher(Method method) {
-	// GoalAdded goalAnnotation = method.getAnnotation(GoalAdded.class);
-	// if (goalAnnotation != null) {
-	// String template = goalAnnotation.value();
-	// String[] atoms = template.split(" ");
-	// if (atoms.length != 3) {
-	// throw new IllegalArgumentException("@" + EventBelief.class.getName() + "
-	// have wrong template");
-	// }
-	// return new BeliefBaseEventMatcher(atoms[0], atoms[1], atoms[2]);
-	// }
-	// return null;
-	// }
-	//
-	// private IEventMatcher<?> extractRoleEventMatcher(Method method) {
-	// RoleAdded goalAnnotation = method.getAnnotation(RoleAdded.class);
-	// if (goalAnnotation != null) {
-	// Class<?> template = goalAnnotation.value();
-	// return new RoleBaseEventMatcher(template);
-	// }
-	// return null;
-	// }
-
 	@Override
 	public void deployTo(IContainer container) throws InjectorException, ContainerException {
 		container.getInjector().inject(this);
 		container.put(uuid.toString(), this);
-		state = AgentState.DEPLOYED;
+		agentContainer.setParent(container);
+		state = AgentState.IDLE;
 	}
 
 	@Override
-	public void addRole(Class<?> roleClass) {
-		roleBase.add(roleClass);
-
+	public Object addRole(Class<?> roleClass, Map<String, Object> parameters) throws ResolveException {
+		if (roleClass == null) {
+			throw new NullPointerException("Role class can't be null");
+		}
+		switch (state) {
+		case UNKNOWN:
+			throw new IllegalStateException("Agent should be deployed into container before adding new roles.");
+		case ACTIVE:
+		case WAITING:
+			throw new IllegalStateException("Agent is in ACTIVE state, use submit method instead.");
+		case TRANSIT:
+			throw new IllegalStateException("Agent is in TRANSIT state, can't add new roles.");
+		case STOPPING:
+			throw new IllegalStateException("Agent is in STOPPING state, can't add new roles.");
+		case IDLE:
+		default:
+			return internalAddRole(roleClass, parameters);
+		}
 	}
 
-	@Override
-	public void resolve() throws ResolveException {
-		roleBase.resolveAll();
+	public Future<Object> submitRole(Class<?> roleClass, Map<String, Object> parameters) {
+		return null;
+	}
+
+	protected Object internalAddRole(Class<?> roleClass, Map<String, Object> parameters) throws ResolveException {
+		try {
+			// Create instance of role object
+			IInjector injector = getInjector();
+			Object roleObject = injector.make(roleClass);
+			injector.inject(roleObject);
+			injector.invoke(roleObject, PostConstruct.class);
+
+			// Now role object have resolved all field dependencies. Need to
+			// convert role object to initial beliefs, goals and plans.
+			List<OWLAxiom> initialBeliefs = converter.getInitialBeliefs(roleObject);
+			List<OWLAxiom> initialGoals = converter.getInitialGoals(roleObject);
+			Map<IPlan, EventType> initialPlans = converter.getPlans(roleObject);
+
+			// If no exceptions was thrown by this moment then we can add
+			// beliefs, goals and plans converted from role object and
+			// role object themselves
+			if (initialBeliefs != null) {
+				beliefBase.addAxioms(initialBeliefs);
+			}
+			if (initialGoals != null) {
+				goalBase.addAxioms(initialGoals);
+			}
+			if (initialPlans != null) {
+				initialPlans.forEach((plan, type) -> planBase.add(type, plan));
+			}
+
+			// Add role object to the role base and generate event about
+			// successful resolving
+			roleBase.addRole(roleObject);
+			eventQueue.offer(new RoleResolvedEvent(roleObject));
+			return roleObject;
+		} catch (InjectorException | ContainerException | ConverterException e) {
+			eventQueue.offer(new RoleUnresolvedEvent(roleClass));
+			throw new ResolveException(e);
+		}
+	}
+
+	protected Collection<IPlan> getRolePlans() {
+		return null;
 	}
 
 	protected class ExecuteAction extends RecursiveAction {

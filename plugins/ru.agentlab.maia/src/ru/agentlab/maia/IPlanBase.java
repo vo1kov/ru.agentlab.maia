@@ -8,10 +8,17 @@
  *******************************************************************************/
 package ru.agentlab.maia;
 
+import java.util.Collection;
+import java.util.stream.Stream;
+
 public interface IPlanBase {
 
 	void add(EventType type, IPlan plan);
 
-	void remove(IPlan plan);
+	void remove(IRolePlan plan);
+
+	Collection<IPlan> getPlans();
+
+	Stream<IPlan> getPlansStream();
 
 }

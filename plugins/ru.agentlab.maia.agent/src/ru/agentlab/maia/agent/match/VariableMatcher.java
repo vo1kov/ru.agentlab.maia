@@ -28,7 +28,7 @@ public class VariableMatcher implements IMatcher<Object> {
 	}
 
 	@Override
-	public Class<?> getType() {
+	public Class<Object> getType() {
 		return Object.class;
 	}
 

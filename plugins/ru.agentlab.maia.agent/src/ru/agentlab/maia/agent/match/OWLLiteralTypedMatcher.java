@@ -24,11 +24,6 @@ public class OWLLiteralTypedMatcher extends OWLLiteralMatcher {
 	}
 
 	@Override
-	public Class<?> getType() {
-		return OWLLiteral.class;
-	}
-
-	@Override
 	public String toString() {
 		return "OWLLiteralTypedMatcher (" + literalMatcher.toString() + "^^" + datatypeMatcher.toString() + ")";
 	}

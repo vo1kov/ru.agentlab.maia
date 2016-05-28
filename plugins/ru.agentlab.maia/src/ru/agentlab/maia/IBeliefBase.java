@@ -8,7 +8,27 @@
  *******************************************************************************/
 package ru.agentlab.maia;
 
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+
 public interface IBeliefBase {
+
+	void addAxiom(OWLAxiom axiom);
+
+	default void addAxioms(OWLAxiom... axioms) {
+		for (OWLAxiom axiom : axioms) {
+			addAxiom(axiom);
+		}
+	}
+
+	default void addAxioms(Iterable<OWLAxiom> axioms) {
+		for (OWLAxiom axiom : axioms) {
+			addAxiom(axiom);
+		}
+	}
 
 	void addClassDeclaration(String object);
 
@@ -31,7 +51,7 @@ public interface IBeliefBase {
 	void removeClassDeclaration(String object);
 
 	void removeIndividualDeclaration(String object);
-	
+
 	void removeClassAssertion(String object, String subject);
 
 	void removeObjectPropertyAssertion(String object, String predicate, String subject);
@@ -63,5 +83,13 @@ public interface IBeliefBase {
 	boolean containsDataPropertyAssertion(String object, String predicate, float subject);
 
 	boolean containsDataPropertyAssertion(String object, String predicate, double subject);
+
+	OWLOntology getOntology();
+
+	IRI getOntologyIRI();
+
+	OWLDataFactory getFactory();
+
+	OWLOntologyManager getManager();
 
 }

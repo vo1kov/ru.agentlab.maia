@@ -6,6 +6,6 @@ public interface IMatcher<T> {
 
 	boolean match(T object, Map<String, Object> map);
 	
-	Class<?> getType();
+	Class<T> getType();
 
 }

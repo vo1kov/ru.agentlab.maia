@@ -17,7 +17,7 @@ public class JavaFloatMatcher implements IMatcher<Float> {
 	}
 
 	@Override
-	public Class<?> getType() {
+	public Class<Float> getType() {
 		return Float.class;
 	}
 

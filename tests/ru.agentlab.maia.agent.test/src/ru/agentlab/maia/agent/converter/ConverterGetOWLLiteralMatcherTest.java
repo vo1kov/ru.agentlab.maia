@@ -53,7 +53,7 @@ import ru.agentlab.maia.agent.converter.literal.ConverterGetOWLLiteralXSDUnsigne
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-// @formatter:off
+	// @formatter:off
 	ConverterGetOWLLiteralMiscMatcherTest.class,
 	ConverterGetOWLLiteralOWLRationalMatcherTest.class,
 	ConverterGetOWLLiteralOWLRealMatcherTest.class,
@@ -89,7 +89,7 @@ import ru.agentlab.maia.agent.converter.literal.ConverterGetOWLLiteralXSDUnsigne
 	ConverterGetOWLLiteralXSDUnsignedIntMatcherTest.class,
 	ConverterGetOWLLiteralXSDUnsignedLongMatcherTest.class,
 	ConverterGetOWLLiteralXSDUnsignedShortMatcherTest.class
-// @formatter:on
+	// @formatter:on
 })
 public class ConverterGetOWLLiteralMatcherTest {
 }

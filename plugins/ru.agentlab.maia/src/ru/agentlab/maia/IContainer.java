@@ -9,6 +9,7 @@
 package ru.agentlab.maia;
 
 import java.util.Set;
+import java.util.UUID;
 
 import ru.agentlab.maia.exception.ServiceNotFound;
 
@@ -57,7 +58,7 @@ public interface IContainer {
 	 * 
 	 * @return unique id of context. Can not be null.
 	 */
-	String getUuid();
+	UUID getUuid();
 
 	/**
 	 * <p>
@@ -76,7 +77,23 @@ public interface IContainer {
 	 * 
 	 * @see #getService(Class)
 	 */
-	Object get(final String key) throws ServiceNotFound;
+	default Object get(final String key) throws ServiceNotFound {
+		if (key == null) {
+			throw new IllegalArgumentException("Key must be not null");
+		}
+
+		Object result = getLocal(key);
+		if (result != null) {
+			return result;
+		}
+		IContainer parent = getParent();
+		if (parent != null) {
+			return parent.get(key);
+		} else {
+			throw new ServiceNotFound("Service for key [" + key + "] did not found in context [" + toString()
+					+ "] and all their parents");
+		}
+	}
 
 	/**
 	 * <p>
@@ -100,7 +117,23 @@ public interface IContainer {
 	 * 
 	 * @see #getService(String)
 	 */
-	<T> T get(Class<T> key) throws ServiceNotFound;
+	default <T> T get(Class<T> key) throws ServiceNotFound {
+		if (key == null) {
+			throw new IllegalArgumentException("Key must be not null");
+		}
+
+		Object result = getLocal(key);
+		if (result != null) {
+			return key.cast(result);
+		}
+		IContainer p = getParent();
+		if (p != null) {
+			return p.get(key);
+		} else {
+			throw new ServiceNotFound("Service for key [" + key + "] did not found in context [" + toString()
+					+ "] and all their parents");
+		}
+	}
 
 	/**
 	 * <p>
@@ -151,7 +184,12 @@ public interface IContainer {
 	 * 
 	 * @see #getServiceLocal(String)
 	 */
-	<T> T getLocal(Class<T> key) throws ServiceNotFound;
+	default <T> T getLocal(Class<T> key) throws ServiceNotFound {
+		if (key == null) {
+			throw new IllegalArgumentException("Key must be not null");
+		}
+		return key.cast(getLocal(key.getName()));
+	}
 
 	/**
 	 * <p>
@@ -200,7 +238,12 @@ public interface IContainer {
 	 * 
 	 * @see #remove(String)
 	 */
-	Object remove(final Class<?> key);
+	default Object remove(final Class<?> key) {
+		if (key == null) {
+			throw new IllegalArgumentException("Key must be not null");
+		}
+		return remove(key.getName());
+	}
 
 	boolean clear();
 
@@ -238,5 +281,10 @@ public interface IContainer {
 	 * @see #putService(String, Object)
 	 * @see #putProvider(String, Provider)
 	 */
-	<T> Object put(final Class<T> key, final T value);
+	default <T> Object put(final Class<T> key, final T value) {
+		if (key == null) {
+			throw new IllegalArgumentException("Key must be not null");
+		}
+		return put(key.getName(), value);
+	}
 }

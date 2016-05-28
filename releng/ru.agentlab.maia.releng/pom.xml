@@ -33,9 +33,10 @@
 		<module>../../plugins/ru.agentlab.maia.agent</module>
 		<module>../../plugins/ru.agentlab.maia.annotation</module>
 		<module>../../plugins/ru.agentlab.maia.container</module>
-
 		<module>../../plugins/ru.agentlab.maia.event</module>
 		<module>../../plugins/ru.agentlab.maia.event.osgi</module>
+		
+		<module>../../tests/ru.agentlab.maia.agent.test</module>
 
 <!-- 		<module>../../aspects/ru.agentlab.maia.container.aspect</module> -->
 <!-- 		<module>../../aspects/ru.agentlab.maia.container.events</module> -->

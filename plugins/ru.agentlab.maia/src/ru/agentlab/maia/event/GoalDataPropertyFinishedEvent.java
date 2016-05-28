@@ -1,11 +1,12 @@
 package ru.agentlab.maia.event;
 
+import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
+
 import ru.agentlab.maia.EventType;
-import ru.agentlab.maia.IGoal;
 
-public class GoalDataPropertyFinishedEvent extends Event<IGoal> {
+public class GoalDataPropertyFinishedEvent extends Event<OWLDataPropertyAssertionAxiom> {
 
-	public GoalDataPropertyFinishedEvent(IGoal goal) {
+	public GoalDataPropertyFinishedEvent(OWLDataPropertyAssertionAxiom goal) {
 		super(goal);
 	}
 
