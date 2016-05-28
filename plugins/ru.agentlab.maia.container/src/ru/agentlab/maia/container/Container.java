@@ -33,7 +33,7 @@ import ru.agentlab.maia.exception.ServiceNotFound;
  */
 public class Container implements IContainer {
 
-	protected final String uuid = UUID.randomUUID().toString();
+	protected final UUID uuid = UUID.randomUUID();
 
 	protected final IInjector injector = new Injector(this);
 
@@ -44,7 +44,7 @@ public class Container implements IContainer {
 	protected final Map<String, Object> map = new ConcurrentHashMap<String, Object>();
 
 	@Override
-	public String getUuid() {
+	public UUID getUuid() {
 		return uuid;
 	}
 
@@ -59,40 +59,6 @@ public class Container implements IContainer {
 	}
 
 	@Override
-	public Object get(String key) throws ServiceNotFound {
-		check(key);
-
-		Object result = map.get(key);
-		if (result != null) {
-			return result;
-		}
-		IContainer p = parent.get();
-		if (p != null) {
-			return p.get(key);
-		} else {
-			throw new ServiceNotFound("Service for key [" + key + "] did not found in context [" + toString()
-					+ "] and all their parents");
-		}
-	}
-
-	@Override
-	public <T> T get(Class<T> key) throws ServiceNotFound {
-		check(key);
-
-		Object result = map.get(key);
-		if (result != null) {
-			return key.cast(result);
-		}
-		IContainer p = parent.get();
-		if (p != null) {
-			return p.get(key);
-		} else {
-			throw new ServiceNotFound("Service for key [" + key + "] did not found in context [" + toString()
-					+ "] and all their parents");
-		}
-	}
-
-	@Override
 	public Object getLocal(String key) throws ServiceNotFound {
 		check(key);
 		Object result = map.get(key);
@@ -103,33 +69,15 @@ public class Container implements IContainer {
 	}
 
 	@Override
-	public <T> T getLocal(Class<T> key) {
-		check(key);
-		return key.cast(map.get(key.getName()));
-	}
-
-	@Override
 	public Object put(String key, Object value) {
 		check(key);
 		return map.put(key, value);
 	}
 
 	@Override
-	public <T> Object put(Class<T> key, T value) {
-		check(key);
-		return map.put(key.getName(), value);
-	}
-
-	@Override
 	public Object remove(String key) {
 		check(key);
 		return map.remove(key);
-	}
-
-	@Override
-	public Object remove(Class<?> key) {
-		check(key);
-		return map.remove(key.getName());
 	}
 
 	@Override
@@ -172,12 +120,6 @@ public class Container implements IContainer {
 	}
 
 	private void check(String key) {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null");
-		}
-	}
-
-	private void check(Class<?> key) {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null");
 		}
