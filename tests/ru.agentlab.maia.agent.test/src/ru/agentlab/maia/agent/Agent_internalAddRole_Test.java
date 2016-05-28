@@ -3,6 +3,7 @@ package ru.agentlab.maia.agent;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -12,6 +13,7 @@ import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -37,7 +39,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import ru.agentlab.maia.EventType;
-import ru.agentlab.maia.IContainer;
 import ru.agentlab.maia.IConverter;
 import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IPlan;
@@ -169,14 +170,10 @@ public class Agent_internalAddRole_Test {
 	@Test
 	public void evaluateTestCase() throws Exception {
 		// Given
-		Agent agent = new Agent();
-		agent.container = mockContainer(mockInjector());
+		Agent agent = spy(new Agent());
+		doReturn(mockInjector()).when(agent).getInjector();
 		agent.converter = mockConverter();
-		spyField(agent, "eventQueue");
-		spyField(agent, "beliefBase");
-		spyField(agent, "goalBase");
-		spyField(agent, "planBase");
-		spyField(agent, "roleBase");
+		spyFields(agent);
 
 		try {
 			// When
@@ -206,6 +203,16 @@ public class Agent_internalAddRole_Test {
 			verify(agent.eventQueue, times(1)).offer(Mockito.any(RoleUnresolvedEvent.class));
 			verify(agent.eventQueue).offer(new RoleUnresolvedEvent(DummyService.class));
 		}
+	}
+
+	private void spyFields(Agent agent) throws Exception {
+		List<Field> allFields = new ArrayList<>();
+		addDeclaredAndInheritedFields(agent.getClass(), allFields);
+		spyField(agent, "eventQueue", allFields);
+		spyField(agent, "beliefBase", allFields);
+		spyField(agent, "goalBase", allFields);
+		spyField(agent, "planBase", allFields);
+		spyField(agent, "roleBase", allFields);
 	}
 
 	private void checkBeliefBase(Agent agent) {
@@ -238,8 +245,9 @@ public class Agent_internalAddRole_Test {
 		}
 	}
 
-	private Object spyField(Object source, String name) throws Exception {
-		Field field = source.getClass().getDeclaredField(name);
+	private Object spyField(Object source, String name, Collection<Field> allFields) throws Exception {
+		System.out.println(allFields);
+		Field field = allFields.stream().filter(f -> f.getName().equals(name)).findFirst().get();
 		field.setAccessible(true);
 		Field modifiersField = Field.class.getDeclaredField("modifiers");
 		modifiersField.setAccessible(true);
@@ -248,6 +256,14 @@ public class Agent_internalAddRole_Test {
 		Object spyed = spy(value);
 		field.set(source, spyed);
 		return spyed;
+	}
+
+	private void addDeclaredAndInheritedFields(Class<?> c, Collection<Field> fields) {
+		fields.addAll(Arrays.asList(c.getDeclaredFields()));
+		Class<?> superClass = c.getSuperclass();
+		if (superClass != null) {
+			addDeclaredAndInheritedFields(superClass, fields);
+		}
 	}
 
 	private IConverter mockConverter() throws ConverterException {
@@ -268,12 +284,6 @@ public class Agent_internalAddRole_Test {
 			when(converter.getPlans(ROLE_MOCK)).thenReturn((Map<IPlan, EventType>) initialPlans);
 		}
 		return converter;
-	}
-
-	private IContainer mockContainer(IInjector injector) {
-		IContainer container = mock(IContainer.class);
-		when(container.getInjector()).thenReturn(injector);
-		return container;
 	}
 
 	private IInjector mockInjector() throws InjectorException, ContainerException {

@@ -40,6 +40,7 @@ public class LoggerRule implements TestRule {
 				} catch (Exception e) {
 					System.out.println("Finished with fail");
 					e.printStackTrace();
+					throw e;
 				}
 			}
 		};

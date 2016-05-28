@@ -8,7 +8,11 @@
  *******************************************************************************/
 package ru.agentlab.maia;
 
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 public interface IBeliefBase {
 
@@ -79,5 +83,13 @@ public interface IBeliefBase {
 	boolean containsDataPropertyAssertion(String object, String predicate, float subject);
 
 	boolean containsDataPropertyAssertion(String object, String predicate, double subject);
+
+	OWLOntology getOntology();
+
+	IRI getOntologyIRI();
+
+	OWLDataFactory getFactory();
+
+	OWLOntologyManager getManager();
 
 }
