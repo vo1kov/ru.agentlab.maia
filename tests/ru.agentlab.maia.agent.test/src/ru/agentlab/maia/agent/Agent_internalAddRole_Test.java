@@ -50,6 +50,7 @@ import ru.agentlab.maia.exception.ContainerException;
 import ru.agentlab.maia.exception.ConverterException;
 import ru.agentlab.maia.exception.InjectorException;
 import ru.agentlab.maia.exception.ResolveException;
+import ru.agentlab.maia.test.util.LoggerRule;
 
 /**
  * <p>

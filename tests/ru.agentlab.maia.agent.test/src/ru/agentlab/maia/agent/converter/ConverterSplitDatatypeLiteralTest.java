@@ -20,7 +20,7 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 import org.semanticweb.owlapi.vocab.Namespaces;
 
-import ru.agentlab.maia.agent.LoggerRule;
+import ru.agentlab.maia.test.util.LoggerRule;
 
 /**
  * Test method {@link Converter#splitDatatypeLiteral(String)} which split

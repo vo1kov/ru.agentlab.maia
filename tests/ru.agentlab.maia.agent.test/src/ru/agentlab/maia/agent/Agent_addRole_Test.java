@@ -26,6 +26,7 @@ import org.mockito.Mockito;
 import ru.agentlab.maia.AgentState;
 import ru.agentlab.maia.agent.doubles.DummyService;
 import ru.agentlab.maia.exception.ResolveException;
+import ru.agentlab.maia.test.util.LoggerRule;
 
 /**
  * <p>
