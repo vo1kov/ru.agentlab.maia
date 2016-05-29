@@ -39,7 +39,6 @@ public class PlanBase implements IPlanBase {
 			eventPlans = new HashSet<IPlan>();
 		}
 		eventPlans.add(plan);
-		// eventQueue.offer(new PlanAddedEvent(plan.getMethod()));
 	}
 
 	@Override
@@ -47,7 +46,6 @@ public class PlanBase implements IPlanBase {
 		for (Collection<IPlan> collection : plans.values()) {
 			if (collection != null) {
 				if (collection.remove(plan)) {
-					eventQueue.offer(new PlanRemovedEvent(plan.getMethod()));
 					return;
 				}
 			}

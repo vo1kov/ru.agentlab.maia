@@ -1,12 +1,11 @@
 package ru.agentlab.maia.event;
 
-import java.lang.reflect.Method;
-
 import ru.agentlab.maia.EventType;
+import ru.agentlab.maia.IPlan;
 
-public class PlanFinishedEvent extends Event<Method> {
+public class PlanFinishedEvent extends Event<IPlan> {
 
-	public PlanFinishedEvent(Method plan) {
+	public PlanFinishedEvent(IPlan plan) {
 		super(plan);
 	}
 
