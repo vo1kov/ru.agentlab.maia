@@ -9,7 +9,7 @@ import ru.agentlab.maia.exception.ConverterException;
 
 public interface IConverter {
 
-	Map<IPlan, EventType> getPlans(Object role) throws ConverterException;
+	Map<IPlan, EventType> getInitialPlans(Object role, IInjector injector) throws ConverterException;
 
 	List<OWLAxiom> getInitialBeliefs(Object role) throws ConverterException;
 

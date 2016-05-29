@@ -257,7 +257,7 @@ public class Converter implements IConverter {
 	 * ru.agentlab.maia.agent.converter.IConverter#getPlans(java.lang.Object)
 	 */
 	@Override
-	public Map<IPlan, EventType> getPlans(Object role) throws ConverterException {
+	public Map<IPlan, EventType> getInitialPlans(Object role, IInjector injector) throws ConverterException {
 		Map<IPlan, EventType> registrations = new HashMap<>();
 		try {
 			Method[] methods = role.getClass().getMethods();
