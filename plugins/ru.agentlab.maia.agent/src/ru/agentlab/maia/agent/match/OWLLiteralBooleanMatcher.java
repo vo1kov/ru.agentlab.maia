@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import org.semanticweb.owlapi.model.OWLLiteral;
 
+import ru.agentlab.maia.IMatcher;
+
 public class OWLLiteralBooleanMatcher extends OWLLiteralMatcher {
 
 	private final IMatcher<? super Boolean> booleanMatcher;

@@ -3,6 +3,8 @@ package ru.agentlab.maia.agent.match;
 import java.util.Map;
 import java.util.Objects;
 
+import ru.agentlab.maia.IMatcher;
+
 public class JavaIntegerMatcher implements IMatcher<Integer> {
 
 	int value;

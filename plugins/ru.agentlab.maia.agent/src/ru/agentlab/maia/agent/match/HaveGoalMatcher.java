@@ -1,6 +1,7 @@
 package ru.agentlab.maia.agent.match;
 
 import ru.agentlab.maia.IAgent;
+import ru.agentlab.maia.IMatcher;
 
 public class HaveGoalMatcher implements IMatcher {
 

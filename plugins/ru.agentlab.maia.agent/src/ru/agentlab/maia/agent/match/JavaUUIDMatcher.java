@@ -3,6 +3,8 @@ package ru.agentlab.maia.agent.match;
 import java.util.Map;
 import java.util.UUID;
 
+import ru.agentlab.maia.IMatcher;
+
 public class JavaUUIDMatcher implements IMatcher<UUID> {
 
 	UUID value;

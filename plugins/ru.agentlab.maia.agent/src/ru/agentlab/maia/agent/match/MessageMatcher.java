@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import ru.agentlab.maia.IMatcher;
 import ru.agentlab.maia.IMessage;
 
 public class MessageMatcher implements IMatcher<IMessage> {

@@ -7,6 +7,8 @@ import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
+import ru.agentlab.maia.IMatcher;
+
 public class OWLLiteralPlainMatcher extends OWLLiteralMatcher {
 
 	IMatcher<? super String> literalMatcher;

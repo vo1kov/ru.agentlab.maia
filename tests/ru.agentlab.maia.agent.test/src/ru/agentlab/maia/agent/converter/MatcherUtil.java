@@ -6,7 +6,7 @@ import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.vocab.Namespaces;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
-import ru.agentlab.maia.agent.match.IMatcher;
+import ru.agentlab.maia.IMatcher;
 import ru.agentlab.maia.agent.match.JavaAnyMatcher;
 import ru.agentlab.maia.agent.match.JavaBooleanMatcher;
 import ru.agentlab.maia.agent.match.JavaDoubleMatcher;

@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.junit.runners.Parameterized.Parameter;
 import org.semanticweb.owlapi.model.OWLLiteral;
 
-import ru.agentlab.maia.agent.match.IMatcher;
+import ru.agentlab.maia.IMatcher;
 import ru.agentlab.maia.agent.match.OWLLiteralMatcher;
 import ru.agentlab.maia.test.util.LoggerRule;
 

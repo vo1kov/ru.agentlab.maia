@@ -3,6 +3,8 @@ package ru.agentlab.maia.agent.match;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import ru.agentlab.maia.IMatcher;
+
 public class JavaMethodMatcher implements IMatcher<Method> {
 
 	Method value;

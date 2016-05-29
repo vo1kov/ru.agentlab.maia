@@ -8,6 +8,8 @@ import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
+import ru.agentlab.maia.IMatcher;
+
 public class OWLClassAssertionAxiomMatcher implements IMatcher<OWLClassAssertionAxiom> {
 
 	IMatcher<? super OWLNamedIndividual> individualMatcher;

@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.semanticweb.owlapi.model.IRI;
 
+import ru.agentlab.maia.IMatcher;
+
 public class IRIMatcher implements IMatcher<IRI> {
 
 	private final IRI value;

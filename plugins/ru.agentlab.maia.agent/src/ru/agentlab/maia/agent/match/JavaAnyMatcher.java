@@ -2,6 +2,8 @@ package ru.agentlab.maia.agent.match;
 
 import java.util.Map;
 
+import ru.agentlab.maia.IMatcher;
+
 public class JavaAnyMatcher implements IMatcher<Object> {
 
 	static JavaAnyMatcher instance = new JavaAnyMatcher();

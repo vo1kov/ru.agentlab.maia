@@ -2,6 +2,8 @@ package ru.agentlab.maia.agent.match;
 
 import java.util.Map;
 
+import ru.agentlab.maia.IMatcher;
+
 @SuppressWarnings("rawtypes")
 public class JavaClassMatcher implements IMatcher<Class> {
 

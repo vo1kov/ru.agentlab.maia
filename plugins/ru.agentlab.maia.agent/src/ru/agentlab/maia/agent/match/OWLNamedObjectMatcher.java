@@ -5,6 +5,8 @@ import java.util.Map;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLNamedObject;
 
+import ru.agentlab.maia.IMatcher;
+
 public class OWLNamedObjectMatcher implements IMatcher<OWLNamedObject> {
 
 	private final IRI value;

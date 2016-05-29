@@ -2,6 +2,8 @@ package ru.agentlab.maia.agent.match;
 
 import java.util.Map;
 
+import ru.agentlab.maia.IMatcher;
+
 public class VariableMatcher implements IMatcher<Object> {
 
 	private final String value;

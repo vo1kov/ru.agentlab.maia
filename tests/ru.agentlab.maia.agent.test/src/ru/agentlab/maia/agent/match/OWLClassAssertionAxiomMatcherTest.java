@@ -28,6 +28,8 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLNamedObject;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
+import ru.agentlab.maia.IMatcher;
+
 /**
  * Test cases:
  * <!-- @formatter:off -->

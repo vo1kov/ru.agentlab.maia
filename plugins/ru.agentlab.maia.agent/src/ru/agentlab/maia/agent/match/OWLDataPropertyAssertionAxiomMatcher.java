@@ -9,6 +9,8 @@ import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
+import ru.agentlab.maia.IMatcher;
+
 public class OWLDataPropertyAssertionAxiomMatcher implements IMatcher<OWLDataPropertyAssertionAxiom> {
 
 	IMatcher<? super OWLNamedIndividual> subjectMatcher;

@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import org.semanticweb.owlapi.model.OWLLiteral;
 
+import ru.agentlab.maia.IMatcher;
+
 public class OWLLiteralDoubleMatcher extends OWLLiteralMatcher {
 
 	private final IMatcher<? super Double> doubleMatcher;

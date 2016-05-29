@@ -8,6 +8,8 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 
+import ru.agentlab.maia.IMatcher;
+
 public class OWLObjectPropertyAssertionAxiomMatcher implements IMatcher<OWLObjectPropertyAssertionAxiom> {
 
 	IMatcher<? super OWLNamedIndividual> subjectMatcher;
