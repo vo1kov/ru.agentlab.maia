@@ -6,25 +6,30 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package ru.agentlab.maia;
+package ru.agentlab.maia.agent;
 
-import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
-public interface IPlanBase {
+import javax.inject.Inject;
 
-	void add(EventType type, IPlan plan);
+import ru.agentlab.maia.IAgentContainer;
+import ru.agentlab.maia.exception.PlanExecutionException;
 
-	void remove(IPlan plan);
+public class PlanLambda extends Plan {
 
-	Collection<IPlan> getPlans();
+	@Inject
+	IAgentContainer agent;
 
-	Stream<IPlan> getPlansStream();
+	Consumer<IAgentContainer> consumer;
 
-	IPlan createPlan(Consumer<IAgentContainer> consumer);
+	public PlanLambda(Consumer<IAgentContainer> consumer) {
+		this.consumer = consumer;
+	}
 
-	IPlan createPlan(Object object, Method method);
+	@Override
+	public Object execute() throws PlanExecutionException {
+		consumer.accept(agent);
+		return null;
+	}
 
 }
