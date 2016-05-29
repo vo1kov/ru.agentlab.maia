@@ -35,6 +35,7 @@ import com.google.common.collect.ImmutableSet;
 
 import ru.agentlab.maia.EventType;
 import ru.agentlab.maia.IConverter;
+import ru.agentlab.maia.IMatcher;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.agent.Plan;
 import ru.agentlab.maia.agent.match.IMatcher;

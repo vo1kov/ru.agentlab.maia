@@ -3,6 +3,7 @@ package ru.agentlab.maia.agent.match;
 import org.semanticweb.owlapi.model.OWLNamedObject;
 
 import ru.agentlab.maia.IBeliefBase;
+import ru.agentlab.maia.IMatcher;
 
 public class HaveBeliefClassificationMatcher implements IMatcher<IBeliefBase> {
 

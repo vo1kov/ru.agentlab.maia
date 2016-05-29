@@ -16,6 +16,7 @@ import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IRolePlan;
 import ru.agentlab.maia.agent.match.IMatcher;
 import ru.agentlab.maia.exception.PlanExecutionException;
+import ru.agentlab.maia.IMatcher;
 
 public class Plan implements IRolePlan {
 
@@ -23,7 +24,7 @@ public class Plan implements IRolePlan {
 
 	Method method;
 
-	IMatcher<? extends Object> eventMatcher;
+	IMatcher<?> eventMatcher;
 
 	IMatcher<?> stateMatchers;
 
