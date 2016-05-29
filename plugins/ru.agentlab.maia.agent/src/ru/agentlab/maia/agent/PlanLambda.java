@@ -8,28 +8,23 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent;
 
-import java.util.function.Consumer;
+import java.util.Map;
 
-import javax.inject.Inject;
-
-import ru.agentlab.maia.IAgentContainer;
+import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.exception.PlanExecutionException;
 
 public class PlanLambda extends Plan {
 
-	@Inject
-	IAgentContainer agent;
+	Runnable runnable;
 
-	Consumer<IAgentContainer> consumer;
-
-	public PlanLambda(Consumer<IAgentContainer> consumer) {
-		this.consumer = consumer;
+	public PlanLambda(Object role, Runnable runnable) {
+		super(role);
+		this.runnable = runnable;
 	}
 
 	@Override
-	public Object execute() throws PlanExecutionException {
-		consumer.accept(agent);
-		return null;
+	public void execute(IInjector injector, Map<String, Object> variables) throws PlanExecutionException {
+		runnable.run();
 	}
 
 }

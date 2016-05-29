@@ -13,12 +13,10 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Queue;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import ru.agentlab.maia.EventType;
-import ru.agentlab.maia.IAgentContainer;
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
@@ -27,27 +25,24 @@ public class PlanBase implements IPlanBase {
 
 	protected final Queue<IEvent<?>> eventQueue;
 
-	IAgentContainer container;
-
 	protected final EnumMap<EventType, Collection<IPlan>> plans = new EnumMap<>(EventType.class);
 
-	public PlanBase(Queue<IEvent<?>> eventQueue, IAgentContainer container) {
+	public PlanBase(Queue<IEvent<?>> eventQueue) {
 		this.eventQueue = eventQueue;
-		this.container = container;
 	}
 
 	@Override
-	public IPlan createPlan(Object object, Method method) {
+	public IPlan createPlan(Object role, Method method) {
 		if (method.getParameterCount() == 0) {
-			return new PlanStateles(object, method);
+			return new PlanStateles(role, method);
 		} else {
-			return new PlanStateful(object, method, container.getInjector());
+			return new PlanStateful(role, method);
 		}
 	}
 
 	@Override
-	public IPlan createPlan(Consumer<IAgentContainer> consumer) {
-		return new PlanLambda(consumer);
+	public IPlan createPlan(Object role, Runnable runnable) {
+		return new PlanLambda(role, runnable);
 	}
 
 	@Override

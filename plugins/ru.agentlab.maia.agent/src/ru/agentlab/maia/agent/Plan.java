@@ -8,9 +8,15 @@ import ru.agentlab.maia.IPlan;
 
 public abstract class Plan implements IPlan {
 
-	IMatcher<?> eventMatcher;
+	protected IMatcher<?> eventMatcher;
 
-	IMatcher<?> stateMatchers;
+	protected IMatcher<?> stateMatchers;
+
+	protected final Object role;
+
+	public Plan(Object role) {
+		this.role = role;
+	}
 
 	@Override
 	public IMatcher<?> getEventMatcher() {

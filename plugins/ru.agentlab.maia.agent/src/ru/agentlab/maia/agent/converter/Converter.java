@@ -274,7 +274,7 @@ public class Converter implements IConverter {
 				if (method.getParameterCount() == 0) {
 					plan = new PlanStateles(role, method);
 				} else {
-					plan = new PlanStateful(role, method, injector);
+					plan = new PlanStateful(role, method);
 				}
 				plan.setEventMatcher(getEventMatcher(ann));
 				registrations.put(plan, type);

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.1.0">
+<diagram program="umlet" version="14.2.0">
   <zoom_level>11</zoom_level>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>44</x>
-      <y>198</y>
-      <w>132</w>
+      <x>198</x>
+      <y>154</y>
+      <w>110</w>
       <h>44</h>
     </coordinates>
     <panel_attributes>UNKNOWN
@@ -16,8 +16,8 @@ bg=light_gray</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>55</x>
-      <y>121</y>
+      <x>209</x>
+      <y>77</y>
       <w>22</w>
       <h>22</h>
     </coordinates>
@@ -27,32 +27,20 @@ bg=light_gray</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>55</x>
-      <y>121</y>
+      <x>209</x>
+      <y>77</y>
       <w>88</w>
       <h>99</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
-&lt;&lt;create&gt;&gt;</panel_attributes>
+m2=&lt;&lt;create&gt;&gt;</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>55</x>
-      <y>231</y>
-      <w>77</w>
-      <h>88</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;
-deploy</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
   </element>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>132</x>
-      <y>121</y>
+      <x>275</x>
+      <y>77</y>
       <w>22</w>
       <h>22</h>
     </coordinates>
@@ -62,35 +50,34 @@ deploy</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>132</x>
-      <y>132</y>
+      <x>275</x>
+      <y>88</y>
       <w>99</w>
       <h>88</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
-&lt;&lt;destroy&gt;&gt;</panel_attributes>
+m2=&lt;&lt;destroy&gt;&gt;</panel_attributes>
     <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>33</x>
-      <y>297</y>
-      <w>319</w>
-      <h>385</h>
+      <x>187</x>
+      <y>330</y>
+      <w>297</w>
+      <h>242</h>
     </coordinates>
-    <panel_attributes>DEPLOYED
-
--
-valign=top
+    <panel_attributes>  DEPLOYED
+valign=bottom
+halign=right
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>55</x>
-      <y>506</y>
+      <x>198</x>
+      <y>429</y>
       <w>110</w>
       <h>44</h>
     </coordinates>
@@ -101,8 +88,8 @@ bg=light_gray</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>55</x>
-      <y>616</y>
+      <x>198</x>
+      <y>517</y>
       <w>110</w>
       <h>44</h>
     </coordinates>
@@ -113,67 +100,45 @@ bg=light_gray</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>66</x>
-      <y>539</y>
+      <x>209</x>
+      <y>462</y>
       <w>55</w>
-      <h>99</h>
+      <h>77</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
-wait</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+m2=wait</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>154</x>
-      <y>484</y>
+      <x>297</x>
+      <y>407</y>
       <w>88</w>
-      <h>66</h>
+      <h>55</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
-stop
+m2=stop
 </panel_attributes>
-    <additional_attributes>10.0;40.0;60.0;10.0</additional_attributes>
+    <additional_attributes>10.0;30.0;60.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>132</x>
-      <y>539</y>
+      <x>275</x>
+      <y>462</y>
       <w>66</w>
-      <h>99</h>
+      <h>77</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
-start</panel_attributes>
-    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLSpecialState</id>
-    <coordinates>
-      <x>99</x>
-      <y>352</y>
-      <w>22</w>
-      <h>22</h>
-    </coordinates>
-    <panel_attributes>type=initial</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>99</x>
-      <y>363</y>
-      <w>33</w>
-      <h>66</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+m2=start</panel_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>55</x>
-      <y>407</y>
+      <x>198</x>
+      <y>341</y>
       <w>110</w>
       <h>44</h>
     </coordinates>
@@ -184,21 +149,21 @@ bg=light_gray</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>99</x>
-      <y>440</y>
+      <x>242</x>
+      <y>374</y>
       <w>66</w>
-      <h>88</h>
+      <h>77</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
-start</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+m2=start</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
   </element>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>429</x>
-      <y>517</y>
-      <w>132</w>
+      <x>198</x>
+      <y>242</y>
+      <w>110</w>
       <h>44</h>
     </coordinates>
     <panel_attributes>TRANSIT
@@ -208,44 +173,32 @@ bg=light_gray</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>132</x>
-      <y>231</y>
+      <x>275</x>
+      <y>275</y>
       <w>88</w>
       <h>88</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
-undeploy</panel_attributes>
+m2=undeploy</panel_attributes>
     <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>341</x>
-      <y>517</y>
-      <w>110</w>
-      <h>44</h>
+      <x>209</x>
+      <y>275</y>
+      <w>77</w>
+      <h>88</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
-transit</panel_attributes>
-    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>341</x>
-      <y>352</y>
-      <w>132</w>
-      <h>99</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;
-addRole</panel_attributes>
-    <additional_attributes>10.0;10.0;50.0;10.0;50.0;70.0;10.0;70.0</additional_attributes>
+m2=deploy</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
   </element>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>220</x>
-      <y>462</y>
+      <x>363</x>
+      <y>385</y>
       <w>110</w>
       <h>44</h>
     </coordinates>
@@ -256,13 +209,61 @@ bg=light_gray</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>154</x>
-      <y>418</y>
+      <x>297</x>
+      <y>363</y>
+      <w>88</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+</panel_attributes>
+    <additional_attributes>60.0;30.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>209</x>
+      <y>187</y>
+      <w>77</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m2=deploy</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>132</x>
+      <y>264</y>
+      <w>88</w>
+      <h>121</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m2=move</panel_attributes>
+    <additional_attributes>60.0;90.0;20.0;90.0;20.0;10.0;60.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>121</x>
+      <y>242</y>
+      <w>99</w>
+      <h>231</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m2=move</panel_attributes>
+    <additional_attributes>70.0;190.0;10.0;190.0;10.0;10.0;70.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>275</x>
+      <y>187</y>
       <w>88</w>
       <h>77</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
-</panel_attributes>
-    <additional_attributes>60.0;50.0;10.0;10.0</additional_attributes>
+m2=undeploy</panel_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>

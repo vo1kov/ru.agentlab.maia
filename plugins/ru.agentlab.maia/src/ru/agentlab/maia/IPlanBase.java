@@ -10,7 +10,6 @@ package ru.agentlab.maia;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public interface IPlanBase {
@@ -23,7 +22,7 @@ public interface IPlanBase {
 
 	Stream<IPlan> getPlansStream();
 
-	IPlan createPlan(Consumer<IAgentContainer> consumer);
+	IPlan createPlan(Object object, Runnable runnable);
 
 	IPlan createPlan(Object object, Method method);
 

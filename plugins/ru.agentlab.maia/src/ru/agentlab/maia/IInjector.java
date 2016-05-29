@@ -10,6 +10,7 @@ package ru.agentlab.maia;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import ru.agentlab.maia.exception.ContainerException;
 import ru.agentlab.maia.exception.InjectorException;
@@ -31,6 +32,8 @@ public interface IInjector {
 	 *             if an exception occurred while performing this operation
 	 */
 	<T> T make(Class<T> clazz) throws InjectorException, ContainerException;
+
+	<T> T make(Class<T> clazz, Map<String, Object> additional) throws InjectorException, ContainerException;
 
 	/**
 	 * <p>
@@ -137,6 +140,9 @@ public interface IInjector {
 	 */
 
 	Object invoke(Object object, Method method, Object defaultValue) throws InjectorException, ContainerException;
+
+	Object invoke(Object object, Method method, Object defaultValue, Map<String, Object> additional)
+			throws InjectorException, ContainerException;
 
 	Object invoke(Object object, String methodName, Object defaultValue) throws InjectorException, ContainerException;
 

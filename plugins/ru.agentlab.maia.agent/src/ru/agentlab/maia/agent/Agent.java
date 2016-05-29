@@ -9,6 +9,7 @@
 package ru.agentlab.maia.agent;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +70,7 @@ public class Agent implements IAgent {
 
 	protected AgentState state = AgentState.UNKNOWN;
 
-	protected final IAgentContainer agentContainer = new AgentContainer();
+	protected final AgentContainer agentContainer = new AgentContainer();
 
 	protected final Queue<IMessage> messageQueue = new ConcurrentLinkedQueue<>();
 
@@ -79,14 +80,14 @@ public class Agent implements IAgent {
 
 	protected final IGoalBase goalBase = new GoalBase(eventQueue);
 
-	protected final IPlanBase planBase = new PlanBase(eventQueue, agentContainer);
+	protected final IPlanBase planBase = new PlanBase(eventQueue);
 
 	protected final IRoleBase roleBase = new RoleBase(eventQueue);
 
 	protected IConverter converter = new Converter();
 
 	public IInjector getInjector() {
-		return agentContainer.getInjector();
+		return agentContainer.injector;
 	}
 
 	@Override
@@ -162,7 +163,7 @@ public class Agent implements IAgent {
 		try {
 			// Create instance of role object
 			IInjector injector = getInjector();
-			Object roleObject = injector.make(roleClass);
+			Object roleObject = injector.make(roleClass, parameters);
 			injector.inject(roleObject);
 			injector.invoke(roleObject, PostConstruct.class, null);
 
@@ -311,8 +312,9 @@ public class Agent implements IAgent {
 			List<PlanStateful> relevantPlans = selectRelevantPlans(event);
 			List<PlanStateful> applicablePlans = selectApplicablePlans(relevantPlans);
 			applicablePlans.forEach(plan -> {
+				Map<String, Object> variables = new HashMap<>();
 				try {
-					plan.execute();
+					plan.execute(getInjector(), variables);
 					eventQueue.offer(new PlanFinishedEvent(plan));
 				} catch (Exception e) {
 					eventQueue.offer(new PlanFailedEvent(plan));

@@ -9,6 +9,7 @@
 package ru.agentlab.maia.agent;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.exception.ContainerException;
@@ -17,22 +18,17 @@ import ru.agentlab.maia.exception.PlanExecutionException;
 
 public class PlanStateful extends Plan {
 
-	Object role;
-
 	Method method;
 
-	IInjector injector;
-
-	public PlanStateful(Object object, Method method, IInjector injector) {
-		this.role = object;
+	public PlanStateful(Object role, Method method) {
+		super(role);
 		this.method = method;
-		this.injector = injector;
 	}
 
 	@Override
-	public Object execute() throws PlanExecutionException {
+	public void execute(IInjector injector, Map<String, Object> variables) throws PlanExecutionException {
 		try {
-			return injector.invoke(role, method, null);
+			injector.invoke(role, method, null, variables);
 		} catch (InjectorException | ContainerException e) {
 			throw new PlanExecutionException(e);
 		}
