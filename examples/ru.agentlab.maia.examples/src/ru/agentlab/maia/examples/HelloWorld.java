@@ -27,7 +27,6 @@ public class HelloWorld {
 	@PostConstruct
 	@BeliefDataPropertyAdded("?some hasLength some string value^^xsd:string")
 	public void setup(IGoalBase goalBase) {
-		goalBase.addGoal("init");
 	}
 
 	@GoalClassificationAdded("init")

@@ -16,5 +16,6 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.container;bundle-version="1.0.0",
  ru.agentlab.maia,
  ru.agentlab.maia.io.messaging,
- ru.agentlab.maia.annotation
+ ru.agentlab.maia.annotation,
+ org.semanticweb.owlapi.apibinding
 

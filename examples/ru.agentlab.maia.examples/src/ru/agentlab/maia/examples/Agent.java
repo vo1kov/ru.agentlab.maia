@@ -11,7 +11,13 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IGoalBase;
@@ -26,6 +32,11 @@ import ru.agentlab.maia.messaging.IMessageDeliveryService;
 
 @Prefix(name = "rdf", namespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns")
 public class Agent {
+
+	@Inject
+	OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+
+	OWLDataFactory factory = manager.getOWLDataFactory();
 
 	@Inject
 	IInjector container;
@@ -51,7 +62,9 @@ public class Agent {
 	@PostConstruct
 	public void setup() {
 		beliefBase.addClassAssertion("test", "SDfsdf");
-		desireBase.addGoal("init");
+		OWLClass clazz = factory.getOWLClass(IRI.create(""));
+		OWLIndividual individual = factory.getOWLNamedIndividual(IRI.create(""));
+		desireBase.addGoalClassAsertion(factory.getOWLClassAssertionAxiom(clazz, individual));
 	}
 
 	@BeliefDataPropertyAdded("?classified rdf:type ?classifier")
