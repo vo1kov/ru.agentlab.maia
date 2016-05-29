@@ -297,13 +297,13 @@ public class Agent implements IAgent {
 			IInjector injector = getInjector();
 			Object roleObject = injector.make(roleClass);
 			injector.inject(roleObject);
-			injector.invoke(roleObject, PostConstruct.class);
+			injector.invoke(roleObject, PostConstruct.class, null);
 
 			// Now role object have resolved all field dependencies. Need to
 			// convert role object to initial beliefs, goals and plans.
 			List<OWLAxiom> initialBeliefs = converter.getInitialBeliefs(roleObject);
 			List<OWLAxiom> initialGoals = converter.getInitialGoals(roleObject);
-			Map<IPlan, EventType> initialPlans = converter.getPlans(roleObject);
+			Map<IPlan, EventType> initialPlans = converter.getInitialPlans(roleObject, injector);
 
 			// If no exceptions was thrown by this moment then we can add
 			// beliefs, goals and plans converted from role object and

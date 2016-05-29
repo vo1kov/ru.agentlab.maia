@@ -268,7 +268,12 @@ public class Converter implements IConverter {
 				}
 				Annotation ann = eventAnnotation.get();
 				EventType type = ann.annotationType().getAnnotation(EventMatcher.class).value();
-				Plan plan = new Plan(role, method);
+				IPlan plan;
+				if (method.getParameterCount() == 0) {
+					plan = new PlanStateles(role, method);
+				} else {
+					plan = new PlanStateful(role, method, injector);
+				}
 				plan.setEventMatcher(getEventMatcher(ann));
 				registrations.put(plan, type);
 			}
