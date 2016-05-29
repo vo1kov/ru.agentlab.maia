@@ -12,7 +12,7 @@ import java.util.Collection;
 
 @SuppressWarnings("all")
 public interface IProtocol {
-  public abstract IRole getInitiator();
+  public abstract Object getInitiator();
   
   public abstract Collection<IProtocolParticipant> getParticipants();
 }

@@ -44,7 +44,6 @@ import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
-import ru.agentlab.maia.IRole;
 import ru.agentlab.maia.IRoleBase;
 import ru.agentlab.maia.agent.converter.Converter;
 import ru.agentlab.maia.container.Injector;
@@ -69,7 +68,7 @@ public class Agent implements IAgent {
 	protected ForkJoinPool executor;
 
 	protected AgentState state = AgentState.UNKNOWN;
-	
+
 	protected final IAgentContainer agentContainer = new AgentContainer();
 
 	protected final Queue<IMessage> messageQueue = new ConcurrentLinkedQueue<>();
@@ -112,8 +111,8 @@ public class Agent implements IAgent {
 	}
 
 	@Override
-	public List<IRole> getRoles() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub");
+	public Collection<Object> getRoles() {
+		return roleBase.getRoles();
 	}
 
 	@Override

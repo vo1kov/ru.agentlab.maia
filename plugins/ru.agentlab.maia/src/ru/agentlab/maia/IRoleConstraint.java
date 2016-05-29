@@ -10,7 +10,7 @@ package ru.agentlab.maia;
 
 @SuppressWarnings("all")
 public interface IRoleConstraint {
-  public abstract IRole getSource();
+  public abstract Object getSource();
   
-  public abstract IRole getTarget();
+  public abstract Object getTarget();
 }

@@ -8,7 +8,7 @@
  *******************************************************************************/
 package ru.agentlab.maia;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
@@ -31,7 +31,7 @@ public interface IAgent {
 
 	AgentState getState();
 
-	List<IRole> getRoles();
+	Collection<Object> getRoles();
 
 	void deployTo(IContainer container) throws InjectorException, ContainerException;
 

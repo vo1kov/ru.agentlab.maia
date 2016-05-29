@@ -11,7 +11,7 @@ package ru.agentlab.maia;
 import java.util.Collection;
 
 public interface IGroup {
-  public abstract Collection<IRole> getRoles();
+  public abstract Collection<Object> getRoles();
   
-  public abstract Collection<IAgent> getAgentsPlaysRole(final IRole role);
+  public abstract Collection<IAgent> getAgentsPlaysRole(Object role);
 }
