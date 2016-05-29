@@ -172,8 +172,9 @@ public class Agent_internalAddRole_Test {
 	public void evaluateTestCase() throws Exception {
 		// Given
 		Agent agent = spy(new Agent());
-		doReturn(mockInjector()).when(agent).getInjector();
-		agent.converter = mockConverter();
+		IInjector injector = mockInjector();
+		doReturn(injector).when(agent).getInjector();
+		agent.converter = mockConverter(injector);
 		spyFields(agent);
 
 		try {
@@ -267,7 +268,7 @@ public class Agent_internalAddRole_Test {
 		}
 	}
 
-	private IConverter mockConverter() throws ConverterException {
+	private IConverter mockConverter(IInjector injector) throws ConverterException {
 		IConverter converter = mock(IConverter.class);
 		if (initialBeliefs instanceof Class) {
 			when(converter.getInitialBeliefs(ROLE_MOCK)).thenThrow((Class<? extends Exception>) initialBeliefs);
@@ -280,9 +281,9 @@ public class Agent_internalAddRole_Test {
 			when(converter.getInitialGoals(ROLE_MOCK)).thenReturn((List<OWLAxiom>) initialGoals);
 		}
 		if (initialPlans instanceof Class) {
-			when(converter.getPlans(ROLE_MOCK)).thenThrow((Class<? extends Exception>) initialPlans);
+			when(converter.getInitialPlans(ROLE_MOCK, injector)).thenThrow((Class<? extends Exception>) initialPlans);
 		} else {
-			when(converter.getPlans(ROLE_MOCK)).thenReturn((Map<IPlan, EventType>) initialPlans);
+			when(converter.getInitialPlans(ROLE_MOCK, injector)).thenReturn((Map<IPlan, EventType>) initialPlans);
 		}
 		return converter;
 	}

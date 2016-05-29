@@ -34,6 +34,7 @@ import com.google.common.collect.ImmutableSet;
 import ru.agentlab.maia.AgentState;
 import ru.agentlab.maia.EventType;
 import ru.agentlab.maia.IAgent;
+import ru.agentlab.maia.IAgentContainer;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IContainer;
 import ru.agentlab.maia.IConverter;
@@ -68,6 +69,8 @@ public class Agent implements IAgent {
 	protected ForkJoinPool executor;
 
 	protected AgentState state = AgentState.UNKNOWN;
+	
+	protected final IAgentContainer agentContainer = new AgentContainer();
 
 	protected final Queue<IMessage> messageQueue = new ConcurrentLinkedQueue<>();
 
@@ -77,146 +80,11 @@ public class Agent implements IAgent {
 
 	protected final IGoalBase goalBase = new GoalBase(eventQueue);
 
-	protected final IPlanBase planBase = new PlanBase(eventQueue);
+	protected final IPlanBase planBase = new PlanBase(eventQueue, agentContainer);
 
 	protected final IRoleBase roleBase = new RoleBase(eventQueue);
 
 	protected IConverter converter = new Converter();
-
-	protected final IContainer agentContainer = new IContainer() {
-
-		@Inject
-		protected final AtomicReference<IContainer> parent = new AtomicReference<IContainer>(null);
-
-		final IInjector injector = new Injector(this);
-
-		@Override
-		public IContainer getParent() {
-			return parent.get();
-		}
-
-		@Override
-		public IInjector getInjector() {
-			return injector;
-		}
-
-		@Override
-		public Iterable<IContainer> getChilds() {
-			return null;
-		}
-
-		@Override
-		public void addChild(IContainer container) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void removeChild(IContainer container) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void clearChilds() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public IContainer setParent(IContainer parent) {
-			return this.parent.getAndSet(parent);
-		}
-
-		@Override
-		public UUID getUuid() {
-			return uuid;
-		}
-
-		@Override
-		public Object getLocal(String key) throws ServiceNotFound {
-			if (key.equals(UUID.class.getName())) {
-				return uuid;
-			} else if (key.equals(IAgent.class.getName())) {
-				return this;
-			} else if (key.equals(IContainer.class.getName())) {
-				return getParent();
-			} else if (key.equals(IBeliefBase.class.getName())) {
-				return beliefBase;
-			} else if (key.equals(IGoalBase.class.getName())) {
-				return goalBase;
-			} else if (key.equals(IPlanBase.class.getName())) {
-				return planBase;
-			} else if (key.equals(IRoleBase.class.getName())) {
-				return roleBase;
-			} else if (key.equals(IRI.class.getName())) {
-				return beliefBase.getOntologyIRI();
-			} else if (key.equals(OWLOntology.class.getName())) {
-				return beliefBase.getOntology();
-			} else if (key.equals(OWLDataFactory.class.getName())) {
-				return beliefBase.getFactory();
-			} else {
-				return null;
-			}
-		}
-
-		public <T> T get(Class<T> key) throws ServiceNotFound {
-			if (key == UUID.class) {
-				return key.cast(uuid);
-			} else if (key == IAgent.class) {
-				return key.cast(this);
-			} else if (key == IContainer.class) {
-				return key.cast(getParent());
-			} else if (key == IBeliefBase.class) {
-				return key.cast(beliefBase);
-			} else if (key == IGoalBase.class) {
-				return key.cast(goalBase);
-			} else if (key == IPlanBase.class) {
-				return key.cast(planBase);
-			} else if (key == IRoleBase.class) {
-				return key.cast(roleBase);
-			} else if (key == IRI.class) {
-				return key.cast(beliefBase.getOntologyIRI());
-			} else if (key == OWLOntology.class) {
-				return key.cast(beliefBase.getOntology());
-			} else if (key == OWLDataFactory.class) {
-				return key.cast(beliefBase.getFactory());
-			} else {
-				return null;
-			}
-		};
-
-		@Override
-		public Set<String> getKeySet() {
-			return ImmutableSet.of(
-				// @formatter:off
-				UUID.class.getName(),
-				IAgent.class.getName(),
-				IContainer.class.getName(),
-				IBeliefBase.class.getName(),
-				IGoalBase.class.getName(),
-				IPlanBase.class.getName(),
-				IRoleBase.class.getName(),
-				IRI.class.getName(),
-				OWLOntology.class.getName(),
-				OWLDataFactory.class.getName()
-				// @formatter:on
-			);
-		}
-
-		@Override
-		public Object remove(String key) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public boolean clear() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public Object put(String key, Object value) {
-			throw new UnsupportedOperationException();
-		}
-
-	};
 
 	public IInjector getInjector() {
 		return agentContainer.getInjector();
@@ -333,7 +201,104 @@ public class Agent implements IAgent {
 		return null;
 	}
 
-	protected class ExecuteAction extends RecursiveAction {
+	protected final class AgentContainer implements IAgentContainer {
+		@Inject
+		protected final AtomicReference<IContainer> parent = new AtomicReference<IContainer>(null);
+		final IInjector injector = new Injector(this);
+
+		@Override
+		public IContainer getParent() {
+			return parent.get();
+		}
+
+		@Override
+		public IInjector getInjector() {
+			return injector;
+		}
+
+		@Override
+		public IContainer setParent(IContainer parent) {
+			return this.parent.getAndSet(parent);
+		}
+
+		@Override
+		public UUID getUuid() {
+			return uuid;
+		}
+
+		@Override
+		public Object getLocal(String key) throws ServiceNotFound {
+			if (key.equals(UUID.class.getName())) {
+				return uuid;
+			} else if (key.equals(IAgent.class.getName())) {
+				return this;
+			} else if (key.equals(IContainer.class.getName())) {
+				return getParent();
+			} else if (key.equals(IBeliefBase.class.getName())) {
+				return beliefBase;
+			} else if (key.equals(IGoalBase.class.getName())) {
+				return goalBase;
+			} else if (key.equals(IPlanBase.class.getName())) {
+				return planBase;
+			} else if (key.equals(IRoleBase.class.getName())) {
+				return roleBase;
+			} else if (key.equals(IRI.class.getName())) {
+				return beliefBase.getOntologyIRI();
+			} else if (key.equals(OWLOntology.class.getName())) {
+				return beliefBase.getOntology();
+			} else if (key.equals(OWLDataFactory.class.getName())) {
+				return beliefBase.getFactory();
+			} else {
+				return null;
+			}
+		}
+
+		public <T> T get(Class<T> key) throws ServiceNotFound {
+			if (key == UUID.class) {
+				return key.cast(uuid);
+			} else if (key == IAgent.class) {
+				return key.cast(this);
+			} else if (key == IContainer.class) {
+				return key.cast(getParent());
+			} else if (key == IBeliefBase.class) {
+				return key.cast(beliefBase);
+			} else if (key == IGoalBase.class) {
+				return key.cast(goalBase);
+			} else if (key == IPlanBase.class) {
+				return key.cast(planBase);
+			} else if (key == IRoleBase.class) {
+				return key.cast(roleBase);
+			} else if (key == IRI.class) {
+				return key.cast(beliefBase.getOntologyIRI());
+			} else if (key == OWLOntology.class) {
+				return key.cast(beliefBase.getOntology());
+			} else if (key == OWLDataFactory.class) {
+				return key.cast(beliefBase.getFactory());
+			} else {
+				return null;
+			}
+		}
+
+		@Override
+		public Set<String> getKeySet() {
+			return ImmutableSet.of(
+				// @formatter:off
+				UUID.class.getName(),
+				IAgent.class.getName(),
+				IContainer.class.getName(),
+				IBeliefBase.class.getName(),
+				IGoalBase.class.getName(),
+				IPlanBase.class.getName(),
+				IRoleBase.class.getName(),
+				IRI.class.getName(),
+				OWLOntology.class.getName(),
+				OWLDataFactory.class.getName()
+				// @formatter:on
+			);
+		}
+	}
+
+	protected final class ExecuteAction extends RecursiveAction {
 
 		private static final long serialVersionUID = 1L;
 
@@ -344,14 +309,14 @@ public class Agent implements IAgent {
 				state = AgentState.WAITING;
 				return;
 			}
-			List<Plan> relevantPlans = selectRelevantPlans(event);
-			List<Plan> applicablePlans = selectApplicablePlans(relevantPlans);
+			List<PlanStateful> relevantPlans = selectRelevantPlans(event);
+			List<PlanStateful> applicablePlans = selectApplicablePlans(relevantPlans);
 			applicablePlans.forEach(plan -> {
 				try {
 					plan.execute();
-					eventQueue.offer(new PlanFinishedEvent(plan.getMethod()));
+					eventQueue.offer(new PlanFinishedEvent(plan));
 				} catch (Exception e) {
-					eventQueue.offer(new PlanFailedEvent(plan.getMethod()));
+					eventQueue.offer(new PlanFailedEvent(plan));
 				}
 			});
 
@@ -365,11 +330,11 @@ public class Agent implements IAgent {
 			return eventQueue.poll();
 		}
 
-		protected List<Plan> selectRelevantPlans(IEvent<?> event) {
+		protected List<PlanStateful> selectRelevantPlans(IEvent<?> event) {
 			return null;
 		}
 
-		protected List<Plan> selectApplicablePlans(List<Plan> relevantPlans) {
+		protected List<PlanStateful> selectApplicablePlans(List<PlanStateful> relevantPlans) {
 			return null;
 		}
 

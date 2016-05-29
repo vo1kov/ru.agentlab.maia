@@ -12,10 +12,18 @@ import java.util.Map;
 
 import ru.agentlab.maia.exception.PlanExecutionException;
 
-public interface IPlan  {
+public interface IPlan {
 
 	Object execute() throws PlanExecutionException;
 
 	boolean relevant(IEvent<?> event, Map<String, Object> map);
+
+	void setStateMatcher(IMatcher<?> matcher);
+
+	IMatcher<?> getStateMatcher();
+
+	void setEventMatcher(IMatcher<?> eventMatcher);
+
+	IMatcher<?> getEventMatcher();
 
 }

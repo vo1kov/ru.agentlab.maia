@@ -35,10 +35,11 @@ import com.google.common.collect.ImmutableSet;
 
 import ru.agentlab.maia.EventType;
 import ru.agentlab.maia.IConverter;
+import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IMatcher;
 import ru.agentlab.maia.IPlan;
-import ru.agentlab.maia.agent.Plan;
-import ru.agentlab.maia.agent.match.IMatcher;
+import ru.agentlab.maia.agent.PlanStateful;
+import ru.agentlab.maia.agent.PlanStateles;
 import ru.agentlab.maia.agent.match.JavaAnyMatcher;
 import ru.agentlab.maia.agent.match.JavaBooleanMatcher;
 import ru.agentlab.maia.agent.match.JavaClassMatcher;
