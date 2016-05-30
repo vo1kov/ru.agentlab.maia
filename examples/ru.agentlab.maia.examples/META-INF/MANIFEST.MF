@@ -5,17 +5,25 @@ Bundle-SymbolicName: ru.agentlab.maia.examples
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.osgi.framework;version="1.3.0",
- org.semanticweb.owlapi.model
+ org.semanticweb.owlapi.model,
+ uk.ac.manchester.cs.owl.owlapi.concurrent
 Bundle-ActivationPolicy: lazy
 Require-Bundle: com.google.guava,
- org.eclipse.xtext.xbase.lib,
- org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro,
  javax.inject;bundle-version="1.0.0",
  org.slf4j.api;bundle-version="1.7.2",
  ru.agentlab.maia.container;bundle-version="1.0.0",
  ru.agentlab.maia,
  ru.agentlab.maia.io.messaging,
  ru.agentlab.maia.annotation,
- org.semanticweb.owlapi.apibinding
-
+ org.semanticweb.owlapi.apibinding,
+ ru.agentlab.maia.agent;bundle-version="1.0.0",
+ org.slf4j.api;bundle-version="1.7.2",
+ net.sf.trove4j;bundle-version="3.0.3",
+ org.semanticweb.owlapi.compatibility;bundle-version="4.1.3",
+ org.semanticweb.owlapi.contract;bundle-version="4.1.3",
+ org.semanticweb.owlapi.fixers;bundle-version="4.1.3",
+ org.semanticweb.owlapi.impl;bundle-version="4.1.3",
+ org.semanticweb.owlapi.oboformat;bundle-version="4.1.3",
+ org.semanticweb.owlapi.parsers;bundle-version="4.1.3",
+ org.semanticweb.owlapi.rio;bundle-version="4.1.3",
+ org.semanticweb.owlapi.tools;bundle-version="4.1.3"
