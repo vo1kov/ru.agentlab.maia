@@ -41,7 +41,7 @@ import ru.agentlab.maia.test.util.LoggerRule;
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
  */
 @RunWith(Parameterized.class)
-public class InjectiorMakeTest {
+public class InjectorMakeTest {
 
 	private static final String STRING_VALUE = "Test";
 

@@ -42,7 +42,7 @@ import ru.agentlab.maia.test.util.LoggerRule;
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
  */
 @RunWith(Parameterized.class)
-public class InjectiorInjectTest {
+public class InjectorInjectTest {
 
 	private static final Class<InjectorException> EXCEPTION = InjectorException.class;
 
