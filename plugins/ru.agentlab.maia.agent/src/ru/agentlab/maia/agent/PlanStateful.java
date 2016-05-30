@@ -12,7 +12,6 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import ru.agentlab.maia.IInjector;
-import ru.agentlab.maia.exception.ContainerException;
 import ru.agentlab.maia.exception.InjectorException;
 import ru.agentlab.maia.exception.PlanExecutionException;
 
@@ -29,7 +28,7 @@ public class PlanStateful extends Plan {
 	public void execute(IInjector injector, Map<String, Object> variables) throws PlanExecutionException {
 		try {
 			injector.invoke(role, method, null, variables);
-		} catch (InjectorException | ContainerException e) {
+		} catch (InjectorException e) {
 			throw new PlanExecutionException(e);
 		}
 	}

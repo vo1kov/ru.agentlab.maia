@@ -56,7 +56,6 @@ import ru.agentlab.maia.exception.ContainerException;
 import ru.agentlab.maia.exception.ConverterException;
 import ru.agentlab.maia.exception.InjectorException;
 import ru.agentlab.maia.exception.ResolveException;
-import ru.agentlab.maia.exception.ServiceNotFound;
 
 /**
  * @author Dmitriy Shishkin
@@ -191,7 +190,7 @@ public class Agent implements IAgent {
 			roleBase.addRole(roleObject);
 			eventQueue.offer(new RoleResolvedEvent(roleObject));
 			return roleObject;
-		} catch (InjectorException | ContainerException | ConverterException e) {
+		} catch (InjectorException | ConverterException e) {
 			eventQueue.offer(new RoleUnresolvedEvent(roleClass));
 			throw new ResolveException(e);
 		}
@@ -227,7 +226,7 @@ public class Agent implements IAgent {
 		}
 
 		@Override
-		public Object getLocal(String key) throws ServiceNotFound {
+		public Object getLocal(String key) {
 			if (key.equals(UUID.class.getName())) {
 				return uuid;
 			} else if (key.equals(IAgent.class.getName())) {
@@ -253,7 +252,7 @@ public class Agent implements IAgent {
 			}
 		}
 
-		public <T> T get(Class<T> key) throws ServiceNotFound {
+		public <T> T get(Class<T> key) {
 			if (key == UUID.class) {
 				return key.cast(uuid);
 			} else if (key == IAgent.class) {

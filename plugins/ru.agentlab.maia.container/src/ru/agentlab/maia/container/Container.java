@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import ru.agentlab.maia.IContainer;
 import ru.agentlab.maia.IInjector;
-import ru.agentlab.maia.exception.ServiceNotFound;
+//import ru.agentlab.maia.exception.ServiceNotFound;
 
 /**
  * <p>
@@ -59,12 +59,9 @@ public class Container implements IContainer {
 	}
 
 	@Override
-	public Object getLocal(String key) throws ServiceNotFound {
+	public Object getLocal(String key) {
 		check(key);
 		Object result = map.get(key);
-		if (result == null) {
-			throw new ServiceNotFound();
-		}
 		return result;
 	}
 
