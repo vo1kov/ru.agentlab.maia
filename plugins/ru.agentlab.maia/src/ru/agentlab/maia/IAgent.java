@@ -37,6 +37,10 @@ public interface IAgent {
 
 	Object addRole(Class<?> roleClass, Map<String, Object> parameters) throws ResolveException;
 
+	default Object addRole(Class<?> roleClass) throws ResolveException {
+		return addRole(roleClass, null);
+	}
+
 	void send(IMessage message);
 
 }
