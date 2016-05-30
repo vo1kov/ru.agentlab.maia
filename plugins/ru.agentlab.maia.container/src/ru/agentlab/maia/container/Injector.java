@@ -59,7 +59,7 @@ public class Injector implements IInjector {
 	@Override
 	public <T> T make(Class<T> clazz, Map<String, Object> additional) throws InjectorException {
 		try {
-			Constructor<?>[] constructors = clazz.getConstructors();
+			Constructor<?>[] constructors = clazz.getDeclaredConstructors();
 			Arrays.sort(constructors, comparator);
 			for (Constructor<?> constructor : constructors) {
 				Object instance = tryConstruct(constructor, additional);
@@ -180,9 +180,6 @@ public class Injector implements IInjector {
 	}
 
 	protected <T> T tryConstruct(Constructor<T> constructor, Map<String, Object> additional) throws InjectorException {
-		if (!constructor.isAnnotationPresent(Inject.class) && constructor.getParameterTypes().length != 0) {
-			return null;
-		}
 		if (constructor.getParameterCount() == 0) {
 			boolean wasAccessible = true;
 			if (!constructor.isAccessible()) {
@@ -200,6 +197,9 @@ public class Injector implements IInjector {
 				}
 			}
 		} else {
+			if (!constructor.isAnnotationPresent(Inject.class)) {
+				return null;
+			}
 			Parameter[] parameters = constructor.getParameters();
 			Object[] values = new Object[parameters.length];
 			for (int i = 0; i < parameters.length; i++) {
@@ -264,17 +264,21 @@ public class Injector implements IInjector {
 	}
 
 	private Object resolveValue(Class<?> classKey, Map<String, Object> additional) {
-		Object fromAdditional = additional.get(classKey.getName());
-		if (fromAdditional != null) {
-			return fromAdditional;
+		if (additional != null) {
+			Object fromAdditional = additional.get(classKey.getName());
+			if (fromAdditional != null) {
+				return fromAdditional;
+			}
 		}
 		return container.get(classKey);
 	}
 
 	private Object resolveValue(String stringKey, Map<String, Object> additional) {
-		Object fromAdditional = additional.get(stringKey);
-		if (fromAdditional != null) {
-			return fromAdditional;
+		if (additional != null) {
+			Object fromAdditional = additional.get(stringKey);
+			if (fromAdditional != null) {
+				return fromAdditional;
+			}
 		}
 		return container.get(stringKey);
 	}
