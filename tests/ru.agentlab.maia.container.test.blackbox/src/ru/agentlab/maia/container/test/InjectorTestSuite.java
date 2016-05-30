@@ -9,6 +9,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	// @formatter:off
 	InjectorMakeTest.class,
 	InjectorInjectTest.class,
+	InjectorInvokeTest.class,
 	// @formatter:on
 })
 public class InjectorTestSuite {
