@@ -11,6 +11,7 @@ package ru.agentlab.maia;
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.Future;
 
 import ru.agentlab.maia.exception.ContainerException;
 import ru.agentlab.maia.exception.InjectorException;
@@ -31,15 +32,29 @@ public interface IAgent {
 
 	AgentState getState();
 
-	Collection<Object> getRoles();
-
 	void deployTo(IContainer container) throws InjectorException, ContainerException;
+
+	Collection<Object> getRoles();
 
 	Object addRole(Class<?> roleClass, Map<String, Object> parameters) throws ResolveException;
 
 	default Object addRole(Class<?> roleClass) throws ResolveException {
 		return addRole(roleClass, null);
 	}
+
+	boolean removeRole(Object roleObject);
+
+	boolean removeAllRoles();
+
+	Future<Object> submitAddRole(Class<?> roleClass, Map<String, Object> parameters);
+
+	default Future<Object> submitAddRole(Class<?> roleClass) {
+		return submitAddRole(roleClass, null);
+	}
+
+	Future<Boolean> submitRemoveRole(Object roleObject);
+
+	Future<Boolean> submitRemoveAllRoles();
 
 	void send(IMessage message);
 

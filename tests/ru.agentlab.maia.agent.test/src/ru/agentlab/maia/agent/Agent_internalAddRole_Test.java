@@ -46,7 +46,6 @@ import ru.agentlab.maia.agent.doubles.DummyService;
 import ru.agentlab.maia.event.RoleAddedEvent;
 import ru.agentlab.maia.event.RoleResolvedEvent;
 import ru.agentlab.maia.event.RoleUnresolvedEvent;
-import ru.agentlab.maia.exception.ContainerException;
 import ru.agentlab.maia.exception.ConverterException;
 import ru.agentlab.maia.exception.InjectorException;
 import ru.agentlab.maia.exception.ResolveException;
@@ -142,7 +141,6 @@ public class Agent_internalAddRole_Test {
 		/* 18 */ { ROLE_MOCK,   InjectorException.class, INITIAL_BELIEFS_3,        INITIAL_GOALS_3,          INITIAL_PLANS_3,          ResolveException.class },
 		/* 19 */ { ROLE_MOCK,   InjectorException.class, INITIAL_BELIEFS_3,        INITIAL_GOALS_3,          INITIAL_PLANS_3,          ResolveException.class },
 		/* 20 */ { InjectorException.class,  null,       INITIAL_BELIEFS_3,        INITIAL_GOALS_3,          INITIAL_PLANS_3,          ResolveException.class },
-		/* 21 */ { ContainerException.class, null,       INITIAL_BELIEFS_3,        INITIAL_GOALS_3,          INITIAL_PLANS_3,          ResolveException.class },
 		// @formatter:on
 		});
 	}
@@ -179,7 +177,7 @@ public class Agent_internalAddRole_Test {
 
 		try {
 			// When
-			Object role = agent.internalAddRole(DummyService.class, Collections.emptyMap());
+			Object role = agent.internalAddRole(DummyService.class, null);
 
 			// Then
 			if (result instanceof Class) {
@@ -188,8 +186,8 @@ public class Agent_internalAddRole_Test {
 			checkBeliefBase(agent);
 			checkGoalBase(agent);
 			checkPlanBase(agent);
-			verify(agent.eventQueue).offer(Mockito.any(RoleAddedEvent.class));
-			verify(agent.eventQueue).offer(Mockito.any(RoleResolvedEvent.class));
+			verify(agent.eventQueue, times(1)).offer(new RoleAddedEvent(role));
+			verify(agent.eventQueue, times(1)).offer(new RoleResolvedEvent(role));
 			assertThat(role, equalTo(result));
 		} catch (Exception e) {
 			// Then
@@ -202,8 +200,7 @@ public class Agent_internalAddRole_Test {
 			// role added. Only ROLE_UNRESOLVED event should be added to event
 			// queue.
 			verifyZeroInteractions(agent.beliefBase, agent.goalBase, agent.planBase);
-			verify(agent.eventQueue, times(1)).offer(Mockito.any(RoleUnresolvedEvent.class));
-			verify(agent.eventQueue).offer(new RoleUnresolvedEvent(DummyService.class));
+			verify(agent.eventQueue, times(1)).offer(new RoleUnresolvedEvent(DummyService.class));
 		}
 	}
 
@@ -214,7 +211,7 @@ public class Agent_internalAddRole_Test {
 		spyField(agent, "beliefBase", allFields);
 		spyField(agent, "goalBase", allFields);
 		spyField(agent, "planBase", allFields);
-		spyField(agent, "roleBase", allFields);
+		spyField(agent, "roles", allFields);
 	}
 
 	private void checkBeliefBase(Agent agent) {
@@ -288,17 +285,18 @@ public class Agent_internalAddRole_Test {
 		return converter;
 	}
 
-	private IInjector mockInjector() throws InjectorException, ContainerException {
+	private IInjector mockInjector() throws InjectorException {
 		IInjector injector = mock(IInjector.class);
 		if (makeResult instanceof Class) {
-			when(injector.make(DummyService.class)).thenThrow((Class<? extends Exception>) makeResult);
+			when(injector.make(DummyService.class, null)).thenThrow((Class<? extends Exception>) makeResult);
 		} else {
-			when(injector.make(DummyService.class)).thenReturn((DummyService) makeResult);
+			when(injector.make(DummyService.class, null)).thenReturn((DummyService) makeResult);
 		}
 		if (invokeResult != null && invokeResult instanceof Class) {
-			when(injector.invoke(ROLE_MOCK, PostConstruct.class)).thenThrow((Class<? extends Exception>) invokeResult);
+			when(injector.invoke(ROLE_MOCK, PostConstruct.class, null))
+					.thenThrow((Class<? extends Exception>) invokeResult);
 		} else {
-			when(injector.invoke(ROLE_MOCK, PostConstruct.class)).thenReturn(invokeResult);
+			when(injector.invoke(ROLE_MOCK, PostConstruct.class, null)).thenReturn(invokeResult);
 		}
 		return injector;
 	}
