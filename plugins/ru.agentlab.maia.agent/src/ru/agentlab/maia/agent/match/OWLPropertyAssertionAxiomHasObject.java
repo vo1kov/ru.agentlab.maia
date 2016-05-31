@@ -3,10 +3,10 @@ package ru.agentlab.maia.agent.match;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLPropertyAssertionObject;
 
-public class OWLPropertyAssertionAxiomHasObject extends TypeSafeMatcher<OWLDataPropertyAssertionAxiom> {
+public class OWLPropertyAssertionAxiomHasObject extends TypeSafeMatcher<OWLPropertyAssertionAxiom<?, ?>> {
 
 	Matcher<? super OWLPropertyAssertionObject> matcher;
 
@@ -21,7 +21,7 @@ public class OWLPropertyAssertionAxiomHasObject extends TypeSafeMatcher<OWLDataP
 	}
 
 	@Override
-	protected boolean matchesSafely(OWLDataPropertyAssertionAxiom axiom) {
+	protected boolean matchesSafely(OWLPropertyAssertionAxiom<?, ?> axiom) {
 		return matcher.matches(axiom.getObject());
 	}
 

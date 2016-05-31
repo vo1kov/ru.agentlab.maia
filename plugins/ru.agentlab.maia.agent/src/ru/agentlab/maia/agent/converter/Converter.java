@@ -1,9 +1,46 @@
 package ru.agentlab.maia.agent.converter;
 
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.instanceOf;
+import static ru.agentlab.maia.agent.match.Matchers.hasClassExpression;
+import static ru.agentlab.maia.agent.match.Matchers.hasContent;
+import static ru.agentlab.maia.agent.match.Matchers.hasConversationId;
+import static ru.agentlab.maia.agent.match.Matchers.hasEncoding;
+import static ru.agentlab.maia.agent.match.Matchers.hasIRI;
+import static ru.agentlab.maia.agent.match.Matchers.hasInReplyTo;
+import static ru.agentlab.maia.agent.match.Matchers.hasIndividual;
+import static ru.agentlab.maia.agent.match.Matchers.hasLanguage;
+import static ru.agentlab.maia.agent.match.Matchers.hasObject;
+import static ru.agentlab.maia.agent.match.Matchers.hasOntology;
+import static ru.agentlab.maia.agent.match.Matchers.hasPerformative;
+import static ru.agentlab.maia.agent.match.Matchers.hasProperty;
+import static ru.agentlab.maia.agent.match.Matchers.hasProtocol;
+import static ru.agentlab.maia.agent.match.Matchers.hasReplyWith;
+import static ru.agentlab.maia.agent.match.Matchers.hasSender;
+import static ru.agentlab.maia.agent.match.Matchers.hasSubject;
+import static ru.agentlab.maia.agent.match.Matchers.isBoolean;
+import static ru.agentlab.maia.agent.match.Matchers.isClass;
+import static ru.agentlab.maia.agent.match.Matchers.isDataProperty;
+import static ru.agentlab.maia.agent.match.Matchers.isDouble;
+import static ru.agentlab.maia.agent.match.Matchers.isFloat;
+import static ru.agentlab.maia.agent.match.Matchers.isIndividual;
+import static ru.agentlab.maia.agent.match.Matchers.isInteger;
+import static ru.agentlab.maia.agent.match.Matchers.isLiteral;
+import static ru.agentlab.maia.agent.match.Matchers.isNamed;
+import static ru.agentlab.maia.agent.match.Matchers.isObjectProperty;
+import static ru.agentlab.maia.agent.match.Matchers.isPlain;
+import static ru.agentlab.maia.agent.match.Matchers.isTyped;
+import static ru.agentlab.maia.agent.match.Matchers.var;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +57,6 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLNamedObject;
@@ -36,31 +72,10 @@ import com.google.common.collect.ImmutableSet;
 import ru.agentlab.maia.EventType;
 import ru.agentlab.maia.IConverter;
 import ru.agentlab.maia.IInjector;
-import ru.agentlab.maia.IMatcher;
+import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.agent.PlanStateful;
 import ru.agentlab.maia.agent.PlanStateles;
-import ru.agentlab.maia.agent.match.JavaAnyMatcher;
-import ru.agentlab.maia.agent.match.JavaBooleanMatcher;
-import ru.agentlab.maia.agent.match.JavaClassMatcher;
-import ru.agentlab.maia.agent.match.JavaDoubleMatcher;
-import ru.agentlab.maia.agent.match.JavaFloatMatcher;
-import ru.agentlab.maia.agent.match.JavaIntegerMatcher;
-import ru.agentlab.maia.agent.match.JavaMethodMatcher;
-import ru.agentlab.maia.agent.match.JavaStringMatcher;
-import ru.agentlab.maia.agent.match.JavaUUIDMatcher;
-import ru.agentlab.maia.agent.match.MessageMatcher;
-import ru.agentlab.maia.agent.match.OWLClassAssertionAxiomMatcher;
-import ru.agentlab.maia.agent.match.OWLDataPropertyAssertionAxiomMatcher;
-import ru.agentlab.maia.agent.match.OWLLiteralBooleanMatcher;
-import ru.agentlab.maia.agent.match.OWLLiteralDoubleMatcher;
-import ru.agentlab.maia.agent.match.OWLLiteralFloatMatcher;
-import ru.agentlab.maia.agent.match.OWLLiteralIntegerMatcher;
-import ru.agentlab.maia.agent.match.OWLLiteralPlainMatcher;
-import ru.agentlab.maia.agent.match.OWLLiteralTypedMatcher;
-import ru.agentlab.maia.agent.match.OWLNamedObjectMatcher;
-import ru.agentlab.maia.agent.match.OWLObjectPropertyAssertionAxiomMatcher;
-import ru.agentlab.maia.agent.match.VariableMatcher;
 import ru.agentlab.maia.annotation.BeliefClassificationAdded;
 import ru.agentlab.maia.annotation.BeliefClassificationRemoved;
 import ru.agentlab.maia.annotation.BeliefDataPropertyAdded;
@@ -84,10 +99,6 @@ import ru.agentlab.maia.annotation.GoalObjectPropertyRemoved;
 import ru.agentlab.maia.annotation.MessageAdded;
 import ru.agentlab.maia.annotation.MessageRemoved;
 import ru.agentlab.maia.annotation.MessageUnhandled;
-import ru.agentlab.maia.annotation.PlanAdded;
-import ru.agentlab.maia.annotation.PlanFailed;
-import ru.agentlab.maia.annotation.PlanFinished;
-import ru.agentlab.maia.annotation.PlanRemoved;
 import ru.agentlab.maia.annotation.Prefix;
 import ru.agentlab.maia.annotation.RoleAdded;
 import ru.agentlab.maia.annotation.RoleRemoved;
@@ -134,12 +145,12 @@ public class Converter implements IConverter {
 		GoalObjectPropertyFinished.class, 
 		GoalObjectPropertyRemoved.class
 	);
-	private static final Set<Class<?>> ANNOTATIONS_METHOD = ImmutableSet.of(
-		PlanAdded.class,
-		PlanFailed.class, 
-		PlanFinished.class, 
-		PlanRemoved.class
-	);
+//	private static final Set<Class<?>> ANNOTATIONS_METHOD = ImmutableSet.of(
+//		PlanAdded.class,
+//		PlanFailed.class, 
+//		PlanFinished.class, 
+//		PlanRemoved.class
+//	);
 	private static final Set<Class<?>> ANNOTATIONS_CLASS = ImmutableSet.of(
 		RoleAdded.class,
 		RoleRemoved.class, 
@@ -307,12 +318,12 @@ public class Converter implements IConverter {
 		} else if (ANNOTATIONS_OBJECT_PROPERTY_ASSERTION.contains(ann.annotationType())) {
 			String value = getMethodValue(ann, METHOD_NAME, String.class);
 			return getOWLObjectPropertyAssertionAxiomMatcher(value);
-		} else if (ANNOTATIONS_METHOD.contains(ann.annotationType())) {
-			String value = getMethodValue(ann, METHOD_NAME, String.class);
-			return getJavaMethodMatcher(value);
+			// } else if (ANNOTATIONS_METHOD.contains(ann.annotationType())) {
+			// String value = getMethodValue(ann, METHOD_NAME, String.class);
+			// return getJavaMethodMatcher(value);
 		} else if (ANNOTATIONS_CLASS.contains(ann.annotationType())) {
 			Class<?> value = getMethodValue(ann, METHOD_NAME, Class.class);
-			return getJavaClassMatcher(value);
+			return anyOf(instanceOf(value), equalTo(value));
 		} else if (ANNOTATIONS_MESSAGE.contains(ann.annotationType())) {
 			return getMessageMatcher(ann);
 		} else {
@@ -320,78 +331,80 @@ public class Converter implements IConverter {
 		}
 	}
 
-	protected IMatcher<?> getMessageMatcher(Annotation ann) {
-		MessageMatcher matcher = new MessageMatcher();
+	protected org.hamcrest.Matcher<? super IMessage> getMessageMatcher(Annotation ann) {
+		List<org.hamcrest.Matcher<? super IMessage>> matchers = new ArrayList<>();
 		String performative = getMethodValue(ann, "performative", String.class);
 		if (!performative.equals("")) {
-			matcher.setPerformativeMatcher(new JavaStringMatcher(performative));
+			matchers.add(hasPerformative(equalTo(performative)));
 		}
 		String sender = getMethodValue(ann, "sender", String.class);
 		if (!sender.equals("")) {
-			matcher.setSenderMatcher(new JavaUUIDMatcher(UUID.fromString(sender)));
+			matchers.add(hasSender(equalTo(UUID.fromString(sender))));
 		}
-		IMatcher<? super List<UUID>> receiversMatcher;
-		IMatcher<? super List<UUID>> replyToMatcher;
+		org.hamcrest.Matcher<? super List<UUID>> receiversMatcher;
+		org.hamcrest.Matcher<? super List<UUID>> replyToMatcher;
 
 		String content = getMethodValue(ann, "content", String.class);
 		if (!content.equals("")) {
-			matcher.setPerformativeMatcher(new JavaStringMatcher(content));
+			matchers.add(hasContent(equalTo(performative)));
 		}
 		String replyWith = getMethodValue(ann, "replyWith", String.class);
 		if (!replyWith.equals("")) {
-			matcher.setPerformativeMatcher(new JavaStringMatcher(replyWith));
+			matchers.add(hasReplyWith(equalTo(performative)));
 		}
 		String inReplyTo = getMethodValue(ann, "inReplyTo", String.class);
 		if (!inReplyTo.equals("")) {
-			matcher.setPerformativeMatcher(new JavaStringMatcher(inReplyTo));
+			matchers.add(hasInReplyTo(equalTo(performative)));
 		}
 		String encoding = getMethodValue(ann, "encoding", String.class);
 		if (!encoding.equals("")) {
-			matcher.setPerformativeMatcher(new JavaStringMatcher(encoding));
+			matchers.add(hasEncoding(equalTo(performative)));
 		}
 		String language = getMethodValue(ann, "language", String.class);
 		if (!language.equals("")) {
-			matcher.setPerformativeMatcher(new JavaStringMatcher(language));
+			matchers.add(hasLanguage(equalTo(performative)));
 		}
 		String ontology = getMethodValue(ann, "ontology", String.class);
 		if (!ontology.equals("")) {
-			matcher.setPerformativeMatcher(new JavaStringMatcher(ontology));
+			matchers.add(hasOntology(equalTo(performative)));
 		}
-		IMatcher<? super LocalDateTime> replyByMatcher;
+		org.hamcrest.Matcher<? super LocalDateTime> replyByMatcher;
 		String protocol = getMethodValue(ann, "protocol", String.class);
 		if (!protocol.equals("")) {
-			matcher.setPerformativeMatcher(new JavaStringMatcher(protocol));
+			matchers.add(hasProtocol(equalTo(performative)));
 		}
 		String conversationId = getMethodValue(ann, "conversationId", String.class);
 		if (!conversationId.equals("")) {
-			matcher.setPerformativeMatcher(new JavaStringMatcher(conversationId));
+			matchers.add(hasConversationId(equalTo(performative)));
 		}
-		IMatcher<? super LocalDateTime> postTimeStampMatcher;
-		return matcher;
+		org.hamcrest.Matcher<? super LocalDateTime> postTimeStampMatcher;
+		return allOf(matchers);
 	}
 
-	protected JavaMethodMatcher getJavaMethodMatcher(String value) throws MethodWrongFormatException {
-		Matcher match = PATTERN_METHOD.matcher(value);
-		if (!match.matches()) {
-			throw new MethodWrongFormatException();
-		}
-		String clazzName = match.group(PATTERN_METHOD_CLASS);
-		String methodName = match.group(PATTERN_METHOD_NAME);
-		try {
-			Class<?> clazz = Class.forName(clazzName);
-			Optional<Method> method = Stream.of(clazz.getMethods()).filter(methodName::equals).findFirst();
-			if (!method.isPresent()) {
-				throw new MethodWrongFormatException();
-			}
-			return new JavaMethodMatcher(method.get());
-		} catch (ClassNotFoundException e) {
-			throw new MethodWrongFormatException();
-		}
-	}
+	// protected JavaMethodMatcher getJavaMethodMatcher(String value) throws
+	// MethodWrongFormatException {
+	// Matcher match = PATTERN_METHOD.matcher(value);
+	// if (!match.matches()) {
+	// throw new MethodWrongFormatException();
+	// }
+	// String clazzName = match.group(PATTERN_METHOD_CLASS);
+	// String methodName = match.group(PATTERN_METHOD_NAME);
+	// try {
+	// Class<?> clazz = Class.forName(clazzName);
+	// Optional<Method> method =
+	// Stream.of(clazz.getMethods()).filter(methodName::equals).findFirst();
+	// if (!method.isPresent()) {
+	// throw new MethodWrongFormatException();
+	// }
+	// return new JavaMethodMatcher(method.get());
+	// } catch (ClassNotFoundException e) {
+	// throw new MethodWrongFormatException();
+	// }
+	// }
 
-	protected JavaClassMatcher getJavaClassMatcher(Class<?> value) {
-		return new JavaClassMatcher(value);
-	}
+	// protected JavaClassMatcher getJavaClassMatcher(Class<?> value) {
+	// return new JavaClassMatcher(value);
+	// }
 
 	private static <T> T getMethodValue(Object object, String methodName, Class<T> clazz) {
 		try {
@@ -405,35 +418,50 @@ public class Converter implements IConverter {
 		}
 	}
 
-	protected org.hamcrest.Matcher<OWLClassAssertionAxiom> getOWLClassAssertionAxiomMatcher(String template)
+	protected org.hamcrest.Matcher<? super OWLClassAssertionAxiom> getOWLClassAssertionAxiomMatcher(String template)
 			throws AnnotationFormatException {
 		String[] parts = splitClassAssertioin(template);
 		String individual = parts[0];
 		String clazz = parts[1];
-		return new OWLClassAssertionAxiomMatcher(getOWLClassMatcher(clazz), getOWLNamedIndividualMatcher(individual));
+		return allOf(hasClassExpression(isClass(getOWLNamedObjectMatcher(clazz))),
+				hasIndividual(isNamed(getOWLNamedObjectMatcher(individual))));
+		// return new OWLClassAssertionAxiomMatcher(getOWLClassMatcher(clazz),
+		// getOWLNamedIndividualMatcher(individual));
 	}
 
-	protected IMatcher<OWLDataPropertyAssertionAxiom> getOWLDataPropertyAssertionAxiomMatcher(String template)
-			throws AnnotationFormatException {
+	protected org.hamcrest.Matcher<? super OWLDataPropertyAssertionAxiom> getOWLDataPropertyAssertionAxiomMatcher(
+			String template) throws AnnotationFormatException {
 		String[] parts = splitDataPropertyAssertioin(template);
 		String subject = parts[0];
 		String property = parts[1];
-		String object = parts[2];
-		return new OWLDataPropertyAssertionAxiomMatcher(getOWLNamedIndividualMatcher(subject),
-				getOWLDataPropertyMatcher(property), getOWLLiteralMatcher(object));
+		String data = parts[2];
+
+		return allOf(hasSubject(isNamed(getOWLNamedObjectMatcher(subject))),
+				hasProperty(isDataProperty(getOWLNamedObjectMatcher(property))),
+				hasObject(isLiteral(getOWLLiteralMatcher(data))));
+
+		// return new
+		// OWLDataPropertyAssertionAxiomMatcher(getOWLNamedIndividualMatcher(subject),
+		// getOWLDataPropertyMatcher(property), getOWLLiteralMatcher(object));
 	}
 
-	protected IMatcher<OWLObjectPropertyAssertionAxiom> getOWLObjectPropertyAssertionAxiomMatcher(String template)
-			throws AnnotationFormatException {
+	protected org.hamcrest.Matcher<? super OWLObjectPropertyAssertionAxiom> getOWLObjectPropertyAssertionAxiomMatcher(
+			String template) throws AnnotationFormatException {
 		String[] parts = splitObjectPropertyAssertioin(template);
 		String subject = parts[0];
 		String property = parts[1];
-		String data = parts[2];
-		return new OWLObjectPropertyAssertionAxiomMatcher(getOWLNamedIndividualMatcher(subject),
-				getOWLObjectPropertyMatcher(property), getOWLNamedIndividualMatcher(data));
+		String object = parts[2];
+		return allOf(hasSubject(isNamed(getOWLNamedObjectMatcher(subject))),
+				hasProperty(isObjectProperty(getOWLNamedObjectMatcher(property))),
+				hasObject(isIndividual(isNamed(getOWLNamedObjectMatcher(object)))));
+		// return new
+		// OWLObjectPropertyAssertionAxiomMatcher(getOWLNamedIndividualMatcher(subject),
+		// getOWLObjectPropertyMatcher(property),
+		// getOWLNamedIndividualMatcher(data));
 	}
 
-	protected IMatcher<? super OWLLiteral> getOWLLiteralMatcher(String string) throws LiteralFormatException {
+	protected org.hamcrest.Matcher<? super OWLLiteral> getOWLLiteralMatcher(String string)
+			throws LiteralFormatException {
 		String[] parts = splitDatatypeLiteral(string);
 		String literal = parts[0];
 		String language = parts[1];
@@ -441,9 +469,7 @@ public class Converter implements IConverter {
 		if (datatype == null) {
 			// Plain Literal
 			// [static@en] || [static@?lang] || [?val@en] || [?val@?lang]
-			IMatcher<? super String> literalMatcher = getStringMatcher(literal);
-			IMatcher<? super String> languageMatcher = getStringMatcher(language);
-			return new OWLLiteralPlainMatcher(literalMatcher, languageMatcher);
+			return isLiteral(isPlain(equalTo(literal), equalTo(language)));
 		} else {
 			// Typed Literal
 			// [static^^some:type] || [static^^?type] || [?val^^some:type] ||
@@ -456,7 +482,7 @@ public class Converter implements IConverter {
 			String variableName = getOWLNamedObjectVariableName(match);
 			if (variableName != null) {
 				// [static^^?type] || [?val^^?type]
-				return new OWLLiteralTypedMatcher(getStringMatcher(literal), new VariableMatcher(variableName));
+				return isTyped(equalTo(literal), var(variableName, Collections.emptyMap()));
 			} else {
 				// [static^^some:type] || [?val^^some:type]
 				IRI datatypeIRI = getOWLNamedObjectIRI(match);
@@ -482,23 +508,22 @@ public class Converter implements IConverter {
 					}
 					switch (owl2datatype) {
 					case XSD_BOOLEAN:
-						return new OWLLiteralBooleanMatcher(getBooleanMatcher(literal));
+						return isBoolean(getBooleanMatcher(literal));
 					case XSD_FLOAT:
-						return new OWLLiteralFloatMatcher(getFloatMatcher(literal));
+						return isFloat(getFloatMatcher(literal));
 					case XSD_DOUBLE:
-						return new OWLLiteralDoubleMatcher(getDoubleMatcher(literal));
+						return isDouble(getDoubleMatcher(literal));
 					case XSD_INT:
 					case XSD_INTEGER:
-						return new OWLLiteralIntegerMatcher(getIntegerMatcher(literal));
+						return isInteger(getIntegerMatcher(literal));
 					case RDF_PLAIN_LITERAL:
-						return new OWLLiteralPlainMatcher(getStringMatcher(literal), getStringMatcher(language));
+						return isLiteral(isPlain(equalTo(literal), equalTo(language)));
 					default:
 						break;
 					}
 				}
-				return new OWLLiteralTypedMatcher(
-						getStringMatcher(language == null ? literal : literal + SEPARATOR_LANGUAGE + language),
-						new OWLNamedObjectMatcher(datatypeIRI));
+				return isTyped(equalTo(language == null ? literal : literal + SEPARATOR_LANGUAGE + language),
+						hasIRI(datatypeIRI));
 			}
 		}
 		// IMatcher<? super OWLDatatype> datatypeMatcher =
@@ -534,32 +559,37 @@ public class Converter implements IConverter {
 		// datatypeMatcher);
 	}
 
-	protected IMatcher<? super OWLDatatype> getOWLDatatypeMatcher(String string) throws LiteralFormatException {
-		if (string == null) {
-			return new OWLNamedObjectMatcher(OWL2Datatype.RDF_PLAIN_LITERAL.getIRI());
-		}
-		return getOWLNamedObjectMatcher(string);
-	}
+	// protected org.hamcrest.Matcher<? super OWLDatatype>
+	// getOWLDatatypeMatcher(String string)
+	// throws LiteralFormatException {
+	// if (string == null) {
+	// return new
+	// OWLNamedObjectMatcher(OWL2Datatype.RDF_PLAIN_LITERAL.getIRI());
+	// }
+	// return getOWLNamedObjectMatcher(string);
+	// }
 
-	protected IMatcher<? super OWLNamedIndividual> getOWLNamedIndividualMatcher(String string)
+	protected org.hamcrest.Matcher<? super OWLNamedIndividual> getOWLNamedIndividualMatcher(String string)
 			throws LiteralFormatException {
 		return getOWLNamedObjectMatcher(string);
 	}
 
-	protected IMatcher<? super OWLClass> getOWLClassMatcher(String string) throws LiteralFormatException {
+	protected org.hamcrest.Matcher<? super OWLClass> getOWLClassMatcher(String string) throws LiteralFormatException {
 		return getOWLNamedObjectMatcher(string);
 	}
 
-	protected IMatcher<? super OWLObjectProperty> getOWLObjectPropertyMatcher(String string)
+	protected org.hamcrest.Matcher<? super OWLObjectProperty> getOWLObjectPropertyMatcher(String string)
 			throws LiteralFormatException {
 		return getOWLNamedObjectMatcher(string);
 	}
 
-	protected IMatcher<? super OWLDataProperty> getOWLDataPropertyMatcher(String string) throws LiteralFormatException {
+	protected org.hamcrest.Matcher<? super OWLDataProperty> getOWLDataPropertyMatcher(String string)
+			throws LiteralFormatException {
 		return getOWLNamedObjectMatcher(string);
 	}
 
-	protected IMatcher<? super OWLNamedObject> getOWLNamedObjectMatcher(String string) throws LiteralFormatException {
+	protected org.hamcrest.Matcher<? super OWLNamedObject> getOWLNamedObjectMatcher(String string)
+			throws LiteralFormatException {
 		Matcher match = PATTERN_LITERAL.matcher(string);
 		if (!match.matches()) {
 			throw new LiteralWrongFormatException("Literal [" + string + "] has wrong format. "
@@ -567,10 +597,10 @@ public class Converter implements IConverter {
 		}
 		String variableName = getOWLNamedObjectVariableName(match);
 		if (variableName != null) {
-			return new VariableMatcher(variableName);
+			return var(variableName, Collections.emptyMap());
 		}
 		IRI iri = getOWLNamedObjectIRI(match);
-		return new OWLNamedObjectMatcher(iri);
+		return hasIRI(iri);
 	}
 
 	private String getOWLNamedObjectVariableName(Matcher match) {
@@ -600,90 +630,98 @@ public class Converter implements IConverter {
 		}
 	}
 
-	protected IMatcher<? super String> getStringMatcher(String string) {
+	protected org.hamcrest.Matcher<? super String> getStringMatcher(String string) {
 		if (string == null) {
-			return JavaAnyMatcher.getInstance();
+			return anything();
 		}
 		Matcher match = PATTERN_VARIABLE.matcher(string);
 		if (match.matches()) {
-			return new VariableMatcher(match.group(PATTERN_VARIABLE_NAME));
+			return var(match.group(PATTERN_VARIABLE_NAME), Collections.emptyMap());
 		} else {
-			return new JavaStringMatcher(string);
+			return equalTo(string);
 		}
 	}
 
-	protected IMatcher<? super Boolean> getBooleanMatcher(String string) throws LiteralNotInValueSpaceException {
+	protected org.hamcrest.Matcher<? super Boolean> getBooleanMatcher(String string)
+			throws LiteralNotInValueSpaceException {
 		if (string == null) {
-			return JavaAnyMatcher.getInstance();
+			return anything();
 		}
 		Matcher match = PATTERN_VARIABLE.matcher(string);
 		if (match.matches()) {
-			return new VariableMatcher(match.group(PATTERN_VARIABLE_NAME));
+			return var(match.group(PATTERN_VARIABLE_NAME), Collections.emptyMap());
 		} else {
+			boolean value;
 			if (string.equals("true") || string.equals("1")) {
-				return new JavaBooleanMatcher(true);
+				value = true;
 			} else if (string.equals("false") || string.equals("0")) {
-				return new JavaBooleanMatcher(false);
+				value = false;
 			} else {
 				throw new LiteralNotInValueSpaceException("Argument should be [true|false|1|0]");
 			}
+			return equalTo(value);
 		}
 	}
 
-	private IMatcher<? super Float> getFloatMatcher(String string) throws LiteralNotInValueSpaceException {
+	private org.hamcrest.Matcher<? super Float> getFloatMatcher(String string) throws LiteralNotInValueSpaceException {
 		if (string == null) {
-			return JavaAnyMatcher.getInstance();
+			return anything();
 		}
 		Matcher match = PATTERN_VARIABLE.matcher(string);
 		if (match.matches()) {
-			return new VariableMatcher(match.group(PATTERN_VARIABLE_NAME));
+			return var(match.group(PATTERN_VARIABLE_NAME), Collections.emptyMap());
 		} else {
+			float value;
 			if (string.equals(NaN)) {
-				return new JavaFloatMatcher(Float.NaN);
+				value = Float.NaN;
 			}
 			if (string.equals(INF)) {
-				return new JavaFloatMatcher(Float.POSITIVE_INFINITY);
+				value = Float.POSITIVE_INFINITY;
 			}
 			if (string.equals(INF_NEG)) {
-				return new JavaFloatMatcher(Float.NEGATIVE_INFINITY);
+				value = Float.NEGATIVE_INFINITY;
+			} else {
+				value = Float.parseFloat(string);
 			}
-			float floatValue = Float.parseFloat(string);
-			return new JavaFloatMatcher(floatValue);
+			return equalTo(value);
 		}
 	}
 
-	private IMatcher<? super Double> getDoubleMatcher(String string) throws LiteralNotInValueSpaceException {
+	private org.hamcrest.Matcher<? super Double> getDoubleMatcher(String string)
+			throws LiteralNotInValueSpaceException {
 		if (string == null) {
-			return JavaAnyMatcher.getInstance();
+			return anything();
 		}
 		Matcher match = PATTERN_VARIABLE.matcher(string);
 		if (match.matches()) {
-			return new VariableMatcher(match.group(PATTERN_VARIABLE_NAME));
+			return var(match.group(PATTERN_VARIABLE_NAME), Collections.emptyMap());
 		} else {
+			double value;
 			if (string.equals(NaN)) {
-				return new JavaDoubleMatcher(Double.NaN);
+				value = Double.NaN;
 			}
 			if (string.equals(INF)) {
-				return new JavaDoubleMatcher(Double.POSITIVE_INFINITY);
+				value = Double.POSITIVE_INFINITY;
 			}
 			if (string.equals(INF_NEG)) {
-				return new JavaDoubleMatcher(Double.NEGATIVE_INFINITY);
+				value = Double.NEGATIVE_INFINITY;
+			} else {
+				value = Double.parseDouble(string);
 			}
-			double doubleValue = Double.parseDouble(string);
-			return new JavaDoubleMatcher(doubleValue);
+			return equalTo(value);
 		}
 	}
 
-	private IMatcher<? super Integer> getIntegerMatcher(String string) throws LiteralNotInValueSpaceException {
+	private org.hamcrest.Matcher<? super Integer> getIntegerMatcher(String string)
+			throws LiteralNotInValueSpaceException {
 		if (string == null) {
-			return JavaAnyMatcher.getInstance();
+			return anything();
 		}
 		Matcher match = PATTERN_VARIABLE.matcher(string);
 		if (match.matches()) {
-			return new VariableMatcher(match.group(PATTERN_VARIABLE_NAME));
+			return var(match.group(PATTERN_VARIABLE_NAME), Collections.emptyMap());
 		} else {
-			int floatValue = Integer.parseInt(string);
-			return new JavaIntegerMatcher(floatValue);
+			return equalTo(Integer.parseInt(string));
 		}
 	}
 

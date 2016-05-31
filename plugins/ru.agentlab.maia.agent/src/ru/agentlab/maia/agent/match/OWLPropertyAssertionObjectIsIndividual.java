@@ -3,14 +3,14 @@ package ru.agentlab.maia.agent.match;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLPropertyAssertionObject;
 
-public class OWLPropertyAssertionObjectIsLiteral extends TypeSafeMatcher<OWLPropertyAssertionObject> {
+public class OWLPropertyAssertionObjectIsIndividual extends TypeSafeMatcher<OWLPropertyAssertionObject> {
 
-	Matcher<? super OWLLiteral> matcher;
+	Matcher<? super OWLIndividual> matcher;
 
-	public OWLPropertyAssertionObjectIsLiteral(Matcher<? super OWLLiteral> matcher) {
+	public OWLPropertyAssertionObjectIsIndividual(Matcher<? super OWLIndividual> matcher) {
 		super();
 		this.matcher = matcher;
 	}
@@ -22,7 +22,7 @@ public class OWLPropertyAssertionObjectIsLiteral extends TypeSafeMatcher<OWLProp
 
 	@Override
 	protected boolean matchesSafely(OWLPropertyAssertionObject object) {
-		return (object instanceof OWLLiteral) && matcher.matches((OWLLiteral) object);
+		return (object instanceof OWLIndividual) && matcher.matches((OWLIndividual) object);
 	}
 
 }
