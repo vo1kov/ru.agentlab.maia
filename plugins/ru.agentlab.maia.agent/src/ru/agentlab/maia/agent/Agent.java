@@ -10,6 +10,7 @@ package ru.agentlab.maia.agent;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -45,11 +47,12 @@ import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
-import ru.agentlab.maia.IRoleBase;
 import ru.agentlab.maia.agent.converter.Converter;
 import ru.agentlab.maia.container.Injector;
 import ru.agentlab.maia.event.PlanFailedEvent;
 import ru.agentlab.maia.event.PlanFinishedEvent;
+import ru.agentlab.maia.event.RoleAddedEvent;
+import ru.agentlab.maia.event.RoleRemovedEvent;
 import ru.agentlab.maia.event.RoleResolvedEvent;
 import ru.agentlab.maia.event.RoleUnresolvedEvent;
 import ru.agentlab.maia.exception.ContainerException;
@@ -81,7 +84,7 @@ public class Agent implements IAgent {
 
 	protected final IPlanBase planBase = new PlanBase(eventQueue);
 
-	protected final IRoleBase roleBase = new RoleBase(eventQueue);
+	protected final Set<Object> roles = new HashSet<>();
 
 	protected IConverter converter = new Converter();
 
@@ -112,7 +115,7 @@ public class Agent implements IAgent {
 
 	@Override
 	public Collection<Object> getRoles() {
-		return roleBase.getRoles();
+		return roles;
 	}
 
 	@Override
@@ -154,8 +157,71 @@ public class Agent implements IAgent {
 		}
 	}
 
-	public Future<Object> submitRole(Class<?> roleClass, Map<String, Object> parameters) {
+	@Override
+	public boolean removeRole(Object roleObject) {
+		if (roleObject == null) {
+			throw new NullPointerException("Role class can't be null");
+		}
+		switch (state) {
+		case ACTIVE:
+		case WAITING:
+			throw new IllegalStateException("Agent is in ACTIVE state, use submit method instead.");
+		case TRANSIT:
+			throw new IllegalStateException("Agent is in TRANSIT state, can't remove roles.");
+		case STOPPING:
+			throw new IllegalStateException("Agent is in STOPPING state, can't remove roles.");
+		case IDLE:
+		case UNKNOWN:
+		default:
+			return internalRemoveRole(roleObject);
+		}
+	}
+
+	@Override
+	public boolean removeAllRoles() {
+		switch (state) {
+		case ACTIVE:
+		case WAITING:
+			throw new IllegalStateException("Agent is in ACTIVE state, use submit method instead.");
+		case TRANSIT:
+			throw new IllegalStateException("Agent is in TRANSIT state, can't remove roles.");
+		case STOPPING:
+			throw new IllegalStateException("Agent is in STOPPING state, can't remove roles.");
+		case IDLE:
+		case UNKNOWN:
+		default:
+			return internalRemoveAllRoles();
+		}
+	}
+
+	@Override
+	public Future<Object> submitAddRole(Class<?> roleClass, Map<String, Object> parameters) {
 		return null;
+	}
+
+	@Override
+	public Future<Boolean> submitRemoveRole(Object roleObject) {
+		return null;
+	}
+
+	@Override
+	public Future<Boolean> submitRemoveAllRoles() {
+		return null;
+	}
+
+	protected boolean internalRemoveRole(Object roleObject) {
+		boolean removed = roles.remove(roleObject);
+		if (removed) {
+			eventQueue.offer(new RoleRemovedEvent(roleObject));
+		}
+		return removed;
+	}
+
+	protected boolean internalRemoveAllRoles() {
+		Stream<RoleRemovedEvent> events = roles.stream().map(role -> new RoleRemovedEvent(role));
+		roles.clear();
+		events.forEach(eventQueue::offer);
+		return true;
 	}
 
 	protected Object internalAddRole(Class<?> roleClass, Map<String, Object> parameters) throws ResolveException {
@@ -187,7 +253,8 @@ public class Agent implements IAgent {
 
 			// Add role object to the role base and generate event about
 			// successful resolving
-			roleBase.addRole(roleObject);
+			roles.add(roleObject);
+			eventQueue.offer(new RoleAddedEvent(roleObject));
 			eventQueue.offer(new RoleResolvedEvent(roleObject));
 			return roleObject;
 		} catch (InjectorException | ConverterException e) {
@@ -239,8 +306,6 @@ public class Agent implements IAgent {
 				return goalBase;
 			} else if (key.equals(IPlanBase.class.getName())) {
 				return planBase;
-			} else if (key.equals(IRoleBase.class.getName())) {
-				return roleBase;
 			} else if (key.equals(IRI.class.getName())) {
 				return beliefBase.getOntologyIRI();
 			} else if (key.equals(OWLOntology.class.getName())) {
@@ -265,8 +330,6 @@ public class Agent implements IAgent {
 				return key.cast(goalBase);
 			} else if (key == IPlanBase.class) {
 				return key.cast(planBase);
-			} else if (key == IRoleBase.class) {
-				return key.cast(roleBase);
 			} else if (key == IRI.class) {
 				return key.cast(beliefBase.getOntologyIRI());
 			} else if (key == OWLOntology.class) {
@@ -288,7 +351,6 @@ public class Agent implements IAgent {
 				IBeliefBase.class.getName(),
 				IGoalBase.class.getName(),
 				IPlanBase.class.getName(),
-				IRoleBase.class.getName(),
 				IRI.class.getName(),
 				OWLOntology.class.getName(),
 				OWLDataFactory.class.getName()
