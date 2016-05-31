@@ -142,7 +142,7 @@ public class Injector implements IInjector {
 			if (haveDefault) {
 				return defaultValue;
 			} else {
-				throw new InjectorException();
+				throw new NullPointerException();
 			}
 		}
 		Parameter[] parameters = method.getParameters();

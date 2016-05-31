@@ -45,6 +45,7 @@ import ru.agentlab.maia.test.util.LoggerRule;
 @RunWith(Parameterized.class)
 public class InjectorInvokeTest {
 
+	private static final Class<NullPointerException> NPE = NullPointerException.class;
 	private static final Class<InjectorException> EXCEPTION = InjectorException.class;
 
 	private static final String STRING_VALUE1 = "Test";
@@ -54,22 +55,29 @@ public class InjectorInvokeTest {
 	private static final int INT_VALUE1 = 12334;
 	private static final int INT_VALUE2 = 12;
 
+	private static final String EMPTY_PARAMETERS = "EMPTY_PARAMETERS";
+
+	private static Method getMethod(String name) {
+		return Stream.of(MethodsService.class.getDeclaredMethods()).filter(m -> m.getName().equals(name)).findFirst()
+				.get();
+	}
+
 	// @formatter:off
-	private static final Method PUBLIC_VOID_METHOD = Stream.of(MethodsService.class.getDeclaredMethods()).filter(m->m.getName().equals("publicVoid")).findFirst().get();
-	private static final Method PROTECTED_VOID_METHOD = Stream.of(MethodsService.class.getDeclaredMethods()).filter(m->m.getName().equals("protectedVoid")).findFirst().get();
-	private static final Method PRIVATE_VOID_METHOD = Stream.of(MethodsService.class.getDeclaredMethods()).filter(m->m.getName().equals("privateVoid")).findFirst().get();
+	private static final Method PUBLIC_VOID_METHOD = getMethod("publicVoid");
+	private static final Method PROTECTED_VOID_METHOD = getMethod("protectedVoid");
+	private static final Method PRIVATE_VOID_METHOD = getMethod("privateVoid");
 	
-	private static final Method PUBLIC_VOID_STRING_METHOD = Stream.of(MethodsService.class.getDeclaredMethods()).filter(m->m.getName().equals("publicVoidString")).findFirst().get();
-	private static final Method PROTECTED_VOID_STRING_METHOD = Stream.of(MethodsService.class.getDeclaredMethods()).filter(m->m.getName().equals("protectedVoidString")).findFirst().get();
-	private static final Method PRIVATE_VOID_STRING_METHOD = Stream.of(MethodsService.class.getDeclaredMethods()).filter(m->m.getName().equals("privateVoidString")).findFirst().get();
+	private static final Method PUBLIC_VOID_STRING_METHOD = getMethod("publicVoidString");
+	private static final Method PROTECTED_VOID_STRING_METHOD = getMethod("protectedVoidString");
+	private static final Method PRIVATE_VOID_STRING_METHOD = getMethod("privateVoidString");
 	
-	private static final Method PUBLIC_RETURN_STRING_METHOD = Stream.of(MethodsService.class.getDeclaredMethods()).filter(m->m.getName().equals("publicReturnString")).findFirst().get();
-	private static final Method PROTECTED_RETURN_STRING_METHOD = Stream.of(MethodsService.class.getDeclaredMethods()).filter(m->m.getName().equals("protectedReturnString")).findFirst().get();
-	private static final Method PRIVATE_RETURN_STRING_METHOD = Stream.of(MethodsService.class.getDeclaredMethods()).filter(m->m.getName().equals("privateReturnString")).findFirst().get();
+	private static final Method PUBLIC_RETURN_STRING_METHOD = getMethod("publicReturnString");
+	private static final Method PROTECTED_RETURN_STRING_METHOD = getMethod("protectedReturnString");
+	private static final Method PRIVATE_RETURN_STRING_METHOD = getMethod("privateReturnString");
 	
-	private static final Method STRING_NAMED_METHOD = Stream.of(MethodsService.class.getDeclaredMethods()).filter(m->m.getName().equals("stringNamed")).findFirst().get();
-	private static final Method STRING_INTEGER_METHOD = Stream.of(MethodsService.class.getDeclaredMethods()).filter(m->m.getName().equals("stringInteger")).findFirst().get();
-	private static final Method STRING_STRING_NAMED_METHOD = Stream.of(MethodsService.class.getDeclaredMethods()).filter(m->m.getName().equals("stringStringNamed")).findFirst().get();
+	private static final Method STRING_NAMED_METHOD = getMethod("stringNamed");
+	private static final Method STRING_INTEGER_METHOD = getMethod("stringInteger");
+	private static final Method STRING_STRING_NAMED_METHOD = getMethod("stringStringNamed");
 	// @formatter:on
 
 	// @formatter:off
@@ -141,39 +149,71 @@ public class InjectorInvokeTest {
 		 *|  ##  |-------------------------------------------------------------------------------------------------------------------------------------------|
 		 *|      | Method                             | Additional    | Container     | Result    | Service state                                            |
 		 *--------------------------------------------------------------------------------------------------------------------------------------------------*/
+		/*  0 */ { null,                              null,           null,           NPE,                                allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
 		// Method without parameters at all	
-		/*  0 */ { PUBLIC_VOID_METHOD,                null,           null,           nullValue(),                        allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
-		/*  0 */ { PROTECTED_VOID_METHOD,             null,           null,           nullValue(),                        allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
-		/*  0 */ { PRIVATE_VOID_METHOD,               null,           null,           nullValue(),                        allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/*  1 */ { PUBLIC_VOID_METHOD,                null,           null,           nullValue(),                        allOf(notNullValue(), hasProperty("value", is(EMPTY_PARAMETERS)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/*  2 */ { PROTECTED_VOID_METHOD,             null,           null,           nullValue(),                        allOf(notNullValue(), hasProperty("value", is(EMPTY_PARAMETERS)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/*  3 */ { PRIVATE_VOID_METHOD,               null,           null,           nullValue(),                        allOf(notNullValue(), hasProperty("value", is(EMPTY_PARAMETERS)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
 		                                                                                                                  
 		// Method with 1 String parameter with different visibility	                                                      
-		/*  0 */ { PUBLIC_VOID_STRING_METHOD,         TSTRING1,       null,           nullValue(),                        allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
-		/*  0 */ { PROTECTED_VOID_STRING_METHOD,      TSTRING1,       null,           nullValue(),                        allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
-		/*  0 */ { PRIVATE_VOID_STRING_METHOD,        TSTRING1,       null,           nullValue(),                        allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/*  4 */ { PUBLIC_VOID_STRING_METHOD,         TSTRING1,       null,           nullValue(),                        allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/*  5 */ { PROTECTED_VOID_STRING_METHOD,      TSTRING1,       null,           nullValue(),                        allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/*  6 */ { PRIVATE_VOID_STRING_METHOD,        TSTRING1,       null,           nullValue(),                        allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
 		                                                                                                                  
-		/*  0 */ { PUBLIC_VOID_STRING_METHOD,         null,           TSTRING1,       nullValue(),                        allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
-		/*  0 */ { PROTECTED_VOID_STRING_METHOD,      null,           TSTRING1,       nullValue(),                        allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
-		/*  0 */ { PRIVATE_VOID_STRING_METHOD,        null,           TSTRING1,       nullValue(),                        allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/*  7 */ { PUBLIC_VOID_STRING_METHOD,         null,           TSTRING1,       nullValue(),                        allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/*  8 */ { PROTECTED_VOID_STRING_METHOD,      null,           TSTRING1,       nullValue(),                        allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/*  9 */ { PRIVATE_VOID_STRING_METHOD,        null,           TSTRING1,       nullValue(),                        allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
 		                                                                                                                  
-		/*  0 */ { PUBLIC_VOID_STRING_METHOD,         TSTRING2,       TSTRING1,       nullValue(),                        allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
-		/*  0 */ { PROTECTED_VOID_STRING_METHOD,      TSTRING2,       TSTRING1,       nullValue(),                        allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
-		/*  0 */ { PRIVATE_VOID_STRING_METHOD,        TSTRING2,       TSTRING1,       nullValue(),                        allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 10 */ { PUBLIC_VOID_STRING_METHOD,         TSTRING2,       TSTRING1,       nullValue(),                        allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 11 */ { PROTECTED_VOID_STRING_METHOD,      TSTRING2,       TSTRING1,       nullValue(),                        allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 12 */ { PRIVATE_VOID_STRING_METHOD,        TSTRING2,       TSTRING1,       nullValue(),                        allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
 
-		// Method with 1 String parameter with different visibility and returning Object	
-		/*  0 */ { PUBLIC_RETURN_STRING_METHOD,       TSTRING1,       null,           notNullValue(MethodsService.class),  allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
-		/*  0 */ { PROTECTED_RETURN_STRING_METHOD,    TSTRING1,       null,           notNullValue(MethodsService.class),  allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
-		/*  0 */ { PRIVATE_RETURN_STRING_METHOD,      TSTRING1,       null,           notNullValue(MethodsService.class),  allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
-		                                                                              
-		/*  0 */ { PUBLIC_RETURN_STRING_METHOD,       null,           TSTRING1,       notNullValue(MethodsService.class),  allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
-		/*  0 */ { PROTECTED_RETURN_STRING_METHOD,    null,           TSTRING1,       notNullValue(MethodsService.class),  allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
-		/*  0 */ { PRIVATE_RETURN_STRING_METHOD,      null,           TSTRING1,       notNullValue(MethodsService.class),  allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
-		                                                                              
-		/*  0 */ { PUBLIC_RETURN_STRING_METHOD,       TSTRING2,       TSTRING1,       notNullValue(MethodsService.class),  allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
-		/*  0 */ { PROTECTED_RETURN_STRING_METHOD,    TSTRING2,       TSTRING1,       notNullValue(MethodsService.class),  allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
-		/*  0 */ { PRIVATE_RETURN_STRING_METHOD,      TSTRING2,       TSTRING1,       notNullValue(MethodsService.class),  allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
-
-		// Method with 1 String parameter with @Named	
+		/* 13 */ { PUBLIC_VOID_STRING_METHOD,         null,           null,           EXCEPTION,                          allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 14 */ { PUBLIC_VOID_STRING_METHOD,         NSTRING1,       null,           EXCEPTION,                          allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 15 */ { PUBLIC_VOID_STRING_METHOD,         null,           NSTRING1,       EXCEPTION,                          allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
 		
+		// Method with 1 String parameter with different visibility and returning Object	
+		/* 16 */ { PUBLIC_RETURN_STRING_METHOD,       TSTRING1,       null,           notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 17 */ { PROTECTED_RETURN_STRING_METHOD,    TSTRING1,       null,           notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 18 */ { PRIVATE_RETURN_STRING_METHOD,      TSTRING1,       null,           notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		                                                                              
+		/* 19 */ { PUBLIC_RETURN_STRING_METHOD,       null,           TSTRING1,       notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 20 */ { PROTECTED_RETURN_STRING_METHOD,    null,           TSTRING1,       notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 21 */ { PRIVATE_RETURN_STRING_METHOD,      null,           TSTRING1,       notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		                                                                              
+		/* 22 */ { PUBLIC_RETURN_STRING_METHOD,       TSTRING2,       TSTRING1,       notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 23 */ { PROTECTED_RETURN_STRING_METHOD,    TSTRING2,       TSTRING1,       notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 24 */ { PRIVATE_RETURN_STRING_METHOD,      TSTRING2,       TSTRING1,       notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		
+		/* 25 */ { PUBLIC_RETURN_STRING_METHOD,       null,           null,           EXCEPTION,                          allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 26 */ { PUBLIC_RETURN_STRING_METHOD,       NSTRING1,       null,           EXCEPTION,                          allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 27 */ { PUBLIC_RETURN_STRING_METHOD,       null,           NSTRING1,       EXCEPTION,                          allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		
+		// Method with 1 String parameter with @Named
+		/* 28 */ { STRING_NAMED_METHOD,               NSTRING1,       null,           notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 29 */ { STRING_NAMED_METHOD,               null,           NSTRING1,       notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 30 */ { STRING_NAMED_METHOD,               NSTRING2,       NSTRING1,       notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2)), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		
+		/* 31 */ { STRING_NAMED_METHOD,               null,           null,           EXCEPTION,                          allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 32 */ { STRING_NAMED_METHOD,               TSTRING1,       null,           EXCEPTION,                          allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 33 */ { STRING_NAMED_METHOD,               null,           TSTRING1,       EXCEPTION,                          allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+
+		// Method with 2 parameters returning Object
+		/* 34 */ { STRING_INTEGER_METHOD,             null,           null,           EXCEPTION,                          allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 35 */ { STRING_INTEGER_METHOD,             TSTRING1,       null,           EXCEPTION,                          allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 36 */ { STRING_INTEGER_METHOD,             null,           TSTRING1,       EXCEPTION,                          allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 37 */ { STRING_INTEGER_METHOD,             TINT1,          null,           EXCEPTION,                          allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 38 */ { STRING_INTEGER_METHOD,             null,           TINT1,          EXCEPTION,                          allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("value2", nullValue()), hasProperty("intValue", is(0))) },
+		/* 39 */ { STRING_INTEGER_METHOD,             TINT1,          TSTRING1,       notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(INT_VALUE1))) },
+		/* 40 */ { STRING_INTEGER_METHOD,             TSTRING1,       TINT1,          notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(INT_VALUE1))) },
+		/* 41 */ { STRING_INTEGER_METHOD,             TSTRING1_TINT1, null,           notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(INT_VALUE1))) },
+		/* 42 */ { STRING_INTEGER_METHOD,             null,           TSTRING2_TINT2, notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2)), hasProperty("value2", nullValue()), hasProperty("intValue", is(INT_VALUE2))) },
+		/* 43 */ { STRING_INTEGER_METHOD,             TSTRING2,       TSTRING1_TINT1, notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2)), hasProperty("value2", nullValue()), hasProperty("intValue", is(INT_VALUE1))) },
+		/* 44 */ { STRING_INTEGER_METHOD,             TINT2,          TSTRING1_TINT1, notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", nullValue()), hasProperty("intValue", is(INT_VALUE2))) },
+		
+		// If services have same types but one is @Named
+		/* 45 */ { STRING_STRING_NAMED_METHOD,        TSTRING1_NSTRING2, null,        notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", is(STRING_VALUE2)), hasProperty("intValue", is(0))) },
+		/* 46 */ { STRING_STRING_NAMED_METHOD,        null,        TSTRING1_NSTRING2, notNullValue(MethodsService.class), allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", is(STRING_VALUE2)), hasProperty("intValue", is(0))) },
 		// @formatter:on
 		});
 	}
@@ -205,16 +245,17 @@ public class InjectorInvokeTest {
 		IInjector injector = new Injector(container);
 		try {
 			// When
-			Object invokeResult = injector.invoke(service, method);
+			Object result = injector.invoke(service, method, parameters);
 			// Then
-			if (resultMatcher != null) {
-				fail("Expected [" + resultMatcher + "], but was: [" + service + "]");
+			if (resultMatcher instanceof Class) {
+				fail("Expected return: [" + resultMatcher + "] and service: [" + serviceMatcher + "], but was: ["
+						+ result + "] and: [" + service + "]");
 			}
 			assertThat(service, serviceMatcher);
-			assertThat(invokeResult, (Matcher<? super Object>) resultMatcher);
+			assertThat(result, (Matcher<? super Object>) resultMatcher);
 		} catch (Exception e) {
 			// Then
-			if (resultMatcher == null) {
+			if (!(resultMatcher instanceof Class)) {
 				fail("Expected [" + resultMatcher + "], but was: [" + e + "]");
 			}
 			assertThat(e, instanceOf((Class<?>) resultMatcher));
@@ -222,7 +263,7 @@ public class InjectorInvokeTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> IContainer mockContainer() {
+	private <T> IContainer mockContainer() {
 		IContainer container = mock(IContainer.class);
 		if (containerServices != null) {
 			containerServices.forEach((k, v) -> {
@@ -247,16 +288,16 @@ public class InjectorInvokeTest {
 		int intValue;
 
 		public void publicVoid() {
-			this.value = "EMPTY_PARAMETERS";
+			this.value = EMPTY_PARAMETERS;
 		}
 
 		protected void protectedVoid() {
-			this.value = "EMPTY_PARAMETERS";
+			this.value = EMPTY_PARAMETERS;
 		}
 
 		@SuppressWarnings("unused")
 		private void privateVoid() {
-			this.value = "EMPTY_PARAMETERS";
+			this.value = EMPTY_PARAMETERS;
 		}
 
 		public void publicVoidString(String value) {

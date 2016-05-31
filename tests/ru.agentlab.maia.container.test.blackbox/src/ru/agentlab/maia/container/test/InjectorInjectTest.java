@@ -44,6 +44,7 @@ import ru.agentlab.maia.test.util.LoggerRule;
 @RunWith(Parameterized.class)
 public class InjectorInjectTest {
 
+	private static final Class<NullPointerException> NPE = NullPointerException.class;
 	private static final Class<InjectorException> EXCEPTION = InjectorException.class;
 
 	private static final String STRING_VALUE1 = "Test";
@@ -131,63 +132,64 @@ public class InjectorInjectTest {
 		 *|  ##  |------------------------------------------------------------------------------------------------------------------------------------------|
 		 *|      | Class                              | Additional    | Container     | Result   | Service state                                            |
 		 *-------------------------------------------------------------------------------------------------------------------------------------------------*/
+		/*  0 */ { null,                              null,           null,           NPE,       notNullValue() },
 		// Service without fields at all	
-		/*  0 */ { NO_FIELDS,                         null,           null,           null,      notNullValue() },
+		/*  1 */ { NO_FIELDS,                         null,           null,           null,      notNullValue() },
 		
 		// Service with 1 field
 		// If no @Inject annotation should be silent and service don't changes
-		/*  1 */ { STRING_FIELD,                      null,           null,           null,      allOf(notNullValue(), hasProperty("value", nullValue())) },
-		/*  2 */ { STRING_FIELD,                      TSTRING1,       null,           null,      allOf(notNullValue(), hasProperty("value", nullValue())) },
-		/*  3 */ { STRING_FIELD,                      null,           TSTRING1,       null,      allOf(notNullValue(), hasProperty("value", nullValue())) },
+		/*  2 */ { STRING_FIELD,                      null,           null,           null,      allOf(notNullValue(), hasProperty("value", nullValue())) },
+		/*  3 */ { STRING_FIELD,                      TSTRING1,       null,           null,      allOf(notNullValue(), hasProperty("value", nullValue())) },
+		/*  4 */ { STRING_FIELD,                      null,           TSTRING1,       null,      allOf(notNullValue(), hasProperty("value", nullValue())) },
 		// If no @Inject annotation but have @Named should be silent and service don't changes
-		/*  4 */ { STRING_NAMED_FIELD,                null,           null,           null,      allOf(notNullValue(), hasProperty("value", nullValue())) },
-		/*  5 */ { STRING_NAMED_FIELD,                TSTRING1,       null,           null,      allOf(notNullValue(), hasProperty("value", nullValue())) },
-		/*  6 */ { STRING_NAMED_FIELD,                null,           TSTRING1,       null,      allOf(notNullValue(), hasProperty("value", nullValue())) },
+		/*  5 */ { STRING_NAMED_FIELD,                null,           null,           null,      allOf(notNullValue(), hasProperty("value", nullValue())) },
+		/*  6 */ { STRING_NAMED_FIELD,                TSTRING1,       null,           null,      allOf(notNullValue(), hasProperty("value", nullValue())) },
+		/*  7 */ { STRING_NAMED_FIELD,                null,           TSTRING1,       null,      allOf(notNullValue(), hasProperty("value", nullValue())) },
 		// If not enough dependencies then throw and service don't changes
-		/*  7 */ { STRING_INJECT_FIELD,               null,           null,           EXCEPTION, allOf(notNullValue(), hasProperty("value", nullValue())) },
+		/*  8 */ { STRING_INJECT_FIELD,               null,           null,           EXCEPTION, allOf(notNullValue(), hasProperty("value", nullValue())) },
 		// If dependency in additional or in context then get it
-		/*  8 */ { STRING_INJECT_FIELD,               TSTRING1,       null,           null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1))) },
-		/*  9 */ { STRING_INJECT_FIELD,               null,           TSTRING1,       null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1))) },
+		/*  9 */ { STRING_INJECT_FIELD,               TSTRING1,       null,           null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1))) },
+		/* 10 */ { STRING_INJECT_FIELD,               null,           TSTRING1,       null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1))) },
 		// If dependency in additional then get from it, not from context
-		/* 10 */ { STRING_INJECT_FIELD,               TSTRING1,       TSTRING1,       null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1))) },
-		/* 11 */ { STRING_INJECT_FIELD,               TSTRING2,       TSTRING1,       null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2))) },
+		/* 11 */ { STRING_INJECT_FIELD,               TSTRING1,       TSTRING1,       null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1))) },
+		/* 12 */ { STRING_INJECT_FIELD,               TSTRING2,       TSTRING1,       null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2))) },
 		// If @Inject @Named, but service registered by type-key, not named-key then throw and service don't changes 
-		/* 12 */ { STRING_NAMED_INJECT_FIELD,         TSTRING1,       null,           EXCEPTION, allOf(notNullValue(), hasProperty("value", nullValue())) },
-		/* 13 */ { STRING_NAMED_INJECT_FIELD,         null,           TSTRING1,       EXCEPTION, allOf(notNullValue(), hasProperty("value", nullValue())) },
-		/* 14 */ { STRING_NAMED_INJECT_FIELD,         TSTRING1,       TSTRING1,       EXCEPTION, allOf(notNullValue(), hasProperty("value", nullValue())) },
+		/* 13 */ { STRING_NAMED_INJECT_FIELD,         TSTRING1,       null,           EXCEPTION, allOf(notNullValue(), hasProperty("value", nullValue())) },
+		/* 14 */ { STRING_NAMED_INJECT_FIELD,         null,           TSTRING1,       EXCEPTION, allOf(notNullValue(), hasProperty("value", nullValue())) },
+		/* 15 */ { STRING_NAMED_INJECT_FIELD,         TSTRING1,       TSTRING1,       EXCEPTION, allOf(notNullValue(), hasProperty("value", nullValue())) },
 		// If @Inject @Named, and service registered by named-key 
-		/* 15 */ { STRING_NAMED_INJECT_FIELD,         NSTRING2,       null,           null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2))) },
-		/* 16 */ { STRING_NAMED_INJECT_FIELD,         null,           NSTRING2,       null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2))) },
-		/* 17 */ { STRING_NAMED_INJECT_FIELD,         NSTRING1,       NSTRING2,       null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1))) },
+		/* 16 */ { STRING_NAMED_INJECT_FIELD,         NSTRING2,       null,           null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2))) },
+		/* 17 */ { STRING_NAMED_INJECT_FIELD,         null,           NSTRING2,       null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2))) },
+		/* 18 */ { STRING_NAMED_INJECT_FIELD,         NSTRING1,       NSTRING2,       null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1))) },
 		
 		// Service with more fields
 		// If no @Inject annotation should be silent and service don't changes
-		/* 18 */ { STRING_INTEGER_FIELDS,             null,           null,           null,      allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
-		/* 19 */ { STRING_INTEGER_FIELDS,             TSTRING1,       null,           null,      allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
-		/* 20 */ { STRING_INTEGER_FIELDS,             null,           TSTRING1,       null,      allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
-		/* 21 */ { STRING_INTEGER_FIELDS,             TINT1,          null,           null,      allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
-		/* 22 */ { STRING_INTEGER_FIELDS,             null,           TINT1,          null,      allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
-		/* 23 */ { STRING_INTEGER_FIELDS,             TSTRING1_TINT1, null,           null,      allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
-		/* 24 */ { STRING_INTEGER_FIELDS,             null,           TSTRING1_TINT1, null,      allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
+		/* 19 */ { STRING_INTEGER_FIELDS,             null,           null,           null,      allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
+		/* 20 */ { STRING_INTEGER_FIELDS,             TSTRING1,       null,           null,      allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
+		/* 21 */ { STRING_INTEGER_FIELDS,             null,           TSTRING1,       null,      allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
+		/* 22 */ { STRING_INTEGER_FIELDS,             TINT1,          null,           null,      allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
+		/* 23 */ { STRING_INTEGER_FIELDS,             null,           TINT1,          null,      allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
+		/* 24 */ { STRING_INTEGER_FIELDS,             TSTRING1_TINT1, null,           null,      allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
+		/* 25 */ { STRING_INTEGER_FIELDS,             null,           TSTRING1_TINT1, null,      allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
 		// If not enough dependencies then throw and service don't changes
-		/* 25 */ { STRING_INTEGER_INJECT_FIELDS,      null,           null,           EXCEPTION, allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
-		/* 26 */ { STRING_INTEGER_INJECT_FIELDS,      TSTRING1,       null,           EXCEPTION, allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
-		/* 27 */ { STRING_INTEGER_INJECT_FIELDS,      null,           TSTRING1,       EXCEPTION, allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
-		/* 28 */ { STRING_INTEGER_INJECT_FIELDS,      TINT1,          null,           EXCEPTION, allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
-		/* 29 */ { STRING_INTEGER_INJECT_FIELDS,      null,           TINT1,          EXCEPTION, allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
+		/* 26 */ { STRING_INTEGER_INJECT_FIELDS,      null,           null,           EXCEPTION, allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
+		/* 27 */ { STRING_INTEGER_INJECT_FIELDS,      TSTRING1,       null,           EXCEPTION, allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
+		/* 28 */ { STRING_INTEGER_INJECT_FIELDS,      null,           TSTRING1,       EXCEPTION, allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
+		/* 29 */ { STRING_INTEGER_INJECT_FIELDS,      TINT1,          null,           EXCEPTION, allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
+		/* 30 */ { STRING_INTEGER_INJECT_FIELDS,      null,           TINT1,          EXCEPTION, allOf(notNullValue(), hasProperty("value", nullValue()), hasProperty("intValue", is(0))) },
 		// If dependency in additional or in context then get it
-		/* 30 */ { STRING_INTEGER_INJECT_FIELDS,      TSTRING1,       TINT1,          null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("intValue", is(INT_VALUE1))) },
-		/* 31 */ { STRING_INTEGER_INJECT_FIELDS,      TINT1,          TSTRING1,       null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("intValue", is(INT_VALUE1))) },
-		/* 32 */ { STRING_INTEGER_INJECT_FIELDS,      TSTRING1_TINT1, null,           null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("intValue", is(INT_VALUE1))) },
-		/* 33 */ { STRING_INTEGER_INJECT_FIELDS,      null,           TSTRING1_TINT1, null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("intValue", is(INT_VALUE1))) },
+		/* 31 */ { STRING_INTEGER_INJECT_FIELDS,      TSTRING1,       TINT1,          null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("intValue", is(INT_VALUE1))) },
+		/* 32 */ { STRING_INTEGER_INJECT_FIELDS,      TINT1,          TSTRING1,       null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("intValue", is(INT_VALUE1))) },
+		/* 33 */ { STRING_INTEGER_INJECT_FIELDS,      TSTRING1_TINT1, null,           null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("intValue", is(INT_VALUE1))) },
+		/* 34 */ { STRING_INTEGER_INJECT_FIELDS,      null,           TSTRING1_TINT1, null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("intValue", is(INT_VALUE1))) },
 		// If dependency in additional then get from it, not from context
-		/* 34 */ { STRING_INTEGER_INJECT_FIELDS,      TSTRING1_TINT1, TSTRING1_TINT1, null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("intValue", is(INT_VALUE1))) },
-		/* 35 */ { STRING_INTEGER_INJECT_FIELDS,      TSTRING2_TINT2, TSTRING1_TINT1, null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2)), hasProperty("intValue", is(INT_VALUE2))) },
-		/* 36 */ { STRING_INTEGER_INJECT_FIELDS,      TSTRING2,       TSTRING1_TINT1, null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2)), hasProperty("intValue", is(INT_VALUE1))) },
-		/* 37 */ { STRING_INTEGER_INJECT_FIELDS,      TINT2,          TSTRING1_TINT1, null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("intValue", is(INT_VALUE2))) },
+		/* 35 */ { STRING_INTEGER_INJECT_FIELDS,      TSTRING1_TINT1, TSTRING1_TINT1, null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("intValue", is(INT_VALUE1))) },
+		/* 36 */ { STRING_INTEGER_INJECT_FIELDS,      TSTRING2_TINT2, TSTRING1_TINT1, null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2)), hasProperty("intValue", is(INT_VALUE2))) },
+		/* 37 */ { STRING_INTEGER_INJECT_FIELDS,      TSTRING2,       TSTRING1_TINT1, null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE2)), hasProperty("intValue", is(INT_VALUE1))) },
+		/* 38 */ { STRING_INTEGER_INJECT_FIELDS,      TINT2,          TSTRING1_TINT1, null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("intValue", is(INT_VALUE2))) },
 		// If services have same type but one is @Named
-		/* 38 */ { STRING_STRING_NAMED_INJECT_FIELDS, TSTRING1_NSTRING2, null,        null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", is(STRING_VALUE2))) },
-		/* 39 */ { STRING_STRING_NAMED_INJECT_FIELDS, null,        TSTRING1_NSTRING2, null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", is(STRING_VALUE2))) },
+		/* 39 */ { STRING_STRING_NAMED_INJECT_FIELDS, TSTRING1_NSTRING2, null,        null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", is(STRING_VALUE2))) },
+		/* 40 */ { STRING_STRING_NAMED_INJECT_FIELDS, null,        TSTRING1_NSTRING2, null,      allOf(notNullValue(), hasProperty("value", is(STRING_VALUE1)), hasProperty("value2", is(STRING_VALUE2))) },
 		// @formatter:on
 		});
 	}
@@ -233,7 +235,7 @@ public class InjectorInjectTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> IContainer mockContainer() {
+	private <T> IContainer mockContainer() {
 		IContainer container = mock(IContainer.class);
 		if (containerServices != null) {
 			containerServices.forEach((k, v) -> {
