@@ -297,7 +297,7 @@ public class Converter implements IConverter {
 		return null;
 	}
 
-	protected IMatcher<?> getEventMatcher(Annotation ann) throws AnnotationFormatException {
+	protected org.hamcrest.Matcher<?> getEventMatcher(Annotation ann) throws AnnotationFormatException {
 		if (ANNOTATIONS_CLASSIFICATION_ASSERTION.contains(ann.annotationType())) {
 			String value = getMethodValue(ann, METHOD_NAME, String.class);
 			return getOWLClassAssertionAxiomMatcher(value);
@@ -405,7 +405,7 @@ public class Converter implements IConverter {
 		}
 	}
 
-	protected IMatcher<OWLClassAssertionAxiom> getOWLClassAssertionAxiomMatcher(String template)
+	protected org.hamcrest.Matcher<OWLClassAssertionAxiom> getOWLClassAssertionAxiomMatcher(String template)
 			throws AnnotationFormatException {
 		String[] parts = splitClassAssertioin(template);
 		String individual = parts[0];

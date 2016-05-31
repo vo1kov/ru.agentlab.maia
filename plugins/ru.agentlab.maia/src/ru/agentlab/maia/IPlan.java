@@ -10,6 +10,8 @@ package ru.agentlab.maia;
 
 import java.util.Map;
 
+import org.hamcrest.Matcher;
+
 import ru.agentlab.maia.exception.PlanExecutionException;
 
 public interface IPlan {
@@ -18,12 +20,12 @@ public interface IPlan {
 
 	boolean relevant(IEvent<?> event, Map<String, Object> map);
 
-	void setStateMatcher(IMatcher<?> matcher);
+	void setStateMatcher(Matcher<?> matcher);
 
-	IMatcher<?> getStateMatcher();
+	Matcher<?> getStateMatcher();
 
-	void setEventMatcher(IMatcher<?> eventMatcher);
+	void setEventMatcher(Matcher<?> eventMatcher);
 
-	IMatcher<?> getEventMatcher();
+	Matcher<?> getEventMatcher();
 
 }
