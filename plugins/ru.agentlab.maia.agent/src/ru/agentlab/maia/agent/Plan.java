@@ -41,17 +41,7 @@ public abstract class Plan implements IPlan {
 
 	@Override
 	public boolean relevant(IEvent<?> event, Map<String, Object> map) {
-		Object eventData = event.getPayload();
-		return match(eventMatcher, eventData, map);
-	}
-
-	private <M> boolean match(Matcher<M> matcher, Object eventData, Map<String, Object> map) {
-//		Class<M> eventMatcherClass = matcher.getType();
-		if (eventMatcherClass.isAssignableFrom(eventData.getClass())) {
-			return matcher.matches(eventMatcherClass.cast(eventData));
-		} else {
-			return false;
-		}
+		return eventMatcher.matches(event.getPayload());
 	}
 
 }
