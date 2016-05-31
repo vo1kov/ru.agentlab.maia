@@ -8,7 +8,6 @@
  *******************************************************************************/
 package ru.agentlab.maia.container;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -18,17 +17,13 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import ru.agentlab.maia.IContainer;
 import ru.agentlab.maia.IInjector;
-import ru.agentlab.maia.exception.ContainerException;
 import ru.agentlab.maia.exception.InjectorException;
-import ru.agentlab.maia.exception.ServiceNotFound;
 
 /**
  * Injector for Dependency Injection.
@@ -62,12 +57,12 @@ public class Injector implements IInjector {
 	}
 
 	@Override
-	public <T> T make(Class<T> clazz) throws InjectorException, ContainerException {
+	public <T> T make(Class<T> clazz, Map<String, Object> additional) throws InjectorException {
 		try {
-			Constructor<?>[] constructors = clazz.getConstructors();
+			Constructor<?>[] constructors = clazz.getDeclaredConstructors();
 			Arrays.sort(constructors, comparator);
 			for (Constructor<?> constructor : constructors) {
-				Object instance = tryConstruct(constructor);
+				Object instance = tryConstruct(constructor, additional);
 				if (instance != null) {
 					return clazz.cast(instance);
 				}
@@ -79,75 +74,42 @@ public class Injector implements IInjector {
 	}
 
 	@Override
-	public Object invoke(Object object, Class<? extends Annotation> qualifier)
-			throws InjectorException, ContainerException {
-		Optional<Method> method = Arrays.stream(object.getClass().getDeclaredMethods())
-				.filter(m -> m.isAnnotationPresent(qualifier)).findFirst();
-		if (method.isPresent()) {
-			return invoke(object, method.get(), false, null);
-		} else {
-			throw new InjectorException("Object have no method annotated with @" + qualifier.getName());
-		}
+	public Object invoke(Object object, Method method) throws InjectorException {
+		return invoke(object, method, false, null, null);
 	}
 
 	@Override
-	public Object invoke(Object object, String methodName) throws InjectorException, ContainerException {
-		Optional<Method> method = Arrays.stream(object.getClass().getDeclaredMethods())
-				.filter(m -> m.getName().equals(methodName)).findFirst();
-		if (method.isPresent()) {
-			return invoke(object, method.get(), false, null);
-		} else {
-			throw new InjectorException("Object have no method with name " + methodName);
-		}
+	public Object invoke(Object object, Method method, Object defaultValue) throws InjectorException {
+		return invoke(object, method, true, defaultValue, null);
 	}
 
 	@Override
-	public Object invoke(Object object, Method method) throws InjectorException, ContainerException {
-		return invoke(object, method, false, null);
+	public Object invoke(Object object, Method method, Map<String, Object> additional) throws InjectorException {
+		return invoke(object, method, false, null, additional);
 	}
 
 	@Override
-	public Object invoke(Object object, Class<? extends Annotation> qualifier, Object defaultValue)
-			throws InjectorException, ContainerException {
-		Optional<Method> method = Arrays.stream(object.getClass().getDeclaredMethods())
-				.filter(m -> m.isAnnotationPresent(qualifier)).findFirst();
-		if (method.isPresent()) {
-			return invoke(object, method.get(), false, null);
-		} else {
-			return defaultValue;
-		}
+	public Object invoke(Object object, Method method, Object defaultValue, Map<String, Object> additional)
+			throws InjectorException {
+		return invoke(object, method, true, defaultValue, additional);
 	}
 
 	@Override
-	public Object invoke(Object object, String methodName, Object defaultValue)
-			throws InjectorException, ContainerException {
-		Optional<Method> method = Arrays.stream(object.getClass().getDeclaredMethods())
-				.filter(m -> m.getName().equals(methodName)).findFirst();
-		if (method.isPresent()) {
-			return invoke(object, method.get(), false, null);
-		} else {
-			return defaultValue;
-		}
-	}
-
-	@Override
-	public Object invoke(Object object, Method method, Object defaultValue)
-			throws InjectorException, ContainerException {
-		return invoke(object, method, true, defaultValue);
-	}
-
-	@Override
-	public void inject(Object object) throws InjectorException, ContainerException {
+	public void inject(Object object, Map<String, Object> additional) throws InjectorException {
 		if (object == null) {
 			throw new NullPointerException();
 		}
 
 		Field[] fields = Arrays.stream(object.getClass().getDeclaredFields())
 				.filter(f -> f.isAnnotationPresent(Inject.class)).toArray(size -> new Field[size]);
-		Object[] keys = resolveKeys(fields);
-		Object[] values = resolveValues(keys);
-		if (values.length < fields.length) {
-			throw new InjectorException("Unresolved value for type " + keys[values.length]);
+
+		Object[] values = new Object[fields.length];
+		for (int i = 0; i < fields.length; i++) {
+			Object resolved = resolveValue(fields[i], additional);
+			if (resolved == null) {
+				throw new InjectorException();
+			}
+			values[i] = resolved;
 		}
 		for (int i = 0; i < fields.length; i++) {
 			Field field = fields[i];
@@ -169,82 +131,32 @@ public class Injector implements IInjector {
 		}
 	}
 
-	/**
-	 * PostConstruct method is invoked before registration service in context.
-	 * Services can remove old services from context in PostConstruct method.
-	 * 
-	 * @throws ServiceNotFound
-	 */
 	@Override
-	public <T> T deploy(Class<T> serviceClass) throws InjectorException, ContainerException {
-		T service = make(serviceClass);
-		inject(service);
-		invoke(service, PostConstruct.class, null);
-		container.put(serviceClass, service);
-		return service;
+	public IContainer getContainer() {
+		return container;
 	}
 
-	@Override
-	public Object deploy(Object service) throws InjectorException, ContainerException {
-		inject(service);
-		invoke(service, PostConstruct.class, null);
-		Class<?> _class = service.getClass();
-		String _name = _class.getName();
-		container.put(_name, service);
-		return service;
-	}
-
-	@Override
-	public <T> T deploy(Class<T> serviceClass, String key) throws InjectorException, ContainerException {
-		T service = make(serviceClass);
-		inject(service);
-		invoke(service, PostConstruct.class, null);
-		container.put(key, service);
-		return service;
-	}
-
-	@Override
-	public <T> T deploy(Class<? extends T> serviceClass, Class<T> interf) throws InjectorException, ContainerException {
-		T service = make(serviceClass);
-		inject(service);
-		invoke(service, PostConstruct.class, null);
-		container.put(interf, service);
-		return service;
-	}
-
-	@Override
-	public Object deploy(Object service, String key) throws InjectorException, ContainerException {
-		inject(service);
-		invoke(service, PostConstruct.class, null);
-		container.put(key, service);
-		return service;
-	}
-
-	@Override
-	public <T> T deploy(T service, Class<T> interf) throws InjectorException, ContainerException {
-		inject(service);
-		invoke(service, PostConstruct.class, null);
-		container.put(interf, service);
-		return service;
-	}
-
-	protected Object invoke(Object object, Method method, boolean haveDefault, Object defaultValue)
-			throws InjectorException, ContainerException {
+	protected Object invoke(Object object, Method method, boolean haveDefault, Object defaultValue,
+			Map<String, Object> additional) throws InjectorException {
 		if (method == null) {
 			if (haveDefault) {
 				return defaultValue;
 			} else {
-				throw new InjectorException();
+				throw new NullPointerException();
 			}
 		}
-		Object[] keys = resolveKeys(method.getParameters());
-		Object[] values = resolveValues(keys);
-		if (values.length < method.getParameterCount()) {
-			if (haveDefault) {
-				return defaultValue;
-			} else {
-				throw new InjectorException();
+		Parameter[] parameters = method.getParameters();
+		Object[] values = new Object[parameters.length];
+		for (int i = 0; i < parameters.length; i++) {
+			Object resolved = resolveValue(parameters[i], additional);
+			if (resolved == null) {
+				if (haveDefault) {
+					return defaultValue;
+				} else {
+					throw new InjectorException();
+				}
 			}
+			values[i] = resolved;
 		}
 		boolean wasAccessible = true;
 		if (!method.isAccessible()) {
@@ -267,77 +179,107 @@ public class Injector implements IInjector {
 		}
 	}
 
-	protected <T> T tryConstruct(Constructor<T> constructor) throws InjectorException {
-		if (!constructor.isAnnotationPresent(Inject.class) && constructor.getParameterTypes().length != 0) {
-			return null;
-		}
-		Parameter[] params = constructor.getParameters();
-		Object[] keys = resolveKeys(params);
-		Object[] values;
-		try {
-			values = resolveValues(keys);
-		} catch (ServiceNotFound e) {
-			return null;
-		}
-		T result = null;
-		boolean wasAccessible = true;
-		if (!constructor.isAccessible()) {
-			constructor.setAccessible(true);
-			wasAccessible = false;
-		}
-		try {
-			result = constructor.newInstance(values);
-		} catch (IllegalArgumentException | InstantiationException | IllegalAccessException
-				| InvocationTargetException e) {
-		} finally {
-			if (!wasAccessible) {
-				constructor.setAccessible(false);
+	protected <T> T tryConstruct(Constructor<T> constructor, Map<String, Object> additional) throws InjectorException {
+		if (constructor.getParameterCount() == 0) {
+			boolean wasAccessible = true;
+			if (!constructor.isAccessible()) {
+				constructor.setAccessible(true);
+				wasAccessible = false;
 			}
-			Arrays.fill(values, null);
-		}
-		return result;
-	}
-
-	protected Object[] resolveKeys(Parameter[] parameters) {
-		return Arrays.stream(parameters).map(this::resolveParameter).toArray();
-	}
-
-	protected Object[] resolveKeys(Field[] fields) {
-		return Arrays.stream(fields).map(this::resolveField).toArray();
-	}
-
-	private Object resolveParameter(Parameter parameter) {
-		if (parameter.isAnnotationPresent(Named.class)) {
-			return parameter.getAnnotation(Named.class).value();
-		}
-		Class<?> type = parameter.getType();
-		return type.isPrimitive() ? (Class<?>) PRIMITIVES_TO_WRAPPERS.get(type) : type;
-	}
-
-	private Object resolveField(Field field) {
-		if (field.isAnnotationPresent(Named.class)) {
-			return field.getAnnotation(Named.class).value();
-		}
-		Class<?> type = field.getType();
-		return type.isPrimitive() ? (Class<?>) PRIMITIVES_TO_WRAPPERS.get(type) : type;
-	}
-
-	protected Object[] resolveValues(Object[] keys) throws ServiceNotFound {
-		Object[] result = new Object[keys.length];
-		for (int i = 0; i < keys.length; i++) {
-			Object value = resolveValue(keys[i]);
-			result[i] = value;
-		}
-		return result;
-	}
-
-	private Object resolveValue(Object key) throws ServiceNotFound {
-		if (key instanceof String) {
-			return container.get((String) key);
-		} else if (key instanceof Class<?>) {
-			return container.get((Class<?>) key);
+			try {
+				return constructor.newInstance();
+			} catch (IllegalArgumentException | InstantiationException | IllegalAccessException
+					| InvocationTargetException e) {
+				return null;
+			} finally {
+				if (!wasAccessible) {
+					constructor.setAccessible(false);
+				}
+			}
 		} else {
-			throw new ServiceNotFound();
+			if (!constructor.isAnnotationPresent(Inject.class)) {
+				return null;
+			}
+			Parameter[] parameters = constructor.getParameters();
+			Object[] values = new Object[parameters.length];
+			for (int i = 0; i < parameters.length; i++) {
+				Object resolved = resolveValue(parameters[i], additional);
+				if (resolved == null) {
+					return null;
+				}
+				values[i] = resolved;
+			}
+			boolean wasAccessible = true;
+			if (!constructor.isAccessible()) {
+				constructor.setAccessible(true);
+				wasAccessible = false;
+			}
+			try {
+				return constructor.newInstance(values);
+			} catch (IllegalArgumentException | InstantiationException | IllegalAccessException
+					| InvocationTargetException e) {
+				return null;
+			} finally {
+				if (!wasAccessible) {
+					constructor.setAccessible(false);
+				}
+			}
 		}
+	}
+
+	private Object resolveValue(Parameter parameter, Map<String, Object> additional) {
+		Object resolved;
+		if (parameter.isAnnotationPresent(Named.class)) {
+			String stringKey = parameter.getAnnotation(Named.class).value();
+			resolved = resolveValue(stringKey, additional);
+		} else {
+			Class<?> type = parameter.getType();
+			Class<?> classKey;
+			if (type.isPrimitive()) {
+				classKey = (Class<?>) PRIMITIVES_TO_WRAPPERS.get(type);
+			} else {
+				classKey = type;
+			}
+			resolved = resolveValue(classKey, additional);
+		}
+		return resolved;
+	}
+
+	private Object resolveValue(Field field, Map<String, Object> additional) {
+		Object resolved;
+		if (field.isAnnotationPresent(Named.class)) {
+			String stringKey = field.getAnnotation(Named.class).value();
+			resolved = resolveValue(stringKey, additional);
+		} else {
+			Class<?> type = field.getType();
+			Class<?> classKey;
+			if (type.isPrimitive()) {
+				classKey = (Class<?>) PRIMITIVES_TO_WRAPPERS.get(type);
+			} else {
+				classKey = type;
+			}
+			resolved = resolveValue(classKey, additional);
+		}
+		return resolved;
+	}
+
+	private Object resolveValue(Class<?> classKey, Map<String, Object> additional) {
+		if (additional != null) {
+			Object fromAdditional = additional.get(classKey.getName());
+			if (fromAdditional != null) {
+				return fromAdditional;
+			}
+		}
+		return container.get(classKey);
+	}
+
+	private Object resolveValue(String stringKey, Map<String, Object> additional) {
+		if (additional != null) {
+			Object fromAdditional = additional.get(stringKey);
+			if (fromAdditional != null) {
+				return fromAdditional;
+			}
+		}
+		return container.get(stringKey);
 	}
 }

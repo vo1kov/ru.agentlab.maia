@@ -13,6 +13,8 @@ import java.util.UUID;
 
 import ru.agentlab.maia.exception.ServiceNotFound;
 
+//import ru.agentlab.maia.exception.ServiceNotFound;
+
 /**
  * Container for storing services and agents.
  * 
@@ -77,11 +79,10 @@ public interface IContainer {
 	 * 
 	 * @see #getService(Class)
 	 */
-	default Object get(final String key) throws ServiceNotFound {
+	default Object get(final String key) {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null");
 		}
-
 		Object result = getLocal(key);
 		if (result != null) {
 			return result;
@@ -90,8 +91,7 @@ public interface IContainer {
 		if (parent != null) {
 			return parent.get(key);
 		} else {
-			throw new ServiceNotFound("Service for key [" + key + "] did not found in context [" + toString()
-					+ "] and all their parents");
+			return null;
 		}
 	}
 
@@ -117,11 +117,10 @@ public interface IContainer {
 	 * 
 	 * @see #getService(String)
 	 */
-	default <T> T get(Class<T> key) throws ServiceNotFound {
+	default <T> T get(Class<T> key) {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null");
 		}
-
 		Object result = getLocal(key);
 		if (result != null) {
 			return key.cast(result);
@@ -130,8 +129,7 @@ public interface IContainer {
 		if (p != null) {
 			return p.get(key);
 		} else {
-			throw new ServiceNotFound("Service for key [" + key + "] did not found in context [" + toString()
-					+ "] and all their parents");
+			return null;
 		}
 	}
 
@@ -157,7 +155,7 @@ public interface IContainer {
 	 * 
 	 * @see #getServiceLocal(Class)
 	 */
-	Object getLocal(final String key) throws ServiceNotFound;
+	Object getLocal(final String key);
 
 	/**
 	 * <p>
@@ -184,7 +182,7 @@ public interface IContainer {
 	 * 
 	 * @see #getServiceLocal(String)
 	 */
-	default <T> T getLocal(Class<T> key) throws ServiceNotFound {
+	default <T> T getLocal(Class<T> key) {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null");
 		}
@@ -277,9 +275,6 @@ public interface IContainer {
 	 *            the value to be stored
 	 * @param <T>
 	 *            type of specified value.
-	 * 
-	 * @see #putService(String, Object)
-	 * @see #putProvider(String, Provider)
 	 */
 	default <T> Object put(final Class<T> key, final T value) {
 		if (key == null) {

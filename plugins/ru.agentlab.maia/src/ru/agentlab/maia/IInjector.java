@@ -10,12 +10,17 @@ package ru.agentlab.maia;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 
-import ru.agentlab.maia.exception.ContainerException;
+import javax.annotation.PostConstruct;
+
 import ru.agentlab.maia.exception.InjectorException;
 
 public interface IInjector {
+
+	<T> T make(Class<T> clazz, Map<String, Object> additional) throws InjectorException;
 
 	/**
 	 * <p>
@@ -31,9 +36,11 @@ public interface IInjector {
 	 * @throws InjectorException
 	 *             if an exception occurred while performing this operation
 	 */
-	<T> T make(Class<T> clazz) throws InjectorException, ContainerException;
+	default <T> T make(Class<T> clazz) throws InjectorException {
+		return make(clazz, null);
+	}
 
-	<T> T make(Class<T> clazz, Map<String, Object> additional) throws InjectorException, ContainerException;
+	void inject(Object object, Map<String, Object> additional) throws InjectorException;
 
 	/**
 	 * <p>
@@ -44,7 +51,9 @@ public interface IInjector {
 	 * @throws InjectorException
 	 *             if an exception occurred while performing this operation
 	 */
-	void inject(Object object) throws InjectorException, ContainerException;
+	default void inject(Object object) throws InjectorException {
+		inject(object, null);
+	}
 
 	/**
 	 * <p>
@@ -58,7 +67,13 @@ public interface IInjector {
 	 * @throws InjectorException
 	 *             when creating or registering falls
 	 */
-	<T> T deploy(Class<T> clazz) throws InjectorException, ContainerException;
+	default <T> T deploy(Class<T> serviceClass) throws InjectorException {
+		T service = make(serviceClass);
+		inject(service);
+		invoke(service, PostConstruct.class, null);
+		getContainer().put(serviceClass, service);
+		return service;
+	}
 
 	/**
 	 * <p>
@@ -74,7 +89,13 @@ public interface IInjector {
 	 * @throws InjectorException
 	 *             when creating or registering falls
 	 */
-	<T> T deploy(Class<T> clazz, String key) throws InjectorException, ContainerException;
+	default <T> T deploy(Class<T> serviceClass, String key) throws InjectorException {
+		T service = make(serviceClass);
+		inject(service);
+		invoke(service, PostConstruct.class, null);
+		getContainer().put(key, service);
+		return service;
+	}
 
 	/**
 	 * <p>
@@ -90,7 +111,13 @@ public interface IInjector {
 	 * @throws InjectorException
 	 *             when creating or registering falls
 	 */
-	<T> T deploy(Class<? extends T> clazz, Class<T> interf) throws InjectorException, ContainerException;
+	default <T> T deploy(Class<? extends T> serviceClass, Class<T> interf) throws InjectorException {
+		T service = make(serviceClass);
+		inject(service);
+		invoke(service, PostConstruct.class, null);
+		getContainer().put(interf, service);
+		return service;
+	}
 
 	/**
 	 * <p>
@@ -104,7 +131,14 @@ public interface IInjector {
 	 * @throws InjectorException
 	 *             when injecting falls
 	 */
-	Object deploy(Object service) throws InjectorException, ContainerException;
+	default Object deploy(Object service) throws InjectorException {
+		inject(service);
+		invoke(service, PostConstruct.class, null);
+		Class<?> _class = service.getClass();
+		String _name = _class.getName();
+		getContainer().put(_name, service);
+		return service;
+	}
 
 	/**
 	 * <p>
@@ -121,7 +155,21 @@ public interface IInjector {
 	 * @throws InjectorException
 	 *             when creating or registering falls
 	 */
-	Object deploy(Object service, String key) throws InjectorException, ContainerException;
+	default Object deploy(Object service, String key) throws InjectorException {
+		inject(service);
+		invoke(service, PostConstruct.class, null);
+		getContainer().put(key, service);
+		return service;
+	}
+
+	default <T> T deploy(T service, Class<T> interf) throws InjectorException {
+		inject(service);
+		invoke(service, PostConstruct.class, null);
+		getContainer().put(interf, service);
+		return service;
+	}
+
+	Object invoke(Object object, Method method) throws InjectorException;
 
 	/**
 	 * <p>
@@ -139,22 +187,85 @@ public interface IInjector {
 	 *             when creating or registering falls
 	 */
 
-	Object invoke(Object object, Method method, Object defaultValue) throws InjectorException, ContainerException;
+	Object invoke(Object object, Method method, Object defaultValue) throws InjectorException;
+
+	Object invoke(Object object, Method method, Map<String, Object> additional) throws InjectorException;
 
 	Object invoke(Object object, Method method, Object defaultValue, Map<String, Object> additional)
-			throws InjectorException, ContainerException;
+			throws InjectorException;
 
-	Object invoke(Object object, String methodName, Object defaultValue) throws InjectorException, ContainerException;
+	default Object invoke(Object object, String methodName) throws InjectorException {
+		Method method = Arrays.stream(object.getClass().getDeclaredMethods())
+				.filter(m -> m.getName().equals(methodName)).findFirst()
+				.orElseThrow(() -> new InjectorException("Object have no method with name " + methodName));
+		return invoke(object, method);
+	}
 
-	Object invoke(Object object, Class<? extends Annotation> qualifier, Object defaultValue)
-			throws InjectorException, ContainerException;
+	default Object invoke(Object object, String methodName, Object defaultValue) throws InjectorException {
+		Optional<Method> method = Arrays.stream(object.getClass().getMethods())
+				.filter(m -> m.getName().equals(methodName)).findFirst();
+		if (method.isPresent()) {
+			return invoke(object, method.get(), defaultValue);
+		} else {
+			return defaultValue;
+		}
+	}
 
-	Object invoke(Object object, Method method) throws InjectorException, ContainerException;
+	default Object invoke(Object object, String methodName, Map<String, Object> additional) throws InjectorException {
+		Method method = Arrays.stream(object.getClass().getDeclaredMethods())
+				.filter(m -> m.getName().equals(methodName)).findFirst()
+				.orElseThrow(() -> new InjectorException("Object have no method with name " + methodName));
+		return invoke(object, method, additional);
+	}
 
-	Object invoke(Object object, String methodName) throws InjectorException, ContainerException;
+	default Object invoke(Object object, String methodName, Object defaultValue, Map<String, Object> additional)
+			throws InjectorException {
+		Optional<Method> method = Arrays.stream(object.getClass().getMethods())
+				.filter(m -> m.getName().equals(methodName)).findFirst();
+		if (method.isPresent()) {
+			return invoke(object, method.get(), defaultValue, additional);
+		} else {
+			return defaultValue;
+		}
+	}
 
-	Object invoke(Object object, Class<? extends Annotation> qualifier) throws InjectorException, ContainerException;
+	default Object invoke(Object object, Class<? extends Annotation> qualifier) throws InjectorException {
+		Method method = Arrays.stream(object.getClass().getDeclaredMethods())
+				.filter(m -> m.isAnnotationPresent(qualifier)).findFirst().orElseThrow(
+						() -> new InjectorException("Object have no method annotated with @" + qualifier.getName()));
+		return invoke(object, method);
+	}
 
-	<T> T deploy(T service, Class<T> interf) throws InjectorException, ContainerException;
+	default Object invoke(Object object, Class<? extends Annotation> qualifier, Object defaultValue)
+			throws InjectorException {
+		Optional<Method> method = Arrays.stream(object.getClass().getMethods())
+				.filter(m -> m.isAnnotationPresent(qualifier)).findFirst();
+		if (method.isPresent()) {
+			return invoke(object, method.get(), defaultValue);
+		} else {
+			return defaultValue;
+		}
+	}
+
+	default Object invoke(Object object, Class<? extends Annotation> qualifier, Map<String, Object> additional)
+			throws InjectorException {
+		Method method = Arrays.stream(object.getClass().getDeclaredMethods())
+				.filter(m -> m.isAnnotationPresent(qualifier)).findFirst().orElseThrow(
+						() -> new InjectorException("Object have no method annotated with @" + qualifier.getName()));
+		return invoke(object, method, additional);
+	}
+
+	default Object invoke(Object object, Class<? extends Annotation> qualifier, Object defaultValue,
+			Map<String, Object> additional) throws InjectorException {
+		Optional<Method> method = Arrays.stream(object.getClass().getMethods())
+				.filter(m -> m.isAnnotationPresent(qualifier)).findFirst();
+		if (method.isPresent()) {
+			return invoke(object, method.get(), defaultValue, additional);
+		} else {
+			return defaultValue;
+		}
+	}
+
+	IContainer getContainer();
 
 }

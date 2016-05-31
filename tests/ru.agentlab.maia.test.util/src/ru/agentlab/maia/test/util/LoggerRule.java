@@ -55,6 +55,9 @@ public class LoggerRule implements TestRule {
 	}
 
 	private String toString(Object object) {
+		if (object == null) {
+			return "null";
+		}
 		if (object.getClass().isArray()) {
 			return Arrays.toString((Object[]) object);
 		} else {
