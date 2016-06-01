@@ -1,8 +1,9 @@
 package ru.agentlab.maia.agent.match;
 
+import static org.hamcrest.CoreMatchers.anything;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLIndividual;
@@ -18,7 +19,7 @@ public class OWLIndividualIsAnonymous extends TypeSafeMatcher<OWLIndividual> {
 
 	public OWLIndividualIsAnonymous() {
 		super();
-		this.matcher = Matchers.anything();
+		this.matcher = anything();
 	}
 
 	@Override

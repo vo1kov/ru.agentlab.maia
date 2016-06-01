@@ -1,8 +1,8 @@
 package ru.agentlab.maia.agent.match;
 
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.anything;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -81,6 +81,10 @@ public class Matchers {
 		return hasIRI(equalTo(IRI.create(iri)));
 	}
 
+	public static Matcher<OWLNamedObject> hasIRI(String namespace, String name) {
+		return hasIRI(equalTo(IRI.create(namespace, name)));
+	}
+
 	public static Matcher<OWLPropertyAssertionObject> isLiteral(Matcher<? super OWLLiteral> matcher) {
 		return new OWLPropertyAssertionObjectIsLiteral(matcher);
 	}
@@ -93,12 +97,24 @@ public class Matchers {
 		return new OWLLiteralIsBoolean(matcher);
 	}
 
+	public static Matcher<OWLLiteral> isBoolean(boolean value) {
+		return new OWLLiteralIsBoolean(equalTo(value));
+	}
+
 	public static Matcher<OWLLiteral> isFloat(Matcher<? super Float> matcher) {
 		return new OWLLiteralIsFloat(matcher);
 	}
 
+	public static Matcher<OWLLiteral> isFloat(float value) {
+		return new OWLLiteralIsFloat(equalTo(value));
+	}
+
 	public static Matcher<OWLLiteral> isDouble(Matcher<? super Double> matcher) {
 		return new OWLLiteralIsDouble(matcher);
+	}
+
+	public static Matcher<OWLLiteral> isDouble(double value) {
+		return new OWLLiteralIsDouble(equalTo(value));
 	}
 
 	public static Matcher<OWLLiteral> isInteger(Matcher<? super Integer> matcher) {
@@ -113,6 +129,10 @@ public class Matchers {
 	public static Matcher<OWLLiteral> isPlain(Matcher<? super String> valueMatcher,
 			Matcher<? super String> languageMatcher) {
 		return new OWLLiteralIsPlain(valueMatcher, languageMatcher);
+	}
+
+	public static Matcher<OWLLiteral> isPlain(Matcher<? super String> valueMatcher) {
+		return new OWLLiteralIsPlain(valueMatcher, anything());
 	}
 
 	public static Matcher<Object> var(String name, Map<String, Object> values) {

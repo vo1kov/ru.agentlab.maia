@@ -8,12 +8,9 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent.converter.literal;
 
-import static ru.agentlab.maia.agent.converter.MatcherUtil.HEX_BINARY;
-import static ru.agentlab.maia.agent.converter.MatcherUtil.OWL;
-import static ru.agentlab.maia.agent.converter.MatcherUtil.XSD;
-import static ru.agentlab.maia.agent.converter.MatcherUtil._str;
-import static ru.agentlab.maia.agent.converter.MatcherUtil._typ;
-import static ru.agentlab.maia.agent.converter.MatcherUtil.typedMatcher;
+import static org.hamcrest.Matchers.equalTo;
+import static ru.agentlab.maia.agent.match.Matchers.hasIRI;
+import static ru.agentlab.maia.agent.match.Matchers.isTyped;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,9 +39,9 @@ public class ConverterGetOWLLiteralXSDHexBinaryMatcherTest extends AbstractGetOW
 			 *| ##		| Input Parameter 				| Result Literal											| Comment						|
 			  -------------------------------------------------------------------------------------------------------------------------------------*/
 			// xsd:hexBinary
-			/*  0 */ 	{ "^^xsd:hexBinary", 			typedMatcher(_str(""), 			_typ(XSD, HEX_BINARY)) },	// test empty string
-			/*  1 */ 	{ "a1^^xsd:hexBinary", 			typedMatcher(_str("a1"), 		_typ(XSD, HEX_BINARY)) },	// test non-empty string
-			/*  2 */ 	{ "a1e2ff^^xsd:hexBinary", 		typedMatcher(_str("a1e2ff"), 	_typ(XSD, HEX_BINARY)) },	// test non-empty string
+			/*  0 */ 	{ "^^xsd:hexBinary", 			isTyped(equalTo(""), 			hasIRI(XSD, HEX_BINARY)) },	// test empty string
+			/*  1 */ 	{ "a1^^xsd:hexBinary", 			isTyped(equalTo("a1"), 		hasIRI(XSD, HEX_BINARY)) },	// test non-empty string
+			/*  2 */ 	{ "a1e2ff^^xsd:hexBinary", 		isTyped(equalTo("a1e2ff"), 	hasIRI(XSD, HEX_BINARY)) },	// test non-empty string
 			/*  3 */ 	{ "?var@?lang^^xsd:hexBinary", 	LiteralIllelgalLanguageTagException.class }, 				// test variable value and lang
 			/*  4 */ 	{ "qwe^^xsd:hexBinary", 		LiteralNotInLexicalSpaceException.class },					// wrong value format
 			/*  5 */ 	{ "f^^xsd:hexBinary", 			LiteralNotInLexicalSpaceException.class },					// wrong value format

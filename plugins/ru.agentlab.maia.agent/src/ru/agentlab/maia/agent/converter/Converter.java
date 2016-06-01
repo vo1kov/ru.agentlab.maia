@@ -1,10 +1,10 @@
 package ru.agentlab.maia.agent.converter;
 
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anyOf;
-import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.anyOf;
+import static org.hamcrest.CoreMatchers.anything;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static ru.agentlab.maia.agent.match.Matchers.hasClassExpression;
 import static ru.agentlab.maia.agent.match.Matchers.hasContent;
 import static ru.agentlab.maia.agent.match.Matchers.hasConversationId;

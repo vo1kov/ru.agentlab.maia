@@ -8,13 +8,9 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent.converter.literal;
 
-import static ru.agentlab.maia.agent.converter.MatcherUtil.NORMALIZED_STRING;
-import static ru.agentlab.maia.agent.converter.MatcherUtil.RDF;
-import static ru.agentlab.maia.agent.converter.MatcherUtil.XSD;
-import static ru.agentlab.maia.agent.converter.MatcherUtil._str;
-import static ru.agentlab.maia.agent.converter.MatcherUtil._typ;
-import static ru.agentlab.maia.agent.converter.MatcherUtil._var;
-import static ru.agentlab.maia.agent.converter.MatcherUtil.typedMatcher;
+import static org.hamcrest.Matchers.equalTo;
+import static ru.agentlab.maia.agent.match.Matchers.hasIRI;
+import static ru.agentlab.maia.agent.match.Matchers.isTyped;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -34,8 +30,7 @@ import ru.agentlab.maia.agent.converter.LiteralWrongBuildInDatatypeException;
 @RunWith(Parameterized.class)
 public class ConverterGetOWLLiteralXSDNormalizedStringMatcherTest extends AbstractGetOWLLiteralMatcherTest {
 
-	// Name is not working because some of the test strings have \r\n symbols
-	@Parameters // (name="When parameter is [{0}] then result is [{1}]")
+	@Parameters
 	public static Collection<Object[]> data() {
 		return Arrays.asList(new Object[][] {
 			// @formatter:off
@@ -43,11 +38,11 @@ public class ConverterGetOWLLiteralXSDNormalizedStringMatcherTest extends Abstra
 			 *| ##		| Input Parameter 							| Result Literal													| Comment						|
 			  ----------------------------------------------------------------------------------------------------------------------------------------------------------*/
 			// xsd:normalizedString
-			/*  0 */ 	{ "^^xsd:normalizedString", 				typedMatcher(_str(""), 				_typ(XSD, NORMALIZED_STRING))},	// test empty string
-			/*  1 */ 	{ "test^^xsd:normalizedString", 			typedMatcher(_str("test"), 			_typ(XSD, NORMALIZED_STRING))},	// test non-empty string
-			/*  2 */ 	{ "test string^^xsd:normalizedString", 		typedMatcher(_str("test string"), 	_typ(XSD, NORMALIZED_STRING))},	// test value with whitespace
-			/*  3 */ 	{ "string^^<" + XSD + "normalizedString>",	typedMatcher(_str("string"), 		_typ(XSD, NORMALIZED_STRING))},	// test full name
-			/*  4 */ 	{ "?var^^xsd:normalizedString", 			typedMatcher(_var("var"),			_typ(XSD, NORMALIZED_STRING))}, // test variable value
+			/*  0 */ 	{ "^^xsd:normalizedString", 				isTyped(equalTo(""), 				hasIRI(XSD, NORMALIZED_STRING))},	// test empty string
+			/*  1 */ 	{ "test^^xsd:normalizedString", 			isTyped(equalTo("test"), 			hasIRI(XSD, NORMALIZED_STRING))},	// test non-empty string
+			/*  2 */ 	{ "test string^^xsd:normalizedString", 		isTyped(equalTo("test string"), 	hasIRI(XSD, NORMALIZED_STRING))},	// test value with whitespace
+			/*  3 */ 	{ "string^^<" + XSD + "normalizedString>",	isTyped(equalTo("string"), 		hasIRI(XSD, NORMALIZED_STRING))},	// test full name
+//			/*  4 */ 	{ "?var^^xsd:normalizedString", 			isTyped(_var("var"),			hasIRI(XSD, NORMALIZED_STRING))}, // test variable value
 			/*  5 */ 	{ "?var@?lang^^xsd:normalizedString", 		LiteralIllelgalLanguageTagException.class }, 						// test variable value and lang
 			/*  6 */ 	{ "test \rstring^^xsd:normalizedString", 	LiteralNotInLexicalSpaceException.class},							// test value with whitespace
 			/*  7 */ 	{ "test \nstring^^xsd:normalizedString", 	LiteralNotInLexicalSpaceException.class},							// test value with whitespace

@@ -8,13 +8,9 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent.converter.literal;
 
-import static ru.agentlab.maia.agent.converter.MatcherUtil.OWL;
-import static ru.agentlab.maia.agent.converter.MatcherUtil.RDF;
-import static ru.agentlab.maia.agent.converter.MatcherUtil.REAL;
-import static ru.agentlab.maia.agent.converter.MatcherUtil._str;
-import static ru.agentlab.maia.agent.converter.MatcherUtil._typ;
-import static ru.agentlab.maia.agent.converter.MatcherUtil._var;
-import static ru.agentlab.maia.agent.converter.MatcherUtil.typedMatcher;
+import static org.hamcrest.Matchers.equalTo;
+import static ru.agentlab.maia.agent.match.Matchers.hasIRI;
+import static ru.agentlab.maia.agent.match.Matchers.isTyped;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -33,24 +29,22 @@ import ru.agentlab.maia.agent.converter.LiteralWrongBuildInDatatypeException;
 @RunWith(Parameterized.class)
 public class ConverterGetOWLLiteralOWLRealMatcherTest extends AbstractGetOWLLiteralMatcherTest {
 
-	// Name is not working because some of the test strings have \r\n symbols
-	@Parameters // (name="When parameter is [{0}] then result is [{1}]")
+	@Parameters
 	public static Collection<Object[]> data() {
-		return Arrays
-				.asList(new Object[][] {
+		return Arrays.asList(new Object[][] {
 			// @formatter:off
-			/* -------------------------------------------------------------------------------------------------------------------------------------
-			 *| ##		| Input Parameter 					| Result Literal										| Comment						|
-			  --------------------------------------------------------------------------------------------------------------------------------------*/
+			/* ---------------------------------------------------------------------------------------------------------------------------------
+			 *| ##   | Input Parameter                   | Result Literal                                      | Comment                        |
+			  ---------------------------------------------------------------------------------------------------------------------------------*/
 			// owl:real
-			/*  0 */ 	{ "^^owl:real", 					typedMatcher(_str(""), 				_typ(OWL, REAL)) },	// test empty string
-			/*  1 */ 	{ "test^^owl:real",					typedMatcher(_str("test"), 			_typ(OWL, REAL)) },	// test non-empty string
-			/*  2 */ 	{ "test string^^owl:real",			typedMatcher(_str("test string"), 	_typ(OWL, REAL)) },	// test value with whitespace
-			/*  3 */ 	{ "test string^^<" + OWL + "real>", typedMatcher(_str("test string"), 	_typ(OWL, REAL)) }, // test full name
-			/*  4 */ 	{ "?var^^owl:real", 				typedMatcher(_var("var"),			_typ(OWL, REAL)) }, // test variable value
-			/*  5 */ 	{ "?var@?lang^^owl:real", 			LiteralIllelgalLanguageTagException.class }, 			// test variable value and lang
-			/*  6 */ 	{ "test string^^rdfs:real", 		LiteralWrongBuildInDatatypeException.class }, 			// wrong namespace
-			/*  7 */ 	{ "test string^^<" + RDF + "real>", LiteralWrongBuildInDatatypeException.class }, 			// wrong namespace
+			/*  0 */ { "^^owl:real",                     isTyped(equalTo(""), hasIRI(OWL, REAL)) },            // test empty string
+			/*  1 */ { "test^^owl:real",                 isTyped(equalTo("test"), hasIRI(OWL, REAL)) },        // test non-empty string
+			/*  2 */ { "test string^^owl:real",          isTyped(equalTo("test string"), hasIRI(OWL, REAL)) }, // test value with whitespace
+			/*  3 */ { "test string^^<" + OWL + "real>", isTyped(equalTo("test string"), hasIRI(OWL, REAL)) }, // test full name
+//			/*  4 */ { "?var^^owl:real",                 isTyped(var("var"), hasIRI(OWL, REAL)) },             // test variable value
+			/*  5 */ { "?var@?lang^^owl:real",           LiteralIllelgalLanguageTagException.class },          // test variable value and lang
+			/*  6 */ { "test string^^rdfs:real",         LiteralWrongBuildInDatatypeException.class },         // wrong namespace
+			/*  7 */ { "test string^^<" + RDF + "real>", LiteralWrongBuildInDatatypeException.class },         // wrong namespace
 			// @formatter:on
 		});
 	}
