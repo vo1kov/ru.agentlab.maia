@@ -1,10 +1,7 @@
 package ru.agentlab.maia.agent;
 
-import java.util.Map;
-
 import org.hamcrest.Matcher;
 
-import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IPlan;
 
 public abstract class Plan implements IPlan {
@@ -40,8 +37,8 @@ public abstract class Plan implements IPlan {
 	}
 
 	@Override
-	public boolean relevant(IEvent<?> event, Map<String, Object> map) {
-		return eventMatcher.matches(event.getPayload());
+	public boolean isRelevant(Object eventData) {
+		return eventMatcher.matches(eventData);
 	}
 
 }

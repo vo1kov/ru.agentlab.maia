@@ -18,8 +18,6 @@ public interface IPlan {
 
 	void execute(IInjector injector, Map<String, Object> variables) throws PlanExecutionException;
 
-	boolean relevant(IEvent<?> event, Map<String, Object> map);
-
 	void setStateMatcher(Matcher<?> matcher);
 
 	Matcher<?> getStateMatcher();
@@ -27,5 +25,11 @@ public interface IPlan {
 	void setEventMatcher(Matcher<?> eventMatcher);
 
 	Matcher<?> getEventMatcher();
+
+	boolean isRelevant(Object eventData);
+
+	Map<String, Object> getVariables(Object eventData);
+
+	boolean isApplicable(Map<String, Object> variables);
 
 }

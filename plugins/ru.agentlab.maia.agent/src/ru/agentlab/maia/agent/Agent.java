@@ -9,7 +9,6 @@
 package ru.agentlab.maia.agent;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,6 +46,7 @@ import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
+import ru.agentlab.maia.Option;
 import ru.agentlab.maia.agent.converter.Converter;
 import ru.agentlab.maia.container.Injector;
 import ru.agentlab.maia.event.PlanFailedEvent;
@@ -365,20 +365,18 @@ public class Agent implements IAgent {
 
 		@Override
 		protected void compute() {
-			IEvent<?> event = selectEvent();
+			IEvent<?> event = eventQueue.poll();
 			if (event == null) {
 				state = AgentState.WAITING;
 				return;
 			}
-			List<PlanStateful> relevantPlans = selectRelevantPlans(event);
-			List<PlanStateful> applicablePlans = selectApplicablePlans(relevantPlans);
-			applicablePlans.forEach(plan -> {
-				Map<String, Object> variables = new HashMap<>();
+			Iterable<Option> options = planBase.getOptions(event);
+			options.forEach(option -> {
 				try {
-					plan.execute(getInjector(), variables);
-					eventQueue.offer(new PlanFinishedEvent(plan));
+					option.getPlan().execute(getInjector(), option.getValues());
+					eventQueue.offer(new PlanFinishedEvent(option.getPlan()));
 				} catch (Exception e) {
-					eventQueue.offer(new PlanFailedEvent(plan));
+					eventQueue.offer(new PlanFailedEvent(option.getPlan()));
 				}
 			});
 
@@ -386,18 +384,6 @@ public class Agent implements IAgent {
 				ExecuteAction action = new ExecuteAction();
 				invokeAll(action);
 			}
-		}
-
-		protected IEvent<?> selectEvent() {
-			return eventQueue.poll();
-		}
-
-		protected List<PlanStateful> selectRelevantPlans(IEvent<?> event) {
-			return null;
-		}
-
-		protected List<PlanStateful> selectApplicablePlans(List<PlanStateful> relevantPlans) {
-			return null;
 		}
 
 	}

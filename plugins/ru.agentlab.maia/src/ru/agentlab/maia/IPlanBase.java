@@ -26,4 +26,6 @@ public interface IPlanBase {
 
 	IPlan createPlan(Object object, Method method);
 
+	Iterable<Option> getOptions(IEvent<?> event);
+
 }
