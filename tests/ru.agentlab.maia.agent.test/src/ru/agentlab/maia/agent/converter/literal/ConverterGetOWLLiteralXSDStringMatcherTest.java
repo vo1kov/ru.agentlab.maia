@@ -8,13 +8,9 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent.converter.literal;
 
-import static ru.agentlab.maia.agent.converter.MatcherUtil.RDF;
-import static ru.agentlab.maia.agent.converter.MatcherUtil.STRING;
-import static ru.agentlab.maia.agent.converter.MatcherUtil.XSD;
-import static ru.agentlab.maia.agent.converter.MatcherUtil._str;
-import static ru.agentlab.maia.agent.converter.MatcherUtil._typ;
-import static ru.agentlab.maia.agent.converter.MatcherUtil._var;
-import static ru.agentlab.maia.agent.converter.MatcherUtil.typedMatcher;
+import static org.hamcrest.Matchers.equalTo;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasIRI;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTyped;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -45,14 +41,14 @@ public class ConverterGetOWLLiteralXSDStringMatcherTest extends AbstractGetOWLLi
 			 *| ##		| Input Parameter 						| Result Literal										| Comment						|
 			  -----------------------------------------------------------------------------------------------------------------------------------------*/
 			// xsd:string
-			/*  0 */ 	{ "^^xsd:string", 						typedMatcher(_str(""), 				_typ(XSD, STRING))},// test empty string
-			/*  1 */ 	{ "test^^xsd:string", 					typedMatcher(_str("test"), 			_typ(XSD, STRING))},// test non-empty string
-			/*  2 */ 	{ "test string^^xsd:string", 			typedMatcher(_str("test string"), 	_typ(XSD, STRING))},// test value with whitespace
-			/*  3 */ 	{ "test \rstring^^xsd:string", 			typedMatcher(_str("test \rstring"), _typ(XSD, STRING))},// test value with whitespace
-			/*  4 */ 	{ "test \nstring^^xsd:string", 			typedMatcher(_str("test \nstring"), _typ(XSD, STRING))},// test value with whitespace
-			/*  5 */ 	{ "test\tstring^^xsd:string", 			typedMatcher(_str("test\tstring"), 	_typ(XSD, STRING))},// test value with whitespace
-			/*  6 */ 	{ "test string^^<" + XSD + "string>", 	typedMatcher(_str("test string"), 	_typ(XSD, STRING))},// test full name
-			/*  7 */ 	{ "?var^^xsd:string", 					typedMatcher(_var("var"),			_typ(XSD, STRING))},// test variable value
+			/*  0 */ 	{ "^^xsd:string", 						isTyped(equalTo(""), 				hasIRI(XSD, STRING))},// test empty string
+			/*  1 */ 	{ "test^^xsd:string", 					isTyped(equalTo("test"), 			hasIRI(XSD, STRING))},// test non-empty string
+			/*  2 */ 	{ "test string^^xsd:string", 			isTyped(equalTo("test string"), 	hasIRI(XSD, STRING))},// test value with whitespace
+			/*  3 */ 	{ "test \rstring^^xsd:string", 			isTyped(equalTo("test \rstring"), hasIRI(XSD, STRING))},// test value with whitespace
+			/*  4 */ 	{ "test \nstring^^xsd:string", 			isTyped(equalTo("test \nstring"), hasIRI(XSD, STRING))},// test value with whitespace
+			/*  5 */ 	{ "test\tstring^^xsd:string", 			isTyped(equalTo("test\tstring"), 	hasIRI(XSD, STRING))},// test value with whitespace
+			/*  6 */ 	{ "test string^^<" + XSD + "string>", 	isTyped(equalTo("test string"), 	hasIRI(XSD, STRING))},// test full name
+//			/*  7 */ 	{ "?var^^xsd:string", 					typedMatcher(_var("var"),			hasIRI(XSD, STRING))},// test variable value
 			/*  8 */ 	{ "?var@?lang^^xsd:string", 			LiteralIllelgalLanguageTagException.class }, 			// test variable value and lang
 			/*  9 */ 	{ "test string^^rdfs:string", 			LiteralWrongBuildInDatatypeException.class }, 			// wrong namespace
 			/* 10 */ 	{ "test string^^<" + RDF + "string>", 	LiteralWrongBuildInDatatypeException.class }, 			// wrong namespace

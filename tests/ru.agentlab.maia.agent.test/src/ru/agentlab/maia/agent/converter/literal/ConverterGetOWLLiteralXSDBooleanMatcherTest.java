@@ -8,11 +8,7 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent.converter.literal;
 
-import static ru.agentlab.maia.agent.converter.MatcherUtil.OWL;
-import static ru.agentlab.maia.agent.converter.MatcherUtil.XSD;
-import static ru.agentlab.maia.agent.converter.MatcherUtil._boo;
-import static ru.agentlab.maia.agent.converter.MatcherUtil._var;
-import static ru.agentlab.maia.agent.converter.MatcherUtil.boolnMatcher;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isBoolean;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,26 +34,26 @@ public class ConverterGetOWLLiteralXSDBooleanMatcherTest extends AbstractGetOWLL
 		return Arrays.asList(new Object[][] {
 			// @formatter:off
 			/* ---------------------------------------------------------------------------------------------------------------------
-			 *| ##		| Input Parameter 				| Result Literal							| Comment						|
-			  ----------------------------------------------------------------------------------------------------------------------*/
+			 *| ##   | Input Parameter                | Result Literal                             | Comment                        |
+			  ---------------------------------------------------------------------------------------------------------------------*/
 			// xsd:boolean
-			/*  0 */ 	{ "^^xsd:boolean", 				LiteralNotInLexicalSpaceException.class },	// wrong empty value
-			/*  1 */ 	{ "true^^xsd:boolean", 			boolnMatcher(_boo(true)) },					// test true string
-			/*  2 */ 	{ "false^^xsd:boolean", 		boolnMatcher(_boo(false)) },				// test false string
-			/*  3 */ 	{ "1^^xsd:boolean", 			boolnMatcher(_boo(true)) },					// test 1 string
-			/*  4 */ 	{ "0^^xsd:boolean", 			boolnMatcher(_boo(false)) },				// test 0 string
-			/*  5 */ 	{ "true^^<" + XSD + "boolean>",	boolnMatcher(_boo(true)) }, 				// test full name
-			/*  6 */ 	{ "false^^<" + XSD + "boolean>",boolnMatcher(_boo(false)) }, 				// test full name
-			/*  7 */ 	{ "+1^^xsd:boolean", 			LiteralNotInLexicalSpaceException.class },	// wrong value format
-			/*  8 */ 	{ "-1^^xsd:boolean", 			LiteralNotInLexicalSpaceException.class },	// wrong value format
-			/*  9 */ 	{ "+0^^xsd:boolean", 			LiteralNotInLexicalSpaceException.class },	// wrong value format
-			/* 10 */ 	{ "-0^^xsd:boolean", 			LiteralNotInLexicalSpaceException.class },	// wrong value format
-			/* 11 */ 	{ "test string^^xsd:boolean", 	LiteralNotInLexicalSpaceException.class },	// wrong value format
-			/* 12 */ 	{ "2^^xsd:boolean", 			LiteralNotInLexicalSpaceException.class },	// wrong value format
-			/* 13 */ 	{ "?var^^xsd:boolean", 			boolnMatcher(_var("var")) }, 				// test variable value
-			/* 14 */ 	{ "?var@?lang^^xsd:boolean", 	LiteralIllelgalLanguageTagException.class },// test variable value and lang
-			/* 15 */ 	{ "true^^rdf:boolean",			LiteralWrongBuildInDatatypeException.class},// wrong namespace
-			/* 16 */ 	{ "true^^<" + OWL + "boolean>",	LiteralWrongBuildInDatatypeException.class},// wrong namespace
+			/*  0 */ { "^^xsd:boolean",               LiteralNotInLexicalSpaceException.class },   // wrong empty value
+			/*  1 */ { "true^^xsd:boolean",           isBoolean(true) },                           // test true string
+			/*  2 */ { "false^^xsd:boolean",          isBoolean(false) },                          // test false string
+			/*  3 */ { "1^^xsd:boolean",              isBoolean(true) },                           // test 1 string
+			/*  4 */ { "0^^xsd:boolean",              isBoolean(false) },                          // test 0 string
+			/*  5 */ { "true^^<" + XSD + "boolean>",  isBoolean(true) },                           // test full name
+			/*  6 */ { "false^^<" + XSD + "boolean>", isBoolean(false) },                          // test full name
+			/*  7 */ { "+1^^xsd:boolean",             LiteralNotInLexicalSpaceException.class },   // wrong value format
+			/*  8 */ { "-1^^xsd:boolean",             LiteralNotInLexicalSpaceException.class },   // wrong value format
+			/*  9 */ { "+0^^xsd:boolean",             LiteralNotInLexicalSpaceException.class },   // wrong value format
+			/* 10 */ { "-0^^xsd:boolean",             LiteralNotInLexicalSpaceException.class },   // wrong value format
+			/* 11 */ { "test string^^xsd:boolean",    LiteralNotInLexicalSpaceException.class },   // wrong value format
+			/* 12 */ { "2^^xsd:boolean",              LiteralNotInLexicalSpaceException.class },   // wrong value format
+//			/* 13 */ { "?var^^xsd:boolean",           isBoolean(_var("var")) },                    // test variable value
+			/* 14 */ { "?var@?lang^^xsd:boolean",     LiteralIllelgalLanguageTagException.class }, // test variable value and lang
+			/* 15 */ { "true^^rdf:boolean",           LiteralWrongBuildInDatatypeException.class}, // wrong namespace
+			/* 16 */ { "true^^<" + OWL + "boolean>",  LiteralWrongBuildInDatatypeException.class}, // wrong namespace
 			// @formatter:on
 		});
 	}

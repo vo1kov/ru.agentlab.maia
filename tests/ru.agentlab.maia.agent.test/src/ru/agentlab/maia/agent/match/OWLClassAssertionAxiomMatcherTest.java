@@ -8,11 +8,21 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent.match;
 
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.Matchers.anything;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasClassExpression;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasIRI;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasIndividual;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isClass;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isNamed;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,43 +35,9 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
-import org.semanticweb.owlapi.model.OWLNamedObject;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-import ru.agentlab.maia.IMatcher;
-
 /**
- * Test cases:
- * <!-- @formatter:off -->
- * <table border="thin single black collapse">
- * 	<thead>
- * 		<tr><th rowspan="2">##<th colspan="4">Input<th colspan="2">Output
- * 		<tr><th>Matcher Individual<th>Matcher Class<th>Axiom Individual<th>Axiom Class<th>Result<th>Unifier
- * 	<thead>
- * 	<tbody>
- * 		<tr><td>0  <td>URI1#test1 <td>URI1#class1 <td>URI1#test1 <td>URI1#class1 <td>true  <td>empty
- * 		<tr><td>1  <td>URI1#test1 <td>URI1#class1 <td>URI1#test1 <td>URI1#xxxxxx <td>false <td>no matter
- * 		<tr><td>2  <td>URI1#test1 <td>URI1#class1 <td>URI1#xxxxx <td>URI1#class1 <td>false <td>no matter
- * 		<tr><td>3  <td>URI1#test1 <td>URI1#class1 <td>URI1#xxxxx <td>URI1#xxxxxx <td>false <td>no matter
- * 
- * 		<tr><td>4  <td>URI1#test1 <td>?class      <td>URI1#test1 <td>URI1#class1 <td>true  <td>?class=URI1#class1
- * 		<tr><td>5  <td>URI1#test1 <td>?class      <td>URI1#test1 <td>URI1#xxxxxx <td>true  <td>?class=URI1#xxxxx
- * 		<tr><td>6  <td>URI1#test1 <td>?class      <td>URI1#xxxxx <td>URI1#class1 <td>false <td>no matter
- * 		<tr><td>7  <td>URI1#test1 <td>?class      <td>URI1#xxxxx <td>URI1#xxxxxx <td>false <td>no matter
- * 
- * 		<tr><td>8  <td>?indiv     <td>URI1#class1 <td>URI1#test1 <td>URI1#class1 <td>true  <td>?indiv=URI1#test1
- * 		<tr><td>9  <td>?indiv     <td>URI1#class1 <td>URI1#test1 <td>URI1#xxxxxx <td>false <td>no matter
- * 		<tr><td>10 <td>?indiv     <td>URI1#class1 <td>URI1#xxxxx <td>URI1#class1 <td>true  <td>?indiv=URI1#xxxxx
- * 		<tr><td>11 <td>?indiv     <td>URI1#class1 <td>URI1#xxxxx <td>URI1#xxxxxx <td>false <td>no matter
- * 
- * 		<tr><td>12 <td>?indiv     <td>?class      <td>URI1#test1 <td>URI1#class1 <td>true  <td>?indiv=URI1#test1 ?class=URI1#class1
- * 		<tr><td>13 <td>?indiv     <td>?class      <td>URI1#test1 <td>URI1#xxxxxx <td>true  <td>?indiv=URI1#test1 ?class=URI1#xxxxxx
- * 		<tr><td>14 <td>?indiv     <td>?class      <td>URI1#xxxxx <td>URI1#class1 <td>true  <td>?indiv=URI1#xxxxx ?class=URI1#class1
- * 		<tr><td>15 <td>?indiv     <td>?class      <td>URI1#xxxxx <td>URI1#xxxxxx <td>true  <td>?indiv=URI1#xxxxx ?class=URI1#xxxxxx
- * 	</tbody>
- * </table>
- * <!-- @formatter:on -->
- * URI1 = http://www.agentlab.ru/test/ontology#
  * 
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
  */
@@ -84,11 +60,6 @@ public class OWLClassAssertionAxiomMatcherTest {
 	private static OWLClass CLASS1 = factory.getOWLClass(CLASS1_IRI);
 	private static OWLClass XXXXXX = factory.getOWLClass(XXXXXX_IRI);
 
-	private static IMatcher<OWLNamedObject> INDIV_STATIC_MATCHER = new OWLNamedObjectMatcher(TEST1_IRI);
-	private static IMatcher<Object> INDIV_VAR_MATCHER = new VariableMatcher("indiv");
-	private static IMatcher<OWLNamedObject> CLASS_STATIC_MATCHER = new OWLNamedObjectMatcher(CLASS1_IRI);
-	private static IMatcher<Object> CLASS_VAR_MATCHER = new VariableMatcher("class");
-
 	private static Map<String, Object> EMPTY = new HashMap<>();
 	private static Map<String, Object> ONLY_TEST1 = new HashMap<>();
 	private static Map<String, Object> ONLY_XXXXX = new HashMap<>();
@@ -98,6 +69,13 @@ public class OWLClassAssertionAxiomMatcherTest {
 	private static Map<String, Object> XXXXX_CLASS1 = new HashMap<>();
 	private static Map<String, Object> TEST1_XXXXXX = new HashMap<>();
 	private static Map<String, Object> XXXXX_XXXXXX = new HashMap<>();
+	private static Map<String, Object> VALUES = new HashMap<>();
+
+	private static final Matcher<?> INDIVIDUAL_CLASS = allOf(hasClassExpression(isClass(hasIRI(CLASS1_IRI))),
+			hasIndividual(isNamed(hasIRI(TEST1_IRI))));
+	private static final Matcher<?> INDIVIDUAL_VAR = hasClassExpression(isClass(hasIRI(CLASS1_IRI)));
+	private static final Matcher<?> VAR_CLASS = hasIndividual(isNamed(hasIRI(TEST1_IRI)));
+	private static final Matcher<?> VAR_VAR = anything();
 
 	static {
 		ONLY_TEST1.put("indiv", TEST1);
@@ -114,74 +92,72 @@ public class OWLClassAssertionAxiomMatcherTest {
 		XXXXX_XXXXXX.put("class", XXXXXX);
 	}
 
-	// @formatter:off
 	@Parameters
 	public static Collection<Object[]> data() {
-		return Arrays.asList(new Object[][] { 
-			/* ---------------------------------------------------------------------------------------------
-			 *| ##	| Matcher 										| Axiom Individual	| Result			|
-			 *----------------------------------------------------------------------------------------------*/
-			/*  0 */ { INDIV_STATIC_MATCHER, CLASS_STATIC_MATCHER, 	TEST1, CLASS1, 		true,  EMPTY },
-			/*  1 */ { INDIV_STATIC_MATCHER, CLASS_STATIC_MATCHER, 	TEST1, XXXXXX, 		false, null },
-			/*  2 */ { INDIV_STATIC_MATCHER, CLASS_STATIC_MATCHER, 	XXXXX, CLASS1, 		false, null },
-			/*  3 */ { INDIV_STATIC_MATCHER, CLASS_STATIC_MATCHER, 	XXXXX, XXXXXX, 		false, null },
-			
-			/*  4 */ { INDIV_STATIC_MATCHER, CLASS_VAR_MATCHER,		TEST1, CLASS1, 		true,  ONLY_CLASS1 },
-			/*  5 */ { INDIV_STATIC_MATCHER, CLASS_VAR_MATCHER, 	TEST1, XXXXXX, 		true,  ONLY_XXXXXX },
-			/*  6 */ { INDIV_STATIC_MATCHER, CLASS_VAR_MATCHER, 	XXXXX, CLASS1, 		false, null },
-			/*  7 */ { INDIV_STATIC_MATCHER, CLASS_VAR_MATCHER, 	XXXXX, XXXXXX, 		false, null },
-			
-			/*  8 */ { INDIV_VAR_MATCHER,    CLASS_STATIC_MATCHER, 	TEST1, CLASS1, 		true,  ONLY_TEST1 },
-			/*  9 */ { INDIV_VAR_MATCHER,    CLASS_STATIC_MATCHER, 	TEST1, XXXXXX, 		false, null },
-			/* 10 */ { INDIV_VAR_MATCHER,    CLASS_STATIC_MATCHER, 	XXXXX, CLASS1, 		true,  ONLY_XXXXX },
-			/* 11 */ { INDIV_VAR_MATCHER,    CLASS_STATIC_MATCHER, 	XXXXX, XXXXXX, 		false, null },
-			
-			/* 12 */ { INDIV_VAR_MATCHER,    CLASS_VAR_MATCHER, 	TEST1, CLASS1, 		true,  TEST1_CLASS1 },
-			/* 13 */ { INDIV_VAR_MATCHER,    CLASS_VAR_MATCHER, 	TEST1, XXXXXX, 		true,  TEST1_XXXXXX },
-			/* 14 */ { INDIV_VAR_MATCHER,    CLASS_VAR_MATCHER, 	XXXXX, CLASS1, 		true,  XXXXX_CLASS1 },
-			/* 15 */ { INDIV_VAR_MATCHER,    CLASS_VAR_MATCHER, 	XXXXX, XXXXXX, 		true,  XXXXX_XXXXXX },
+		return Arrays.asList(new Object[][] {
+			// @formatter:off
+			/* ------------------------------------------------------------------
+			 *| ##	| Matcher 			 | Axiom        | Result                 |
+			 *------------------------------------------------------------------*/
+			/*  0 */ { INDIVIDUAL_CLASS, TEST1, CLASS1, true,  EMPTY },
+			/*  1 */ { INDIVIDUAL_CLASS, TEST1, XXXXXX, false, null },
+			/*  2 */ { INDIVIDUAL_CLASS, XXXXX, CLASS1, false, null },
+			/*  3 */ { INDIVIDUAL_CLASS, XXXXX, XXXXXX, false, null },
+			                                            
+			/*  4 */ { INDIVIDUAL_VAR,   TEST1, CLASS1, true,  ONLY_CLASS1 },
+			/*  5 */ { INDIVIDUAL_VAR,   TEST1, XXXXXX, true,  ONLY_XXXXXX },
+			/*  6 */ { INDIVIDUAL_VAR,   XXXXX, CLASS1, false, null },
+			/*  7 */ { INDIVIDUAL_VAR,   XXXXX, XXXXXX, false, null },
+			                                            
+			/*  8 */ { VAR_CLASS,        TEST1, CLASS1, true,  ONLY_TEST1 },
+			/*  9 */ { VAR_CLASS,        TEST1, XXXXXX, false, null },
+			/* 10 */ { VAR_CLASS,        XXXXX, CLASS1, true,  ONLY_XXXXX },
+			/* 11 */ { VAR_CLASS,        XXXXX, XXXXXX, false, null },
+			                                            
+			/* 12 */ { VAR_VAR,          TEST1, CLASS1, true,  TEST1_CLASS1 },
+			/* 13 */ { VAR_VAR,          TEST1, XXXXXX, true,  TEST1_XXXXXX },
+			/* 14 */ { VAR_VAR,          XXXXX, CLASS1, true,  XXXXX_CLASS1 },
+			/* 15 */ { VAR_VAR,          XXXXX, XXXXXX, true,  XXXXX_XXXXXX },
+			// @formatter:on
 		});
 	}
-	// @formatter:on
 
 	@Parameter(0)
-	public IMatcher<? super OWLNamedIndividual> indivMatcher;
+	public Matcher<?> matcher;
 
 	@Parameter(1)
-	public IMatcher<? super OWLClass> classMatcher;
-
-	@Parameter(2)
 	public OWLNamedIndividual indivAxiom;
 
-	@Parameter(3)
+	@Parameter(2)
 	public OWLClass classAxiom;
 
-	@Parameter(4)
+	@Parameter(3)
 	public boolean result;
 
-	@Parameter(5)
+	@Parameter(4)
 	public Map<String, Object> resultUnifier;
 
 	@Test
 	public void test() {
 		// Given
-		OWLClassAssertionAxiomMatcher matcher = new OWLClassAssertionAxiomMatcher(classMatcher, indivMatcher);
+		VALUES.clear();
 		OWLClassAssertionAxiom axiom = factory.getOWLClassAssertionAxiom(classAxiom, indivAxiom);
-		Map<String, Object> unifier = new HashMap<>();
 
 		// When
 		System.out.println("Match " + axiom + " by " + matcher);
-		boolean match = matcher.match(axiom, unifier);
-		unifier.forEach((k, v) -> {
+		boolean match = matcher.matches(axiom);
+		VALUES.forEach((k, v) -> {
 			System.out.println("	" + k + "=" + v);
 		});
-
+		Description d = Description.NONE;
+		matcher.describeMismatch(axiom, d);
+		System.out.println(d.toString());
 		// Then
 		Assert.assertEquals(result, match);
 		if (match) {
-			Assert.assertEquals(resultUnifier.size(), unifier.size());
+			Assert.assertEquals(resultUnifier.size(), VALUES.size());
 			resultUnifier.forEach((k, v) -> {
-				Assert.assertEquals(v, unifier.get(k));
+				Assert.assertEquals(v, VALUES.get(k));
 			});
 		}
 	}
