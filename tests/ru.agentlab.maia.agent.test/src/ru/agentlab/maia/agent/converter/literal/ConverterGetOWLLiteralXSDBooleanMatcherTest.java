@@ -8,7 +8,7 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent.converter.literal;
 
-import static ru.agentlab.maia.agent.match.Matchers.isBoolean;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isBoolean;
 
 import java.util.Arrays;
 import java.util.Collection;

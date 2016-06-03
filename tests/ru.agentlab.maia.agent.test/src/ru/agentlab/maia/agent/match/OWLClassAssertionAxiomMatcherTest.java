@@ -9,12 +9,12 @@
 package ru.agentlab.maia.agent.match;
 
 import static org.hamcrest.CoreMatchers.allOf;
-import static ru.agentlab.maia.agent.match.Matchers.hasClassExpression;
-import static ru.agentlab.maia.agent.match.Matchers.hasIRI;
-import static ru.agentlab.maia.agent.match.Matchers.hasIndividual;
-import static ru.agentlab.maia.agent.match.Matchers.isClass;
-import static ru.agentlab.maia.agent.match.Matchers.isNamed;
-import static ru.agentlab.maia.agent.match.Matchers.var;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasClassExpression;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasIRI;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasIndividual;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isClass;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isNamed;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.var;
 
 import java.util.Arrays;
 import java.util.Collection;

@@ -9,8 +9,8 @@
 package ru.agentlab.maia.agent.converter.literal;
 
 import static org.hamcrest.Matchers.equalTo;
-import static ru.agentlab.maia.agent.match.Matchers.hasIRI;
-import static ru.agentlab.maia.agent.match.Matchers.isTyped;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasIRI;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTyped;
 
 import java.util.Arrays;
 import java.util.Collection;
