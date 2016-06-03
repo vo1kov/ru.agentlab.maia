@@ -3,8 +3,6 @@ package ru.agentlab.maia.hamcrest.owlapi;
 import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-import java.util.Map;
-
 import org.hamcrest.Matcher;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -128,10 +126,6 @@ public class Matchers {
 
 	public static Matcher<OWLLiteral> isPlain(Matcher<? super String> valueMatcher) {
 		return new OWLLiteralIsPlain(valueMatcher, anything());
-	}
-
-	public static Matcher<Object> var(String name, Map<String, Object> values) {
-		return new Variable(name, values);
 	}
 
 }
