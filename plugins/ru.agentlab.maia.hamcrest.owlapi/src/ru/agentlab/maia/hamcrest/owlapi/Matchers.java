@@ -1,6 +1,5 @@
 package ru.agentlab.maia.hamcrest.owlapi;
 
-import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.equalTo;
 
@@ -133,27 +132,6 @@ public class Matchers {
 
 	public static Matcher<Object> var(String name, Map<String, Object> values) {
 		return new Variable(name, values);
-	}
-
-	public static void main(String[] args) {
-		// @formatter:off
-		allOf(
-			hasClassExpression(isClass(hasIRI(""))), 
-			hasIndividual(isNamed(hasIRI("")))
-		);
-		
-		allOf(
-			hasSubject(isNamed(hasIRI(""))), 
-			hasProperty(isDataProperty(hasIRI(""))),
-			hasObject(isIndividual(isNamed(hasIRI(""))))
-		);
-		
-		allOf(
-			hasSubject(isNamed(hasIRI(""))), 
-			hasProperty(isObjectProperty(hasIRI(""))),
-			hasObject(isLiteral(isBoolean(anything())))
-		);
-		// @formatter:on
 	}
 
 }

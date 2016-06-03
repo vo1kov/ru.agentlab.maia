@@ -7,7 +7,7 @@ import org.hamcrest.Matcher;
 
 import ru.agentlab.maia.IMessage;
 
-public class AclMatchers {
+public class Matchers {
 
 	public static Matcher<IMessage> hasContent(Matcher<? super String> matcher) {
 		return new AclMessageHasContent(matcher);
