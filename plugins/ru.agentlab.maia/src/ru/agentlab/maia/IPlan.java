@@ -12,11 +12,7 @@ import java.util.Map;
 
 import org.hamcrest.Matcher;
 
-import ru.agentlab.maia.exception.PlanExecutionException;
-
 public interface IPlan {
-
-	void execute(IInjector injector, Map<String, Object> variables) throws PlanExecutionException;
 
 	void setStateMatcher(Matcher<?> matcher);
 

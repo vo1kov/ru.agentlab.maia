@@ -12,25 +12,21 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import ru.agentlab.maia.IInjector;
-import ru.agentlab.maia.exception.InjectorException;
-import ru.agentlab.maia.exception.PlanExecutionException;
+import ru.agentlab.maia.IPlanBody;
 
-public class PlanStateful extends Plan {
+public class PlanStateful implements IPlanBody {
 
-	Method method;
+	protected final Object role;
+	protected final Method method;
 
 	public PlanStateful(Object role, Method method) {
-		super(role);
+		this.role = role;
 		this.method = method;
 	}
 
 	@Override
-	public void execute(IInjector injector, Map<String, Object> variables) throws PlanExecutionException {
-		try {
-			injector.invoke(role, method, null, variables);
-		} catch (InjectorException e) {
-			throw new PlanExecutionException(e);
-		}
+	public void execute(IInjector injector, Map<String, Object> variables) throws Exception {
+		injector.invoke(role, method, null, variables);
 	}
 
 }

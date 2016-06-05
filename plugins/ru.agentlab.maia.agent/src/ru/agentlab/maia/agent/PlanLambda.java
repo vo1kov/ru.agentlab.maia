@@ -11,19 +11,18 @@ package ru.agentlab.maia.agent;
 import java.util.Map;
 
 import ru.agentlab.maia.IInjector;
-import ru.agentlab.maia.exception.PlanExecutionException;
+import ru.agentlab.maia.IPlanBody;
 
-public class PlanLambda extends Plan {
+public class PlanLambda implements IPlanBody {
 
 	Runnable runnable;
 
-	public PlanLambda(Object role, Runnable runnable) {
-		super(role);
+	public PlanLambda(Runnable runnable) {
 		this.runnable = runnable;
 	}
 
 	@Override
-	public void execute(IInjector injector, Map<String, Object> variables) throws PlanExecutionException {
+	public void execute(IInjector injector, Map<String, Object> variables) throws Exception {
 		runnable.run();
 	}
 

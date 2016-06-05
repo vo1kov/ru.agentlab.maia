@@ -33,7 +33,6 @@ import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isNamed;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isObjectProperty;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isPlain;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTyped;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.var;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -378,7 +377,7 @@ public class Converter implements IConverter {
 			matchers.add(hasConversationId(equalTo(performative)));
 		}
 		org.hamcrest.Matcher<? super LocalDateTime> postTimeStampMatcher;
-		return allOf(matchers);
+		return allOf(matchers.toArray(new org.hamcrest.Matcher[matchers.size()]));
 	}
 
 	// protected JavaMethodMatcher getJavaMethodMatcher(String value) throws

@@ -81,8 +81,7 @@ public class PlanBase implements IPlanBase {
 					continue;
 				}
 				Map<String, Object> variables = plan.getVariables(eventData);
-				boolean isApplicable = plan.isApplicable(variables);
-				if (!isApplicable) {
+				if (!plan.isApplicable(variables)) {
 					continue;
 				}
 				result.add(new Option(plan, variables));

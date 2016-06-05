@@ -8,29 +8,26 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
 import ru.agentlab.maia.IInjector;
-import ru.agentlab.maia.exception.PlanExecutionException;
+import ru.agentlab.maia.IPlanBody;
 
-public class PlanStateles extends Plan {
+public class PlanStateles implements IPlanBody {
 
-	Method method;
+	protected final Object role;
+
+	protected final Method method;
 
 	public PlanStateles(Object role, Method method) {
-		super(role);
+		this.role = role;
 		this.method = method;
 	}
 
 	@Override
-	public void execute(IInjector injector, Map<String, Object> variables) throws PlanExecutionException {
-		try {
-			method.invoke(role);
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			throw new PlanExecutionException(e);
-		}
+	public void execute(IInjector injector, Map<String, Object> variables) throws Exception {
+		method.invoke(role);
 	}
 
 }
