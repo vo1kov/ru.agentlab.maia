@@ -22,7 +22,7 @@ import javax.inject.Inject;
 
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IMessage;
-import ru.agentlab.maia.annotation.MessageAdded;
+import ru.agentlab.maia.annotation.event.AddedMessage;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
 
 public abstract class SubscriptionInitiator {
@@ -52,7 +52,7 @@ public abstract class SubscriptionInitiator {
 		messaging.send(message);
 	}
 
-	@MessageAdded(performative = AGREE, protocol = PROTOCOL_NAME)
+	@AddedMessage(performative = AGREE, protocol = PROTOCOL_NAME)
 	public void onAgree(IMessage message) {
 		if (!message.getConversationId().equals(conversationId)) {
 			return;
@@ -61,11 +61,11 @@ public abstract class SubscriptionInitiator {
 		beliefBase.addObjectPropertyAssertion("this", "maia:haveSubscription", sender.toString());
 	}
 
-	@MessageAdded(performative = REFUSE, protocol = PROTOCOL_NAME)
+	@AddedMessage(performative = REFUSE, protocol = PROTOCOL_NAME)
 	public void onRefuse(IMessage message) {
 	}
 
-	@MessageAdded(performative = INFORM, protocol = PROTOCOL_NAME)
+	@AddedMessage(performative = INFORM, protocol = PROTOCOL_NAME)
 	public void onInform(IMessage message) {
 		if (!message.getConversationId().equals(conversationId)) {
 			return;

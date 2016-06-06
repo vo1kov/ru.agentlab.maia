@@ -22,12 +22,13 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IInjector;
-import ru.agentlab.maia.annotation.BeliefDataPropertyAdded;
-import ru.agentlab.maia.annotation.HaveBelief;
-import ru.agentlab.maia.annotation.MessageAdded;
 import ru.agentlab.maia.annotation.Optional;
 import ru.agentlab.maia.annotation.Prefix;
-import ru.agentlab.maia.annotation.RoleAdded;
+import ru.agentlab.maia.annotation.event.AddedClassAssertion;
+import ru.agentlab.maia.annotation.event.AddedMessage;
+import ru.agentlab.maia.annotation.event.AddedRole;
+import ru.agentlab.maia.annotation.state.HaveDataPropertyAssertion;
+import ru.agentlab.maia.annotation.state.HaveSubClassOf;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
 
 @Prefix(name = "rdf", namespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns")
@@ -67,24 +68,24 @@ public class Agent {
 		desireBase.addGoalClassAsertion(factory.getOWLClassAssertionAxiom(clazz, individual));
 	}
 
-	@BeliefDataPropertyAdded("?classified rdf:type ?classifier")
-	@HaveBelief("?classifier ?b ?c")
+	@AddedClassAssertion("?classified ?classifier")
+	@HaveDataPropertyAssertion("?classifier ?c")
 	public void onSomeClassified() {
 
 	}
 
-	@BeliefDataPropertyAdded("?classified rdf:type ?classifier")
-	@HaveBelief("?classifier ?b ?c")
+	@AddedClassAssertion("?classified ?classifier")
+	@HaveSubClassOf("?classifier owl:Thing")
 	public void onSomeClassifiedw() {
 
 	}
 
-	@MessageAdded(performative = "INFO")
+	@AddedMessage(performative = "INFO")
 	public void sdf() {
 
 	}
 
-	@RoleAdded(HelloWorld.class)
+	@AddedRole(HelloWorld.class)
 	public void onHelloWorldAdded() {
 	}
 

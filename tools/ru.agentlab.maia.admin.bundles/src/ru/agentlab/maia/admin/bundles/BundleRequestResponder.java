@@ -17,7 +17,7 @@ import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.annotation.GoalClassificationFailed;
 import ru.agentlab.maia.annotation.GoalClassificationFinished;
-import ru.agentlab.maia.annotation.MessageAdded;
+import ru.agentlab.maia.annotation.event.AddedMessage;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
 
 public class BundleRequestResponder {
@@ -30,7 +30,7 @@ public class BundleRequestResponder {
 	@Inject
 	IGoalBase goalBase;
 
-	@MessageAdded(performative = REQUEST, protocol = "FIPA_REQUEST")
+	@AddedMessage(performative = REQUEST, protocol = "FIPA_REQUEST")
 	public void onRequest(IMessage message) {
 		try {
 			IGoal goal = goalBase.addGoal(message.getContent());
@@ -41,7 +41,7 @@ public class BundleRequestResponder {
 		}
 	}
 
-	@MessageAdded(performative = CANCEL, protocol = "FIPA_REQUEST")
+	@AddedMessage(performative = CANCEL, protocol = "FIPA_REQUEST")
 	public void onCancel(IMessage message) {
 		try {
 			goalBase.removeGoal(message.getContent());

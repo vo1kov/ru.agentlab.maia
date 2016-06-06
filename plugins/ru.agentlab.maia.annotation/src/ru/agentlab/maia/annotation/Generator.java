@@ -23,7 +23,8 @@ public class Generator {
 
 	static List<String> allPrefixes = ImmutableList.of(
 		// @formatter:off
-		"Have"
+		"Have",
+		"Initial"
 		// @formatter:on
 	);
 
@@ -98,7 +99,7 @@ public class Generator {
 	}
 
 	private static void printContent(PrintWriter writer, String className) {
-		writer.println("package ru.agentlab.maia.annotation.ext;");
+		writer.println("package ru.agentlab.maia.annotation.initial;");
 		writer.println();
 		writer.println("import java.lang.annotation.Documented;");
 		writer.println("import java.lang.annotation.ElementType;");
@@ -113,13 +114,13 @@ public class Generator {
 		writer.println(" */");
 		writer.println("@Documented");
 		writer.println("@Retention(RetentionPolicy.RUNTIME)");
-		writer.println("@Target(ElementType.METHOD)");
+		writer.println("@Target(ElementType.TYPE)");
 //		writer.println("@EventMatcher(EventType.BELIEF_CLASSIFICATION_ADDED)");
 		writer.print("public @interface ");
 		writer.print(className);
 		writer.println(" {");
 		writer.println();
-		writer.println("	String value();");
+		writer.println("	String[] value();");
 		writer.println();
 		writer.println("}");
 	}

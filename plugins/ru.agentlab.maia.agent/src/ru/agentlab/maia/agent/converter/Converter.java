@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static ru.agentlab.maia.agent.Variable.var;
 import static ru.agentlab.maia.hamcrest.message.Matchers.hasContent;
 import static ru.agentlab.maia.hamcrest.message.Matchers.hasConversationId;
 import static ru.agentlab.maia.hamcrest.message.Matchers.hasEncoding;
@@ -82,7 +83,6 @@ import ru.agentlab.maia.annotation.BeliefDataPropertyRemoved;
 import ru.agentlab.maia.annotation.BeliefObjectPropertyAdded;
 import ru.agentlab.maia.annotation.BeliefObjectPropertyRemoved;
 import ru.agentlab.maia.annotation.EventMatcher;
-import ru.agentlab.maia.annotation.ExternalEventAdded;
 import ru.agentlab.maia.annotation.GoalClassificationAdded;
 import ru.agentlab.maia.annotation.GoalClassificationFailed;
 import ru.agentlab.maia.annotation.GoalClassificationFinished;
@@ -95,14 +95,15 @@ import ru.agentlab.maia.annotation.GoalObjectPropertyAdded;
 import ru.agentlab.maia.annotation.GoalObjectPropertyFailed;
 import ru.agentlab.maia.annotation.GoalObjectPropertyFinished;
 import ru.agentlab.maia.annotation.GoalObjectPropertyRemoved;
-import ru.agentlab.maia.annotation.MessageAdded;
-import ru.agentlab.maia.annotation.MessageRemoved;
-import ru.agentlab.maia.annotation.MessageUnhandled;
 import ru.agentlab.maia.annotation.Prefix;
-import ru.agentlab.maia.annotation.RoleAdded;
-import ru.agentlab.maia.annotation.RoleRemoved;
-import ru.agentlab.maia.annotation.RoleResolved;
-import ru.agentlab.maia.annotation.RoleUnresolved;
+import ru.agentlab.maia.annotation.event.AddedExternalEvent;
+import ru.agentlab.maia.annotation.event.AddedMessage;
+import ru.agentlab.maia.annotation.event.AddedRole;
+import ru.agentlab.maia.annotation.event.RemovedMessage;
+import ru.agentlab.maia.annotation.event.RemovedRole;
+import ru.agentlab.maia.annotation.event.ResolvedRole;
+import ru.agentlab.maia.annotation.event.UnhandledMessage;
+import ru.agentlab.maia.annotation.event.UnresolvedRole;
 import ru.agentlab.maia.exception.ConverterException;
 
 public class Converter implements IConverter {
@@ -151,16 +152,16 @@ public class Converter implements IConverter {
 //		PlanRemoved.class
 //	);
 	private static final Set<Class<?>> ANNOTATIONS_CLASS = ImmutableSet.of(
-		RoleAdded.class,
-		RoleRemoved.class, 
-		RoleResolved.class, 
-		RoleUnresolved.class,
-		ExternalEventAdded.class
+		AddedRole.class,
+		RemovedRole.class, 
+		ResolvedRole.class, 
+		UnresolvedRole.class,
+		AddedExternalEvent.class
 	);
 	private static final Set<Class<?>> ANNOTATIONS_MESSAGE = ImmutableSet.of(
-		MessageAdded.class,
-		MessageRemoved.class, 
-		MessageUnhandled.class
+		AddedMessage.class,
+		RemovedMessage.class, 
+		UnhandledMessage.class
 	);
 	private static Set<String> BUILDIN_DATATYPE_NAMESPACES = ImmutableSet.of(
 		Namespaces.OWL.toString(),

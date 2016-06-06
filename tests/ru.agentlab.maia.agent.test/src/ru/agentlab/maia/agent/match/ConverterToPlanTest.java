@@ -26,9 +26,9 @@ import ru.agentlab.maia.annotation.PlanAdded;
 import ru.agentlab.maia.annotation.PlanFailed;
 import ru.agentlab.maia.annotation.PlanFinished;
 import ru.agentlab.maia.annotation.PlanRemoved;
-import ru.agentlab.maia.annotation.RoleAdded;
-import ru.agentlab.maia.annotation.RoleResolved;
-import ru.agentlab.maia.annotation.RoleUnresolved;
+import ru.agentlab.maia.annotation.event.AddedRole;
+import ru.agentlab.maia.annotation.event.ResolvedRole;
+import ru.agentlab.maia.annotation.event.UnresolvedRole;
 
 /**
  * 
@@ -128,10 +128,10 @@ import ru.agentlab.maia.annotation.RoleUnresolved;
  * 		<tr><td>19 <td>"BeliefAddedDummy::"		<td>Exception	<td>
  * 
  * 		<tr><td>16  <td rowspan="10">
- * 			{@link RoleAdded @RoleAdded}<br>
- * 			{@link RoleResolved @RoleResolved}<br>
- * 			{@link RoleResolved @RoleFinished}<br>
- * 			{@link RoleUnresolved @RoleUnresolved}<br>
+ * 			{@link AddedRole @RoleAdded}<br>
+ * 			{@link ResolvedRole @RoleResolved}<br>
+ * 			{@link ResolvedRole @RoleFinished}<br>
+ * 			{@link UnresolvedRole @RoleUnresolved}<br>
  * 				   <td>byte.class 				<td>Exception	<td>
  * 		<tr><td>18 <td>short.class 				<td>Exception	<td>
  * 		<tr><td>19 <td>int.class 				<td>Exception	<td>

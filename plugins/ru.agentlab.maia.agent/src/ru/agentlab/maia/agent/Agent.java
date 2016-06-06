@@ -46,6 +46,7 @@ import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
+import ru.agentlab.maia.IPlanBody;
 import ru.agentlab.maia.Option;
 import ru.agentlab.maia.agent.converter.Converter;
 import ru.agentlab.maia.container.Injector;
@@ -372,11 +373,12 @@ public class Agent implements IAgent {
 			}
 			Iterable<Option> options = planBase.getOptions(event);
 			options.forEach(option -> {
+				IPlanBody planBody = option.getPlanBody();
 				try {
-					option.getPlan().execute(getInjector(), option.getValues());
-					eventQueue.offer(new PlanFinishedEvent(option.getPlan()));
+					planBody.execute(getInjector(), option.getValues());
+					eventQueue.offer(new PlanFinishedEvent(planBody));
 				} catch (Exception e) {
-					eventQueue.offer(new PlanFailedEvent(option.getPlan()));
+					eventQueue.offer(new PlanFailedEvent(planBody));
 				}
 			});
 

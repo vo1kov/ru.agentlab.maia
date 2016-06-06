@@ -8,7 +8,6 @@
  *******************************************************************************/
 package ru.agentlab.maia;
 
-import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.stream.Stream;
 
@@ -21,10 +20,6 @@ public interface IPlanBase {
 	Collection<IPlan> getPlans();
 
 	Stream<IPlan> getPlansStream();
-
-	IPlan createPlan(Object object, Runnable runnable);
-
-	IPlan createPlan(Object object, Method method);
 
 	Iterable<Option> getOptions(IEvent<?> event);
 

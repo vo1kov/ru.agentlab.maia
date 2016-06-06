@@ -1,62 +1,36 @@
 package ru.agentlab.maia.agent;
 
-import java.util.Map;
-
-import org.hamcrest.Matcher;
-
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBody;
 import ru.agentlab.maia.IPlanFilter;
 
 public abstract class Plan implements IPlan {
-	
+
 	IPlanFilter planFilter;
-	
+
 	IPlanBody planBody;
-
-	protected Matcher<?> eventMatcher;
-
-	protected Matcher<?> stateMatchers;
 
 	protected final Object role;
 
-	public Plan(Object role) {
+	public Plan(Object role, IPlanFilter planFilter, IPlanBody planBody) {
 		this.role = role;
+		this.planFilter = planFilter;
+		this.planBody = planBody;
 	}
 
 	@Override
-	public boolean isRelevant(Object eventData) {
-		return eventMatcher.matches(eventData);
+	public IPlanBody getPlanBody() {
+		return planBody;
 	}
 
 	@Override
-	public boolean isApplicable(Map<String, Object> variables) {
-		return false;
+	public IPlanFilter getPlanFilter() {
+		return planFilter;
 	}
 
 	@Override
-	public Map<String, Object> getVariables(Object eventData) {
-		return null;
-	}
-
-	@Override
-	public Matcher<?> getEventMatcher() {
-		return eventMatcher;
-	}
-
-	@Override
-	public void setEventMatcher(Matcher<?> eventMatcher) {
-		this.eventMatcher = eventMatcher;
-	}
-
-	@Override
-	public Matcher<?> getStateMatcher() {
-		return stateMatchers;
-	}
-
-	@Override
-	public void setStateMatcher(Matcher<?> matcher) {
-		this.stateMatchers = matcher;
+	public Object getRole() {
+		return role;
 	}
 
 }

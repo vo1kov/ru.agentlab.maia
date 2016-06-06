@@ -8,11 +8,11 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -34,20 +34,6 @@ public class PlanBase implements IPlanBase {
 
 	public PlanBase(Queue<IEvent<?>> eventQueue) {
 		this.eventQueue = eventQueue;
-	}
-
-	@Override
-	public IPlan createPlan(Object role, Method method) {
-		if (method.getParameterCount() == 0) {
-			return new PlanStateles(role, method);
-		} else {
-			return new PlanStateful(role, method);
-		}
-	}
-
-	@Override
-	public IPlan createPlan(Object role, Runnable runnable) {
-		return new PlanLambda(role, runnable);
 	}
 
 	@Override
@@ -76,15 +62,14 @@ public class PlanBase implements IPlanBase {
 		if (eventPlans != null) {
 			List<Option> result = new ArrayList<>();
 			Object eventData = event.getPayload();
+			Map<String, Object> values = new HashMap<>();
 			for (IPlan plan : eventPlans) {
-				if (!plan.isRelevant(eventData)) {
-					continue;
+				if (plan.getPlanFilter().matches(eventData, values)) {
+					result.add(new Option(plan.getPlanBody(), values));
+					values = new HashMap<>();
+				} else {
+					values.clear();
 				}
-				Map<String, Object> variables = plan.getVariables(eventData);
-				if (!plan.isApplicable(variables)) {
-					continue;
-				}
-				result.add(new Option(plan, variables));
 			}
 			return result;
 		}

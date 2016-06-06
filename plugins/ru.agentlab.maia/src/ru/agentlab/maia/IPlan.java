@@ -8,24 +8,12 @@
  *******************************************************************************/
 package ru.agentlab.maia;
 
-import java.util.Map;
-
-import org.hamcrest.Matcher;
-
 public interface IPlan {
 
-	void setStateMatcher(Matcher<?> matcher);
+	IPlanFilter getPlanFilter();
 
-	Matcher<?> getStateMatcher();
-
-	void setEventMatcher(Matcher<?> eventMatcher);
-
-	Matcher<?> getEventMatcher();
-
-	boolean isRelevant(Object eventData);
-
-	Map<String, Object> getVariables(Object eventData);
-
-	boolean isApplicable(Map<String, Object> variables);
+	IPlanBody getPlanBody();
+	
+	Object getRole();
 
 }

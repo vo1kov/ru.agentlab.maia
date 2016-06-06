@@ -19,8 +19,8 @@ import javax.inject.Named;
 import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.annotation.BeliefDataPropertyAdded;
 import ru.agentlab.maia.annotation.HaveBelief;
-import ru.agentlab.maia.annotation.MessageAdded;
 import ru.agentlab.maia.annotation.Prefix;
+import ru.agentlab.maia.annotation.event.AddedMessage;
 import ru.agentlab.maia.messaging.AclMessage;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
 
@@ -36,7 +36,7 @@ public class BundleSubscriptionResponder {
 	@Inject
 	IMessageDeliveryService mts;
 
-	@MessageAdded(performative = SUBSCRIBE, protocol = "FIPA_SUBSCRIBE")
+	@AddedMessage(performative = SUBSCRIBE, protocol = "FIPA_SUBSCRIBE")
 	public void onSubscribe(IMessage message) {
 		UUID sender = message.getSender();
 		String conversationId = message.getConversationId();
@@ -54,7 +54,7 @@ public class BundleSubscriptionResponder {
 		reply(message, AGREE);
 	}
 
-	@MessageAdded(performative = CANCEL, protocol = "FIPA_SUBSCRIBE")
+	@AddedMessage(performative = CANCEL, protocol = "FIPA_SUBSCRIBE")
 	public void onCancel(IMessage message) {
 		UUID sender = message.getSender();
 		String conversationId = message.getConversationId();
