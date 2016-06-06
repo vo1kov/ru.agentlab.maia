@@ -6,16 +6,24 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import org.semanticweb.owlapi.model.AxiomType;
+
 import com.google.common.collect.ImmutableList;
 
 public class Generator {
 
-	static List<String> prefixes = ImmutableList.of(
+	static List<String> aBoxPrefixes = ImmutableList.of(
 		// @formatter:off
-		"Have",
+		"Goal",
+		"Failed",
 		"Added",
-		"Removed",
-		"Initial"
+		"Removed"
+		// @formatter:on
+	);
+
+	static List<String> allPrefixes = ImmutableList.of(
+		// @formatter:off
+		"Have"
 		// @formatter:on
 	);
 
@@ -58,16 +66,26 @@ public class Generator {
 	);
 
 	public static void main(String[] args) throws IOException {
-		for (String prefix : prefixes) {
-			for (String name : names) {
-				String className = prefix + name;
-				generateJava(className);
+		for (String prefix : aBoxPrefixes) {
+			for (AxiomType<?> axiomType : AxiomType.ABoxAxiomTypes) {
+				generateJava(prefix + axiomType.getName());
 			}
 		}
-		for (String name : extra) {
-			String className = "Have" + name;
-			generateJava(className);
+		for (String prefix : allPrefixes) {
+			for (AxiomType<?> axiomType : AxiomType.TBoxAxiomTypes) {
+				generateJava(prefix + axiomType.getName());
+			}
+			for (AxiomType<?> axiomType : AxiomType.ABoxAxiomTypes) {
+				generateJava(prefix + axiomType.getName());
+			}
+			for (AxiomType<?> axiomType : AxiomType.RBoxAxiomTypes) {
+				generateJava(prefix + axiomType.getName());
+			}
 		}
+		// for (String name : extra) {
+		// String className = "Have" + name;
+		// generateJava(className);
+		// }
 	}
 
 	private static void generateJava(String className) throws IOException {
@@ -80,7 +98,7 @@ public class Generator {
 	}
 
 	private static void printContent(PrintWriter writer, String className) {
-		writer.println("package ru.agentlab.maia.annotation;");
+		writer.println("package ru.agentlab.maia.annotation.ext;");
 		writer.println();
 		writer.println("import java.lang.annotation.Documented;");
 		writer.println("import java.lang.annotation.ElementType;");
@@ -88,12 +106,15 @@ public class Generator {
 		writer.println("import java.lang.annotation.RetentionPolicy;");
 		writer.println("import java.lang.annotation.Target;");
 		writer.println();
-		writer.println("import ru.agentlab.maia.EventType;");
-		writer.println();
+//		writer.println("import ru.agentlab.maia.EventType;");
+//		writer.println();
+		writer.println("/**");
+		writer.println(" * @author Dmitriy Shishkin");
+		writer.println(" */");
 		writer.println("@Documented");
 		writer.println("@Retention(RetentionPolicy.RUNTIME)");
 		writer.println("@Target(ElementType.METHOD)");
-		writer.println("@EventMatcher(EventType.BELIEF_CLASSIFICATION_ADDED)");
+//		writer.println("@EventMatcher(EventType.BELIEF_CLASSIFICATION_ADDED)");
 		writer.print("public @interface ");
 		writer.print(className);
 		writer.println(" {");
