@@ -319,7 +319,7 @@ public class Agent implements IAgent {
 			if (key == UUID.class) {
 				return key.cast(uuid);
 			} else if (key == IAgent.class) {
-				return key.cast(this);
+				return key.cast(Agent.this);
 			} else if (key == IContainer.class) {
 				return key.cast(getParent());
 			} else if (key == IBeliefBase.class) {
@@ -357,12 +357,16 @@ public class Agent implements IAgent {
 		}
 	}
 
+	int i = 0;
+
 	protected final class ExecuteAction extends RecursiveAction {
 
 		private static final long serialVersionUID = 1L;
 
 		@Override
 		protected void compute() {
+			System.out.println("-------------------- Execute " + i++ + " --------------------");
+			long begin = System.nanoTime();
 			IEvent<?> event = eventQueue.poll();
 			if (event == null) {
 				state = AgentState.WAITING;
@@ -374,13 +378,16 @@ public class Agent implements IAgent {
 					option.getPlanBody().execute(getInjector(), option.getValues());
 					// eventQueue.offer(new PlanFinishedEvent(planBody));
 				} catch (Exception e) {
+					e.printStackTrace();
 					// eventQueue.offer(new PlanFailedEvent(planBody));
 				}
 			});
+			System.out.println("ThreadPool: " + executor.toString());
+			System.out.println("Executed " + (System.nanoTime() - begin) + " nanos");
 
 			if (getState() == AgentState.ACTIVE) {
 				ExecuteAction action = new ExecuteAction();
-				invokeAll(action);
+				executor.submit(action);
 			}
 		}
 
