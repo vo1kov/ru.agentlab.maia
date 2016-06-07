@@ -32,16 +32,18 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.reasoner.structural.StructuralReasonerFactory;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
 
+import de.derivo.sparqldlapi.QueryEngine;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IEvent;
-import ru.agentlab.maia.event.BeliefClassificationAddedEvent;
-import ru.agentlab.maia.event.BeliefClassificationRemovedEvent;
-import ru.agentlab.maia.event.BeliefDataPropertyAddedEvent;
-import ru.agentlab.maia.event.BeliefDataPropertyRemovedEvent;
-import ru.agentlab.maia.event.BeliefObjectPropertyAddedEvent;
-import ru.agentlab.maia.event.BeliefObjectPropertyRemovedEvent;
+import ru.agentlab.maia.event.AddedClassAssertionEvent;
+import ru.agentlab.maia.event.RemovedClassAssertionEvent;
+import ru.agentlab.maia.event.AddedDataPropertyAssertionEvent;
+import ru.agentlab.maia.event.RemovedDataPropertyAssertionEvent;
+import ru.agentlab.maia.event.AddedObjectPropertyAssertionEvent;
+import ru.agentlab.maia.event.RemovedObjectPropertyAssertionEvent;
 
 public class BeliefBase implements IBeliefBase {
 
@@ -52,6 +54,14 @@ public class BeliefBase implements IBeliefBase {
 
 	private final Queue<IEvent<?>> eventQueue;
 
+	private final IRI ontologyIRI;
+
+	OWLOntology ontology;
+
+	QueryEngine engine;// = QueryEngine.create(manager, (new
+						// StructuralReasonerFactory()).createReasoner(ontology),
+						// true);
+
 	public BeliefBase(Queue<IEvent<?>> eventQueue, String namespace) {
 		this.eventQueue = eventQueue;
 		ontologyIRI = IRI.create(namespace);
@@ -60,27 +70,28 @@ public class BeliefBase implements IBeliefBase {
 		} catch (OWLOntologyCreationException e) {
 			e.printStackTrace();
 		}
+		engine = QueryEngine.create(manager, (new StructuralReasonerFactory()).createReasoner(ontology), true);
 		manager.addOntologyChangeListener(changes -> {
 			changes.forEach((OWLOntologyChange change) -> {
 				OWLAxiom axiom = change.getAxiom();
 				if (change.isAddAxiom()) {
 					if (axiom instanceof OWLClassAssertionAxiom) {
-						this.eventQueue.offer(new BeliefClassificationAddedEvent((OWLClassAssertionAxiom) axiom));
+						this.eventQueue.offer(new AddedClassAssertionEvent((OWLClassAssertionAxiom) axiom));
 					} else if (axiom instanceof OWLDataPropertyAssertionAxiom) {
-						this.eventQueue.offer(new BeliefDataPropertyAddedEvent((OWLDataPropertyAssertionAxiom) axiom));
+						this.eventQueue.offer(new AddedDataPropertyAssertionEvent((OWLDataPropertyAssertionAxiom) axiom));
 					} else if (axiom instanceof OWLObjectPropertyAssertionAxiom) {
 						this.eventQueue
-								.offer(new BeliefObjectPropertyAddedEvent((OWLObjectPropertyAssertionAxiom) axiom));
+								.offer(new AddedObjectPropertyAssertionEvent((OWLObjectPropertyAssertionAxiom) axiom));
 					}
 				} else if (change.isRemoveAxiom()) {
 					if (axiom instanceof OWLClassAssertionAxiom) {
-						this.eventQueue.offer(new BeliefClassificationRemovedEvent((OWLClassAssertionAxiom) axiom));
+						this.eventQueue.offer(new RemovedClassAssertionEvent((OWLClassAssertionAxiom) axiom));
 					} else if (axiom instanceof OWLDataPropertyAssertionAxiom) {
 						this.eventQueue
-								.offer(new BeliefDataPropertyRemovedEvent((OWLDataPropertyAssertionAxiom) axiom));
+								.offer(new RemovedDataPropertyAssertionEvent((OWLDataPropertyAssertionAxiom) axiom));
 					} else if (axiom instanceof OWLObjectPropertyAssertionAxiom) {
 						this.eventQueue
-								.offer(new BeliefObjectPropertyRemovedEvent((OWLObjectPropertyAssertionAxiom) axiom));
+								.offer(new RemovedObjectPropertyAssertionEvent((OWLObjectPropertyAssertionAxiom) axiom));
 					}
 				}
 			});
@@ -90,12 +101,6 @@ public class BeliefBase implements IBeliefBase {
 			listener.ontologiesChanged(filtered);
 		});
 	}
-
-	boolean onAddIndividual = false;
-	boolean onAddClass = false;
-	boolean onRemoveIndividual = false;
-
-	private final IRI ontologyIRI;
 
 	@Override
 	public OWLOntologyManager getManager() {
@@ -116,8 +121,6 @@ public class BeliefBase implements IBeliefBase {
 	public OWLOntology getOntology() {
 		return ontology;
 	}
-
-	OWLOntology ontology;
 
 	// public BeliefBase(String namespace) {
 	// ontologyIRI = IRI.create(namespace);
@@ -345,7 +348,7 @@ public class BeliefBase implements IBeliefBase {
 	@Override
 	public void addAxiom(OWLAxiom axiom) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	// private IRI getLocalIRI(String object) {

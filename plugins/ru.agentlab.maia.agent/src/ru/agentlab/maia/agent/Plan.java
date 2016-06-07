@@ -4,7 +4,7 @@ import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBody;
 import ru.agentlab.maia.IPlanFilter;
 
-public abstract class Plan implements IPlan {
+public class Plan implements IPlan {
 
 	IPlanFilter planFilter;
 

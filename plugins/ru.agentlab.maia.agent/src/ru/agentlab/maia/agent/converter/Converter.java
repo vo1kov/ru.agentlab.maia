@@ -40,16 +40,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -74,32 +71,31 @@ import ru.agentlab.maia.IConverter;
 import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.IPlan;
-import ru.agentlab.maia.agent.PlanStateful;
-import ru.agentlab.maia.agent.PlanStateles;
-import ru.agentlab.maia.annotation.BeliefClassificationAdded;
-import ru.agentlab.maia.annotation.BeliefClassificationRemoved;
-import ru.agentlab.maia.annotation.BeliefDataPropertyAdded;
-import ru.agentlab.maia.annotation.BeliefDataPropertyRemoved;
-import ru.agentlab.maia.annotation.BeliefObjectPropertyAdded;
-import ru.agentlab.maia.annotation.BeliefObjectPropertyRemoved;
+import ru.agentlab.maia.IPlanBody;
+import ru.agentlab.maia.IPlanFilter;
+import ru.agentlab.maia.agent.IStateMatcher;
+import ru.agentlab.maia.agent.Plan;
+import ru.agentlab.maia.agent.PlanBodyFactory;
+import ru.agentlab.maia.agent.PlanFilterFactory;
 import ru.agentlab.maia.annotation.EventMatcher;
-import ru.agentlab.maia.annotation.GoalClassificationAdded;
-import ru.agentlab.maia.annotation.GoalClassificationFailed;
-import ru.agentlab.maia.annotation.GoalClassificationFinished;
-import ru.agentlab.maia.annotation.GoalClassificationRemoved;
-import ru.agentlab.maia.annotation.GoalDataPropertyAdded;
-import ru.agentlab.maia.annotation.GoalDataPropertyFailed;
-import ru.agentlab.maia.annotation.GoalDataPropertyFinished;
-import ru.agentlab.maia.annotation.GoalDataPropertyRemoved;
-import ru.agentlab.maia.annotation.GoalObjectPropertyAdded;
-import ru.agentlab.maia.annotation.GoalObjectPropertyFailed;
-import ru.agentlab.maia.annotation.GoalObjectPropertyFinished;
-import ru.agentlab.maia.annotation.GoalObjectPropertyRemoved;
 import ru.agentlab.maia.annotation.Prefix;
+import ru.agentlab.maia.annotation.StateMatcher;
+import ru.agentlab.maia.annotation.event.AddedClassAssertion;
+import ru.agentlab.maia.annotation.event.AddedDataPropertyAssertion;
 import ru.agentlab.maia.annotation.event.AddedExternalEvent;
 import ru.agentlab.maia.annotation.event.AddedMessage;
+import ru.agentlab.maia.annotation.event.AddedObjectPropertyAssertion;
 import ru.agentlab.maia.annotation.event.AddedRole;
+import ru.agentlab.maia.annotation.event.FailedClassAssertion;
+import ru.agentlab.maia.annotation.event.FailedDataPropertyAssertion;
+import ru.agentlab.maia.annotation.event.FailedObjectPropertyAssertion;
+import ru.agentlab.maia.annotation.event.GoalClassAssertion;
+import ru.agentlab.maia.annotation.event.GoalDataPropertyAssertion;
+import ru.agentlab.maia.annotation.event.GoalObjectPropertyAssertion;
+import ru.agentlab.maia.annotation.event.RemovedClassAssertion;
+import ru.agentlab.maia.annotation.event.RemovedDataPropertyAssertion;
 import ru.agentlab.maia.annotation.event.RemovedMessage;
+import ru.agentlab.maia.annotation.event.RemovedObjectPropertyAssertion;
 import ru.agentlab.maia.annotation.event.RemovedRole;
 import ru.agentlab.maia.annotation.event.ResolvedRole;
 import ru.agentlab.maia.annotation.event.UnhandledMessage;
@@ -122,35 +118,23 @@ public class Converter implements IConverter {
 
 	// @formatter:off
 	private static final Set<Class<?>> ANNOTATIONS_CLASSIFICATION_ASSERTION = ImmutableSet.of(
-		BeliefClassificationAdded.class,
-		BeliefClassificationRemoved.class, 
-		GoalClassificationAdded.class, 
-		GoalClassificationFailed.class,
-		GoalClassificationFinished.class, 
-		GoalClassificationRemoved.class
+		AddedClassAssertion.class,
+		RemovedClassAssertion.class, 
+		GoalClassAssertion.class, 
+		FailedClassAssertion.class
 	);
 	private static final Set<Class<?>> ANNOTATIONS_DATA_PROPERTY_ASSERTION = ImmutableSet.of(
-		BeliefDataPropertyAdded.class,
-		BeliefDataPropertyRemoved.class, 
-		GoalDataPropertyAdded.class, 
-		GoalDataPropertyFailed.class,
-		GoalDataPropertyFinished.class, 
-		GoalDataPropertyRemoved.class
+		AddedDataPropertyAssertion.class,
+		RemovedDataPropertyAssertion.class, 
+		GoalDataPropertyAssertion.class, 
+		FailedDataPropertyAssertion.class
 	);
 	private static final Set<Class<?>> ANNOTATIONS_OBJECT_PROPERTY_ASSERTION = ImmutableSet.of(
-		BeliefObjectPropertyAdded.class,
-		BeliefObjectPropertyRemoved.class, 
-		GoalObjectPropertyAdded.class, 
-		GoalObjectPropertyFailed.class,
-		GoalObjectPropertyFinished.class, 
-		GoalObjectPropertyRemoved.class
+		AddedObjectPropertyAssertion.class,
+		RemovedObjectPropertyAssertion.class, 
+		GoalObjectPropertyAssertion.class, 
+		FailedObjectPropertyAssertion.class
 	);
-//	private static final Set<Class<?>> ANNOTATIONS_METHOD = ImmutableSet.of(
-//		PlanAdded.class,
-//		PlanFailed.class, 
-//		PlanFinished.class, 
-//		PlanRemoved.class
-//	);
 	private static final Set<Class<?>> ANNOTATIONS_CLASS = ImmutableSet.of(
 		AddedRole.class,
 		RemovedRole.class, 
@@ -163,7 +147,7 @@ public class Converter implements IConverter {
 		RemovedMessage.class, 
 		UnhandledMessage.class
 	);
-	private static Set<String> BUILDIN_DATATYPE_NAMESPACES = ImmutableSet.of(
+	private static final Set<String> BUILDIN_DATATYPE_NAMESPACES = ImmutableSet.of(
 		Namespaces.OWL.toString(),
 		Namespaces.RDF.toString(),
 		Namespaces.RDFS.toString(),
@@ -270,30 +254,46 @@ public class Converter implements IConverter {
 	 */
 	@Override
 	public Map<IPlan, EventType> getInitialPlans(Object role, IInjector injector) throws ConverterException {
-		Map<IPlan, EventType> registrations = new HashMap<>();
 		try {
-			Method[] methods = role.getClass().getMethods();
+			Map<IPlan, EventType> result = new HashMap<>();
+			Method[] methods = role.getClass().getDeclaredMethods();
 			for (Method method : methods) {
-				Optional<Annotation> eventAnnotation = Stream.of(method.getAnnotations())
-						.filter(ann -> ann.annotationType().isAnnotationPresent(EventMatcher.class)).findFirst();
-				if (!eventAnnotation.isPresent()) {
-					continue;
+				List<Annotation> eventAnnotations = findAnnotatedAnnotations(method, EventMatcher.class);
+				if (!eventAnnotations.isEmpty()) {
+					List<Annotation> stateAnnotations = findAnnotatedAnnotations(method, StateMatcher.class);
+					IStateMatcher stateMatcher = getStateMatcher(stateAnnotations);
+					IPlanBody planBody = PlanBodyFactory.create(role, method);
+					for (Annotation ann : eventAnnotations) {
+						Map<String, Object> variables = new HashMap<>();
+						org.hamcrest.Matcher<?> eventMatcher = getEventMatcher(ann, variables);
+						IPlanFilter planFilter = PlanFilterFactory.create(eventMatcher, variables, stateMatcher);
+						IPlan plan = new Plan(role, planFilter, planBody);
+						result.put(plan, getEventType(ann));
+					}
 				}
-				Annotation ann = eventAnnotation.get();
-				EventType type = ann.annotationType().getAnnotation(EventMatcher.class).value();
-				IPlan plan;
-				if (method.getParameterCount() == 0) {
-					plan = new PlanStateles(role, method);
-				} else {
-					plan = new PlanStateful(role, method);
-				}
-				plan.setEventMatcher(getEventMatcher(ann));
-				registrations.put(plan, type);
 			}
-			return registrations;
+			return result;
 		} catch (AnnotationFormatException e) {
 			throw new ConverterException(e);
 		}
+	}
+
+	private IStateMatcher getStateMatcher(List<Annotation> stateAnnotations) {
+		return null;
+	}
+
+	private List<Annotation> findAnnotatedAnnotations(Method method, Class<? extends Annotation> qualifier) {
+		List<Annotation> annotations = new ArrayList<>();
+		for (Annotation ann : method.getAnnotations()) {
+			if (ann.annotationType().isAnnotationPresent(qualifier)) {
+				annotations.add(ann);
+			}
+		}
+		return annotations;
+	}
+
+	private EventType getEventType(Annotation ann) {
+		return ann.annotationType().getAnnotation(EventMatcher.class).value();
 	}
 
 	@Override
@@ -308,30 +308,29 @@ public class Converter implements IConverter {
 		return null;
 	}
 
-	protected org.hamcrest.Matcher<?> getEventMatcher(Annotation ann) throws AnnotationFormatException {
+	protected org.hamcrest.Matcher<?> getEventMatcher(Annotation ann, Map<String, Object> variables)
+			throws AnnotationFormatException {
 		if (ANNOTATIONS_CLASSIFICATION_ASSERTION.contains(ann.annotationType())) {
 			String value = getMethodValue(ann, METHOD_NAME, String.class);
-			return getOWLClassAssertionAxiomMatcher(value);
+			return getOWLClassAssertionAxiomMatcher(value, variables);
 		} else if (ANNOTATIONS_DATA_PROPERTY_ASSERTION.contains(ann.annotationType())) {
 			String value = getMethodValue(ann, METHOD_NAME, String.class);
-			return getOWLDataPropertyAssertionAxiomMatcher(value);
+			return getOWLDataPropertyAssertionAxiomMatcher(value, variables);
 		} else if (ANNOTATIONS_OBJECT_PROPERTY_ASSERTION.contains(ann.annotationType())) {
 			String value = getMethodValue(ann, METHOD_NAME, String.class);
-			return getOWLObjectPropertyAssertionAxiomMatcher(value);
-			// } else if (ANNOTATIONS_METHOD.contains(ann.annotationType())) {
-			// String value = getMethodValue(ann, METHOD_NAME, String.class);
-			// return getJavaMethodMatcher(value);
+			return getOWLObjectPropertyAssertionAxiomMatcher(value, variables);
 		} else if (ANNOTATIONS_CLASS.contains(ann.annotationType())) {
 			Class<?> value = getMethodValue(ann, METHOD_NAME, Class.class);
 			return anyOf(instanceOf(value), equalTo(value));
 		} else if (ANNOTATIONS_MESSAGE.contains(ann.annotationType())) {
-			return getMessageMatcher(ann);
+			return getMessageMatcher(ann, variables);
 		} else {
 			throw new RuntimeException();
 		}
 	}
 
-	protected org.hamcrest.Matcher<? super IMessage> getMessageMatcher(Annotation ann) {
+	@SuppressWarnings("unchecked")
+	protected org.hamcrest.Matcher<? super IMessage> getMessageMatcher(Annotation ann, Map<String, Object> variables) {
 		List<org.hamcrest.Matcher<? super IMessage>> matchers = new ArrayList<>();
 		String performative = getMethodValue(ann, "performative", String.class);
 		if (!performative.equals("")) {
@@ -381,31 +380,6 @@ public class Converter implements IConverter {
 		return allOf(matchers.toArray(new org.hamcrest.Matcher[matchers.size()]));
 	}
 
-	// protected JavaMethodMatcher getJavaMethodMatcher(String value) throws
-	// MethodWrongFormatException {
-	// Matcher match = PATTERN_METHOD.matcher(value);
-	// if (!match.matches()) {
-	// throw new MethodWrongFormatException();
-	// }
-	// String clazzName = match.group(PATTERN_METHOD_CLASS);
-	// String methodName = match.group(PATTERN_METHOD_NAME);
-	// try {
-	// Class<?> clazz = Class.forName(clazzName);
-	// Optional<Method> method =
-	// Stream.of(clazz.getMethods()).filter(methodName::equals).findFirst();
-	// if (!method.isPresent()) {
-	// throw new MethodWrongFormatException();
-	// }
-	// return new JavaMethodMatcher(method.get());
-	// } catch (ClassNotFoundException e) {
-	// throw new MethodWrongFormatException();
-	// }
-	// }
-
-	// protected JavaClassMatcher getJavaClassMatcher(Class<?> value) {
-	// return new JavaClassMatcher(value);
-	// }
-
 	private static <T> T getMethodValue(Object object, String methodName, Class<T> clazz) {
 		try {
 			Method valueMethod = object.getClass().getMethod(methodName);
@@ -418,50 +392,43 @@ public class Converter implements IConverter {
 		}
 	}
 
-	protected org.hamcrest.Matcher<? super OWLClassAssertionAxiom> getOWLClassAssertionAxiomMatcher(String template)
-			throws AnnotationFormatException {
+	@SuppressWarnings("unchecked")
+	protected org.hamcrest.Matcher<? super OWLClassAssertionAxiom> getOWLClassAssertionAxiomMatcher(String template,
+			Map<String, Object> variables) throws AnnotationFormatException {
 		String[] parts = splitClassAssertioin(template);
 		String individual = parts[0];
 		String clazz = parts[1];
-		return allOf(hasClassExpression(isClass(getOWLNamedObjectMatcher(clazz))),
-				hasIndividual(isNamed(getOWLNamedObjectMatcher(individual))));
-		// return new OWLClassAssertionAxiomMatcher(getOWLClassMatcher(clazz),
-		// getOWLNamedIndividualMatcher(individual));
+		return allOf(hasClassExpression(isClass(getOWLNamedObjectMatcher(clazz, variables))),
+				hasIndividual(isNamed(getOWLNamedObjectMatcher(individual, variables))));
 	}
 
+	@SuppressWarnings("unchecked")
 	protected org.hamcrest.Matcher<? super OWLDataPropertyAssertionAxiom> getOWLDataPropertyAssertionAxiomMatcher(
-			String template) throws AnnotationFormatException {
+			String template, Map<String, Object> variables) throws AnnotationFormatException {
 		String[] parts = splitDataPropertyAssertioin(template);
 		String subject = parts[0];
 		String property = parts[1];
 		String data = parts[2];
 
-		return allOf(hasSubject(isNamed(getOWLNamedObjectMatcher(subject))),
-				hasProperty(isDataProperty(getOWLNamedObjectMatcher(property))),
-				hasObject(isLiteral(getOWLLiteralMatcher(data))));
-
-		// return new
-		// OWLDataPropertyAssertionAxiomMatcher(getOWLNamedIndividualMatcher(subject),
-		// getOWLDataPropertyMatcher(property), getOWLLiteralMatcher(object));
+		return allOf(hasSubject(isNamed(getOWLNamedObjectMatcher(subject, variables))),
+				hasProperty(isDataProperty(getOWLNamedObjectMatcher(property, variables))),
+				hasObject(isLiteral(getOWLLiteralMatcher(data, variables))));
 	}
 
+	@SuppressWarnings("unchecked")
 	protected org.hamcrest.Matcher<? super OWLObjectPropertyAssertionAxiom> getOWLObjectPropertyAssertionAxiomMatcher(
-			String template) throws AnnotationFormatException {
+			String template, Map<String, Object> variables) throws AnnotationFormatException {
 		String[] parts = splitObjectPropertyAssertioin(template);
 		String subject = parts[0];
 		String property = parts[1];
 		String object = parts[2];
-		return allOf(hasSubject(isNamed(getOWLNamedObjectMatcher(subject))),
-				hasProperty(isObjectProperty(getOWLNamedObjectMatcher(property))),
-				hasObject(isIndividual(isNamed(getOWLNamedObjectMatcher(object)))));
-		// return new
-		// OWLObjectPropertyAssertionAxiomMatcher(getOWLNamedIndividualMatcher(subject),
-		// getOWLObjectPropertyMatcher(property),
-		// getOWLNamedIndividualMatcher(data));
+		return allOf(hasSubject(isNamed(getOWLNamedObjectMatcher(subject, variables))),
+				hasProperty(isObjectProperty(getOWLNamedObjectMatcher(property, variables))),
+				hasObject(isIndividual(isNamed(getOWLNamedObjectMatcher(object, variables)))));
 	}
 
-	protected org.hamcrest.Matcher<? super OWLLiteral> getOWLLiteralMatcher(String string)
-			throws LiteralFormatException {
+	protected org.hamcrest.Matcher<? super OWLLiteral> getOWLLiteralMatcher(String string,
+			Map<String, Object> variables) throws LiteralFormatException {
 		String[] parts = splitDatatypeLiteral(string);
 		String literal = parts[0];
 		String language = parts[1];
@@ -482,7 +449,7 @@ public class Converter implements IConverter {
 			String variableName = getOWLNamedObjectVariableName(match);
 			if (variableName != null) {
 				// [static^^?type] || [?val^^?type]
-				return isTyped(equalTo(literal), var(variableName, Collections.emptyMap()));
+				return isTyped(equalTo(literal), var(variableName, variables));
 			} else {
 				// [static^^some:type] || [?val^^some:type]
 				IRI datatypeIRI = getOWLNamedObjectIRI(match);
@@ -508,14 +475,14 @@ public class Converter implements IConverter {
 					}
 					switch (owl2datatype) {
 					case XSD_BOOLEAN:
-						return isBoolean(getBooleanMatcher(literal));
+						return isBoolean(getBooleanMatcher(literal, variables));
 					case XSD_FLOAT:
-						return isFloat(getFloatMatcher(literal));
+						return isFloat(getFloatMatcher(literal, variables));
 					case XSD_DOUBLE:
-						return isDouble(getDoubleMatcher(literal));
+						return isDouble(getDoubleMatcher(literal, variables));
 					case XSD_INT:
 					case XSD_INTEGER:
-						return isInteger(getIntegerMatcher(literal));
+						return isInteger(getIntegerMatcher(literal, variables));
 					case RDF_PLAIN_LITERAL:
 						return isLiteral(isPlain(equalTo(literal), equalTo(language)));
 					default:
@@ -569,27 +536,28 @@ public class Converter implements IConverter {
 	// return getOWLNamedObjectMatcher(string);
 	// }
 
-	protected org.hamcrest.Matcher<? super OWLNamedIndividual> getOWLNamedIndividualMatcher(String string)
-			throws LiteralFormatException {
-		return getOWLNamedObjectMatcher(string);
+	protected org.hamcrest.Matcher<? super OWLNamedIndividual> getOWLNamedIndividualMatcher(String string,
+			Map<String, Object> variables) throws LiteralFormatException {
+		return getOWLNamedObjectMatcher(string, variables);
 	}
 
-	protected org.hamcrest.Matcher<? super OWLClass> getOWLClassMatcher(String string) throws LiteralFormatException {
-		return getOWLNamedObjectMatcher(string);
+	protected org.hamcrest.Matcher<? super OWLClass> getOWLClassMatcher(String string, Map<String, Object> variables)
+			throws LiteralFormatException {
+		return getOWLNamedObjectMatcher(string, variables);
 	}
 
-	protected org.hamcrest.Matcher<? super OWLObjectProperty> getOWLObjectPropertyMatcher(String string)
-			throws LiteralFormatException {
-		return getOWLNamedObjectMatcher(string);
+	protected org.hamcrest.Matcher<? super OWLObjectProperty> getOWLObjectPropertyMatcher(String string,
+			Map<String, Object> variables) throws LiteralFormatException {
+		return getOWLNamedObjectMatcher(string, variables);
 	}
 
-	protected org.hamcrest.Matcher<? super OWLDataProperty> getOWLDataPropertyMatcher(String string)
-			throws LiteralFormatException {
-		return getOWLNamedObjectMatcher(string);
+	protected org.hamcrest.Matcher<? super OWLDataProperty> getOWLDataPropertyMatcher(String string,
+			Map<String, Object> variables) throws LiteralFormatException {
+		return getOWLNamedObjectMatcher(string, variables);
 	}
 
-	protected org.hamcrest.Matcher<? super OWLNamedObject> getOWLNamedObjectMatcher(String string)
-			throws LiteralFormatException {
+	protected org.hamcrest.Matcher<? super OWLNamedObject> getOWLNamedObjectMatcher(String string,
+			Map<String, Object> variables) throws LiteralFormatException {
 		Matcher match = PATTERN_LITERAL.matcher(string);
 		if (!match.matches()) {
 			throw new LiteralWrongFormatException("Literal [" + string + "] has wrong format. "
@@ -597,7 +565,7 @@ public class Converter implements IConverter {
 		}
 		String variableName = getOWLNamedObjectVariableName(match);
 		if (variableName != null) {
-			return var(variableName, Collections.emptyMap());
+			return var(variableName, variables);
 		}
 		IRI iri = getOWLNamedObjectIRI(match);
 		return hasIRI(iri);
@@ -618,9 +586,12 @@ public class Converter implements IConverter {
 			return IRI.create(fullIRInamespace, fullIRIname);
 		} else if (match.group(PATTERN_LITERAL_PREFIXEDIRI_GROUP) != null) {
 			String prefixedIRIprefix = match.group(PATTERN_LITERAL_PREFIXEDIRI_PREFIX);
+			if (prefixedIRIprefix == null) {
+				prefixedIRIprefix = ":";
+			}
 			String prefix = prefixManager.getPrefix(prefixedIRIprefix);
 			if (prefix == null) {
-				throw new LiteralUnknownPrefixException("Prefix [" + prefix + "] is unknown. Use @"
+				throw new LiteralUnknownPrefixException("Prefix [" + prefixedIRIprefix + "] is unknown. Use @"
 						+ Prefix.class.getName() + " annotation to register not build-in prefixes.");
 			}
 			String prefixedIRIname = match.group(PATTERN_LITERAL_PREFIXEDIRI_NAME);
@@ -630,26 +601,26 @@ public class Converter implements IConverter {
 		}
 	}
 
-	protected org.hamcrest.Matcher<? super String> getStringMatcher(String string) {
+	protected org.hamcrest.Matcher<? super String> getStringMatcher(String string, Map<String, Object> variables) {
 		if (string == null) {
 			return anything();
 		}
 		Matcher match = PATTERN_VARIABLE.matcher(string);
 		if (match.matches()) {
-			return var(match.group(PATTERN_VARIABLE_NAME), Collections.emptyMap());
+			return var(match.group(PATTERN_VARIABLE_NAME), variables);
 		} else {
 			return equalTo(string);
 		}
 	}
 
-	protected org.hamcrest.Matcher<? super Boolean> getBooleanMatcher(String string)
+	protected org.hamcrest.Matcher<? super Boolean> getBooleanMatcher(String string, Map<String, Object> variables)
 			throws LiteralNotInValueSpaceException {
 		if (string == null) {
 			return anything();
 		}
 		Matcher match = PATTERN_VARIABLE.matcher(string);
 		if (match.matches()) {
-			return var(match.group(PATTERN_VARIABLE_NAME), Collections.emptyMap());
+			return var(match.group(PATTERN_VARIABLE_NAME), variables);
 		} else {
 			boolean value;
 			if (string.equals("true") || string.equals("1")) {
@@ -663,13 +634,14 @@ public class Converter implements IConverter {
 		}
 	}
 
-	private org.hamcrest.Matcher<? super Float> getFloatMatcher(String string) throws LiteralNotInValueSpaceException {
+	private org.hamcrest.Matcher<? super Float> getFloatMatcher(String string, Map<String, Object> variables)
+			throws LiteralNotInValueSpaceException {
 		if (string == null) {
 			return anything();
 		}
 		Matcher match = PATTERN_VARIABLE.matcher(string);
 		if (match.matches()) {
-			return var(match.group(PATTERN_VARIABLE_NAME), Collections.emptyMap());
+			return var(match.group(PATTERN_VARIABLE_NAME), variables);
 		} else {
 			float value;
 			if (string.equals(NaN)) {
@@ -687,14 +659,14 @@ public class Converter implements IConverter {
 		}
 	}
 
-	private org.hamcrest.Matcher<? super Double> getDoubleMatcher(String string)
+	private org.hamcrest.Matcher<? super Double> getDoubleMatcher(String string, Map<String, Object> variables)
 			throws LiteralNotInValueSpaceException {
 		if (string == null) {
 			return anything();
 		}
 		Matcher match = PATTERN_VARIABLE.matcher(string);
 		if (match.matches()) {
-			return var(match.group(PATTERN_VARIABLE_NAME), Collections.emptyMap());
+			return var(match.group(PATTERN_VARIABLE_NAME), variables);
 		} else {
 			double value;
 			if (string.equals(NaN)) {
@@ -712,14 +684,14 @@ public class Converter implements IConverter {
 		}
 	}
 
-	private org.hamcrest.Matcher<? super Integer> getIntegerMatcher(String string)
+	private org.hamcrest.Matcher<? super Integer> getIntegerMatcher(String string, Map<String, Object> variables)
 			throws LiteralNotInValueSpaceException {
 		if (string == null) {
 			return anything();
 		}
 		Matcher match = PATTERN_VARIABLE.matcher(string);
 		if (match.matches()) {
-			return var(match.group(PATTERN_VARIABLE_NAME), Collections.emptyMap());
+			return var(match.group(PATTERN_VARIABLE_NAME), variables);
 		} else {
 			return equalTo(Integer.parseInt(string));
 		}

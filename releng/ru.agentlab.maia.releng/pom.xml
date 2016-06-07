@@ -28,6 +28,7 @@
 	</repositories>
 
 	<modules>
+		<module>../../plugins/de.derivo.sparqldlapi</module>
 		<module>../../plugins/io.netty</module>
 		<module>../../plugins/ru.agentlab.maia</module>
 		<module>../../plugins/ru.agentlab.maia.agent</module>
@@ -35,9 +36,11 @@
 		<module>../../plugins/ru.agentlab.maia.container</module>
 		<module>../../plugins/ru.agentlab.maia.event</module>
 		<module>../../plugins/ru.agentlab.maia.event.osgi</module>
+		<module>../../plugins/ru.agentlab.maia.hamcrest.message</module>
+		<module>../../plugins/ru.agentlab.maia.hamcrest.owlapi</module>
 		
-		<module>../../tests/ru.agentlab.maia.test.util</module>
-		<module>../../tests/ru.agentlab.maia.agent.test</module>
+<!-- 		<module>../../tests/ru.agentlab.maia.test.util</module> -->
+<!-- 		<module>../../tests/ru.agentlab.maia.agent.test</module> -->
 
 <!-- 		<module>../../aspects/ru.agentlab.maia.container.aspect</module> -->
 <!-- 		<module>../../aspects/ru.agentlab.maia.container.events</module> -->

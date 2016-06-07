@@ -32,9 +32,8 @@ public class Variable extends BaseMatcher<Object> {
 	}
 
 	@Override
-	public void describeTo(Description arg0) {
-		// TODO Auto-generated method stub
-
+	public void describeTo(Description description) {
+		description.appendValue("?" + name);
 	}
 
 	public static Matcher<? super Object> var(String name, Map<String, Object> values) {

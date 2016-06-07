@@ -25,12 +25,12 @@ public class HelloWorld {
 
 	@Inject
 	@PostConstruct
-	@AddedDataPropertyAssertion(subject = "?some", property = "hasLength", value = "some string value", type = "xsd:string")
+	@AddedDataPropertyAssertion("?some hasLength some string value^^xsd:string")
 	public void setup(IGoalBase goalBase) {
 	}
 
 	@GoalClassAssertion("init")
-	@AddedDataPropertyAssertion(subject = "?some", property = "hasLength", value = "2", type = "xsd:float")
+	@AddedDataPropertyAssertion("?some hasLength 2^^xsd:float")
 	public void onInit() {
 		IMessage message = new AclMessage();
 		message.setContent("Hello World");

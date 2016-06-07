@@ -6,16 +6,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import ru.agentlab.maia.EventType;
+import ru.agentlab.maia.annotation.EventMatcher;
+
 /**
  * @author Dmitriy Shishkin
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
+@EventMatcher(EventType.ADDED_CLASS_ASSERTION)
 public @interface AddedClassAssertion {
 
-	String clazz();
-
-	String individual();
+	String value();
 
 }

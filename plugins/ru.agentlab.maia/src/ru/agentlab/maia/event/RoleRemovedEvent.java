@@ -10,7 +10,7 @@ public class RoleRemovedEvent extends Event<Object> {
 
 	@Override
 	public EventType getType() {
-		return EventType.ROLE_REMOVED;
+		return EventType.REMOVED_ROLE;
 	}
 
 }

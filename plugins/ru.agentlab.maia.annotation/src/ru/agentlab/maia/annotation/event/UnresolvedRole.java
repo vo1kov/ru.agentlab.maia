@@ -12,7 +12,7 @@ import ru.agentlab.maia.annotation.EventMatcher;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@EventMatcher(EventType.ROLE_UNRESOLVED)
+@EventMatcher(EventType.UNRESOLVED_ROLE)
 public @interface UnresolvedRole {
 
 	Class<?> value();

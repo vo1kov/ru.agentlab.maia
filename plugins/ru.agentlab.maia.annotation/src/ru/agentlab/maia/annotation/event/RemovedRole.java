@@ -12,7 +12,7 @@ import ru.agentlab.maia.annotation.EventMatcher;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@EventMatcher(EventType.ROLE_REMOVED)
+@EventMatcher(EventType.REMOVED_ROLE)
 public @interface RemovedRole {
 
 	Class<? extends Object> value();

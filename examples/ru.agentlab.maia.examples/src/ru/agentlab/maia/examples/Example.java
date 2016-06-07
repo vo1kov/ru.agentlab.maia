@@ -20,16 +20,16 @@ public class Example {
 	String service;
 
 	@PostConstruct
-	@AddedClassAssertion(clazz = "foaf:Teenager", individual = "foaf:Tomas")
-	@RemovedClassAssertion(clazz = "foaf:Teenager", individual = "foaf:Tomas")
-	@GoalClassAssertion(clazz = "foaf:Teenager", individual = "foaf:Tomas")
-	@FailedClassAssertion(clazz = "foaf:Teenager", individual = "foaf:Tomas")
+	@AddedClassAssertion("foaf:Teenager foaf:Tomas")
+	@RemovedClassAssertion("foaf:Teenager foaf:Tomas")
+	@GoalClassAssertion("foaf:Teenager foaf:Tomas")
+	@FailedClassAssertion("foaf:Teenager foaf:Tomas")
 	public void setup() {
 		IPlan plan = planBase.createPlan(this, () -> {
 			System.out.println(service);
 			System.out.println(service.hashCode());
 		});
-		planBase.add(EventType.BELIEF_CLASSIFICATION_ADDED, plan);
+		planBase.add(EventType.ADDED_CLASS_ASSERTION, plan);
 	}
 
 }

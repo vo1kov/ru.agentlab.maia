@@ -12,7 +12,7 @@ import ru.agentlab.maia.annotation.EventMatcher;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@EventMatcher(EventType.MESSAGE_ADDED)
+@EventMatcher(EventType.ADDED_MESSAGE)
 public @interface AddedMessage {
 
 	String performative() default "";

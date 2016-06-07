@@ -20,7 +20,7 @@ public class ExampleLambdaPlan {
 		IPlan plan = planBase.createPlan(this, () -> {
 			System.out.println(service.hashCode());
 		});
-		planBase.add(EventType.BELIEF_CLASSIFICATION_ADDED, plan);
+		planBase.add(EventType.ADDED_CLASS_ASSERTION, plan);
 	}
 
 }

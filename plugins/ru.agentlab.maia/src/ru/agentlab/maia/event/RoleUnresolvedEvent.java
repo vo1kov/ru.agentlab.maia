@@ -10,7 +10,7 @@ public class RoleUnresolvedEvent extends Event<Class<?>> {
 
 	@Override
 	public EventType getType() {
-		return EventType.ROLE_UNRESOLVED;
+		return EventType.UNRESOLVED_ROLE;
 	}
 
 }

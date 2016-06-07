@@ -12,7 +12,7 @@ import ru.agentlab.maia.annotation.EventMatcher;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@EventMatcher(EventType.MESSAGE_UNHANDLED)
+@EventMatcher(EventType.UNHANDLED_MESSAGE)
 public @interface UnhandledMessage {
 
 	String performative() default "";

@@ -98,12 +98,12 @@ public class Agent_internalAddRole_Test {
 	// --------------- Converter plans variants----------------
 	private static final Map<IPlan, EventType> INITIAL_PLANS_0 = Collections.emptyMap();
 	private static final Map<IPlan, EventType> INITIAL_PLANS_1 = ImmutableMap.of(mock(IPlan.class),
-			EventType.BELIEF_DATA_PROPERTY_REMOVED);
+			EventType.REMOVED_DATA_PROPERTY_ASSERTION);
 	private static final Map<IPlan, EventType> INITIAL_PLANS_3 = ImmutableMap.of(
 			// @formatter:off
-			mock(IPlan.class), EventType.BELIEF_CLASSIFICATION_ADDED, 
-			mock(IPlan.class), EventType.BELIEF_DATA_PROPERTY_REMOVED,
-			mock(IPlan.class), EventType.GOAL_CLASSIFICATION_ADDED
+			mock(IPlan.class), EventType.ADDED_CLASS_ASSERTION, 
+			mock(IPlan.class), EventType.REMOVED_DATA_PROPERTY_ASSERTION,
+			mock(IPlan.class), EventType.GOAL_CLASS_ASSERTION
 			// @formatter:on
 	);
 

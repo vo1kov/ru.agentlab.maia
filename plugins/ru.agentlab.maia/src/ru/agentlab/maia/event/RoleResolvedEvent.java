@@ -10,7 +10,7 @@ public class RoleResolvedEvent extends Event<Object> {
 
 	@Override
 	public EventType getType() {
-		return EventType.ROLE_RESOLVED;
+		return EventType.RESOLVED_ROLE;
 	}
 
 }

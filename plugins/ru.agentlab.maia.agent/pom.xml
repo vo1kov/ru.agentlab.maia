@@ -1,31 +1,27 @@
-<!--
-    Copyright (c) 2016 AgentLab.
-   
-    All rights reserved. This program and the accompanying materials
-    are made available under the terms of the Eclipse Public License v1.0
-    which accompanies this distribution, and is available at
-    http://www.eclipse.org/legal/epl-v10.html
- -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-	
+<!-- Copyright (c) 2016 AgentLab. All rights reserved. This program and the 
+	accompanying materials are made available under the terms of the Eclipse 
+	Public License v1.0 which accompanies this distribution, and is available 
+	at http://www.eclipse.org/legal/epl-v10.html -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
 	<artifactId>ru.agentlab.maia.agent</artifactId>
 	<packaging>eclipse-plugin</packaging>
 
-	<dependencies>
-		<!-- http://mvnrepository.com/artifact/edu.stanford.protege/de-derivo-sparqldlapi -->
-		<dependency>
-		    <groupId>edu.stanford.protege</groupId>
-		    <artifactId>de-derivo-sparqldlapi</artifactId>
-		    <version>2.0.0</version>
-		</dependency>
-	</dependencies>
-	
+	<!-- <dependencies> -->
+	<!-- <dependency> -->
+	<!-- <groupId>edu.stanford.protege</groupId> -->
+	<!-- <artifactId>de-derivo-sparqldlapi</artifactId> -->
+	<!-- <version>2.0.0</version> -->
+	<!-- </dependency> -->
+	<!-- </dependencies> -->
+
 	<parent>
 		<groupId>ru.agentlab.maia</groupId>
 		<artifactId>ru.agentlab.maia.releng</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../../releng/ru.agentlab.maia.releng</relativePath>
 	</parent>
-	
+
 </project>

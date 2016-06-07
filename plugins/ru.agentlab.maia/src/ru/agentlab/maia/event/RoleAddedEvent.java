@@ -10,7 +10,7 @@ public class RoleAddedEvent extends Event<Object> {
 
 	@Override
 	public EventType getType() {
-		return EventType.ROLE_ADDED;
+		return EventType.ADDED_ROLE;
 	}
 
 }

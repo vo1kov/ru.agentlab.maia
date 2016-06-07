@@ -12,10 +12,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,6 +22,7 @@ import ru.agentlab.maia.EventType;
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
+import ru.agentlab.maia.IPlanFilter;
 import ru.agentlab.maia.Option;
 
 public class PlanBase implements IPlanBase {
@@ -41,6 +40,7 @@ public class PlanBase implements IPlanBase {
 		Collection<IPlan> eventPlans = plans.get(type);
 		if (eventPlans == null) {
 			eventPlans = new HashSet<IPlan>();
+			plans.put(type, eventPlans);
 		}
 		eventPlans.add(plan);
 	}
@@ -62,13 +62,10 @@ public class PlanBase implements IPlanBase {
 		if (eventPlans != null) {
 			List<Option> result = new ArrayList<>();
 			Object eventData = event.getPayload();
-			Map<String, Object> values = new HashMap<>();
 			for (IPlan plan : eventPlans) {
-				if (plan.getPlanFilter().matches(eventData, values)) {
-					result.add(new Option(plan.getPlanBody(), values));
-					values = new HashMap<>();
-				} else {
-					values.clear();
+				IPlanFilter planFilter = plan.getPlanFilter();
+				if (planFilter.matches(eventData)) {
+					result.add(new Option(plan.getPlanBody(), planFilter.getVariables()));
 				}
 			}
 			return result;

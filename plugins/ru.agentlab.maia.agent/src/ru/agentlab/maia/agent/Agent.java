@@ -46,12 +46,9 @@ import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
-import ru.agentlab.maia.IPlanBody;
 import ru.agentlab.maia.Option;
 import ru.agentlab.maia.agent.converter.Converter;
 import ru.agentlab.maia.container.Injector;
-import ru.agentlab.maia.event.PlanFailedEvent;
-import ru.agentlab.maia.event.PlanFinishedEvent;
 import ru.agentlab.maia.event.RoleAddedEvent;
 import ru.agentlab.maia.event.RoleRemovedEvent;
 import ru.agentlab.maia.event.RoleResolvedEvent;
@@ -231,7 +228,7 @@ public class Agent implements IAgent {
 			IInjector injector = getInjector();
 			Object roleObject = injector.make(roleClass, parameters);
 			injector.inject(roleObject);
-			injector.invoke(roleObject, PostConstruct.class, null);
+			injector.invoke(roleObject, PostConstruct.class, null, null);
 
 			// Now role object have resolved all field dependencies. Need to
 			// convert role object to initial beliefs, goals and plans.
@@ -373,12 +370,11 @@ public class Agent implements IAgent {
 			}
 			Iterable<Option> options = planBase.getOptions(event);
 			options.forEach(option -> {
-				IPlanBody planBody = option.getPlanBody();
 				try {
-					planBody.execute(getInjector(), option.getValues());
-					eventQueue.offer(new PlanFinishedEvent(planBody));
+					option.getPlanBody().execute(getInjector(), option.getValues());
+					// eventQueue.offer(new PlanFinishedEvent(planBody));
 				} catch (Exception e) {
-					eventQueue.offer(new PlanFailedEvent(planBody));
+					// eventQueue.offer(new PlanFailedEvent(planBody));
 				}
 			});
 

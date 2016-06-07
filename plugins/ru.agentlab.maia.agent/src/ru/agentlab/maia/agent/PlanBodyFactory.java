@@ -6,7 +6,7 @@ import ru.agentlab.maia.IPlanBody;
 
 public class PlanBodyFactory {
 
-	public static IPlanBody createPlan(Object role, Method method) {
+	public static IPlanBody create(Object role, Method method) {
 		if (method.getParameterCount() == 0) {
 			return new PlanStateles(role, method);
 		} else {
@@ -14,7 +14,7 @@ public class PlanBodyFactory {
 		}
 	}
 
-	public static IPlanBody createPlan(Object role, Runnable runnable) {
+	public static IPlanBody create(Object role, Runnable runnable) {
 		return new PlanLambda(runnable);
 	}
 
