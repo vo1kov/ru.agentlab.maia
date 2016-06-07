@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Sparqldlapi
+Bundle-SymbolicName: de.derivo.sparqldlapi
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ClassPath: libs/de-derivo-sparqldlapi-2.0.0.jar,
+ libs/jdom-legacy-1.1.3.jar,
+ libs/jpaul-2.5.1.jar
+Require-Bundle: org.semanticweb.owlapi.api;bundle-version="4.1.3",
+ org.semanticweb.owlapi.impl;bundle-version="4.1.3"
+Export-Package: de.derivo.sparqldlapi,
+ de.derivo.sparqldlapi.exceptions,
+ de.derivo.sparqldlapi.impl,
+ de.derivo.sparqldlapi.types
