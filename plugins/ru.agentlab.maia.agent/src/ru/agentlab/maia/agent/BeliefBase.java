@@ -32,7 +32,9 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.reasoner.structural.StructuralReasonerFactory;
+import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
 
 import de.derivo.sparqldlapi.QueryEngine;
@@ -55,6 +57,8 @@ public class BeliefBase implements IBeliefBase {
 	private final Queue<IEvent<?>> eventQueue;
 
 	private final IRI ontologyIRI;
+
+	protected final PrefixManager prefixManager = new DefaultPrefixManager();
 
 	OWLOntology ontology;
 
@@ -349,6 +353,11 @@ public class BeliefBase implements IBeliefBase {
 	public void addAxiom(OWLAxiom axiom) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public PrefixManager getPrefixManager() {
+		return prefixManager;
 	}
 
 	// private IRI getLocalIRI(String object) {

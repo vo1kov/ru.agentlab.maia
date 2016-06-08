@@ -30,6 +30,7 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.PrefixManager;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -83,8 +84,6 @@ public class Agent implements IAgent {
 	protected final IPlanBase planBase = new PlanBase(eventQueue);
 
 	protected final Set<Object> roles = new HashSet<>();
-
-	protected IConverter converter = new Converter();
 
 	public IInjector getInjector() {
 		return agentContainer.injector;
@@ -230,6 +229,9 @@ public class Agent implements IAgent {
 			injector.inject(roleObject);
 			injector.invoke(roleObject, PostConstruct.class, null, null);
 
+			IConverter converter = injector.make(Converter.class);
+			injector.inject(converter);
+			injector.invoke(converter, PostConstruct.class, null, null);
 			// Now role object have resolved all field dependencies. Need to
 			// convert role object to initial beliefs, goals and plans.
 			List<OWLAxiom> initialBeliefs = converter.getInitialBeliefs(roleObject);
@@ -310,6 +312,8 @@ public class Agent implements IAgent {
 				return beliefBase.getOntology();
 			} else if (key.equals(OWLDataFactory.class.getName())) {
 				return beliefBase.getFactory();
+			} else if (key.equals(PrefixManager.class.getName())) {
+				return beliefBase.getPrefixManager();
 			} else {
 				return null;
 			}
@@ -334,6 +338,8 @@ public class Agent implements IAgent {
 				return key.cast(beliefBase.getOntology());
 			} else if (key == OWLDataFactory.class) {
 				return key.cast(beliefBase.getFactory());
+			} else if (key == PrefixManager.class) {
+				return key.cast(beliefBase.getPrefixManager());
 			} else {
 				return null;
 			}
@@ -351,7 +357,8 @@ public class Agent implements IAgent {
 				IPlanBase.class.getName(),
 				IRI.class.getName(),
 				OWLOntology.class.getName(),
-				OWLDataFactory.class.getName()
+				OWLDataFactory.class.getName(),
+				PrefixManager.class.getName()
 				// @formatter:on
 			);
 		}

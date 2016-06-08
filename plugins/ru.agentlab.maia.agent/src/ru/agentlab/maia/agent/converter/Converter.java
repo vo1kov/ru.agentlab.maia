@@ -48,6 +48,8 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.inject.Inject;
+
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -244,7 +246,8 @@ public class Converter implements IConverter {
 	protected static final int PATTERN_METHOD_CLASS = 1;
 	protected static final int PATTERN_METHOD_NAME = 2;
 
-	protected PrefixManager prefixManager = new DefaultPrefixManager();
+	@Inject
+	protected PrefixManager prefixManager;// = new DefaultPrefixManager();
 
 	/*
 	 * (non-Javadoc)

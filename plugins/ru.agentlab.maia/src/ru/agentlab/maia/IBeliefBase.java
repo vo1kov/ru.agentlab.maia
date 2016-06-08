@@ -13,6 +13,7 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.PrefixManager;
 
 public interface IBeliefBase {
 
@@ -91,5 +92,7 @@ public interface IBeliefBase {
 	OWLDataFactory getFactory();
 
 	OWLOntologyManager getManager();
+
+	PrefixManager getPrefixManager();
 
 }
