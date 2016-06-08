@@ -1,4 +1,4 @@
-package ru.agentlab.maia.annotation.state;
+package ru.agentlab.maia.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -7,17 +7,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import de.derivo.sparqldlapi.types.QueryAtomType;
-import ru.agentlab.maia.annotation.SparqlDL;
 
-/**
- * @author Dmitriy Shishkin
- */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-@SparqlDL(QueryAtomType.DISJOINT_WITH)
-public @interface HaveDisjointClasses {
+@Target(ElementType.ANNOTATION_TYPE)
+public @interface SparqlDL {
 
-	String value();
+	QueryAtomType value();
 
 }

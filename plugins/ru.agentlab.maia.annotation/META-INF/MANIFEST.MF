@@ -12,4 +12,5 @@ Require-Bundle: ru.agentlab.maia,
  com.google.guava;bundle-version="18.0.0",
  org.slf4j.api;bundle-version="1.7.2",
  org.semanticweb.owlapi.api;bundle-version="4.1.3",
- org.semanticweb.owlapi.impl;bundle-version="4.1.3"
+ org.semanticweb.owlapi.impl;bundle-version="4.1.3",
+ de.derivo.sparqldlapi;bundle-version="1.0.0"

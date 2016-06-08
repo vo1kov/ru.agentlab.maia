@@ -6,8 +6,9 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import ru.agentlab.maia.IAgent;
+import ru.agentlab.maia.agent.IStateMatcher;
 
-public class SelectRoles {
+public class SelectRoles implements IStateMatcher {
 
 	Class<?> roleClass;
 
@@ -18,7 +19,8 @@ public class SelectRoles {
 		this.roleClass = roleClass;
 	}
 
-	public boolean ask(Map<String, Object> values) {
+	@Override
+	public boolean matches(Object item, Map<String, Object> values) {
 		Iterator<Object> result = agent.getRoles().stream().filter(r -> r.getClass() == roleClass).iterator();
 		if (result.hasNext()) {
 			return true;

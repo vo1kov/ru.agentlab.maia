@@ -8,8 +8,9 @@ import de.derivo.sparqldlapi.Query;
 import de.derivo.sparqldlapi.QueryEngine;
 import de.derivo.sparqldlapi.QueryResult;
 import de.derivo.sparqldlapi.exceptions.QueryEngineException;
+import ru.agentlab.maia.agent.IStateMatcher;
 
-public class SelectBeliefs {
+public class SelectBeliefs implements IStateMatcher {
 
 	Query query;
 
@@ -20,7 +21,8 @@ public class SelectBeliefs {
 		this.query = query;
 	}
 
-	public boolean ask(Map<String, Object> values) {
+	@Override
+	public boolean matches(Object item, Map<String, Object> values) {
 		try {
 			QueryResult result = engine.execute(query);
 			values.put("res", result.iterator());

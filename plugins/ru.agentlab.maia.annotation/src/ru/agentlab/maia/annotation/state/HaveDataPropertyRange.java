@@ -6,12 +6,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import de.derivo.sparqldlapi.types.QueryAtomType;
+import ru.agentlab.maia.annotation.SparqlDL;
+
 /**
  * @author Dmitriy Shishkin
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
+@SparqlDL(QueryAtomType.RANGE)
 public @interface HaveDataPropertyRange {
 
 	String value();

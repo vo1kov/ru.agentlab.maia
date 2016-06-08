@@ -38,15 +38,19 @@ import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTyped;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -62,12 +66,17 @@ import org.semanticweb.owlapi.model.OWLNamedObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.PrefixManager;
-import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.vocab.Namespaces;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.inject.name.Named;
 
+import de.derivo.sparqldlapi.QueryAtom;
+import de.derivo.sparqldlapi.impl.QueryAtomGroupImpl;
+import de.derivo.sparqldlapi.impl.QueryImpl;
+import de.derivo.sparqldlapi.types.QueryAtomType;
+import de.derivo.sparqldlapi.types.QueryType;
 import ru.agentlab.maia.EventType;
 import ru.agentlab.maia.IConverter;
 import ru.agentlab.maia.IInjector;
@@ -81,6 +90,7 @@ import ru.agentlab.maia.agent.PlanBodyFactory;
 import ru.agentlab.maia.agent.PlanFilterFactory;
 import ru.agentlab.maia.annotation.EventMatcher;
 import ru.agentlab.maia.annotation.Prefix;
+import ru.agentlab.maia.annotation.SparqlDL;
 import ru.agentlab.maia.annotation.StateMatcher;
 import ru.agentlab.maia.annotation.event.AddedClassAssertion;
 import ru.agentlab.maia.annotation.event.AddedDataPropertyAssertion;
@@ -264,7 +274,7 @@ public class Converter implements IConverter {
 				List<Annotation> eventAnnotations = findAnnotatedAnnotations(method, EventMatcher.class);
 				if (!eventAnnotations.isEmpty()) {
 					List<Annotation> stateAnnotations = findAnnotatedAnnotations(method, StateMatcher.class);
-					IStateMatcher stateMatcher = getStateMatcher(stateAnnotations);
+					IStateMatcher stateMatcher = getStateMatcher(method, stateAnnotations);
 					IPlanBody planBody = PlanBodyFactory.create(role, method);
 					for (Annotation ann : eventAnnotations) {
 						Map<String, Object> variables = new HashMap<>();
@@ -281,8 +291,32 @@ public class Converter implements IConverter {
 		}
 	}
 
-	private IStateMatcher getStateMatcher(List<Annotation> stateAnnotations) {
+	private IStateMatcher getStateMatcher(Method method, List<Annotation> stateAnnotations) {
+		if (stateAnnotations.isEmpty()) {
+			return null;
+		}
+		List<QueryAtom> queryAtoms = stateAnnotations.stream()
+				.filter(ann -> ann.annotationType().isAnnotationPresent(SparqlDL.class)).map(ann -> {
+					QueryAtomType type = ann.annotationType().getAnnotation(SparqlDL.class).value();
+					QueryAtom result = new QueryAtom(type, Collections.emptyList());
+					return result;
+				}).collect(Collectors.toList());
+//		QueryImpl query = GetQueryType(method);
+		QueryAtomGroupImpl queryAtomGroup = new QueryAtomGroupImpl();
+		for (QueryAtom atom : queryAtoms) {
+			queryAtomGroup.addAtom(atom);
+		}
+//		query.addAtomGroup(queryAtomGroup);
 		return null;
+	}
+
+	private QueryType GetQueryType(Method method) {
+		for (Parameter parameter : method.getParameters()) {
+			if (parameter.getType() == Iterator.class && parameter.isAnnotationPresent(Named.class)) {
+
+			}
+		}
+		return QueryType.ASK;
 	}
 
 	private List<Annotation> findAnnotatedAnnotations(Method method, Class<? extends Annotation> qualifier) {
@@ -395,7 +429,6 @@ public class Converter implements IConverter {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	protected org.hamcrest.Matcher<? super OWLClassAssertionAxiom> getOWLClassAssertionAxiomMatcher(String template,
 			Map<String, Object> variables) throws AnnotationFormatException {
 		String[] parts = splitClassAssertioin(template);
@@ -405,7 +438,6 @@ public class Converter implements IConverter {
 				hasIndividual(isNamed(getOWLNamedObjectMatcher(individual, variables))));
 	}
 
-	@SuppressWarnings("unchecked")
 	protected org.hamcrest.Matcher<? super OWLDataPropertyAssertionAxiom> getOWLDataPropertyAssertionAxiomMatcher(
 			String template, Map<String, Object> variables) throws AnnotationFormatException {
 		String[] parts = splitDataPropertyAssertioin(template);
@@ -418,7 +450,6 @@ public class Converter implements IConverter {
 				hasObject(isLiteral(getOWLLiteralMatcher(data, variables))));
 	}
 
-	@SuppressWarnings("unchecked")
 	protected org.hamcrest.Matcher<? super OWLObjectPropertyAssertionAxiom> getOWLObjectPropertyAssertionAxiomMatcher(
 			String template, Map<String, Object> variables) throws AnnotationFormatException {
 		String[] parts = splitObjectPropertyAssertioin(template);
