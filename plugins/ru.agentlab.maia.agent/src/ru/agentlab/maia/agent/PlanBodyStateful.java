@@ -14,12 +14,12 @@ import java.util.Map;
 import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IPlanBody;
 
-public class PlanStateful implements IPlanBody {
+public class PlanBodyStateful implements IPlanBody {
 
 	protected final Object role;
 	protected final Method method;
 
-	public PlanStateful(Object role, Method method) {
+	public PlanBodyStateful(Object role, Method method) {
 		this.role = role;
 		this.method = method;
 	}

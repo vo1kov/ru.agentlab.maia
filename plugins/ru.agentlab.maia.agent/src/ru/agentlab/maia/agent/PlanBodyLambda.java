@@ -13,11 +13,11 @@ import java.util.Map;
 import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IPlanBody;
 
-public class PlanLambda implements IPlanBody {
+public class PlanBodyLambda implements IPlanBody {
 
 	Runnable runnable;
 
-	public PlanLambda(Runnable runnable) {
+	public PlanBodyLambda(Runnable runnable) {
 		this.runnable = runnable;
 	}
 

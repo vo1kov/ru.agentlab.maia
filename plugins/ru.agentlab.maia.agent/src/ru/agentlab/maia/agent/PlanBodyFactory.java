@@ -8,14 +8,14 @@ public class PlanBodyFactory {
 
 	public static IPlanBody create(Object role, Method method) {
 		if (method.getParameterCount() == 0) {
-			return new PlanStateles(role, method);
+			return new PlanBodyStateles(role, method);
 		} else {
-			return new PlanStateful(role, method);
+			return new PlanBodyStateful(role, method);
 		}
 	}
 
 	public static IPlanBody create(Object role, Runnable runnable) {
-		return new PlanLambda(runnable);
+		return new PlanBodyLambda(runnable);
 	}
 
 }
