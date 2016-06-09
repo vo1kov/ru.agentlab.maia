@@ -301,19 +301,19 @@ public class Converter implements IConverter {
 					QueryAtom result = new QueryAtom(type, Collections.emptyList());
 					return result;
 				}).collect(Collectors.toList());
-//		QueryImpl query = GetQueryType(method);
+		QueryImpl query = new QueryImpl(GetQueryType(method));
 		QueryAtomGroupImpl queryAtomGroup = new QueryAtomGroupImpl();
 		for (QueryAtom atom : queryAtoms) {
 			queryAtomGroup.addAtom(atom);
 		}
-//		query.addAtomGroup(queryAtomGroup);
+		query.addAtomGroup(queryAtomGroup);
 		return null;
 	}
 
 	private QueryType GetQueryType(Method method) {
 		for (Parameter parameter : method.getParameters()) {
 			if (parameter.getType() == Iterator.class && parameter.isAnnotationPresent(Named.class)) {
-
+				return QueryType.SELECT;
 			}
 		}
 		return QueryType.ASK;
