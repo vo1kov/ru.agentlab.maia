@@ -8,7 +8,8 @@ Bundle-ClassPath: libs/de-derivo-sparqldlapi-2.0.0.jar,
  libs/jdom-legacy-1.1.3.jar,
  libs/jpaul-2.5.1.jar
 Require-Bundle: org.semanticweb.owlapi.api;bundle-version="4.1.3",
- org.semanticweb.owlapi.impl;bundle-version="4.1.3"
+ org.semanticweb.owlapi.impl;bundle-version="4.1.3",
+ net.sf.trove4j;bundle-version="3.0.3"
 Export-Package: de.derivo.sparqldlapi,
  de.derivo.sparqldlapi.exceptions,
  de.derivo.sparqldlapi.impl,
