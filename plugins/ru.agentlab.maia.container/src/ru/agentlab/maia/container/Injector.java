@@ -105,9 +105,10 @@ public class Injector implements IInjector {
 
 		Object[] values = new Object[fields.length];
 		for (int i = 0; i < fields.length; i++) {
-			Object resolved = resolveValue(fields[i], additional);
+			Field field = fields[i];
+			Object resolved = resolveValue(field, additional);
 			if (resolved == null) {
-				throw new InjectorException();
+				throw new InjectorException("Failed to resolve " + field + " value");
 			}
 			values[i] = resolved;
 		}

@@ -10,14 +10,14 @@ import de.derivo.sparqldlapi.QueryResult;
 import de.derivo.sparqldlapi.exceptions.QueryEngineException;
 import ru.agentlab.maia.agent.IStateMatcher;
 
-public class AskForBelief implements IStateMatcher {
+public class HaveBeliefs implements IStateMatcher {
 
 	Query query;
 
 	@Inject
 	QueryEngine engine;
 
-	public AskForBelief(Query query) {
+	public HaveBeliefs(Query query) {
 		this.query = query;
 	}
 
@@ -25,7 +25,10 @@ public class AskForBelief implements IStateMatcher {
 	public boolean matches(Object item, Map<String, Object> values) {
 		try {
 			QueryResult result = engine.execute(query);
-			return result.ask();
+			if (query.isSelect()) {
+				values.put(QueryResult.class.getName(), result);
+			}
+			return true;
 		} catch (QueryEngineException e) {
 			e.printStackTrace();
 			return false;

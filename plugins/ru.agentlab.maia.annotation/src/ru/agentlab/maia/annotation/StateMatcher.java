@@ -13,6 +13,4 @@ import ru.agentlab.maia.EventType;
 @Target(ElementType.ANNOTATION_TYPE)
 public @interface StateMatcher {
 	
-	EventType value();
-
 }

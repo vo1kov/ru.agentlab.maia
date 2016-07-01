@@ -66,6 +66,11 @@ public class BeliefBase implements IBeliefBase {
 						// StructuralReasonerFactory()).createReasoner(ontology),
 						// true);
 
+	@Override
+	public QueryEngine getQueryEngine() {
+		return engine;
+	}
+
 	public BeliefBase(Queue<IEvent<?>> eventQueue, String namespace) {
 		this.eventQueue = eventQueue;
 		ontologyIRI = IRI.create(namespace);

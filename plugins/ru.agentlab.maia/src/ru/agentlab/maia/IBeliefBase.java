@@ -15,6 +15,8 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.PrefixManager;
 
+import de.derivo.sparqldlapi.QueryEngine;
+
 public interface IBeliefBase {
 
 	void addAxiom(OWLAxiom axiom);
@@ -94,5 +96,7 @@ public interface IBeliefBase {
 	OWLOntologyManager getManager();
 
 	PrefixManager getPrefixManager();
+
+	QueryEngine getQueryEngine();
 
 }

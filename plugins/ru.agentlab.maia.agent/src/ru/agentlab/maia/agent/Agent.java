@@ -11,7 +11,6 @@ package ru.agentlab.maia.agent;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
@@ -34,6 +33,7 @@ import org.semanticweb.owlapi.model.PrefixManager;
 
 import com.google.common.collect.ImmutableSet;
 
+import de.derivo.sparqldlapi.QueryEngine;
 import ru.agentlab.maia.AgentState;
 import ru.agentlab.maia.EventType;
 import ru.agentlab.maia.IAgent;
@@ -234,9 +234,9 @@ public class Agent implements IAgent {
 			injector.invoke(converter, PostConstruct.class, null, null);
 			// Now role object have resolved all field dependencies. Need to
 			// convert role object to initial beliefs, goals and plans.
-			List<OWLAxiom> initialBeliefs = converter.getInitialBeliefs(roleObject);
-			List<OWLAxiom> initialGoals = converter.getInitialGoals(roleObject);
-			Map<IPlan, EventType> initialPlans = converter.getInitialPlans(roleObject, injector);
+			Set<OWLAxiom> initialBeliefs = converter.getInitialBeliefs(roleObject);
+			Set<OWLAxiom> initialGoals = converter.getInitialGoals(roleObject);
+			Map<IPlan, EventType> initialPlans = converter.getInitialPlans(roleObject);
 
 			// If no exceptions was thrown by this moment then we can add
 			// beliefs, goals and plans converted from role object and
@@ -314,6 +314,10 @@ public class Agent implements IAgent {
 				return beliefBase.getFactory();
 			} else if (key.equals(PrefixManager.class.getName())) {
 				return beliefBase.getPrefixManager();
+			} else if (key.equals(IInjector.class.getName())) {
+				return injector;
+			} else if (key.equals(QueryEngine.class.getName())) {
+				return beliefBase.getQueryEngine();
 			} else {
 				return null;
 			}
@@ -340,6 +344,10 @@ public class Agent implements IAgent {
 				return key.cast(beliefBase.getFactory());
 			} else if (key == PrefixManager.class) {
 				return key.cast(beliefBase.getPrefixManager());
+			} else if (key == IInjector.class) {
+				return key.cast(injector);
+			} else if (key == QueryEngine.class) {
+				return key.cast(beliefBase.getQueryEngine());
 			} else {
 				return null;
 			}
@@ -358,7 +366,9 @@ public class Agent implements IAgent {
 				IRI.class.getName(),
 				OWLOntology.class.getName(),
 				OWLDataFactory.class.getName(),
-				PrefixManager.class.getName()
+				PrefixManager.class.getName(),
+				IInjector.class.getName(),
+				QueryEngine.class.getName()
 				// @formatter:on
 			);
 		}

@@ -6,12 +6,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import de.derivo.sparqldlapi.types.QueryAtomType;
+import ru.agentlab.maia.annotation.SparqlDL;
+import ru.agentlab.maia.annotation.StateMatcher;
+
 /**
  * @author Dmitriy Shishkin
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
+@StateMatcher
+@SparqlDL(QueryAtomType.SUB_CLASS_OF)
 public @interface HaveSubClassOf {
 
 	String value();

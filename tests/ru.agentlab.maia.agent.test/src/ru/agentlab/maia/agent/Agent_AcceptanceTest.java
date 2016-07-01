@@ -15,6 +15,7 @@ import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.vocab.Namespaces;
 
+import de.derivo.sparqldlapi.QueryResult;
 import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IContainer;
 import ru.agentlab.maia.annotation.event.AddedDataPropertyAssertion;
@@ -70,11 +71,12 @@ public class Agent_AcceptanceTest {
 			System.out.println("WORKS");
 
 		}
-
+		
 		@AddedDataPropertyAssertion("?ind ?property 2^^xsd:integer")
 		@HaveSubClassOf("owl:Thing rdf:Some")
 		@HaveClassAssertion("rdf:Some rdf:ind")
-		public void exe2(@Named("property") OWLDataProperty property, @Named("ind") OWLIndividual ind) {
+		public void exe2(@Named("property") OWLDataProperty property, @Named("ind") OWLIndividual ind,
+				QueryResult res) {
 			System.out.println("WORKS2" + property.toString());
 			System.out.println("WORKS2" + ind.toString());
 

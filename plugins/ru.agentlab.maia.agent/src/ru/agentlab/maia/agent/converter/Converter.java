@@ -43,7 +43,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -70,9 +69,9 @@ import org.semanticweb.owlapi.vocab.Namespaces;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.inject.name.Named;
 
 import de.derivo.sparqldlapi.QueryAtom;
+import de.derivo.sparqldlapi.QueryResult;
 import de.derivo.sparqldlapi.impl.QueryAtomGroupImpl;
 import de.derivo.sparqldlapi.impl.QueryImpl;
 import de.derivo.sparqldlapi.types.QueryAtomType;
@@ -88,6 +87,7 @@ import ru.agentlab.maia.agent.IStateMatcher;
 import ru.agentlab.maia.agent.Plan;
 import ru.agentlab.maia.agent.PlanBodyFactory;
 import ru.agentlab.maia.agent.PlanFilterFactory;
+import ru.agentlab.maia.agent.match.HaveBeliefs;
 import ru.agentlab.maia.annotation.EventMatcher;
 import ru.agentlab.maia.annotation.Prefix;
 import ru.agentlab.maia.annotation.SparqlDL;
@@ -113,6 +113,7 @@ import ru.agentlab.maia.annotation.event.ResolvedRole;
 import ru.agentlab.maia.annotation.event.UnhandledMessage;
 import ru.agentlab.maia.annotation.event.UnresolvedRole;
 import ru.agentlab.maia.exception.ConverterException;
+import ru.agentlab.maia.exception.InjectorException;
 
 public class Converter implements IConverter {
 
@@ -131,7 +132,7 @@ public class Converter implements IConverter {
 	// @formatter:off
 	private static final Set<Class<?>> ANNOTATIONS_CLASSIFICATION_ASSERTION = ImmutableSet.of(
 		AddedClassAssertion.class,
-		RemovedClassAssertion.class, 
+		RemovedClassAssertion.class,
 		GoalClassAssertion.class, 
 		FailedClassAssertion.class
 	);
@@ -257,7 +258,10 @@ public class Converter implements IConverter {
 	protected static final int PATTERN_METHOD_NAME = 2;
 
 	@Inject
-	protected PrefixManager prefixManager;// = new DefaultPrefixManager();
+	protected PrefixManager prefixManager;
+
+	@Inject
+	protected IInjector injector;
 
 	/*
 	 * (non-Javadoc)
@@ -266,7 +270,7 @@ public class Converter implements IConverter {
 	 * ru.agentlab.maia.agent.converter.IConverter#getPlans(java.lang.Object)
 	 */
 	@Override
-	public Map<IPlan, EventType> getInitialPlans(Object role, IInjector injector) throws ConverterException {
+	public Map<IPlan, EventType> getInitialPlans(Object role) throws ConverterException {
 		try {
 			Map<IPlan, EventType> result = new HashMap<>();
 			Method[] methods = role.getClass().getDeclaredMethods();
@@ -301,18 +305,24 @@ public class Converter implements IConverter {
 					QueryAtom result = new QueryAtom(type, Collections.emptyList());
 					return result;
 				}).collect(Collectors.toList());
-		QueryImpl query = new QueryImpl(GetQueryType(method));
+		QueryImpl query = new QueryImpl(getQueryType(method));
 		QueryAtomGroupImpl queryAtomGroup = new QueryAtomGroupImpl();
 		for (QueryAtom atom : queryAtoms) {
 			queryAtomGroup.addAtom(atom);
 		}
 		query.addAtomGroup(queryAtomGroup);
-		return null;
+		HaveBeliefs haveBeliefs = new HaveBeliefs(query);
+		try {
+			injector.inject(haveBeliefs);
+		} catch (InjectorException e) {
+			e.printStackTrace();
+		}
+		return haveBeliefs;
 	}
 
-	private QueryType GetQueryType(Method method) {
+	private QueryType getQueryType(Method method) {
 		for (Parameter parameter : method.getParameters()) {
-			if (parameter.getType() == Iterator.class && parameter.isAnnotationPresent(Named.class)) {
+			if (parameter.getType() == QueryResult.class) {
 				return QueryType.SELECT;
 			}
 		}
@@ -334,13 +344,13 @@ public class Converter implements IConverter {
 	}
 
 	@Override
-	public List<OWLAxiom> getInitialBeliefs(Object role) throws ConverterException {
+	public Set<OWLAxiom> getInitialBeliefs(Object role) throws ConverterException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<OWLAxiom> getInitialGoals(Object role) throws ConverterException {
+	public Set<OWLAxiom> getInitialGoals(Object role) throws ConverterException {
 		// TODO Auto-generated method stub
 		return null;
 	}

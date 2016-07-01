@@ -6,12 +6,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import ru.agentlab.maia.annotation.StateMatcher;
+
 /**
  * @author Dmitriy Shishkin
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
+@StateMatcher
 public @interface HaveSameIndividual {
 
 	String value();
