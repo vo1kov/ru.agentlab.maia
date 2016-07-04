@@ -40,12 +40,8 @@ import org.semanticweb.owlapi.util.OWLEntityRemover;
 import de.derivo.sparqldlapi.QueryEngine;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IEvent;
-import ru.agentlab.maia.event.AddedClassAssertionEvent;
-import ru.agentlab.maia.event.RemovedClassAssertionEvent;
-import ru.agentlab.maia.event.AddedDataPropertyAssertionEvent;
-import ru.agentlab.maia.event.RemovedDataPropertyAssertionEvent;
-import ru.agentlab.maia.event.AddedObjectPropertyAssertionEvent;
-import ru.agentlab.maia.event.RemovedObjectPropertyAssertionEvent;
+import ru.agentlab.maia.event.AddedBeliefEvent;
+import ru.agentlab.maia.event.RemovedBeliefEvent;
 
 public class BeliefBase implements IBeliefBase {
 
@@ -81,27 +77,12 @@ public class BeliefBase implements IBeliefBase {
 		}
 		engine = QueryEngine.create(manager, (new StructuralReasonerFactory()).createReasoner(ontology), true);
 		manager.addOntologyChangeListener(changes -> {
-			changes.forEach((OWLOntologyChange change) -> {
+			changes.forEach(change -> {
 				OWLAxiom axiom = change.getAxiom();
 				if (change.isAddAxiom()) {
-					if (axiom instanceof OWLClassAssertionAxiom) {
-						this.eventQueue.offer(new AddedClassAssertionEvent((OWLClassAssertionAxiom) axiom));
-					} else if (axiom instanceof OWLDataPropertyAssertionAxiom) {
-						this.eventQueue.offer(new AddedDataPropertyAssertionEvent((OWLDataPropertyAssertionAxiom) axiom));
-					} else if (axiom instanceof OWLObjectPropertyAssertionAxiom) {
-						this.eventQueue
-								.offer(new AddedObjectPropertyAssertionEvent((OWLObjectPropertyAssertionAxiom) axiom));
-					}
+					this.eventQueue.offer(new AddedBeliefEvent(axiom));
 				} else if (change.isRemoveAxiom()) {
-					if (axiom instanceof OWLClassAssertionAxiom) {
-						this.eventQueue.offer(new RemovedClassAssertionEvent((OWLClassAssertionAxiom) axiom));
-					} else if (axiom instanceof OWLDataPropertyAssertionAxiom) {
-						this.eventQueue
-								.offer(new RemovedDataPropertyAssertionEvent((OWLDataPropertyAssertionAxiom) axiom));
-					} else if (axiom instanceof OWLObjectPropertyAssertionAxiom) {
-						this.eventQueue
-								.offer(new RemovedObjectPropertyAssertionEvent((OWLObjectPropertyAssertionAxiom) axiom));
-					}
+					this.eventQueue.offer(new RemovedBeliefEvent(axiom));
 				}
 			});
 		}, (listener, changes) -> {

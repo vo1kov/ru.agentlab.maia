@@ -50,10 +50,10 @@ import ru.agentlab.maia.IPlanBase;
 import ru.agentlab.maia.Option;
 import ru.agentlab.maia.agent.converter.Converter;
 import ru.agentlab.maia.container.Injector;
-import ru.agentlab.maia.event.RoleAddedEvent;
-import ru.agentlab.maia.event.RoleRemovedEvent;
-import ru.agentlab.maia.event.RoleResolvedEvent;
-import ru.agentlab.maia.event.RoleUnresolvedEvent;
+import ru.agentlab.maia.event.AddedRoleEvent;
+import ru.agentlab.maia.event.RemovedRoleEvent;
+import ru.agentlab.maia.event.ResolvedRoleEvent;
+import ru.agentlab.maia.event.UnresolvedRoleEvent;
 import ru.agentlab.maia.exception.ContainerException;
 import ru.agentlab.maia.exception.ConverterException;
 import ru.agentlab.maia.exception.InjectorException;
@@ -209,13 +209,13 @@ public class Agent implements IAgent {
 	protected boolean internalRemoveRole(Object roleObject) {
 		boolean removed = roles.remove(roleObject);
 		if (removed) {
-			eventQueue.offer(new RoleRemovedEvent(roleObject));
+			eventQueue.offer(new RemovedRoleEvent(roleObject));
 		}
 		return removed;
 	}
 
 	protected boolean internalRemoveAllRoles() {
-		Stream<RoleRemovedEvent> events = roles.stream().map(role -> new RoleRemovedEvent(role));
+		Stream<RemovedRoleEvent> events = roles.stream().map(role -> new RemovedRoleEvent(role));
 		roles.clear();
 		events.forEach(eventQueue::offer);
 		return true;
@@ -254,11 +254,11 @@ public class Agent implements IAgent {
 			// Add role object to the role base and generate event about
 			// successful resolving
 			roles.add(roleObject);
-			eventQueue.offer(new RoleAddedEvent(roleObject));
-			eventQueue.offer(new RoleResolvedEvent(roleObject));
+			eventQueue.offer(new AddedRoleEvent(roleObject));
+			eventQueue.offer(new ResolvedRoleEvent(roleObject));
 			return roleObject;
 		} catch (InjectorException | ConverterException e) {
-			eventQueue.offer(new RoleUnresolvedEvent(roleClass));
+			eventQueue.offer(new UnresolvedRoleEvent(roleClass));
 			throw new ResolveException(e);
 		}
 	}

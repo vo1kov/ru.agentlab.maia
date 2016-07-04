@@ -8,9 +8,7 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IGoalBase;
-import ru.agentlab.maia.event.GoalClassAssertionEvent;
-import ru.agentlab.maia.event.GoalDataPropertyAssertionEvent;
-import ru.agentlab.maia.event.GoalObjectPropertyAssertionEvent;
+import ru.agentlab.maia.event.AddedGoalEvent;
 
 public class GoalBase implements IGoalBase {
 
@@ -23,21 +21,21 @@ public class GoalBase implements IGoalBase {
 	@Override
 	public boolean addGoalClassAsertion(OWLClassAssertionAxiom axiom) {
 		// TODO: implement this
-		eventQueue.offer(new GoalClassAssertionEvent(axiom));
+		eventQueue.offer(new AddedGoalEvent(axiom));
 		return false;
 	}
 
 	@Override
 	public boolean addGoalDataPropertyAsertion(OWLDataPropertyAssertionAxiom axiom) {
 		// TODO: implement this
-		eventQueue.offer(new GoalDataPropertyAssertionEvent(axiom));
+		eventQueue.offer(new AddedGoalEvent(axiom));
 		return false;
 	}
 
 	@Override
 	public boolean addGoalObjectPropertyAsertion(OWLObjectPropertyAssertionAxiom axiom) {
 		// TODO: implement this
-		eventQueue.offer(new GoalObjectPropertyAssertionEvent(axiom));
+		eventQueue.offer(new AddedGoalEvent(axiom));
 		return false;
 	}
 
