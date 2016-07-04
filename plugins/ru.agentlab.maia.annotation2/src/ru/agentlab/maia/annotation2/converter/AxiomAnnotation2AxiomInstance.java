@@ -1,12 +1,7 @@
-package ru.agentlab.maia.annotation2;
+package ru.agentlab.maia.annotation2.converter;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -21,20 +16,10 @@ import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-import ru.agentlab.maia.EventType;
-import ru.agentlab.maia.IPlan;
-import ru.agentlab.maia.IPlanBody;
-import ru.agentlab.maia.IPlanFilter;
-import ru.agentlab.maia.agent.IStateMatcher;
-import ru.agentlab.maia.agent.Plan;
-import ru.agentlab.maia.agent.PlanBodyFactory;
-import ru.agentlab.maia.agent.PlanFilterFactory;
-import ru.agentlab.maia.agent.converter.AnnotationFormatException;
-import ru.agentlab.maia.annotation.EventMatcher;
-import ru.agentlab.maia.annotation.StateMatcher;
+import ru.agentlab.maia.annotation2.AxiomType;
 import ru.agentlab.maia.exception.ConverterException;
 
-public class InitialGoalsConverter {
+public class AxiomAnnotation2AxiomInstance {
 
 	@Inject
 	OWLOntologyManager manager;
@@ -42,78 +27,9 @@ public class InitialGoalsConverter {
 	@Inject
 	OWLDataFactory factory;
 
-	public Set<OWLAxiom> getInitialBeliefs(Object role) throws ConverterException {
-		// Multiple initial beliefs
-		InitialBeliefs initialBeliefs = role.getClass().getAnnotation(InitialBeliefs.class);
-		if (initialBeliefs != null) {
-			Set<OWLAxiom> result = new HashSet<>();
-			for (InitialBelief initialBelief : initialBeliefs.value()) {
-				OWLAxiom axiom = getAxiom(initialBelief.value(), initialBelief.type());
-				result.add(axiom);
-			}
-			return result;
-		}
-
-		// Single initial belief
-		InitialBelief initialBelief = role.getClass().getAnnotation(InitialBelief.class);
-		if (initialBelief != null) {
-			OWLAxiom axiom = getAxiom(initialBelief.value(), initialBelief.type());
-			return Collections.singleton(axiom);
-		}
-
-		// No initial goals;
-		return Collections.emptySet();
-	}
-
-	public Set<OWLAxiom> getInitialGoals(Object role) throws ConverterException {
-		// Multiple initial goals
-		InitialGoals initialGoals = role.getClass().getAnnotation(InitialGoals.class);
-		if (initialGoals != null) {
-			Set<OWLAxiom> result = new HashSet<>();
-			for (InitialGoal initialGoal : initialGoals.value()) {
-				OWLAxiom axiom = getAxiom(initialGoal.value(), initialGoal.type());
-				result.add(axiom);
-			}
-			return result;
-		}
-
-		// Single initial goal
-		InitialGoal initialGoal = role.getClass().getAnnotation(InitialGoal.class);
-		if (initialGoal != null) {
-			OWLAxiom axiom = getAxiom(initialGoal.value(), initialGoal.type());
-			return Collections.singleton(axiom);
-		}
-
-		// No initial goals;
-		return Collections.emptySet();
-	}
-
-	public Map<IPlan, EventType> getInitialPlans(Object role) throws ConverterException {
-		// try {
-		Map<IPlan, EventType> result = new HashMap<>();
-		Method[] methods = role.getClass().getDeclaredMethods();
-		for (Method method : methods) {
-			List<Annotation> eventAnnotations = findAnnotatedAnnotations(method, EventMatcher.class);
-			if (!eventAnnotations.isEmpty()) {
-				List<Annotation> stateAnnotations = findAnnotatedAnnotations(method, StateMatcher.class);
-				IStateMatcher stateMatcher = getStateMatcher(method, stateAnnotations);
-				IPlanBody planBody = PlanBodyFactory.create(role, method);
-				for (Annotation ann : eventAnnotations) {
-					Map<String, Object> variables = new HashMap<>();
-					org.hamcrest.Matcher<?> eventMatcher = getEventMatcher(ann, variables);
-					IPlanFilter planFilter = PlanFilterFactory.create(eventMatcher, variables, stateMatcher);
-					IPlan plan = new Plan(role, planFilter, planBody);
-					result.put(plan, getEventType(ann));
-				}
-			}
-		}
-		return result;
-		// } catch (AnnotationFormatException e) {
-		// throw new ConverterException(e);
-		// }
-	}
-
-	private OWLAxiom getAxiom(String[] args, AxiomType type) throws ConverterException {
+	public OWLAxiom getAxiom(Annotation ann) throws ConverterException {
+		AxiomType type = Util.getMethodValue(ann, "type", AxiomType.class);
+		String[] args = Util.getMethodValue(ann, "value", String[].class);
 		checkNoVariables(args);
 		checkLength(args, type.getArity());
 		switch (type) {
@@ -256,5 +172,4 @@ public class InitialGoalsConverter {
 			}
 		}
 	}
-
 }

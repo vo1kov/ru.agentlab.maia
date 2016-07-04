@@ -43,9 +43,9 @@ import ru.agentlab.maia.IConverter;
 import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.agent.doubles.DummyService;
-import ru.agentlab.maia.event.RoleAddedEvent;
-import ru.agentlab.maia.event.RoleResolvedEvent;
-import ru.agentlab.maia.event.RoleUnresolvedEvent;
+import ru.agentlab.maia.event.AddedRoleEvent;
+import ru.agentlab.maia.event.ResolvedRoleEvent;
+import ru.agentlab.maia.event.UnresolvedRoleEvent;
 import ru.agentlab.maia.exception.ConverterException;
 import ru.agentlab.maia.exception.InjectorException;
 import ru.agentlab.maia.exception.ResolveException;
@@ -186,8 +186,8 @@ public class Agent_internalAddRole_Test {
 			checkBeliefBase(agent);
 			checkGoalBase(agent);
 			checkPlanBase(agent);
-			verify(agent.eventQueue, times(1)).offer(new RoleAddedEvent(role));
-			verify(agent.eventQueue, times(1)).offer(new RoleResolvedEvent(role));
+			verify(agent.eventQueue, times(1)).offer(new AddedRoleEvent(role));
+			verify(agent.eventQueue, times(1)).offer(new ResolvedRoleEvent(role));
 			assertThat(role, equalTo(result));
 		} catch (Exception e) {
 			// Then
@@ -200,7 +200,7 @@ public class Agent_internalAddRole_Test {
 			// role added. Only ROLE_UNRESOLVED event should be added to event
 			// queue.
 			verifyZeroInteractions(agent.beliefBase, agent.goalBase, agent.planBase);
-			verify(agent.eventQueue, times(1)).offer(new RoleUnresolvedEvent(DummyService.class));
+			verify(agent.eventQueue, times(1)).offer(new UnresolvedRoleEvent(DummyService.class));
 		}
 	}
 

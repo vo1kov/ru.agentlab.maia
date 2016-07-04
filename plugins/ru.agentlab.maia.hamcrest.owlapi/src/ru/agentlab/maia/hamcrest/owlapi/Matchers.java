@@ -10,6 +10,8 @@ import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLDifferentIndividualsAxiom;
+import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -20,6 +22,15 @@ import org.semanticweb.owlapi.model.OWLPropertyAssertionObject;
 import org.semanticweb.owlapi.model.OWLPropertyExpression;
 
 public class Matchers {
+
+	public static Matcher<OWLDisjointClassesAxiom> hasDisjointClasses(Matcher<? super OWLClassExpression>[] matchers) {
+		return new OWLDisjointClassesAxiomHasClasses(matchers);
+	}
+
+	public static Matcher<OWLDifferentIndividualsAxiom> hasDifferentIndividuals(
+			Matcher<? super OWLIndividual>[] matchers) {
+		return new OWLDifferentIndividualsAxiomHasIndividuals(matchers);
+	}
 
 	public static Matcher<OWLClassExpression> isClass(Matcher<? super OWLClass> matcher) {
 		return new OWLClassExpressionIsClass(matcher);

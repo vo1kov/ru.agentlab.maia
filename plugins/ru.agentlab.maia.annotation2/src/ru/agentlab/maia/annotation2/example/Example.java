@@ -6,6 +6,7 @@ import static ru.agentlab.maia.annotation2.AxiomType.DATA_PROPERTY_ASSERTION;
 import java.lang.annotation.Annotation;
 
 import ru.agentlab.maia.annotation2.AddedBelief;
+import ru.agentlab.maia.annotation2.AddedMessage;
 import ru.agentlab.maia.annotation2.HaveBelief;
 import ru.agentlab.maia.annotation2.HaveGoal;
 import ru.agentlab.maia.annotation2.InitialBelief;
@@ -32,6 +33,7 @@ public class Example {
 	public void test2() {
 	}
 
+	@AddedMessage(performative = "FIPA-REQUEST")
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException {
 		Example e = new Example();
 		for (Annotation ann : e.getClass().getMethod("test").getAnnotations()) {

@@ -22,7 +22,7 @@ import ru.agentlab.maia.annotation.event.AddedDataPropertyAssertion;
 import ru.agentlab.maia.annotation.state.HaveClassAssertion;
 import ru.agentlab.maia.annotation.state.HaveSubClassOf;
 import ru.agentlab.maia.container.Container;
-import ru.agentlab.maia.event.AddedDataPropertyAssertionEvent;
+import ru.agentlab.maia.event.AddedBeliefEvent;
 import ru.agentlab.maia.exception.ContainerException;
 import ru.agentlab.maia.exception.InjectorException;
 import ru.agentlab.maia.exception.ResolveException;
@@ -43,7 +43,7 @@ public class Agent_AcceptanceTest {
 		agent.deployTo(container);
 		agent.addRole(TestRole.class);
 		IntStream.range(0, 500).forEach(i -> {
-			agent.eventQueue.offer(new AddedDataPropertyAssertionEvent(factory.getOWLDataPropertyAssertionAxiom(
+			agent.eventQueue.offer(new AddedBeliefEvent(factory.getOWLDataPropertyAssertionAxiom(
 					factory.getOWLDataProperty(IRI.create(Namespaces.RDF.toString(), "hasProperty")),
 					factory.getOWLNamedIndividual(IRI.create(Namespaces.RDF.toString(), "ind")),
 					factory.getOWLLiteral(2))));
@@ -71,7 +71,7 @@ public class Agent_AcceptanceTest {
 			System.out.println("WORKS");
 
 		}
-		
+
 		@AddedDataPropertyAssertion("?ind ?property 2^^xsd:integer")
 		@HaveSubClassOf("owl:Thing rdf:Some")
 		@HaveClassAssertion("rdf:Some rdf:ind")
