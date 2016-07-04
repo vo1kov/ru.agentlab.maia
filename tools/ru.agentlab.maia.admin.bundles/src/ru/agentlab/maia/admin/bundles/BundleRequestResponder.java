@@ -18,6 +18,8 @@ import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.annotation.GoalClassificationFailed;
 import ru.agentlab.maia.annotation.GoalClassificationFinished;
 import ru.agentlab.maia.annotation.event.AddedMessage;
+import ru.agentlab.maia.annotation2.AxiomType;
+import ru.agentlab.maia.annotation2.FailedGoal;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
 
 public class BundleRequestResponder {
@@ -51,7 +53,7 @@ public class BundleRequestResponder {
 		}
 	}
 
-	@GoalClassificationFinished("")
+	@AddedGoalClassificationFinished("")
 	public void onGoalFinished(IGoal goal) {
 		IMessage message = requests.get(goal);
 		if (message != null) {
@@ -59,7 +61,7 @@ public class BundleRequestResponder {
 		}
 	}
 
-	@GoalClassificationFailed("")
+	@FailedGoal(value = "", type = AxiomType.CLASS_ASSERTION)
 	public void onGoalFailed(IGoal goal) {
 		IMessage message = requests.get(goal);
 		if (message != null) {
