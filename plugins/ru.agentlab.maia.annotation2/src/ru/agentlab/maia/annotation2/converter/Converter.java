@@ -1,15 +1,34 @@
 package ru.agentlab.maia.annotation2.converter;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hamcrest.Matcher;
-import org.semanticweb.owlapi.model.OWLAxiom;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
+import org.hamcrest.Matcher;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.PrefixManager;
+import org.semanticweb.owlapi.util.DefaultPrefixManager;
+
+import de.derivo.sparqldlapi.QueryArgument;
+import de.derivo.sparqldlapi.QueryAtom;
+import de.derivo.sparqldlapi.QueryResult;
+import de.derivo.sparqldlapi.Var;
+import de.derivo.sparqldlapi.impl.QueryAtomGroupImpl;
+import de.derivo.sparqldlapi.impl.QueryImpl;
+import de.derivo.sparqldlapi.types.QueryAtomType;
+import de.derivo.sparqldlapi.types.QueryType;
 import ru.agentlab.maia.EventType;
+import ru.agentlab.maia.IConverter;
+import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBody;
 import ru.agentlab.maia.IPlanFilter;
@@ -17,11 +36,13 @@ import ru.agentlab.maia.agent.IStateMatcher;
 import ru.agentlab.maia.agent.Plan;
 import ru.agentlab.maia.agent.PlanBodyFactory;
 import ru.agentlab.maia.agent.PlanFilterFactory;
+import ru.agentlab.maia.agent.match.HaveBeliefsStateMatcher;
 import ru.agentlab.maia.annotation2.AddedBelief;
 import ru.agentlab.maia.annotation2.AddedGoal;
 import ru.agentlab.maia.annotation2.AddedMessage;
 import ru.agentlab.maia.annotation2.AddedRole;
 import ru.agentlab.maia.annotation2.FailedGoal;
+import ru.agentlab.maia.annotation2.HaveBelief;
 import ru.agentlab.maia.annotation2.InitialBelief;
 import ru.agentlab.maia.annotation2.InitialGoal;
 import ru.agentlab.maia.annotation2.RemovedBelief;
@@ -31,6 +52,7 @@ import ru.agentlab.maia.annotation2.ResolvedRole;
 import ru.agentlab.maia.annotation2.UnhandledMessage;
 import ru.agentlab.maia.annotation2.UnresolvedRole;
 import ru.agentlab.maia.exception.ConverterException;
+import ru.agentlab.maia.exception.InjectorException;
 
 /**
  * <!-- @formatter:off -->
@@ -59,7 +81,7 @@ import ru.agentlab.maia.exception.ConverterException;
  * 
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
  */
-public class Converter {
+public class Converter implements IConverter {
 
 	AxiomAnnotation2AxiomInstance axiomInstances;
 
@@ -68,6 +90,22 @@ public class Converter {
 	MessageAnnotation2MessageMatcher messageMatchers;
 
 	RoleAnnotation2RoleMatcher roleMatchers;
+
+	AxiomAnnotation2QueryType queryTypes;
+
+	@Inject
+	IInjector injector;
+	
+	PrefixManager prefixes = new DefaultPrefixManager();
+
+	@PostConstruct
+	public void init() throws InjectorException {
+		axiomInstances = injector.make(AxiomAnnotation2AxiomInstance.class);
+		axiomMatchers = injector.make(AxiomAnnotation2AxiomMatcher.class);
+		messageMatchers = injector.make(MessageAnnotation2MessageMatcher.class);
+		roleMatchers = injector.make(RoleAnnotation2RoleMatcher.class);
+		queryTypes = injector.make(AxiomAnnotation2QueryType.class);
+	}
 
 	public Set<OWLAxiom> getInitialBeliefs(Object role) throws ConverterException {
 		Set<OWLAxiom> result = new HashSet<>();
@@ -103,7 +141,41 @@ public class Converter {
 	}
 
 	private IStateMatcher getStateMatcher(Method method, Map<String, Object> variables) throws ConverterException {
-		return null;
+		QueryImpl query = new QueryImpl(getQueryType(method));
+		QueryAtomGroupImpl queryAtomGroup = new QueryAtomGroupImpl();
+		query.addAtomGroup(queryAtomGroup);
+		for (HaveBelief haveBelief : method.getAnnotationsByType(HaveBelief.class)) {
+			QueryAtomType type = queryTypes.getQueryType(haveBelief);
+			List<QueryArgument> arguments = new ArrayList<>();
+			for (String arg : haveBelief.value()) {
+				if (isVariable(arg)) {
+					arguments.add(new QueryArgument(new Var(arg.substring(1))));
+				}
+				arguments.add(new QueryArgument(IRI.create(arg)));
+			}
+			QueryAtom atom = new QueryAtom(type, arguments);
+			queryAtomGroup.addAtom(atom);
+		}
+		try {
+			HaveBeliefsStateMatcher haveBeliefMatcher = new HaveBeliefsStateMatcher(query);
+			injector.inject(haveBeliefMatcher);
+			return haveBeliefMatcher;
+		} catch (InjectorException e) {
+			throw new ConverterException(e);
+		}
+	}
+
+	private boolean isVariable(String arg) {
+		return arg.startsWith("?");
+	}
+
+	private QueryType getQueryType(Method method) {
+		for (Parameter parameter : method.getParameters()) {
+			if (parameter.getType() == QueryResult.class) {
+				return QueryType.SELECT;
+			}
+		}
+		return QueryType.ASK;
 	}
 
 	private Registration getEventMatcher(Method method, Map<String, Object> variables) throws ConverterException {

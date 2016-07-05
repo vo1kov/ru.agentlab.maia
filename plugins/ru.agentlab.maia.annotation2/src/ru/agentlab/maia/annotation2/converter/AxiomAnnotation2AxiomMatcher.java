@@ -13,17 +13,13 @@ import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isNamed;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import org.hamcrest.Matcher;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
-import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLNamedObject;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 import ru.agentlab.maia.annotation2.AxiomType;
 import ru.agentlab.maia.exception.ConverterException;
@@ -33,12 +29,6 @@ public class AxiomAnnotation2AxiomMatcher {
 	protected static final String VALUE = "value";
 
 	protected static final String TYPE = "type";
-
-	@Inject
-	OWLOntologyManager manager;
-
-	@Inject
-	OWLDataFactory factory;
 
 	@SuppressWarnings("unchecked")
 	public Matcher<?> getMatcher(Annotation ann, Map<String, Object> variables) throws ConverterException {
