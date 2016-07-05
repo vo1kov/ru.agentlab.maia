@@ -25,7 +25,6 @@ import org.mockito.Mockito;
 
 import ru.agentlab.maia.AgentState;
 import ru.agentlab.maia.agent.doubles.DummyService;
-import ru.agentlab.maia.annotation2.converter.Converter;
 import ru.agentlab.maia.exception.ResolveException;
 import ru.agentlab.maia.test.util.LoggerRule;
 
@@ -95,17 +94,17 @@ public class Agent_addRole_Test {
 		// Given
 		Agent agent = spy(new Agent());
 		agent.state = state;
-		doReturn(ROLE_MOCK).when(agent).internalAddRole(Mockito.any(), Mockito.any(), Mockito.any());
+		doReturn(ROLE_MOCK).when(agent).internalAddRole(Mockito.any(), Mockito.any());
 
 		try {
 			// When
-			Object role = agent.addRole(roleClass, Converter.class, parameters);
+			Object role = agent.addRole(roleClass, parameters);
 
 			// Then
 			if (result instanceof Class) {
 				Assert.fail("Expected [" + result + "], but was: [" + role + "]");
 			}
-			verify(agent).internalAddRole(roleClass, Converter.class, parameters);
+			verify(agent).internalAddRole(roleClass, parameters);
 			assertThat(role, equalTo(result));
 		} catch (Exception e) {
 			// Then
@@ -113,7 +112,7 @@ public class Agent_addRole_Test {
 				Assert.fail("Expected [" + result + "], but was: [" + e + "]");
 			}
 			assertThat(e, instanceOf((Class<?>) result));
-			verify(agent, times(0)).internalAddRole(roleClass, Converter.class, parameters);
+			verify(agent, times(0)).internalAddRole(roleClass, parameters);
 		}
 	}
 

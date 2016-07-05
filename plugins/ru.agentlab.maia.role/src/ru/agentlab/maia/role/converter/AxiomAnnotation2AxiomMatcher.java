@@ -33,11 +33,10 @@ import javax.inject.Inject;
 
 import org.hamcrest.Matcher;
 import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLNamedObject;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.vocab.Namespaces;
@@ -183,30 +182,7 @@ public class AxiomAnnotation2AxiomMatcher {
 		}
 	}
 
-	private void checkLength(String[] args, int length) throws ConverterException {
-		if (length == -1) {
-			return;
-		}
-		if (args.length != length) {
-			throw new ConverterException(
-					"Initial goal for Annotation assertion should contain " + length + " arguments");
-		}
-	}
-
-	protected Matcher<? super OWLNamedObject> hasName(String string, Map<String, Object> variables) {
-		if (Util.isVariable(string)) {
-			return var(Util.getVariableName(string), variables);
-		}
-		return hasIRI(prefixManager.getIRI(string));
-	}
-
 	/**
-	 * 
-	 * <!-- @formatter:off -->
-	 * literal   X X    X   X    X   X    ...
-	 * language  X null var X    X   null ...
-	 * datatype  X X    X   null var null ...
-	 * <!-- @formatter:on -->
 	 * 
 	 * @param string
 	 * @param variables
@@ -219,6 +195,9 @@ public class AxiomAnnotation2AxiomMatcher {
 		String literal = parts[0];
 		String language = parts[1];
 		String datatype = parts[2];
+		Matcher<? super String> literalMatcher = hasString(parts[0], variables);
+		Matcher<? super String> languageMatcher = hasString(parts[1], variables);
+		Matcher<? super OWLDatatype> datatypeMatcher = hasName(parts[2], variables);
 
 		if (datatype == null) {
 			// Plain Literal
@@ -227,30 +206,28 @@ public class AxiomAnnotation2AxiomMatcher {
 				if (Util.isVariable(literal)) {
 					return isLiteral(var(Util.getVariableName(literal), variables));
 				} else {
-					return isLiteral(isPlain(equalTo(literal), equalTo(language)));
+					return isLiteral(isPlain(equalTo(literal), anything()));
 				}
 			} else {
-				if (Util.isVariable(literal)) {
-					return isLiteral(isPlain(var(Util.getVariableName(literal), variables), equalTo(language)));
-				} else {
-					return isLiteral(isPlain(equalTo(literal), equalTo(language)));
-				}
+				return isLiteral(isPlain(hasString(literal, variables), hasString(language, variables)));
 			}
 		}
-		if (datatype != null) {
-			if (Util.isVariable(datatype)) {
-				return isTyped(equalTo(literal), var(Util.getVariableName(datatype), variables));
+		if (Util.isVariable(datatype)) {
+			if (language == null) {
+				return isTyped(literalMatcher, datatypeMatcher);
 			} else {
-				IRI datatypeIRI = prefixManager.getIRI(string);
-				if (language != null && language.startsWith("?")
-						&& !datatypeIRI.equals(OWL2Datatype.RDF_PLAIN_LITERAL.getIRI())) {
-					throw new LiteralIllelgalLanguageTagException(
-							"Cannot build a literal matcher with type: " + datatypeIRI + " and language: " + language
-									+ ". Only " + OWL2Datatype.RDF_PLAIN_LITERAL.getIRI() + " can use language tag.");
-				}
-				return isLiteral(isPlain(equalTo(literal), equalTo(language)));
+				Matcher<? super String> languageMatcher = hasString(language, variables);
 			}
 		}
+		IRI datatypeIRI = prefixManager.getIRI(string);
+		if (language != null && language.startsWith("?")
+				&& !datatypeIRI.equals(OWL2Datatype.RDF_PLAIN_LITERAL.getIRI())) {
+			throw new LiteralIllelgalLanguageTagException(
+					"Cannot build a literal matcher with type: " + datatypeIRI + " and language: " + language
+							+ ". Only " + OWL2Datatype.RDF_PLAIN_LITERAL.getIRI() + " can use language tag.");
+		}
+		return isLiteral(isPlain(equalTo(literal), equalTo(language)));
+
 		throw new LiteralWrongFormatException("Literal [" + datatype + "] has wrong format. "
 				+ "Should be in form either namespace:name, <htt://full.com#name> or ?variable.");
 
@@ -297,114 +274,25 @@ public class AxiomAnnotation2AxiomMatcher {
 					}
 					switch (owl2datatype) {
 					case XSD_BOOLEAN:
-						return isBoolean(getBooleanMatcher(literal, variables));
+						return isBoolean(hasBoolean(literal, variables));
 					case XSD_FLOAT:
-						return isFloat(getFloatMatcher(literal, variables));
+						return isFloat(hasFloat(literal, variables));
 					case XSD_DOUBLE:
-						return isDouble(getDoubleMatcher(literal, variables));
+						return isDouble(hasDouble(literal, variables));
 					case XSD_INT:
 					case XSD_INTEGER:
-						return isInteger(getIntegerMatcher(literal, variables));
+						return isInteger(hasInteger(literal, variables));
 					case RDF_PLAIN_LITERAL:
 						return isLiteral(isPlain(equalTo(literal), equalTo(language)));
 					default:
 						break;
 					}
+				} else {
+					return isTyped(equalTo(language == null ? literal : literal + SEPARATOR_LANGUAGE + language),
+							hasIRI(datatypeIRI));
 				}
-				return isTyped(equalTo(language == null ? literal : literal + SEPARATOR_LANGUAGE + language),
-						hasIRI(datatypeIRI));
-			}
-		}
-	}
 
-	protected Matcher<? super String> getStringMatcher(String string, Map<String, Object> variables) {
-		if (string == null) {
-			return anything();
-		}
-		if (Util.isVariable(string)) {
-			return var(Util.getVariableName(string), variables);
-		} else {
-			return equalTo(string);
-		}
-	}
-
-	protected Matcher<? super Boolean> getBooleanMatcher(String string, Map<String, Object> variables)
-			throws LiteralNotInValueSpaceException {
-		if (string == null) {
-			return anything();
-		}
-		if (Util.isVariable(string)) {
-			return var(Util.getVariableName(string), variables);
-		} else {
-			boolean value;
-			if (string.equals("true") || string.equals("1")) {
-				value = true;
-			} else if (string.equals("false") || string.equals("0")) {
-				value = false;
-			} else {
-				throw new LiteralNotInValueSpaceException("Argument should be [true|false|1|0]");
 			}
-			return equalTo(value);
-		}
-	}
-
-	private Matcher<? super Float> getFloatMatcher(String string, Map<String, Object> variables)
-			throws LiteralNotInValueSpaceException {
-		if (string == null) {
-			return anything();
-		}
-		if (Util.isVariable(string)) {
-			return var(Util.getVariableName(string), variables);
-		} else {
-			float value;
-			if (string.equals(NaN)) {
-				value = Float.NaN;
-			}
-			if (string.equals(INF)) {
-				value = Float.POSITIVE_INFINITY;
-			}
-			if (string.equals(INF_NEG)) {
-				value = Float.NEGATIVE_INFINITY;
-			} else {
-				value = Float.parseFloat(string);
-			}
-			return equalTo(value);
-		}
-	}
-
-	private Matcher<? super Double> getDoubleMatcher(String string, Map<String, Object> variables)
-			throws LiteralNotInValueSpaceException {
-		if (string == null) {
-			return anything();
-		}
-		if (Util.isVariable(string)) {
-			return var(Util.getVariableName(string), variables);
-		} else {
-			double value;
-			if (string.equals(NaN)) {
-				value = Double.NaN;
-			}
-			if (string.equals(INF)) {
-				value = Double.POSITIVE_INFINITY;
-			}
-			if (string.equals(INF_NEG)) {
-				value = Double.NEGATIVE_INFINITY;
-			} else {
-				value = Double.parseDouble(string);
-			}
-			return equalTo(value);
-		}
-	}
-
-	private Matcher<? super Integer> getIntegerMatcher(String string, Map<String, Object> variables)
-			throws LiteralNotInValueSpaceException {
-		if (string == null) {
-			return anything();
-		}
-		if (Util.isVariable(string)) {
-			return var(Util.getVariableName(string), variables);
-		} else {
-			return equalTo(Integer.parseInt(string));
 		}
 	}
 
@@ -447,5 +335,114 @@ public class AxiomAnnotation2AxiomMatcher {
 			value = value.substring(0, languageIndex);
 		}
 		return new String[] { value, language, datatype };
+	}
+
+	private Matcher<? super OWLNamedObject> hasName(String string, Map<String, Object> variables) {
+		if (Util.isVariable(string)) {
+			return var(Util.getVariableName(string), variables);
+		} else {
+			return hasIRI(prefixManager.getIRI(string));
+		}
+	}
+
+	private Matcher<? super String> hasString(String string, Map<String, Object> variables) {
+		if (string == null) {
+			return anything();
+		}
+		if (Util.isVariable(string)) {
+			return var(Util.getVariableName(string), variables);
+		} else {
+			return equalTo(string);
+		}
+	}
+
+	private Matcher<? super Boolean> hasBoolean(String string, Map<String, Object> variables)
+			throws LiteralNotInValueSpaceException {
+		if (string == null) {
+			return anything();
+		}
+		if (Util.isVariable(string)) {
+			return var(Util.getVariableName(string), variables);
+		} else {
+			boolean value;
+			if (string.equals("true") || string.equals("1")) {
+				value = true;
+			} else if (string.equals("false") || string.equals("0")) {
+				value = false;
+			} else {
+				throw new LiteralNotInValueSpaceException("Argument should be [true|false|1|0]");
+			}
+			return equalTo(value);
+		}
+	}
+
+	private Matcher<? super Float> hasFloat(String string, Map<String, Object> variables)
+			throws LiteralNotInValueSpaceException {
+		if (string == null) {
+			return anything();
+		}
+		if (Util.isVariable(string)) {
+			return var(Util.getVariableName(string), variables);
+		} else {
+			float value;
+			if (string.equals(NaN)) {
+				value = Float.NaN;
+			}
+			if (string.equals(INF)) {
+				value = Float.POSITIVE_INFINITY;
+			}
+			if (string.equals(INF_NEG)) {
+				value = Float.NEGATIVE_INFINITY;
+			} else {
+				value = Float.parseFloat(string);
+			}
+			return equalTo(value);
+		}
+	}
+
+	private Matcher<? super Double> hasDouble(String string, Map<String, Object> variables)
+			throws LiteralNotInValueSpaceException {
+		if (string == null) {
+			return anything();
+		}
+		if (Util.isVariable(string)) {
+			return var(Util.getVariableName(string), variables);
+		} else {
+			double value;
+			if (string.equals(NaN)) {
+				value = Double.NaN;
+			}
+			if (string.equals(INF)) {
+				value = Double.POSITIVE_INFINITY;
+			}
+			if (string.equals(INF_NEG)) {
+				value = Double.NEGATIVE_INFINITY;
+			} else {
+				value = Double.parseDouble(string);
+			}
+			return equalTo(value);
+		}
+	}
+
+	private Matcher<? super Integer> hasInteger(String string, Map<String, Object> variables)
+			throws LiteralNotInValueSpaceException {
+		if (string == null) {
+			return anything();
+		}
+		if (Util.isVariable(string)) {
+			return var(Util.getVariableName(string), variables);
+		} else {
+			return equalTo(Integer.parseInt(string));
+		}
+	}
+
+	private void checkLength(String[] args, int length) throws ConverterException {
+		if (length == -1) {
+			return;
+		}
+		if (args.length != length) {
+			throw new ConverterException(
+					"Initial goal for Annotation assertion should contain " + length + " arguments");
+		}
 	}
 }

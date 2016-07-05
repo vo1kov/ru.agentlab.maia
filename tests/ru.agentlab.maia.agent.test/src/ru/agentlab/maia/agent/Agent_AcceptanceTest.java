@@ -20,6 +20,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.vocab.Namespaces;
 
 import de.derivo.sparqldlapi.QueryResult;
+import ru.agentlab.maia.ConvertWith;
 import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IContainer;
 import ru.agentlab.maia.container.Container;
@@ -45,7 +46,7 @@ public class Agent_AcceptanceTest {
 		container.put(String.class, "TEST");
 		Agent agent = new Agent();
 		agent.deployTo(container);
-		agent.addRole(TestRole.class, Converter.class);
+		agent.addRole(TestRole.class);
 		IntStream.range(0, 500).forEach(i -> {
 			agent.eventQueue.offer(new AddedBeliefEvent(factory.getOWLDataPropertyAssertionAxiom(
 					factory.getOWLDataProperty(IRI.create(Namespaces.RDF.toString(), "hasProperty")),
@@ -58,6 +59,7 @@ public class Agent_AcceptanceTest {
 
 	}
 
+	@ConvertWith(Converter.class)
 	public static class TestRole {
 
 		@Inject

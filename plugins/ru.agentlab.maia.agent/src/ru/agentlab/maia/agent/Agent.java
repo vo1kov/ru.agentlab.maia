@@ -35,6 +35,7 @@ import com.google.common.collect.ImmutableSet;
 
 import de.derivo.sparqldlapi.QueryEngine;
 import ru.agentlab.maia.AgentState;
+import ru.agentlab.maia.ConvertWith;
 import ru.agentlab.maia.EventType;
 import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IAgentContainer;
@@ -133,8 +134,7 @@ public class Agent implements IAgent {
 	}
 
 	@Override
-	public Object addRole(Class<?> roleClass, Class<? extends IConverter> converterClass,
-			Map<String, Object> parameters) throws ResolveException {
+	public Object addRole(Class<?> roleClass, Map<String, Object> parameters) throws ResolveException {
 		if (roleClass == null) {
 			throw new NullPointerException("Role class can't be null");
 		}
@@ -150,7 +150,7 @@ public class Agent implements IAgent {
 			throw new IllegalStateException("Agent is in STOPPING state, can't add new roles.");
 		case IDLE:
 		default:
-			return internalAddRole(roleClass, converterClass, parameters);
+			return internalAddRole(roleClass, parameters);
 		}
 	}
 
@@ -192,8 +192,7 @@ public class Agent implements IAgent {
 	}
 
 	@Override
-	public Future<Object> submitAddRole(Class<?> roleClass, Class<? extends IConverter> converterClass,
-			Map<String, Object> parameters) {
+	public Future<Object> submitAddRole(Class<?> roleClass, Map<String, Object> parameters) {
 		return null;
 	}
 
@@ -222,16 +221,20 @@ public class Agent implements IAgent {
 		return true;
 	}
 
-	protected Object internalAddRole(Class<?> roleClass, Class<? extends IConverter> converterClass,
-			Map<String, Object> parameters) throws ResolveException {
+	protected Object internalAddRole(Class<?> roleClass, Map<String, Object> parameters) throws ResolveException {
 		try {
+			ConvertWith convertWith = roleClass.getAnnotation(ConvertWith.class);
+			if (convertWith == null) {
+				throw new ResolveException(
+						"Unknown converter, use @" + ConvertWith.class.getName() + " to specify converter.");
+			}
 			// Create instance of role object
 			IInjector injector = getInjector();
 			Object roleObject = injector.make(roleClass, parameters);
 			injector.inject(roleObject);
 			injector.invoke(roleObject, PostConstruct.class, null, null);
 
-			IConverter converter = injector.make(converterClass);
+			IConverter converter = injector.make(convertWith.value());
 			injector.inject(converter);
 			injector.invoke(converter, PostConstruct.class, null, null);
 			// Now role object have resolved all field dependencies. Need to

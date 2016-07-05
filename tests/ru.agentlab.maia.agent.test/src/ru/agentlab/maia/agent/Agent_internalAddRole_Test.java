@@ -44,7 +44,6 @@ import ru.agentlab.maia.IConverter;
 import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.agent.doubles.DummyService;
-import ru.agentlab.maia.annotation2.converter.Converter;
 import ru.agentlab.maia.event.AddedRoleEvent;
 import ru.agentlab.maia.event.ResolvedRoleEvent;
 import ru.agentlab.maia.event.UnresolvedRoleEvent;
@@ -170,7 +169,7 @@ public class Agent_internalAddRole_Test {
 
 		try {
 			// When
-			Object role = agent.internalAddRole(DummyService.class, Converter.class, null);
+			Object role = agent.internalAddRole(DummyService.class, null);
 
 			// Then
 			if (result instanceof Class) {
