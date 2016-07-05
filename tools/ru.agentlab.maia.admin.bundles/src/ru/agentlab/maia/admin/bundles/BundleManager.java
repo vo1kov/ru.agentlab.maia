@@ -1,7 +1,7 @@
 package ru.agentlab.maia.admin.bundles;
 
-import static ru.agentlab.maia.annotation2.AxiomType.DATA_PROPERTY_ASSERTION;
-import static ru.agentlab.maia.annotation2.AxiomType.OBJECT_PROPERTY_ASSERTION;
+import static ru.agentlab.maia.role.AxiomType.DATA_PROPERTY_ASSERTION;
+import static ru.agentlab.maia.role.AxiomType.OBJECT_PROPERTY_ASSERTION;
 
 import javax.inject.Named;
 
@@ -10,8 +10,8 @@ import org.osgi.framework.BundleException;
 
 import ru.agentlab.maia.admin.bundles.internal.Activator;
 import ru.agentlab.maia.annotation.Prefix;
-import ru.agentlab.maia.annotation2.AddedGoal;
-import ru.agentlab.maia.annotation2.HaveBelief;
+import ru.agentlab.maia.role.AddedGoal;
+import ru.agentlab.maia.role.HaveBelief;
 
 @Prefix(name = "osgi", namespace = "http://www.agentlab.ru/ontologies/osgi")
 public class BundleManager {

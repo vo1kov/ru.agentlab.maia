@@ -19,11 +19,11 @@ import javax.inject.Named;
 import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.annotation.Prefix;
 import ru.agentlab.maia.annotation.event.AddedMessage;
-import ru.agentlab.maia.annotation2.AddedBelief;
-import ru.agentlab.maia.annotation2.AxiomType;
-import ru.agentlab.maia.annotation2.HaveBelief;
 import ru.agentlab.maia.messaging.AclMessage;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
+import ru.agentlab.maia.role.AddedBelief;
+import ru.agentlab.maia.role.AxiomType;
+import ru.agentlab.maia.role.HaveBelief;
 
 public class BundleSubscriptionResponder {
 

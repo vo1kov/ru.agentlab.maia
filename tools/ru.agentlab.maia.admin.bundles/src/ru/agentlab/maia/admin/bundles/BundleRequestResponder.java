@@ -18,9 +18,9 @@ import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.annotation.GoalClassificationFailed;
 import ru.agentlab.maia.annotation.GoalClassificationFinished;
 import ru.agentlab.maia.annotation.event.AddedMessage;
-import ru.agentlab.maia.annotation2.AxiomType;
-import ru.agentlab.maia.annotation2.FailedGoal;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
+import ru.agentlab.maia.role.AxiomType;
+import ru.agentlab.maia.role.FailedGoal;
 
 public class BundleRequestResponder {
 
