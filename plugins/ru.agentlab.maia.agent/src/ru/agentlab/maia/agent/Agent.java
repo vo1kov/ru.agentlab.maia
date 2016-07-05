@@ -48,7 +48,6 @@ import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
 import ru.agentlab.maia.Option;
-import ru.agentlab.maia.agent.converter.Converter;
 import ru.agentlab.maia.container.Injector;
 import ru.agentlab.maia.event.AddedRoleEvent;
 import ru.agentlab.maia.event.RemovedRoleEvent;
@@ -134,7 +133,8 @@ public class Agent implements IAgent {
 	}
 
 	@Override
-	public Object addRole(Class<?> roleClass, Map<String, Object> parameters) throws ResolveException {
+	public Object addRole(Class<?> roleClass, Class<? extends IConverter> converterClass,
+			Map<String, Object> parameters) throws ResolveException {
 		if (roleClass == null) {
 			throw new NullPointerException("Role class can't be null");
 		}
@@ -150,7 +150,7 @@ public class Agent implements IAgent {
 			throw new IllegalStateException("Agent is in STOPPING state, can't add new roles.");
 		case IDLE:
 		default:
-			return internalAddRole(roleClass, parameters);
+			return internalAddRole(roleClass, converterClass, parameters);
 		}
 	}
 
@@ -192,7 +192,8 @@ public class Agent implements IAgent {
 	}
 
 	@Override
-	public Future<Object> submitAddRole(Class<?> roleClass, Map<String, Object> parameters) {
+	public Future<Object> submitAddRole(Class<?> roleClass, Class<? extends IConverter> converterClass,
+			Map<String, Object> parameters) {
 		return null;
 	}
 
@@ -221,7 +222,8 @@ public class Agent implements IAgent {
 		return true;
 	}
 
-	protected Object internalAddRole(Class<?> roleClass, Map<String, Object> parameters) throws ResolveException {
+	protected Object internalAddRole(Class<?> roleClass, Class<? extends IConverter> converterClass,
+			Map<String, Object> parameters) throws ResolveException {
 		try {
 			// Create instance of role object
 			IInjector injector = getInjector();
@@ -229,7 +231,7 @@ public class Agent implements IAgent {
 			injector.inject(roleObject);
 			injector.invoke(roleObject, PostConstruct.class, null, null);
 
-			IConverter converter = injector.make(Converter.class);
+			IConverter converter = injector.make(converterClass);
 			injector.inject(converter);
 			injector.invoke(converter, PostConstruct.class, null, null);
 			// Now role object have resolved all field dependencies. Need to
@@ -241,15 +243,9 @@ public class Agent implements IAgent {
 			// If no exceptions was thrown by this moment then we can add
 			// beliefs, goals and plans converted from role object and
 			// role object themselves
-			if (initialBeliefs != null) {
-				beliefBase.addAxioms(initialBeliefs);
-			}
-			if (initialGoals != null) {
-				goalBase.addAxioms(initialGoals);
-			}
-			if (initialPlans != null) {
-				initialPlans.forEach((plan, type) -> planBase.add(type, plan));
-			}
+			beliefBase.addAxioms(initialBeliefs);
+			goalBase.addAxioms(initialGoals);
+			initialPlans.forEach((plan, type) -> planBase.add(type, plan));
 
 			// Add role object to the role base and generate event about
 			// successful resolving

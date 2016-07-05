@@ -36,20 +36,22 @@ public interface IAgent {
 
 	Collection<Object> getRoles();
 
-	Object addRole(Class<?> roleClass, Map<String, Object> parameters) throws ResolveException;
+	Object addRole(Class<?> roleClass, Class<? extends IConverter> converterClass, Map<String, Object> parameters)
+			throws ResolveException;
 
-	default Object addRole(Class<?> roleClass) throws ResolveException {
-		return addRole(roleClass, null);
+	default Object addRole(Class<?> roleClass, Class<? extends IConverter> converterClass) throws ResolveException {
+		return addRole(roleClass, converterClass, null);
 	}
 
 	boolean removeRole(Object roleObject);
 
 	boolean removeAllRoles();
 
-	Future<Object> submitAddRole(Class<?> roleClass, Map<String, Object> parameters);
+	Future<Object> submitAddRole(Class<?> roleClass, Class<? extends IConverter> converterClass,
+			Map<String, Object> parameters);
 
-	default Future<Object> submitAddRole(Class<?> roleClass) {
-		return submitAddRole(roleClass, null);
+	default Future<Object> submitAddRole(Class<?> roleClass, Class<? extends IConverter> converterClass) {
+		return submitAddRole(roleClass, converterClass, null);
 	}
 
 	Future<Boolean> submitRemoveRole(Object roleObject);
