@@ -1,4 +1,4 @@
-package ru.agentlab.maia.agent.converter;
+package ru.agentlab.maia.role.converter;
 
 public abstract class AssertionFormatException extends AnnotationFormatException {
 

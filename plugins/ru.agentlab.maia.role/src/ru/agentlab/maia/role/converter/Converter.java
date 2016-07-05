@@ -148,7 +148,7 @@ public class Converter implements IConverter {
 			QueryAtomType type = queryTypes.getQueryType(haveBelief);
 			List<QueryArgument> arguments = new ArrayList<>();
 			for (String arg : haveBelief.value()) {
-				if (isVariable(arg)) {
+				if (Util.isVariable(arg)) {
 					arguments.add(new QueryArgument(new Var(arg.substring(1))));
 				}
 				arguments.add(new QueryArgument(IRI.create(arg)));
@@ -163,10 +163,6 @@ public class Converter implements IConverter {
 		} catch (InjectorException e) {
 			throw new ConverterException(e);
 		}
-	}
-
-	private boolean isVariable(String arg) {
-		return arg.startsWith("?");
 	}
 
 	private QueryType getQueryType(Method method) {

@@ -1,5 +1,9 @@
 package ru.agentlab.maia.agent;
 
+import static ru.agentlab.maia.role.AxiomType.CLASS_ASSERTION;
+import static ru.agentlab.maia.role.AxiomType.DATA_PROPERTY_ASSERTION;
+import static ru.agentlab.maia.role.AxiomType.SUBCLASS_OF;
+
 import java.util.concurrent.ForkJoinPool;
 import java.util.stream.IntStream;
 
@@ -18,14 +22,14 @@ import org.semanticweb.owlapi.vocab.Namespaces;
 import de.derivo.sparqldlapi.QueryResult;
 import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IContainer;
-import ru.agentlab.maia.annotation.event.AddedDataPropertyAssertion;
-import ru.agentlab.maia.annotation.state.HaveClassAssertion;
-import ru.agentlab.maia.annotation.state.HaveSubClassOf;
 import ru.agentlab.maia.container.Container;
 import ru.agentlab.maia.event.AddedBeliefEvent;
 import ru.agentlab.maia.exception.ContainerException;
 import ru.agentlab.maia.exception.InjectorException;
 import ru.agentlab.maia.exception.ResolveException;
+import ru.agentlab.maia.role.AddedBelief;
+import ru.agentlab.maia.role.HaveBelief;
+import ru.agentlab.maia.role.converter.Converter;
 
 public class Agent_AcceptanceTest {
 
@@ -41,7 +45,7 @@ public class Agent_AcceptanceTest {
 		container.put(String.class, "TEST");
 		Agent agent = new Agent();
 		agent.deployTo(container);
-		agent.addRole(TestRole.class);
+		agent.addRole(TestRole.class, Converter.class);
 		IntStream.range(0, 500).forEach(i -> {
 			agent.eventQueue.offer(new AddedBeliefEvent(factory.getOWLDataPropertyAssertionAxiom(
 					factory.getOWLDataProperty(IRI.create(Namespaces.RDF.toString(), "hasProperty")),
@@ -49,7 +53,7 @@ public class Agent_AcceptanceTest {
 					factory.getOWLLiteral(2))));
 		});
 		agent.start();
-		Thread.sleep(500);
+		Thread.sleep(1100500);
 		System.out.println(agent.state);
 
 	}
@@ -64,17 +68,17 @@ public class Agent_AcceptanceTest {
 			System.out.println(agent.getUuid());
 		}
 
-		@AddedDataPropertyAssertion("rdf:ind rdf:hasProperty 2^^xsd:integer")
-		@HaveSubClassOf("owl:Thing rdf:Some")
-		@HaveClassAssertion("rdf:Some rdf:ind")
+		@AddedBelief(value = { "rdf:ind", "rdf:hasProperty", "2^^xsd:integer" }, type = DATA_PROPERTY_ASSERTION)
+		@HaveBelief(value = { "owl:Thing", "rdf:Some" }, type = SUBCLASS_OF)
+		@HaveBelief(value = { "rdf:Some", "rdf:ind" }, type = CLASS_ASSERTION)
 		public void exe() {
 			System.out.println("WORKS");
 
 		}
 
-		@AddedDataPropertyAssertion("?ind ?property 2^^xsd:integer")
-		@HaveSubClassOf("owl:Thing rdf:Some")
-		@HaveClassAssertion("rdf:Some rdf:ind")
+		@AddedBelief(value = { "rdf:ind", "rdf:hasProperty", "2^^xsd:integer" }, type = DATA_PROPERTY_ASSERTION)
+		@HaveBelief(value = { "owl:Thing", "rdf:Some" }, type = SUBCLASS_OF)
+		@HaveBelief(value = { "rdf:Some", "rdf:ind" }, type = CLASS_ASSERTION)
 		public void exe2(@Named("property") OWLDataProperty property, @Named("ind") OWLIndividual ind,
 				QueryResult res) {
 			System.out.println("WORKS2" + property.toString());

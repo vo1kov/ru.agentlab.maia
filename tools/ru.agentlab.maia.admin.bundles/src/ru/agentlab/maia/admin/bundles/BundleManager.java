@@ -9,9 +9,9 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 
 import ru.agentlab.maia.admin.bundles.internal.Activator;
-import ru.agentlab.maia.annotation.Prefix;
 import ru.agentlab.maia.role.AddedGoal;
 import ru.agentlab.maia.role.HaveBelief;
+import ru.agentlab.maia.role.Prefix;
 
 @Prefix(name = "osgi", namespace = "http://www.agentlab.ru/ontologies/osgi")
 public class BundleManager {

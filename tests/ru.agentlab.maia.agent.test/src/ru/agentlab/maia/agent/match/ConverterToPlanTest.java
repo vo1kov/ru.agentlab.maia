@@ -3,7 +3,6 @@ package ru.agentlab.maia.agent.match;
 import org.junit.experimental.theories.Theories;
 import org.junit.runner.RunWith;
 
-import ru.agentlab.maia.agent.converter.AnnotationFormatException;
 import ru.agentlab.maia.annotation.BeliefClassificationAdded;
 import ru.agentlab.maia.annotation.BeliefClassificationRemoved;
 import ru.agentlab.maia.annotation.BeliefDataPropertyAdded;
@@ -29,6 +28,7 @@ import ru.agentlab.maia.annotation.PlanRemoved;
 import ru.agentlab.maia.annotation.event.AddedRole;
 import ru.agentlab.maia.annotation.event.ResolvedRole;
 import ru.agentlab.maia.annotation.event.UnresolvedRole;
+import ru.agentlab.maia.role.converter.AnnotationFormatException;
 
 /**
  * 

@@ -32,7 +32,7 @@ public class Matchers {
 		return new OWLDifferentIndividualsAxiomHasIndividuals(matchers);
 	}
 
-	public static Matcher<OWLClassExpression> isClass(Matcher<? super OWLClass> matcher) {
+	public static Matcher<OWLClassExpression> isNamedClass(Matcher<? super OWLClass> matcher) {
 		return new OWLClassExpressionIsClass(matcher);
 	}
 
@@ -44,7 +44,7 @@ public class Matchers {
 		return new OWLClassAssertionAxiomHasIndividual(matcher);
 	}
 
-	public static Matcher<OWLIndividual> isNamed(Matcher<? super OWLNamedIndividual> matcher) {
+	public static Matcher<OWLIndividual> isNamedIndividual(Matcher<? super OWLNamedIndividual> matcher) {
 		return new OWLIndividualIsNamed(matcher);
 	}
 

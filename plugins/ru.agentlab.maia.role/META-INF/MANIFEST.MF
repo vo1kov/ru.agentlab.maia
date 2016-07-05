@@ -12,6 +12,7 @@ Require-Bundle: org.semanticweb.owlapi.compatibility,
  ru.agentlab.maia.hamcrest.message;bundle-version="1.0.0",
  ru.agentlab.maia.hamcrest.owlapi;bundle-version="1.0.0",
  de.derivo.sparqldlapi;bundle-version="1.0.0",
- org.semanticweb.owlapi.api
+ org.semanticweb.owlapi.api,
+ com.google.guava
 Export-Package: ru.agentlab.maia.role,
  ru.agentlab.maia.role.converter

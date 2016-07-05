@@ -21,9 +21,9 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import ru.agentlab.maia.agent.converter.AbstractGetOWLLiteralMatcherTest;
-import ru.agentlab.maia.agent.converter.LiteralNotInLexicalSpaceException;
-import ru.agentlab.maia.agent.converter.LiteralUnknownPrefixException;
-import ru.agentlab.maia.agent.converter.LiteralWrongFormatException;
+import ru.agentlab.maia.role.converter.LiteralNotInLexicalSpaceException;
+import ru.agentlab.maia.role.converter.LiteralUnknownPrefixException;
+import ru.agentlab.maia.role.converter.LiteralWrongFormatException;
 
 /**
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>

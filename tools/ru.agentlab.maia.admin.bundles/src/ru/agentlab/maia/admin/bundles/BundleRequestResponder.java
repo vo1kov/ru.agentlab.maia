@@ -15,10 +15,8 @@ import javax.inject.Inject;
 import ru.agentlab.maia.IGoal;
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IMessage;
-import ru.agentlab.maia.annotation.GoalClassificationFailed;
-import ru.agentlab.maia.annotation.GoalClassificationFinished;
-import ru.agentlab.maia.annotation.event.AddedMessage;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
+import ru.agentlab.maia.role.AddedMessage;
 import ru.agentlab.maia.role.AxiomType;
 import ru.agentlab.maia.role.FailedGoal;
 

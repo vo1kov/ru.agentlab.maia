@@ -1,5 +1,7 @@
 package ru.agentlab.maia.agent.converter;
 
+import ru.agentlab.maia.role.converter.AnnotationFormatException;
+
 public class MethodWrongFormatException extends AnnotationFormatException {
 
 	private static final long serialVersionUID = 1L;

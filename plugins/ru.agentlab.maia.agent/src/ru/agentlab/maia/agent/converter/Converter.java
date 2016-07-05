@@ -23,7 +23,7 @@ import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasObject;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasProperty;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasSubject;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isBoolean;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isClass;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isNamedClass;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isDataProperty;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isDouble;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isFloat;
@@ -114,6 +114,16 @@ import ru.agentlab.maia.annotation.event.UnhandledMessage;
 import ru.agentlab.maia.annotation.event.UnresolvedRole;
 import ru.agentlab.maia.exception.ConverterException;
 import ru.agentlab.maia.exception.InjectorException;
+import ru.agentlab.maia.role.converter.AnnotationFormatException;
+import ru.agentlab.maia.role.converter.AssertionFormatException;
+import ru.agentlab.maia.role.converter.AssertionWrongFormatException;
+import ru.agentlab.maia.role.converter.LiteralFormatException;
+import ru.agentlab.maia.role.converter.LiteralIllelgalLanguageTagException;
+import ru.agentlab.maia.role.converter.LiteralNotInLexicalSpaceException;
+import ru.agentlab.maia.role.converter.LiteralNotInValueSpaceException;
+import ru.agentlab.maia.role.converter.LiteralUnknownPrefixException;
+import ru.agentlab.maia.role.converter.LiteralWrongBuildInDatatypeException;
+import ru.agentlab.maia.role.converter.LiteralWrongFormatException;
 
 public class Converter implements IConverter {
 
@@ -444,8 +454,8 @@ public class Converter implements IConverter {
 		String[] parts = splitClassAssertioin(template);
 		String individual = parts[0];
 		String clazz = parts[1];
-		return allOf(hasClassExpression(isClass(getOWLNamedObjectMatcher(clazz, variables))),
-				hasIndividual(isNamed(getOWLNamedObjectMatcher(individual, variables))));
+		return allOf(hasClassExpression(isNamedClass(getOWLNamedObjectMatcher(clazz, variables))),
+				hasIndividual(isNamedIndividual(getOWLNamedObjectMatcher(individual, variables))));
 	}
 
 	protected org.hamcrest.Matcher<? super OWLDataPropertyAssertionAxiom> getOWLDataPropertyAssertionAxiomMatcher(
@@ -455,7 +465,7 @@ public class Converter implements IConverter {
 		String property = parts[1];
 		String data = parts[2];
 
-		return allOf(hasSubject(isNamed(getOWLNamedObjectMatcher(subject, variables))),
+		return allOf(hasSubject(isNamedIndividual(getOWLNamedObjectMatcher(subject, variables))),
 				hasProperty(isDataProperty(getOWLNamedObjectMatcher(property, variables))),
 				hasObject(isLiteral(getOWLLiteralMatcher(data, variables))));
 	}
@@ -466,9 +476,9 @@ public class Converter implements IConverter {
 		String subject = parts[0];
 		String property = parts[1];
 		String object = parts[2];
-		return allOf(hasSubject(isNamed(getOWLNamedObjectMatcher(subject, variables))),
+		return allOf(hasSubject(isNamedIndividual(getOWLNamedObjectMatcher(subject, variables))),
 				hasProperty(isObjectProperty(getOWLNamedObjectMatcher(property, variables))),
-				hasObject(isIndividual(isNamed(getOWLNamedObjectMatcher(object, variables)))));
+				hasObject(isIndividual(isNamedIndividual(getOWLNamedObjectMatcher(object, variables)))));
 	}
 
 	protected org.hamcrest.Matcher<? super OWLLiteral> getOWLLiteralMatcher(String string,
