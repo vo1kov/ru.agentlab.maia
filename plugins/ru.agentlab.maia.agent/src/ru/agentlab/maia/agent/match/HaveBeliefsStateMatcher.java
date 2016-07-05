@@ -10,14 +10,14 @@ import de.derivo.sparqldlapi.QueryResult;
 import de.derivo.sparqldlapi.exceptions.QueryEngineException;
 import ru.agentlab.maia.agent.IStateMatcher;
 
-public class HaveBeliefs implements IStateMatcher {
+public class HaveBeliefsStateMatcher implements IStateMatcher {
 
 	Query query;
 
 	@Inject
 	QueryEngine engine;
 
-	public HaveBeliefs(Query query) {
+	public HaveBeliefsStateMatcher(Query query) {
 		this.query = query;
 	}
 

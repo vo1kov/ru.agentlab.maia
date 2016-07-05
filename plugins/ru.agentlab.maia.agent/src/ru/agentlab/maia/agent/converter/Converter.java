@@ -87,7 +87,7 @@ import ru.agentlab.maia.agent.IStateMatcher;
 import ru.agentlab.maia.agent.Plan;
 import ru.agentlab.maia.agent.PlanBodyFactory;
 import ru.agentlab.maia.agent.PlanFilterFactory;
-import ru.agentlab.maia.agent.match.HaveBeliefs;
+import ru.agentlab.maia.agent.match.HaveBeliefsStateMatcher;
 import ru.agentlab.maia.annotation.EventMatcher;
 import ru.agentlab.maia.annotation.Prefix;
 import ru.agentlab.maia.annotation.SparqlDL;
@@ -311,7 +311,7 @@ public class Converter implements IConverter {
 			queryAtomGroup.addAtom(atom);
 		}
 		query.addAtomGroup(queryAtomGroup);
-		HaveBeliefs haveBeliefs = new HaveBeliefs(query);
+		HaveBeliefsStateMatcher haveBeliefs = new HaveBeliefsStateMatcher(query);
 		try {
 			injector.inject(haveBeliefs);
 		} catch (InjectorException e) {
