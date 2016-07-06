@@ -10,7 +10,7 @@ package ru.agentlab.maia.agent.converter.literal;
 
 import static org.hamcrest.Matchers.equalTo;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasIRI;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTyped;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTypedLiteral;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,10 +37,10 @@ public class ConverterGetOWLLiteralOWLRealMatcherTest extends AbstractGetOWLLite
 			 *| ##   | Input Parameter                   | Result Literal                                      | Comment                        |
 			  ---------------------------------------------------------------------------------------------------------------------------------*/
 			// owl:real
-			/*  0 */ { "^^owl:real",                     isTyped(equalTo(""), hasIRI(OWL, REAL)) },            // test empty string
-			/*  1 */ { "test^^owl:real",                 isTyped(equalTo("test"), hasIRI(OWL, REAL)) },        // test non-empty string
-			/*  2 */ { "test string^^owl:real",          isTyped(equalTo("test string"), hasIRI(OWL, REAL)) }, // test value with whitespace
-			/*  3 */ { "test string^^<" + OWL + "real>", isTyped(equalTo("test string"), hasIRI(OWL, REAL)) }, // test full name
+			/*  0 */ { "^^owl:real",                     isTypedLiteral(equalTo(""), hasIRI(OWL, REAL)) },            // test empty string
+			/*  1 */ { "test^^owl:real",                 isTypedLiteral(equalTo("test"), hasIRI(OWL, REAL)) },        // test non-empty string
+			/*  2 */ { "test string^^owl:real",          isTypedLiteral(equalTo("test string"), hasIRI(OWL, REAL)) }, // test value with whitespace
+			/*  3 */ { "test string^^<" + OWL + "real>", isTypedLiteral(equalTo("test string"), hasIRI(OWL, REAL)) }, // test full name
 //			/*  4 */ { "?var^^owl:real",                 isTyped(var("var"), hasIRI(OWL, REAL)) },             // test variable value
 			/*  5 */ { "?var@?lang^^owl:real",           LiteralIllelgalLanguageTagException.class },          // test variable value and lang
 			/*  6 */ { "test string^^rdfs:real",         LiteralWrongBuildInDatatypeException.class },         // wrong namespace

@@ -13,10 +13,11 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.hamcrest.Matcher;
-import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
+
+import com.google.common.collect.ImmutableMap;
 
 import de.derivo.sparqldlapi.QueryArgument;
 import de.derivo.sparqldlapi.QueryAtom;
@@ -95,13 +96,16 @@ public class Converter implements IConverter {
 
 	@Inject
 	IInjector injector;
-	
+
 	PrefixManager prefixes = new DefaultPrefixManager();
 
 	@PostConstruct
 	public void init() throws InjectorException {
+		Map<String, Object> additional = ImmutableMap.of(PrefixManager.class.getName(), prefixes);
 		axiomInstances = injector.make(AxiomAnnotation2AxiomInstance.class);
+		injector.inject(axiomInstances, additional);
 		axiomMatchers = injector.make(AxiomAnnotation2AxiomMatcher.class);
+		injector.inject(axiomMatchers, additional);
 		messageMatchers = injector.make(MessageAnnotation2MessageMatcher.class);
 		roleMatchers = injector.make(RoleAnnotation2RoleMatcher.class);
 		queryTypes = injector.make(AxiomAnnotation2QueryType.class);
@@ -151,7 +155,7 @@ public class Converter implements IConverter {
 				if (Util.isVariable(arg)) {
 					arguments.add(new QueryArgument(new Var(arg.substring(1))));
 				}
-				arguments.add(new QueryArgument(IRI.create(arg)));
+				arguments.add(new QueryArgument(prefixes.getIRI(arg)));
 			}
 			QueryAtom atom = new QueryAtom(type, arguments);
 			queryAtomGroup.addAtom(atom);

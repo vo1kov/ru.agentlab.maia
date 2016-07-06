@@ -12,18 +12,18 @@ import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasIndividual;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasObject;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasProperty;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasSubject;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isBoolean;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isBooleanLiteral;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isDataProperty;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isDouble;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isFloat;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isDoubleLiteral;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isFloatLiteral;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isIndividual;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isInteger;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isIntegerLiteral;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isLiteral;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isNamedClass;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isNamedIndividual;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isObjectProperty;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isPlain;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTyped;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isPlainLiteral;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTypedLiteral;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
@@ -34,7 +34,6 @@ import javax.inject.Inject;
 import org.hamcrest.Matcher;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassExpression;
-import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedObject;
@@ -54,10 +53,6 @@ public class AxiomAnnotation2AxiomMatcher {
 	private static final String INF = "INF";
 
 	private static final String NaN = "NaN";
-
-	private static final String SEPARATOR_LANGUAGE = "@";
-
-	private static final String SEPARATOR_DATATYPE = "^^";
 
 	protected static final String VALUE = "value";
 
@@ -191,73 +186,19 @@ public class AxiomAnnotation2AxiomMatcher {
 	 */
 	protected Matcher<? super OWLLiteral> getOWLLiteralMatcher(String string, Map<String, Object> variables)
 			throws LiteralFormatException {
-		String[] parts = splitDatatypeLiteral(string);
+		String[] parts = Util.splitDatatypeLiteral(string);
 		String literal = parts[0];
 		String language = parts[1];
 		String datatype = parts[2];
-		Matcher<? super String> literalMatcher = hasString(parts[0], variables);
-		Matcher<? super String> languageMatcher = hasString(parts[1], variables);
-		Matcher<? super OWLDatatype> datatypeMatcher = hasName(parts[2], variables);
 
-		if (datatype == null) {
-			// Plain Literal
-			// [static@en] || [static@?lang] || [?val@en] || [?val@?lang]
-			if (language == null) {
-				if (Util.isVariable(literal)) {
-					return isLiteral(var(Util.getVariableName(literal), variables));
-				} else {
-					return isLiteral(isPlain(equalTo(literal), anything()));
-				}
-			} else {
-				return isLiteral(isPlain(hasString(literal, variables), hasString(language, variables)));
-			}
+		if (language != null) {
+			return isPlainLiteral(hasString(literal, variables), hasString(language, variables));
 		}
-		if (Util.isVariable(datatype)) {
-			if (language == null) {
-				return isTyped(literalMatcher, datatypeMatcher);
+		if (datatype != null) {
+			if (Util.isVariable(datatype)) {
+				return isTypedLiteral(hasString(literal, variables), var(Util.getVariableName(datatype), variables));
 			} else {
-				Matcher<? super String> languageMatcher = hasString(language, variables);
-			}
-		}
-		IRI datatypeIRI = prefixManager.getIRI(string);
-		if (language != null && language.startsWith("?")
-				&& !datatypeIRI.equals(OWL2Datatype.RDF_PLAIN_LITERAL.getIRI())) {
-			throw new LiteralIllelgalLanguageTagException(
-					"Cannot build a literal matcher with type: " + datatypeIRI + " and language: " + language
-							+ ". Only " + OWL2Datatype.RDF_PLAIN_LITERAL.getIRI() + " can use language tag.");
-		}
-		return isLiteral(isPlain(equalTo(literal), equalTo(language)));
-
-		throw new LiteralWrongFormatException("Literal [" + datatype + "] has wrong format. "
-				+ "Should be in form either namespace:name, <htt://full.com#name> or ?variable.");
-
-		if (datatype == null) {
-			// return isLiteral(isPlain(equalTo(literal), equalTo(language)));
-		} else {
-			// Typed Literal
-			// [static^^some:type] || [static^^?type] || [?val^^some:type] ||
-			// [?val^^?type]
-			// Matcher match = PATTERN_LITERAL.matcher(datatype);
-			// if (!match.matches()) {
-			//
-			// }
-			String variableName = getOWLNamedObjectVariableName(match);
-			if (variableName != null) {
-				// [static^^?type] || [?val^^?type]
-				return isTyped(equalTo(literal), var(variableName, variables));
-			} else {
-				// [static^^some:type] || [?val^^some:type]
-				// IRI datatypeIRI = getOWLNamedObjectIRI(match);
-				// if (language != null && language.startsWith("?")
-				// &&
-				// !datatypeIRI.equals(OWL2Datatype.RDF_PLAIN_LITERAL.getIRI()))
-				// {
-				// throw new LiteralIllelgalLanguageTagException(
-				// "Cannot build a literal matcher with type: " + datatypeIRI +
-				// " and language: " + language
-				// + ". Only " + OWL2Datatype.RDF_PLAIN_LITERAL.getIRI() + " can
-				// use language tag.");
-				// }
+				IRI datatypeIRI = prefixManager.getIRI(datatype);
 				String datatypeNamespace = datatypeIRI.getNamespace();
 				if (BUILDIN_DATATYPE_NAMESPACES.contains(datatypeNamespace)) {
 					if (!OWL2Datatype.isBuiltIn(datatypeIRI)) {
@@ -266,75 +207,32 @@ public class AxiomAnnotation2AxiomMatcher {
 								+ "] does not contain build-in datatype [" + datatypeIRI.toQuotedString() + "]");
 					}
 					OWL2Datatype owl2datatype = OWL2Datatype.getDatatype(datatypeIRI);
-					// if value is not variable then check lexical space
-					if (!literal.startsWith("?") && !owl2datatype.isInLexicalSpace(literal)) {
+					if (!Util.isVariable(literal) && !owl2datatype.isInLexicalSpace(literal)) {
 						throw new LiteralNotInLexicalSpaceException("Literal [" + string + "] has wrong format. Value ["
 								+ literal + "] is not in lexical space of datatype [" + datatypeIRI.toQuotedString()
 								+ "]");
 					}
 					switch (owl2datatype) {
 					case XSD_BOOLEAN:
-						return isBoolean(hasBoolean(literal, variables));
+						return isBooleanLiteral(hasBoolean(literal, variables));
 					case XSD_FLOAT:
-						return isFloat(hasFloat(literal, variables));
+						return isFloatLiteral(hasFloat(literal, variables));
 					case XSD_DOUBLE:
-						return isDouble(hasDouble(literal, variables));
+						return isDoubleLiteral(hasDouble(literal, variables));
 					case XSD_INT:
 					case XSD_INTEGER:
-						return isInteger(hasInteger(literal, variables));
+						return isIntegerLiteral(hasInteger(literal, variables));
 					case RDF_PLAIN_LITERAL:
-						return isLiteral(isPlain(equalTo(literal), equalTo(language)));
+						return isPlainLiteral(equalTo(literal), equalTo(language));
 					default:
-						break;
+						return isTypedLiteral(hasString(literal, variables), hasIRI(datatypeIRI));
 					}
 				} else {
-					return isTyped(equalTo(language == null ? literal : literal + SEPARATOR_LANGUAGE + language),
-							hasIRI(datatypeIRI));
+					return isTypedLiteral(hasString(literal, variables), hasIRI(datatypeIRI));
 				}
-
 			}
 		}
-	}
-
-	/**
-	 * <p>
-	 * Splits input string into 3 parts:
-	 * <ol>
-	 * <li>Literal value template (required, but can be empty);
-	 * <li>Literal language template (optional);
-	 * <li>Literal datatype template (optional);
-	 * </ol>
-	 * <p>
-	 * String should have format: {@code <value> ['@' <language>] ['^^' 
-	 * <datatype>]}
-	 * <p>
-	 * For example for string: [<i>some string@en^^xsd:string</i>]
-	 * <ol>
-	 * <li><i>some string</i> - is a value;
-	 * <li><i>en</i> - is a language;
-	 * <li><i>xsd:string</i> - is a datatype;
-	 * </ol>
-	 * 
-	 * @param string
-	 *            input string
-	 * @return string array containing value, language and datatype parts of
-	 *         input string.
-	 */
-	protected String[] splitDatatypeLiteral(String string) {
-		String value = string;
-		String language = null;
-		String datatype = null;
-		int datatypeIndex = string.lastIndexOf(SEPARATOR_DATATYPE);
-		if (datatypeIndex != -1) {
-			value = string.substring(0, datatypeIndex);
-			datatype = string.substring(datatypeIndex + SEPARATOR_DATATYPE.length(), string.length());
-		}
-		int languageIndex = value.lastIndexOf(SEPARATOR_LANGUAGE);
-		if (languageIndex != -1) {
-			language = value.substring(languageIndex + SEPARATOR_LANGUAGE.length(), value.length());
-			value = value.substring(0, languageIndex);
-		}
-		return new String[] { value, language, datatype };
+		return isPlainLiteral(hasString(literal, variables), anything());
 	}
 
 	private Matcher<? super OWLNamedObject> hasName(String string, Map<String, Object> variables) {
@@ -387,11 +285,9 @@ public class AxiomAnnotation2AxiomMatcher {
 			float value;
 			if (string.equals(NaN)) {
 				value = Float.NaN;
-			}
-			if (string.equals(INF)) {
+			} else if (string.equals(INF)) {
 				value = Float.POSITIVE_INFINITY;
-			}
-			if (string.equals(INF_NEG)) {
+			} else if (string.equals(INF_NEG)) {
 				value = Float.NEGATIVE_INFINITY;
 			} else {
 				value = Float.parseFloat(string);

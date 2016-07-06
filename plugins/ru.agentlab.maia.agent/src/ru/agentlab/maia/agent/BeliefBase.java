@@ -337,8 +337,7 @@ public class BeliefBase implements IBeliefBase {
 
 	@Override
 	public void addAxiom(OWLAxiom axiom) {
-		// TODO Auto-generated method stub
-
+		manager.addAxiom(ontology, axiom);
 	}
 
 	@Override

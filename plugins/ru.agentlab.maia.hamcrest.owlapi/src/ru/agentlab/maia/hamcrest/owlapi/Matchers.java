@@ -97,40 +97,40 @@ public class Matchers {
 		return new OWLPropertyAssertionObjectIsIndividual(matcher);
 	}
 
-	public static Matcher<OWLLiteral> isBoolean(Matcher<? super Boolean> matcher) {
+	public static Matcher<OWLLiteral> isBooleanLiteral(Matcher<? super Boolean> matcher) {
 		return new OWLLiteralIsBoolean(matcher);
 	}
 
-	public static Matcher<OWLLiteral> isBoolean(boolean value) {
+	public static Matcher<OWLLiteral> isBooleanLiteral(boolean value) {
 		return new OWLLiteralIsBoolean(equalTo(value));
 	}
 
-	public static Matcher<OWLLiteral> isFloat(Matcher<? super Float> matcher) {
+	public static Matcher<OWLLiteral> isFloatLiteral(Matcher<? super Float> matcher) {
 		return new OWLLiteralIsFloat(matcher);
 	}
 
-	public static Matcher<OWLLiteral> isFloat(float value) {
+	public static Matcher<OWLLiteral> isFloatLiteral(float value) {
 		return new OWLLiteralIsFloat(equalTo(value));
 	}
 
-	public static Matcher<OWLLiteral> isDouble(Matcher<? super Double> matcher) {
+	public static Matcher<OWLLiteral> isDoubleLiteral(Matcher<? super Double> matcher) {
 		return new OWLLiteralIsDouble(matcher);
 	}
 
-	public static Matcher<OWLLiteral> isDouble(double value) {
+	public static Matcher<OWLLiteral> isDoubleLiteral(double value) {
 		return new OWLLiteralIsDouble(equalTo(value));
 	}
 
-	public static Matcher<OWLLiteral> isInteger(Matcher<? super Integer> matcher) {
+	public static Matcher<OWLLiteral> isIntegerLiteral(Matcher<? super Integer> matcher) {
 		return new OWLLiteralIsInteger(matcher);
 	}
 
-	public static Matcher<OWLLiteral> isTyped(Matcher<? super String> valueMatcher,
+	public static Matcher<OWLLiteral> isTypedLiteral(Matcher<? super String> valueMatcher,
 			Matcher<? super OWLDatatype> datatypeMatcher) {
 		return new OWLLiteralIsTyped(valueMatcher, datatypeMatcher);
 	}
 
-	public static Matcher<OWLLiteral> isPlain(Matcher<? super String> valueMatcher,
+	public static Matcher<OWLLiteral> isPlainLiteral(Matcher<? super String> valueMatcher,
 			Matcher<? super String> languageMatcher) {
 		return new OWLLiteralIsPlain(valueMatcher, languageMatcher);
 	}

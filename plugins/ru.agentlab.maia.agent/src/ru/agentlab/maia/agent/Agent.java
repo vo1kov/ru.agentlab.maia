@@ -322,7 +322,8 @@ public class Agent implements IAgent {
 			}
 		}
 
-		public <T> T get(Class<T> key) {
+		@Override
+		public <T> T getLocal(Class<T> key) {
 			if (key == UUID.class) {
 				return key.cast(uuid);
 			} else if (key == IAgent.class) {
@@ -388,6 +389,8 @@ public class Agent implements IAgent {
 				state = AgentState.WAITING;
 				return;
 			}
+			System.out.println("EventQueue: " + eventQueue.toString());
+			System.out.println("Event: " + event.toString());
 			Iterable<Option> options = planBase.getOptions(event);
 			options.forEach(option -> {
 				try {

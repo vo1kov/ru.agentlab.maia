@@ -10,7 +10,7 @@ package ru.agentlab.maia.agent.converter.literal;
 
 import static org.hamcrest.Matchers.equalTo;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasIRI;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTyped;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTypedLiteral;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,10 +38,10 @@ public class ConverterGetOWLLiteralXSDNormalizedStringMatcherTest extends Abstra
 			 *| ##		| Input Parameter 							| Result Literal													| Comment						|
 			  ----------------------------------------------------------------------------------------------------------------------------------------------------------*/
 			// xsd:normalizedString
-			/*  0 */ 	{ "^^xsd:normalizedString", 				isTyped(equalTo(""), 				hasIRI(XSD, NORMALIZED_STRING))},	// test empty string
-			/*  1 */ 	{ "test^^xsd:normalizedString", 			isTyped(equalTo("test"), 			hasIRI(XSD, NORMALIZED_STRING))},	// test non-empty string
-			/*  2 */ 	{ "test string^^xsd:normalizedString", 		isTyped(equalTo("test string"), 	hasIRI(XSD, NORMALIZED_STRING))},	// test value with whitespace
-			/*  3 */ 	{ "string^^<" + XSD + "normalizedString>",	isTyped(equalTo("string"), 		hasIRI(XSD, NORMALIZED_STRING))},	// test full name
+			/*  0 */ 	{ "^^xsd:normalizedString", 				isTypedLiteral(equalTo(""), 				hasIRI(XSD, NORMALIZED_STRING))},	// test empty string
+			/*  1 */ 	{ "test^^xsd:normalizedString", 			isTypedLiteral(equalTo("test"), 			hasIRI(XSD, NORMALIZED_STRING))},	// test non-empty string
+			/*  2 */ 	{ "test string^^xsd:normalizedString", 		isTypedLiteral(equalTo("test string"), 	hasIRI(XSD, NORMALIZED_STRING))},	// test value with whitespace
+			/*  3 */ 	{ "string^^<" + XSD + "normalizedString>",	isTypedLiteral(equalTo("string"), 		hasIRI(XSD, NORMALIZED_STRING))},	// test full name
 //			/*  4 */ 	{ "?var^^xsd:normalizedString", 			isTyped(_var("var"),			hasIRI(XSD, NORMALIZED_STRING))}, // test variable value
 			/*  5 */ 	{ "?var@?lang^^xsd:normalizedString", 		LiteralIllelgalLanguageTagException.class }, 						// test variable value and lang
 			/*  6 */ 	{ "test \rstring^^xsd:normalizedString", 	LiteralNotInLexicalSpaceException.class},							// test value with whitespace
