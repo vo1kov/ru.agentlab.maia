@@ -34,6 +34,11 @@ public abstract class Event<T> implements IEvent<T> {
 	}
 
 	@Override
+	public String toString() {
+		return getClass().getSimpleName() + " " + payload.toString();
+	}
+
+	@Override
 	public int hashCode() {
 		return Objects.hash(getType(), payload);
 	}
