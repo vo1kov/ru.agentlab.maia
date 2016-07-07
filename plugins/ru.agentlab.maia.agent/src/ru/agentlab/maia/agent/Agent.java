@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
@@ -374,7 +375,7 @@ public class Agent implements IAgent {
 		}
 	}
 
-	int i = 0;
+	AtomicInteger i = new AtomicInteger();
 
 	protected final class ExecuteAction extends RecursiveAction {
 
@@ -382,7 +383,7 @@ public class Agent implements IAgent {
 
 		@Override
 		protected void compute() {
-			System.out.println("-------------------- Execute " + i++ + " --------------------");
+			System.out.println("-------------------- Execute " + i.incrementAndGet() + " --------------------");
 			long begin = System.nanoTime();
 			IEvent<?> event = eventQueue.poll();
 			if (event == null) {
