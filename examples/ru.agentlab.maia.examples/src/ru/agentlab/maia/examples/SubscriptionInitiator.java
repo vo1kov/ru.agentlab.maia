@@ -22,8 +22,8 @@ import javax.inject.Inject;
 
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IMessage;
-import ru.agentlab.maia.annotation.event.AddedMessage;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
+import ru.agentlab.maia.role.AddedMessage;
 
 public abstract class SubscriptionInitiator {
 
