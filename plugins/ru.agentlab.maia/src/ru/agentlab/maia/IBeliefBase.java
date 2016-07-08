@@ -13,79 +13,58 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.PrefixManager;
 
 import de.derivo.sparqldlapi.QueryEngine;
 
 public interface IBeliefBase {
 
-	void addAxiom(OWLAxiom axiom);
+	void addBelief(OWLAxiom axiom);
 
-	default void addAxioms(OWLAxiom... axioms) {
+	void removeBelief(OWLAxiom axiom);
+
+	boolean containsBelief(OWLAxiom axiom);
+
+	default void addBeliefs(OWLAxiom... axioms) {
 		for (OWLAxiom axiom : axioms) {
-			addAxiom(axiom);
+			addBelief(axiom);
 		}
 	}
 
-	default void addAxioms(Iterable<OWLAxiom> axioms) {
+	default void addBeliefs(Iterable<OWLAxiom> axioms) {
 		for (OWLAxiom axiom : axioms) {
-			addAxiom(axiom);
+			addBelief(axiom);
 		}
 	}
 
-	void addClassDeclaration(String object);
+	default void removeBeliefs(OWLAxiom... axioms) {
+		for (OWLAxiom axiom : axioms) {
+			removeBelief(axiom);
+		}
+	}
 
-	void addIndividualDeclaration(String object);
+	default void removeBeliefs(Iterable<OWLAxiom> axioms) {
+		for (OWLAxiom axiom : axioms) {
+			removeBelief(axiom);
+		}
+	}
 
-	void addClassAssertion(String object, String subject);
+	default boolean containsBeliefs(OWLAxiom... axioms) {
+		for (OWLAxiom axiom : axioms) {
+			if (!containsBelief(axiom)) {
+				return false;
+			}
+		}
+		return true;
+	}
 
-	void addObjectPropertyAssertion(String object, String predicate, String subject);
-
-	void addDataPropertyAssertion(String object, String predicate, String subject);
-
-	void addDataPropertyAssertion(String object, String predicate, boolean subject);
-
-	void addDataPropertyAssertion(String object, String predicate, int subject);
-
-	void addDataPropertyAssertion(String object, String predicate, float subject);
-
-	void addDataPropertyAssertion(String object, String predicate, double subject);
-
-	void removeClassDeclaration(String object);
-
-	void removeIndividualDeclaration(String object);
-
-	void removeClassAssertion(String object, String subject);
-
-	void removeObjectPropertyAssertion(String object, String predicate, String subject);
-
-	void removeDataPropertyAssertion(String object, String predicate, String subject);
-
-	void removeDataPropertyAssertion(String object, String predicate, boolean subject);
-
-	void removeDataPropertyAssertion(String object, String predicate, int subject);
-
-	void removeDataPropertyAssertion(String object, String predicate, float subject);
-
-	void removeDataPropertyAssertion(String object, String predicate, double subject);
-
-	boolean containsClassDeclaration(String object);
-
-	boolean containsIndividualDeclaration(String object);
-
-	boolean containsClassAssertion(String object, String subject);
-
-	boolean containsObjectPropertyAssertion(String object, String predicate, String subject);
-
-	boolean containsDataPropertyAssertion(String object, String predicate, String subject);
-
-	boolean containsDataPropertyAssertion(String object, String predicate, boolean subject);
-
-	boolean containsDataPropertyAssertion(String object, String predicate, int subject);
-
-	boolean containsDataPropertyAssertion(String object, String predicate, float subject);
-
-	boolean containsDataPropertyAssertion(String object, String predicate, double subject);
+	default boolean containsBeliefs(Iterable<OWLAxiom> axioms) {
+		for (OWLAxiom axiom : axioms) {
+			if (!containsBelief(axiom)) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	OWLOntology getOntology();
 
@@ -94,8 +73,6 @@ public interface IBeliefBase {
 	OWLDataFactory getFactory();
 
 	OWLOntologyManager getManager();
-
-	PrefixManager getPrefixManager();
 
 	QueryEngine getQueryEngine();
 

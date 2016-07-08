@@ -210,8 +210,8 @@ public class Agent_internalAddRole_Test {
 	private void checkBeliefBase(Agent agent) {
 		Set<OWLAxiom> beliefs = (Set<OWLAxiom>) initialBeliefs;
 		if (beliefs != null) {
-			verify(agent.beliefBase, times(beliefs.size())).addAxiom(Mockito.any(OWLAxiom.class));
-			beliefs.stream().forEach(axiom -> verify(agent.beliefBase).addAxiom(axiom));
+			verify(agent.beliefBase, times(beliefs.size())).addBelief(Mockito.any(OWLAxiom.class));
+			beliefs.stream().forEach(axiom -> verify(agent.beliefBase).addBelief(axiom));
 		} else {
 			verifyZeroInteractions(agent.beliefBase);
 		}
@@ -220,8 +220,8 @@ public class Agent_internalAddRole_Test {
 	private void checkGoalBase(Agent agent) {
 		Set<OWLAxiom> goals = (Set<OWLAxiom>) initialGoals;
 		if (goals != null) {
-			verify(agent.goalBase, times(goals.size())).addAxiom(Mockito.any(OWLAxiom.class));
-			goals.stream().forEach(axiom -> verify(agent.goalBase).addAxiom(axiom));
+			verify(agent.goalBase, times(goals.size())).addBelief(Mockito.any(OWLAxiom.class));
+			goals.stream().forEach(axiom -> verify(agent.goalBase).addBelief(axiom));
 		} else {
 			verifyZeroInteractions(agent.goalBase);
 		}

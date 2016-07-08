@@ -7,15 +7,11 @@
  *******************************************************************************/
 package ru.agentlab.maia.examples;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
@@ -28,9 +24,13 @@ import ru.agentlab.maia.role.AddedMessage;
 import ru.agentlab.maia.role.AddedRole;
 import ru.agentlab.maia.role.AxiomType;
 import ru.agentlab.maia.role.HaveBelief;
+import ru.agentlab.maia.role.InitialBelief;
+import ru.agentlab.maia.role.InitialGoal;
 import ru.agentlab.maia.role.Prefix;
 
 @Prefix(name = "rdf", namespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns")
+@InitialBelief(value = { "test", "SDfsdf" }, type = AxiomType.CLASS_ASSERTION)
+@InitialGoal(value = { "test", "SDfsdf" }, type = AxiomType.CLASS_ASSERTION)
 public class Agent {
 
 	@Inject
@@ -45,7 +45,7 @@ public class Agent {
 	IBeliefBase beliefBase;
 
 	@Inject
-	IGoalBase desireBase;
+	IGoalBase goalBase;
 
 	@Inject
 	@Named("Namespace")
@@ -57,14 +57,6 @@ public class Agent {
 
 	@Inject
 	IMessageDeliveryService messaging;
-
-	@PostConstruct
-	public void setup() {
-		beliefBase.addClassAssertion("test", "SDfsdf");
-		OWLClass clazz = factory.getOWLClass(IRI.create(""));
-		OWLIndividual individual = factory.getOWLNamedIndividual(IRI.create(""));
-		desireBase.addGoalClassAsertion(factory.getOWLClassAssertionAxiom(clazz, individual));
-	}
 
 	@AddedBelief(value = { "?classified", "?classifier" }, type = AxiomType.CLASS_ASSERTION)
 	@HaveBelief(value = { "?classifier", "?c" }, type = AxiomType.CLASS_ASSERTION)

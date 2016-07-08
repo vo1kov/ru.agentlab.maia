@@ -25,9 +25,12 @@ import ru.agentlab.maia.role.AxiomType;
 import ru.agentlab.maia.role.HaveBelief;
 import ru.agentlab.maia.role.Prefix;
 
+@Prefix(name = "osgi", namespace = "http://www.agentlab.ru/ontologies/osgi")
 public class BundleSubscriptionResponder {
 
-	private Map<UUID, String> subscriberConverdationIds = new HashMap<>();
+	private static final String FIPA_SUBSCRIBE = "FIPA_SUBSCRIBE";
+
+	private Map<UUID, String> conversationIds = new HashMap<>();
 
 	private Map<String, List<UUID>> subscriberProperties = new HashMap<>();
 
@@ -37,11 +40,11 @@ public class BundleSubscriptionResponder {
 	@Inject
 	IMessageDeliveryService mts;
 
-	@AddedMessage(performative = SUBSCRIBE, protocol = "FIPA_SUBSCRIBE")
+	@AddedMessage(performative = SUBSCRIBE, protocol = FIPA_SUBSCRIBE)
 	public void onSubscribe(IMessage message) {
 		UUID sender = message.getSender();
 		String conversationId = message.getConversationId();
-		subscriberConverdationIds.put(sender, conversationId);
+		conversationIds.put(sender, conversationId);
 		String property = message.getContent();
 		if (property == null) {
 			reply(message, REFUSE);
@@ -55,12 +58,11 @@ public class BundleSubscriptionResponder {
 		reply(message, AGREE);
 	}
 
-	@AddedMessage(performative = CANCEL, protocol = "FIPA_SUBSCRIBE")
+	@AddedMessage(performative = CANCEL, protocol = FIPA_SUBSCRIBE)
 	public void onCancel(IMessage message) {
 		UUID sender = message.getSender();
-		String conversationId = message.getConversationId();
-		if (subscriberConverdationIds.get(sender) == conversationId) {
-			subscriberConverdationIds.remove(sender);
+		if (conversationIds.get(sender) == message.getConversationId()) {
+			conversationIds.remove(sender);
 			reply(message, INFORM);
 		} else {
 			reply(message, FAILURE);
@@ -69,7 +71,6 @@ public class BundleSubscriptionResponder {
 
 	@AddedBelief(value = { "?bundle", "?property", "?value" }, type = AxiomType.DATA_PROPERTY_ASSERTION)
 	@HaveBelief(value = { "?bundle", "osgi:Bundle" }, type = AxiomType.CLASS_ASSERTION)
-	@Prefix(name = "osgi", namespace = "http://www.agentlab.ru/ontologies/osgi")
 	public void onPropertyChanged(@Named("bundle") String bundle, @Named("property") String property,
 			@Named("value") String value) {
 		IMessage message = new AclMessage();

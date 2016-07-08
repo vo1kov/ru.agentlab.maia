@@ -30,7 +30,6 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.PrefixManager;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -85,7 +84,7 @@ public class Agent implements IAgent {
 	protected final IPlanBase planBase = new PlanBase(eventQueue);
 
 	protected final Set<Object> roles = new HashSet<>();
-
+	
 	public IInjector getInjector() {
 		return agentContainer.injector;
 	}
@@ -247,8 +246,8 @@ public class Agent implements IAgent {
 			// If no exceptions was thrown by this moment then we can add
 			// beliefs, goals and plans converted from role object and
 			// role object themselves
-			beliefBase.addAxioms(initialBeliefs);
-			goalBase.addAxioms(initialGoals);
+			beliefBase.addBeliefs(initialBeliefs);
+			goalBase.addGoals(initialGoals);
 			initialPlans.forEach((plan, type) -> planBase.add(type, plan));
 
 			// Add role object to the role base and generate event about
@@ -312,8 +311,6 @@ public class Agent implements IAgent {
 				return beliefBase.getOntology();
 			} else if (key.equals(OWLDataFactory.class.getName())) {
 				return beliefBase.getFactory();
-			} else if (key.equals(PrefixManager.class.getName())) {
-				return beliefBase.getPrefixManager();
 			} else if (key.equals(IInjector.class.getName())) {
 				return injector;
 			} else if (key.equals(QueryEngine.class.getName())) {
@@ -343,8 +340,6 @@ public class Agent implements IAgent {
 				return key.cast(beliefBase.getOntology());
 			} else if (key == OWLDataFactory.class) {
 				return key.cast(beliefBase.getFactory());
-			} else if (key == PrefixManager.class) {
-				return key.cast(beliefBase.getPrefixManager());
 			} else if (key == IInjector.class) {
 				return key.cast(injector);
 			} else if (key == QueryEngine.class) {
@@ -367,7 +362,6 @@ public class Agent implements IAgent {
 				IRI.class.getName(),
 				OWLOntology.class.getName(),
 				OWLDataFactory.class.getName(),
-				PrefixManager.class.getName(),
 				IInjector.class.getName(),
 				QueryEngine.class.getName()
 				// @formatter:on
@@ -383,15 +377,17 @@ public class Agent implements IAgent {
 
 		@Override
 		protected void compute() {
-			System.out.println("-------------------- Execute " + i.incrementAndGet() + " --------------------");
-			long begin = System.nanoTime();
+			i.incrementAndGet();
+			// System.out.println("-------------------- Execute " +
+			// i.incrementAndGet() + " --------------------");
+			// long begin = System.nanoTime();C
 			IEvent<?> event = eventQueue.poll();
 			if (event == null) {
 				state = AgentState.WAITING;
 				return;
 			}
-			System.out.println("EventQueue: " + eventQueue.toString());
-			System.out.println("Event: " + event.toString());
+			// System.out.println("EventQueue: " + eventQueue.toString());
+			// System.out.println("Event: " + event.toString());
 			Iterable<Option> options = planBase.getOptions(event);
 			options.forEach(option -> {
 				try {
@@ -402,12 +398,15 @@ public class Agent implements IAgent {
 					// eventQueue.offer(new PlanFailedEvent(planBody));
 				}
 			});
-			System.out.println("ThreadPool: " + executor.toString());
-			System.out.println("Executed " + (System.nanoTime() - begin) + " nanos");
+			// System.out.println("ThreadPool: " + executor.toString());
+			// System.out.println("Executed " + (System.nanoTime() - begin) + "
+			// nanos");
 
 			if (getState() == AgentState.ACTIVE) {
 				ExecuteAction action = new ExecuteAction();
 				executor.submit(action);
+			} else {
+				state = AgentState.IDLE;
 			}
 		}
 

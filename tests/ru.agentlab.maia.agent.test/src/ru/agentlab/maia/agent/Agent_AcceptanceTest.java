@@ -48,29 +48,33 @@ public class Agent_AcceptanceTest {
 		container.put(ForkJoinPool.class,
 				new ForkJoinPool(4, ForkJoinPool.defaultForkJoinWorkerThreadFactory, null, true));
 		container.put(String.class, "TEST");
-		container.put(OWLOntologyManager.class, OWLManager.createOWLOntologyManager());
+		container.put(OWLOntologyManager.class, manager);
+		container.put(OWLDataFactory.class, factory);
 		List<Agent> agents = new ArrayList<>();
 
-		for (int j = 0; j < 50; j++) {
+		for (int j = 0; j < 10; j++) {
 			Agent agent = new Agent();
 			agents.add(agent);
 			agent.deployTo(container);
 			agent.addRole(TestRole.class);
-			IntStream.range(0, 500).forEach(i -> {
+			IntStream.range(0, 500000).forEach(i -> {
 				IEvent<?> event = new AddedBeliefEvent(factory.getOWLDataPropertyAssertionAxiom(
 						factory.getOWLDataProperty(IRI.create(Namespaces.RDF.toString(), "hasProperty")),
 						factory.getOWLNamedIndividual(IRI.create(Namespaces.RDF.toString(), "ind")),
 						factory.getOWLLiteral(2)));
 				agent.eventQueue.offer(event);
 			});
-			System.out.println(agent.eventQueue);
+//			System.out.println(agent.eventQueue);
 		}
 
 		System.out.println("START AGENTS");
 		for (Agent agent : agents) {
 			agent.start();
 		}
-		Thread.sleep(5000);
+		Thread.sleep(50000);
+		for (Agent agent : agents) {
+			agent.stop();
+		}
 		for (Agent agent : agents) {
 			System.err.println();
 			System.err.println(agent.uuid);
