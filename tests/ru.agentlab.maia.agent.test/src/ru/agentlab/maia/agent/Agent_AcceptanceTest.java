@@ -109,7 +109,7 @@ public class Agent_AcceptanceTest {
 
 		@AddedBelief(value = { "rdf:ind", "rdf:hasProperty", "2^^xsd:integer" }, type = DATA_PROPERTY_ASSERTION)
 		@HaveBelief(value = { "rdf:Some", "owl:Thing" }, type = SUBCLASS_OF)
-		@HaveBelief(value = { "rdf:ind", "rdf:Some" }, type = CLASS_ASSERTION)
+		@HaveBelief(value = { "rdf:ind", "?ind" }, type = CLASS_ASSERTION)
 		public void exe2(@Named("property") OWLDataProperty property, @Named("ind") OWLIndividual ind,
 				QueryResult res) {
 			System.out.println("WORKS2" + property.toString());

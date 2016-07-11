@@ -153,7 +153,11 @@ public class Converter implements IConverter {
 			List<QueryArgument> arguments = new ArrayList<>();
 			for (String arg : haveBelief.value()) {
 				if (Util.isVariable(arg)) {
-					arguments.add(new QueryArgument(new Var(arg.substring(1))));
+					QueryArgument queryArgument = new QueryArgument(new Var(arg.substring(1)));
+					arguments.add(queryArgument);
+					if (!query.isAsk()) {
+						query.addResultVar(queryArgument);
+					}
 				}
 				arguments.add(new QueryArgument(prefixes.getIRI(arg)));
 			}
