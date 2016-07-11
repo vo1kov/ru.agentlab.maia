@@ -9,13 +9,17 @@
 package ru.agentlab.maia.agent;
 
 import java.util.Queue;
+import java.util.Set;
+import java.util.UUID;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.structural.StructuralReasonerFactory;
@@ -29,52 +33,60 @@ import ru.agentlab.maia.event.RemovedBeliefEvent;
 public class BeliefBase implements IBeliefBase {
 
 	@Inject
-	OWLOntologyManager manager;
+	private OWLOntologyManager manager;
 
 	@Inject
-	OWLDataFactory factory;
+	private OWLDataFactory factory;
 
-	private final Queue<IEvent<?>> eventQueue;
+	@Inject
+	private UUID uuid;
 
-	private final IRI ontologyIRI;
+	private OWLOntology ontology;
 
-	OWLOntology ontology;
+	private QueryEngine engine;
 
-	QueryEngine engine;// = QueryEngine.create(manager, (new
-						// StructuralReasonerFactory()).createReasoner(ontology),
-						// true);
+	private OWLOntologyChangeListener listener;
 
-	public BeliefBase(Queue<IEvent<?>> eventQueue, String namespace) {
-		this.eventQueue = eventQueue;
-		ontologyIRI = IRI.create(namespace);
-		try {
-			ontology = manager.createOntology(ontologyIRI);
-		} catch (OWLOntologyCreationException e) {
-			e.printStackTrace();
-		}
+	@PostConstruct
+	public void init(Queue<IEvent<?>> eventQueue) throws OWLOntologyCreationException {
+		ontology = manager.createOntology(IRI.create(uuid.toString()));
 		engine = QueryEngine.create(manager, (new StructuralReasonerFactory()).createReasoner(ontology), true);
-		manager.addOntologyChangeListener(changes -> {
+		if (listener != null) {
+			manager.removeOntologyChangeListener(listener);
+		}
+		listener = changes -> {
 			changes.forEach(change -> {
 				if (change.getOntology() == ontology) {
 					OWLAxiom axiom = change.getAxiom();
 					if (change.isAddAxiom()) {
-						this.eventQueue.offer(new AddedBeliefEvent(axiom));
+						eventQueue.offer(new AddedBeliefEvent(axiom));
 					} else if (change.isRemoveAxiom()) {
-						this.eventQueue.offer(new RemovedBeliefEvent(axiom));
+						eventQueue.offer(new RemovedBeliefEvent(axiom));
 					}
 				}
 			});
-		});
+		};
+		manager.addOntologyChangeListener(listener);
 	}
 
 	@Override
 	public void addBelief(OWLAxiom axiom) {
 		manager.addAxiom(ontology, axiom);
 	}
+	
+	@Override
+	public void addBeliefs(Set<OWLAxiom> axioms) {
+		manager.addAxioms(ontology, axioms);
+	}
 
 	@Override
 	public void removeBelief(OWLAxiom axiom) {
 		manager.removeAxiom(ontology, axiom);
+	}
+	
+	@Override
+	public void removeBeliefs(Set<OWLAxiom> axioms) {
+		manager.removeAxioms(ontology, axioms);
 	}
 
 	@Override
@@ -95,11 +107,6 @@ public class BeliefBase implements IBeliefBase {
 	@Override
 	public OWLDataFactory getFactory() {
 		return factory;
-	}
-
-	@Override
-	public IRI getOntologyIRI() {
-		return ontologyIRI;
 	}
 
 	@Override

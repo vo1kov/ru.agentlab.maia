@@ -8,7 +8,8 @@
  *******************************************************************************/
 package ru.agentlab.maia;
 
-import org.semanticweb.owlapi.model.IRI;
+import java.util.Set;
+
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -24,40 +25,19 @@ public interface IBeliefBase {
 
 	boolean containsBelief(OWLAxiom axiom);
 
-	default void addBeliefs(OWLAxiom... axioms) {
+	default void addBeliefs(Set<OWLAxiom> axioms) {
 		for (OWLAxiom axiom : axioms) {
 			addBelief(axiom);
 		}
 	}
 
-	default void addBeliefs(Iterable<OWLAxiom> axioms) {
-		for (OWLAxiom axiom : axioms) {
-			addBelief(axiom);
-		}
-	}
-
-	default void removeBeliefs(OWLAxiom... axioms) {
+	default void removeBeliefs(Set<OWLAxiom> axioms) {
 		for (OWLAxiom axiom : axioms) {
 			removeBelief(axiom);
 		}
 	}
 
-	default void removeBeliefs(Iterable<OWLAxiom> axioms) {
-		for (OWLAxiom axiom : axioms) {
-			removeBelief(axiom);
-		}
-	}
-
-	default boolean containsBeliefs(OWLAxiom... axioms) {
-		for (OWLAxiom axiom : axioms) {
-			if (!containsBelief(axiom)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	default boolean containsBeliefs(Iterable<OWLAxiom> axioms) {
+	default boolean containsBeliefs(Set<OWLAxiom> axioms) {
 		for (OWLAxiom axiom : axioms) {
 			if (!containsBelief(axiom)) {
 				return false;
@@ -67,8 +47,6 @@ public interface IBeliefBase {
 	}
 
 	OWLOntology getOntology();
-
-	IRI getOntologyIRI();
 
 	OWLDataFactory getFactory();
 

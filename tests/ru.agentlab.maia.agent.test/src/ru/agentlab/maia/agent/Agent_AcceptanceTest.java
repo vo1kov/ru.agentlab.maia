@@ -38,7 +38,7 @@ import ru.agentlab.maia.role.converter.Converter;
 
 public class Agent_AcceptanceTest {
 
-	private static OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+	private static OWLOntologyManager manager = OWLManager.createConcurrentOWLOntologyManager();
 
 	private static OWLDataFactory factory = manager.getOWLDataFactory();
 
@@ -57,14 +57,14 @@ public class Agent_AcceptanceTest {
 			agents.add(agent);
 			agent.deployTo(container);
 			agent.addRole(TestRole.class);
-			IntStream.range(0, 500000).forEach(i -> {
+			IntStream.range(0, 500_000).forEach(i -> {
 				IEvent<?> event = new AddedBeliefEvent(factory.getOWLDataPropertyAssertionAxiom(
 						factory.getOWLDataProperty(IRI.create(Namespaces.RDF.toString(), "hasProperty")),
 						factory.getOWLNamedIndividual(IRI.create(Namespaces.RDF.toString(), "ind")),
 						factory.getOWLLiteral(2)));
 				agent.eventQueue.offer(event);
 			});
-//			System.out.println(agent.eventQueue);
+			// System.out.println(agent.eventQueue);
 		}
 
 		System.out.println("START AGENTS");

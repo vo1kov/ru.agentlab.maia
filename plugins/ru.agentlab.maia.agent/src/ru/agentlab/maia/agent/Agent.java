@@ -9,6 +9,7 @@
 package ru.agentlab.maia.agent;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
@@ -26,7 +27,6 @@ import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -77,14 +77,22 @@ public class Agent implements IAgent {
 
 	protected final Queue<IEvent<?>> eventQueue = new LinkedList<>();
 
-	protected final IBeliefBase beliefBase = new BeliefBase(eventQueue, uuid.toString());
+	protected final IBeliefBase beliefBase = new BeliefBase();
 
 	protected final IGoalBase goalBase = new GoalBase(eventQueue);
 
 	protected final IPlanBase planBase = new PlanBase(eventQueue);
 
 	protected final Set<Object> roles = new HashSet<>();
-	
+
+	@PostConstruct
+	public void init() throws InjectorException {
+		Map<String, Object> additional = new HashMap<>();
+		additional.put(Queue.class.getName(), eventQueue);
+		getInjector().inject(beliefBase, additional);
+		getInjector().invoke(beliefBase, PostConstruct.class, null, additional);
+	}
+
 	public IInjector getInjector() {
 		return agentContainer.injector;
 	}
@@ -127,9 +135,10 @@ public class Agent implements IAgent {
 
 	@Override
 	public void deployTo(IContainer container) throws InjectorException, ContainerException {
-		container.getInjector().inject(this);
-		container.put(uuid.toString(), this);
 		agentContainer.setParent(container);
+		getInjector().inject(this);
+		getInjector().invoke(this, PostConstruct.class);
+		container.put(uuid.toString(), this);
 		state = AgentState.IDLE;
 	}
 
@@ -305,12 +314,8 @@ public class Agent implements IAgent {
 				return goalBase;
 			} else if (key.equals(IPlanBase.class.getName())) {
 				return planBase;
-			} else if (key.equals(IRI.class.getName())) {
-				return beliefBase.getOntologyIRI();
 			} else if (key.equals(OWLOntology.class.getName())) {
 				return beliefBase.getOntology();
-			} else if (key.equals(OWLDataFactory.class.getName())) {
-				return beliefBase.getFactory();
 			} else if (key.equals(IInjector.class.getName())) {
 				return injector;
 			} else if (key.equals(QueryEngine.class.getName())) {
@@ -334,12 +339,8 @@ public class Agent implements IAgent {
 				return key.cast(goalBase);
 			} else if (key == IPlanBase.class) {
 				return key.cast(planBase);
-			} else if (key == IRI.class) {
-				return key.cast(beliefBase.getOntologyIRI());
 			} else if (key == OWLOntology.class) {
 				return key.cast(beliefBase.getOntology());
-			} else if (key == OWLDataFactory.class) {
-				return key.cast(beliefBase.getFactory());
 			} else if (key == IInjector.class) {
 				return key.cast(injector);
 			} else if (key == QueryEngine.class) {
@@ -359,9 +360,7 @@ public class Agent implements IAgent {
 				IBeliefBase.class.getName(),
 				IGoalBase.class.getName(),
 				IPlanBase.class.getName(),
-				IRI.class.getName(),
 				OWLOntology.class.getName(),
-				OWLDataFactory.class.getName(),
 				IInjector.class.getName(),
 				QueryEngine.class.getName()
 				// @formatter:on
