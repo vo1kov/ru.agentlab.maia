@@ -19,6 +19,7 @@ import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
 import ru.agentlab.maia.role.converter.AnnotationFormatException;
+import ru.agentlab.maia.role.converter.Converter;
 
 /**
  * 

@@ -28,7 +28,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import com.google.common.collect.ImmutableSet;

@@ -13,6 +13,7 @@ import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.vocab.Namespaces;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
+import ru.agentlab.maia.role.converter.Converter;
 import ru.agentlab.maia.test.util.LoggerRule;
 
 /**
@@ -30,6 +31,7 @@ public abstract class AbstractGetOWLLiteralMatcherTest {
 	public static final String STRING = OWL2Datatype.XSD_STRING.getShortForm();
 	public static final String LITERAL = OWL2Datatype.RDFS_LITERAL.getShortForm();
 	public static final String XML_LITERAL = OWL2Datatype.RDF_XML_LITERAL.getShortForm();
+	public static final String PLAIN_LITERAL = OWL2Datatype.RDF_PLAIN_LITERAL.getShortForm();
 
 	public final static String RDF = Namespaces.RDF.toString();
 	public final static String RDFS = Namespaces.RDFS.toString();

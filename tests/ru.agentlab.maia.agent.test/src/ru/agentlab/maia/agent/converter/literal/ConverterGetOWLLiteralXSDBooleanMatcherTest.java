@@ -38,12 +38,12 @@ public class ConverterGetOWLLiteralXSDBooleanMatcherTest extends AbstractGetOWLL
 			  ---------------------------------------------------------------------------------------------------------------------*/
 			// xsd:boolean
 			/*  0 */ { "^^xsd:boolean",               LiteralNotInLexicalSpaceException.class },   // wrong empty value
-			/*  1 */ { "true^^xsd:boolean",           isBoolean(true) },                           // test true string
-			/*  2 */ { "false^^xsd:boolean",          isBoolean(false) },                          // test false string
-			/*  3 */ { "1^^xsd:boolean",              isBoolean(true) },                           // test 1 string
-			/*  4 */ { "0^^xsd:boolean",              isBoolean(false) },                          // test 0 string
-			/*  5 */ { "true^^<" + XSD + "boolean>",  isBoolean(true) },                           // test full name
-			/*  6 */ { "false^^<" + XSD + "boolean>", isBoolean(false) },                          // test full name
+			/*  1 */ { "true^^xsd:boolean",           isBooleanLiteral(true) },                    // test true string
+			/*  2 */ { "false^^xsd:boolean",          isBooleanLiteral(false) },                   // test false string
+			/*  3 */ { "1^^xsd:boolean",              isBooleanLiteral(true) },                    // test 1 string
+			/*  4 */ { "0^^xsd:boolean",              isBooleanLiteral(false) },                   // test 0 string
+			/*  5 */ { "true^^<" + XSD + "boolean>",  isBooleanLiteral(true) },                    // test full name
+			/*  6 */ { "false^^<" + XSD + "boolean>", isBooleanLiteral(false) },                   // test full name
 			/*  7 */ { "+1^^xsd:boolean",             LiteralNotInLexicalSpaceException.class },   // wrong value format
 			/*  8 */ { "-1^^xsd:boolean",             LiteralNotInLexicalSpaceException.class },   // wrong value format
 			/*  9 */ { "+0^^xsd:boolean",             LiteralNotInLexicalSpaceException.class },   // wrong value format
