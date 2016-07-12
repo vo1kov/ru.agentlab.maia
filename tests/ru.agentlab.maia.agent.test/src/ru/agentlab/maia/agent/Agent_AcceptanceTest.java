@@ -10,7 +10,6 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.stream.IntStream;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -71,7 +70,7 @@ public class Agent_AcceptanceTest {
 		for (Agent agent : agents) {
 			agent.start();
 		}
-		Thread.sleep(50000);
+		Thread.sleep(50_000);
 		for (Agent agent : agents) {
 			agent.stop();
 		}
@@ -91,11 +90,8 @@ public class Agent_AcceptanceTest {
 	@InitialBelief(value = { "rdf:Some", "rdf:ind" }, type = CLASS_ASSERTION)
 	public static class TestRole {
 
-		@Inject
-		IAgent agent;
-
 		@PostConstruct
-		public void init() {
+		public void init(IAgent agent) {
 			System.out.println(agent.getUuid());
 		}
 
@@ -107,7 +103,7 @@ public class Agent_AcceptanceTest {
 
 		}
 
-		@AddedBelief(value = { "rdf:ind", "rdf:hasProperty", "2^^xsd:integer" }, type = DATA_PROPERTY_ASSERTION)
+		@AddedBelief(value = { "?ind", "?property", "2^^xsd:integer" }, type = DATA_PROPERTY_ASSERTION)
 		@HaveBelief(value = { "rdf:Some", "owl:Thing" }, type = SUBCLASS_OF)
 		@HaveBelief(value = { "rdf:ind", "?ind" }, type = CLASS_ASSERTION)
 		public void exe2(@Named("property") OWLDataProperty property, @Named("ind") OWLIndividual ind,
