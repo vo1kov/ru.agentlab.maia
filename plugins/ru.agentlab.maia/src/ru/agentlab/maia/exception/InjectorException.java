@@ -11,7 +11,7 @@ package ru.agentlab.maia.exception;
 /**
  * @author Dmitriy Shishkin
  */
-public class InjectorException extends Exception {
+public class InjectorException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 

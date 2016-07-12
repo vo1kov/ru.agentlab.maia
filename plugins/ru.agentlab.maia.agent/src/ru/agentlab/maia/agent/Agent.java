@@ -47,8 +47,10 @@ import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
+import ru.agentlab.maia.OnStart;
 import ru.agentlab.maia.Option;
 import ru.agentlab.maia.container.Injector;
+import ru.agentlab.maia.event.AddedExternalEvent;
 import ru.agentlab.maia.event.AddedRoleEvent;
 import ru.agentlab.maia.event.RemovedRoleEvent;
 import ru.agentlab.maia.event.ResolvedRoleEvent;
@@ -68,11 +70,13 @@ public class Agent implements IAgent {
 	@Inject
 	protected ForkJoinPool executor;
 
-	protected AgentState state = AgentState.UNKNOWN;
+	protected AtomicReference<AgentState> state = new AtomicReference<>(AgentState.UNKNOWN);
 
 	protected final AgentContainer agentContainer = new AgentContainer();
 
 	protected final Queue<IMessage> messageQueue = new ConcurrentLinkedQueue<>();
+
+	protected final Queue<IEvent<?>> externalEventQueue = new ConcurrentLinkedQueue<>();
 
 	protected final Queue<IEvent<?>> eventQueue = new LinkedList<>();
 
@@ -83,6 +87,12 @@ public class Agent implements IAgent {
 	protected final IPlanBase planBase = new PlanBase(eventQueue);
 
 	protected final Set<Object> roles = new HashSet<>();
+
+	protected void setState(AgentState newState) {
+		state.set(newState);
+		// System.out.println("Agent [" + uuid.toString() + "] change state to
+		// [" + state.toString() + "]");
+	}
 
 	@PostConstruct
 	public void init() throws InjectorException {
@@ -97,14 +107,26 @@ public class Agent implements IAgent {
 	}
 
 	@Override
+	public void fireExternalEvent(Object event) {
+		externalEventQueue.offer(new AddedExternalEvent(event));
+		boolean started = state.compareAndSet(AgentState.WAITING, AgentState.ACTIVE);
+		if (started) {
+			// System.out.println("Agent [" + uuid.toString() + "] change state
+			// to [" + state.toString() + "]");
+			executor.submit(new ExecuteAction());
+		}
+	}
+
+	@Override
 	public void start() {
-		state = AgentState.ACTIVE;
+		setState(AgentState.ACTIVE);
+		getRoles().forEach(role -> getInjector().invoke(role, OnStart.class, (Object) null));
 		executor.submit(new ExecuteAction());
 	}
 
 	@Override
 	public void stop() {
-		state = AgentState.STOPPING;
+		setState(AgentState.STOPPING);
 	}
 
 	@Override
@@ -124,7 +146,7 @@ public class Agent implements IAgent {
 
 	@Override
 	public AgentState getState() {
-		return state;
+		return state.get();
 	}
 
 	@Override
@@ -138,7 +160,7 @@ public class Agent implements IAgent {
 		getInjector().inject(this);
 		getInjector().invoke(this, PostConstruct.class);
 		container.put(uuid.toString(), this);
-		state = AgentState.IDLE;
+		setState(AgentState.IDLE);
 	}
 
 	@Override
@@ -146,7 +168,7 @@ public class Agent implements IAgent {
 		if (roleClass == null) {
 			throw new NullPointerException("Role class can't be null");
 		}
-		switch (state) {
+		switch (state.get()) {
 		case UNKNOWN:
 			throw new IllegalStateException("Agent should be deployed into container before adding new roles.");
 		case ACTIVE:
@@ -167,7 +189,7 @@ public class Agent implements IAgent {
 		if (roleObject == null) {
 			throw new NullPointerException("Role class can't be null");
 		}
-		switch (state) {
+		switch (state.get()) {
 		case ACTIVE:
 		case WAITING:
 			throw new IllegalStateException("Agent is in ACTIVE state, use submit method instead.");
@@ -184,7 +206,7 @@ public class Agent implements IAgent {
 
 	@Override
 	public boolean removeAllRoles() {
-		switch (state) {
+		switch (state.get()) {
 		case ACTIVE:
 		case WAITING:
 			throw new IllegalStateException("Agent is in ACTIVE state, use submit method instead.");
@@ -378,12 +400,16 @@ public class Agent implements IAgent {
 			i.incrementAndGet();
 			// System.out.println("-------------------- Execute " +
 			// i.incrementAndGet() + " --------------------");
-			// long begin = System.nanoTime();C
-			IEvent<?> event = eventQueue.poll();
+			// long begin = System.nanoTime();
+			IEvent<?> event = externalEventQueue.poll();
 			if (event == null) {
-				state = AgentState.WAITING;
-				return;
+				event = eventQueue.poll();
+				if (event == null) {
+					setState(AgentState.WAITING);
+					return;
+				}
 			}
+
 			// System.out.println("EventQueue: " + eventQueue.toString());
 			// System.out.println("Event: " + event.toString());
 			Iterable<Option> options = planBase.getOptions(event);
@@ -404,7 +430,7 @@ public class Agent implements IAgent {
 				ExecuteAction action = new ExecuteAction();
 				executor.submit(action);
 			} else {
-				state = AgentState.IDLE;
+				setState(AgentState.IDLE);
 			}
 		}
 

@@ -67,11 +67,11 @@ public class Agent_AcceptanceTest {
 		}
 
 		System.out.println("START AGENTS");
-		for (Agent agent : agents) {
+		for (IAgent agent : agents) {
 			agent.start();
 		}
 		Thread.sleep(50_000);
-		for (Agent agent : agents) {
+		for (IAgent agent : agents) {
 			agent.stop();
 		}
 		for (Agent agent : agents) {
@@ -85,9 +85,9 @@ public class Agent_AcceptanceTest {
 	}
 
 	@ConvertWith(Converter.class)
-	@InitialBelief(value = { "rdf:ind", "rdf:hasProperty", "2^^xsd:integer" }, type = DATA_PROPERTY_ASSERTION)
-	@InitialBelief(value = { "rdf:Some", "owl:Thing" }, type = SUBCLASS_OF)
-	@InitialBelief(value = { "rdf:Some", "rdf:ind" }, type = CLASS_ASSERTION)
+	@InitialBelief(type = DATA_PROPERTY_ASSERTION, value = { "rdf:ind", "rdf:hasProperty", "2^^xsd:integer" })
+	@InitialBelief(type = SUBCLASS_OF, value = { "rdf:Some", "owl:Thing" })
+	@InitialBelief(type = CLASS_ASSERTION, value = { "rdf:Some", "rdf:ind" })
 	public static class TestRole {
 
 		@PostConstruct
@@ -95,17 +95,17 @@ public class Agent_AcceptanceTest {
 			System.out.println(agent.getUuid());
 		}
 
-		@AddedBelief(value = { "rdf:ind", "rdf:hasProperty", "2^^xsd:integer" }, type = DATA_PROPERTY_ASSERTION)
-		@HaveBelief(value = { "rdf:Some", "owl:Thing" }, type = SUBCLASS_OF)
-		@HaveBelief(value = { "rdf:ind", "rdf:Some" }, type = CLASS_ASSERTION)
+		@AddedBelief(type = DATA_PROPERTY_ASSERTION, value = { "rdf:ind", "rdf:hasProperty", "2^^xsd:integer" })
+		@HaveBelief(type = SUBCLASS_OF, value = { "rdf:Some", "owl:Thing" })
+		@HaveBelief(type = CLASS_ASSERTION, value = { "rdf:ind", "rdf:Some" })
 		public void exe() {
 			System.out.println("WORKS");
 
 		}
 
-		@AddedBelief(value = { "?ind", "?property", "2^^xsd:integer" }, type = DATA_PROPERTY_ASSERTION)
-		@HaveBelief(value = { "rdf:Some", "owl:Thing" }, type = SUBCLASS_OF)
-		@HaveBelief(value = { "rdf:ind", "?ind" }, type = CLASS_ASSERTION)
+		@AddedBelief(type = DATA_PROPERTY_ASSERTION, value = { "?ind", "?property", "2^^xsd:integer" })
+		@HaveBelief(type = SUBCLASS_OF, value = { "rdf:Some", "owl:Thing" })
+		@HaveBelief(type = CLASS_ASSERTION, value = { "rdf:ind", "?ind" })
 		public void exe2(@Named("property") OWLDataProperty property, @Named("ind") OWLIndividual ind,
 				QueryResult res) {
 			System.out.println("WORKS2" + property.toString());

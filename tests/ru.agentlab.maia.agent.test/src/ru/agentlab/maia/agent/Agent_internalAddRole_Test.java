@@ -40,6 +40,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 import ru.agentlab.maia.EventType;
+import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IConverter;
 import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IPlan;
@@ -197,7 +198,7 @@ public class Agent_internalAddRole_Test {
 		}
 	}
 
-	private void spyFields(Agent agent) throws Exception {
+	private void spyFields(IAgent agent) throws Exception {
 		List<Field> allFields = new ArrayList<>();
 		addDeclaredAndInheritedFields(agent.getClass(), allFields);
 		spyField(agent, "eventQueue", allFields);

@@ -41,6 +41,7 @@ import ru.agentlab.maia.agent.match.HaveBeliefsStateMatcher;
 import ru.agentlab.maia.exception.ConverterException;
 import ru.agentlab.maia.exception.InjectorException;
 import ru.agentlab.maia.role.AddedBelief;
+import ru.agentlab.maia.role.AddedExternalEvent;
 import ru.agentlab.maia.role.AddedGoal;
 import ru.agentlab.maia.role.AddedMessage;
 import ru.agentlab.maia.role.AddedRole;
@@ -145,10 +146,14 @@ public class Converter implements IConverter {
 	}
 
 	private IStateMatcher getStateMatcher(Method method, Map<String, Object> variables) throws ConverterException {
+		HaveBelief[] annotations = method.getAnnotationsByType(HaveBelief.class);
+		if (annotations.length == 0) {
+			return null;
+		}
 		QueryImpl query = new QueryImpl(getQueryType(method));
 		QueryAtomGroupImpl queryAtomGroup = new QueryAtomGroupImpl();
 		query.addAtomGroup(queryAtomGroup);
-		for (HaveBelief haveBelief : method.getAnnotationsByType(HaveBelief.class)) {
+		for (HaveBelief haveBelief : annotations) {
 			QueryAtomType type = queryTypes.getQueryType(haveBelief);
 			List<QueryArgument> arguments = new ArrayList<>();
 			for (String arg : haveBelief.value()) {
@@ -238,6 +243,12 @@ public class Converter implements IConverter {
 		UnresolvedRole unresolvedRole = method.getAnnotation(UnresolvedRole.class);
 		if (unresolvedRole != null) {
 			return new Registration(roleMatchers.getMatcher(unresolvedRole, variables), EventType.UNRESOLVED_ROLE);
+		}
+		// AddedExternalEvent
+		AddedExternalEvent addedExternalEvent = method.getAnnotation(AddedExternalEvent.class);
+		if (addedExternalEvent != null) {
+			return new Registration(roleMatchers.getMatcher(addedExternalEvent, variables),
+					EventType.ADDED_EXTERNAL_EVENT);
 		}
 		return null;
 	}

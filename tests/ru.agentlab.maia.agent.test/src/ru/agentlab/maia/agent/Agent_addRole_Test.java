@@ -93,7 +93,7 @@ public class Agent_addRole_Test {
 	public void evaluateTestCase() throws ResolveException {
 		// Given
 		Agent agent = spy(new Agent());
-		agent.state = state;
+		agent.state.set(state);
 		doReturn(ROLE_MOCK).when(agent).internalAddRole(Mockito.any(), Mockito.any());
 
 		try {

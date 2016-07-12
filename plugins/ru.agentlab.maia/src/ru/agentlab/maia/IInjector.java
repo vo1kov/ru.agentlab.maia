@@ -247,14 +247,6 @@ public interface IInjector {
 		}
 	}
 
-	default Object invoke(Object object, Class<? extends Annotation> qualifier, Map<String, Object> additional)
-			throws InjectorException {
-		Method method = Arrays.stream(object.getClass().getDeclaredMethods())
-				.filter(m -> m.isAnnotationPresent(qualifier)).findFirst().orElseThrow(
-						() -> new InjectorException("Object have no method annotated with @" + qualifier.getName()));
-		return invoke(object, method, additional);
-	}
-
 	default Object invoke(Object object, Class<? extends Annotation> qualifier, Object defaultValue,
 			Map<String, Object> additional) throws InjectorException {
 		Optional<Method> method = Arrays.stream(object.getClass().getMethods())
@@ -264,6 +256,14 @@ public interface IInjector {
 		} else {
 			return defaultValue;
 		}
+	}
+
+	default Object invoke(Object object, Class<? extends Annotation> qualifier, Map<String, Object> additional)
+			throws InjectorException {
+		Method method = Arrays.stream(object.getClass().getDeclaredMethods())
+				.filter(m -> m.isAnnotationPresent(qualifier)).findFirst().orElseThrow(
+						() -> new InjectorException("Object have no method annotated with @" + qualifier.getName()));
+		return invoke(object, method, additional);
 	}
 
 	IContainer getContainer();
