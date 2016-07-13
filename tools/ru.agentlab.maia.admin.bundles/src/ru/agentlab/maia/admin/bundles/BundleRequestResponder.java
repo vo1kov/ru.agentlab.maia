@@ -5,8 +5,9 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.semanticweb.owlapi.model.OWLAxiom;
+
 import ru.agentlab.maia.FIPAPerformativeNames;
-import ru.agentlab.maia.IGoal;
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
@@ -20,7 +21,7 @@ public class BundleRequestResponder {
 	@Inject
 	IMessageDeliveryService mts;
 
-	private Map<IGoal, IMessage> requests = new HashMap<>();
+	private Map<OWLAxiom, IMessage> requests = new HashMap<>();
 
 	@Inject
 	IGoalBase goalBase;
@@ -28,7 +29,7 @@ public class BundleRequestResponder {
 	@AddedMessage(performative = FIPAPerformativeNames.REQUEST, protocol = "FIPA_REQUEST")
 	public void onRequest(IMessage message) {
 		try {
-			IGoal goal = goalBase.addGoal(message.getContent());
+			OWLAxiom goal = goalBase.addGoal(message.getContent());
 			requests.put(goal, message);
 			reply(message, FIPAPerformativeNames.AGREE);
 		} catch (Exception e) {
@@ -47,7 +48,7 @@ public class BundleRequestResponder {
 	}
 
 	@AddedGoal(value = "", type = AxiomType.CLASS_ASSERTION)
-	public void onGoalFinished(IGoal goal) {
+	public void onGoalFinished(OWLAxiom goal) {
 		IMessage message = requests.get(goal);
 		if (message != null) {
 			reply(message, FIPAPerformativeNames.INFORM);
@@ -55,7 +56,7 @@ public class BundleRequestResponder {
 	}
 
 	@FailedGoal(value = "", type = AxiomType.CLASS_ASSERTION)
-	public void onGoalFailed(IGoal goal) {
+	public void onGoalFailed(OWLAxiom goal) {
 		IMessage message = requests.get(goal);
 		if (message != null) {
 			reply(message, FIPAPerformativeNames.FAILURE);

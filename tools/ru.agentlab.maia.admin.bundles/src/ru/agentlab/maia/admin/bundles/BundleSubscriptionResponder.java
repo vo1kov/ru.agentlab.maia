@@ -1,11 +1,11 @@
 package ru.agentlab.maia.admin.bundles;
 
-import static ru.agentlab.maia.IMessage.AGREE;
-import static ru.agentlab.maia.IMessage.CANCEL;
-import static ru.agentlab.maia.IMessage.FAILURE;
-import static ru.agentlab.maia.IMessage.INFORM;
-import static ru.agentlab.maia.IMessage.REFUSE;
-import static ru.agentlab.maia.IMessage.SUBSCRIBE;
+import static ru.agentlab.maia.FIPAPerformativeNames.AGREE;
+import static ru.agentlab.maia.FIPAPerformativeNames.CANCEL;
+import static ru.agentlab.maia.FIPAPerformativeNames.FAILURE;
+import static ru.agentlab.maia.FIPAPerformativeNames.INFORM;
+import static ru.agentlab.maia.FIPAPerformativeNames.REFUSE;
+import static ru.agentlab.maia.FIPAPerformativeNames.SUBSCRIBE;
 
 import java.util.ArrayList;
 import java.util.HashMap;
