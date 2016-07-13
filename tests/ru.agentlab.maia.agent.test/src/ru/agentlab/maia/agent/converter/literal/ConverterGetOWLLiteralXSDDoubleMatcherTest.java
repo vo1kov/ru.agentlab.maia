@@ -8,7 +8,7 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent.converter.literal;
 
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isDouble;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isDoubleLiteral;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -18,9 +18,9 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import ru.agentlab.maia.agent.converter.AbstractGetOWLLiteralMatcherTest;
-import ru.agentlab.maia.agent.converter.LiteralIllelgalLanguageTagException;
-import ru.agentlab.maia.agent.converter.LiteralNotInLexicalSpaceException;
-import ru.agentlab.maia.agent.converter.LiteralWrongBuildInDatatypeException;
+import ru.agentlab.maia.role.converter.LiteralIllelgalLanguageTagException;
+import ru.agentlab.maia.role.converter.LiteralNotInLexicalSpaceException;
+import ru.agentlab.maia.role.converter.LiteralWrongBuildInDatatypeException;
 
 /**
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
@@ -38,21 +38,21 @@ public class ConverterGetOWLLiteralXSDDoubleMatcherTest extends AbstractGetOWLLi
 			  ---------------------------------------------------------------------------------------------------------------------------------*/
 			// xsd:double
 			/*  0 */ 	{ "^^xsd:double", 						LiteralNotInLexicalSpaceException.class },		// wrong empty value
-			/*  1 */ 	{ "0^^xsd:double", 						isDouble(0) },						// test 0 string
-			/*  2 */ 	{ "-0^^xsd:double", 					isDouble(0) },						// test 0 string
-			/*  3 */ 	{ "+0^^xsd:double", 					isDouble(0) },						// test 0 string
-			/*  4 */ 	{ "1^^xsd:double", 						isDouble(1) },						// test 1 string
-			/*  5 */ 	{ "-1^^xsd:double", 					isDouble(-1) },						// test 1 string
-			/*  6 */ 	{ "+1^^xsd:double", 					isDouble(1) },						// test 1 string
-			/*  7 */ 	{ "12345^^<" + XSD + "double>",			isDouble(12345) }, 					// test more numbers
-			/*  8 */ 	{ "2.2E12^^<" + XSD + "double>",		isDouble(2.2e12) }, 						// test dot name
-			/*  9 */ 	{ Double.MAX_VALUE+"^^xsd:double",		isDouble(Double.MAX_VALUE) }, 		// test max value
-			/* 10 */ 	{ "-"+Double.MAX_VALUE+"^^xsd:double",	isDouble(-Double.MAX_VALUE) }, 		// test min value
-			/* 11 */ 	{ Double.MAX_VALUE+"0^^xsd:double",		isDouble(Double.POSITIVE_INFINITY) }, // test > +infinity
-			/* 12 */ 	{ "INF^^xsd:double",					isDouble(Double.POSITIVE_INFINITY) }, // test +infinity
-			/* 13 */ 	{ "-"+Double.MAX_VALUE+"0^^xsd:double",	isDouble(Double.NEGATIVE_INFINITY) }, // test < -infinity
-			/* 14 */ 	{ "-INF^^xsd:double",					isDouble(Double.NEGATIVE_INFINITY) }, // test +infinity
-			/* 15 */ 	{ "NaN^^xsd:double",					isDouble(Double.NaN) }, 				// test NaN
+			/*  1 */ 	{ "0^^xsd:double", 						isDoubleLiteral(0) },						    // test 0 string
+			/*  2 */ 	{ "-0^^xsd:double", 					isDoubleLiteral(0) },				            // test 0 string
+			/*  3 */ 	{ "+0^^xsd:double", 					isDoubleLiteral(0) },						    // test 0 string
+			/*  4 */ 	{ "1^^xsd:double", 						isDoubleLiteral(1) },						    // test 1 string
+			/*  5 */ 	{ "-1^^xsd:double", 					isDoubleLiteral(-1) },						    // test 1 string
+			/*  6 */ 	{ "+1^^xsd:double", 					isDoubleLiteral(1) },						    // test 1 string
+			/*  7 */ 	{ "12345^^<" + XSD + "double>",			isDoubleLiteral(12345) }, 					    // test more numbers
+			/*  8 */ 	{ "2.2E12^^<" + XSD + "double>",		isDoubleLiteral(2.2e12) }, 						// test dot name
+			/*  9 */ 	{ Double.MAX_VALUE+"^^xsd:double",		isDoubleLiteral(Double.MAX_VALUE) }, 		    // test max value
+			/* 10 */ 	{ "-"+Double.MAX_VALUE+"^^xsd:double",	isDoubleLiteral(-Double.MAX_VALUE) }, 		    // test min value
+			/* 11 */ 	{ Double.MAX_VALUE+"0^^xsd:double",		isDoubleLiteral(Double.POSITIVE_INFINITY) },    // test > +infinity
+			/* 12 */ 	{ "INF^^xsd:double",					isDoubleLiteral(Double.POSITIVE_INFINITY) },    // test +infinity
+			/* 13 */ 	{ "-"+Double.MAX_VALUE+"0^^xsd:double",	isDoubleLiteral(Double.NEGATIVE_INFINITY) },    // test < -infinity
+			/* 14 */ 	{ "-INF^^xsd:double",					isDoubleLiteral(Double.NEGATIVE_INFINITY) },    // test +infinity
+			/* 15 */ 	{ "NaN^^xsd:double",					isDoubleLiteral(Double.NaN) }, 				    // test NaN
 			/* 16 */ 	{ "-NaN^^xsd:double",					LiteralNotInLexicalSpaceException.class }, 		// test -NaN
 			/* 17 */ 	{ "+-1^^xsd:double", 					LiteralNotInLexicalSpaceException.class },		// wrong value format
 			/* 18 */ 	{ "-+1^^xsd:double", 					LiteralNotInLexicalSpaceException.class },		// wrong value format

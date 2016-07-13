@@ -1,11 +1,11 @@
 package ru.agentlab.maia.admin.bundles;
 
-import static ru.agentlab.maia.IMessage.AGREE;
-import static ru.agentlab.maia.IMessage.CANCEL;
-import static ru.agentlab.maia.IMessage.FAILURE;
-import static ru.agentlab.maia.IMessage.INFORM;
-import static ru.agentlab.maia.IMessage.REFUSE;
-import static ru.agentlab.maia.IMessage.SUBSCRIBE;
+import static ru.agentlab.maia.FIPAPerformativeNames.AGREE;
+import static ru.agentlab.maia.FIPAPerformativeNames.CANCEL;
+import static ru.agentlab.maia.FIPAPerformativeNames.FAILURE;
+import static ru.agentlab.maia.FIPAPerformativeNames.INFORM;
+import static ru.agentlab.maia.FIPAPerformativeNames.REFUSE;
+import static ru.agentlab.maia.FIPAPerformativeNames.SUBSCRIBE;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,16 +17,20 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ru.agentlab.maia.IMessage;
-import ru.agentlab.maia.annotation.BeliefDataPropertyAdded;
-import ru.agentlab.maia.annotation.HaveBelief;
-import ru.agentlab.maia.annotation.MessageAdded;
-import ru.agentlab.maia.annotation.Prefix;
 import ru.agentlab.maia.messaging.AclMessage;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
+import ru.agentlab.maia.role.AddedBelief;
+import ru.agentlab.maia.role.AddedMessage;
+import ru.agentlab.maia.role.AxiomType;
+import ru.agentlab.maia.role.HaveBelief;
+import ru.agentlab.maia.role.Prefix;
 
+@Prefix(name = "osgi", namespace = "http://www.agentlab.ru/ontologies/osgi")
 public class BundleSubscriptionResponder {
 
-	private Map<UUID, String> subscriberConverdationIds = new HashMap<>();
+	private static final String FIPA_SUBSCRIBE = "FIPA_SUBSCRIBE";
+
+	private Map<UUID, String> conversationIds = new HashMap<>();
 
 	private Map<String, List<UUID>> subscriberProperties = new HashMap<>();
 
@@ -36,11 +40,11 @@ public class BundleSubscriptionResponder {
 	@Inject
 	IMessageDeliveryService mts;
 
-	@MessageAdded(performative = SUBSCRIBE, protocol = "FIPA_SUBSCRIBE")
+	@AddedMessage(performative = SUBSCRIBE, protocol = FIPA_SUBSCRIBE)
 	public void onSubscribe(IMessage message) {
 		UUID sender = message.getSender();
 		String conversationId = message.getConversationId();
-		subscriberConverdationIds.put(sender, conversationId);
+		conversationIds.put(sender, conversationId);
 		String property = message.getContent();
 		if (property == null) {
 			reply(message, REFUSE);
@@ -54,21 +58,19 @@ public class BundleSubscriptionResponder {
 		reply(message, AGREE);
 	}
 
-	@MessageAdded(performative = CANCEL, protocol = "FIPA_SUBSCRIBE")
+	@AddedMessage(performative = CANCEL, protocol = FIPA_SUBSCRIBE)
 	public void onCancel(IMessage message) {
 		UUID sender = message.getSender();
-		String conversationId = message.getConversationId();
-		if (subscriberConverdationIds.get(sender) == conversationId) {
-			subscriberConverdationIds.remove(sender);
+		if (conversationIds.get(sender) == message.getConversationId()) {
+			conversationIds.remove(sender);
 			reply(message, INFORM);
 		} else {
 			reply(message, FAILURE);
 		}
 	}
 
-	@BeliefDataPropertyAdded("?bundle ?property ?value")
-	@HaveBelief("?bundle rdf:type osgi:Bundle")
-	@Prefix(name = "osgi", namespace = "http://www.agentlab.ru/ontologies/osgi")
+	@AddedBelief(value = { "?bundle", "?property", "?value" }, type = AxiomType.DATA_PROPERTY_ASSERTION)
+	@HaveBelief(value = { "?bundle", "osgi:Bundle" }, type = AxiomType.CLASS_ASSERTION)
 	public void onPropertyChanged(@Named("bundle") String bundle, @Named("property") String property,
 			@Named("value") String value) {
 		IMessage message = new AclMessage();

@@ -7,12 +7,6 @@
  *******************************************************************************/
 package ru.agentlab.maia.examples;
 
-import static ru.agentlab.maia.IMessage.AGREE;
-import static ru.agentlab.maia.IMessage.CANCEL;
-import static ru.agentlab.maia.IMessage.INFORM;
-import static ru.agentlab.maia.IMessage.REFUSE;
-import static ru.agentlab.maia.IMessage.SUBSCRIBE;
-
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -20,14 +14,18 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.PrefixManager;
+import org.semanticweb.owlapi.util.DefaultPrefixManager;
+
+import ru.agentlab.maia.FIPAPerformativeNames;
+import ru.agentlab.maia.FIPAProtocolNames;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IMessage;
-import ru.agentlab.maia.annotation.MessageAdded;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
+import ru.agentlab.maia.role.AddedMessage;
 
 public abstract class SubscriptionInitiator {
-
-	private static final String PROTOCOL_NAME = "FIPA-SUBSCRIPTION";
 
 	private final static String conversationId = Long.toString(ThreadLocalRandom.current().nextLong());
 
@@ -46,41 +44,52 @@ public abstract class SubscriptionInitiator {
 	@PostConstruct
 	public void onSetup() {
 		IMessage message = initial;
-		message.setProtocol(PROTOCOL_NAME);
+		message.setProtocol(FIPAProtocolNames.FIPA_SUBSCRIBE);
 		message.setConversationId(conversationId);
-		message.setPerformative(SUBSCRIBE);
+		message.setPerformative(FIPAPerformativeNames.SUBSCRIBE);
 		messaging.send(message);
 	}
 
-	@MessageAdded(performative = AGREE, protocol = PROTOCOL_NAME)
+	@AddedMessage(performative = FIPAPerformativeNames.AGREE, protocol = FIPAProtocolNames.FIPA_SUBSCRIBE)
 	public void onAgree(IMessage message) {
 		if (!message.getConversationId().equals(conversationId)) {
 			return;
 		}
 		UUID sender = message.getSender();
-		beliefBase.addObjectPropertyAssertion("this", "maia:haveSubscription", sender.toString());
+		OWLDataFactory factory = beliefBase.getFactory();
+		PrefixManager prefixManager = new DefaultPrefixManager();
+		prefixManager.setPrefix("maia", "");
+		beliefBase.addBelief(
+				factory.getOWLObjectPropertyAssertionAxiom(factory.getOWLObjectProperty("this", prefixManager),
+						factory.getOWLNamedIndividual("maia:haveSubscription", prefixManager),
+						factory.getOWLNamedIndividual(sender.toString(), prefixManager)));
 	}
 
-	@MessageAdded(performative = REFUSE, protocol = PROTOCOL_NAME)
+	@AddedMessage(performative = FIPAPerformativeNames.REFUSE, protocol = FIPAProtocolNames.FIPA_SUBSCRIBE)
 	public void onRefuse(IMessage message) {
 	}
 
-	@MessageAdded(performative = INFORM, protocol = PROTOCOL_NAME)
+	@AddedMessage(performative = FIPAPerformativeNames.INFORM, protocol = FIPAProtocolNames.FIPA_SUBSCRIBE)
 	public void onInform(IMessage message) {
 		if (!message.getConversationId().equals(conversationId)) {
 			return;
 		}
 		UUID sender = message.getSender();
-		// String content = message.getContent();
-		beliefBase.addObjectPropertyAssertion("this", "maia:haveSubscription", sender.toString());
+		OWLDataFactory factory = beliefBase.getFactory();
+		PrefixManager prefixManager = new DefaultPrefixManager();
+		prefixManager.setPrefix("maia", "");
+		beliefBase.addBelief(
+				factory.getOWLObjectPropertyAssertionAxiom(factory.getOWLObjectProperty("this", prefixManager),
+						factory.getOWLNamedIndividual("maia:haveSubscription", prefixManager),
+						factory.getOWLNamedIndividual(sender.toString(), prefixManager)));
 	}
 
 	@PreDestroy
 	public void onDestroy() {
 		IMessage message = initial;
-		message.setProtocol(PROTOCOL_NAME);
+		message.setProtocol(FIPAProtocolNames.FIPA_SUBSCRIBE);
 		message.setConversationId(conversationId);
-		message.setPerformative(CANCEL);
+		message.setPerformative(FIPAPerformativeNames.CANCEL);
 		messaging.send(message);
 	}
 

@@ -10,6 +10,8 @@ import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLDifferentIndividualsAxiom;
+import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -21,7 +23,16 @@ import org.semanticweb.owlapi.model.OWLPropertyExpression;
 
 public class Matchers {
 
-	public static Matcher<OWLClassExpression> isClass(Matcher<? super OWLClass> matcher) {
+	public static Matcher<OWLDisjointClassesAxiom> hasDisjointClasses(Matcher<? super OWLClassExpression>[] matchers) {
+		return new OWLDisjointClassesAxiomHasClasses(matchers);
+	}
+
+	public static Matcher<OWLDifferentIndividualsAxiom> hasDifferentIndividuals(
+			Matcher<? super OWLIndividual>[] matchers) {
+		return new OWLDifferentIndividualsAxiomHasIndividuals(matchers);
+	}
+
+	public static Matcher<OWLClassExpression> isNamedClass(Matcher<? super OWLClass> matcher) {
 		return new OWLClassExpressionIsClass(matcher);
 	}
 
@@ -33,7 +44,7 @@ public class Matchers {
 		return new OWLClassAssertionAxiomHasIndividual(matcher);
 	}
 
-	public static Matcher<OWLIndividual> isNamed(Matcher<? super OWLNamedIndividual> matcher) {
+	public static Matcher<OWLIndividual> isNamedIndividual(Matcher<? super OWLNamedIndividual> matcher) {
 		return new OWLIndividualIsNamed(matcher);
 	}
 
@@ -86,40 +97,40 @@ public class Matchers {
 		return new OWLPropertyAssertionObjectIsIndividual(matcher);
 	}
 
-	public static Matcher<OWLLiteral> isBoolean(Matcher<? super Boolean> matcher) {
+	public static Matcher<OWLLiteral> isBooleanLiteral(Matcher<? super Boolean> matcher) {
 		return new OWLLiteralIsBoolean(matcher);
 	}
 
-	public static Matcher<OWLLiteral> isBoolean(boolean value) {
+	public static Matcher<OWLLiteral> isBooleanLiteral(boolean value) {
 		return new OWLLiteralIsBoolean(equalTo(value));
 	}
 
-	public static Matcher<OWLLiteral> isFloat(Matcher<? super Float> matcher) {
+	public static Matcher<OWLLiteral> isFloatLiteral(Matcher<? super Float> matcher) {
 		return new OWLLiteralIsFloat(matcher);
 	}
 
-	public static Matcher<OWLLiteral> isFloat(float value) {
+	public static Matcher<OWLLiteral> isFloatLiteral(float value) {
 		return new OWLLiteralIsFloat(equalTo(value));
 	}
 
-	public static Matcher<OWLLiteral> isDouble(Matcher<? super Double> matcher) {
+	public static Matcher<OWLLiteral> isDoubleLiteral(Matcher<? super Double> matcher) {
 		return new OWLLiteralIsDouble(matcher);
 	}
 
-	public static Matcher<OWLLiteral> isDouble(double value) {
+	public static Matcher<OWLLiteral> isDoubleLiteral(double value) {
 		return new OWLLiteralIsDouble(equalTo(value));
 	}
 
-	public static Matcher<OWLLiteral> isInteger(Matcher<? super Integer> matcher) {
+	public static Matcher<OWLLiteral> isIntegerLiteral(Matcher<? super Integer> matcher) {
 		return new OWLLiteralIsInteger(matcher);
 	}
 
-	public static Matcher<OWLLiteral> isTyped(Matcher<? super String> valueMatcher,
+	public static Matcher<OWLLiteral> isTypedLiteral(Matcher<? super String> valueMatcher,
 			Matcher<? super OWLDatatype> datatypeMatcher) {
 		return new OWLLiteralIsTyped(valueMatcher, datatypeMatcher);
 	}
 
-	public static Matcher<OWLLiteral> isPlain(Matcher<? super String> valueMatcher,
+	public static Matcher<OWLLiteral> isPlainLiteral(Matcher<? super String> valueMatcher,
 			Matcher<? super String> languageMatcher) {
 		return new OWLLiteralIsPlain(valueMatcher, languageMatcher);
 	}

@@ -1,69 +1,65 @@
 package ru.agentlab.maia.admin.bundles;
 
-import static ru.agentlab.maia.IMessage.AGREE;
-import static ru.agentlab.maia.IMessage.CANCEL;
-import static ru.agentlab.maia.IMessage.FAILURE;
-import static ru.agentlab.maia.IMessage.INFORM;
-import static ru.agentlab.maia.IMessage.REFUSE;
-import static ru.agentlab.maia.IMessage.REQUEST;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
 
-import ru.agentlab.maia.IGoal;
+import org.semanticweb.owlapi.model.OWLAxiom;
+
+import ru.agentlab.maia.FIPAPerformativeNames;
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IMessage;
-import ru.agentlab.maia.annotation.GoalClassificationFailed;
-import ru.agentlab.maia.annotation.GoalClassificationFinished;
-import ru.agentlab.maia.annotation.MessageAdded;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
+import ru.agentlab.maia.role.AddedGoal;
+import ru.agentlab.maia.role.AddedMessage;
+import ru.agentlab.maia.role.AxiomType;
+import ru.agentlab.maia.role.FailedGoal;
 
 public class BundleRequestResponder {
 
 	@Inject
 	IMessageDeliveryService mts;
 
-	private Map<IGoal, IMessage> requests = new HashMap<>();
+	private Map<OWLAxiom, IMessage> requests = new HashMap<>();
 
 	@Inject
 	IGoalBase goalBase;
 
-	@MessageAdded(performative = REQUEST, protocol = "FIPA_REQUEST")
+	@AddedMessage(performative = FIPAPerformativeNames.REQUEST, protocol = "FIPA_REQUEST")
 	public void onRequest(IMessage message) {
 		try {
-			IGoal goal = goalBase.addGoal(message.getContent());
+			OWLAxiom goal = goalBase.addGoal(message.getContent());
 			requests.put(goal, message);
-			reply(message, AGREE);
+			reply(message, FIPAPerformativeNames.AGREE);
 		} catch (Exception e) {
-			reply(message, REFUSE);
+			reply(message, FIPAPerformativeNames.REFUSE);
 		}
 	}
 
-	@MessageAdded(performative = CANCEL, protocol = "FIPA_REQUEST")
+	@AddedMessage(performative = FIPAPerformativeNames.CANCEL, protocol = "FIPA_REQUEST")
 	public void onCancel(IMessage message) {
 		try {
 			goalBase.removeGoal(message.getContent());
-			reply(message, INFORM);
+			reply(message, FIPAPerformativeNames.INFORM);
 		} catch (Exception e) {
-			reply(message, FAILURE);
+			reply(message, FIPAPerformativeNames.FAILURE);
 		}
 	}
 
-	@GoalClassificationFinished("")
-	public void onGoalFinished(IGoal goal) {
+	@AddedGoal(value = "", type = AxiomType.CLASS_ASSERTION)
+	public void onGoalFinished(OWLAxiom goal) {
 		IMessage message = requests.get(goal);
 		if (message != null) {
-			reply(message, INFORM);
+			reply(message, FIPAPerformativeNames.INFORM);
 		}
 	}
 
-	@GoalClassificationFailed("")
-	public void onGoalFailed(IGoal goal) {
+	@FailedGoal(value = "", type = AxiomType.CLASS_ASSERTION)
+	public void onGoalFailed(OWLAxiom goal) {
 		IMessage message = requests.get(goal);
 		if (message != null) {
-			reply(message, FAILURE);
+			reply(message, FIPAPerformativeNames.FAILURE);
 		}
 	}
 

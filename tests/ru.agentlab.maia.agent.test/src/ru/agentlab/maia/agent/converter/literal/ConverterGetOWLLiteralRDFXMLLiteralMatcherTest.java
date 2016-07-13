@@ -10,7 +10,7 @@ package ru.agentlab.maia.agent.converter.literal;
 
 import static org.hamcrest.Matchers.equalTo;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasIRI;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTyped;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTypedLiteral;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,8 +20,8 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import ru.agentlab.maia.agent.converter.AbstractGetOWLLiteralMatcherTest;
-import ru.agentlab.maia.agent.converter.LiteralIllelgalLanguageTagException;
-import ru.agentlab.maia.agent.converter.LiteralWrongBuildInDatatypeException;
+import ru.agentlab.maia.role.converter.LiteralIllelgalLanguageTagException;
+import ru.agentlab.maia.role.converter.LiteralWrongBuildInDatatypeException;
 
 /**
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
@@ -38,12 +38,12 @@ public class ConverterGetOWLLiteralRDFXMLLiteralMatcherTest extends AbstractGetO
 			 *| ##   | Input Parameter                          | Result Literal                                             | Comment                        |
 			  -----------------------------------------------------------------------------------------------------------------------------------------------*/
 			// rdf:XMLLiteral
-			/*  0 */ { "^^rdf:XMLLiteral",                      isTyped(equalTo(""), hasIRI(RDF, XML_LITERAL)) },            // test empty string
-			/*  1 */ { "test^^rdf:XMLLiteral",                  isTyped(equalTo("test"), hasIRI(RDF, XML_LITERAL)) },        // test non-empty string
-			/*  2 */ { "test string^^rdf:XMLLiteral",           isTyped(equalTo("test string"), hasIRI(RDF, XML_LITERAL)) }, // test value with whitespace
-			/*  3 */ { "true^^rdf:XMLLiteral",                  isTyped(equalTo("true"), hasIRI(RDF, XML_LITERAL)) },        // test value with another type
-			/*  4 */ { "2.3^^rdf:XMLLiteral",                   isTyped(equalTo("2.3"), hasIRI(RDF, XML_LITERAL)) },         // test value with another type
-			/*  5 */ { "test string^^<" + RDF + "XMLLiteral>",  isTyped(equalTo("test string"), hasIRI(RDF, XML_LITERAL)) }, // test type full name
+			/*  0 */ { "^^rdf:XMLLiteral",                      isTypedLiteral(equalTo(""), hasIRI(RDF, XML_LITERAL)) },            // test empty string
+			/*  1 */ { "test^^rdf:XMLLiteral",                  isTypedLiteral(equalTo("test"), hasIRI(RDF, XML_LITERAL)) },        // test non-empty string
+			/*  2 */ { "test string^^rdf:XMLLiteral",           isTypedLiteral(equalTo("test string"), hasIRI(RDF, XML_LITERAL)) }, // test value with whitespace
+			/*  3 */ { "true^^rdf:XMLLiteral",                  isTypedLiteral(equalTo("true"), hasIRI(RDF, XML_LITERAL)) },        // test value with another type
+			/*  4 */ { "2.3^^rdf:XMLLiteral",                   isTypedLiteral(equalTo("2.3"), hasIRI(RDF, XML_LITERAL)) },         // test value with another type
+			/*  5 */ { "test string^^<" + RDF + "XMLLiteral>",  isTypedLiteral(equalTo("test string"), hasIRI(RDF, XML_LITERAL)) }, // test type full name
 //			/*  6 */ { "?var^^rdf:XMLLiteral",                  isTyped(var("var"), hasIRI(RDF, XML_LITERAL)) },             // test variable value
 			/*  7 */ { "?var@?lang^^rdf:XMLLiteral",            LiteralIllelgalLanguageTagException.class },                 // test variable value and lang
 			/*  8 */ { "test string^^rdfs:XMLLiteral",          LiteralWrongBuildInDatatypeException.class },                // wrong namespace

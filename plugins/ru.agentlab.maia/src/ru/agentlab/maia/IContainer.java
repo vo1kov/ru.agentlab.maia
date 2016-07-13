@@ -186,6 +186,9 @@ public interface IContainer {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be not null");
 		}
+		if (key == IInjector.class) {
+			return key.cast(getInjector());
+		}
 		return key.cast(getLocal(key.getName()));
 	}
 

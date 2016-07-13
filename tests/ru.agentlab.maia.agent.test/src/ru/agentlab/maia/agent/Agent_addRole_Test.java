@@ -45,7 +45,7 @@ import ru.agentlab.maia.test.util.LoggerRule;
  */
 @RunWith(Parameterized.class)
 public class Agent_addRole_Test {
-	
+
 	private static final DummyService ROLE_MOCK = mock(DummyService.class);
 	@SuppressWarnings("unchecked")
 	private static final Map<String, Object> PARAMETERS_MOCK = mock(Map.class);
@@ -93,7 +93,7 @@ public class Agent_addRole_Test {
 	public void evaluateTestCase() throws ResolveException {
 		// Given
 		Agent agent = spy(new Agent());
-		agent.state = state;
+		agent.state.set(state);
 		doReturn(ROLE_MOCK).when(agent).internalAddRole(Mockito.any(), Mockito.any());
 
 		try {

@@ -13,7 +13,7 @@ public class Plan_isRelevant_Test {
 		// Given
 		Object role = new DummyService();
 		Method method = role.getClass().getMethod("method");
-		Plan plan = new PlanStateful(role, method);
+		PlanBodyStateful plan = new PlanBodyStateful(role, method);
 	}
 
 }

@@ -10,7 +10,7 @@ package ru.agentlab.maia.agent.converter.literal;
 
 import static org.hamcrest.Matchers.equalTo;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasIRI;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTyped;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTypedLiteral;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,8 +20,8 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import ru.agentlab.maia.agent.converter.AbstractGetOWLLiteralMatcherTest;
-import ru.agentlab.maia.agent.converter.LiteralIllelgalLanguageTagException;
-import ru.agentlab.maia.agent.converter.LiteralWrongBuildInDatatypeException;
+import ru.agentlab.maia.role.converter.LiteralIllelgalLanguageTagException;
+import ru.agentlab.maia.role.converter.LiteralWrongBuildInDatatypeException;
 
 /**
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
@@ -41,13 +41,13 @@ public class ConverterGetOWLLiteralXSDStringMatcherTest extends AbstractGetOWLLi
 			 *| ##		| Input Parameter 						| Result Literal										| Comment						|
 			  -----------------------------------------------------------------------------------------------------------------------------------------*/
 			// xsd:string
-			/*  0 */ 	{ "^^xsd:string", 						isTyped(equalTo(""), 				hasIRI(XSD, STRING))},// test empty string
-			/*  1 */ 	{ "test^^xsd:string", 					isTyped(equalTo("test"), 			hasIRI(XSD, STRING))},// test non-empty string
-			/*  2 */ 	{ "test string^^xsd:string", 			isTyped(equalTo("test string"), 	hasIRI(XSD, STRING))},// test value with whitespace
-			/*  3 */ 	{ "test \rstring^^xsd:string", 			isTyped(equalTo("test \rstring"), hasIRI(XSD, STRING))},// test value with whitespace
-			/*  4 */ 	{ "test \nstring^^xsd:string", 			isTyped(equalTo("test \nstring"), hasIRI(XSD, STRING))},// test value with whitespace
-			/*  5 */ 	{ "test\tstring^^xsd:string", 			isTyped(equalTo("test\tstring"), 	hasIRI(XSD, STRING))},// test value with whitespace
-			/*  6 */ 	{ "test string^^<" + XSD + "string>", 	isTyped(equalTo("test string"), 	hasIRI(XSD, STRING))},// test full name
+			/*  0 */ 	{ "^^xsd:string", 						isTypedLiteral(equalTo(""), 				hasIRI(XSD, STRING))},// test empty string
+			/*  1 */ 	{ "test^^xsd:string", 					isTypedLiteral(equalTo("test"), 			hasIRI(XSD, STRING))},// test non-empty string
+			/*  2 */ 	{ "test string^^xsd:string", 			isTypedLiteral(equalTo("test string"), 	hasIRI(XSD, STRING))},// test value with whitespace
+			/*  3 */ 	{ "test \rstring^^xsd:string", 			isTypedLiteral(equalTo("test \rstring"), hasIRI(XSD, STRING))},// test value with whitespace
+			/*  4 */ 	{ "test \nstring^^xsd:string", 			isTypedLiteral(equalTo("test \nstring"), hasIRI(XSD, STRING))},// test value with whitespace
+			/*  5 */ 	{ "test\tstring^^xsd:string", 			isTypedLiteral(equalTo("test\tstring"), 	hasIRI(XSD, STRING))},// test value with whitespace
+			/*  6 */ 	{ "test string^^<" + XSD + "string>", 	isTypedLiteral(equalTo("test string"), 	hasIRI(XSD, STRING))},// test full name
 //			/*  7 */ 	{ "?var^^xsd:string", 					typedMatcher(_var("var"),			hasIRI(XSD, STRING))},// test variable value
 			/*  8 */ 	{ "?var@?lang^^xsd:string", 			LiteralIllelgalLanguageTagException.class }, 			// test variable value and lang
 			/*  9 */ 	{ "test string^^rdfs:string", 			LiteralWrongBuildInDatatypeException.class }, 			// wrong namespace

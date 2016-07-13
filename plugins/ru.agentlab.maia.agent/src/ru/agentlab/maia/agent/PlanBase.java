@@ -8,10 +8,12 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent;
 
-import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Queue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -20,6 +22,8 @@ import ru.agentlab.maia.EventType;
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
+import ru.agentlab.maia.IPlanFilter;
+import ru.agentlab.maia.Option;
 
 public class PlanBase implements IPlanBase {
 
@@ -32,24 +36,11 @@ public class PlanBase implements IPlanBase {
 	}
 
 	@Override
-	public IPlan createPlan(Object role, Method method) {
-		if (method.getParameterCount() == 0) {
-			return new PlanStateles(role, method);
-		} else {
-			return new PlanStateful(role, method);
-		}
-	}
-
-	@Override
-	public IPlan createPlan(Object role, Runnable runnable) {
-		return new PlanLambda(role, runnable);
-	}
-
-	@Override
 	public void add(EventType type, IPlan plan) {
 		Collection<IPlan> eventPlans = plans.get(type);
 		if (eventPlans == null) {
 			eventPlans = new HashSet<IPlan>();
+			plans.put(type, eventPlans);
 		}
 		eventPlans.add(plan);
 	}
@@ -63,6 +54,23 @@ public class PlanBase implements IPlanBase {
 				}
 			}
 		}
+	}
+
+	@Override
+	public Iterable<Option> getOptions(IEvent<?> event) {
+		Collection<IPlan> eventPlans = plans.get(event.getType());
+		if (eventPlans != null) {
+			List<Option> result = new ArrayList<>();
+			Object eventData = event.getPayload();
+			for (IPlan plan : eventPlans) {
+				IPlanFilter planFilter = plan.getPlanFilter();
+				if (planFilter.matches(eventData)) {
+					result.add(new Option(plan.getPlanBody(), planFilter.getVariables()));
+				}
+			}
+			return result;
+		}
+		return Collections.emptyList();
 	}
 
 	@Override

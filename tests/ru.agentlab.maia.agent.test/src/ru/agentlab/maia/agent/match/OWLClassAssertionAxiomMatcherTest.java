@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.anything;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasClassExpression;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasIRI;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasIndividual;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isClass;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isNamedClass;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isNamed;
 
 import java.util.Arrays;
@@ -71,10 +71,10 @@ public class OWLClassAssertionAxiomMatcherTest {
 	private static Map<String, Object> XXXXX_XXXXXX = new HashMap<>();
 	private static Map<String, Object> VALUES = new HashMap<>();
 
-	private static final Matcher<?> INDIVIDUAL_CLASS = allOf(hasClassExpression(isClass(hasIRI(CLASS1_IRI))),
-			hasIndividual(isNamed(hasIRI(TEST1_IRI))));
-	private static final Matcher<?> INDIVIDUAL_VAR = hasClassExpression(isClass(hasIRI(CLASS1_IRI)));
-	private static final Matcher<?> VAR_CLASS = hasIndividual(isNamed(hasIRI(TEST1_IRI)));
+	private static final Matcher<?> INDIVIDUAL_CLASS = allOf(hasClassExpression(isNamedClass(hasIRI(CLASS1_IRI))),
+			hasIndividual(isNamedIndividual(hasIRI(TEST1_IRI))));
+	private static final Matcher<?> INDIVIDUAL_VAR = hasClassExpression(isNamedClass(hasIRI(CLASS1_IRI)));
+	private static final Matcher<?> VAR_CLASS = hasIndividual(isNamedIndividual(hasIRI(TEST1_IRI)));
 	private static final Matcher<?> VAR_VAR = anything();
 
 	static {

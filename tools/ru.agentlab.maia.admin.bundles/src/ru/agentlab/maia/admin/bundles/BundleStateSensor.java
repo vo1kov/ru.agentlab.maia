@@ -8,7 +8,7 @@ import org.osgi.framework.BundleEvent;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IEventQueue;
 import ru.agentlab.maia.admin.bundles.internal.Activator;
-import ru.agentlab.maia.annotation.ExternalEventAdded;
+import ru.agentlab.maia.role.AddedExternalEvent;
 
 public class BundleStateSensor {
 
@@ -20,7 +20,7 @@ public class BundleStateSensor {
 		Activator.context.addBundleListener(eventQueue::offer);
 	}
 
-	@ExternalEventAdded(BundleEvent.class)
+	@AddedExternalEvent(BundleEvent.class)
 	public void onBundleChanged(BundleEvent event) {
 		String object = "";
 		switch (event.getType()) {

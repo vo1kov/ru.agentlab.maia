@@ -8,7 +8,7 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent.converter.literal;
 
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isFloat;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isFloatLiteral;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -18,9 +18,9 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import ru.agentlab.maia.agent.converter.AbstractGetOWLLiteralMatcherTest;
-import ru.agentlab.maia.agent.converter.LiteralIllelgalLanguageTagException;
-import ru.agentlab.maia.agent.converter.LiteralNotInLexicalSpaceException;
-import ru.agentlab.maia.agent.converter.LiteralWrongBuildInDatatypeException;
+import ru.agentlab.maia.role.converter.LiteralIllelgalLanguageTagException;
+import ru.agentlab.maia.role.converter.LiteralNotInLexicalSpaceException;
+import ru.agentlab.maia.role.converter.LiteralWrongBuildInDatatypeException;
 
 /**
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
@@ -38,21 +38,21 @@ public class ConverterGetOWLLiteralXSDFloatMatcherTest extends AbstractGetOWLLit
 			  ----------------------------------------------------------------------------------------------------------------------------------*/
 			// xsd:float
 			/*  0 */ 	{ "^^xsd:float", 						LiteralNotInLexicalSpaceException.class },		// wrong empty value
-			/*  1 */ 	{ "0^^xsd:float", 						isFloat(0) },						// test 0 string
-			/*  2 */ 	{ "-0^^xsd:float", 						isFloat(0) },						// test 0 string
-			/*  3 */ 	{ "+0^^xsd:float", 						isFloat(0) },						// test 0 string
-			/*  4 */ 	{ "1^^xsd:float", 						isFloat(1) },						// test 1 string
-			/*  5 */ 	{ "-1^^xsd:float", 						isFloat(-1) },						// test 1 string
-			/*  6 */ 	{ "+1^^xsd:float", 						isFloat(1) },						// test 1 string
-			/*  7 */ 	{ "12345^^<" + XSD + "float>",			isFloat(12345) }, 					// test more numbers
-			/*  8 */ 	{ "2.2E12^^<" + XSD + "float>",			isFloat(2.2e12f) }, 						// test dot name
-			/*  9 */ 	{ Float.MAX_VALUE+"^^xsd:float",		isFloat(Float.MAX_VALUE) }, 			// test max value
-			/* 10 */ 	{ "-"+Float.MAX_VALUE+"^^xsd:float",	isFloat(-Float.MAX_VALUE) }, 		// test min value
-			/* 11 */ 	{ Float.MAX_VALUE+"0^^xsd:float",		isFloat(Float.POSITIVE_INFINITY) }, 	// test > +infinity
-			/* 12 */ 	{ "INF^^xsd:float",						isFloat(Float.POSITIVE_INFINITY) }, 	// test +infinity
-			/* 13 */ 	{ "-"+Float.MAX_VALUE+"0^^xsd:float",	isFloat(Float.NEGATIVE_INFINITY) }, 	// test < -infinity
-			/* 14 */ 	{ "-INF^^xsd:float",					isFloat(Float.NEGATIVE_INFINITY) }, 	// test +infinity
-			/* 15 */ 	{ "NaN^^xsd:float",						isFloat(Float.NaN) }, 				// test NaN
+			/*  1 */ 	{ "0^^xsd:float", 						isFloatLiteral(0) },						    // test 0 string
+			/*  2 */ 	{ "-0^^xsd:float", 						isFloatLiteral(0) },						    // test 0 string
+			/*  3 */ 	{ "+0^^xsd:float", 						isFloatLiteral(0) },						    // test 0 string
+			/*  4 */ 	{ "1^^xsd:float", 						isFloatLiteral(1) },						    // test 1 string
+			/*  5 */ 	{ "-1^^xsd:float", 						isFloatLiteral(-1) },						    // test 1 string
+			/*  6 */ 	{ "+1^^xsd:float", 						isFloatLiteral(1) },						    // test 1 string
+			/*  7 */ 	{ "12345^^<" + XSD + "float>",			isFloatLiteral(12345) }, 					    // test more numbers
+			/*  8 */ 	{ "2.2E12^^<" + XSD + "float>",			isFloatLiteral(2.2e12f) }, 						// test dot name
+			/*  9 */ 	{ Float.MAX_VALUE+"^^xsd:float",		isFloatLiteral(Float.MAX_VALUE) }, 			    // test max value
+			/* 10 */ 	{ "-"+Float.MAX_VALUE+"^^xsd:float",	isFloatLiteral(-Float.MAX_VALUE) }, 		    // test min value
+			/* 11 */ 	{ Float.MAX_VALUE+"0^^xsd:float",		isFloatLiteral(Float.POSITIVE_INFINITY) }, 	    // test > +infinity
+			/* 12 */ 	{ "INF^^xsd:float",						isFloatLiteral(Float.POSITIVE_INFINITY) }, 	    // test +infinity
+			/* 13 */ 	{ "-"+Float.MAX_VALUE+"0^^xsd:float",	isFloatLiteral(Float.NEGATIVE_INFINITY) }, 	    // test < -infinity
+			/* 14 */ 	{ "-INF^^xsd:float",					isFloatLiteral(Float.NEGATIVE_INFINITY) }, 	    // test +infinity
+			/* 15 */ 	{ "NaN^^xsd:float",						isFloatLiteral(Float.NaN) }, 				    // test NaN
 			/* 16 */ 	{ "-NaN^^xsd:float",					LiteralNotInLexicalSpaceException.class }, 		// test -NaN
 			/* 17 */ 	{ "+-1^^xsd:float", 					LiteralNotInLexicalSpaceException.class },		// wrong value format
 			/* 18 */ 	{ "-+1^^xsd:float", 					LiteralNotInLexicalSpaceException.class },		// wrong value format

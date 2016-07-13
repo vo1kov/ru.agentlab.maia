@@ -11,7 +11,7 @@ package ru.agentlab.maia.agent.converter.literal;
 import static org.hamcrest.Matchers.equalTo;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasIRI;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isPlain;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTyped;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTypedLiteral;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,9 +21,9 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import ru.agentlab.maia.agent.converter.AbstractGetOWLLiteralMatcherTest;
-import ru.agentlab.maia.agent.converter.LiteralNotInLexicalSpaceException;
-import ru.agentlab.maia.agent.converter.LiteralUnknownPrefixException;
-import ru.agentlab.maia.agent.converter.LiteralWrongFormatException;
+import ru.agentlab.maia.role.converter.LiteralNotInLexicalSpaceException;
+import ru.agentlab.maia.role.converter.LiteralUnknownPrefixException;
+import ru.agentlab.maia.role.converter.LiteralWrongFormatException;
 
 /**
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
@@ -43,9 +43,9 @@ public class ConverterGetOWLLiteralMiscMatcherTest extends AbstractGetOWLLiteral
 			/*  1 */ { "test string^rdf:Literal",         isPlain(equalTo("test string^rdf:Literal")) },                // wrong separator, should be ^^
 			/*  2 */ { "test string^rdf:real",            isPlain(equalTo("test string^rdf:real")) },                   // wrong separator, should be ^^
 			/*  3 */ { "true^xsd:boolean",                isPlain(equalTo("true^xsd:boolean")) },                       // wrong separator, should be ^^
-			/*  4 */ { "test string^^^rdf:XMLLiteral",    isTyped(equalTo("test string^"), hasIRI(RDF, XML_LITERAL)) }, // wrong separator, should be ^^
-			/*  5 */ { "test string^^^rdfs:Literal",      isTyped(equalTo("test string^"), hasIRI(RDFS, LITERAL)) }, 	// wrong separator, should be ^^
-			/*  6 */ { "test string^^^owl:real",          isTyped(equalTo("test string^"), hasIRI(OWL, REAL)) }, 		// wrong separator, should be ^^
+			/*  4 */ { "test string^^^rdf:XMLLiteral",    isTypedLiteral(equalTo("test string^"), hasIRI(RDF, XML_LITERAL)) }, // wrong separator, should be ^^
+			/*  5 */ { "test string^^^rdfs:Literal",      isTypedLiteral(equalTo("test string^"), hasIRI(RDFS, LITERAL)) }, 	// wrong separator, should be ^^
+			/*  6 */ { "test string^^^owl:real",          isTypedLiteral(equalTo("test string^"), hasIRI(OWL, REAL)) }, 		// wrong separator, should be ^^
 //			/*  7 */ { "?var^^?type",                     isTyped(var("var"),			var("type")) },                 // test variable value and type
 			/*  8 */ { "false^^^xsd:boolean",             LiteralNotInLexicalSpaceException.class },                    // wrong value [true^] format
 			/*  9 */ { "false^^some:type",                LiteralUnknownPrefixException.class },                        // unknown prefix

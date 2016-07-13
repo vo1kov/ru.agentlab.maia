@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
@@ -35,17 +36,18 @@ import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 import ru.agentlab.maia.EventType;
+import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IConverter;
 import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.agent.doubles.DummyService;
-import ru.agentlab.maia.event.RoleAddedEvent;
-import ru.agentlab.maia.event.RoleResolvedEvent;
-import ru.agentlab.maia.event.RoleUnresolvedEvent;
+import ru.agentlab.maia.event.AddedRoleEvent;
+import ru.agentlab.maia.event.ResolvedRoleEvent;
+import ru.agentlab.maia.event.UnresolvedRoleEvent;
 import ru.agentlab.maia.exception.ConverterException;
 import ru.agentlab.maia.exception.InjectorException;
 import ru.agentlab.maia.exception.ResolveException;
@@ -74,9 +76,9 @@ public class Agent_internalAddRole_Test {
 	private static final DummyService ROLE_MOCK = mock(DummyService.class);
 
 	// --------------- Converter initial beliefs variants----------------
-	private static final List<OWLAxiom> INITIAL_BELIEFS_0 = Collections.emptyList();
-	private static final List<OWLAxiom> INITIAL_BELIEFS_1 = ImmutableList.of(mock(OWLClassAssertionAxiom.class));
-	private static final List<OWLAxiom> INITIAL_BELIEFS_3 = ImmutableList.of(
+	private static final Set<OWLAxiom> INITIAL_BELIEFS_0 = Collections.emptySet();
+	private static final Set<OWLAxiom> INITIAL_BELIEFS_1 = ImmutableSet.of(mock(OWLClassAssertionAxiom.class));
+	private static final Set<OWLAxiom> INITIAL_BELIEFS_3 = ImmutableSet.of(
 			// @formatter:off
 			mock(OWLClassAssertionAxiom.class),
 			mock(OWLDataPropertyAssertionAxiom.class), 
@@ -85,9 +87,9 @@ public class Agent_internalAddRole_Test {
 	);
 
 	// --------------- Converter initial goals variants----------------
-	private static final List<OWLAxiom> INITIAL_GOALS_0 = Collections.emptyList();
-	private static final List<OWLAxiom> INITIAL_GOALS_1 = ImmutableList.of(mock(OWLDataPropertyAssertionAxiom.class));
-	private static final List<OWLAxiom> INITIAL_GOALS_3 = ImmutableList.of(
+	private static final Set<OWLAxiom> INITIAL_GOALS_0 = Collections.emptySet();
+	private static final Set<OWLAxiom> INITIAL_GOALS_1 = ImmutableSet.of(mock(OWLDataPropertyAssertionAxiom.class));
+	private static final Set<OWLAxiom> INITIAL_GOALS_3 = ImmutableSet.of(
 			// @formatter:off
 			mock(OWLClassAssertionAxiom.class),
 			mock(OWLDataPropertyAssertionAxiom.class), 
@@ -98,12 +100,12 @@ public class Agent_internalAddRole_Test {
 	// --------------- Converter plans variants----------------
 	private static final Map<IPlan, EventType> INITIAL_PLANS_0 = Collections.emptyMap();
 	private static final Map<IPlan, EventType> INITIAL_PLANS_1 = ImmutableMap.of(mock(IPlan.class),
-			EventType.BELIEF_DATA_PROPERTY_REMOVED);
+			EventType.REMOVED_BELIEF);
 	private static final Map<IPlan, EventType> INITIAL_PLANS_3 = ImmutableMap.of(
 			// @formatter:off
-			mock(IPlan.class), EventType.BELIEF_CLASSIFICATION_ADDED, 
-			mock(IPlan.class), EventType.BELIEF_DATA_PROPERTY_REMOVED,
-			mock(IPlan.class), EventType.GOAL_CLASSIFICATION_ADDED
+			mock(IPlan.class), EventType.ADDED_BELIEF, 
+			mock(IPlan.class), EventType.FAILED_GOAL,
+			mock(IPlan.class), EventType.ADDED_GOAL
 			// @formatter:on
 	);
 
@@ -126,21 +128,12 @@ public class Agent_internalAddRole_Test {
 		/*  5 */ { ROLE_MOCK,   null,                    INITIAL_BELIEFS_1,        INITIAL_GOALS_0,          INITIAL_PLANS_0,          ROLE_MOCK },
 		/*  6 */ { ROLE_MOCK,   null,                    INITIAL_BELIEFS_0,        INITIAL_GOALS_3,          INITIAL_PLANS_0,          ROLE_MOCK },
 		/*  7 */ { ROLE_MOCK,   null,                    INITIAL_BELIEFS_0,        INITIAL_GOALS_0,          INITIAL_PLANS_0,          ROLE_MOCK },
-        // Nulls instead of empty collections
-		/*  8 */ { ROLE_MOCK,   null,                    null,                     INITIAL_GOALS_3,          INITIAL_PLANS_1,          ROLE_MOCK },
-		/*  9 */ { ROLE_MOCK,   null,                    INITIAL_BELIEFS_3,        null,                     INITIAL_PLANS_3,          ROLE_MOCK },
-		/* 10 */ { ROLE_MOCK,   null,                    INITIAL_BELIEFS_1,        INITIAL_GOALS_3,          null,                     ROLE_MOCK },
-		/* 11 */ { ROLE_MOCK,   null,                    null,                     null,                     INITIAL_PLANS_3,          ROLE_MOCK },
-		/* 12 */ { ROLE_MOCK,   null,                    INITIAL_BELIEFS_3,        null,                     null,                     ROLE_MOCK },
-		/* 13 */ { ROLE_MOCK,   null,                    null,                     INITIAL_GOALS_1,          null,                     ROLE_MOCK },
-		/* 14 */ { ROLE_MOCK,   null,                    null,                     null,                     null,                     ROLE_MOCK },
 		// Negative tests                                                                                    
-		/* 15 */ { ROLE_MOCK,   null,                    INITIAL_BELIEFS_3,        INITIAL_GOALS_3,          ConverterException.class, ResolveException.class },
-		/* 16 */ { ROLE_MOCK,   null,                    INITIAL_BELIEFS_3,        ConverterException.class, INITIAL_PLANS_3,          ResolveException.class },
-		/* 17 */ { ROLE_MOCK,   null,                    ConverterException.class, INITIAL_GOALS_3,          INITIAL_PLANS_3,          ResolveException.class },
-		/* 18 */ { ROLE_MOCK,   InjectorException.class, INITIAL_BELIEFS_3,        INITIAL_GOALS_3,          INITIAL_PLANS_3,          ResolveException.class },
-		/* 19 */ { ROLE_MOCK,   InjectorException.class, INITIAL_BELIEFS_3,        INITIAL_GOALS_3,          INITIAL_PLANS_3,          ResolveException.class },
-		/* 20 */ { InjectorException.class,  null,       INITIAL_BELIEFS_3,        INITIAL_GOALS_3,          INITIAL_PLANS_3,          ResolveException.class },
+		/*  8 */ { ROLE_MOCK,   null,                    INITIAL_BELIEFS_3,        INITIAL_GOALS_3,          ConverterException.class, ResolveException.class },
+		/*  9 */ { ROLE_MOCK,   null,                    INITIAL_BELIEFS_3,        ConverterException.class, INITIAL_PLANS_3,          ResolveException.class },
+		/* 10 */ { ROLE_MOCK,   null,                    ConverterException.class, INITIAL_GOALS_3,          INITIAL_PLANS_3,          ResolveException.class },
+		/* 11 */ { ROLE_MOCK,   InjectorException.class, INITIAL_BELIEFS_3,        INITIAL_GOALS_3,          INITIAL_PLANS_3,          ResolveException.class },
+		/* 12 */ { InjectorException.class,  null,       INITIAL_BELIEFS_3,        INITIAL_GOALS_3,          INITIAL_PLANS_3,          ResolveException.class },
 		// @formatter:on
 		});
 	}
@@ -172,7 +165,7 @@ public class Agent_internalAddRole_Test {
 		Agent agent = spy(new Agent());
 		IInjector injector = mockInjector();
 		doReturn(injector).when(agent).getInjector();
-		agent.converter = mockConverter(injector);
+		doReturn(mockConverter(injector)).when(injector).make(Mockito.any());
 		spyFields(agent);
 
 		try {
@@ -186,12 +179,13 @@ public class Agent_internalAddRole_Test {
 			checkBeliefBase(agent);
 			checkGoalBase(agent);
 			checkPlanBase(agent);
-			verify(agent.eventQueue, times(1)).offer(new RoleAddedEvent(role));
-			verify(agent.eventQueue, times(1)).offer(new RoleResolvedEvent(role));
+			verify(agent.eventQueue, times(1)).offer(new AddedRoleEvent(role));
+			verify(agent.eventQueue, times(1)).offer(new ResolvedRoleEvent(role));
 			assertThat(role, equalTo(result));
 		} catch (Exception e) {
 			// Then
 			if (!(result instanceof Class)) {
+				e.printStackTrace();
 				Assert.fail("Expected [" + result + "], but was: [" + e + "]");
 			}
 			assertThat(e, instanceOf((Class<?>) result));
@@ -200,11 +194,11 @@ public class Agent_internalAddRole_Test {
 			// role added. Only ROLE_UNRESOLVED event should be added to event
 			// queue.
 			verifyZeroInteractions(agent.beliefBase, agent.goalBase, agent.planBase);
-			verify(agent.eventQueue, times(1)).offer(new RoleUnresolvedEvent(DummyService.class));
+			verify(agent.eventQueue, times(1)).offer(new UnresolvedRoleEvent(DummyService.class));
 		}
 	}
 
-	private void spyFields(Agent agent) throws Exception {
+	private void spyFields(IAgent agent) throws Exception {
 		List<Field> allFields = new ArrayList<>();
 		addDeclaredAndInheritedFields(agent.getClass(), allFields);
 		spyField(agent, "eventQueue", allFields);
@@ -215,20 +209,20 @@ public class Agent_internalAddRole_Test {
 	}
 
 	private void checkBeliefBase(Agent agent) {
-		List<OWLAxiom> beliefs = (List<OWLAxiom>) initialBeliefs;
+		Set<OWLAxiom> beliefs = (Set<OWLAxiom>) initialBeliefs;
 		if (beliefs != null) {
-			verify(agent.beliefBase, times(beliefs.size())).addAxiom(Mockito.any(OWLAxiom.class));
-			beliefs.stream().forEach(axiom -> verify(agent.beliefBase).addAxiom(axiom));
+			verify(agent.beliefBase, times(beliefs.size())).addBelief(Mockito.any(OWLAxiom.class));
+			beliefs.stream().forEach(axiom -> verify(agent.beliefBase).addBelief(axiom));
 		} else {
 			verifyZeroInteractions(agent.beliefBase);
 		}
 	}
 
 	private void checkGoalBase(Agent agent) {
-		List<OWLAxiom> goals = (List<OWLAxiom>) initialGoals;
+		Set<OWLAxiom> goals = (Set<OWLAxiom>) initialGoals;
 		if (goals != null) {
-			verify(agent.goalBase, times(goals.size())).addAxiom(Mockito.any(OWLAxiom.class));
-			goals.stream().forEach(axiom -> verify(agent.goalBase).addAxiom(axiom));
+			verify(agent.goalBase, times(goals.size())).addGoal(Mockito.any(OWLAxiom.class));
+			goals.stream().forEach(axiom -> verify(agent.goalBase).addGoal(axiom));
 		} else {
 			verifyZeroInteractions(agent.goalBase);
 		}
@@ -270,17 +264,17 @@ public class Agent_internalAddRole_Test {
 		if (initialBeliefs instanceof Class) {
 			when(converter.getInitialBeliefs(ROLE_MOCK)).thenThrow((Class<? extends Exception>) initialBeliefs);
 		} else {
-			when(converter.getInitialBeliefs(ROLE_MOCK)).thenReturn((List<OWLAxiom>) initialBeliefs);
+			when(converter.getInitialBeliefs(ROLE_MOCK)).thenReturn((Set<OWLAxiom>) initialBeliefs);
 		}
 		if (initialGoals instanceof Class) {
 			when(converter.getInitialGoals(ROLE_MOCK)).thenThrow((Class<? extends Exception>) initialGoals);
 		} else {
-			when(converter.getInitialGoals(ROLE_MOCK)).thenReturn((List<OWLAxiom>) initialGoals);
+			when(converter.getInitialGoals(ROLE_MOCK)).thenReturn((Set<OWLAxiom>) initialGoals);
 		}
 		if (initialPlans instanceof Class) {
-			when(converter.getInitialPlans(ROLE_MOCK, injector)).thenThrow((Class<? extends Exception>) initialPlans);
+			when(converter.getInitialPlans(ROLE_MOCK)).thenThrow((Class<? extends Exception>) initialPlans);
 		} else {
-			when(converter.getInitialPlans(ROLE_MOCK, injector)).thenReturn((Map<IPlan, EventType>) initialPlans);
+			when(converter.getInitialPlans(ROLE_MOCK)).thenReturn((Map<IPlan, EventType>) initialPlans);
 		}
 		return converter;
 	}
@@ -293,10 +287,10 @@ public class Agent_internalAddRole_Test {
 			when(injector.make(DummyService.class, null)).thenReturn((DummyService) makeResult);
 		}
 		if (invokeResult != null && invokeResult instanceof Class) {
-			when(injector.invoke(ROLE_MOCK, PostConstruct.class, null))
+			when(injector.invoke(ROLE_MOCK, PostConstruct.class, null, null))
 					.thenThrow((Class<? extends Exception>) invokeResult);
 		} else {
-			when(injector.invoke(ROLE_MOCK, PostConstruct.class, null)).thenReturn(invokeResult);
+			when(injector.invoke(ROLE_MOCK, PostConstruct.class, null, null)).thenReturn(invokeResult);
 		}
 		return injector;
 	}

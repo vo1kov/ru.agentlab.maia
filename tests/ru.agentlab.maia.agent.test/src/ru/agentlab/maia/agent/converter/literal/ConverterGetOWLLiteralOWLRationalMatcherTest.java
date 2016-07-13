@@ -10,7 +10,7 @@ package ru.agentlab.maia.agent.converter.literal;
 
 import static org.hamcrest.Matchers.equalTo;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasIRI;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTyped;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTypedLiteral;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,8 +20,8 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import ru.agentlab.maia.agent.converter.AbstractGetOWLLiteralMatcherTest;
-import ru.agentlab.maia.agent.converter.LiteralIllelgalLanguageTagException;
-import ru.agentlab.maia.agent.converter.LiteralNotInLexicalSpaceException;
+import ru.agentlab.maia.role.converter.LiteralIllelgalLanguageTagException;
+import ru.agentlab.maia.role.converter.LiteralNotInLexicalSpaceException;
 
 /**
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
@@ -38,11 +38,11 @@ public class ConverterGetOWLLiteralOWLRationalMatcherTest extends AbstractGetOWL
 			  ----------------------------------------------------------------------------------------------------------------------------*/
 			// owl:rational
 			/*  0 */ { "^^owl:rational",              LiteralNotInLexicalSpaceException.class },          // test empty string
-			/*  1 */ { "2/3^^owl:rational",           isTyped(equalTo("2/3"), hasIRI(OWL, RATIONAL)) },   // test non-empty string
-			/*  2 */ { "2 / 3^^owl:rational",         isTyped(equalTo("2 / 3"), hasIRI(OWL, RATIONAL)) }, // test non-empty string
-			/*  3 */ { "-2 /3^^owl:rational",         isTyped(equalTo("-2 /3"), hasIRI(OWL, RATIONAL)) }, // test non-empty string
-			/*  4 */ { "+2/ 3^^owl:rational",         isTyped(equalTo("+2/ 3"), hasIRI(OWL, RATIONAL)) }, // test non-empty string
-			/*  5 */ { "45/7^^<" + OWL + "rational>", isTyped(equalTo("45/7"), hasIRI(OWL, RATIONAL)) },  // test full name
+			/*  1 */ { "2/3^^owl:rational",           isTypedLiteral(equalTo("2/3"), hasIRI(OWL, RATIONAL)) },   // test non-empty string
+			/*  2 */ { "2 / 3^^owl:rational",         isTypedLiteral(equalTo("2 / 3"), hasIRI(OWL, RATIONAL)) }, // test non-empty string
+			/*  3 */ { "-2 /3^^owl:rational",         isTypedLiteral(equalTo("-2 /3"), hasIRI(OWL, RATIONAL)) }, // test non-empty string
+			/*  4 */ { "+2/ 3^^owl:rational",         isTypedLiteral(equalTo("+2/ 3"), hasIRI(OWL, RATIONAL)) }, // test non-empty string
+			/*  5 */ { "45/7^^<" + OWL + "rational>", isTypedLiteral(equalTo("45/7"), hasIRI(OWL, RATIONAL)) },  // test full name
 //			/*  6 */ { "?var^^owl:rational",          isTyped(var("var"), hasIRI(OWL, RATIONAL)) },       // test variable value
 			/*  7 */ { "?var@?lang^^owl:rational",    LiteralIllelgalLanguageTagException.class },        // test variable value and lang
 			/*  8 */ { "2^^owl:rational",             LiteralNotInLexicalSpaceException.class },          // test wrong format

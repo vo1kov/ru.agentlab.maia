@@ -10,7 +10,7 @@ package ru.agentlab.maia.agent.converter.literal;
 
 import static org.hamcrest.Matchers.equalTo;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasIRI;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTyped;
+import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTypedLiteral;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,9 +20,9 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import ru.agentlab.maia.agent.converter.AbstractGetOWLLiteralMatcherTest;
-import ru.agentlab.maia.agent.converter.LiteralIllelgalLanguageTagException;
-import ru.agentlab.maia.agent.converter.LiteralNotInLexicalSpaceException;
-import ru.agentlab.maia.agent.converter.LiteralWrongBuildInDatatypeException;
+import ru.agentlab.maia.role.converter.LiteralIllelgalLanguageTagException;
+import ru.agentlab.maia.role.converter.LiteralNotInLexicalSpaceException;
+import ru.agentlab.maia.role.converter.LiteralWrongBuildInDatatypeException;
 
 /**
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
@@ -39,9 +39,9 @@ public class ConverterGetOWLLiteralXSDHexBinaryMatcherTest extends AbstractGetOW
 			 *| ##		| Input Parameter 				| Result Literal											| Comment						|
 			  -------------------------------------------------------------------------------------------------------------------------------------*/
 			// xsd:hexBinary
-			/*  0 */ 	{ "^^xsd:hexBinary", 			isTyped(equalTo(""), 			hasIRI(XSD, HEX_BINARY)) },	// test empty string
-			/*  1 */ 	{ "a1^^xsd:hexBinary", 			isTyped(equalTo("a1"), 		hasIRI(XSD, HEX_BINARY)) },	// test non-empty string
-			/*  2 */ 	{ "a1e2ff^^xsd:hexBinary", 		isTyped(equalTo("a1e2ff"), 	hasIRI(XSD, HEX_BINARY)) },	// test non-empty string
+			/*  0 */ 	{ "^^xsd:hexBinary", 			isTypedLiteral(equalTo(""), 			hasIRI(XSD, HEX_BINARY)) },	// test empty string
+			/*  1 */ 	{ "a1^^xsd:hexBinary", 			isTypedLiteral(equalTo("a1"), 		hasIRI(XSD, HEX_BINARY)) },	// test non-empty string
+			/*  2 */ 	{ "a1e2ff^^xsd:hexBinary", 		isTypedLiteral(equalTo("a1e2ff"), 	hasIRI(XSD, HEX_BINARY)) },	// test non-empty string
 			/*  3 */ 	{ "?var@?lang^^xsd:hexBinary", 	LiteralIllelgalLanguageTagException.class }, 				// test variable value and lang
 			/*  4 */ 	{ "qwe^^xsd:hexBinary", 		LiteralNotInLexicalSpaceException.class },					// wrong value format
 			/*  5 */ 	{ "f^^xsd:hexBinary", 			LiteralNotInLexicalSpaceException.class },					// wrong value format

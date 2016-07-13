@@ -58,4 +58,6 @@ public interface IAgent {
 
 	void send(IMessage message);
 
+	void fireExternalEvent(Object event);
+
 }

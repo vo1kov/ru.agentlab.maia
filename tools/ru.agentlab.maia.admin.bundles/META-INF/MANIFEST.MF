@@ -11,8 +11,11 @@ Require-Bundle: com.google.guava,
  io.netty;bundle-version="4.0.26",
  javax.inject,
  ru.agentlab.maia;bundle-version="1.0.0",
- ru.agentlab.maia.annotation;bundle-version="1.0.0",
- ru.agentlab.maia.io.messaging;bundle-version="1.0.0"
+ ru.agentlab.maia.io.messaging;bundle-version="1.0.0",
+ ru.agentlab.maia.role,
+ org.semanticweb.owlapi.compatibility,
+ org.semanticweb.owlapi.apibinding,
+ org.semanticweb.owlapi.api
 Import-Package: org.eclipse.osgi.util;version="1.1.0",
  org.osgi.framework;version="1.8.0"
 Export-Package: ru.agentlab.maia.admin.bundles

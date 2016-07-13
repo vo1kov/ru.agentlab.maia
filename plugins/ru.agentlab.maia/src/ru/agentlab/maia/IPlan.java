@@ -8,24 +8,12 @@
  *******************************************************************************/
 package ru.agentlab.maia;
 
-import java.util.Map;
-
-import org.hamcrest.Matcher;
-
-import ru.agentlab.maia.exception.PlanExecutionException;
-
 public interface IPlan {
 
-	void execute(IInjector injector, Map<String, Object> variables) throws PlanExecutionException;
+	IPlanFilter getPlanFilter();
 
-	boolean relevant(IEvent<?> event, Map<String, Object> map);
-
-	void setStateMatcher(Matcher<?> matcher);
-
-	Matcher<?> getStateMatcher();
-
-	void setEventMatcher(Matcher<?> eventMatcher);
-
-	Matcher<?> getEventMatcher();
+	IPlanBody getPlanBody();
+	
+	Object getRole();
 
 }

@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
@@ -21,20 +20,21 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import com.google.common.collect.ImmutableSet;
 
+import de.derivo.sparqldlapi.QueryEngine;
 import ru.agentlab.maia.AgentState;
+import ru.agentlab.maia.ConvertWith;
 import ru.agentlab.maia.EventType;
 import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IAgentContainer;
@@ -47,14 +47,14 @@ import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
-import ru.agentlab.maia.agent.converter.Converter;
+import ru.agentlab.maia.OnStart;
+import ru.agentlab.maia.Option;
 import ru.agentlab.maia.container.Injector;
-import ru.agentlab.maia.event.PlanFailedEvent;
-import ru.agentlab.maia.event.PlanFinishedEvent;
-import ru.agentlab.maia.event.RoleAddedEvent;
-import ru.agentlab.maia.event.RoleRemovedEvent;
-import ru.agentlab.maia.event.RoleResolvedEvent;
-import ru.agentlab.maia.event.RoleUnresolvedEvent;
+import ru.agentlab.maia.event.AddedExternalEvent;
+import ru.agentlab.maia.event.AddedRoleEvent;
+import ru.agentlab.maia.event.RemovedRoleEvent;
+import ru.agentlab.maia.event.ResolvedRoleEvent;
+import ru.agentlab.maia.event.UnresolvedRoleEvent;
 import ru.agentlab.maia.exception.ContainerException;
 import ru.agentlab.maia.exception.ConverterException;
 import ru.agentlab.maia.exception.InjectorException;
@@ -70,15 +70,17 @@ public class Agent implements IAgent {
 	@Inject
 	protected ForkJoinPool executor;
 
-	protected AgentState state = AgentState.UNKNOWN;
+	protected AtomicReference<AgentState> state = new AtomicReference<>(AgentState.UNKNOWN);
 
 	protected final AgentContainer agentContainer = new AgentContainer();
 
 	protected final Queue<IMessage> messageQueue = new ConcurrentLinkedQueue<>();
 
+	protected final Queue<IEvent<?>> externalEventQueue = new ConcurrentLinkedQueue<>();
+
 	protected final Queue<IEvent<?>> eventQueue = new LinkedList<>();
 
-	protected final IBeliefBase beliefBase = new BeliefBase(eventQueue, uuid.toString());
+	protected final IBeliefBase beliefBase = new BeliefBase();
 
 	protected final IGoalBase goalBase = new GoalBase(eventQueue);
 
@@ -86,21 +88,45 @@ public class Agent implements IAgent {
 
 	protected final Set<Object> roles = new HashSet<>();
 
-	protected IConverter converter = new Converter();
+	protected void setState(AgentState newState) {
+		state.set(newState);
+		// System.out.println("Agent [" + uuid.toString() + "] change state to
+		// [" + state.toString() + "]");
+	}
+
+	@PostConstruct
+	public void init() throws InjectorException {
+		Map<String, Object> additional = new HashMap<>();
+		additional.put(Queue.class.getName(), eventQueue);
+		getInjector().inject(beliefBase, additional);
+		getInjector().invoke(beliefBase, PostConstruct.class, null, additional);
+	}
 
 	public IInjector getInjector() {
 		return agentContainer.injector;
 	}
 
 	@Override
+	public void fireExternalEvent(Object event) {
+		externalEventQueue.offer(new AddedExternalEvent(event));
+		boolean started = state.compareAndSet(AgentState.WAITING, AgentState.ACTIVE);
+		if (started) {
+			// System.out.println("Agent [" + uuid.toString() + "] change state
+			// to [" + state.toString() + "]");
+			executor.submit(new ExecuteAction());
+		}
+	}
+
+	@Override
 	public void start() {
-		state = AgentState.ACTIVE;
+		setState(AgentState.ACTIVE);
+		getRoles().forEach(role -> getInjector().invoke(role, OnStart.class, (Object) null));
 		executor.submit(new ExecuteAction());
 	}
 
 	@Override
 	public void stop() {
-		state = AgentState.STOPPING;
+		setState(AgentState.STOPPING);
 	}
 
 	@Override
@@ -120,7 +146,7 @@ public class Agent implements IAgent {
 
 	@Override
 	public AgentState getState() {
-		return state;
+		return state.get();
 	}
 
 	@Override
@@ -130,10 +156,11 @@ public class Agent implements IAgent {
 
 	@Override
 	public void deployTo(IContainer container) throws InjectorException, ContainerException {
-		container.getInjector().inject(this);
-		container.put(uuid.toString(), this);
 		agentContainer.setParent(container);
-		state = AgentState.IDLE;
+		getInjector().inject(this);
+		getInjector().invoke(this, PostConstruct.class);
+		container.put(uuid.toString(), this);
+		setState(AgentState.IDLE);
 	}
 
 	@Override
@@ -141,7 +168,7 @@ public class Agent implements IAgent {
 		if (roleClass == null) {
 			throw new NullPointerException("Role class can't be null");
 		}
-		switch (state) {
+		switch (state.get()) {
 		case UNKNOWN:
 			throw new IllegalStateException("Agent should be deployed into container before adding new roles.");
 		case ACTIVE:
@@ -162,7 +189,7 @@ public class Agent implements IAgent {
 		if (roleObject == null) {
 			throw new NullPointerException("Role class can't be null");
 		}
-		switch (state) {
+		switch (state.get()) {
 		case ACTIVE:
 		case WAITING:
 			throw new IllegalStateException("Agent is in ACTIVE state, use submit method instead.");
@@ -179,7 +206,7 @@ public class Agent implements IAgent {
 
 	@Override
 	public boolean removeAllRoles() {
-		switch (state) {
+		switch (state.get()) {
 		case ACTIVE:
 		case WAITING:
 			throw new IllegalStateException("Agent is in ACTIVE state, use submit method instead.");
@@ -212,13 +239,13 @@ public class Agent implements IAgent {
 	protected boolean internalRemoveRole(Object roleObject) {
 		boolean removed = roles.remove(roleObject);
 		if (removed) {
-			eventQueue.offer(new RoleRemovedEvent(roleObject));
+			eventQueue.offer(new RemovedRoleEvent(roleObject));
 		}
 		return removed;
 	}
 
 	protected boolean internalRemoveAllRoles() {
-		Stream<RoleRemovedEvent> events = roles.stream().map(role -> new RoleRemovedEvent(role));
+		Stream<RemovedRoleEvent> events = roles.stream().map(role -> new RemovedRoleEvent(role));
 		roles.clear();
 		events.forEach(eventQueue::offer);
 		return true;
@@ -226,39 +253,41 @@ public class Agent implements IAgent {
 
 	protected Object internalAddRole(Class<?> roleClass, Map<String, Object> parameters) throws ResolveException {
 		try {
+			ConvertWith convertWith = roleClass.getAnnotation(ConvertWith.class);
+			if (convertWith == null) {
+				throw new ResolveException(
+						"Unknown converter, use @" + ConvertWith.class.getName() + " to specify converter.");
+			}
 			// Create instance of role object
 			IInjector injector = getInjector();
 			Object roleObject = injector.make(roleClass, parameters);
 			injector.inject(roleObject);
-			injector.invoke(roleObject, PostConstruct.class, null);
+			injector.invoke(roleObject, PostConstruct.class, null, null);
 
+			IConverter converter = injector.make(convertWith.value());
+			injector.inject(converter);
+			injector.invoke(converter, PostConstruct.class, null, null);
 			// Now role object have resolved all field dependencies. Need to
 			// convert role object to initial beliefs, goals and plans.
-			List<OWLAxiom> initialBeliefs = converter.getInitialBeliefs(roleObject);
-			List<OWLAxiom> initialGoals = converter.getInitialGoals(roleObject);
-			Map<IPlan, EventType> initialPlans = converter.getInitialPlans(roleObject, injector);
+			Set<OWLAxiom> initialBeliefs = converter.getInitialBeliefs(roleObject);
+			Set<OWLAxiom> initialGoals = converter.getInitialGoals(roleObject);
+			Map<IPlan, EventType> initialPlans = converter.getInitialPlans(roleObject);
 
 			// If no exceptions was thrown by this moment then we can add
 			// beliefs, goals and plans converted from role object and
 			// role object themselves
-			if (initialBeliefs != null) {
-				beliefBase.addAxioms(initialBeliefs);
-			}
-			if (initialGoals != null) {
-				goalBase.addAxioms(initialGoals);
-			}
-			if (initialPlans != null) {
-				initialPlans.forEach((plan, type) -> planBase.add(type, plan));
-			}
+			beliefBase.addBeliefs(initialBeliefs);
+			goalBase.addGoals(initialGoals);
+			initialPlans.forEach((plan, type) -> planBase.add(type, plan));
 
 			// Add role object to the role base and generate event about
 			// successful resolving
 			roles.add(roleObject);
-			eventQueue.offer(new RoleAddedEvent(roleObject));
-			eventQueue.offer(new RoleResolvedEvent(roleObject));
+			eventQueue.offer(new AddedRoleEvent(roleObject));
+			eventQueue.offer(new ResolvedRoleEvent(roleObject));
 			return roleObject;
 		} catch (InjectorException | ConverterException e) {
-			eventQueue.offer(new RoleUnresolvedEvent(roleClass));
+			eventQueue.offer(new UnresolvedRoleEvent(roleClass));
 			throw new ResolveException(e);
 		}
 	}
@@ -306,22 +335,23 @@ public class Agent implements IAgent {
 				return goalBase;
 			} else if (key.equals(IPlanBase.class.getName())) {
 				return planBase;
-			} else if (key.equals(IRI.class.getName())) {
-				return beliefBase.getOntologyIRI();
 			} else if (key.equals(OWLOntology.class.getName())) {
 				return beliefBase.getOntology();
-			} else if (key.equals(OWLDataFactory.class.getName())) {
-				return beliefBase.getFactory();
+			} else if (key.equals(IInjector.class.getName())) {
+				return injector;
+			} else if (key.equals(QueryEngine.class.getName())) {
+				return beliefBase.getQueryEngine();
 			} else {
 				return null;
 			}
 		}
 
-		public <T> T get(Class<T> key) {
+		@Override
+		public <T> T getLocal(Class<T> key) {
 			if (key == UUID.class) {
 				return key.cast(uuid);
 			} else if (key == IAgent.class) {
-				return key.cast(this);
+				return key.cast(Agent.this);
 			} else if (key == IContainer.class) {
 				return key.cast(getParent());
 			} else if (key == IBeliefBase.class) {
@@ -330,12 +360,12 @@ public class Agent implements IAgent {
 				return key.cast(goalBase);
 			} else if (key == IPlanBase.class) {
 				return key.cast(planBase);
-			} else if (key == IRI.class) {
-				return key.cast(beliefBase.getOntologyIRI());
 			} else if (key == OWLOntology.class) {
 				return key.cast(beliefBase.getOntology());
-			} else if (key == OWLDataFactory.class) {
-				return key.cast(beliefBase.getFactory());
+			} else if (key == IInjector.class) {
+				return key.cast(injector);
+			} else if (key == QueryEngine.class) {
+				return key.cast(beliefBase.getQueryEngine());
 			} else {
 				return null;
 			}
@@ -351,13 +381,15 @@ public class Agent implements IAgent {
 				IBeliefBase.class.getName(),
 				IGoalBase.class.getName(),
 				IPlanBase.class.getName(),
-				IRI.class.getName(),
 				OWLOntology.class.getName(),
-				OWLDataFactory.class.getName()
+				IInjector.class.getName(),
+				QueryEngine.class.getName()
 				// @formatter:on
 			);
 		}
 	}
+
+	AtomicInteger i = new AtomicInteger();
 
 	protected final class ExecuteAction extends RecursiveAction {
 
@@ -365,39 +397,41 @@ public class Agent implements IAgent {
 
 		@Override
 		protected void compute() {
-			IEvent<?> event = selectEvent();
+			i.incrementAndGet();
+			// System.out.println("-------------------- Execute " +
+			// i.incrementAndGet() + " --------------------");
+			// long begin = System.nanoTime();
+			IEvent<?> event = externalEventQueue.poll();
 			if (event == null) {
-				state = AgentState.WAITING;
-				return;
+				event = eventQueue.poll();
+				if (event == null) {
+					setState(AgentState.WAITING);
+					return;
+				}
 			}
-			List<PlanStateful> relevantPlans = selectRelevantPlans(event);
-			List<PlanStateful> applicablePlans = selectApplicablePlans(relevantPlans);
-			applicablePlans.forEach(plan -> {
-				Map<String, Object> variables = new HashMap<>();
+
+			// System.out.println("EventQueue: " + eventQueue.toString());
+			// System.out.println("Event: " + event.toString());
+			Iterable<Option> options = planBase.getOptions(event);
+			options.forEach(option -> {
 				try {
-					plan.execute(getInjector(), variables);
-					eventQueue.offer(new PlanFinishedEvent(plan));
+					option.getPlanBody().execute(getInjector(), option.getValues());
+					// eventQueue.offer(new PlanFinishedEvent(planBody));
 				} catch (Exception e) {
-					eventQueue.offer(new PlanFailedEvent(plan));
+					e.printStackTrace();
+					// eventQueue.offer(new PlanFailedEvent(planBody));
 				}
 			});
+			// System.out.println("ThreadPool: " + executor.toString());
+			// System.out.println("Executed " + (System.nanoTime() - begin) + "
+			// nanos");
 
 			if (getState() == AgentState.ACTIVE) {
 				ExecuteAction action = new ExecuteAction();
-				invokeAll(action);
+				executor.submit(action);
+			} else {
+				setState(AgentState.IDLE);
 			}
-		}
-
-		protected IEvent<?> selectEvent() {
-			return eventQueue.poll();
-		}
-
-		protected List<PlanStateful> selectRelevantPlans(IEvent<?> event) {
-			return null;
-		}
-
-		protected List<PlanStateful> selectApplicablePlans(List<PlanStateful> relevantPlans) {
-			return null;
 		}
 
 	}

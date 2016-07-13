@@ -5,32 +5,32 @@ import javax.inject.Inject;
 
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IMessage;
-import ru.agentlab.maia.annotation.BeliefDataPropertyAdded;
-import ru.agentlab.maia.annotation.GoalClassificationAdded;
-import ru.agentlab.maia.annotation.InitialBelief;
-import ru.agentlab.maia.annotation.InitialGoal;
 import ru.agentlab.maia.messaging.AclMessage;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
+import ru.agentlab.maia.role.AddedBelief;
+import ru.agentlab.maia.role.AddedGoal;
+import ru.agentlab.maia.role.AxiomType;
+import ru.agentlab.maia.role.InitialBelief;
+import ru.agentlab.maia.role.InitialGoal;
 
-@InitialBelief(":this :havePosition :myPosition")
-@InitialBelief(":myPosition :haveX 2")
-@InitialBelief(":myPosition :haveY 2")
-@InitialGoal(":this :havePosition :myPosition")
-@InitialGoal(":myPosition :haveX 5")
-@InitialGoal(":myPosition :haveY 5")
+@InitialBelief(value = { ":this", ":havePosition", "_:pos" }, type = AxiomType.OBJECT_PROPERTY_ASSERTION)
+@InitialBelief(value = { "_:pos", ":haveX", "2^^xsd:integer" }, type = AxiomType.DATA_PROPERTY_ASSERTION)
+@InitialBelief(value = { "_:pos", ":haveY", "2^^xsd:integer" }, type = AxiomType.DATA_PROPERTY_ASSERTION)
+@InitialGoal(value = { ":this", ":havePosition", "_:pos" }, type = AxiomType.OBJECT_PROPERTY_ASSERTION)
+@InitialGoal(value = { "_:pos", ":haveX", "5^^xsd:integer" }, type = AxiomType.DATA_PROPERTY_ASSERTION)
+@InitialGoal(value = { "_:pos", ":haveY", "5^^xsd:integer" }, type = AxiomType.DATA_PROPERTY_ASSERTION)
 public class HelloWorld {
 
 	@Inject
 	IMessageDeliveryService messaging;
 
-	@Inject
 	@PostConstruct
-	@BeliefDataPropertyAdded("?some hasLength some string value^^xsd:string")
+	@AddedBelief(value = { "?some", "hasLength", "value^^xsd:string" }, type = AxiomType.DATA_PROPERTY_ASSERTION)
 	public void setup(IGoalBase goalBase) {
 	}
 
-	@GoalClassificationAdded("init")
-	@BeliefDataPropertyAdded("?some hasLength 2^^xsd:float")
+	@AddedGoal(value = { "init" }, type = AxiomType.CLASS_ASSERTION)
+	@AddedBelief(value = { "?some", "hasLength", "2^^xsd:float" }, type = AxiomType.DATA_PROPERTY_ASSERTION)
 	public void onInit() {
 		IMessage message = new AclMessage();
 		message.setContent("Hello World");
