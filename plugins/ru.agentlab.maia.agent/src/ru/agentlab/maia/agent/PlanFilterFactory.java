@@ -5,6 +5,7 @@ import java.util.Map;
 import org.hamcrest.Matcher;
 
 import ru.agentlab.maia.IPlanFilter;
+import ru.agentlab.maia.IStateMatcher;
 
 public class PlanFilterFactory {
 

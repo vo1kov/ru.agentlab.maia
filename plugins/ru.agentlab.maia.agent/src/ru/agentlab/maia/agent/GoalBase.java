@@ -6,7 +6,7 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IGoalBase;
-import ru.agentlab.maia.event.AddedGoalEvent;
+import ru.agentlab.maia.event.GoalAddedEvent;
 
 public class GoalBase implements IGoalBase {
 
@@ -19,7 +19,7 @@ public class GoalBase implements IGoalBase {
 	@Override
 	public boolean addGoal(OWLAxiom axiom) {
 		// TODO: implement this
-		eventQueue.offer(new AddedGoalEvent(axiom));
+		eventQueue.offer(new GoalAddedEvent(axiom));
 		return false;
 	}
 

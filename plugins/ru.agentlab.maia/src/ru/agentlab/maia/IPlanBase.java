@@ -13,9 +13,9 @@ import java.util.stream.Stream;
 
 public interface IPlanBase {
 
-	void add(EventType type, IPlan plan);
+	void add(Class<?> type, IPlan plan);
 
-	void remove(IPlan plan);
+	void remove(Class<?> type, IPlan plan);
 
 	Collection<IPlan> getPlans();
 

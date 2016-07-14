@@ -5,7 +5,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import ru.agentlab.maia.IAgent;
-import ru.agentlab.maia.agent.IStateMatcher;
+import ru.agentlab.maia.IStateMatcher;
 
 public class AskForRole implements IStateMatcher {
 

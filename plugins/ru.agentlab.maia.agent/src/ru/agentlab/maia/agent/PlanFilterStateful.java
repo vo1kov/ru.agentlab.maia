@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.hamcrest.Matcher;
 
+import ru.agentlab.maia.IStateMatcher;
+
 public class PlanFilterStateful extends AbstractPlanFilter {
 
 	protected final IStateMatcher stateMatcher;

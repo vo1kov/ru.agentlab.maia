@@ -27,8 +27,8 @@ import org.semanticweb.owlapi.reasoner.structural.StructuralReasonerFactory;
 import de.derivo.sparqldlapi.QueryEngine;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IEvent;
-import ru.agentlab.maia.event.AddedBeliefEvent;
-import ru.agentlab.maia.event.RemovedBeliefEvent;
+import ru.agentlab.maia.event.BeliefAddedEvent;
+import ru.agentlab.maia.event.BeliefRemovedEvent;
 
 public class BeliefBase implements IBeliefBase {
 
@@ -59,9 +59,9 @@ public class BeliefBase implements IBeliefBase {
 				if (change.getOntology() == ontology) {
 					OWLAxiom axiom = change.getAxiom();
 					if (change.isAddAxiom()) {
-						eventQueue.offer(new AddedBeliefEvent(axiom));
+						eventQueue.offer(new BeliefAddedEvent(axiom));
 					} else if (change.isRemoveAxiom()) {
-						eventQueue.offer(new RemovedBeliefEvent(axiom));
+						eventQueue.offer(new BeliefRemovedEvent(axiom));
 					}
 				}
 			});

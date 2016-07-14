@@ -7,12 +7,12 @@ import javax.inject.Inject;
 
 import org.hamcrest.Matchers;
 
-import ru.agentlab.maia.EventType;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
 import ru.agentlab.maia.agent.Plan;
 import ru.agentlab.maia.agent.PlanBodyLambda;
 import ru.agentlab.maia.agent.PlanFilterFactory;
+import ru.agentlab.maia.event.BeliefAddedEvent;
 
 public class ExampleLambdaPlan {
 
@@ -29,7 +29,7 @@ public class ExampleLambdaPlan {
 					System.out.println(service);
 					System.out.println(service.hashCode());
 				}));
-		planBase.add(EventType.ADDED_BELIEF, plan);
+		planBase.add(BeliefAddedEvent.class, plan);
 	}
 
 }

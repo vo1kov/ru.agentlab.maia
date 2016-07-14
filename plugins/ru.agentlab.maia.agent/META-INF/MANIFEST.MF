@@ -17,7 +17,9 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  ru.agentlab.maia.hamcrest.owlapi;bundle-version="1.0.0",
  ru.agentlab.maia.hamcrest.message;bundle-version="1.0.0",
  de.derivo.sparqldlapi;bundle-version="1.0.0",
- org.semanticweb.owlapi.impl
+ org.semanticweb.owlapi.impl,
+ ru.agentlab.maia.annotation.agent,
+ ru.agentlab.maia.annotation
 Export-Package: ru.agentlab.maia.agent,
  ru.agentlab.maia.agent.match
 Import-Package: ru.agentlab.maia.container

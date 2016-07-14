@@ -12,6 +12,4 @@ public interface IEvent<T> {
 
 	T getPayload();
 	
-	EventType getType();
-
 }

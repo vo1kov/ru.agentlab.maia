@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
@@ -27,34 +28,40 @@ import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.semanticweb.owlapi.model.OWLAxiom;
+import org.hamcrest.Matcher;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import com.google.common.collect.ImmutableSet;
 
 import de.derivo.sparqldlapi.QueryEngine;
 import ru.agentlab.maia.AgentState;
-import ru.agentlab.maia.ConvertWith;
-import ru.agentlab.maia.EventType;
+import ru.agentlab.maia.ConverterContext;
 import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IAgentContainer;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IContainer;
-import ru.agentlab.maia.IConverter;
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
-import ru.agentlab.maia.OnStart;
+import ru.agentlab.maia.IPlanBody;
+import ru.agentlab.maia.IPlanFilter;
+import ru.agentlab.maia.IStateMatcher;
 import ru.agentlab.maia.Option;
+import ru.agentlab.maia.agent.match.CompositeStateMatcher;
+import ru.agentlab.maia.annotation.EventMatcher;
+import ru.agentlab.maia.annotation.IEventMatcherConverter;
+import ru.agentlab.maia.annotation.IStateMatcherConverter;
+import ru.agentlab.maia.annotation.StateMatcher;
+import ru.agentlab.maia.annotation.agent.OnAgentStarted;
 import ru.agentlab.maia.container.Injector;
-import ru.agentlab.maia.event.AddedExternalEvent;
-import ru.agentlab.maia.event.AddedRoleEvent;
-import ru.agentlab.maia.event.RemovedRoleEvent;
-import ru.agentlab.maia.event.ResolvedRoleEvent;
-import ru.agentlab.maia.event.UnresolvedRoleEvent;
+import ru.agentlab.maia.event.ExternalAddedEvent;
+import ru.agentlab.maia.event.RoleAddedEvent;
+import ru.agentlab.maia.event.RoleRemovedEvent;
+import ru.agentlab.maia.event.RoleResolvedEvent;
+import ru.agentlab.maia.event.RoleUnresolvedEvent;
 import ru.agentlab.maia.exception.ContainerException;
 import ru.agentlab.maia.exception.ConverterException;
 import ru.agentlab.maia.exception.InjectorException;
@@ -108,7 +115,7 @@ public class Agent implements IAgent {
 
 	@Override
 	public void fireExternalEvent(Object event) {
-		externalEventQueue.offer(new AddedExternalEvent(event));
+		externalEventQueue.offer(new ExternalAddedEvent(event));
 		boolean started = state.compareAndSet(AgentState.WAITING, AgentState.ACTIVE);
 		if (started) {
 			// System.out.println("Agent [" + uuid.toString() + "] change state
@@ -120,7 +127,7 @@ public class Agent implements IAgent {
 	@Override
 	public void start() {
 		setState(AgentState.ACTIVE);
-		getRoles().forEach(role -> getInjector().invoke(role, OnStart.class, (Object) null));
+		getRoles().forEach(role -> getInjector().invoke(role, OnAgentStarted.class, (Object) null));
 		executor.submit(new ExecuteAction());
 	}
 
@@ -239,13 +246,13 @@ public class Agent implements IAgent {
 	protected boolean internalRemoveRole(Object roleObject) {
 		boolean removed = roles.remove(roleObject);
 		if (removed) {
-			eventQueue.offer(new RemovedRoleEvent(roleObject));
+			eventQueue.offer(new RoleRemovedEvent(roleObject));
 		}
 		return removed;
 	}
 
 	protected boolean internalRemoveAllRoles() {
-		Stream<RemovedRoleEvent> events = roles.stream().map(role -> new RemovedRoleEvent(role));
+		Stream<RoleRemovedEvent> events = roles.stream().map(role -> new RoleRemovedEvent(role));
 		roles.clear();
 		events.forEach(eventQueue::offer);
 		return true;
@@ -253,42 +260,91 @@ public class Agent implements IAgent {
 
 	protected Object internalAddRole(Class<?> roleClass, Map<String, Object> parameters) throws ResolveException {
 		try {
-			ConvertWith convertWith = roleClass.getAnnotation(ConvertWith.class);
-			if (convertWith == null) {
-				throw new ResolveException(
-						"Unknown converter, use @" + ConvertWith.class.getName() + " to specify converter.");
-			}
 			// Create instance of role object
 			IInjector injector = getInjector();
 			Object roleObject = injector.make(roleClass, parameters);
 			injector.inject(roleObject);
 			injector.invoke(roleObject, PostConstruct.class, null, null);
 
-			IConverter converter = injector.make(convertWith.value());
-			injector.inject(converter);
-			injector.invoke(converter, PostConstruct.class, null, null);
 			// Now role object have resolved all field dependencies. Need to
 			// convert role object to initial beliefs, goals and plans.
-			Set<OWLAxiom> initialBeliefs = converter.getInitialBeliefs(roleObject);
-			Set<OWLAxiom> initialGoals = converter.getInitialGoals(roleObject);
-			Map<IPlan, EventType> initialPlans = converter.getInitialPlans(roleObject);
+			Map<IPlan, Class<?>> plans = getInitialPlans(roleObject);
 
 			// If no exceptions was thrown by this moment then we can add
 			// beliefs, goals and plans converted from role object and
 			// role object themselves
-			beliefBase.addBeliefs(initialBeliefs);
-			goalBase.addGoals(initialGoals);
-			initialPlans.forEach((plan, type) -> planBase.add(type, plan));
+			plans.forEach((plan, type) -> planBase.add(type, plan));
 
 			// Add role object to the role base and generate event about
 			// successful resolving
 			roles.add(roleObject);
-			eventQueue.offer(new AddedRoleEvent(roleObject));
-			eventQueue.offer(new ResolvedRoleEvent(roleObject));
+			eventQueue.offer(new RoleAddedEvent(roleObject));
+			eventQueue.offer(new RoleResolvedEvent(roleObject));
 			return roleObject;
 		} catch (InjectorException | ConverterException e) {
-			eventQueue.offer(new UnresolvedRoleEvent(roleClass));
+			eventQueue.offer(new RoleUnresolvedEvent(roleClass));
 			throw new ResolveException(e);
+		}
+	}
+
+	public Map<IPlan, Class<?>> getInitialPlans(Object role) {
+		IInjector injector = getInjector();
+		Map<IPlan, Class<?>> result = new HashMap<>();
+		Stream.of(role.getClass().getDeclaredMethods()).forEach(method -> {
+
+			IStateMatcher[] stateMatchers = Stream.of(method.getAnnotations()).map(annotation -> {
+				ConverterContext context = new ConverterContext();
+				context.setAnnotation(annotation);
+				context.setInjector(injector);
+				context.setMethod(method);
+				context.setRole(role);
+				context.setVariables(null);
+				StateMatcher stateMatcherAnn = annotation.annotationType().getAnnotation(StateMatcher.class);
+				if (stateMatcherAnn == null) {
+					return null;
+				}
+				Class<? extends IStateMatcherConverter> converterClass = stateMatcherAnn.converter();
+				IStateMatcherConverter converter = injector.make(converterClass);
+				IStateMatcher matcher = converter.getMatcher(context);
+				return matcher;
+
+			}).filter(Objects::nonNull).toArray(size -> new IStateMatcher[size]);
+
+			IStateMatcher stateMatcher = reduceMatchers(stateMatchers);
+
+			Stream.of(method.getAnnotations())
+					.filter(annotation -> annotation.annotationType().isAnnotationPresent(EventMatcher.class))
+					.forEach(annotation -> {
+						Map<String, Object> variables = new HashMap<>();
+						ConverterContext context = new ConverterContext();
+						context.setAnnotation(annotation);
+						context.setInjector(injector);
+						context.setMethod(method);
+						context.setRole(role);
+						context.setVariables(variables);
+						EventMatcher eventMatcherAnnotation = annotation.annotationType()
+								.getAnnotation(EventMatcher.class);
+						Class<? extends IEventMatcherConverter> converterClass = eventMatcherAnnotation.converter();
+						Class<?> eventType = eventMatcherAnnotation.eventType();
+						IEventMatcherConverter converter = injector.make(converterClass);
+						Matcher<?> eventMatcher = converter.getMatcher(context);
+						IPlanFilter planFilter = PlanFilterFactory.create(eventMatcher, variables, stateMatcher);
+						IPlanBody planBody = PlanBodyFactory.create(role, method);
+						IPlan plan = new Plan(role, planFilter, planBody);
+						result.put(plan, eventType);
+					});
+
+		});
+		return result;
+	}
+
+	private IStateMatcher reduceMatchers(IStateMatcher[] stateMatchers) {
+		if (stateMatchers.length == 0) {
+			return null;
+		} else if (stateMatchers.length == 1) {
+			return stateMatchers[0];
+		} else {
+			return new CompositeStateMatcher(stateMatchers);
 		}
 	}
 

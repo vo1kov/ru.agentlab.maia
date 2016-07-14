@@ -17,13 +17,13 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ru.agentlab.maia.IMessage;
+import ru.agentlab.maia.annotation.belief.AddedBelief;
+import ru.agentlab.maia.annotation.belief.AxiomType;
+import ru.agentlab.maia.annotation.belief.HaveBelief;
+import ru.agentlab.maia.annotation.belief.Prefix;
 import ru.agentlab.maia.messaging.AclMessage;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
-import ru.agentlab.maia.role.AddedBelief;
-import ru.agentlab.maia.role.AddedMessage;
-import ru.agentlab.maia.role.AxiomType;
-import ru.agentlab.maia.role.HaveBelief;
-import ru.agentlab.maia.role.Prefix;
+import ru.agentlab.maia.plan.message.AddedMessage;
 
 @Prefix(name = "osgi", namespace = "http://www.agentlab.ru/ontologies/osgi")
 public class BundleSubscriptionResponder {

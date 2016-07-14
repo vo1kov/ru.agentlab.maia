@@ -18,15 +18,15 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IInjector;
+import ru.agentlab.maia.annotation.belief.OnBeliefAdded;
+import ru.agentlab.maia.annotation.belief.AxiomType;
+import ru.agentlab.maia.annotation.belief.WhenHaveBelief;
+import ru.agentlab.maia.annotation.belief.InitialBelief;
+import ru.agentlab.maia.annotation.belief.Prefix;
+import ru.agentlab.maia.annotation.goal.InitialGoal;
+import ru.agentlab.maia.annotation.message.OnMessageReceived;
+import ru.agentlab.maia.annotation.role.OnRoleAdded;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
-import ru.agentlab.maia.role.AddedBelief;
-import ru.agentlab.maia.role.AddedMessage;
-import ru.agentlab.maia.role.AddedRole;
-import ru.agentlab.maia.role.AxiomType;
-import ru.agentlab.maia.role.HaveBelief;
-import ru.agentlab.maia.role.InitialBelief;
-import ru.agentlab.maia.role.InitialGoal;
-import ru.agentlab.maia.role.Prefix;
 
 @Prefix(name = "rdf", namespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns")
 @InitialBelief(value = { "test", "SDfsdf" }, type = AxiomType.CLASS_ASSERTION)
@@ -58,24 +58,24 @@ public class Agent {
 	@Inject
 	IMessageDeliveryService messaging;
 
-	@AddedBelief(value = { "?classified", "?classifier" }, type = AxiomType.CLASS_ASSERTION)
-	@HaveBelief(value = { "?classifier", "?c" }, type = AxiomType.CLASS_ASSERTION)
+	@OnBeliefAdded(value = { "?classified", "?classifier" }, type = AxiomType.CLASS_ASSERTION)
+	@WhenHaveBelief(value = { "?classifier", "?c" }, type = AxiomType.CLASS_ASSERTION)
 	public void onSomeClassified() {
 
 	}
 
-	@AddedBelief(value = { "?classified", "?classifier" }, type = AxiomType.CLASS_ASSERTION)
-	@HaveBelief(value = { "?classifier", "owl:Thing" }, type = AxiomType.CLASS_ASSERTION)
+	@OnBeliefAdded(value = { "?classified", "?classifier" }, type = AxiomType.CLASS_ASSERTION)
+	@WhenHaveBelief(value = { "?classifier", "owl:Thing" }, type = AxiomType.CLASS_ASSERTION)
 	public void onSomeClassifiedw() {
 
 	}
 
-	@AddedMessage(performative = "INFO")
+	@OnMessageReceived(performative = "INFO")
 	public void sdf() {
 
 	}
 
-	@AddedRole(HelloWorld.class)
+	@OnRoleAdded(HelloWorld.class)
 	public void onHelloWorldAdded() {
 	}
 

@@ -41,16 +41,16 @@ import com.google.common.collect.ImmutableSet;
 
 import ru.agentlab.maia.EventType;
 import ru.agentlab.maia.IAgent;
-import ru.agentlab.maia.IConverter;
 import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.agent.doubles.DummyService;
-import ru.agentlab.maia.event.AddedRoleEvent;
-import ru.agentlab.maia.event.ResolvedRoleEvent;
-import ru.agentlab.maia.event.UnresolvedRoleEvent;
+import ru.agentlab.maia.event.RoleAddedEvent;
+import ru.agentlab.maia.event.RoleResolvedEvent;
+import ru.agentlab.maia.event.RoleUnresolvedEvent;
 import ru.agentlab.maia.exception.ConverterException;
 import ru.agentlab.maia.exception.InjectorException;
 import ru.agentlab.maia.exception.ResolveException;
+import ru.agentlab.maia.plan.IConverter;
 import ru.agentlab.maia.test.util.LoggerRule;
 
 /**
@@ -179,8 +179,8 @@ public class Agent_internalAddRole_Test {
 			checkBeliefBase(agent);
 			checkGoalBase(agent);
 			checkPlanBase(agent);
-			verify(agent.eventQueue, times(1)).offer(new AddedRoleEvent(role));
-			verify(agent.eventQueue, times(1)).offer(new ResolvedRoleEvent(role));
+			verify(agent.eventQueue, times(1)).offer(new RoleAddedEvent(role));
+			verify(agent.eventQueue, times(1)).offer(new RoleResolvedEvent(role));
 			assertThat(role, equalTo(result));
 		} catch (Exception e) {
 			// Then
@@ -194,7 +194,7 @@ public class Agent_internalAddRole_Test {
 			// role added. Only ROLE_UNRESOLVED event should be added to event
 			// queue.
 			verifyZeroInteractions(agent.beliefBase, agent.goalBase, agent.planBase);
-			verify(agent.eventQueue, times(1)).offer(new UnresolvedRoleEvent(DummyService.class));
+			verify(agent.eventQueue, times(1)).offer(new RoleUnresolvedEvent(DummyService.class));
 		}
 	}
 

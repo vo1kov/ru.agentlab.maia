@@ -20,8 +20,8 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import ru.agentlab.maia.agent.converter.AbstractGetOWLLiteralMatcherTest;
-import ru.agentlab.maia.role.converter.LiteralIllelgalLanguageTagException;
-import ru.agentlab.maia.role.converter.LiteralWrongBuildInDatatypeException;
+import ru.agentlab.maia.annotation.belief.converter.LiteralIllelgalLanguageTagException;
+import ru.agentlab.maia.annotation.belief.converter.LiteralWrongBuildInDatatypeException;
 
 /**
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>

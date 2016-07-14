@@ -22,8 +22,8 @@ import ru.agentlab.maia.FIPAPerformativeNames;
 import ru.agentlab.maia.FIPAProtocolNames;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IMessage;
+import ru.agentlab.maia.annotation.message.OnMessageReceived;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
-import ru.agentlab.maia.role.AddedMessage;
 
 public abstract class SubscriptionInitiator {
 
@@ -50,7 +50,7 @@ public abstract class SubscriptionInitiator {
 		messaging.send(message);
 	}
 
-	@AddedMessage(performative = FIPAPerformativeNames.AGREE, protocol = FIPAProtocolNames.FIPA_SUBSCRIBE)
+	@OnMessageReceived(performative = FIPAPerformativeNames.AGREE, protocol = FIPAProtocolNames.FIPA_SUBSCRIBE)
 	public void onAgree(IMessage message) {
 		if (!message.getConversationId().equals(conversationId)) {
 			return;
@@ -65,11 +65,11 @@ public abstract class SubscriptionInitiator {
 						factory.getOWLNamedIndividual(sender.toString(), prefixManager)));
 	}
 
-	@AddedMessage(performative = FIPAPerformativeNames.REFUSE, protocol = FIPAProtocolNames.FIPA_SUBSCRIBE)
+	@OnMessageReceived(performative = FIPAPerformativeNames.REFUSE, protocol = FIPAProtocolNames.FIPA_SUBSCRIBE)
 	public void onRefuse(IMessage message) {
 	}
 
-	@AddedMessage(performative = FIPAPerformativeNames.INFORM, protocol = FIPAProtocolNames.FIPA_SUBSCRIBE)
+	@OnMessageReceived(performative = FIPAPerformativeNames.INFORM, protocol = FIPAProtocolNames.FIPA_SUBSCRIBE)
 	public void onInform(IMessage message) {
 		if (!message.getConversationId().equals(conversationId)) {
 			return;

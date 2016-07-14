@@ -10,15 +10,13 @@ package ru.agentlab.maia.agent;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Queue;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import ru.agentlab.maia.EventType;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
@@ -29,58 +27,44 @@ public class PlanBase implements IPlanBase {
 
 	protected final Queue<IEvent<?>> eventQueue;
 
-	protected final EnumMap<EventType, Collection<IPlan>> plans = new EnumMap<>(EventType.class);
+	protected final Multimap<Class<?>, IPlan> plans = ArrayListMultimap.create();
 
 	public PlanBase(Queue<IEvent<?>> eventQueue) {
 		this.eventQueue = eventQueue;
 	}
 
 	@Override
-	public void add(EventType type, IPlan plan) {
-		Collection<IPlan> eventPlans = plans.get(type);
-		if (eventPlans == null) {
-			eventPlans = new HashSet<IPlan>();
-			plans.put(type, eventPlans);
-		}
-		eventPlans.add(plan);
+	public void add(Class<?> type, IPlan plan) {
+		plans.put(type, plan);
 	}
 
 	@Override
-	public void remove(IPlan plan) {
-		for (Collection<IPlan> collection : plans.values()) {
-			if (collection != null) {
-				if (collection.remove(plan)) {
-					return;
-				}
-			}
-		}
+	public void remove(Class<?> type, IPlan plan) {
+		plans.remove(type, plan);
 	}
 
 	@Override
 	public Iterable<Option> getOptions(IEvent<?> event) {
-		Collection<IPlan> eventPlans = plans.get(event.getType());
-		if (eventPlans != null) {
-			List<Option> result = new ArrayList<>();
-			Object eventData = event.getPayload();
-			for (IPlan plan : eventPlans) {
-				IPlanFilter planFilter = plan.getPlanFilter();
-				if (planFilter.matches(eventData)) {
-					result.add(new Option(plan.getPlanBody(), planFilter.getVariables()));
-				}
+		Collection<IPlan> eventPlans = plans.get(event.getClass());
+		List<Option> result = new ArrayList<>();
+		Object eventData = event.getPayload();
+		for (IPlan plan : eventPlans) {
+			IPlanFilter planFilter = plan.getPlanFilter();
+			if (planFilter.matches(eventData)) {
+				result.add(new Option(plan.getPlanBody(), planFilter.getVariables()));
 			}
-			return result;
 		}
-		return Collections.emptyList();
+		return result;
 	}
 
 	@Override
 	public Stream<IPlan> getPlansStream() {
-		return plans.values().stream().flatMap(list -> list.stream());
+		return plans.values().stream();
 	}
 
 	@Override
 	public Collection<IPlan> getPlans() {
-		return plans.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
+		return plans.values();
 	}
 
 }

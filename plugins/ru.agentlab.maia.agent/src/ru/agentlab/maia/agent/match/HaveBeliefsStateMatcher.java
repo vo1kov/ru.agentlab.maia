@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import de.derivo.sparqldlapi.Query;
 import de.derivo.sparqldlapi.QueryEngine;
 import de.derivo.sparqldlapi.QueryResult;
-import ru.agentlab.maia.agent.IStateMatcher;
+import ru.agentlab.maia.IStateMatcher;
 
 public class HaveBeliefsStateMatcher implements IStateMatcher {
 

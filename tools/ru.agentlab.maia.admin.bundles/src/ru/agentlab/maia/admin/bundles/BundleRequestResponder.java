@@ -10,11 +10,11 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import ru.agentlab.maia.FIPAPerformativeNames;
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IMessage;
+import ru.agentlab.maia.annotation.belief.AxiomType;
+import ru.agentlab.maia.annotation.goal.AddedGoal;
+import ru.agentlab.maia.annotation.goal.FailedGoal;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
-import ru.agentlab.maia.role.AddedGoal;
-import ru.agentlab.maia.role.AddedMessage;
-import ru.agentlab.maia.role.AxiomType;
-import ru.agentlab.maia.role.FailedGoal;
+import ru.agentlab.maia.plan.message.AddedMessage;
 
 public class BundleRequestResponder {
 
