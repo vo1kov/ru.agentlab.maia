@@ -468,7 +468,7 @@ public class Agent implements IAgent {
 
 			// System.out.println("EventQueue: " + eventQueue.toString());
 			// System.out.println("Event: " + event.toString());
-			Iterable<Option> options = planBase.getOptions(event);
+			Stream<Option> options = planBase.getOptions(event);
 			options.forEach(option -> {
 				try {
 					option.getPlanBody().execute(getInjector(), option.getValues());

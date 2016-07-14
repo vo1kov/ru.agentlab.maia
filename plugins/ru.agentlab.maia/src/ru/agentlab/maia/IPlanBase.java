@@ -21,6 +21,6 @@ public interface IPlanBase {
 
 	Stream<IPlan> getPlansStream();
 
-	Iterable<Option> getOptions(IEvent<?> event);
+	Stream<Option> getOptions(IEvent<?> event);
 
 }

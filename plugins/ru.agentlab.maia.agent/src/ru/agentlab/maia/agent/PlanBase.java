@@ -8,9 +8,7 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Queue;
 import java.util.stream.Stream;
 
@@ -20,7 +18,6 @@ import com.google.common.collect.Multimap;
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
-import ru.agentlab.maia.IPlanFilter;
 import ru.agentlab.maia.Option;
 
 public class PlanBase implements IPlanBase {
@@ -44,17 +41,10 @@ public class PlanBase implements IPlanBase {
 	}
 
 	@Override
-	public Iterable<Option> getOptions(IEvent<?> event) {
-		Collection<IPlan> eventPlans = plans.get(event.getClass());
-		List<Option> result = new ArrayList<>();
-		Object eventData = event.getPayload();
-		for (IPlan plan : eventPlans) {
-			IPlanFilter planFilter = plan.getPlanFilter();
-			if (planFilter.matches(eventData)) {
-				result.add(new Option(plan.getPlanBody(), planFilter.getVariables()));
-			}
-		}
-		return result;
+	public Stream<Option> getOptions(IEvent<?> event) {
+		return plans.get(event.getClass()).stream()
+				.filter(plan -> plan.getPlanFilter().matches(event.getPayload()))
+				.map(plan -> new Option(plan.getPlanBody(), plan.getPlanFilter().getVariables()));
 	}
 
 	@Override
