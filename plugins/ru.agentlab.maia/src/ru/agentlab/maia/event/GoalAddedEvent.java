@@ -4,15 +4,15 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 
 import ru.agentlab.maia.EventType;
 
-public class AddedBeliefEvent extends Event<OWLAxiom> {
+public class GoalAddedEvent extends Event<OWLAxiom> {
 
-	public AddedBeliefEvent(OWLAxiom axiom) {
-		super(axiom);
+	public GoalAddedEvent(OWLAxiom goal) {
+		super(goal);
 	}
 
 	@Override
 	public EventType getType() {
-		return EventType.ADDED_BELIEF;
+		return EventType.ADDED_GOAL;
 	}
 
 }

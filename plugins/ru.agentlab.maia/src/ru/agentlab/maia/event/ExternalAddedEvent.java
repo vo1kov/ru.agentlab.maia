@@ -2,9 +2,9 @@ package ru.agentlab.maia.event;
 
 import ru.agentlab.maia.EventType;
 
-public class AddedExternalEvent extends Event<Object> {
+public class ExternalAddedEvent extends Event<Object> {
 
-	public AddedExternalEvent(Object event) {
+	public ExternalAddedEvent(Object event) {
 		super(event);
 	}
 

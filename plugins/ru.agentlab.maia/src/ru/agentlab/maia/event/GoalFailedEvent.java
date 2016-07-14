@@ -4,9 +4,9 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 
 import ru.agentlab.maia.EventType;
 
-public class FailedGoalEvent extends Event<OWLAxiom> {
+public class GoalFailedEvent extends Event<OWLAxiom> {
 
-	public FailedGoalEvent(OWLAxiom axiom) {
+	public GoalFailedEvent(OWLAxiom axiom) {
 		super(axiom);
 	}
 
