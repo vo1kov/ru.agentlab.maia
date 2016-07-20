@@ -1,19 +1,19 @@
-package ru.agentlab.maia.agent.match;
+package ru.agentlab.maia.agent;
 
 import java.util.Collection;
 import java.util.Map;
 
 import ru.agentlab.maia.IStateMatcher;
 
-public class CompositeStateMatcher implements IStateMatcher {
+public class StateMatcherAllOf implements IStateMatcher {
 
 	IStateMatcher[] matchers;
 
-	public CompositeStateMatcher(Collection<IStateMatcher> matchers) {
+	public StateMatcherAllOf(Collection<IStateMatcher> matchers) {
 		this.matchers = matchers.toArray(new IStateMatcher[matchers.size()]);
 	}
 
-	public CompositeStateMatcher(IStateMatcher... matchers) {
+	public StateMatcherAllOf(IStateMatcher... matchers) {
 		this.matchers = matchers;
 	}
 

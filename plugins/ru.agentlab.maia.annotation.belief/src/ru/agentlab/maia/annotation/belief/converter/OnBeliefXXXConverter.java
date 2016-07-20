@@ -3,7 +3,7 @@ package ru.agentlab.maia.annotation.belief.converter;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.equalTo;
-import static ru.agentlab.maia.annotation.Variable.var;
+import static ru.agentlab.maia.agent.Variable.var;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasClassExpression;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasDifferentIndividuals;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasDisjointClasses;
@@ -43,12 +43,12 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import com.google.common.collect.ImmutableSet;
 
 import ru.agentlab.maia.ConverterContext;
-import ru.agentlab.maia.annotation.IEventMatcherConverter;
+import ru.agentlab.maia.annotation.IExtraPlansConverter;
 import ru.agentlab.maia.annotation.Util;
 import ru.agentlab.maia.annotation.belief.AxiomType;
 import ru.agentlab.maia.exception.ConverterException;
 
-public class OnBeliefXXXConverter implements IEventMatcherConverter {
+public class OnBeliefXXXConverter implements IExtraPlansConverter {
 
 	private static final String INF_NEG = "-INF";
 

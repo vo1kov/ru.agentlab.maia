@@ -1,10 +1,13 @@
 package ru.agentlab.maia.annotation;
 
-import ru.agentlab.maia.ConverterContext;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.Map;
+
 import ru.agentlab.maia.IStateMatcher;
 
 public interface IStateMatcherConverter {
 
-	IStateMatcher getMatcher(ConverterContext context);
+	IStateMatcher getMatcher(Object role, Method method, Annotation annotation, Map<String, Object> customData);
 
 }

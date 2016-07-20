@@ -18,7 +18,6 @@ import de.derivo.sparqldlapi.impl.QueryAtomGroupImpl;
 import de.derivo.sparqldlapi.impl.QueryImpl;
 import de.derivo.sparqldlapi.types.QueryAtomType;
 import de.derivo.sparqldlapi.types.QueryType;
-import ru.agentlab.maia.ConverterContext;
 import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IStateMatcher;
 import ru.agentlab.maia.agent.match.HaveBeliefsStateMatcher;
@@ -43,16 +42,10 @@ public class WhenHaveBeliefsConverter implements IStateMatcherConverter {
 	PrefixManager prefixes;
 
 	@Override
-	public IStateMatcher getMatcher(ConverterContext context) throws ConverterException {
-		Annotation annotation = context.getAnnotation();
-		if (annotation.annotationType() != WhenHaveBeliefs.class) {
-			throw new RuntimeException();
-		}
-		WhenHaveBelief[] annotations = ((WhenHaveBeliefs) annotation).value();
-		if (annotations.length == 0) {
-			return null;
-		}
-		QueryImpl query = new QueryImpl(getQueryType(context.getMethod()));
+	public IStateMatcher getMatcher(Object role, Method method, Annotation annotation) {
+		WhenHaveBeliefs whenHaveBeliefs = (WhenHaveBeliefs) annotation;
+		WhenHaveBelief[] annotations = whenHaveBeliefs.value();
+		QueryImpl query = new QueryImpl(getQueryType(method));
 		QueryAtomGroupImpl queryAtomGroup = new QueryAtomGroupImpl();
 		query.addAtomGroup(queryAtomGroup);
 		for (WhenHaveBelief haveBelief : annotations) {

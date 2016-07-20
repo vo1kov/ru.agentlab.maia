@@ -9,6 +9,9 @@
 package ru.agentlab.maia.agent;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.stream.Stream;
 
@@ -16,8 +19,10 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 import ru.agentlab.maia.IEvent;
+import ru.agentlab.maia.IEventMatcher;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
+import ru.agentlab.maia.IStateMatcher;
 import ru.agentlab.maia.Option;
 
 public class PlanBase implements IPlanBase {
@@ -27,24 +32,44 @@ public class PlanBase implements IPlanBase {
 	protected final Multimap<Class<?>, IPlan> plans = ArrayListMultimap.create();
 
 	public PlanBase(Queue<IEvent<?>> eventQueue) {
+		Objects.requireNonNull(eventQueue);
 		this.eventQueue = eventQueue;
 	}
 
 	@Override
 	public void add(Class<?> type, IPlan plan) {
+		Objects.requireNonNull(type);
+		Objects.requireNonNull(plan);
 		plans.put(type, plan);
 	}
 
 	@Override
+	public void addAll(Multimap<Class<?>, IPlan> map) {
+		Objects.requireNonNull(map);
+		plans.putAll(map);
+	}
+
+	@Override
 	public void remove(Class<?> type, IPlan plan) {
+		Objects.requireNonNull(type);
+		Objects.requireNonNull(plan);
 		plans.remove(type, plan);
 	}
 
 	@Override
 	public Stream<Option> getOptions(IEvent<?> event) {
-		return plans.get(event.getClass()).stream()
-				.filter(plan -> plan.getPlanFilter().matches(event.getPayload()))
-				.map(plan -> new Option(plan.getPlanBody(), plan.getPlanFilter().getVariables()));
+		Objects.requireNonNull(event);
+		Object payload = event.getPayload();
+		return plans.get(event.getClass()).stream().map(plan -> {
+			Map<String, Object> variables = new HashMap<>();
+			IEventMatcher eventMatcher = plan.getEventMatcher();
+			IStateMatcher stateMatcher = plan.getStateMatcher();
+			if (eventMatcher.matches(payload, variables) && stateMatcher.matches(payload, variables)) {
+				return new Option(plan.getPlanBody(), variables);
+			} else {
+				return null;
+			}
+		}).filter(Objects::nonNull);
 	}
 
 	@Override

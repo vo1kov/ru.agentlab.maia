@@ -12,16 +12,14 @@ public class ConverterContext {
 
 	Annotation annotation;
 
-	IInjector injector;
+	Map<String, Object> customData;
 
-	Map<String, Object> variables;
-
-	public Map<String, Object> getVariables() {
-		return variables;
+	public Map<String, Object> getCustomData() {
+		return customData;
 	}
 
-	public void setVariables(Map<String, Object> variables) {
-		this.variables = variables;
+	public void setCustomData(Map<String, Object> variables) {
+		this.customData = variables;
 	}
 
 	public Object getRole() {
@@ -46,14 +44,6 @@ public class ConverterContext {
 
 	public void setAnnotation(Annotation annotation) {
 		this.annotation = annotation;
-	}
-
-	public IInjector getInjector() {
-		return injector;
-	}
-
-	public void setInjector(IInjector injector) {
-		this.injector = injector;
 	}
 
 }

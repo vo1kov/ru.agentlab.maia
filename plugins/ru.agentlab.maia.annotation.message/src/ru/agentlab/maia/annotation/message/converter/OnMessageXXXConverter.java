@@ -2,6 +2,7 @@ package ru.agentlab.maia.annotation.message.converter;
 
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static ru.agentlab.maia.agent.EventMatchers.hamcrest;
 import static ru.agentlab.maia.hamcrest.message.Matchers.hasContent;
 import static ru.agentlab.maia.hamcrest.message.Matchers.hasConversationId;
 import static ru.agentlab.maia.hamcrest.message.Matchers.hasEncoding;
@@ -14,6 +15,7 @@ import static ru.agentlab.maia.hamcrest.message.Matchers.hasReplyWith;
 import static ru.agentlab.maia.hamcrest.message.Matchers.hasSender;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,25 +24,17 @@ import java.util.UUID;
 
 import org.hamcrest.Matcher;
 
-import ru.agentlab.maia.ConverterContext;
+import ru.agentlab.maia.IEventMatcher;
 import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.annotation.IEventMatcherConverter;
 import ru.agentlab.maia.annotation.Util;
 
 public class OnMessageXXXConverter implements IEventMatcherConverter {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * ru.agentlab.maia.plan.message.converter.IEventMatcherConverter#getMatcher
-	 * (java.lang.annotation.Annotation, java.util.Map)
-	 */
-	@SuppressWarnings({ "unused", "unchecked" })
+	@SuppressWarnings({ "unchecked", "unused" })
 	@Override
-	public Matcher<? super IMessage> getMatcher(ConverterContext context) {
-		Annotation ann = context.getAnnotation();
-		Map<String, Object> variables = context.getVariables();
+	public IEventMatcher getMatcher(Object role, Method method, Annotation annotation, Map<String, Object> customData) {
+		Annotation ann = annotation;
 		List<Matcher<? super IMessage>> matchers = new ArrayList<>();
 
 		// performative
@@ -119,7 +113,7 @@ public class OnMessageXXXConverter implements IEventMatcherConverter {
 		// TODO
 		Matcher<? super LocalDateTime> postTimeStampMatcher;
 
-		return allOf(matchers.toArray(new Matcher[matchers.size()]));
+		return hamcrest(allOf(matchers.toArray(new Matcher[matchers.size()])));
 	}
 
 }

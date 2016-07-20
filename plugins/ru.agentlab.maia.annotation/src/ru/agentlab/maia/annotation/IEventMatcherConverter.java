@@ -1,11 +1,13 @@
 package ru.agentlab.maia.annotation;
 
-import org.hamcrest.Matcher;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.Map;
 
-import ru.agentlab.maia.ConverterContext;
+import ru.agentlab.maia.IEventMatcher;
 
 public interface IEventMatcherConverter {
 
-	Matcher<?> getMatcher(ConverterContext context);
+	IEventMatcher getMatcher(Object role, Method method, Annotation annotation, Map<String, Object> customData);
 
 }
