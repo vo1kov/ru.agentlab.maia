@@ -25,10 +25,10 @@ import ru.agentlab.maia.annotation.PlanAdded;
 import ru.agentlab.maia.annotation.PlanFailed;
 import ru.agentlab.maia.annotation.PlanFinished;
 import ru.agentlab.maia.annotation.PlanRemoved;
-import ru.agentlab.maia.annotation.belief.converter.AnnotationFormatException;
 import ru.agentlab.maia.annotation.event.AddedRole;
 import ru.agentlab.maia.annotation.event.ResolvedRole;
 import ru.agentlab.maia.annotation.event.UnresolvedRole;
+import ru.agentlab.maia.belief.annotation.converter.AnnotationFormatException;
 
 /**
  * 

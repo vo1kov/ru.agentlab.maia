@@ -5,11 +5,11 @@ import javax.inject.Inject;
 
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IMessage;
-import ru.agentlab.maia.annotation.belief.OnBeliefAdded;
-import ru.agentlab.maia.annotation.belief.AxiomType;
-import ru.agentlab.maia.annotation.belief.InitialBelief;
-import ru.agentlab.maia.annotation.goal.OnGoalAdded;
-import ru.agentlab.maia.annotation.goal.InitialGoal;
+import ru.agentlab.maia.belief.annotation.AxiomType;
+import ru.agentlab.maia.belief.annotation.InitialBelief;
+import ru.agentlab.maia.belief.annotation.OnBeliefAdded;
+import ru.agentlab.maia.goal.annotation.InitialGoal;
+import ru.agentlab.maia.goal.annotation.OnGoalAdded;
 import ru.agentlab.maia.messaging.AclMessage;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
 

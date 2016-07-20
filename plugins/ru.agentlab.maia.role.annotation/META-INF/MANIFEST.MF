@@ -10,4 +10,4 @@ Require-Bundle: org.hamcrest;bundle-version="1.1.0",
  com.google.guava,
  ru.agentlab.maia.agent,
  ru.agentlab.maia.match;bundle-version="1.0.0"
-Export-Package: ru.agentlab.maia.annotation.role
+Export-Package: ru.agentlab.maia.role.annotation

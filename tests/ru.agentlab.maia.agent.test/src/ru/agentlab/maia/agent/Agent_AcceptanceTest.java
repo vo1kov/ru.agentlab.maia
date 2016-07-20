@@ -1,8 +1,8 @@
 package ru.agentlab.maia.agent;
 
-import static ru.agentlab.maia.annotation.belief.AxiomType.CLASS_ASSERTION;
-import static ru.agentlab.maia.annotation.belief.AxiomType.DATA_PROPERTY_ASSERTION;
-import static ru.agentlab.maia.annotation.belief.AxiomType.SUBCLASS_OF;
+import static ru.agentlab.maia.belief.annotation.AxiomType.CLASS_ASSERTION;
+import static ru.agentlab.maia.belief.annotation.AxiomType.DATA_PROPERTY_ASSERTION;
+import static ru.agentlab.maia.belief.annotation.AxiomType.SUBCLASS_OF;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +24,9 @@ import de.derivo.sparqldlapi.QueryResult;
 import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IContainer;
 import ru.agentlab.maia.IEvent;
-import ru.agentlab.maia.annotation.belief.OnBeliefAdded;
-import ru.agentlab.maia.annotation.belief.WhenHaveBelief;
-import ru.agentlab.maia.annotation.belief.InitialBelief;
+import ru.agentlab.maia.belief.annotation.InitialBelief;
+import ru.agentlab.maia.belief.annotation.OnBeliefAdded;
+import ru.agentlab.maia.belief.annotation.WhenHaveBelief;
 import ru.agentlab.maia.container.Container;
 import ru.agentlab.maia.event.BeliefAddedEvent;
 import ru.agentlab.maia.exception.ContainerException;

@@ -26,7 +26,7 @@ import org.junit.runners.Parameterized.Parameters;
 import org.semanticweb.owlapi.vocab.Namespaces;
 
 import ru.agentlab.maia.annotation.Converter;
-import ru.agentlab.maia.annotation.belief.converter.AssertionWrongFormatException;
+import ru.agentlab.maia.belief.annotation.converter.AssertionWrongFormatException;
 import ru.agentlab.maia.test.util.LoggerRule;
 
 /**

@@ -22,7 +22,7 @@ import ru.agentlab.maia.FIPAPerformativeNames;
 import ru.agentlab.maia.FIPAProtocolNames;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IMessage;
-import ru.agentlab.maia.annotation.message.OnMessageReceived;
+import ru.agentlab.maia.message.annotation.OnMessageReceived;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
 
 public abstract class SubscriptionInitiator {

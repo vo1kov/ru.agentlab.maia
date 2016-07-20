@@ -20,8 +20,8 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import ru.agentlab.maia.agent.converter.AbstractGetOWLLiteralMatcherTest;
-import ru.agentlab.maia.annotation.belief.converter.LiteralIllelgalLanguageTagException;
-import ru.agentlab.maia.annotation.belief.converter.LiteralNotInLexicalSpaceException;
+import ru.agentlab.maia.belief.annotation.converter.LiteralIllelgalLanguageTagException;
+import ru.agentlab.maia.belief.annotation.converter.LiteralNotInLexicalSpaceException;
 
 /**
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
