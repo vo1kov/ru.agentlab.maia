@@ -3,7 +3,7 @@ package ru.agentlab.maia.annotation.role.converter;
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static ru.agentlab.maia.agent.EventMatchers.hamcrest;
+import static ru.agentlab.maia.match.EventMatchers.hamcrest;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

@@ -21,6 +21,6 @@ public @interface OnTimerDateTime {
 
 	String value();
 
-	String pattern() default "yyyy.MM.dd hh:mm:ss";
+	String pattern() default "yyyy-MM-dd'T'HH:mm:ss.SSS";
 
 }

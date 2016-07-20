@@ -18,6 +18,6 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.test.util;bundle-version="1.0.0",
  org.hamcrest.library;bundle-version="1.3.0",
  ru.agentlab.maia.hamcrest.owlapi;bundle-version="1.0.0",
- ru.agentlab.maia.annotation.belief
+ ru.agentlab.maia.belief.annotation;bundle-version="1.0.0"
 Fragment-Host: ru.agentlab.maia.agent
 

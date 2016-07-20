@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -42,7 +43,7 @@ public class WhenHaveBeliefsConverter implements IStateMatcherConverter {
 	PrefixManager prefixes;
 
 	@Override
-	public IStateMatcher getMatcher(Object role, Method method, Annotation annotation) {
+	public IStateMatcher getMatcher(Object role, Method method, Annotation annotation, Map<String, Object> customData) {
 		WhenHaveBeliefs whenHaveBeliefs = (WhenHaveBeliefs) annotation;
 		WhenHaveBelief[] annotations = whenHaveBeliefs.value();
 		QueryImpl query = new QueryImpl(getQueryType(method));
@@ -177,5 +178,11 @@ public class WhenHaveBeliefsConverter implements IStateMatcherConverter {
 			}
 		}
 		return QueryType.ASK;
+	}
+
+	@Override
+	public IStateMatcher getMatcher() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

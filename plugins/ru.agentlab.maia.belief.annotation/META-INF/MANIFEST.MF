@@ -13,5 +13,5 @@ Require-Bundle: javax.inject,
  com.google.guava,
  org.hamcrest.library,
  ru.agentlab.maia.hamcrest.owlapi;bundle-version="1.0.0",
- ru.agentlab.maia.agent,
- org.semanticweb.owlapi.api
+ org.semanticweb.owlapi.api,
+ ru.agentlab.maia.belief.match;bundle-version="1.0.0"

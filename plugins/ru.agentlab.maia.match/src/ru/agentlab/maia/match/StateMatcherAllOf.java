@@ -1,4 +1,4 @@
-package ru.agentlab.maia.agent;
+package ru.agentlab.maia.match;
 
 import java.util.Collection;
 import java.util.Map;

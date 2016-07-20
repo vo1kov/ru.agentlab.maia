@@ -7,6 +7,8 @@ import ru.agentlab.maia.IEventMatcher;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBody;
 import ru.agentlab.maia.IStateMatcher;
+import ru.agentlab.maia.match.EventMatchers;
+import ru.agentlab.maia.match.StateMatchers;
 
 public class Plan implements IPlan {
 

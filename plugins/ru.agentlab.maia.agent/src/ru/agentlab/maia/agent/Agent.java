@@ -56,7 +56,6 @@ import ru.agentlab.maia.annotation.IEventMatcherConverter;
 import ru.agentlab.maia.annotation.IExtraPlansConverter;
 import ru.agentlab.maia.annotation.IStateMatcherConverter;
 import ru.agentlab.maia.annotation.StateMatcher;
-import ru.agentlab.maia.annotation.agent.OnAgentStarted;
 import ru.agentlab.maia.container.Injector;
 import ru.agentlab.maia.event.ExternalAddedEvent;
 import ru.agentlab.maia.event.RoleAddedEvent;
@@ -67,6 +66,7 @@ import ru.agentlab.maia.exception.ContainerException;
 import ru.agentlab.maia.exception.ConverterException;
 import ru.agentlab.maia.exception.InjectorException;
 import ru.agentlab.maia.exception.ResolveException;
+import ru.agentlab.maia.match.StateMatchers;
 
 /**
  * @author Dmitriy Shishkin
@@ -127,9 +127,7 @@ public class Agent implements IAgent {
 
 	@Override
 	public void start() {
-		setState(AgentState.ACTIVE);
-		getRoles().forEach(role -> getInjector().invoke(role, OnAgentStarted.class, (Object) null));
-		executor.submit(new ExecuteAction());
+		executor.submit(new StartAgentAction());
 	}
 
 	@Override
@@ -311,6 +309,7 @@ public class Agent implements IAgent {
 			if (extraPlansAnnotation != null) {
 				Class<? extends IExtraPlansConverter> converterClass = extraPlansAnnotation.converter();
 				IExtraPlansConverter converter = injector.make(converterClass);
+				injector.inject(converter);
 				injector.invoke(converter, PostConstruct.class, null, null);
 				Multimap<Class<?>, IPlan> plans = converter.getPlans(role, method, annotation, customData);
 				result.putAll(plans);
@@ -329,6 +328,7 @@ public class Agent implements IAgent {
 				Class<? extends IEventMatcherConverter> converterClass = eventMatcher.converter();
 				Class<?> eventType = eventMatcher.eventType();
 				IEventMatcherConverter converter = injector.make(converterClass);
+				injector.inject(converter);
 				injector.invoke(converter, PostConstruct.class, null, null);
 				result.add(new Registration(converter.getMatcher(role, method, annotation, customData), eventType));
 			}
@@ -345,6 +345,7 @@ public class Agent implements IAgent {
 			if (stateMatcher != null) {
 				Class<? extends IStateMatcherConverter> converterClass = stateMatcher.converter();
 				IStateMatcherConverter converter = injector.make(converterClass);
+				injector.inject(converter);
 				injector.invoke(converter, PostConstruct.class, null, null);
 				result.add(converter.getMatcher(role, method, annotation, customData));
 			}
@@ -520,4 +521,46 @@ public class Agent implements IAgent {
 		}
 
 	}
+
+	protected final class StartAgentAction extends RecursiveAction {
+
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		protected void compute() {
+			setState(AgentState.ACTIVE);
+			planBase.getStartPlans().forEach(plan -> {
+				try {
+					plan.getPlanBody().execute(getInjector(), null);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
+
+			if (getState() == AgentState.ACTIVE) {
+				ExecuteAction action = new ExecuteAction();
+				executor.submit(action);
+			} else {
+				setState(AgentState.IDLE);
+			}
+		}
+	}
+
+	protected final class StopAgentAction extends RecursiveAction {
+
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		protected void compute() {
+			planBase.getStopPlans().forEach(plan -> {
+				try {
+					plan.getPlanBody().execute(getInjector(), null);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
+			setState(AgentState.IDLE);
+		}
+	}
+
 }

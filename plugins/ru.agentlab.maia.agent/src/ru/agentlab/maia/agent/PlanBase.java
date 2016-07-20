@@ -24,6 +24,9 @@ import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
 import ru.agentlab.maia.IStateMatcher;
 import ru.agentlab.maia.Option;
+import ru.agentlab.maia.event.AgentStartedEvent;
+import ru.agentlab.maia.event.AgentStoppedEvent;
+import ru.agentlab.maia.event.ExternalAddedEvent;
 
 public class PlanBase implements IPlanBase {
 
@@ -57,10 +60,25 @@ public class PlanBase implements IPlanBase {
 	}
 
 	@Override
+	public Collection<IPlan> getStartPlans() {
+		return plans.get(AgentStartedEvent.class);
+	}
+
+	@Override
+	public Collection<IPlan> getStopPlans() {
+		return plans.get(AgentStoppedEvent.class);
+	}
+
+	@Override
 	public Stream<Option> getOptions(IEvent<?> event) {
 		Objects.requireNonNull(event);
 		Object payload = event.getPayload();
-		return plans.get(event.getClass()).stream().map(plan -> {
+		Class<?> eventType = event.getClass();
+		if (event instanceof ExternalAddedEvent) {
+			eventType = event.getPayload().getClass();
+		}
+		Collection<IPlan> collection = plans.get(eventType);
+		return collection.stream().map(plan -> {
 			Map<String, Object> variables = new HashMap<>();
 			IEventMatcher eventMatcher = plan.getEventMatcher();
 			IStateMatcher stateMatcher = plan.getStateMatcher();

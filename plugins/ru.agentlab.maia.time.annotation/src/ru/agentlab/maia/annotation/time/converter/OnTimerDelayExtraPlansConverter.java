@@ -34,15 +34,17 @@ public class OnTimerDelayExtraPlansConverter implements IExtraPlansConverter {
 			Map<String, Object> customData) {
 		OnTimerDelay onTimerDelay = (OnTimerDelay) annotation;
 
-		final UUID eventKey = (UUID) customData.get(OnTimerXXXEventMatcherConverter.EVENT_KEY);
+		final UUID eventKey = (UUID) customData.get(annotation.getClass().getName());
 		final ScheduledFuture<?>[] futures = new ScheduledFuture[1];
 
 		Runnable onStartPlan = () -> {
+			System.out.println("Register schedule");
 			futures[0] = scheduler.schedule(() -> agent.fireExternalEvent(new TimerEvent(eventKey)),
 					onTimerDelay.value(), onTimerDelay.unit());
 		};
 
 		Runnable onStopPlan = () -> {
+			System.out.println("Unregister schedule");
 			futures[0].cancel(true);
 		};
 

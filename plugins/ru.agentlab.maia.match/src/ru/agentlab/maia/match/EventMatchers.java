@@ -1,4 +1,6 @@
-package ru.agentlab.maia.agent;
+package ru.agentlab.maia.match;
+
+import java.util.Collection;
 
 import org.hamcrest.Matcher;
 
@@ -10,7 +12,15 @@ public class EventMatchers {
 		return new EventMatcherAllOf(matchers);
 	}
 
+	public static IEventMatcher allOf(Collection<IEventMatcher> matchers) {
+		return new EventMatcherAllOf(matchers);
+	}
+
 	public static IEventMatcher anyOf(IEventMatcher... matchers) {
+		return new EventMatcherAnyOf(matchers);
+	}
+
+	public static IEventMatcher anyOf(Collection<IEventMatcher> matchers) {
 		return new EventMatcherAnyOf(matchers);
 	}
 
@@ -19,7 +29,7 @@ public class EventMatchers {
 	}
 
 	public static IEventMatcher var(String name) {
-		return new Variable(name);
+		return new EventMatcherVariable(name);
 	}
 
 	public static IEventMatcher anything() {

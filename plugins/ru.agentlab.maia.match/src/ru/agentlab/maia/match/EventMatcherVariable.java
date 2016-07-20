@@ -1,14 +1,14 @@
-package ru.agentlab.maia.agent;
+package ru.agentlab.maia.match;
 
 import java.util.Map;
 
 import ru.agentlab.maia.IEventMatcher;
 
-public class Variable implements IEventMatcher {
+public class EventMatcherVariable implements IEventMatcher {
 
 	private final String name;
 
-	public Variable(String name) {
+	public EventMatcherVariable(String name) {
 		this.name = name;
 	}
 

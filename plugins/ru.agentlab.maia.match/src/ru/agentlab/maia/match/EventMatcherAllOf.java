@@ -1,5 +1,6 @@
-package ru.agentlab.maia.agent;
+package ru.agentlab.maia.match;
 
+import java.util.Collection;
 import java.util.Map;
 
 import ru.agentlab.maia.IEventMatcher;
@@ -10,6 +11,10 @@ public class EventMatcherAllOf implements IEventMatcher {
 
 	public EventMatcherAllOf(IEventMatcher... matchers) {
 		this.matchers = matchers;
+	}
+
+	public EventMatcherAllOf(Collection<IEventMatcher> matchers) {
+		this.matchers = matchers.toArray(new IEventMatcher[matchers.size()]);
 	}
 
 	@Override

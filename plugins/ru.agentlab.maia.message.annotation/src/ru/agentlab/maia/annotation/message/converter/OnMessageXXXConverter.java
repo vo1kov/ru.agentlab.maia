@@ -2,7 +2,6 @@ package ru.agentlab.maia.annotation.message.converter;
 
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static ru.agentlab.maia.agent.EventMatchers.hamcrest;
 import static ru.agentlab.maia.hamcrest.message.Matchers.hasContent;
 import static ru.agentlab.maia.hamcrest.message.Matchers.hasConversationId;
 import static ru.agentlab.maia.hamcrest.message.Matchers.hasEncoding;
@@ -13,6 +12,7 @@ import static ru.agentlab.maia.hamcrest.message.Matchers.hasPerformative;
 import static ru.agentlab.maia.hamcrest.message.Matchers.hasProtocol;
 import static ru.agentlab.maia.hamcrest.message.Matchers.hasReplyWith;
 import static ru.agentlab.maia.hamcrest.message.Matchers.hasSender;
+import static ru.agentlab.maia.match.EventMatchers.hamcrest;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

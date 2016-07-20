@@ -9,4 +9,5 @@ Require-Bundle: ru.agentlab.maia.annotation;bundle-version="1.0.0",
  org.hamcrest.library,
  ru.agentlab.maia.hamcrest.message;bundle-version="1.0.0",
  ru.agentlab.maia,
- ru.agentlab.maia.agent;bundle-version="1.0.0"
+ ru.agentlab.maia.agent;bundle-version="1.0.0",
+ ru.agentlab.maia.match;bundle-version="1.0.0"

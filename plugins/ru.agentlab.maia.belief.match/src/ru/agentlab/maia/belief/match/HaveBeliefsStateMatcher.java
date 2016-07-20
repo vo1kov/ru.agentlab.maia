@@ -1,4 +1,4 @@
-package ru.agentlab.maia.agent.match;
+package ru.agentlab.maia.belief.match;
 
 import java.util.Map;
 
