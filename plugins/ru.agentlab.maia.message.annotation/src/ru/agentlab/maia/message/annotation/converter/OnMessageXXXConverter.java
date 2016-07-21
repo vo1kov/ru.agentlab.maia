@@ -2,17 +2,17 @@ package ru.agentlab.maia.message.annotation.converter;
 
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static ru.agentlab.maia.hamcrest.message.Matchers.hasContent;
-import static ru.agentlab.maia.hamcrest.message.Matchers.hasConversationId;
-import static ru.agentlab.maia.hamcrest.message.Matchers.hasEncoding;
-import static ru.agentlab.maia.hamcrest.message.Matchers.hasInReplyTo;
-import static ru.agentlab.maia.hamcrest.message.Matchers.hasLanguage;
-import static ru.agentlab.maia.hamcrest.message.Matchers.hasOntology;
-import static ru.agentlab.maia.hamcrest.message.Matchers.hasPerformative;
-import static ru.agentlab.maia.hamcrest.message.Matchers.hasProtocol;
-import static ru.agentlab.maia.hamcrest.message.Matchers.hasReplyWith;
-import static ru.agentlab.maia.hamcrest.message.Matchers.hasSender;
 import static ru.agentlab.maia.match.EventMatchers.hamcrest;
+import static ru.agentlab.maia.message.match.Matchers.hasContent;
+import static ru.agentlab.maia.message.match.Matchers.hasConversationId;
+import static ru.agentlab.maia.message.match.Matchers.hasEncoding;
+import static ru.agentlab.maia.message.match.Matchers.hasInReplyTo;
+import static ru.agentlab.maia.message.match.Matchers.hasLanguage;
+import static ru.agentlab.maia.message.match.Matchers.hasOntology;
+import static ru.agentlab.maia.message.match.Matchers.hasPerformative;
+import static ru.agentlab.maia.message.match.Matchers.hasProtocol;
+import static ru.agentlab.maia.message.match.Matchers.hasReplyWith;
+import static ru.agentlab.maia.message.match.Matchers.hasSender;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

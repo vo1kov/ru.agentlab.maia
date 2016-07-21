@@ -1,26 +1,6 @@
 package ru.agentlab.maia.belief.annotation.converter;
 
 import static org.hamcrest.Matchers.equalTo;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasClassExpression;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasDifferentIndividuals;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasDisjointClasses;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasIRI;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasIndividual;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasObject;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasProperty;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasSubject;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isBooleanLiteral;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isDataProperty;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isDoubleLiteral;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isFloatLiteral;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isIndividual;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isIntegerLiteral;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isLiteral;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isNamedClass;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isNamedIndividual;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isObjectProperty;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isPlainLiteral;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTypedLiteral;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -46,6 +26,27 @@ import ru.agentlab.maia.annotation.IEventMatcherConverter;
 import ru.agentlab.maia.annotation.Util;
 import ru.agentlab.maia.belief.annotation.AxiomType;
 import ru.agentlab.maia.exception.ConverterException;
+
+import static ru.agentlab.maia.belief.match.Matchers.hasClassExpression;
+import static ru.agentlab.maia.belief.match.Matchers.hasDifferentIndividuals;
+import static ru.agentlab.maia.belief.match.Matchers.hasDisjointClasses;
+import static ru.agentlab.maia.belief.match.Matchers.hasIRI;
+import static ru.agentlab.maia.belief.match.Matchers.hasIndividual;
+import static ru.agentlab.maia.belief.match.Matchers.hasObject;
+import static ru.agentlab.maia.belief.match.Matchers.hasProperty;
+import static ru.agentlab.maia.belief.match.Matchers.hasSubject;
+import static ru.agentlab.maia.belief.match.Matchers.isBooleanLiteral;
+import static ru.agentlab.maia.belief.match.Matchers.isDataProperty;
+import static ru.agentlab.maia.belief.match.Matchers.isDoubleLiteral;
+import static ru.agentlab.maia.belief.match.Matchers.isFloatLiteral;
+import static ru.agentlab.maia.belief.match.Matchers.isIndividual;
+import static ru.agentlab.maia.belief.match.Matchers.isIntegerLiteral;
+import static ru.agentlab.maia.belief.match.Matchers.isLiteral;
+import static ru.agentlab.maia.belief.match.Matchers.isNamedClass;
+import static ru.agentlab.maia.belief.match.Matchers.isNamedIndividual;
+import static ru.agentlab.maia.belief.match.Matchers.isObjectProperty;
+import static ru.agentlab.maia.belief.match.Matchers.isPlainLiteral;
+import static ru.agentlab.maia.belief.match.Matchers.isTypedLiteral;
 import static ru.agentlab.maia.match.EventMatchers.*;
 
 public class OnBeliefXXXConverter implements IEventMatcherConverter {
