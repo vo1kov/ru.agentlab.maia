@@ -262,8 +262,8 @@ public class Agent implements IAgent {
 			// Create instance of role object
 			IInjector injector = getInjector();
 			Object roleObject = injector.make(roleClass, parameters);
-			injector.inject(roleObject);
-			injector.invoke(roleObject, PostConstruct.class, null, null);
+			injector.inject(roleObject, parameters);
+			injector.invoke(roleObject, PostConstruct.class, null, parameters);
 
 			// Now role object have resolved all field dependencies. Need to
 			// convert role object to initial beliefs, goals and plans.
