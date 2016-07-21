@@ -1,7 +1,5 @@
 package ru.agentlab.maia.belief.annotation.converter;
 
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.equalTo;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasClassExpression;
 import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasDifferentIndividuals;
@@ -48,6 +46,7 @@ import ru.agentlab.maia.annotation.IEventMatcherConverter;
 import ru.agentlab.maia.annotation.Util;
 import ru.agentlab.maia.belief.annotation.AxiomType;
 import ru.agentlab.maia.exception.ConverterException;
+import static ru.agentlab.maia.match.EventMatchers.*;
 
 public class OnBeliefXXXConverter implements IEventMatcherConverter {
 
@@ -91,14 +90,14 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 			case ASYMMETRIC_OBJECT_PROPERTY:
 				return null;
 			case CLASS_ASSERTION:
-				return allOf(hasClassExpression(isNamedClass(hasName(args[1], variables))),
-						hasIndividual(isNamedIndividual(hasName(args[0], variables))));
+				return allOf(hasClassExpression(isNamedClass(hasName(args[1]))),
+						hasIndividual(isNamedIndividual(hasName(args[0]))));
 			case DATATYPE_DEFINITION:
 				return null;
 			case DATA_PROPERTY_ASSERTION:
-				return allOf(hasSubject(isNamedIndividual(hasName(args[0], variables))),
-						hasProperty(isDataProperty(hasName(args[1], variables))),
-						hasObject(isLiteral(getOWLLiteralMatcher(args[2], variables))));
+				return allOf(hasSubject(isNamedIndividual(hasName(args[0]))),
+						hasProperty(isDataProperty(hasName(args[1]))),
+						hasObject(isLiteral(getOWLLiteralMatcher(args[2]))));
 			case DATA_PROPERTY_DOMAIN:
 				return null;
 			case DATA_PROPERTY_RANGE:
@@ -108,13 +107,13 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 			case DIFFERENT_INDIVIDUALS:
 				Matcher<? super OWLIndividual>[] differentIndividuals = new Matcher[length];
 				for (int i = 0; i < length; i++) {
-					differentIndividuals[i] = isNamedIndividual(hasName(args[i], variables));
+					differentIndividuals[i] = isNamedIndividual(hasName(args[i]));
 				}
 				return hasDifferentIndividuals(differentIndividuals);
 			case DISJOINT_CLASSES:
 				Matcher<? super OWLClassExpression>[] disjointClasses = new Matcher[length];
 				for (int i = 0; i < length; i++) {
-					disjointClasses[i] = isNamedClass(hasName(args[i], variables));
+					disjointClasses[i] = isNamedClass(hasName(args[i]));
 				}
 				return hasDisjointClasses(disjointClasses);
 			case DISJOINT_DATA_PROPERTIES:
@@ -146,9 +145,9 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 			case NEGATIVE_OBJECT_PROPERTY_ASSERTION:
 				return null;
 			case OBJECT_PROPERTY_ASSERTION:
-				return allOf(hasSubject(isNamedIndividual(hasName(args[0], variables))),
-						hasProperty(isObjectProperty(hasName(args[1], variables))),
-						hasObject(isIndividual(isNamedIndividual(hasName(args[2], variables)))));
+				return allOf(hasSubject(isNamedIndividual(hasName(args[0]))),
+						hasProperty(isObjectProperty(hasName(args[1]))),
+						hasObject(isIndividual(isNamedIndividual(hasName(args[2])))));
 			case OBJECT_PROPERTY_DOMAIN:
 				return null;
 			case OBJECT_PROPERTY_RANGE:
@@ -188,7 +187,7 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 	 * @return
 	 * @throws LiteralFormatException
 	 */
-	protected Matcher<? super OWLLiteral> getOWLLiteralMatcher(String string, Map<String, Object> variables)
+	protected IEventMatcher getOWLLiteralMatcher(String string)
 			throws LiteralFormatException {
 		String[] parts = Util.splitDatatypeLiteral(string);
 		String literal = parts[0];
@@ -196,11 +195,11 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 		String datatype = parts[2];
 
 		if (language != null) {
-			return isPlainLiteral(hasString(literal, variables), hasString(language, variables));
+			return isPlainLiteral(hasString(literal), hasString(language));
 		}
 		if (datatype != null) {
 			if (Util.isVariable(datatype)) {
-				return isTypedLiteral(hasString(literal, variables), var(Util.getVariableName(datatype), variables));
+				return isTypedLiteral(hasString(literal), var(Util.getVariableName(datatype)));
 			} else {
 				IRI datatypeIRI = prefixManager.getIRI(datatype);
 				String datatypeNamespace = datatypeIRI.getNamespace();
@@ -218,53 +217,53 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 					}
 					switch (owl2datatype) {
 					case XSD_BOOLEAN:
-						return isBooleanLiteral(hasBoolean(literal, variables));
+						return isBooleanLiteral(hasBoolean(literal));
 					case XSD_FLOAT:
-						return isFloatLiteral(hasFloat(literal, variables));
+						return isFloatLiteral(hasFloat(literal));
 					case XSD_DOUBLE:
-						return isDoubleLiteral(hasDouble(literal, variables));
+						return isDoubleLiteral(hasDouble(literal));
 					case XSD_INT:
 					case XSD_INTEGER:
-						return isIntegerLiteral(hasInteger(literal, variables));
+						return isIntegerLiteral(hasInteger(literal));
 					case RDF_PLAIN_LITERAL:
 						return isPlainLiteral(equalTo(literal), equalTo(language));
 					default:
-						return isTypedLiteral(hasString(literal, variables), hasIRI(datatypeIRI));
+						return isTypedLiteral(hasString(literal), hasIRI(datatypeIRI));
 					}
 				} else {
-					return isTypedLiteral(hasString(literal, variables), hasIRI(datatypeIRI));
+					return isTypedLiteral(hasString(literal), hasIRI(datatypeIRI));
 				}
 			}
 		}
-		return isPlainLiteral(hasString(literal, variables), anything());
+		return isPlainLiteral(hasString(literal), anything());
 	}
 
-	private Matcher<? super OWLNamedObject> hasName(String string, Map<String, Object> variables) {
+	private IEventMatcher hasName(String string) {
 		if (Util.isVariable(string)) {
-			return var(Util.getVariableName(string), variables);
+			return var(Util.getVariableName(string));
 		} else {
-			return hasIRI(prefixManager.getIRI(string));
+			return hamcrest(hasIRI(prefixManager.getIRI(string)));
 		}
 	}
 
-	private Matcher<? super String> hasString(String string, Map<String, Object> variables) {
+	private IEventMatcher hasString(String string) {
 		if (string == null) {
 			return anything();
 		}
 		if (Util.isVariable(string)) {
-			return var(Util.getVariableName(string), variables);
+			return var(Util.getVariableName(string));
 		} else {
-			return equalTo(string);
+			return hamcrest(equalTo(string));
 		}
 	}
 
-	private Matcher<? super Boolean> hasBoolean(String string, Map<String, Object> variables)
+	private IEventMatcher hasBoolean(String string)
 			throws LiteralNotInValueSpaceException {
 		if (string == null) {
 			return anything();
 		}
 		if (Util.isVariable(string)) {
-			return var(Util.getVariableName(string), variables);
+			return var(Util.getVariableName(string));
 		} else {
 			boolean value;
 			if (string.equals("true") || string.equals("1")) {
@@ -274,17 +273,17 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 			} else {
 				throw new LiteralNotInValueSpaceException("Argument should be [true|false|1|0]");
 			}
-			return equalTo(value);
+			return hamcrest(equalTo(value));
 		}
 	}
 
-	private Matcher<? super Float> hasFloat(String string, Map<String, Object> variables)
+	private IEventMatcher hasFloat(String string)
 			throws LiteralNotInValueSpaceException {
 		if (string == null) {
 			return anything();
 		}
 		if (Util.isVariable(string)) {
-			return var(Util.getVariableName(string), variables);
+			return var(Util.getVariableName(string));
 		} else {
 			float value;
 			if (string.equals(NaN)) {
@@ -296,17 +295,17 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 			} else {
 				value = Float.parseFloat(string);
 			}
-			return equalTo(value);
+			return hamcrest(equalTo(value));
 		}
 	}
 
-	private Matcher<? super Double> hasDouble(String string, Map<String, Object> variables)
+	private IEventMatcher hasDouble(String string)
 			throws LiteralNotInValueSpaceException {
 		if (string == null) {
 			return anything();
 		}
 		if (Util.isVariable(string)) {
-			return var(Util.getVariableName(string), variables);
+			return var(Util.getVariableName(string));
 		} else {
 			double value;
 			if (string.equals(NaN)) {
@@ -320,19 +319,19 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 			} else {
 				value = Double.parseDouble(string);
 			}
-			return equalTo(value);
+			return hamcrest(equalTo(value));
 		}
 	}
 
-	private Matcher<? super Integer> hasInteger(String string, Map<String, Object> variables)
+	private IEventMatcher hasInteger(String string)
 			throws LiteralNotInValueSpaceException {
 		if (string == null) {
 			return anything();
 		}
 		if (Util.isVariable(string)) {
-			return var(Util.getVariableName(string), variables);
+			return var(Util.getVariableName(string));
 		} else {
-			return equalTo(Integer.parseInt(string));
+			return hamcrest(equalTo(Integer.parseInt(string)));
 		}
 	}
 
@@ -346,9 +345,4 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 		}
 	}
 
-	@Override
-	public IEventMatcher getMatcher() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

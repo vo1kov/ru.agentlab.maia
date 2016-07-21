@@ -21,12 +21,12 @@ import de.derivo.sparqldlapi.types.QueryAtomType;
 import de.derivo.sparqldlapi.types.QueryType;
 import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IStateMatcher;
-import ru.agentlab.maia.agent.match.HaveBeliefsStateMatcher;
 import ru.agentlab.maia.annotation.IStateMatcherConverter;
 import ru.agentlab.maia.annotation.Util;
 import ru.agentlab.maia.belief.annotation.AxiomType;
 import ru.agentlab.maia.belief.annotation.WhenHaveBelief;
 import ru.agentlab.maia.belief.annotation.WhenHaveBeliefs;
+import ru.agentlab.maia.belief.match.HaveBeliefsStateMatcher;
 import ru.agentlab.maia.exception.ConverterException;
 import ru.agentlab.maia.exception.InjectorException;
 
@@ -180,9 +180,4 @@ public class WhenHaveBeliefsConverter implements IStateMatcherConverter {
 		return QueryType.ASK;
 	}
 
-	@Override
-	public IStateMatcher getMatcher() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
