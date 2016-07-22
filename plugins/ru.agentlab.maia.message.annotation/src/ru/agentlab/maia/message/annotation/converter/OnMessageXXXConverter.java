@@ -2,7 +2,7 @@ package ru.agentlab.maia.message.annotation.converter;
 
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static ru.agentlab.maia.match.EventMatchers.hamcrest;
+import static ru.agentlab.maia.agent.match.EventMatchers.hamcrest;
 import static ru.agentlab.maia.message.match.Matchers.hasContent;
 import static ru.agentlab.maia.message.match.Matchers.hasConversationId;
 import static ru.agentlab.maia.message.match.Matchers.hasEncoding;

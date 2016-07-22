@@ -6,6 +6,7 @@ import static ru.agentlab.maia.FIPAPerformativeNames.FAILURE;
 import static ru.agentlab.maia.FIPAPerformativeNames.INFORM;
 import static ru.agentlab.maia.FIPAPerformativeNames.REFUSE;
 import static ru.agentlab.maia.FIPAPerformativeNames.SUBSCRIBE;
+import static ru.agentlab.maia.FIPAProtocolNames.FIPA_SUBSCRIBE;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,18 +18,16 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ru.agentlab.maia.IMessage;
-import ru.agentlab.maia.annotation.belief.AddedBelief;
-import ru.agentlab.maia.annotation.belief.AxiomType;
-import ru.agentlab.maia.annotation.belief.HaveBelief;
-import ru.agentlab.maia.annotation.belief.Prefix;
+import ru.agentlab.maia.agent.belief.annotation.AxiomType;
+import ru.agentlab.maia.agent.belief.annotation.OnBeliefAdded;
+import ru.agentlab.maia.agent.belief.annotation.Prefix;
+import ru.agentlab.maia.agent.belief.annotation.WhenHaveBelief;
+import ru.agentlab.maia.message.annotation.OnMessageReceived;
 import ru.agentlab.maia.messaging.AclMessage;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
-import ru.agentlab.maia.plan.message.AddedMessage;
 
 @Prefix(name = "osgi", namespace = "http://www.agentlab.ru/ontologies/osgi")
 public class BundleSubscriptionResponder {
-
-	private static final String FIPA_SUBSCRIBE = "FIPA_SUBSCRIBE";
 
 	private Map<UUID, String> conversationIds = new HashMap<>();
 
@@ -40,7 +39,7 @@ public class BundleSubscriptionResponder {
 	@Inject
 	IMessageDeliveryService mts;
 
-	@AddedMessage(performative = SUBSCRIBE, protocol = FIPA_SUBSCRIBE)
+	@OnMessageReceived(performative = SUBSCRIBE, protocol = FIPA_SUBSCRIBE)
 	public void onSubscribe(IMessage message) {
 		UUID sender = message.getSender();
 		String conversationId = message.getConversationId();
@@ -58,7 +57,7 @@ public class BundleSubscriptionResponder {
 		reply(message, AGREE);
 	}
 
-	@AddedMessage(performative = CANCEL, protocol = FIPA_SUBSCRIBE)
+	@OnMessageReceived(performative = CANCEL, protocol = FIPA_SUBSCRIBE)
 	public void onCancel(IMessage message) {
 		UUID sender = message.getSender();
 		if (conversationIds.get(sender) == message.getConversationId()) {
@@ -69,8 +68,8 @@ public class BundleSubscriptionResponder {
 		}
 	}
 
-	@AddedBelief(value = { "?bundle", "?property", "?value" }, type = AxiomType.DATA_PROPERTY_ASSERTION)
-	@HaveBelief(value = { "?bundle", "osgi:Bundle" }, type = AxiomType.CLASS_ASSERTION)
+	@OnBeliefAdded(value = { "?bundle", "?property", "?value" }, type = AxiomType.DATA_PROPERTY_ASSERTION)
+	@WhenHaveBelief(value = { "?bundle", "osgi:Bundle" }, type = AxiomType.CLASS_ASSERTION)
 	public void onPropertyChanged(@Named("bundle") String bundle, @Named("property") String property,
 			@Named("value") String value) {
 		IMessage message = new AclMessage();

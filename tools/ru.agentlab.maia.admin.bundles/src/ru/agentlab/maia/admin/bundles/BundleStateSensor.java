@@ -4,16 +4,22 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.osgi.framework.BundleEvent;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IEventQueue;
 import ru.agentlab.maia.admin.bundles.internal.Activator;
-import ru.agentlab.maia.annotation.agent.AddedExternalEvent;
+import ru.agentlab.maia.agent.annotation.AddedExternalEvent;
 
 public class BundleStateSensor {
 
 	@Inject
 	IBeliefBase beliefBase;
+
+	@Inject
+	OWLDataFactory factory;
 
 	@PostConstruct
 	public void init(IEventQueue eventQueue) {
@@ -46,7 +52,10 @@ public class BundleStateSensor {
 			return;
 		}
 		String subject = event.getBundle().getSymbolicName();
-		beliefBase.addObjectPropertyAssertion(subject, "osgi:hasState", object);
+		OWLAxiom axiom = factory.getOWLObjectPropertyAssertionAxiom(
+				factory.getOWLObjectProperty(IRI.create("osgi", "hasState")),
+				factory.getOWLNamedIndividual(IRI.create(subject)), factory.getOWLNamedIndividual(IRI.create(object)));
+		beliefBase.addBelief(axiom);
 
 	}
 

@@ -29,6 +29,6 @@ Require-Bundle: com.google.guava,
  org.hamcrest.library,
  org.semanticweb.owlapi.api,
  ru.agentlab.maia.message.annotation,
- ru.agentlab.maia.belief.annotation,
- ru.agentlab.maia.goal.annotation,
- ru.agentlab.maia.role.annotation
+ ru.agentlab.maia.agent.belief.annotation,
+ ru.agentlab.maia.agent.goal.annotation,
+ ru.agentlab.maia.agent.role.annotation

@@ -3,7 +3,7 @@ package ru.agentlab.maia.time.annotation.converter;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
-import static ru.agentlab.maia.match.EventMatchers.hamcrest;
+import static ru.agentlab.maia.agent.match.EventMatchers.hamcrest;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

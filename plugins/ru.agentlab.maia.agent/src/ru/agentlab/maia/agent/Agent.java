@@ -50,6 +50,7 @@ import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
 import ru.agentlab.maia.IStateMatcher;
+import ru.agentlab.maia.agent.match.StateMatchers;
 import ru.agentlab.maia.annotation.EventMatcher;
 import ru.agentlab.maia.annotation.ExtraPlans;
 import ru.agentlab.maia.annotation.IEventMatcherConverter;
@@ -66,7 +67,6 @@ import ru.agentlab.maia.exception.ContainerException;
 import ru.agentlab.maia.exception.ConverterException;
 import ru.agentlab.maia.exception.InjectorException;
 import ru.agentlab.maia.exception.ResolveException;
-import ru.agentlab.maia.match.StateMatchers;
 
 /**
  * @author Dmitriy Shishkin
