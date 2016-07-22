@@ -1,16 +1,17 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Contexts
-Bundle-SymbolicName: ru.agentlab.maia.admin.containers
+Bundle-Name: Messaging
+Bundle-SymbolicName: ru.agentlab.maia.message
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- io.netty;bundle-version="4.0.26",
  ru.agentlab.maia.container;bundle-version="1.0.0",
- ru.agentlab.maia.event;bundle-version="1.0.0"
-Import-Package: org.osgi.framework;version="1.8.0"
-Bundle-Activator: ru.agentlab.maia.admin.contexts.internal.Activator
+ io.netty;bundle-version="4.0.26",
+ org.slf4j.api;bundle-version="1.7.2"
+Export-Package: ru.agentlab.maia.messaging,
+ ru.agentlab.maia.messaging.matching,
+ ru.agentlab.maia.messaging.netty
 
