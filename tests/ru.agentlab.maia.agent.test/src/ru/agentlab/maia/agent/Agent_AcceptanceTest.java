@@ -1,8 +1,8 @@
 package ru.agentlab.maia.agent;
 
-import static ru.agentlab.maia.role.AxiomType.CLASS_ASSERTION;
-import static ru.agentlab.maia.role.AxiomType.DATA_PROPERTY_ASSERTION;
-import static ru.agentlab.maia.role.AxiomType.SUBCLASS_OF;
+import static ru.agentlab.maia.agent.belief.annotation.AxiomType.CLASS_ASSERTION;
+import static ru.agentlab.maia.agent.belief.annotation.AxiomType.DATA_PROPERTY_ASSERTION;
+import static ru.agentlab.maia.agent.belief.annotation.AxiomType.SUBCLASS_OF;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,19 +21,17 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.vocab.Namespaces;
 
 import de.derivo.sparqldlapi.QueryResult;
-import ru.agentlab.maia.ConvertWith;
 import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IContainer;
 import ru.agentlab.maia.IEvent;
+import ru.agentlab.maia.agent.belief.annotation.InitialBelief;
+import ru.agentlab.maia.agent.belief.annotation.OnBeliefAdded;
+import ru.agentlab.maia.agent.belief.annotation.WhenHaveBelief;
 import ru.agentlab.maia.container.Container;
-import ru.agentlab.maia.event.AddedBeliefEvent;
+import ru.agentlab.maia.event.BeliefAddedEvent;
 import ru.agentlab.maia.exception.ContainerException;
 import ru.agentlab.maia.exception.InjectorException;
 import ru.agentlab.maia.exception.ResolveException;
-import ru.agentlab.maia.role.AddedBelief;
-import ru.agentlab.maia.role.HaveBelief;
-import ru.agentlab.maia.role.InitialBelief;
-import ru.agentlab.maia.role.converter.Converter;
 
 public class Agent_AcceptanceTest {
 
@@ -57,7 +55,7 @@ public class Agent_AcceptanceTest {
 			agent.deployTo(container);
 			agent.addRole(TestRole.class);
 			IntStream.range(0, 500_000).forEach(i -> {
-				IEvent<?> event = new AddedBeliefEvent(factory.getOWLDataPropertyAssertionAxiom(
+				IEvent<?> event = new BeliefAddedEvent(factory.getOWLDataPropertyAssertionAxiom(
 						factory.getOWLDataProperty(IRI.create(Namespaces.RDF.toString(), "hasProperty")),
 						factory.getOWLNamedIndividual(IRI.create(Namespaces.RDF.toString(), "ind")),
 						factory.getOWLLiteral(2)));
@@ -84,7 +82,6 @@ public class Agent_AcceptanceTest {
 
 	}
 
-	@ConvertWith(Converter.class)
 	@InitialBelief(type = DATA_PROPERTY_ASSERTION, value = { "rdf:ind", "rdf:hasProperty", "2^^xsd:integer" })
 	@InitialBelief(type = SUBCLASS_OF, value = { "rdf:Some", "owl:Thing" })
 	@InitialBelief(type = CLASS_ASSERTION, value = { "rdf:Some", "rdf:ind" })
@@ -95,17 +92,17 @@ public class Agent_AcceptanceTest {
 			System.out.println(agent.getUuid());
 		}
 
-		@AddedBelief(type = DATA_PROPERTY_ASSERTION, value = { "rdf:ind", "rdf:hasProperty", "2^^xsd:integer" })
-		@HaveBelief(type = SUBCLASS_OF, value = { "rdf:Some", "owl:Thing" })
-		@HaveBelief(type = CLASS_ASSERTION, value = { "rdf:ind", "rdf:Some" })
+		@OnBeliefAdded(type = DATA_PROPERTY_ASSERTION, value = { "rdf:ind", "rdf:hasProperty", "2^^xsd:integer" })
+		@WhenHaveBelief(type = SUBCLASS_OF, value = { "rdf:Some", "owl:Thing" })
+		@WhenHaveBelief(type = CLASS_ASSERTION, value = { "rdf:ind", "rdf:Some" })
 		public void exe() {
 			System.out.println("WORKS");
 
 		}
 
-		@AddedBelief(type = DATA_PROPERTY_ASSERTION, value = { "?ind", "?property", "2^^xsd:integer" })
-		@HaveBelief(type = SUBCLASS_OF, value = { "rdf:Some", "owl:Thing" })
-		@HaveBelief(type = CLASS_ASSERTION, value = { "rdf:ind", "?ind" })
+		@OnBeliefAdded(type = DATA_PROPERTY_ASSERTION, value = { "?ind", "?property", "2^^xsd:integer" })
+		@WhenHaveBelief(type = SUBCLASS_OF, value = { "rdf:Some", "owl:Thing" })
+		@WhenHaveBelief(type = CLASS_ASSERTION, value = { "rdf:ind", "?ind" })
 		public void exe2(@Named("property") OWLDataProperty property, @Named("ind") OWLIndividual ind,
 				QueryResult res) {
 			System.out.println("WORKS2" + property.toString());

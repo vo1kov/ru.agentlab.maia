@@ -11,16 +11,24 @@ package ru.agentlab.maia;
 import java.util.Collection;
 import java.util.stream.Stream;
 
+import com.google.common.collect.Multimap;
+
 public interface IPlanBase {
 
-	void add(EventType type, IPlan plan);
+	void add(Class<?> type, IPlan plan);
 
-	void remove(IPlan plan);
+	void remove(Class<?> type, IPlan plan);
 
 	Collection<IPlan> getPlans();
 
 	Stream<IPlan> getPlansStream();
 
-	Iterable<Option> getOptions(IEvent<?> event);
+	Stream<Option> getOptions(IEvent<?> event);
+
+	void addAll(Multimap<Class<?>, IPlan> map);
+
+	Collection<IPlan> getStopPlans();
+
+	Collection<IPlan> getStartPlans();
 
 }

@@ -15,7 +15,11 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.role,
  org.semanticweb.owlapi.compatibility,
  org.semanticweb.owlapi.apibinding,
- org.semanticweb.owlapi.api
+ org.semanticweb.owlapi.api,
+ ru.agentlab.maia.message.annotation,
+ ru.agentlab.maia.agent.belief.annotation,
+ ru.agentlab.maia.agent.goal.annotation,
+ ru.agentlab.maia.agent.annotation
 Import-Package: org.eclipse.osgi.util;version="1.1.0",
  org.osgi.framework;version="1.8.0"
 Export-Package: ru.agentlab.maia.admin.bundles

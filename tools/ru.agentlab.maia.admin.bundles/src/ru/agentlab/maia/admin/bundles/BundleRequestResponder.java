@@ -10,11 +10,11 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import ru.agentlab.maia.FIPAPerformativeNames;
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IMessage;
+import ru.agentlab.maia.agent.belief.annotation.AxiomType;
+import ru.agentlab.maia.agent.goal.annotation.OnGoalAdded;
+import ru.agentlab.maia.agent.goal.annotation.OnGoalFailed;
+import ru.agentlab.maia.message.annotation.OnMessageReceived;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
-import ru.agentlab.maia.role.AddedGoal;
-import ru.agentlab.maia.role.AddedMessage;
-import ru.agentlab.maia.role.AxiomType;
-import ru.agentlab.maia.role.FailedGoal;
 
 public class BundleRequestResponder {
 
@@ -26,7 +26,7 @@ public class BundleRequestResponder {
 	@Inject
 	IGoalBase goalBase;
 
-	@AddedMessage(performative = FIPAPerformativeNames.REQUEST, protocol = "FIPA_REQUEST")
+	@OnMessageReceived(performative = FIPAPerformativeNames.REQUEST, protocol = "FIPA_REQUEST")
 	public void onRequest(IMessage message) {
 		try {
 			OWLAxiom goal = goalBase.addGoal(message.getContent());
@@ -37,7 +37,7 @@ public class BundleRequestResponder {
 		}
 	}
 
-	@AddedMessage(performative = FIPAPerformativeNames.CANCEL, protocol = "FIPA_REQUEST")
+	@OnMessageReceived(performative = FIPAPerformativeNames.CANCEL, protocol = "FIPA_REQUEST")
 	public void onCancel(IMessage message) {
 		try {
 			goalBase.removeGoal(message.getContent());
@@ -47,7 +47,7 @@ public class BundleRequestResponder {
 		}
 	}
 
-	@AddedGoal(value = "", type = AxiomType.CLASS_ASSERTION)
+	@OnGoalAdded(value = "", type = AxiomType.CLASS_ASSERTION)
 	public void onGoalFinished(OWLAxiom goal) {
 		IMessage message = requests.get(goal);
 		if (message != null) {
@@ -55,7 +55,7 @@ public class BundleRequestResponder {
 		}
 	}
 
-	@FailedGoal(value = "", type = AxiomType.CLASS_ASSERTION)
+	@OnGoalFailed(value = "", type = AxiomType.CLASS_ASSERTION)
 	public void onGoalFailed(OWLAxiom goal) {
 		IMessage message = requests.get(goal);
 		if (message != null) {

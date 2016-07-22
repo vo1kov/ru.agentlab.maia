@@ -1,6 +1,6 @@
 package ru.agentlab.maia.exception;
 
-public class ConverterException extends Exception {
+public class ConverterException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 

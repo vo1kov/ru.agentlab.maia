@@ -10,10 +10,16 @@ package ru.agentlab.maia;
 
 public interface IPlan {
 
-	IPlanFilter getPlanFilter();
-
 	IPlanBody getPlanBody();
 	
 	Object getRole();
+
+	void setStateMatcher(IStateMatcher stateMatcher);
+
+	IStateMatcher getStateMatcher();
+
+	void setEventMatcher(IEventMatcher<?> eventMatcher);
+
+	IEventMatcher<?> getEventMatcher();
 
 }

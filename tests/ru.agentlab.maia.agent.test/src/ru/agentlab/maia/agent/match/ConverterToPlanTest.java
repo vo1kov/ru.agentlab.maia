@@ -28,7 +28,7 @@ import ru.agentlab.maia.annotation.PlanRemoved;
 import ru.agentlab.maia.annotation.event.AddedRole;
 import ru.agentlab.maia.annotation.event.ResolvedRole;
 import ru.agentlab.maia.annotation.event.UnresolvedRole;
-import ru.agentlab.maia.role.converter.AnnotationFormatException;
+import ru.agentlab.maia.belief.annotation.converter.AnnotationFormatException;
 
 /**
  * 

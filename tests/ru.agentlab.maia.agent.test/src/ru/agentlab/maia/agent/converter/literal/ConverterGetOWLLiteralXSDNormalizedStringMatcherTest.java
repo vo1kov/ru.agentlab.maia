@@ -9,8 +9,8 @@
 package ru.agentlab.maia.agent.converter.literal;
 
 import static org.hamcrest.Matchers.equalTo;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.hasIRI;
-import static ru.agentlab.maia.hamcrest.owlapi.Matchers.isTypedLiteral;
+import static ru.agentlab.maia.belief.match.Matchers.hasIRI;
+import static ru.agentlab.maia.belief.match.Matchers.isTypedLiteral;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,9 +20,9 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import ru.agentlab.maia.agent.converter.AbstractGetOWLLiteralMatcherTest;
-import ru.agentlab.maia.role.converter.LiteralIllelgalLanguageTagException;
-import ru.agentlab.maia.role.converter.LiteralNotInLexicalSpaceException;
-import ru.agentlab.maia.role.converter.LiteralWrongBuildInDatatypeException;
+import ru.agentlab.maia.belief.annotation.converter.LiteralIllelgalLanguageTagException;
+import ru.agentlab.maia.belief.annotation.converter.LiteralNotInLexicalSpaceException;
+import ru.agentlab.maia.belief.annotation.converter.LiteralWrongBuildInDatatypeException;
 
 /**
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
