@@ -1,29 +1,26 @@
 package ru.agentlab.maia.belief.match;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
+import java.util.Map;
+
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
 
-public class OWLDisjointClassesAxiomHasClasses extends TypeSafeMatcher<OWLDisjointClassesAxiom> {
+import ru.agentlab.maia.IEventMatcher;
+import ru.agentlab.maia.TypeSafeEventMatcher;
 
-	Matcher<Iterable<? extends OWLClassExpression>> anyOrderMatcher;
+public class OWLDisjointClassesAxiomHasClasses extends TypeSafeEventMatcher<OWLDisjointClassesAxiom> {
 
-	public OWLDisjointClassesAxiomHasClasses(Matcher<? super OWLClassExpression>[] matchers) {
+	IEventMatcher<Iterable<? extends OWLClassExpression>> anyOrderMatcher;
+
+	public OWLDisjointClassesAxiomHasClasses(IEventMatcher<? super OWLClassExpression>[] matchers) {
 		super();
 		this.anyOrderMatcher = IsIterableContainingInAnyOrder.containsInAnyOrder(matchers);
 	}
 
 	@Override
-	public void describeTo(Description description) {
-		description.appendText("hasDisjointClasses ");// .appendDescriptionOf(matchers);
-	}
-
-	@Override
-	protected boolean matchesSafely(OWLDisjointClassesAxiom axiom) {
-		return anyOrderMatcher.matches(axiom.getClassExpressions());
+	protected boolean matchesSafely(OWLDisjointClassesAxiom axiom, Map<String, Object> values) {
+		return anyOrderMatcher.matches(axiom.getClassExpressions(), values);
 	}
 
 }

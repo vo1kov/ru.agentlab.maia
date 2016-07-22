@@ -1,28 +1,25 @@
 package ru.agentlab.maia.belief.match;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
+import java.util.Map;
+
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLPropertyAssertionObject;
 
-public class OWLPropertyAssertionObjectIsIndividual extends TypeSafeMatcher<OWLPropertyAssertionObject> {
+import ru.agentlab.maia.IEventMatcher;
+import ru.agentlab.maia.TypeSafeEventMatcher;
 
-	Matcher<? super OWLIndividual> matcher;
+public class OWLPropertyAssertionObjectIsIndividual extends TypeSafeEventMatcher<OWLPropertyAssertionObject> {
 
-	public OWLPropertyAssertionObjectIsIndividual(Matcher<? super OWLIndividual> matcher) {
+	IEventMatcher<? super OWLIndividual> matcher;
+
+	public OWLPropertyAssertionObjectIsIndividual(IEventMatcher<? super OWLIndividual> matcher) {
 		super();
 		this.matcher = matcher;
 	}
 
 	@Override
-	public void describeTo(Description description) {
-		description.appendText("hasObject ").appendDescriptionOf(matcher);
-	}
-
-	@Override
-	protected boolean matchesSafely(OWLPropertyAssertionObject object) {
-		return (object instanceof OWLIndividual) && matcher.matches((OWLIndividual) object);
+	protected boolean matchesSafely(OWLPropertyAssertionObject object, Map<String, Object> values) {
+		return (object instanceof OWLIndividual) && matcher.matches((OWLIndividual) object, values);
 	}
 
 }

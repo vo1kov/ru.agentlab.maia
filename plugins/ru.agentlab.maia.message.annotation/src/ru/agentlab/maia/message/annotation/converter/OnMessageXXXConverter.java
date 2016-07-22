@@ -33,7 +33,7 @@ public class OnMessageXXXConverter implements IEventMatcherConverter {
 
 	@SuppressWarnings({ "unchecked", "unused" })
 	@Override
-	public IEventMatcher getMatcher(Object role, Method method, Annotation annotation, Map<String, Object> customData) {
+	public IEventMatcher<?> getMatcher(Object role, Method method, Annotation annotation, Map<String, Object> customData) {
 		Annotation ann = annotation;
 		List<Matcher<? super IMessage>> matchers = new ArrayList<>();
 

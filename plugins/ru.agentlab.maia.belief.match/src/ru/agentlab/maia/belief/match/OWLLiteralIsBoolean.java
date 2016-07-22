@@ -1,27 +1,24 @@
 package ru.agentlab.maia.belief.match;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
+import java.util.Map;
+
 import org.semanticweb.owlapi.model.OWLLiteral;
 
-public class OWLLiteralIsBoolean extends TypeSafeMatcher<OWLLiteral> {
+import ru.agentlab.maia.IEventMatcher;
+import ru.agentlab.maia.TypeSafeEventMatcher;
 
-	Matcher<? super Boolean> matcher;
+public class OWLLiteralIsBoolean extends TypeSafeEventMatcher<OWLLiteral> {
 
-	public OWLLiteralIsBoolean(Matcher<? super Boolean> matcher) {
+	IEventMatcher<? super Boolean> matcher;
+
+	public OWLLiteralIsBoolean(IEventMatcher<? super Boolean> matcher) {
 		super();
 		this.matcher = matcher;
 	}
 
 	@Override
-	public void describeTo(Description description) {
-		description.appendText("is boolean ").appendDescriptionOf(matcher);
-	}
-
-	@Override
-	protected boolean matchesSafely(OWLLiteral literal) {
-		return literal.isBoolean() && matcher.matches(literal.parseBoolean());
+	protected boolean matchesSafely(OWLLiteral literal, Map<String, Object> values) {
+		return literal.isBoolean() && matcher.matches(literal.parseBoolean(), values);
 	}
 
 }

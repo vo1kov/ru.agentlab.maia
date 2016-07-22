@@ -1,29 +1,26 @@
 package ru.agentlab.maia.belief.match;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
+import java.util.Map;
+
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLIndividual;
 
-public class OWLClassAssertionAxiomHasIndividual extends TypeSafeMatcher<OWLClassAssertionAxiom> {
+import ru.agentlab.maia.IEventMatcher;
+import ru.agentlab.maia.TypeSafeEventMatcher;
 
-	Matcher<? super OWLIndividual> matcher;
+public class OWLClassAssertionAxiomHasIndividual extends TypeSafeEventMatcher<OWLClassAssertionAxiom> {
 
-	public OWLClassAssertionAxiomHasIndividual(Matcher<? super OWLIndividual> matcher) {
+	IEventMatcher<? super OWLIndividual> matcher;
+
+	public OWLClassAssertionAxiomHasIndividual(IEventMatcher<? super OWLIndividual> matcher) {
 		super();
 		this.matcher = matcher;
 	}
 
 	@Override
-	public void describeTo(Description description) {
-		description.appendText("hasIndividual ").appendDescriptionOf(matcher);
-	}
-
-	@Override
-	protected boolean matchesSafely(OWLClassAssertionAxiom axiom) {
+	protected boolean matchesSafely(OWLClassAssertionAxiom axiom, Map<String, Object> values) {
 		OWLIndividual subject = axiom.getIndividual();
-		return subject.isNamed() && matcher.matches(subject.asOWLNamedIndividual());
+		return subject.isNamed() && matcher.matches(subject.asOWLNamedIndividual(), values);
 	}
 
 }

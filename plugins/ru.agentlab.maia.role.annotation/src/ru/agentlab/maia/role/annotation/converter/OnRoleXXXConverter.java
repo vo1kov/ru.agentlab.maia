@@ -16,7 +16,7 @@ import ru.agentlab.maia.annotation.Util;
 public class OnRoleXXXConverter implements IEventMatcherConverter {
 
 	@Override
-	public IEventMatcher getMatcher(Object role, Method method, Annotation annotation, Map<String, Object> customData) {
+	public IEventMatcher<?> getMatcher(Object role, Method method, Annotation annotation, Map<String, Object> customData) {
 		Class<?> value = Util.getMethodValue(annotation, "value", Class.class);
 		return hamcrest(anyOf(instanceOf(value), equalTo(value)));
 	}

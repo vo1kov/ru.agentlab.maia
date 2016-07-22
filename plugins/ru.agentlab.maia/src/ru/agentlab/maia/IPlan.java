@@ -18,8 +18,8 @@ public interface IPlan {
 
 	IStateMatcher getStateMatcher();
 
-	void setEventMatcher(IEventMatcher eventMatcher);
+	void setEventMatcher(IEventMatcher<?> eventMatcher);
 
-	IEventMatcher getEventMatcher();
+	IEventMatcher<?> getEventMatcher();
 
 }

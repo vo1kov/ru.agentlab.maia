@@ -2,8 +2,8 @@ package ru.agentlab.maia.belief.match;
 
 import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static ru.agentlab.maia.match.EventMatchers.hamcrest;
 
-import org.hamcrest.Matcher;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
@@ -21,122 +21,133 @@ import org.semanticweb.owlapi.model.OWLPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLPropertyAssertionObject;
 import org.semanticweb.owlapi.model.OWLPropertyExpression;
 
+import ru.agentlab.maia.IEventMatcher;
+
 public class Matchers {
 
-	public static Matcher<OWLDisjointClassesAxiom> hasDisjointClasses(Matcher<? super OWLClassExpression>[] matchers) {
+	public static IEventMatcher<OWLDisjointClassesAxiom> hasDisjointClasses(
+			IEventMatcher<? super OWLClassExpression>[] matchers) {
 		return new OWLDisjointClassesAxiomHasClasses(matchers);
 	}
 
-	public static Matcher<OWLDifferentIndividualsAxiom> hasDifferentIndividuals(
-			Matcher<? super OWLIndividual>[] matchers) {
+	public static IEventMatcher<OWLDifferentIndividualsAxiom> hasDifferentIndividuals(
+			IEventMatcher<? super OWLIndividual>[] matchers) {
 		return new OWLDifferentIndividualsAxiomHasIndividuals(matchers);
 	}
 
-	public static Matcher<OWLClassExpression> isNamedClass(Matcher<? super OWLClass> matcher) {
-		return new OWLClassExpressionIsClass(matcher);
+	public static IEventMatcher<OWLClassExpression> isNamedClass(IEventMatcher<? super OWLClass> IEventMatcher) {
+		return new OWLClassExpressionIsClass(IEventMatcher);
 	}
 
-	public static Matcher<OWLClassAssertionAxiom> hasClassExpression(Matcher<? super OWLClassExpression> matcher) {
-		return new OWLClassAssertionAxiomHasClassExpression(matcher);
+	public static IEventMatcher<OWLClassAssertionAxiom> hasClassExpression(
+			IEventMatcher<? super OWLClassExpression> IEventMatcher) {
+		return new OWLClassAssertionAxiomHasClassExpression(IEventMatcher);
 	}
 
-	public static Matcher<OWLClassAssertionAxiom> hasIndividual(Matcher<? super OWLIndividual> matcher) {
-		return new OWLClassAssertionAxiomHasIndividual(matcher);
+	public static IEventMatcher<OWLClassAssertionAxiom> hasIndividual(
+			IEventMatcher<? super OWLIndividual> IEventMatcher) {
+		return new OWLClassAssertionAxiomHasIndividual(IEventMatcher);
 	}
 
-	public static Matcher<OWLIndividual> isNamedIndividual(Matcher<? super OWLNamedIndividual> matcher) {
-		return new OWLIndividualIsNamed(matcher);
+	public static IEventMatcher<OWLIndividual> isNamedIndividual(
+			IEventMatcher<? super OWLNamedIndividual> IEventMatcher) {
+		return new OWLIndividualIsNamed(IEventMatcher);
 	}
 
-	public static Matcher<OWLIndividual> isNamed() {
-		return new OWLIndividualIsNamed(anything());
+	public static IEventMatcher<OWLIndividual> isNamed() {
+		return new OWLIndividualIsNamed(hamcrest(anything()));
 	}
 
-	public static Matcher<OWLPropertyAssertionAxiom<?, ?>> hasSubject(Matcher<? super OWLIndividual> matcher) {
-		return new OWLPropertyAssertionAxiomHasSubject(matcher);
+	public static IEventMatcher<OWLPropertyAssertionAxiom<?, ?>> hasSubject(
+			IEventMatcher<? super OWLIndividual> IEventMatcher) {
+		return new OWLPropertyAssertionAxiomHasSubject(IEventMatcher);
 	}
 
-	public static Matcher<OWLPropertyAssertionAxiom<?, ?>> hasObject(
-			Matcher<? super OWLPropertyAssertionObject> matcher) {
-		return new OWLPropertyAssertionAxiomHasObject(matcher);
+	public static IEventMatcher<OWLPropertyAssertionAxiom<?, ?>> hasObject(
+			IEventMatcher<? super OWLPropertyAssertionObject> IEventMatcher) {
+		return new OWLPropertyAssertionAxiomHasObject(IEventMatcher);
 	}
 
-	public static Matcher<OWLPropertyExpression> isObjectProperty(Matcher<? super OWLObjectProperty> matcher) {
-		return new OWLPropertyExpressionIsObjectPropertyExpression(matcher);
+	public static IEventMatcher<OWLPropertyExpression> isObjectProperty(
+			IEventMatcher<? super OWLObjectProperty> IEventMatcher) {
+		return new OWLPropertyExpressionIsObjectPropertyExpression(IEventMatcher);
 	}
 
-	public static Matcher<OWLPropertyExpression> isDataProperty(Matcher<? super OWLDataProperty> matcher) {
-		return new OWLPropertyExpressionIsDataPropertyExpression(matcher);
+	public static IEventMatcher<OWLPropertyExpression> isDataProperty(
+			IEventMatcher<? super OWLDataProperty> IEventMatcher) {
+		return new OWLPropertyExpressionIsDataPropertyExpression(IEventMatcher);
 	}
 
-	public static Matcher<OWLPropertyAssertionAxiom<?, ?>> hasProperty(Matcher<? super OWLPropertyExpression> matcher) {
-		return new OWLPropertyAssertionAxiomHasProperty(matcher);
+	public static IEventMatcher<OWLPropertyAssertionAxiom<?, ?>> hasProperty(
+			IEventMatcher<? super OWLPropertyExpression> IEventMatcher) {
+		return new OWLPropertyAssertionAxiomHasProperty(IEventMatcher);
 	}
 
-	public static Matcher<OWLNamedObject> hasIRI(Matcher<? super IRI> matcher) {
-		return new OWLNamedObjectHasIRI(matcher);
+	public static IEventMatcher<OWLNamedObject> hasIRI(IEventMatcher<? super IRI> IEventMatcher) {
+		return new OWLNamedObjectHasIRI(IEventMatcher);
 	}
 
-	public static Matcher<OWLNamedObject> hasIRI(IRI iri) {
-		return hasIRI(equalTo(iri));
+	public static IEventMatcher<OWLNamedObject> hasIRI(IRI iri) {
+		return hasIRI(hamcrest(equalTo(iri)));
 	}
 
-	public static Matcher<OWLNamedObject> hasIRI(String iri) {
-		return hasIRI(equalTo(IRI.create(iri)));
+	public static IEventMatcher<OWLNamedObject> hasIRI(String iri) {
+		return hasIRI(hamcrest(equalTo(IRI.create(iri))));
 	}
 
-	public static Matcher<OWLNamedObject> hasIRI(String namespace, String name) {
-		return hasIRI(equalTo(IRI.create(namespace, name)));
+	public static IEventMatcher<OWLNamedObject> hasIRI(String namespace, String name) {
+		return hasIRI(hamcrest(equalTo(IRI.create(namespace, name))));
 	}
 
-	public static Matcher<OWLPropertyAssertionObject> isLiteral(Matcher<? super OWLLiteral> matcher) {
-		return new OWLPropertyAssertionObjectIsLiteral(matcher);
+	public static IEventMatcher<OWLPropertyAssertionObject> isLiteral(IEventMatcher<? super OWLLiteral> IEventMatcher) {
+		return new OWLPropertyAssertionObjectIsLiteral(IEventMatcher);
 	}
 
-	public static Matcher<OWLPropertyAssertionObject> isIndividual(Matcher<? super OWLIndividual> matcher) {
-		return new OWLPropertyAssertionObjectIsIndividual(matcher);
+	public static IEventMatcher<OWLPropertyAssertionObject> isIndividual(
+			IEventMatcher<? super OWLIndividual> IEventMatcher) {
+		return new OWLPropertyAssertionObjectIsIndividual(IEventMatcher);
 	}
 
-	public static Matcher<OWLLiteral> isBooleanLiteral(Matcher<? super Boolean> matcher) {
-		return new OWLLiteralIsBoolean(matcher);
+	public static IEventMatcher<OWLLiteral> isBooleanLiteral(IEventMatcher<? super Boolean> IEventMatcher) {
+		return new OWLLiteralIsBoolean(IEventMatcher);
 	}
 
-	public static Matcher<OWLLiteral> isBooleanLiteral(boolean value) {
-		return new OWLLiteralIsBoolean(equalTo(value));
+	public static IEventMatcher<OWLLiteral> isBooleanLiteral(boolean value) {
+		return new OWLLiteralIsBoolean(hamcrest(equalTo(value)));
 	}
 
-	public static Matcher<OWLLiteral> isFloatLiteral(Matcher<? super Float> matcher) {
-		return new OWLLiteralIsFloat(matcher);
+	public static IEventMatcher<OWLLiteral> isFloatLiteral(IEventMatcher<? super Float> IEventMatcher) {
+		return new OWLLiteralIsFloat(IEventMatcher);
 	}
 
-	public static Matcher<OWLLiteral> isFloatLiteral(float value) {
-		return new OWLLiteralIsFloat(equalTo(value));
+	public static IEventMatcher<OWLLiteral> isFloatLiteral(float value) {
+		return new OWLLiteralIsFloat(hamcrest(equalTo(value)));
 	}
 
-	public static Matcher<OWLLiteral> isDoubleLiteral(Matcher<? super Double> matcher) {
-		return new OWLLiteralIsDouble(matcher);
+	public static IEventMatcher<OWLLiteral> isDoubleLiteral(IEventMatcher<? super Double> IEventMatcher) {
+		return new OWLLiteralIsDouble(IEventMatcher);
 	}
 
-	public static Matcher<OWLLiteral> isDoubleLiteral(double value) {
-		return new OWLLiteralIsDouble(equalTo(value));
+	public static IEventMatcher<OWLLiteral> isDoubleLiteral(double value) {
+		return new OWLLiteralIsDouble(hamcrest(equalTo(value)));
 	}
 
-	public static Matcher<OWLLiteral> isIntegerLiteral(Matcher<? super Integer> matcher) {
-		return new OWLLiteralIsInteger(matcher);
+	public static IEventMatcher<OWLLiteral> isIntegerLiteral(IEventMatcher<? super Integer> IEventMatcher) {
+		return new OWLLiteralIsInteger(IEventMatcher);
 	}
 
-	public static Matcher<OWLLiteral> isTypedLiteral(Matcher<? super String> valueMatcher,
-			Matcher<? super OWLDatatype> datatypeMatcher) {
+	public static IEventMatcher<OWLLiteral> isTypedLiteral(IEventMatcher<? super String> valueMatcher,
+			IEventMatcher<? super OWLDatatype> datatypeMatcher) {
 		return new OWLLiteralIsTyped(valueMatcher, datatypeMatcher);
 	}
 
-	public static Matcher<OWLLiteral> isPlainLiteral(Matcher<? super String> valueMatcher,
-			Matcher<? super String> languageMatcher) {
+	public static IEventMatcher<OWLLiteral> isPlainLiteral(IEventMatcher<? super String> valueMatcher,
+			IEventMatcher<? super String> languageMatcher) {
 		return new OWLLiteralIsPlain(valueMatcher, languageMatcher);
 	}
 
-	public static Matcher<OWLLiteral> isPlain(Matcher<? super String> valueMatcher) {
-		return new OWLLiteralIsPlain(valueMatcher, anything());
+	public static IEventMatcher<OWLLiteral> isPlain(IEventMatcher<? super String> valueMatcher) {
+		return new OWLLiteralIsPlain(valueMatcher, hamcrest(anything()));
 	}
 
 }

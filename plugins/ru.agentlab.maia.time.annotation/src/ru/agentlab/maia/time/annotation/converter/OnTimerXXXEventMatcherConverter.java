@@ -19,7 +19,8 @@ public class OnTimerXXXEventMatcherConverter implements IEventMatcherConverter {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public IEventMatcher getMatcher(Object role, Method method, Annotation annotation, Map<String, Object> customData) {
+	public IEventMatcher<?> getMatcher(Object role, Method method, Annotation annotation,
+			Map<String, Object> customData) {
 		final UUID eventKey = UUID.randomUUID();
 		customData.put(annotation.getClass().getName(), eventKey);
 		return hamcrest(allOf(hasProperty(EVENT_KEY, equalTo(eventKey))));

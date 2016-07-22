@@ -1,18 +1,15 @@
 package ru.agentlab.maia.belief.match;
 
-import org.hamcrest.Description;
-import org.hamcrest.TypeSafeMatcher;
+import java.util.Map;
+
 import org.semanticweb.owlapi.model.OWLClassExpression;
 
-public class OWLClassExpressionIsNothing extends TypeSafeMatcher<OWLClassExpression> {
+import ru.agentlab.maia.TypeSafeEventMatcher;
+
+public class OWLClassExpressionIsNothing extends TypeSafeEventMatcher<OWLClassExpression> {
 
 	@Override
-	public void describeTo(Description description) {
-		description.appendText("is OWLNothing");
-	}
-
-	@Override
-	protected boolean matchesSafely(OWLClassExpression expression) {
+	protected boolean matchesSafely(OWLClassExpression expression, Map<String, Object> values) {
 		return expression.isOWLNothing();
 	}
 

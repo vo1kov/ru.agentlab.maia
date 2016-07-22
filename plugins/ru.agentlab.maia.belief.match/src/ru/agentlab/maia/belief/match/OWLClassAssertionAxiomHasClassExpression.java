@@ -1,28 +1,25 @@
 package ru.agentlab.maia.belief.match;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
+import java.util.Map;
+
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 
-public class OWLClassAssertionAxiomHasClassExpression extends TypeSafeMatcher<OWLClassAssertionAxiom> {
+import ru.agentlab.maia.IEventMatcher;
+import ru.agentlab.maia.TypeSafeEventMatcher;
 
-	Matcher<? super OWLClassExpression> matcher;
+public class OWLClassAssertionAxiomHasClassExpression extends TypeSafeEventMatcher<OWLClassAssertionAxiom> {
 
-	public OWLClassAssertionAxiomHasClassExpression(Matcher<? super OWLClassExpression> matcher) {
+	IEventMatcher<? super OWLClassExpression> matcher;
+
+	public OWLClassAssertionAxiomHasClassExpression(IEventMatcher<? super OWLClassExpression> matcher) {
 		super();
 		this.matcher = matcher;
 	}
 
 	@Override
-	public void describeTo(Description description) {
-		description.appendText("hasClassExpression ").appendDescriptionOf(matcher);
-	}
-
-	@Override
-	protected boolean matchesSafely(OWLClassAssertionAxiom axiom) {
-		return matcher.matches(axiom.getClassExpression());
+	protected boolean matchesSafely(OWLClassAssertionAxiom axiom, Map<String, Object> values) {
+		return matcher.matches(axiom.getClassExpression(), values);
 	}
 
 }

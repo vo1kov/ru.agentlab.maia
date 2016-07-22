@@ -1,35 +1,7 @@
 package ru.agentlab.maia.belief.annotation.converter;
 
 import static org.hamcrest.Matchers.equalTo;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.Set;
-
-import org.hamcrest.Matcher;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLClassExpression;
-import org.semanticweb.owlapi.model.OWLIndividual;
-import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.model.OWLNamedObject;
-import org.semanticweb.owlapi.model.PrefixManager;
-import org.semanticweb.owlapi.util.DefaultPrefixManager;
-import org.semanticweb.owlapi.vocab.Namespaces;
-import org.semanticweb.owlapi.vocab.OWL2Datatype;
-
-import com.google.common.collect.ImmutableSet;
-
-import ru.agentlab.maia.ConverterContext;
-import ru.agentlab.maia.IEventMatcher;
-import ru.agentlab.maia.annotation.IEventMatcherConverter;
-import ru.agentlab.maia.annotation.Util;
-import ru.agentlab.maia.belief.annotation.AxiomType;
-import ru.agentlab.maia.exception.ConverterException;
-
 import static ru.agentlab.maia.belief.match.Matchers.hasClassExpression;
-import static ru.agentlab.maia.belief.match.Matchers.hasDifferentIndividuals;
-import static ru.agentlab.maia.belief.match.Matchers.hasDisjointClasses;
 import static ru.agentlab.maia.belief.match.Matchers.hasIRI;
 import static ru.agentlab.maia.belief.match.Matchers.hasIndividual;
 import static ru.agentlab.maia.belief.match.Matchers.hasObject;
@@ -47,7 +19,32 @@ import static ru.agentlab.maia.belief.match.Matchers.isNamedIndividual;
 import static ru.agentlab.maia.belief.match.Matchers.isObjectProperty;
 import static ru.agentlab.maia.belief.match.Matchers.isPlainLiteral;
 import static ru.agentlab.maia.belief.match.Matchers.isTypedLiteral;
-import static ru.agentlab.maia.match.EventMatchers.*;
+import static ru.agentlab.maia.match.EventMatchers.allOf;
+import static ru.agentlab.maia.match.EventMatchers.anything;
+import static ru.agentlab.maia.match.EventMatchers.hamcrest;
+import static ru.agentlab.maia.match.EventMatchers.var;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.Set;
+
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLNamedObject;
+import org.semanticweb.owlapi.model.PrefixManager;
+import org.semanticweb.owlapi.util.DefaultPrefixManager;
+import org.semanticweb.owlapi.vocab.Namespaces;
+import org.semanticweb.owlapi.vocab.OWL2Datatype;
+
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+
+import ru.agentlab.maia.IEventMatcher;
+import ru.agentlab.maia.annotation.IEventMatcherConverter;
+import ru.agentlab.maia.annotation.Util;
+import ru.agentlab.maia.belief.annotation.AxiomType;
+import ru.agentlab.maia.exception.ConverterException;
 
 public class OnBeliefXXXConverter implements IEventMatcherConverter {
 
@@ -74,12 +71,13 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public IEventMatcher getMatcher(Object role, Method method, Annotation annotation, Map<String, Object> customData) {
+	public IEventMatcher<?> getMatcher(Object role, Method method, Annotation annotation,
+			Map<String, Object> customData) {
 		Annotation ann = annotation;
 		AxiomType type = Util.getMethodValue(ann, TYPE, AxiomType.class);
 		String[] args = Util.getMethodValue(ann, VALUE, String[].class);
 		checkLength(args, type.getArity());
-		int length = args.length;
+		// int length = args.length;
 		try {
 			switch (type) {
 			case ANNOTATION_ASSERTION:
@@ -91,14 +89,14 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 			case ASYMMETRIC_OBJECT_PROPERTY:
 				return null;
 			case CLASS_ASSERTION:
-				return allOf(hasClassExpression(isNamedClass(hasName(args[1]))),
-						hasIndividual(isNamedIndividual(hasName(args[0]))));
+				return allOf(Lists.newArrayList(hasClassExpression(isNamedClass(hasName(args[1]))),
+						hasIndividual(isNamedIndividual(hasName(args[0])))));
 			case DATATYPE_DEFINITION:
 				return null;
 			case DATA_PROPERTY_ASSERTION:
-				return allOf(hasSubject(isNamedIndividual(hasName(args[0]))),
+				return allOf(Lists.newArrayList(hasSubject(isNamedIndividual(hasName(args[0]))),
 						hasProperty(isDataProperty(hasName(args[1]))),
-						hasObject(isLiteral(getOWLLiteralMatcher(args[2]))));
+						hasObject(isLiteral(getOWLLiteralMatcher(args[2])))));
 			case DATA_PROPERTY_DOMAIN:
 				return null;
 			case DATA_PROPERTY_RANGE:
@@ -106,17 +104,22 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 			case DECLARATION:
 				return null;
 			case DIFFERENT_INDIVIDUALS:
-				Matcher<? super OWLIndividual>[] differentIndividuals = new Matcher[length];
-				for (int i = 0; i < length; i++) {
-					differentIndividuals[i] = isNamedIndividual(hasName(args[i]));
-				}
-				return hasDifferentIndividuals(differentIndividuals);
+				// Matcher<? super OWLIndividual>[] differentIndividuals = new
+				// Matcher[length];
+				// for (int i = 0; i < length; i++) {
+				// differentIndividuals[i] =
+				// isNamedIndividual(hasName(args[i]));
+				// }
+				// return hasDifferentIndividuals(differentIndividuals);
+				return null;
 			case DISJOINT_CLASSES:
-				Matcher<? super OWLClassExpression>[] disjointClasses = new Matcher[length];
-				for (int i = 0; i < length; i++) {
-					disjointClasses[i] = isNamedClass(hasName(args[i]));
-				}
-				return hasDisjointClasses(disjointClasses);
+				// Matcher<? super OWLClassExpression>[] disjointClasses = new
+				// Matcher[length];
+				// for (int i = 0; i < length; i++) {
+				// disjointClasses[i] = isNamedClass(hasName(args[i]));
+				// }
+				// return hasDisjointClasses(disjointClasses);
+				return null;
 			case DISJOINT_DATA_PROPERTIES:
 				return null;
 			case DISJOINT_OBJECT_PROPERTIES:
@@ -146,9 +149,9 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 			case NEGATIVE_OBJECT_PROPERTY_ASSERTION:
 				return null;
 			case OBJECT_PROPERTY_ASSERTION:
-				return allOf(hasSubject(isNamedIndividual(hasName(args[0]))),
+				return allOf(Lists.newArrayList(hasSubject(isNamedIndividual(hasName(args[0]))),
 						hasProperty(isObjectProperty(hasName(args[1]))),
-						hasObject(isIndividual(isNamedIndividual(hasName(args[2])))));
+						hasObject(isIndividual(isNamedIndividual(hasName(args[2]))))));
 			case OBJECT_PROPERTY_DOMAIN:
 				return null;
 			case OBJECT_PROPERTY_RANGE:
@@ -188,8 +191,7 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 	 * @return
 	 * @throws LiteralFormatException
 	 */
-	protected IEventMatcher getOWLLiteralMatcher(String string)
-			throws LiteralFormatException {
+	protected IEventMatcher<? super OWLLiteral> getOWLLiteralMatcher(String string) throws LiteralFormatException {
 		String[] parts = Util.splitDatatypeLiteral(string);
 		String literal = parts[0];
 		String language = parts[1];
@@ -227,7 +229,7 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 					case XSD_INTEGER:
 						return isIntegerLiteral(hasInteger(literal));
 					case RDF_PLAIN_LITERAL:
-						return isPlainLiteral(equalTo(literal), equalTo(language));
+						return isPlainLiteral(hamcrest(equalTo(literal)), hamcrest(equalTo(language)));
 					default:
 						return isTypedLiteral(hasString(literal), hasIRI(datatypeIRI));
 					}
@@ -239,15 +241,15 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 		return isPlainLiteral(hasString(literal), anything());
 	}
 
-	private IEventMatcher hasName(String string) {
+	private IEventMatcher<? super OWLNamedObject> hasName(String string) {
 		if (Util.isVariable(string)) {
 			return var(Util.getVariableName(string));
 		} else {
-			return hamcrest(hasIRI(prefixManager.getIRI(string)));
+			return hasIRI(prefixManager.getIRI(string));
 		}
 	}
 
-	private IEventMatcher hasString(String string) {
+	private IEventMatcher<? super String> hasString(String string) {
 		if (string == null) {
 			return anything();
 		}
@@ -258,8 +260,7 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 		}
 	}
 
-	private IEventMatcher hasBoolean(String string)
-			throws LiteralNotInValueSpaceException {
+	private IEventMatcher<? super Boolean> hasBoolean(String string) throws LiteralNotInValueSpaceException {
 		if (string == null) {
 			return anything();
 		}
@@ -278,8 +279,7 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 		}
 	}
 
-	private IEventMatcher hasFloat(String string)
-			throws LiteralNotInValueSpaceException {
+	private IEventMatcher<? super Float> hasFloat(String string) throws LiteralNotInValueSpaceException {
 		if (string == null) {
 			return anything();
 		}
@@ -300,8 +300,7 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 		}
 	}
 
-	private IEventMatcher hasDouble(String string)
-			throws LiteralNotInValueSpaceException {
+	private IEventMatcher<? super Double> hasDouble(String string) throws LiteralNotInValueSpaceException {
 		if (string == null) {
 			return anything();
 		}
@@ -324,8 +323,7 @@ public class OnBeliefXXXConverter implements IEventMatcherConverter {
 		}
 	}
 
-	private IEventMatcher hasInteger(String string)
-			throws LiteralNotInValueSpaceException {
+	private IEventMatcher<? super Integer> hasInteger(String string) throws LiteralNotInValueSpaceException {
 		if (string == null) {
 			return anything();
 		}

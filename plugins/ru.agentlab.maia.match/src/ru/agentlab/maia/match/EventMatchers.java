@@ -8,35 +8,27 @@ import ru.agentlab.maia.IEventMatcher;
 
 public class EventMatchers {
 
-	public static IEventMatcher allOf(IEventMatcher... matchers) {
-		return new EventMatcherAllOf(matchers);
+	public static <T> IEventMatcher<T> allOf(Collection<IEventMatcher<T>> matchers) {
+		return new EventMatcherAllOf<T>(matchers);
 	}
 
-	public static IEventMatcher allOf(Collection<IEventMatcher> matchers) {
-		return new EventMatcherAllOf(matchers);
+	public static <T> IEventMatcher<T> anyOf(Collection<IEventMatcher<T>> matchers) {
+		return new EventMatcherAnyOf<T>(matchers);
 	}
 
-	public static IEventMatcher anyOf(IEventMatcher... matchers) {
-		return new EventMatcherAnyOf(matchers);
+	public static <T> IEventMatcher<T> hamcrest(Matcher<T> matcher) {
+		return new EventMatcherHamcrest<T>(matcher);
 	}
 
-	public static IEventMatcher anyOf(Collection<IEventMatcher> matchers) {
-		return new EventMatcherAnyOf(matchers);
-	}
-
-	public static IEventMatcher hamcrest(Matcher<?> matcher) {
-		return new EventMatcherHamcrest(matcher);
-	}
-
-	public static IEventMatcher var(String name) {
+	public static IEventMatcher<Object> var(String name) {
 		return new EventMatcherVariable(name);
 	}
 
-	public static IEventMatcher anything() {
+	public static IEventMatcher<Object> anything() {
 		return (event, variables) -> true;
 	}
 
-	public static IEventMatcher nothing() {
+	public static IEventMatcher<Object> nothing() {
 		return (event, variables) -> false;
 	}
 

@@ -1,31 +1,29 @@
 package ru.agentlab.maia.belief.match;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
+import java.util.Map;
+
 import org.semanticweb.owlapi.model.OWLLiteral;
 
-public class OWLLiteralIsPlain extends TypeSafeMatcher<OWLLiteral> {
+import ru.agentlab.maia.IEventMatcher;
+import ru.agentlab.maia.TypeSafeEventMatcher;
 
-	Matcher<? super String> valueMatcher;
+public class OWLLiteralIsPlain extends TypeSafeEventMatcher<OWLLiteral> {
 
-	Matcher<? super String> languageMatcher;
+	IEventMatcher<? super String> valueMatcher;
 
-	public OWLLiteralIsPlain(Matcher<? super String> valueMatcher, Matcher<? super String> languageMatcher) {
+	IEventMatcher<? super String> languageMatcher;
+
+	public OWLLiteralIsPlain(IEventMatcher<? super String> valueMatcher,
+			IEventMatcher<? super String> languageMatcher) {
 		super();
 		this.valueMatcher = valueMatcher;
 		this.languageMatcher = languageMatcher;
 	}
 
 	@Override
-	public void describeTo(Description description) {
-		description.appendText("is integer ").appendDescriptionOf(valueMatcher);
-	}
-
-	@Override
-	protected boolean matchesSafely(OWLLiteral literal) {
-		return literal.isRDFPlainLiteral() && valueMatcher.matches(literal.getLiteral())
-				&& languageMatcher.matches(literal.getLang());
+	protected boolean matchesSafely(OWLLiteral literal, Map<String, Object> values) {
+		return literal.isRDFPlainLiteral() && valueMatcher.matches(literal.getLiteral(), values)
+				&& languageMatcher.matches(literal.getLang(), values);
 	}
 
 }

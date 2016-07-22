@@ -6,12 +6,12 @@ import ru.agentlab.maia.IStateMatcher;
 
 public class StateMatchers {
 
-	public static IStateMatcher allOf(IStateMatcher... matchers) {
+	public static IStateMatcher allOf(Collection<IStateMatcher> matchers) {
 		return new StateMatcherAllOf(matchers);
 	}
 
-	public static IStateMatcher allOf(Collection<IStateMatcher> matchers) {
-		return new StateMatcherAllOf(matchers);
+	public static IStateMatcher anyOf(Collection<IStateMatcher> matchers) {
+		return new StateMatcherAnyOf(matchers);
 	}
 
 	public static IStateMatcher anything() {

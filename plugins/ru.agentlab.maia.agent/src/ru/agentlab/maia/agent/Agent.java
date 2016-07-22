@@ -361,17 +361,17 @@ public class Agent implements IAgent {
 
 	private static class Registration {
 
-		IEventMatcher mathcer;
+		IEventMatcher<?> mathcer;
 
 		Class<?> eventType;
 
-		public Registration(IEventMatcher mathcer, Class<?> eventType) {
+		public Registration(IEventMatcher<?> mathcer, Class<?> eventType) {
 			super();
 			this.mathcer = mathcer;
 			this.eventType = eventType;
 		}
 
-		public IEventMatcher getEventMatcher() {
+		public IEventMatcher<?> getEventMatcher() {
 			return mathcer;
 		}
 

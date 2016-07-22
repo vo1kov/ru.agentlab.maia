@@ -80,7 +80,7 @@ public class PlanBase implements IPlanBase {
 		Collection<IPlan> collection = plans.get(eventType);
 		return collection.stream().map(plan -> {
 			Map<String, Object> variables = new HashMap<>();
-			IEventMatcher eventMatcher = plan.getEventMatcher();
+			IEventMatcher<?> eventMatcher = plan.getEventMatcher();
 			IStateMatcher stateMatcher = plan.getStateMatcher();
 			if (eventMatcher.matches(payload, variables) && stateMatcher.matches(payload, variables)) {
 				return new Option(plan.getPlanBody(), variables);

@@ -1,28 +1,25 @@
 package ru.agentlab.maia.belief.match;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
+import java.util.Map;
+
 import org.semanticweb.owlapi.model.OWLAnonymousClassExpression;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 
-public class OWLClassExpressionIsAnonymous extends TypeSafeMatcher<OWLClassExpression> {
+import ru.agentlab.maia.IEventMatcher;
+import ru.agentlab.maia.TypeSafeEventMatcher;
 
-	Matcher<? super OWLAnonymousClassExpression> matcher;
+public class OWLClassExpressionIsAnonymous extends TypeSafeEventMatcher<OWLClassExpression> {
 
-	public OWLClassExpressionIsAnonymous(Matcher<? super OWLAnonymousClassExpression> matcher) {
+	IEventMatcher<? super OWLAnonymousClassExpression> matcher;
+
+	public OWLClassExpressionIsAnonymous(IEventMatcher<? super OWLAnonymousClassExpression> matcher) {
 		super();
 		this.matcher = matcher;
 	}
 
 	@Override
-	public void describeTo(Description description) {
-		description.appendText("isClass ").appendDescriptionOf(matcher);
-	}
-
-	@Override
-	protected boolean matchesSafely(OWLClassExpression expression) {
-		return expression.isAnonymous() && matcher.matches(expression);
+	protected boolean matchesSafely(OWLClassExpression expression, Map<String, Object> values) {
+		return expression.isAnonymous() && matcher.matches(expression, values);
 	}
 
 }

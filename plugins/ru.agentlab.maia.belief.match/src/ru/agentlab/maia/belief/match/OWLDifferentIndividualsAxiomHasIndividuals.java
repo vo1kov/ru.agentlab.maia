@@ -1,29 +1,26 @@
 package ru.agentlab.maia.belief.match;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
+import java.util.Map;
+
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.semanticweb.owlapi.model.OWLDifferentIndividualsAxiom;
 import org.semanticweb.owlapi.model.OWLIndividual;
 
-public class OWLDifferentIndividualsAxiomHasIndividuals extends TypeSafeMatcher<OWLDifferentIndividualsAxiom> {
+import ru.agentlab.maia.IEventMatcher;
+import ru.agentlab.maia.TypeSafeEventMatcher;
 
-	Matcher<Iterable<? extends OWLIndividual>> anyOrderMatcher;
+public class OWLDifferentIndividualsAxiomHasIndividuals extends TypeSafeEventMatcher<OWLDifferentIndividualsAxiom> {
 
-	public OWLDifferentIndividualsAxiomHasIndividuals(Matcher<? super OWLIndividual>[] matchers) {
+	IEventMatcher<Iterable<? extends OWLIndividual>> anyOrderMatcher;
+
+	public OWLDifferentIndividualsAxiomHasIndividuals(IEventMatcher<? super OWLIndividual>[] matchers) {
 		super();
 		this.anyOrderMatcher = IsIterableContainingInAnyOrder.containsInAnyOrder(matchers);
 	}
 
 	@Override
-	public void describeTo(Description description) {
-		description.appendText("hasDisjointClasses ");// .appendDescriptionOf(matchers);
-	}
-
-	@Override
-	protected boolean matchesSafely(OWLDifferentIndividualsAxiom axiom) {
-		return anyOrderMatcher.matches(axiom.getIndividuals());
+	protected boolean matchesSafely(OWLDifferentIndividualsAxiom axiom, Map<String, Object> values) {
+		return anyOrderMatcher.matches(axiom.getIndividuals(), values);
 	}
 
 }

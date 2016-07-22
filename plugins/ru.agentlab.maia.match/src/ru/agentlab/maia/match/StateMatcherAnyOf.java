@@ -8,31 +8,31 @@ import java.util.Map;
 
 import ru.agentlab.maia.IStateMatcher;
 
-public class StateMatcherAllOf implements IStateMatcher {
+public class StateMatcherAnyOf implements IStateMatcher {
 
 	IStateMatcher[] matchers;
 
-	public StateMatcherAllOf(Collection<IStateMatcher> matchers) {
+	public StateMatcherAnyOf(Collection<IStateMatcher> matchers) {
 		this.matchers = matchers.toArray(new IStateMatcher[matchers.size()]);
 	}
 
-	public StateMatcherAllOf(IStateMatcher... matchers) {
+	public StateMatcherAnyOf(IStateMatcher... matchers) {
 		this.matchers = matchers;
 	}
 
 	@Override
 	public boolean matches(Object item, Map<String, Object> values) {
 		for (IStateMatcher matcher : matchers) {
-			if (!matcher.matches(item, values)) {
-				return false;
+			if (matcher.matches(item, values)) {
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	@Override
 	public String toString() {
-		return "all of: " + Arrays.stream(matchers).map(Object::toString).collect(joining(", ", "(", ")"));
+		return "anyof: " + Arrays.stream(matchers).map(Object::toString).collect(joining(", ", "(", ")"));
 	}
 
 }

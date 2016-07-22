@@ -1,28 +1,25 @@
 package ru.agentlab.maia.belief.match;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
+import java.util.Map;
+
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLPropertyAssertionAxiom;
 
-public class OWLPropertyAssertionAxiomHasSubject extends TypeSafeMatcher<OWLPropertyAssertionAxiom<?, ?>> {
+import ru.agentlab.maia.IEventMatcher;
+import ru.agentlab.maia.TypeSafeEventMatcher;
 
-	Matcher<? super OWLIndividual> matcher;
+public class OWLPropertyAssertionAxiomHasSubject extends TypeSafeEventMatcher<OWLPropertyAssertionAxiom<?, ?>> {
 
-	public OWLPropertyAssertionAxiomHasSubject(Matcher<? super OWLIndividual> matcher) {
+	IEventMatcher<? super OWLIndividual> matcher;
+
+	public OWLPropertyAssertionAxiomHasSubject(IEventMatcher<? super OWLIndividual> matcher) {
 		super();
 		this.matcher = matcher;
 	}
 
 	@Override
-	public void describeTo(Description description) {
-		description.appendText("hasSubject ").appendDescriptionOf(matcher);
-	}
-
-	@Override
-	protected boolean matchesSafely(OWLPropertyAssertionAxiom<?, ?> axiom) {
-		return matcher.matches(axiom.getSubject());
+	protected boolean matchesSafely(OWLPropertyAssertionAxiom<?, ?> axiom, Map<String, Object> values) {
+		return matcher.matches(axiom.getSubject(), values);
 	}
 
 }

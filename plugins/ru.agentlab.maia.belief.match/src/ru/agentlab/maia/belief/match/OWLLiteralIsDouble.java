@@ -1,27 +1,24 @@
 package ru.agentlab.maia.belief.match;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
+import java.util.Map;
+
 import org.semanticweb.owlapi.model.OWLLiteral;
 
-public class OWLLiteralIsDouble extends TypeSafeMatcher<OWLLiteral> {
+import ru.agentlab.maia.IEventMatcher;
+import ru.agentlab.maia.TypeSafeEventMatcher;
 
-	Matcher<? super Double> matcher;
+public class OWLLiteralIsDouble extends TypeSafeEventMatcher<OWLLiteral> {
 
-	public OWLLiteralIsDouble(Matcher<? super Double> matcher) {
+	IEventMatcher<? super Double> matcher;
+
+	public OWLLiteralIsDouble(IEventMatcher<? super Double> matcher) {
 		super();
 		this.matcher = matcher;
 	}
 
 	@Override
-	public void describeTo(Description description) {
-		description.appendText("is double ").appendDescriptionOf(matcher);
-	}
-
-	@Override
-	protected boolean matchesSafely(OWLLiteral literal) {
-		return literal.isDouble() && matcher.matches(literal.parseDouble());
+	protected boolean matchesSafely(OWLLiteral literal, Map<String, Object> values) {
+		return literal.isDouble() && matcher.matches(literal.parseDouble(), values);
 	}
 
 }

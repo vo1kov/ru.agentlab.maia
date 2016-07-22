@@ -12,7 +12,7 @@ import ru.agentlab.maia.match.StateMatchers;
 
 public class Plan implements IPlan {
 
-	protected IEventMatcher eventMatcher;
+	protected IEventMatcher<?> eventMatcher;
 
 	protected IStateMatcher stateMatcher;
 
@@ -20,7 +20,7 @@ public class Plan implements IPlan {
 
 	protected final Object role;
 
-	public Plan(Object role, IPlanBody planBody, IEventMatcher eventMatcher, IStateMatcher stateMatcher) {
+	public Plan(Object role, IPlanBody planBody, IEventMatcher<?> eventMatcher, IStateMatcher stateMatcher) {
 		Objects.requireNonNull(role);
 		Objects.requireNonNull(planBody);
 		Objects.requireNonNull(eventMatcher);
@@ -31,11 +31,11 @@ public class Plan implements IPlan {
 		this.stateMatcher = stateMatcher;
 	}
 
-	public Plan(Object role, Method method, IEventMatcher eventMatcher, IStateMatcher stateMatcher) {
+	public Plan(Object role, Method method, IEventMatcher<?> eventMatcher, IStateMatcher stateMatcher) {
 		this(role, getPlanBody(role, method), eventMatcher, stateMatcher);
 	}
 
-	public Plan(Object role, Method method, IEventMatcher eventMatcher) {
+	public Plan(Object role, Method method, IEventMatcher<?> eventMatcher) {
 		this(role, getPlanBody(role, method), eventMatcher, StateMatchers.anything());
 	}
 
@@ -47,11 +47,11 @@ public class Plan implements IPlan {
 		this(role, getPlanBody(role, method), EventMatchers.anything(), StateMatchers.anything());
 	}
 
-	public Plan(Object role, Runnable lambda, IEventMatcher eventMatcher, IStateMatcher stateMatcher) {
+	public Plan(Object role, Runnable lambda, IEventMatcher<?> eventMatcher, IStateMatcher stateMatcher) {
 		this(role, new PlanBodyLambda(lambda), eventMatcher, stateMatcher);
 	}
 
-	public Plan(Object role, Runnable lambda, IEventMatcher eventMatcher) {
+	public Plan(Object role, Runnable lambda, IEventMatcher<?> eventMatcher) {
 		this(role, new PlanBodyLambda(lambda), eventMatcher, StateMatchers.anything());
 	}
 
@@ -82,12 +82,12 @@ public class Plan implements IPlan {
 	}
 
 	@Override
-	public IEventMatcher getEventMatcher() {
+	public IEventMatcher<?> getEventMatcher() {
 		return eventMatcher;
 	}
 
 	@Override
-	public void setEventMatcher(IEventMatcher eventMatcher) {
+	public void setEventMatcher(IEventMatcher<?> eventMatcher) {
 		Objects.requireNonNull(eventMatcher);
 		this.eventMatcher = eventMatcher;
 	}

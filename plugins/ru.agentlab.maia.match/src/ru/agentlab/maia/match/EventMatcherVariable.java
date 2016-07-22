@@ -4,7 +4,7 @@ import java.util.Map;
 
 import ru.agentlab.maia.IEventMatcher;
 
-public class EventMatcherVariable implements IEventMatcher {
+public class EventMatcherVariable implements IEventMatcher<Object> {
 
 	private final String name;
 
@@ -24,6 +24,11 @@ public class EventMatcherVariable implements IEventMatcher {
 			values.put(name, item);
 			return true;
 		}
+	}
+
+	@Override
+	public String toString() {
+		return "?" + name;
 	}
 
 }

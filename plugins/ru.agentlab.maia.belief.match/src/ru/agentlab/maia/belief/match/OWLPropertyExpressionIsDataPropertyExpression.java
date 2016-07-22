@@ -1,30 +1,27 @@
 package ru.agentlab.maia.belief.match;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
+import java.util.Map;
+
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLPropertyExpression;
 
-public class OWLPropertyExpressionIsDataPropertyExpression extends TypeSafeMatcher<OWLPropertyExpression> {
+import ru.agentlab.maia.IEventMatcher;
+import ru.agentlab.maia.TypeSafeEventMatcher;
 
-	Matcher<? super OWLDataProperty> matcher;
+public class OWLPropertyExpressionIsDataPropertyExpression extends TypeSafeEventMatcher<OWLPropertyExpression> {
 
-	public OWLPropertyExpressionIsDataPropertyExpression(Matcher<? super OWLDataProperty> matcher) {
+	IEventMatcher<? super OWLDataProperty> matcher;
+
+	public OWLPropertyExpressionIsDataPropertyExpression(IEventMatcher<? super OWLDataProperty> matcher) {
 		super();
 		this.matcher = matcher;
 	}
 
 	@Override
-	public void describeTo(Description description) {
-		description.appendText("hasObject ").appendDescriptionOf(matcher);
-	}
-
-	@Override
-	protected boolean matchesSafely(OWLPropertyExpression property) {
+	protected boolean matchesSafely(OWLPropertyExpression property, Map<String, Object> values) {
 		return property.isDataPropertyExpression()
-				&& matcher.matches(((OWLDataPropertyExpression) property).asOWLDataProperty());
+				&& matcher.matches(((OWLDataPropertyExpression) property).asOWLDataProperty(), values);
 	}
 
 }
