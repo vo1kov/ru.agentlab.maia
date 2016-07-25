@@ -23,7 +23,7 @@ import javax.inject.Named;
 
 import ru.agentlab.maia.IContainer;
 import ru.agentlab.maia.IInjector;
-import ru.agentlab.maia.exception.InjectorException;
+import ru.agentlab.maia.InjectorException;
 
 /**
  * Injector for Dependency Injection.

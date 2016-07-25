@@ -13,10 +13,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
-import ru.agentlab.maia.exception.ContainerException;
-import ru.agentlab.maia.exception.InjectorException;
-import ru.agentlab.maia.exception.ResolveException;
-
 /**
  * @author Dmitry Shishkin
  */
@@ -56,7 +52,7 @@ public interface IAgent {
 
 	Future<Boolean> submitRemoveAllRoles();
 
-	void send(IMessage message);
+	// void send(IMessage message);
 
 	void fireExternalEvent(Object event);
 

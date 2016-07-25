@@ -7,8 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import ru.agentlab.maia.agent.role.annotation.converter.OnRoleXXXConverter;
+import ru.agentlab.maia.agent.role.event.RoleResolvedEvent;
 import ru.agentlab.maia.annotation.EventMatcher;
-import ru.agentlab.maia.event.RoleResolvedEvent;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.hamcrest.Matcher;
 
-import ru.agentlab.maia.IMessage;
+import ru.agentlab.maia.message.IMessage;
 
 public class Matchers {
 

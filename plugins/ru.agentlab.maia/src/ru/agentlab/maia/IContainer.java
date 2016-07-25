@@ -11,8 +11,6 @@ package ru.agentlab.maia;
 import java.util.Set;
 import java.util.UUID;
 
-import ru.agentlab.maia.exception.ServiceNotFound;
-
 //import ru.agentlab.maia.exception.ServiceNotFound;
 
 /**
@@ -74,8 +72,6 @@ public interface IContainer {
 	 *            <code>null</code> then IllegalArgumentException will be
 	 *            thrown.
 	 * @return an object corresponding to the given name, or <code>null</code>.
-	 * @throws ServiceNotFound
-	 *             if context have no value for specified key.
 	 * 
 	 * @see #getService(Class)
 	 */
@@ -112,8 +108,6 @@ public interface IContainer {
 	 *         <code>null</code>.
 	 * @throws ClassCastException
 	 *             if context contains value but with different type.
-	 * @throws ServiceNotFound
-	 *             if context have no value for specified key.
 	 * 
 	 * @see #getService(String)
 	 */
@@ -150,8 +144,6 @@ public interface IContainer {
 	 * @param <T>
 	 *            type of returning value
 	 * @return an object corresponding to the given name, or <code>null</code>
-	 * @throws ServiceNotFound
-	 *             if context have no value for specified key.
 	 * 
 	 * @see #getServiceLocal(Class)
 	 */
@@ -177,8 +169,6 @@ public interface IContainer {
 	 *         <code>null</code>.
 	 * @throws ClassCastException
 	 *             if context contains value but with different type.
-	 * @throws ServiceNotFound
-	 *             if context have no value for specified key.
 	 * 
 	 * @see #getServiceLocal(String)
 	 */

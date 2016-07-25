@@ -7,12 +7,12 @@ import javax.inject.Inject;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
 
-import ru.agentlab.maia.FIPAPerformativeNames;
 import ru.agentlab.maia.IGoalBase;
-import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.agent.belief.annotation.AxiomType;
 import ru.agentlab.maia.agent.goal.annotation.OnGoalAdded;
 import ru.agentlab.maia.agent.goal.annotation.OnGoalFailed;
+import ru.agentlab.maia.fipa.FIPAPerformativeNames;
+import ru.agentlab.maia.message.IMessage;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
 

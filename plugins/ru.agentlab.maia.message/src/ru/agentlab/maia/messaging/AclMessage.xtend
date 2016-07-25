@@ -1,13 +1,12 @@
 package ru.agentlab.maia.messaging
 
+import java.time.LocalDateTime
 import java.util.ArrayList
 import java.util.List
 import java.util.Properties
 import java.util.UUID
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.messaging.IMessageEnvelope
-import ru.agentlab.maia.IMessage
-import java.time.LocalDateTime
+import ru.agentlab.maia.message.IMessage
 
 @Accessors
 class AclMessage implements IMessage {

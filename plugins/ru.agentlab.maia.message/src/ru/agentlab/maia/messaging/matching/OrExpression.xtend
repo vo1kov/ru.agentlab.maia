@@ -1,6 +1,6 @@
 package ru.agentlab.maia.messaging.matching
 
-import ru.agentlab.maia.IMessage
+import ru.agentlab.maia.message.IMessage
 
 class OrExpression implements IMatchExpression {
 

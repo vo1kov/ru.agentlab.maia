@@ -40,11 +40,11 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
+import ru.agentlab.maia.ConverterException;
 import ru.agentlab.maia.IEventMatcher;
 import ru.agentlab.maia.agent.belief.annotation.AxiomType;
 import ru.agentlab.maia.annotation.IEventMatcherConverter;
 import ru.agentlab.maia.annotation.Util;
-import ru.agentlab.maia.exception.ConverterException;
 
 public class OnBeliefXXXConverter implements IEventMatcherConverter {
 

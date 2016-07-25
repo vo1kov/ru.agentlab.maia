@@ -5,12 +5,12 @@ import java.util.concurrent.ForkJoinPool;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
+import ru.agentlab.maia.ContainerException;
 import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IContainer;
+import ru.agentlab.maia.InjectorException;
+import ru.agentlab.maia.ResolveException;
 import ru.agentlab.maia.container.Container;
-import ru.agentlab.maia.exception.ContainerException;
-import ru.agentlab.maia.exception.InjectorException;
-import ru.agentlab.maia.exception.ResolveException;
 
 public class Main {
 

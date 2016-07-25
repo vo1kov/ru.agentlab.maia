@@ -39,16 +39,16 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import ru.agentlab.maia.ConverterException;
 import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IInjector;
 import ru.agentlab.maia.IPlan;
+import ru.agentlab.maia.InjectorException;
+import ru.agentlab.maia.ResolveException;
 import ru.agentlab.maia.agent.doubles.DummyService;
-import ru.agentlab.maia.event.RoleAddedEvent;
-import ru.agentlab.maia.event.RoleResolvedEvent;
-import ru.agentlab.maia.event.RoleUnresolvedEvent;
-import ru.agentlab.maia.exception.ConverterException;
-import ru.agentlab.maia.exception.InjectorException;
-import ru.agentlab.maia.exception.ResolveException;
+import ru.agentlab.maia.agent.role.event.RoleAddedEvent;
+import ru.agentlab.maia.agent.role.event.RoleResolvedEvent;
+import ru.agentlab.maia.agent.role.event.RoleUnresolvedEvent;
 import ru.agentlab.maia.test.util.LoggerRule;
 
 /**

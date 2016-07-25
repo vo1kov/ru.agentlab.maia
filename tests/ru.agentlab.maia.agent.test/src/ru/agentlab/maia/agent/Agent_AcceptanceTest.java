@@ -21,17 +21,17 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.vocab.Namespaces;
 
 import de.derivo.sparqldlapi.QueryResult;
+import ru.agentlab.maia.ContainerException;
 import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IContainer;
 import ru.agentlab.maia.IEvent;
+import ru.agentlab.maia.InjectorException;
+import ru.agentlab.maia.ResolveException;
 import ru.agentlab.maia.agent.belief.annotation.InitialBelief;
 import ru.agentlab.maia.agent.belief.annotation.OnBeliefAdded;
 import ru.agentlab.maia.agent.belief.annotation.WhenHaveBelief;
+import ru.agentlab.maia.agent.belief.event.BeliefAddedEvent;
 import ru.agentlab.maia.container.Container;
-import ru.agentlab.maia.event.BeliefAddedEvent;
-import ru.agentlab.maia.exception.ContainerException;
-import ru.agentlab.maia.exception.InjectorException;
-import ru.agentlab.maia.exception.ResolveException;
 
 public class Agent_AcceptanceTest {
 

@@ -1,6 +1,6 @@
 package ru.agentlab.maia.messaging
 
-import ru.agentlab.maia.IMessage
+import ru.agentlab.maia.message.IMessage
 
 interface IMessageFactory  {
 	

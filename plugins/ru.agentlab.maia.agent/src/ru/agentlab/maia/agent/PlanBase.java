@@ -18,15 +18,15 @@ import java.util.stream.Stream;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+import ru.agentlab.maia.ExternalAddedEvent;
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IEventMatcher;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
 import ru.agentlab.maia.IStateMatcher;
 import ru.agentlab.maia.Option;
-import ru.agentlab.maia.event.AgentStartedEvent;
-import ru.agentlab.maia.event.AgentStoppedEvent;
-import ru.agentlab.maia.event.ExternalAddedEvent;
+import ru.agentlab.maia.agent.event.AgentStartedEvent;
+import ru.agentlab.maia.agent.event.AgentStoppedEvent;
 
 public class PlanBase implements IPlanBase {
 

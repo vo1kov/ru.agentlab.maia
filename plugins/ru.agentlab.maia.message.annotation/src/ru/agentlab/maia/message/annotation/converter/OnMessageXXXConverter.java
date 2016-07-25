@@ -25,9 +25,9 @@ import java.util.UUID;
 import org.hamcrest.Matcher;
 
 import ru.agentlab.maia.IEventMatcher;
-import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.annotation.IEventMatcherConverter;
 import ru.agentlab.maia.annotation.Util;
+import ru.agentlab.maia.message.IMessage;
 
 public class OnMessageXXXConverter implements IEventMatcherConverter {
 

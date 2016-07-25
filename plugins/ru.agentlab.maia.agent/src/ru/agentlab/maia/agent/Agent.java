@@ -38,19 +38,26 @@ import com.google.common.collect.Multimap;
 
 import de.derivo.sparqldlapi.QueryEngine;
 import ru.agentlab.maia.AgentState;
+import ru.agentlab.maia.ContainerException;
+import ru.agentlab.maia.ConverterException;
+import ru.agentlab.maia.ExternalAddedEvent;
 import ru.agentlab.maia.IAgent;
-import ru.agentlab.maia.IAgentContainer;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IContainer;
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IEventMatcher;
 import ru.agentlab.maia.IGoalBase;
 import ru.agentlab.maia.IInjector;
-import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
 import ru.agentlab.maia.IStateMatcher;
+import ru.agentlab.maia.InjectorException;
+import ru.agentlab.maia.ResolveException;
 import ru.agentlab.maia.agent.match.StateMatchers;
+import ru.agentlab.maia.agent.role.event.RoleAddedEvent;
+import ru.agentlab.maia.agent.role.event.RoleRemovedEvent;
+import ru.agentlab.maia.agent.role.event.RoleResolvedEvent;
+import ru.agentlab.maia.agent.role.event.RoleUnresolvedEvent;
 import ru.agentlab.maia.annotation.EventMatcher;
 import ru.agentlab.maia.annotation.ExtraPlans;
 import ru.agentlab.maia.annotation.IEventMatcherConverter;
@@ -58,15 +65,6 @@ import ru.agentlab.maia.annotation.IExtraPlansConverter;
 import ru.agentlab.maia.annotation.IStateMatcherConverter;
 import ru.agentlab.maia.annotation.StateMatcher;
 import ru.agentlab.maia.container.Injector;
-import ru.agentlab.maia.event.ExternalAddedEvent;
-import ru.agentlab.maia.event.RoleAddedEvent;
-import ru.agentlab.maia.event.RoleRemovedEvent;
-import ru.agentlab.maia.event.RoleResolvedEvent;
-import ru.agentlab.maia.event.RoleUnresolvedEvent;
-import ru.agentlab.maia.exception.ContainerException;
-import ru.agentlab.maia.exception.ConverterException;
-import ru.agentlab.maia.exception.InjectorException;
-import ru.agentlab.maia.exception.ResolveException;
 
 /**
  * @author Dmitriy Shishkin
@@ -82,7 +80,8 @@ public class Agent implements IAgent {
 
 	protected final AgentContainer agentContainer = new AgentContainer();
 
-	protected final Queue<IMessage> messageQueue = new ConcurrentLinkedQueue<>();
+	// protected final Queue<IMessage> messageQueue = new
+	// ConcurrentLinkedQueue<>();
 
 	protected final Queue<IEvent<?>> externalEventQueue = new ConcurrentLinkedQueue<>();
 
@@ -135,10 +134,10 @@ public class Agent implements IAgent {
 		setState(AgentState.STOPPING);
 	}
 
-	@Override
-	public void send(IMessage message) {
-		messageQueue.offer(message);
-	}
+	// @Override
+	// public void send(IMessage message) {
+	// messageQueue.offer(message);
+	// }
 
 	@Override
 	public IContainer getContainer() {
@@ -385,10 +384,45 @@ public class Agent implements IAgent {
 		return null;
 	}
 
-	protected final class AgentContainer implements IAgentContainer {
+	protected final class AgentContainer implements IContainer {
 		@Inject
 		protected final AtomicReference<IContainer> parent = new AtomicReference<IContainer>(null);
 		final IInjector injector = new Injector(this);
+
+		@Override
+		public Iterable<IContainer> getChilds() {
+			return null;
+		}
+
+		@Override
+		public void addChild(IContainer container) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public void removeChild(IContainer container) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public void clearChilds() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Object remove(String key) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public boolean clear() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Object put(String key, Object value) {
+			throw new UnsupportedOperationException();
+		}
 
 		@Override
 		public IContainer getParent() {

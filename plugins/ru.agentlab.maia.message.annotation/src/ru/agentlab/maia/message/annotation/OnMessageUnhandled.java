@@ -7,8 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import ru.agentlab.maia.annotation.EventMatcher;
-import ru.agentlab.maia.event.MessageUnhandledEvent;
 import ru.agentlab.maia.message.annotation.converter.OnMessageXXXConverter;
+import ru.agentlab.maia.message.event.MessageUnhandledEvent;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

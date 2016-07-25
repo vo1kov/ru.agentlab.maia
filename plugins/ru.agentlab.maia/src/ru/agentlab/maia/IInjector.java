@@ -16,8 +16,6 @@ import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
-import ru.agentlab.maia.exception.InjectorException;
-
 public interface IInjector {
 
 	<T> T make(Class<T> clazz, Map<String, Object> additional) throws InjectorException;

@@ -15,9 +15,9 @@ import com.google.common.collect.Multimap;
 import ru.agentlab.maia.IAgent;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.agent.Plan;
+import ru.agentlab.maia.agent.event.AgentStartedEvent;
+import ru.agentlab.maia.agent.event.AgentStoppedEvent;
 import ru.agentlab.maia.annotation.IExtraPlansConverter;
-import ru.agentlab.maia.event.AgentStartedEvent;
-import ru.agentlab.maia.event.AgentStoppedEvent;
 import ru.agentlab.maia.time.TimerEvent;
 import ru.agentlab.maia.time.annotation.OnTimerFixedRate;
 

@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import ru.agentlab.maia.ConverterException;
 import ru.agentlab.maia.agent.belief.annotation.AxiomType;
 import ru.agentlab.maia.annotation.Util;
 
@@ -23,8 +24,6 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
-
-import ru.agentlab.maia.exception.ConverterException;
 
 public class InitialBeliefConverter {
 

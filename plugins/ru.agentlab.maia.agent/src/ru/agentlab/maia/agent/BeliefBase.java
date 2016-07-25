@@ -27,8 +27,8 @@ import org.semanticweb.owlapi.reasoner.structural.StructuralReasonerFactory;
 import de.derivo.sparqldlapi.QueryEngine;
 import ru.agentlab.maia.IBeliefBase;
 import ru.agentlab.maia.IEvent;
-import ru.agentlab.maia.event.BeliefAddedEvent;
-import ru.agentlab.maia.event.BeliefRemovedEvent;
+import ru.agentlab.maia.agent.belief.event.BeliefAddedEvent;
+import ru.agentlab.maia.agent.belief.event.BeliefRemovedEvent;
 
 public class BeliefBase implements IBeliefBase {
 

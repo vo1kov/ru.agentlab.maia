@@ -6,7 +6,7 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 
 import ru.agentlab.maia.IEvent;
 import ru.agentlab.maia.IGoalBase;
-import ru.agentlab.maia.event.GoalAddedEvent;
+import ru.agentlab.maia.agent.goal.event.GoalAddedEvent;
 
 public class GoalBase implements IGoalBase {
 

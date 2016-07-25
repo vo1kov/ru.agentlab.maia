@@ -1,12 +1,12 @@
 package ru.agentlab.maia.admin.bundles;
 
-import static ru.agentlab.maia.FIPAPerformativeNames.AGREE;
-import static ru.agentlab.maia.FIPAPerformativeNames.CANCEL;
-import static ru.agentlab.maia.FIPAPerformativeNames.FAILURE;
-import static ru.agentlab.maia.FIPAPerformativeNames.INFORM;
-import static ru.agentlab.maia.FIPAPerformativeNames.REFUSE;
-import static ru.agentlab.maia.FIPAPerformativeNames.SUBSCRIBE;
-import static ru.agentlab.maia.FIPAProtocolNames.FIPA_SUBSCRIBE;
+import static ru.agentlab.maia.fipa.FIPAPerformativeNames.AGREE;
+import static ru.agentlab.maia.fipa.FIPAPerformativeNames.CANCEL;
+import static ru.agentlab.maia.fipa.FIPAPerformativeNames.FAILURE;
+import static ru.agentlab.maia.fipa.FIPAPerformativeNames.INFORM;
+import static ru.agentlab.maia.fipa.FIPAPerformativeNames.REFUSE;
+import static ru.agentlab.maia.fipa.FIPAPerformativeNames.SUBSCRIBE;
+import static ru.agentlab.maia.fipa.FIPAProtocolNames.FIPA_SUBSCRIBE;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,11 +17,11 @@ import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import ru.agentlab.maia.IMessage;
 import ru.agentlab.maia.agent.belief.annotation.AxiomType;
 import ru.agentlab.maia.agent.belief.annotation.OnBeliefAdded;
 import ru.agentlab.maia.agent.belief.annotation.Prefix;
 import ru.agentlab.maia.agent.belief.annotation.WhenHaveBelief;
+import ru.agentlab.maia.message.IMessage;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
 import ru.agentlab.maia.messaging.AclMessage;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;

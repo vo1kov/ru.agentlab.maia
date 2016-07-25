@@ -6,12 +6,12 @@ import javax.inject.Inject;
 import ru.agentlab.maia.IPlan;
 import ru.agentlab.maia.IPlanBase;
 import ru.agentlab.maia.agent.Plan;
+import ru.agentlab.maia.agent.belief.BeliefAddedEvent;
 import ru.agentlab.maia.agent.belief.annotation.AxiomType;
 import ru.agentlab.maia.agent.belief.annotation.OnBeliefAdded;
 import ru.agentlab.maia.agent.belief.annotation.OnBeliefRemoved;
 import ru.agentlab.maia.agent.goal.annotation.OnGoalAdded;
 import ru.agentlab.maia.agent.goal.annotation.OnGoalFailed;
-import ru.agentlab.maia.event.BeliefAddedEvent;
 
 public class Example {
 

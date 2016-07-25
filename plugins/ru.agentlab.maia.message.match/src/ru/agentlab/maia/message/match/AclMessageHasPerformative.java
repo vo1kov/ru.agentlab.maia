@@ -4,7 +4,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-import ru.agentlab.maia.IMessage;
+import ru.agentlab.maia.message.IMessage;
 
 public class AclMessageHasPerformative extends TypeSafeMatcher<IMessage> {
 

@@ -7,8 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import ru.agentlab.maia.agent.belief.annotation.converter.OnBeliefXXXConverter;
+import ru.agentlab.maia.agent.belief.event.BeliefAddedEvent;
 import ru.agentlab.maia.annotation.EventMatcher;
-import ru.agentlab.maia.event.BeliefAddedEvent;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

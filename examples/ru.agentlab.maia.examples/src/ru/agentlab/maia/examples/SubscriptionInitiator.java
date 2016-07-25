@@ -18,10 +18,10 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
-import ru.agentlab.maia.FIPAPerformativeNames;
-import ru.agentlab.maia.FIPAProtocolNames;
 import ru.agentlab.maia.IBeliefBase;
-import ru.agentlab.maia.IMessage;
+import ru.agentlab.maia.fipa.FIPAPerformativeNames;
+import ru.agentlab.maia.fipa.FIPAProtocolNames;
+import ru.agentlab.maia.message.IMessage;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
 
