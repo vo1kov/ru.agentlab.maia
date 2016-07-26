@@ -4,3 +4,9 @@ Bundle-Name: Fipa
 Bundle-SymbolicName: ru.agentlab.maia.fipa
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: ru.agentlab.maia.message,
+ javax.inject,
+ ru.agentlab.maia.message.annotation,
+ org.semanticweb.owlapi.compatibility,
+ org.semanticweb.owlapi.api,
+ ru.agentlab.maia

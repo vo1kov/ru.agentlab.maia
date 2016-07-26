@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package ru.agentlab.maia.examples;
+package ru.agentlab.maia.fipa;
 
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,13 +19,11 @@ import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
 import ru.agentlab.maia.IBeliefBase;
-import ru.agentlab.maia.fipa.FIPAPerformativeNames;
-import ru.agentlab.maia.fipa.FIPAProtocolNames;
 import ru.agentlab.maia.message.IMessage;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
 
-public abstract class SubscriptionInitiator {
+public  class FIPASubscribeInitiator {
 
 	private final static String conversationId = Long.toString(ThreadLocalRandom.current().nextLong());
 
@@ -37,7 +35,7 @@ public abstract class SubscriptionInitiator {
 
 	private IMessage initial;
 
-	public SubscriptionInitiator(IMessage initial) {
+	public FIPASubscribeInitiator(IMessage initial) {
 		this.initial = initial;
 	}
 
