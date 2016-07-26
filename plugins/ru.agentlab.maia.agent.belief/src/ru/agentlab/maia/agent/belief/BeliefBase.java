@@ -6,7 +6,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package ru.agentlab.maia.agent;
+package ru.agentlab.maia.agent.belief;
 
 import java.util.Queue;
 import java.util.Set;

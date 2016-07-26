@@ -5,5 +5,9 @@ Bundle-SymbolicName: ru.agentlab.maia.agent.belief
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.semanticweb.owlapi.compatibility,
- ru.agentlab.maia
-Export-Package: ru.agentlab.maia.agent.belief.event
+ ru.agentlab.maia,
+ javax.inject,
+ de.derivo.sparqldlapi,
+ org.semanticweb.owlapi.impl
+Export-Package: ru.agentlab.maia.agent.belief,
+ ru.agentlab.maia.agent.belief.event

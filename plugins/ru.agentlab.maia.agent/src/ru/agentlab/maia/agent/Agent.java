@@ -53,6 +53,7 @@ import ru.agentlab.maia.IPlanBase;
 import ru.agentlab.maia.IStateMatcher;
 import ru.agentlab.maia.InjectorException;
 import ru.agentlab.maia.ResolveException;
+import ru.agentlab.maia.agent.belief.BeliefBase;
 import ru.agentlab.maia.agent.match.StateMatchers;
 import ru.agentlab.maia.agent.role.event.RoleAddedEvent;
 import ru.agentlab.maia.agent.role.event.RoleRemovedEvent;
