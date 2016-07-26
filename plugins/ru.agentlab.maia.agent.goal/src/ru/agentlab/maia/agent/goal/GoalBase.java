@@ -1,4 +1,4 @@
-package ru.agentlab.maia.agent;
+package ru.agentlab.maia.agent.goal;
 
 import java.util.Queue;
 
