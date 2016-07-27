@@ -40,10 +40,10 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
-import ru.agentlab.maia.annotation.ConverterException;
-import ru.agentlab.maia.annotation.IPlanEventFilterConverter;
-import ru.agentlab.maia.annotation.Util;
 import ru.agentlab.maia.belief.annotation.AxiomType;
+import ru.agentlab.maia.converter.ConverterException;
+import ru.agentlab.maia.converter.IPlanEventFilterConverter;
+import ru.agentlab.maia.converter.Util;
 import ru.agentlab.maia.filter.IPlanEventFilter;
 
 public class OnBeliefXXXConverter implements IPlanEventFilterConverter {

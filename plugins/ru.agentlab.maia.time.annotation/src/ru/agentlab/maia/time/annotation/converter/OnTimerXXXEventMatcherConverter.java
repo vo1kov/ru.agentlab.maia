@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.UUID;
 
-import ru.agentlab.maia.annotation.IPlanEventFilterConverter;
+import ru.agentlab.maia.converter.IPlanEventFilterConverter;
 import ru.agentlab.maia.filter.IPlanEventFilter;
 
 public class OnTimerXXXEventMatcherConverter implements IPlanEventFilterConverter {

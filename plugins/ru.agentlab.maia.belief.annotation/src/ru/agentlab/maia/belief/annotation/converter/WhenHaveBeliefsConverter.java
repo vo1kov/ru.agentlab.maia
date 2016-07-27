@@ -20,15 +20,15 @@ import de.derivo.sparqldlapi.impl.QueryAtomGroupImpl;
 import de.derivo.sparqldlapi.impl.QueryImpl;
 import de.derivo.sparqldlapi.types.QueryAtomType;
 import de.derivo.sparqldlapi.types.QueryType;
-import ru.agentlab.maia.annotation.ConverterException;
-import ru.agentlab.maia.annotation.IPlanStateFilterConverter;
-import ru.agentlab.maia.annotation.Util;
 import ru.agentlab.maia.belief.annotation.AxiomType;
 import ru.agentlab.maia.belief.annotation.WhenHaveBelief;
 import ru.agentlab.maia.belief.annotation.WhenHaveBeliefs;
 import ru.agentlab.maia.belief.filter.HaveBeliefsStateMatcher;
 import ru.agentlab.maia.container.IInjector;
 import ru.agentlab.maia.container.InjectorException;
+import ru.agentlab.maia.converter.ConverterException;
+import ru.agentlab.maia.converter.IPlanStateFilterConverter;
+import ru.agentlab.maia.converter.Util;
 import ru.agentlab.maia.filter.IPlanStateFilter;
 
 public class WhenHaveBeliefsConverter implements IPlanStateFilterConverter {

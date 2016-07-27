@@ -7,8 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.concurrent.TimeUnit;
 
-import ru.agentlab.maia.annotation.PlanExtra;
-import ru.agentlab.maia.annotation.PlanEventFilter;
+import ru.agentlab.maia.converter.PlanEventFilter;
+import ru.agentlab.maia.converter.PlanExtra;
 import ru.agentlab.maia.time.TimerEvent;
 import ru.agentlab.maia.time.annotation.converter.OnTimerFixedPeriodExtraPlansConverter;
 import ru.agentlab.maia.time.annotation.converter.OnTimerXXXEventMatcherConverter;

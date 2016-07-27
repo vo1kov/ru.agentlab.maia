@@ -1,4 +1,4 @@
-package ru.agentlab.maia.annotation;
+package ru.agentlab.maia.converter;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

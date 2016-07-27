@@ -11,5 +11,5 @@ Require-Bundle: javax.inject,
  com.google.guava,
  ru.agentlab.maia.agent,
  ru.agentlab.maia.agent.impl,
- ru.agentlab.maia.annotation,
+ ru.agentlab.maia.converter,
  ru.agentlab.maia.time;bundle-version="1.0.0"

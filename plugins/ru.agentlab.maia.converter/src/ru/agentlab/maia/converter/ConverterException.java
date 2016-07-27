@@ -1,4 +1,4 @@
-package ru.agentlab.maia.annotation;
+package ru.agentlab.maia.converter;
 
 public class ConverterException extends RuntimeException {
 

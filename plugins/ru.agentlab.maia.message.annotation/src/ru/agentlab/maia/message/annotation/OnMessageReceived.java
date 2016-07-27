@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import ru.agentlab.maia.annotation.PlanEventFilter;
+import ru.agentlab.maia.converter.PlanEventFilter;
 import ru.agentlab.maia.message.annotation.converter.OnMessageXXXConverter;
 import ru.agentlab.maia.message.event.MessageAddedEvent;
 

@@ -17,7 +17,7 @@ import ru.agentlab.maia.agent.IPlan;
 import ru.agentlab.maia.agent.event.AgentStartedEvent;
 import ru.agentlab.maia.agent.event.AgentStoppedEvent;
 import ru.agentlab.maia.agent.impl.Plan;
-import ru.agentlab.maia.annotation.IPlanExtraConverter;
+import ru.agentlab.maia.converter.IPlanExtraConverter;
 import ru.agentlab.maia.time.TimerEvent;
 import ru.agentlab.maia.time.annotation.OnTimerFixedRate;
 

@@ -13,6 +13,6 @@ Require-Bundle: javax.inject,
  ru.agentlab.maia.belief,
  ru.agentlab.maia.belief.filter;bundle-version="1.0.0",
  ru.agentlab.maia.container;bundle-version="1.0.0",
- ru.agentlab.maia.annotation,
+ ru.agentlab.maia.converter,
  ru.agentlab.maia.agent,
  org.hamcrest.core;bundle-version="1.3.0"

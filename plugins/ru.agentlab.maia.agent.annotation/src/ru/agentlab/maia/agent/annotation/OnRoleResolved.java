@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 import ru.agentlab.maia.agent.annotation.converter.OnRoleXXXConverter;
 import ru.agentlab.maia.agent.event.RoleResolvedEvent;
-import ru.agentlab.maia.annotation.PlanEventFilter;
+import ru.agentlab.maia.converter.PlanEventFilter;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

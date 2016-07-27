@@ -2,7 +2,6 @@ package ru.agentlab.maia.belief.filter;
 
 import java.util.Map;
 
-import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
 

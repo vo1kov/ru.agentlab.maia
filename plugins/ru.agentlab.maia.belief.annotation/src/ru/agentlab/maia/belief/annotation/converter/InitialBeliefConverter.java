@@ -21,9 +21,9 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
-import ru.agentlab.maia.annotation.ConverterException;
-import ru.agentlab.maia.annotation.Util;
 import ru.agentlab.maia.belief.annotation.AxiomType;
+import ru.agentlab.maia.converter.ConverterException;
+import ru.agentlab.maia.converter.Util;
 
 public class InitialBeliefConverter {
 

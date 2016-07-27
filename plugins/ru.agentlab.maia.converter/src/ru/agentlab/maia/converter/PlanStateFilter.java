@@ -1,4 +1,4 @@
-package ru.agentlab.maia.annotation;
+package ru.agentlab.maia.converter;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,10 +7,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.ANNOTATION_TYPE)
-public @interface PlanEventFilter {
+public @interface PlanStateFilter {
 
-	Class<? extends IPlanEventFilterConverter> converter();
-
-	Class<?> eventType();
+	Class<? extends IPlanStateFilterConverter> converter();
 
 }

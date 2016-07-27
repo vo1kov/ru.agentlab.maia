@@ -6,8 +6,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import ru.agentlab.maia.annotation.PlanStateFilter;
 import ru.agentlab.maia.belief.annotation.converter.WhenHaveBeliefsConverter;
+import ru.agentlab.maia.converter.PlanStateFilter;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

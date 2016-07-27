@@ -24,8 +24,8 @@ import java.util.UUID;
 
 import org.hamcrest.Matcher;
 
-import ru.agentlab.maia.annotation.IPlanEventFilterConverter;
-import ru.agentlab.maia.annotation.Util;
+import ru.agentlab.maia.converter.IPlanEventFilterConverter;
+import ru.agentlab.maia.converter.Util;
 import ru.agentlab.maia.filter.IPlanEventFilter;
 import ru.agentlab.maia.message.IMessage;
 
