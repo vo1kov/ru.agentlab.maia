@@ -16,9 +16,12 @@ Require-Bundle: com.google.guava,
  org.semanticweb.owlapi.apibinding,
  org.semanticweb.owlapi.api,
  ru.agentlab.maia.message.annotation,
- ru.agentlab.maia.agent.belief.annotation,
- ru.agentlab.maia.agent.goal.annotation,
- ru.agentlab.maia.agent.annotation
+ ru.agentlab.maia.belief.annotation,
+ ru.agentlab.maia.goal.annotation,
+ ru.agentlab.maia.agent.annotation,
+ ru.agentlab.maia.belief,
+ ru.agentlab.maia.fipa;bundle-version="1.0.0",
+ ru.agentlab.maia.goal
 Import-Package: org.eclipse.osgi.util;version="1.1.0",
  org.osgi.framework;version="1.8.0"
 Export-Package: ru.agentlab.maia.admin.bundles

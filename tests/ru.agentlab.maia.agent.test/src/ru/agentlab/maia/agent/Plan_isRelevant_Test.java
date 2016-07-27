@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import org.junit.Test;
 
 import ru.agentlab.maia.agent.doubles.DummyService;
+import ru.agentlab.maia.agent.impl.PlanBodyStateful;
 
 public class Plan_isRelevant_Test {
 

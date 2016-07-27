@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Belief
+Bundle-SymbolicName: ru.agentlab.maia.belief
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.semanticweb.owlapi.compatibility,
+ javax.inject,
+ de.derivo.sparqldlapi,
+ org.semanticweb.owlapi.impl,
+ ru.agentlab.maia.agent
+Export-Package: ru.agentlab.maia.belief,
+ ru.agentlab.maia.belief.event

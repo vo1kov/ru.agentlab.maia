@@ -10,11 +10,11 @@ package ru.agentlab.maia.agent.match;
 
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.Matchers.anything;
-import static ru.agentlab.maia.belief.match.Matchers.hasClassExpression;
-import static ru.agentlab.maia.belief.match.Matchers.hasIRI;
-import static ru.agentlab.maia.belief.match.Matchers.hasIndividual;
-import static ru.agentlab.maia.belief.match.Matchers.isNamed;
-import static ru.agentlab.maia.belief.match.Matchers.isNamedClass;
+import static ru.agentlab.maia.belief.filter.Matchers.hasClassExpression;
+import static ru.agentlab.maia.belief.filter.Matchers.hasIRI;
+import static ru.agentlab.maia.belief.filter.Matchers.hasIndividual;
+import static ru.agentlab.maia.belief.filter.Matchers.isNamed;
+import static ru.agentlab.maia.belief.filter.Matchers.isNamedClass;
 
 import java.util.Arrays;
 import java.util.Collection;

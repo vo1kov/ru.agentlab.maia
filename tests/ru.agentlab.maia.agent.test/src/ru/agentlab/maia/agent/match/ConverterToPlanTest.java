@@ -3,33 +3,6 @@ package ru.agentlab.maia.agent.match;
 import org.junit.experimental.theories.Theories;
 import org.junit.runner.RunWith;
 
-import ru.agentlab.maia.annotation.BeliefClassificationAdded;
-import ru.agentlab.maia.annotation.BeliefClassificationRemoved;
-import ru.agentlab.maia.annotation.BeliefDataPropertyAdded;
-import ru.agentlab.maia.annotation.BeliefDataPropertyRemoved;
-import ru.agentlab.maia.annotation.BeliefObjectPropertyAdded;
-import ru.agentlab.maia.annotation.BeliefObjectPropertyRemoved;
-import ru.agentlab.maia.annotation.GoalClassificationAdded;
-import ru.agentlab.maia.annotation.GoalClassificationFailed;
-import ru.agentlab.maia.annotation.GoalClassificationFinished;
-import ru.agentlab.maia.annotation.GoalClassificationRemoved;
-import ru.agentlab.maia.annotation.GoalDataPropertyAdded;
-import ru.agentlab.maia.annotation.GoalDataPropertyFailed;
-import ru.agentlab.maia.annotation.GoalDataPropertyFinished;
-import ru.agentlab.maia.annotation.GoalDataPropertyRemoved;
-import ru.agentlab.maia.annotation.GoalObjectPropertyAdded;
-import ru.agentlab.maia.annotation.GoalObjectPropertyFailed;
-import ru.agentlab.maia.annotation.GoalObjectPropertyFinished;
-import ru.agentlab.maia.annotation.GoalObjectPropertyRemoved;
-import ru.agentlab.maia.annotation.PlanAdded;
-import ru.agentlab.maia.annotation.PlanFailed;
-import ru.agentlab.maia.annotation.PlanFinished;
-import ru.agentlab.maia.annotation.PlanRemoved;
-import ru.agentlab.maia.annotation.event.AddedRole;
-import ru.agentlab.maia.annotation.event.ResolvedRole;
-import ru.agentlab.maia.annotation.event.UnresolvedRole;
-import ru.agentlab.maia.belief.annotation.converter.AnnotationFormatException;
-
 /**
  * 
  * Test cases:

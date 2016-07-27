@@ -12,16 +12,16 @@ import javax.inject.Inject;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-import ru.agentlab.maia.IAgent;
-import ru.agentlab.maia.IPlan;
-import ru.agentlab.maia.agent.Plan;
+import ru.agentlab.maia.agent.IAgent;
+import ru.agentlab.maia.agent.IPlan;
 import ru.agentlab.maia.agent.event.AgentStartedEvent;
 import ru.agentlab.maia.agent.event.AgentStoppedEvent;
-import ru.agentlab.maia.annotation.IExtraPlansConverter;
+import ru.agentlab.maia.agent.impl.Plan;
+import ru.agentlab.maia.annotation.IPlanExtraConverter;
 import ru.agentlab.maia.time.TimerEvent;
 import ru.agentlab.maia.time.annotation.OnTimerFixedPeriod;
 
-public class OnTimerFixedPeriodExtraPlansConverter implements IExtraPlansConverter {
+public class OnTimerFixedPeriodExtraPlansConverter implements IPlanExtraConverter {
 
 	@Inject
 	ScheduledExecutorService scheduler;

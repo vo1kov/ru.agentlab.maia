@@ -4,22 +4,11 @@ Bundle-Name: Agent
 Bundle-SymbolicName: ru.agentlab.maia.agent
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: javax.inject;bundle-version="1.0.0",
- ru.agentlab.maia;bundle-version="1.0.0";visibility:=reexport,
- org.semanticweb.owlapi.api;bundle-version="4.1.3",
- org.semanticweb.owlapi.apibinding;bundle-version="4.1.3",
- org.semanticweb.owlapi.compatibility;bundle-version="4.1.3",
- com.google.guava;bundle-version="18.0.0",
- com.google.inject;bundle-version="3.0.0",
- org.slf4j.api;bundle-version="1.7.2",
- de.derivo.sparqldlapi;bundle-version="1.0.0",
- org.semanticweb.owlapi.impl,
- ru.agentlab.maia.agent.match,
- ru.agentlab.maia.agent.role,
- ru.agentlab.maia.agent.belief,
- ru.agentlab.maia.agent.goal
+Require-Bundle: com.google.guava;bundle-version="18.0.0",
+ ru.agentlab.maia.container,
+ org.hamcrest.core;bundle-version="1.3.0"
 Export-Package: ru.agentlab.maia.agent,
  ru.agentlab.maia.agent.event,
- ru.agentlab.maia.annotation
-Import-Package: ru.agentlab.maia.container
+ ru.agentlab.maia.filter,
+ ru.agentlab.maia.filter.impl
 
