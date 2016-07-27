@@ -30,6 +30,9 @@ import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.semanticweb.owlapi.model.PrefixManager;
+import org.semanticweb.owlapi.util.DefaultPrefixManager;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
@@ -38,6 +41,7 @@ import ru.agentlab.maia.agent.IAgent;
 import ru.agentlab.maia.agent.IEvent;
 import ru.agentlab.maia.agent.IPlan;
 import ru.agentlab.maia.agent.IPlanBase;
+import ru.agentlab.maia.agent.IPlanBody;
 import ru.agentlab.maia.agent.ResolveException;
 import ru.agentlab.maia.agent.event.ExternalAddedEvent;
 import ru.agentlab.maia.agent.event.RoleAddedEvent;
@@ -300,7 +304,9 @@ public class Agent implements IAgent {
 			Object roleObject = injector.make(roleClass, parameters);
 			injector.inject(roleObject, parameters);
 			injector.invoke(roleObject, PostConstruct.class, null, parameters);
-
+			
+			PrefixManager prefixes = new DefaultPrefixManager();
+			putService(PrefixManager.class, prefixes);
 			// Now role object have resolved all field dependencies. Need to
 			// convert role object to initial beliefs, goals and plans.
 			Multimap<Class<?>, IPlan> plans = getInitialPlans(roleObject);
@@ -446,7 +452,9 @@ public class Agent implements IAgent {
 			// System.out.println("Event: " + event.toString());
 			planBase.getOptions(event).forEach(option -> {
 				try {
-					option.getPlanBody().execute(getInjector(), option.getValues());
+					Map<String, Object> values = option.getValues();
+					IPlanBody planBody = option.getPlanBody();
+					planBody.execute(getInjector(), values);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

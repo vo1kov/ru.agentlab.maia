@@ -1,4 +1,4 @@
-package ru.agentlab.maia.role.annotation.converter;
+package ru.agentlab.maia.agent.annotation.converter;
 
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.equalTo;

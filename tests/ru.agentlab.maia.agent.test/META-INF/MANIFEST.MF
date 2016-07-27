@@ -25,6 +25,8 @@ Require-Bundle: com.google.guava,
  javax.inject,
  de.derivo.sparqldlapi,
  ru.agentlab.maia.container.factory,
- org.hamcrest.core;bundle-version="1.3.0"
+ org.hamcrest.core;bundle-version="1.3.0",
+ ru.agentlab.maia.agent.factory,
+ org.semanticweb.owlapi.api
 Fragment-Host: ru.agentlab.maia.agent
 

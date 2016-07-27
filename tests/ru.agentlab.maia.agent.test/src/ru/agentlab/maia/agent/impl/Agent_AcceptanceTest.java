@@ -6,6 +6,7 @@ import static ru.agentlab.maia.belief.annotation.AxiomType.SUBCLASS_OF;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 
 import javax.annotation.PostConstruct;
@@ -15,12 +16,16 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.PrefixManager;
+import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.vocab.Namespaces;
 
 import de.derivo.sparqldlapi.QueryResult;
 import ru.agentlab.maia.agent.IAgent;
 import ru.agentlab.maia.agent.IEvent;
 import ru.agentlab.maia.agent.ResolveException;
+import ru.agentlab.maia.agent.factory.Agents;
+import ru.agentlab.maia.belief.IBeliefBase;
 import ru.agentlab.maia.belief.annotation.InitialBelief;
 import ru.agentlab.maia.belief.annotation.OnBeliefAdded;
 import ru.agentlab.maia.belief.annotation.WhenHaveBelief;
@@ -34,12 +39,12 @@ public class Agent_AcceptanceTest {
 
 	public static void main(String[] args)
 			throws InjectorException, ContainerException, ResolveException, InterruptedException {
-		IContainer container = Containers.createDefault();
+		IContainer container = Containers.createDefaultBDI();
 		OWLDataFactory factory = container.get(OWLDataFactory.class);
 		List<Agent> agents = new ArrayList<>();
 
 		for (int j = 0; j < 10; j++) {
-			Agent agent = new Agent();
+			Agent agent = (Agent) Agents.createBDI();
 			System.out.println("Create Agent " + agent.getUuid());
 			agents.add(agent);
 			agent.deployTo(container);
@@ -76,16 +81,25 @@ public class Agent_AcceptanceTest {
 	@InitialBelief(type = CLASS_ASSERTION, value = { "rdf:Some", "rdf:ind" })
 	public static class TestRole {
 
+		Logger logger = Logger.getLogger(this.getClass().getName());
+
 		@PostConstruct
-		public void init(IAgent agent) {
+		public void init(IAgent agent, IBeliefBase bb) {
 			System.out.println(agent.getUuid());
+			PrefixManager prefixes = new DefaultPrefixManager();
+			OWLDataFactory factory = bb.getFactory();
+			bb.addBelief(factory.getOWLSubClassOfAxiom(factory.getOWLClass(prefixes.getIRI("rdf:Some")),
+					factory.getOWLClass(prefixes.getIRI("owl:Thing"))));
+			bb.addBelief(factory.getOWLClassAssertionAxiom(factory.getOWLClass(prefixes.getIRI("rdf:Some")),
+					factory.getOWLNamedIndividual(prefixes.getIRI("rdf:ind"))));
 		}
 
 		@OnBeliefAdded(type = DATA_PROPERTY_ASSERTION, value = { "rdf:ind", "rdf:hasProperty", "2^^xsd:integer" })
 		@WhenHaveBelief(type = SUBCLASS_OF, value = { "rdf:Some", "owl:Thing" })
 		@WhenHaveBelief(type = CLASS_ASSERTION, value = { "rdf:ind", "rdf:Some" })
 		public void exe() {
-			System.out.println("WORKS");
+			logger.info(() -> "WORKS");
+			// System.out.println();
 
 		}
 
@@ -94,8 +108,10 @@ public class Agent_AcceptanceTest {
 		@WhenHaveBelief(type = CLASS_ASSERTION, value = { "rdf:ind", "?ind" })
 		public void exe2(@Named("property") OWLDataProperty property, @Named("ind") OWLIndividual ind,
 				QueryResult res) {
-			System.out.println("WORKS2" + property.toString());
-			System.out.println("WORKS2" + ind.toString());
+			logger.info(() -> "WORKS2 " + property.toString());
+			logger.info(() -> "WORKS2 " + ind.toString());
+			// System.out.println("WORKS2 " + property.toString());
+			// System.out.println("WORKS2 " + ind.toString());
 
 		}
 

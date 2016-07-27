@@ -9,5 +9,6 @@ Require-Bundle: de.derivo.sparqldlapi;bundle-version="1.0.0",
  org.hamcrest.library,
  org.semanticweb.owlapi.compatibility,
  ru.agentlab.maia.agent,
- ru.agentlab.maia.agent.impl;bundle-version="1.0.0"
+ ru.agentlab.maia.agent.impl;bundle-version="1.0.0",
+ ru.agentlab.maia.belief
 Export-Package: ru.agentlab.maia.belief.filter

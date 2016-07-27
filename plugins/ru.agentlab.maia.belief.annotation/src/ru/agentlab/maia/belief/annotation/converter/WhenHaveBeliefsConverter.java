@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.semanticweb.owlapi.model.PrefixManager;
@@ -43,7 +44,8 @@ public class WhenHaveBeliefsConverter implements IPlanStateFilterConverter {
 	PrefixManager prefixes;
 
 	@Override
-	public IPlanStateFilter getMatcher(Object role, Method method, Annotation annotation, Map<String, Object> customData) {
+	public IPlanStateFilter getMatcher(Object role, Method method, Annotation annotation,
+			Map<String, Object> customData) {
 		WhenHaveBeliefs whenHaveBeliefs = (WhenHaveBeliefs) annotation;
 		WhenHaveBelief[] annotations = whenHaveBeliefs.value();
 		QueryImpl query = new QueryImpl(getQueryType(method));
@@ -68,6 +70,7 @@ public class WhenHaveBeliefsConverter implements IPlanStateFilterConverter {
 		try {
 			HaveBeliefsStateMatcher haveBeliefMatcher = new HaveBeliefsStateMatcher(query);
 			injector.inject(haveBeliefMatcher);
+			injector.invoke(haveBeliefMatcher, PostConstruct.class);
 			return haveBeliefMatcher;
 		} catch (InjectorException e) {
 			throw new ConverterException(e);
