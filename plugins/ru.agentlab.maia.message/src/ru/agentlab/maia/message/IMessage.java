@@ -79,5 +79,4 @@ public interface IMessage {
 
 	void setPerformative(String performative);
 
-	IMessage createReply();
 }

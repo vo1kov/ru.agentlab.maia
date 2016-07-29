@@ -98,7 +98,7 @@ public class Agent_AcceptanceTest {
 		@WhenHaveBelief(type = SUBCLASS_OF, value = { "rdf:Some", "owl:Thing" })
 		@WhenHaveBelief(type = CLASS_ASSERTION, value = { "rdf:ind", "rdf:Some" })
 		public void exe() {
-			logger.info(() -> "WORKS");
+//			logger.info(() -> "WORKS");
 			// System.out.println();
 
 		}
@@ -108,8 +108,8 @@ public class Agent_AcceptanceTest {
 		@WhenHaveBelief(type = CLASS_ASSERTION, value = { "rdf:ind", "?ind" })
 		public void exe2(@Named("property") OWLDataProperty property, @Named("ind") OWLIndividual ind,
 				QueryResult res) {
-			logger.info(() -> "WORKS2 " + property.toString());
-			logger.info(() -> "WORKS2 " + ind.toString());
+//			logger.info(() -> "WORKS2 " + property.toString());
+//			logger.info(() -> "WORKS2 " + ind.toString());
 			// System.out.println("WORKS2 " + property.toString());
 			// System.out.println("WORKS2 " + ind.toString());
 
