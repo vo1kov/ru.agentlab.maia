@@ -18,12 +18,12 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
-import ru.agentlab.maia.IBeliefBase;
+import ru.agentlab.maia.belief.IBeliefBase;
 import ru.agentlab.maia.message.IMessage;
+import ru.agentlab.maia.message.IMessageDeliveryService;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
-import ru.agentlab.maia.messaging.IMessageDeliveryService;
 
-public  class FIPASubscribeInitiator {
+public class FIPASubscribeInitiator {
 
 	private final static String conversationId = Long.toString(ThreadLocalRandom.current().nextLong());
 

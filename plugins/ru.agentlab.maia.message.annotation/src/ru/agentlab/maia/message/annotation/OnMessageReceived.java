@@ -6,14 +6,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import ru.agentlab.maia.annotation.EventMatcher;
+import ru.agentlab.maia.converter.PlanEventFilter;
 import ru.agentlab.maia.message.annotation.converter.OnMessageXXXConverter;
 import ru.agentlab.maia.message.event.MessageAddedEvent;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@EventMatcher(converter = OnMessageXXXConverter.class, eventType = MessageAddedEvent.class)
+@PlanEventFilter(converter = OnMessageXXXConverter.class, eventType = MessageAddedEvent.class)
 public @interface OnMessageReceived {
 
 	String performative() default "";

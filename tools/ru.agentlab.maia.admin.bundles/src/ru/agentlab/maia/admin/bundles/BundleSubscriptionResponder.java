@@ -17,10 +17,10 @@ import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import ru.agentlab.maia.agent.belief.annotation.AxiomType;
-import ru.agentlab.maia.agent.belief.annotation.OnBeliefAdded;
-import ru.agentlab.maia.agent.belief.annotation.Prefix;
-import ru.agentlab.maia.agent.belief.annotation.WhenHaveBelief;
+import ru.agentlab.maia.belief.annotation.AxiomType;
+import ru.agentlab.maia.belief.annotation.OnBeliefAdded;
+import ru.agentlab.maia.belief.annotation.Prefix;
+import ru.agentlab.maia.belief.annotation.WhenHaveBelief;
 import ru.agentlab.maia.message.IMessage;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
 import ru.agentlab.maia.messaging.AclMessage;

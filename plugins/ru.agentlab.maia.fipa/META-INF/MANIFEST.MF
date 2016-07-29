@@ -9,4 +9,5 @@ Require-Bundle: ru.agentlab.maia.message,
  ru.agentlab.maia.message.annotation,
  org.semanticweb.owlapi.compatibility,
  org.semanticweb.owlapi.api,
- ru.agentlab.maia
+ ru.agentlab.maia.belief
+Export-Package: ru.agentlab.maia.fipa

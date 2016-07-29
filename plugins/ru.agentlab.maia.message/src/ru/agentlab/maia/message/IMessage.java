@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
-@SuppressWarnings("all")
 public interface IMessage {
 
 	UUID getSender();
@@ -79,6 +78,6 @@ public interface IMessage {
 	String getPerformative();
 
 	void setPerformative(String performative);
-	
+
 	IMessage createReply();
 }

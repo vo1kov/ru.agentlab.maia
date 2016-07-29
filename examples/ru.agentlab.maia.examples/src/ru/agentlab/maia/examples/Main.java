@@ -5,12 +5,12 @@ import java.util.concurrent.ForkJoinPool;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-import ru.agentlab.maia.ContainerException;
-import ru.agentlab.maia.IAgent;
-import ru.agentlab.maia.IContainer;
-import ru.agentlab.maia.InjectorException;
-import ru.agentlab.maia.ResolveException;
-import ru.agentlab.maia.container.Container;
+import ru.agentlab.maia.agent.IAgent;
+import ru.agentlab.maia.agent.ResolveException;
+import ru.agentlab.maia.container.ContainerException;
+import ru.agentlab.maia.container.IContainer;
+import ru.agentlab.maia.container.InjectorException;
+import ru.agentlab.maia.container.impl.Container;
 
 public class Main {
 
@@ -19,7 +19,7 @@ public class Main {
 		container.put(ForkJoinPool.class, ForkJoinPool.commonPool());
 		container.put(String.class, "TEST");
 		container.put(OWLOntologyManager.class, OWLManager.createOWLOntologyManager());
-		IAgent agent = new ru.agentlab.maia.agent.Agent();
+		IAgent agent = new ru.agentlab.maia.agent.impl.Agent();
 		agent.deployTo(container);
 		agent.addRole(Example.class);
 	}

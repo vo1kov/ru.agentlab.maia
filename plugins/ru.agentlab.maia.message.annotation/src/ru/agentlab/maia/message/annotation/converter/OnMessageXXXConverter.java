@@ -2,7 +2,7 @@ package ru.agentlab.maia.message.annotation.converter;
 
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static ru.agentlab.maia.agent.match.EventMatchers.hamcrest;
+import static ru.agentlab.maia.filter.impl.PlanEventFilters.hamcrest;
 import static ru.agentlab.maia.message.match.Matchers.hasContent;
 import static ru.agentlab.maia.message.match.Matchers.hasConversationId;
 import static ru.agentlab.maia.message.match.Matchers.hasEncoding;
@@ -24,16 +24,17 @@ import java.util.UUID;
 
 import org.hamcrest.Matcher;
 
-import ru.agentlab.maia.IEventMatcher;
-import ru.agentlab.maia.annotation.IEventMatcherConverter;
-import ru.agentlab.maia.annotation.Util;
+import ru.agentlab.maia.converter.IPlanEventFilterConverter;
+import ru.agentlab.maia.converter.Util;
+import ru.agentlab.maia.filter.IPlanEventFilter;
 import ru.agentlab.maia.message.IMessage;
 
-public class OnMessageXXXConverter implements IEventMatcherConverter {
+public class OnMessageXXXConverter implements IPlanEventFilterConverter {
 
 	@SuppressWarnings({ "unchecked", "unused" })
 	@Override
-	public IEventMatcher<?> getMatcher(Object role, Method method, Annotation annotation, Map<String, Object> customData) {
+	public IPlanEventFilter<?> getMatcher(Object role, Method method, Annotation annotation,
+			Map<String, Object> customData) {
 		Annotation ann = annotation;
 		List<Matcher<? super IMessage>> matchers = new ArrayList<>();
 

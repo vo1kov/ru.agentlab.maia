@@ -27,10 +27,10 @@ import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.collect.ImmutableMap;
 
-import ru.agentlab.maia.IContainer;
-import ru.agentlab.maia.IInjector;
-import ru.agentlab.maia.InjectorException;
-import ru.agentlab.maia.container.Injector;
+import ru.agentlab.maia.container.IContainer;
+import ru.agentlab.maia.container.IInjector;
+import ru.agentlab.maia.container.InjectorException;
+import ru.agentlab.maia.container.impl.Injector;
 import ru.agentlab.maia.test.util.LoggerRule;
 
 /**

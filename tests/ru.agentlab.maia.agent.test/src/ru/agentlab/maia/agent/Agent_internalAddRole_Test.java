@@ -39,16 +39,11 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
-import ru.agentlab.maia.ConverterException;
-import ru.agentlab.maia.IAgent;
-import ru.agentlab.maia.IInjector;
-import ru.agentlab.maia.IPlan;
-import ru.agentlab.maia.InjectorException;
-import ru.agentlab.maia.ResolveException;
 import ru.agentlab.maia.agent.doubles.DummyService;
-import ru.agentlab.maia.agent.role.event.RoleAddedEvent;
-import ru.agentlab.maia.agent.role.event.RoleResolvedEvent;
-import ru.agentlab.maia.agent.role.event.RoleUnresolvedEvent;
+import ru.agentlab.maia.agent.impl.Agent;
+import ru.agentlab.maia.annotation.ConverterException;
+import ru.agentlab.maia.container.IInjector;
+import ru.agentlab.maia.container.InjectorException;
 import ru.agentlab.maia.test.util.LoggerRule;
 
 /**
@@ -177,8 +172,8 @@ public class Agent_internalAddRole_Test {
 			checkBeliefBase(agent);
 			checkGoalBase(agent);
 			checkPlanBase(agent);
-			verify(agent.eventQueue, times(1)).offer(new RoleAddedEvent(role));
-			verify(agent.eventQueue, times(1)).offer(new RoleResolvedEvent(role));
+			verify(agent.internalEventQueue, times(1)).offer(new RoleAddedEvent(role));
+			verify(agent.internalEventQueue, times(1)).offer(new RoleResolvedEvent(role));
 			assertThat(role, equalTo(result));
 		} catch (Exception e) {
 			// Then
@@ -192,7 +187,7 @@ public class Agent_internalAddRole_Test {
 			// role added. Only ROLE_UNRESOLVED event should be added to event
 			// queue.
 			verifyZeroInteractions(agent.beliefBase, agent.goalBase, agent.planBase);
-			verify(agent.eventQueue, times(1)).offer(new RoleUnresolvedEvent(DummyService.class));
+			verify(agent.internalEventQueue, times(1)).offer(new RoleUnresolvedEvent(DummyService.class));
 		}
 	}
 
