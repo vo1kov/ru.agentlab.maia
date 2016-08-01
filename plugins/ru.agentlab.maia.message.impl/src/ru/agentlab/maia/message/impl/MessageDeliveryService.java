@@ -51,18 +51,16 @@ public abstract class MessageDeliveryService implements IMessageDeliveryService 
 
 	@Override
 	public void send(IMessage message) {
-		message.getReceivers().stream().forEach(uuid -> {
-			AgentAddress address = registry.get(uuid);
-			if (address == null) {
-				throw new RuntimeException("Agent did not found");
-			}
-			if (address instanceof LocalAgentAddress) {
-				IAgent agent = ((LocalAgentAddress) address).getAgent();
-				sendInternal(message, agent);
-			} else if (address instanceof RemoteAgentAddress) {
-				sendExternal(message, ((RemoteAgentAddress) address).getAddress());
-			}
-		});
+		AgentAddress address = registry.get(message.getReceiver());
+		if (address == null) {
+			throw new RuntimeException("Agent did not found");
+		}
+		if (address instanceof LocalAgentAddress) {
+			IAgent agent = ((LocalAgentAddress) address).getAgent();
+			sendInternal(message, agent);
+		} else if (address instanceof RemoteAgentAddress) {
+			sendExternal(message, ((RemoteAgentAddress) address).getAddress());
+		}
 	}
 
 	protected void sendInternal(IMessage message, IAgent agent) {

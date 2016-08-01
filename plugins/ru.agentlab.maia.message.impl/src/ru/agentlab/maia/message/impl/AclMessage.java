@@ -1,12 +1,8 @@
 package ru.agentlab.maia.message.impl;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
-
-import com.google.common.collect.ImmutableList;
 
 import ru.agentlab.maia.message.IMessage;
 
@@ -14,9 +10,9 @@ public class AclMessage implements IMessage {
 
 	private UUID sender;
 
-	private List<UUID> receivers = new ArrayList<UUID>();
+	private UUID receiver;
 
-	private List<UUID> replyTo = new ArrayList<UUID>();
+	private UUID replyTo;
 
 	private String content;
 
@@ -49,7 +45,12 @@ public class AclMessage implements IMessage {
 		IMessage reply = new AclMessage();
 		reply.setConversationId(getConversationId());
 		reply.setProtocol(getProtocol());
-		reply.setReceivers(ImmutableList.of(getSender()));
+		if (getReplyTo() != null) {
+			reply.setReceiver(getReplyTo());
+		} else {
+			reply.setReceiver(getSender());
+		}
+		reply.setSender(getReceiver());
 		return reply;
 	}
 
@@ -68,19 +69,19 @@ public class AclMessage implements IMessage {
 		this.sender = sender;
 	}
 
-	public List<UUID> getReceivers() {
-		return receivers;
+	public UUID getReceiver() {
+		return receiver;
 	}
 
-	public void setReceivers(List<UUID> receivers) {
-		this.receivers = receivers;
+	public void setReceiver(UUID receiver) {
+		this.receiver = receiver;
 	}
 
-	public List<UUID> getReplyTo() {
+	public UUID getReplyTo() {
 		return replyTo;
 	}
 
-	public void setReplyTo(List<UUID> replyTo) {
+	public void setReplyTo(UUID replyTo) {
 		this.replyTo = replyTo;
 	}
 

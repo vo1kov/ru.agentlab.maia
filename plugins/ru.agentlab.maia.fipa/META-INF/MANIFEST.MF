@@ -12,5 +12,8 @@ Require-Bundle: ru.agentlab.maia.message,
  ru.agentlab.maia.belief,
  ru.agentlab.maia.agent,
  ru.agentlab.maia.agent.impl,
- com.google.guava
+ com.google.guava,
+ ru.agentlab.maia.agent.annotation,
+ ru.agentlab.maia.message.impl,
+ ru.agentlab.maia.goal
 Export-Package: ru.agentlab.maia.fipa
