@@ -4,7 +4,8 @@ Bundle-Name: Messaging
 Bundle-SymbolicName: ru.agentlab.maia.message
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: ru.agentlab.maia.agent
+Require-Bundle: ru.agentlab.maia.agent,
+ io.netty
 Export-Package: ru.agentlab.maia.message,
  ru.agentlab.maia.message.event
 

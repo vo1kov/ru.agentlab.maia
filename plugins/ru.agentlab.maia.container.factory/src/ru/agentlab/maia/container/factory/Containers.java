@@ -16,7 +16,7 @@ import ru.agentlab.maia.container.IContainer;
 import ru.agentlab.maia.container.impl.Container;
 import ru.agentlab.maia.message.IMessageDeliveryService;
 import ru.agentlab.maia.message.impl.AgentRegistry;
-import ru.agentlab.maia.message.impl.HttpMessageDeliveryService;
+import ru.agentlab.maia.message.impl.http.HttpMessageDeliveryService;
 
 public class Containers {
 

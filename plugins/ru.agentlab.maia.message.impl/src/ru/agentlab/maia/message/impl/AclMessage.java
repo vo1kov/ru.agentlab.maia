@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
+import com.google.common.collect.ImmutableList;
+
 import ru.agentlab.maia.message.IMessage;
 
-class AclMessage implements IMessage {
+public class AclMessage implements IMessage {
 
 	private UUID sender;
 
@@ -29,6 +31,34 @@ class AclMessage implements IMessage {
 	private String language;
 
 	private String ontology;
+
+	private String performative;
+
+	private LocalDateTime replyBy;
+
+	private String protocol;
+
+	private String conversationId;
+
+	private Properties userDefinedProps;
+
+	private LocalDateTime postTimeStamp;
+
+	@Override
+	public IMessage getReply() {
+		IMessage reply = new AclMessage();
+		reply.setConversationId(getConversationId());
+		reply.setProtocol(getProtocol());
+		reply.setReceivers(ImmutableList.of(getSender()));
+		return reply;
+	}
+
+	@Override
+	public IMessage getReply(String performative) {
+		IMessage reply = getReply();
+		reply.setPerformative(performative);
+		return reply;
+	}
 
 	public UUID getSender() {
 		return sender;
@@ -157,17 +187,5 @@ class AclMessage implements IMessage {
 	public void setPostTimeStamp(LocalDateTime postTimeStamp) {
 		this.postTimeStamp = postTimeStamp;
 	}
-
-	private String performative;
-
-	private LocalDateTime replyBy;
-
-	private String protocol;
-
-	private String conversationId;
-
-	private Properties userDefinedProps;
-
-	private LocalDateTime postTimeStamp;
 
 }
