@@ -39,8 +39,10 @@ public class FIPASubscribeInitiator {
 	@Inject
 	private IMessageDeliveryService messaging;
 
+	@Inject
 	private UUID targetAgent;
 
+	@Inject
 	private String template;
 
 	public FIPASubscribeInitiator(UUID targetAgent, String template) {
