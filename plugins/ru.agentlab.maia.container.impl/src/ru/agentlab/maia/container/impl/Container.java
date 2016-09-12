@@ -43,6 +43,13 @@ public class Container implements IContainer {
 
 	protected final Map<String, Object> map = new ConcurrentHashMap<String, Object>();
 
+	{
+		map.put(IContainer.class.getName(), this);
+		map.put(Container.class.getName(), this);
+		map.put(IInjector.class.getName(), injector);
+		map.put(Injector.class.getName(), injector);
+	}
+
 	@Override
 	public UUID getUuid() {
 		return uuid;
