@@ -32,6 +32,8 @@ public class HttpNetworkProtocol implements INetworkProtocol {
 				ChannelPipeline pipeline = channel.pipeline();
 				pipeline.addLast(new HttpClientCodec());
 				pipeline.addLast(new HttpObjectAggregator(1048576));
+				pipeline.addLast(new HttpRequestContentDecoder());
+				pipeline.addLast(new HttpRequestContentEncoder());
 				pipeline.addLast(new AclMessageEncoder(gson));
 				pipeline.addLast(new AclMessageDecoder(gson));
 				if (lastHandler != null) {
