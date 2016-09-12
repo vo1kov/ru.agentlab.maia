@@ -112,7 +112,7 @@ public interface IInjector {
 	default <T> T deploy(Class<? extends T> serviceClass, Class<T> interf) throws InjectorException {
 		T service = make(serviceClass);
 		inject(service);
-		invoke(service, PostConstruct.class, null);
+		invoke(service, PostConstruct.class, null, null);
 		getContainer().put(interf, service);
 		return service;
 	}

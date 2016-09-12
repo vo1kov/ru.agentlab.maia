@@ -45,7 +45,7 @@ public class Matchers {
 		return new AclMessageHasProtocol(matcher);
 	}
 
-	public static Matcher<IMessage> hasReceivers(Matcher<? super Iterable<UUID>> matcher) {
+	public static Matcher<IMessage> hasReceivers(Matcher<? super UUID> matcher) {
 		return new AclMessageHasReceivers(matcher);
 	}
 

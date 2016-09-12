@@ -10,9 +10,9 @@ import ru.agentlab.maia.message.IMessage;
 
 public class AclMessageHasReceivers extends TypeSafeMatcher<IMessage> {
 
-	Matcher<? super Iterable<UUID>> matcher;
+	Matcher<? super UUID> matcher;
 
-	public AclMessageHasReceivers(Matcher<? super Iterable<UUID>> matcher) {
+	public AclMessageHasReceivers(Matcher<? super UUID> matcher) {
 		super();
 		this.matcher = matcher;
 	}
@@ -24,7 +24,7 @@ public class AclMessageHasReceivers extends TypeSafeMatcher<IMessage> {
 
 	@Override
 	protected boolean matchesSafely(IMessage message) {
-		return matcher.matches(message.getReceivers());
+		return matcher.matches(message.getReceiver());
 	}
 
 }

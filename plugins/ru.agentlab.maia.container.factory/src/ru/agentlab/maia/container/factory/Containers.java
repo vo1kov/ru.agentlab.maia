@@ -11,8 +11,12 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 import io.netty.channel.nio.NioEventLoopGroup;
+import ru.agentlab.maia.agent.IAgentRegistry;
 import ru.agentlab.maia.container.IContainer;
 import ru.agentlab.maia.container.impl.Container;
+import ru.agentlab.maia.message.IMessageDeliveryService;
+import ru.agentlab.maia.message.impl.AgentRegistry;
+import ru.agentlab.maia.message.impl.http.HttpMessageDeliveryService;
 
 public class Containers {
 
@@ -48,6 +52,8 @@ public class Containers {
 	public static void populateMessaging(IContainer container) {
 		container.put("worker-group", new NioEventLoopGroup(3));
 		container.put("boss-group", new NioEventLoopGroup(1));
+		container.getInjector().deploy(AgentRegistry.class, IAgentRegistry.class);
+		container.getInjector().deploy(HttpMessageDeliveryService.class, IMessageDeliveryService.class);
 	}
 
 	public static void populateBDI(IContainer container) {

@@ -27,6 +27,8 @@ public interface IPlanBase {
 
 	void addAll(Multimap<Class<?>, IPlan> map);
 
+	void addAll(Class<?> key, Iterable<? extends IPlan> plans);
+
 	Collection<IPlan> getStopPlans();
 
 	Collection<IPlan> getStartPlans();

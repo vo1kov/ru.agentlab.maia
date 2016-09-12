@@ -9,7 +9,6 @@
 package ru.agentlab.maia.message;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -19,13 +18,13 @@ public interface IMessage {
 
 	void setSender(UUID sender);
 
-	List<UUID> getReceivers();
+	UUID getReceiver();
 
-	void setReceivers(List<UUID> receivers);
+	void setReceiver(UUID receiver);
 
-	List<UUID> getReplyTo();
+	UUID getReplyTo();
 
-	void setReplyTo(List<UUID> replyTo);
+	void setReplyTo(UUID replyTo);
 
 	String getContent();
 
@@ -79,5 +78,8 @@ public interface IMessage {
 
 	void setPerformative(String performative);
 
-	IMessage createReply();
+	IMessage getReply();
+
+	IMessage getReply(String performative);
+
 }

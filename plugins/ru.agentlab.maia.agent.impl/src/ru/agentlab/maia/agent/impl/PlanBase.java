@@ -53,6 +53,13 @@ public class PlanBase implements IPlanBase {
 	}
 
 	@Override
+	public void addAll(Class<?> key, Iterable<? extends IPlan> plan) {
+		Objects.requireNonNull(key);
+		Objects.requireNonNull(plan);
+		plans.putAll(key, plan);
+	}
+
+	@Override
 	public void remove(Class<?> type, IPlan plan) {
 		Objects.requireNonNull(type);
 		Objects.requireNonNull(plan);

@@ -7,25 +7,31 @@
  *******************************************************************************/
 package ru.agentlab.maia.fipa;
 
+import static ru.agentlab.maia.fipa.FIPAPerformativeNames.AGREE;
+import static ru.agentlab.maia.fipa.FIPAPerformativeNames.CANCEL;
+import static ru.agentlab.maia.fipa.FIPAPerformativeNames.INFORM;
+import static ru.agentlab.maia.fipa.FIPAPerformativeNames.REFUSE;
+import static ru.agentlab.maia.fipa.FIPAPerformativeNames.SUBSCRIBE;
+import static ru.agentlab.maia.fipa.FIPAProtocolNames.FIPA_SUBSCRIBE;
+
 import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
-import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.PrefixManager;
-import org.semanticweb.owlapi.util.DefaultPrefixManager;
+import org.semanticweb.owlapi.model.OWLAxiom;
 
+import ru.agentlab.maia.agent.IAgent;
 import ru.agentlab.maia.belief.IBeliefBase;
 import ru.agentlab.maia.message.IMessage;
 import ru.agentlab.maia.message.IMessageDeliveryService;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
+import ru.agentlab.maia.message.impl.AclMessage;
 
 public class FIPASubscribeInitiator {
 
-	private final static String conversationId = Long.toString(ThreadLocalRandom.current().nextLong());
+	private String conversationId;
 
 	@Inject
 	private IBeliefBase beliefBase;
@@ -33,62 +39,77 @@ public class FIPASubscribeInitiator {
 	@Inject
 	private IMessageDeliveryService messaging;
 
-	private IMessage initial;
+	@Inject
+	private UUID targetAgent;
 
-	public FIPASubscribeInitiator(IMessage initial) {
-		this.initial = initial;
+	@Inject
+	private String template;
+
+	public FIPASubscribeInitiator(UUID targetAgent, String template) {
+		this.targetAgent = targetAgent;
+		this.template = template;
 	}
 
 	@PostConstruct
-	public void onSetup() {
-		IMessage message = initial;
-		message.setProtocol(FIPAProtocolNames.FIPA_SUBSCRIBE);
-		message.setConversationId(conversationId);
-		message.setPerformative(FIPAPerformativeNames.SUBSCRIBE);
+	public void onSetup(IAgent agent) {
+		conversationId = UUID.randomUUID().toString();
+		IMessage message = createMessageToTargetAgent(agent);
+		message.setPerformative(SUBSCRIBE);
+		message.setContent(template);
 		messaging.send(message);
 	}
 
-	@OnMessageReceived(performative = FIPAPerformativeNames.AGREE, protocol = FIPAProtocolNames.FIPA_SUBSCRIBE)
+	@OnMessageReceived(performative = AGREE, protocol = FIPA_SUBSCRIBE)
 	public void onAgree(IMessage message) {
-		if (!message.getConversationId().equals(conversationId)) {
+		if (!checkConversationId(message)) {
 			return;
 		}
-		UUID sender = message.getSender();
-		OWLDataFactory factory = beliefBase.getFactory();
-		PrefixManager prefixManager = new DefaultPrefixManager();
-		prefixManager.setPrefix("maia", "");
-		beliefBase.addBelief(
-				factory.getOWLObjectPropertyAssertionAxiom(factory.getOWLObjectProperty("this", prefixManager),
-						factory.getOWLNamedIndividual("maia:haveSubscription", prefixManager),
-						factory.getOWLNamedIndividual(sender.toString(), prefixManager)));
 	}
 
-	@OnMessageReceived(performative = FIPAPerformativeNames.REFUSE, protocol = FIPAProtocolNames.FIPA_SUBSCRIBE)
+	@OnMessageReceived(performative = REFUSE, protocol = FIPA_SUBSCRIBE)
 	public void onRefuse(IMessage message) {
-	}
-
-	@OnMessageReceived(performative = FIPAPerformativeNames.INFORM, protocol = FIPAProtocolNames.FIPA_SUBSCRIBE)
-	public void onInform(IMessage message) {
-		if (!message.getConversationId().equals(conversationId)) {
+		if (!checkConversationId(message)) {
 			return;
 		}
-		UUID sender = message.getSender();
-		OWLDataFactory factory = beliefBase.getFactory();
-		PrefixManager prefixManager = new DefaultPrefixManager();
-		prefixManager.setPrefix("maia", "");
-		beliefBase.addBelief(
-				factory.getOWLObjectPropertyAssertionAxiom(factory.getOWLObjectProperty("this", prefixManager),
-						factory.getOWLNamedIndividual("maia:haveSubscription", prefixManager),
-						factory.getOWLNamedIndividual(sender.toString(), prefixManager)));
+	}
+
+	@OnMessageReceived(performative = INFORM, protocol = FIPA_SUBSCRIBE)
+	public void onInform(IMessage message) {
+		if (!checkConversationId(message)) {
+			return;
+		}
+		OWLAxiom axiom = getAxiom(message);
+		beliefBase.addBelief(axiom);
 	}
 
 	@PreDestroy
-	public void onDestroy() {
-		IMessage message = initial;
-		message.setProtocol(FIPAProtocolNames.FIPA_SUBSCRIBE);
-		message.setConversationId(conversationId);
-		message.setPerformative(FIPAPerformativeNames.CANCEL);
+	public void onDestroy(IAgent agent) {
+		IMessage message = createMessageToTargetAgent(agent);
+		message.setPerformative(CANCEL);
 		messaging.send(message);
+		conversationId = null;
+	}
+
+	private IMessage createMessageToTargetAgent(IAgent agent) {
+		IMessage message = new AclMessage();
+		message.setSender(agent.getUuid());
+		message.setReceiver(targetAgent);
+		message.setProtocol(FIPA_SUBSCRIBE);
+		message.setConversationId(conversationId);
+		return message;
+	}
+
+	private boolean checkConversationId(IMessage message) {
+		return message.getConversationId().equals(conversationId);
+	}
+
+	private OWLAxiom getAxiom(IMessage message) {
+		//
+		//
+		// TODO: extract belief from message
+		//
+		//
+		return null;
 	}
 
 }

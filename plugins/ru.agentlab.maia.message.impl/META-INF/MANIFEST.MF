@@ -11,5 +11,8 @@ Require-Bundle: com.google.guava,
  io.netty;bundle-version="4.0.26",
  org.slf4j.api;bundle-version="1.7.2",
  javax.inject;bundle-version="1.0.0",
- ru.agentlab.maia.message;bundle-version="1.0.0"
+ ru.agentlab.maia.message;bundle-version="1.0.0",
+ com.google.gson,
+ ru.agentlab.maia.agent
+Export-Package: ru.agentlab.maia.message.impl
 

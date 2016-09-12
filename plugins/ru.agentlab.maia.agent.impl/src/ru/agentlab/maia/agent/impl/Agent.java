@@ -38,10 +38,12 @@ import com.google.common.collect.Multimap;
 
 import ru.agentlab.maia.agent.AgentState;
 import ru.agentlab.maia.agent.IAgent;
+import ru.agentlab.maia.agent.IAgentRegistry;
 import ru.agentlab.maia.agent.IEvent;
 import ru.agentlab.maia.agent.IPlan;
 import ru.agentlab.maia.agent.IPlanBase;
 import ru.agentlab.maia.agent.IPlanBody;
+import ru.agentlab.maia.agent.LocalAgentAddress;
 import ru.agentlab.maia.agent.ResolveException;
 import ru.agentlab.maia.agent.event.ExternalAddedEvent;
 import ru.agentlab.maia.agent.event.RoleAddedEvent;
@@ -73,20 +75,16 @@ public class Agent implements IAgent {
 	@Inject
 	protected ForkJoinPool executor;
 
+	@Inject
+	IAgentRegistry registry;
+
 	protected AtomicReference<AgentState> state = new AtomicReference<>(AgentState.UNKNOWN);
 
 	protected final IContainer agentContainer = new Container();
 
-	// protected final Queue<IMessage> messageQueue = new
-	// ConcurrentLinkedQueue<>();
-
 	protected final Queue<IEvent<?>> externalEventQueue = new ConcurrentLinkedQueue<>();
 
 	protected final Queue<IEvent<?>> internalEventQueue = new LinkedList<>();
-
-	// protected final IBeliefBase beliefBase = new BeliefBase();
-	//
-	// protected final IGoalBase goalBase = new GoalBase(eventQueue);
 
 	protected final IPlanBase planBase = new PlanBase(internalEventQueue);
 
@@ -136,14 +134,6 @@ public class Agent implements IAgent {
 		return agentContainer.get(key);
 	}
 
-	// @PostConstruct
-	// public void init() {
-	// Map<String, Object> additional = new HashMap<>();
-	// additional.put(Queue.class.getName(), eventQueue);
-	// getInjector().inject(beliefBase, additional);
-	// getInjector().invoke(beliefBase, PostConstruct.class, null, additional);
-	// }
-
 	public IInjector getInjector() {
 		return agentContainer.getInjector();
 	}
@@ -153,8 +143,6 @@ public class Agent implements IAgent {
 		externalEventQueue.offer(new ExternalAddedEvent(event));
 		boolean started = state.compareAndSet(AgentState.WAITING, AgentState.ACTIVE);
 		if (started) {
-			// System.out.println("Agent [" + uuid.toString() + "] change state
-			// to [" + state.toString() + "]");
 			executor.submit(new ExecuteAction());
 		}
 	}
@@ -168,11 +156,6 @@ public class Agent implements IAgent {
 	public void stop() {
 		setState(AgentState.STOPPING);
 	}
-
-	// @Override
-	// public void send(IMessage message) {
-	// messageQueue.offer(message);
-	// }
 
 	@Override
 	public IContainer getContainer() {
@@ -201,11 +184,12 @@ public class Agent implements IAgent {
 		agentContainer.setParent(container);
 		injector.inject(this);
 		injector.invoke(this, PostConstruct.class, null, null);
-		for (Object service : agentContainer.values()){
+		for (Object service : agentContainer.values()) {
 			injector.inject(service);
 			injector.invoke(service, PostConstruct.class, null, null);
 		}
 		container.put(uuid.toString(), this);
+		registry.put(uuid, new LocalAgentAddress(this));
 		setState(AgentState.IDLE);
 	}
 
@@ -304,7 +288,7 @@ public class Agent implements IAgent {
 			Object roleObject = injector.make(roleClass, parameters);
 			injector.inject(roleObject, parameters);
 			injector.invoke(roleObject, PostConstruct.class, null, parameters);
-			
+
 			PrefixManager prefixes = new DefaultPrefixManager();
 			putService(PrefixManager.class, prefixes);
 			// Now role object have resolved all field dependencies. Need to
