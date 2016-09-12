@@ -6,7 +6,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package ru.agentlab.maia.message;
+package ru.agentlab.maia.agent;
 
 import java.time.LocalDateTime;
 import java.util.Properties;

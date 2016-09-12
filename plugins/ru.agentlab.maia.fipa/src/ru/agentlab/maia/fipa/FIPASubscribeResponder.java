@@ -19,11 +19,11 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import ru.agentlab.maia.agent.IMessage;
 import ru.agentlab.maia.agent.IPlan;
 import ru.agentlab.maia.agent.IPlanBase;
 import ru.agentlab.maia.agent.impl.Plan;
 import ru.agentlab.maia.belief.event.BeliefAddedEvent;
-import ru.agentlab.maia.message.IMessage;
 import ru.agentlab.maia.message.IMessageDeliveryService;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
 

@@ -11,7 +11,6 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import ru.agentlab.maia.admin.bundles.internal.Activator;
-import ru.agentlab.maia.agent.IEvent;
 import ru.agentlab.maia.agent.annotation.AddedExternalEvent;
 import ru.agentlab.maia.belief.IBeliefBase;
 
@@ -24,7 +23,7 @@ public class BundleStateSensor {
 	OWLDataFactory factory;
 
 	@PostConstruct
-	public void init(Queue<IEvent<?>> eventQueue) {
+	public void init(Queue<Object> eventQueue) {
 		Activator.context.addBundleListener(eventQueue::offer);
 	}
 

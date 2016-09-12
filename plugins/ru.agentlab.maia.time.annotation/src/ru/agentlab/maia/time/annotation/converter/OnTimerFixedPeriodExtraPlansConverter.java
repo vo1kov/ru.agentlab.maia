@@ -3,6 +3,7 @@ package ru.agentlab.maia.time.annotation.converter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -12,7 +13,6 @@ import javax.inject.Inject;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-import ru.agentlab.maia.agent.IAgent;
 import ru.agentlab.maia.agent.IPlan;
 import ru.agentlab.maia.agent.event.AgentStartedEvent;
 import ru.agentlab.maia.agent.event.AgentStoppedEvent;
@@ -27,7 +27,7 @@ public class OnTimerFixedPeriodExtraPlansConverter implements IPlanExtraConverte
 	ScheduledExecutorService scheduler;
 
 	@Inject
-	IAgent agent;
+	Queue<Object> eventQueue;
 
 	@Override
 	public Multimap<Class<?>, IPlan> getPlans(Object role, Method method, Annotation annotation,
@@ -39,7 +39,7 @@ public class OnTimerFixedPeriodExtraPlansConverter implements IPlanExtraConverte
 
 		Runnable onStartPlan = () -> {
 			System.out.println("Register schedule");
-			futures[0] = scheduler.scheduleWithFixedDelay(() -> agent.fireExternalEvent(new TimerEvent(eventKey)),
+			futures[0] = scheduler.scheduleWithFixedDelay(() -> eventQueue.offer(new TimerEvent(eventKey)),
 					onTimerDelay.delay(), onTimerDelay.value(), onTimerDelay.unit());
 		};
 

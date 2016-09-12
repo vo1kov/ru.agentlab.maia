@@ -23,7 +23,7 @@ public interface IPlanBase {
 
 	Stream<IPlan> getPlansStream();
 
-	Stream<Option> getOptions(IEvent<?> event);
+	Stream<Option> getOptions(Object event);
 
 	void addAll(Multimap<Class<?>, IPlan> map);
 

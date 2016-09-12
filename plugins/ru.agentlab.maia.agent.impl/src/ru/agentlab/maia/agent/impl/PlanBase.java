@@ -18,23 +18,21 @@ import java.util.stream.Stream;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-import ru.agentlab.maia.agent.IEvent;
 import ru.agentlab.maia.agent.IPlan;
 import ru.agentlab.maia.agent.IPlanBase;
 import ru.agentlab.maia.agent.Option;
 import ru.agentlab.maia.agent.event.AgentStartedEvent;
 import ru.agentlab.maia.agent.event.AgentStoppedEvent;
-import ru.agentlab.maia.agent.event.ExternalAddedEvent;
 import ru.agentlab.maia.filter.IPlanEventFilter;
 import ru.agentlab.maia.filter.IPlanStateFilter;
 
 public class PlanBase implements IPlanBase {
 
-	protected final Queue<IEvent<?>> eventQueue;
+	protected final Queue<Object> eventQueue;
 
 	protected final Multimap<Class<?>, IPlan> plans = ArrayListMultimap.create();
 
-	public PlanBase(Queue<IEvent<?>> eventQueue) {
+	public PlanBase(Queue<Object> eventQueue) {
 		Objects.requireNonNull(eventQueue);
 		this.eventQueue = eventQueue;
 	}
@@ -77,20 +75,20 @@ public class PlanBase implements IPlanBase {
 	}
 
 	@Override
-	public Stream<Option> getOptions(IEvent<?> event) {
+	public Stream<Option> getOptions(Object event) {
 		Objects.requireNonNull(event);
-		Object payload = event.getPayload();
+		// Object payload = event.getPayload();
 		Class<?> eventType = event.getClass();
-		if (event instanceof ExternalAddedEvent) {
-			eventType = event.getPayload().getClass();
-		}
+		// if (event instanceof ExternalAddedEvent) {
+		// eventType = event.getPayload().getClass();
+		// }
 		Collection<IPlan> collection = plans.get(eventType);
 		return collection.stream().map(plan -> {
 			Map<String, Object> variables = new HashMap<>();
-			variables.put(payload.getClass().getName(), payload);
+			variables.put(eventType.getName(), event);
 			IPlanEventFilter<?> eventMatcher = plan.getEventMatcher();
 			IPlanStateFilter stateMatcher = plan.getStateMatcher();
-			if (eventMatcher.matches(payload, variables) && stateMatcher.matches(payload, variables)) {
+			if (eventMatcher.matches(event, variables) && stateMatcher.matches(event, variables)) {
 				return new Option(plan.getPlanBody(), variables);
 			} else {
 				return null;

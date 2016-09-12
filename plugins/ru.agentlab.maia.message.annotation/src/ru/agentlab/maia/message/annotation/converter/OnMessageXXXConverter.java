@@ -24,10 +24,10 @@ import java.util.UUID;
 
 import org.hamcrest.Matcher;
 
+import ru.agentlab.maia.agent.IMessage;
 import ru.agentlab.maia.converter.IPlanEventFilterConverter;
 import ru.agentlab.maia.converter.Util;
 import ru.agentlab.maia.filter.IPlanEventFilter;
-import ru.agentlab.maia.message.IMessage;
 
 public class OnMessageXXXConverter implements IPlanEventFilterConverter {
 
