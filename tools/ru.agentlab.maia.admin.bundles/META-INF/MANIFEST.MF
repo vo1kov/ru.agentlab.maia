@@ -21,7 +21,9 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.agent.annotation,
  ru.agentlab.maia.belief,
  ru.agentlab.maia.fipa;bundle-version="1.0.0",
- ru.agentlab.maia.goal
+ ru.agentlab.maia.goal,
+ ru.agentlab.maia.agent,
+ ru.agentlab.maia.message.impl
 Import-Package: org.eclipse.osgi.util;version="1.1.0",
  org.osgi.framework;version="1.8.0"
 Export-Package: ru.agentlab.maia.admin.bundles

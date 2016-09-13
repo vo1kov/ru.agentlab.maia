@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
+import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -16,7 +17,6 @@ import javax.inject.Inject;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-import ru.agentlab.maia.agent.IAgent;
 import ru.agentlab.maia.agent.IPlan;
 import ru.agentlab.maia.agent.event.AgentStartedEvent;
 import ru.agentlab.maia.agent.event.AgentStoppedEvent;
@@ -31,7 +31,7 @@ public class OnTimerDateTimeExtraPlansConverter implements IPlanExtraConverter {
 	ScheduledExecutorService scheduler;
 
 	@Inject
-	IAgent agent;
+	Queue<Object> eventQueue;
 
 	@Override
 	public Multimap<Class<?>, IPlan> getPlans(Object role, Method method, Annotation annotation,
@@ -47,7 +47,7 @@ public class OnTimerDateTimeExtraPlansConverter implements IPlanExtraConverter {
 			LocalDateTime now = LocalDateTime.now();
 			long delay = ChronoUnit.MILLIS.between(now, dateTime);
 			System.out.println("Register schedule in " + delay + " ms");
-			futures[0] = scheduler.schedule(() -> agent.fireExternalEvent(new TimerEvent(eventKey)), delay,
+			futures[0] = scheduler.schedule(() -> eventQueue.offer(new TimerEvent(eventKey)), delay,
 					TimeUnit.MILLISECONDS);
 		};
 

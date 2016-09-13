@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Properties;
 import java.util.UUID;
 
-import ru.agentlab.maia.message.IMessage;
+import ru.agentlab.maia.agent.IMessage;
 
 public class AclMessage implements IMessage {
 

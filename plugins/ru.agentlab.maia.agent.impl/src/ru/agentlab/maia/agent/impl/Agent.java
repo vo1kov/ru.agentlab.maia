@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveAction;
@@ -39,13 +38,12 @@ import com.google.common.collect.Multimap;
 import ru.agentlab.maia.agent.AgentState;
 import ru.agentlab.maia.agent.IAgent;
 import ru.agentlab.maia.agent.IAgentRegistry;
-import ru.agentlab.maia.agent.IEvent;
+import ru.agentlab.maia.agent.IMessage;
 import ru.agentlab.maia.agent.IPlan;
 import ru.agentlab.maia.agent.IPlanBase;
 import ru.agentlab.maia.agent.IPlanBody;
 import ru.agentlab.maia.agent.LocalAgentAddress;
 import ru.agentlab.maia.agent.ResolveException;
-import ru.agentlab.maia.agent.event.ExternalAddedEvent;
 import ru.agentlab.maia.agent.event.RoleAddedEvent;
 import ru.agentlab.maia.agent.event.RoleRemovedEvent;
 import ru.agentlab.maia.agent.event.RoleResolvedEvent;
@@ -82,18 +80,18 @@ public class Agent implements IAgent {
 
 	protected final IContainer agentContainer = new Container();
 
-	protected final Queue<IEvent<?>> externalEventQueue = new ConcurrentLinkedQueue<>();
+	protected Queue<Object> eventQueue = new AgentEventQueue<Object>(this);
 
-	protected final Queue<IEvent<?>> internalEventQueue = new LinkedList<>();
+	// protected final Queue<IEvent<?>> internalEventQueue = new LinkedList<>();
 
-	protected final IPlanBase planBase = new PlanBase(internalEventQueue);
+	protected final IPlanBase planBase = new PlanBase(eventQueue);
 
 	protected final Set<Object> roles = new HashSet<>();
 
 	{
 		agentContainer.put(UUID.class, uuid);
 		agentContainer.put(IAgent.class, this);
-		agentContainer.put(Queue.class, internalEventQueue);
+		agentContainer.put(Queue.class, eventQueue);
 		agentContainer.put(IPlanBase.class, planBase);
 	}
 
@@ -134,17 +132,17 @@ public class Agent implements IAgent {
 		return agentContainer.get(key);
 	}
 
-	public IInjector getInjector() {
+	protected IInjector getInjector() {
 		return agentContainer.getInjector();
 	}
 
 	@Override
-	public void fireExternalEvent(Object event) {
-		externalEventQueue.offer(new ExternalAddedEvent(event));
-		boolean started = state.compareAndSet(AgentState.WAITING, AgentState.ACTIVE);
-		if (started) {
-			executor.submit(new ExecuteAction());
-		}
+	public void notify(IMessage message) {
+		eventQueue.offer(message);
+//		boolean started = state.compareAndSet(AgentState.WAITING, AgentState.ACTIVE);
+//		if (started) {
+//			executor.submit(new ExecuteAction());
+//		}
 	}
 
 	@Override
@@ -269,7 +267,7 @@ public class Agent implements IAgent {
 	protected boolean internalRemoveRole(Object roleObject) {
 		boolean removed = roles.remove(roleObject);
 		if (removed) {
-			internalEventQueue.offer(new RoleRemovedEvent(roleObject));
+			eventQueue.offer(new RoleRemovedEvent(roleObject));
 		}
 		return removed;
 	}
@@ -277,7 +275,7 @@ public class Agent implements IAgent {
 	protected boolean internalRemoveAllRoles() {
 		Stream<RoleRemovedEvent> events = roles.stream().map(role -> new RoleRemovedEvent(role));
 		roles.clear();
-		events.forEach(internalEventQueue::offer);
+		events.forEach(eventQueue::offer);
 		return true;
 	}
 
@@ -303,11 +301,11 @@ public class Agent implements IAgent {
 			// Add role object to the role base and generate event about
 			// successful resolving
 			roles.add(roleObject);
-			internalEventQueue.offer(new RoleAddedEvent(roleObject));
-			internalEventQueue.offer(new RoleResolvedEvent(roleObject));
+			eventQueue.offer(new RoleAddedEvent(roleObject));
+			eventQueue.offer(new RoleResolvedEvent(roleObject));
 			return roleObject;
 		} catch (InjectorException | ConverterException e) {
-			internalEventQueue.offer(new RoleUnresolvedEvent(roleClass));
+			eventQueue.offer(new RoleUnresolvedEvent(roleClass));
 			throw new ResolveException(e);
 		}
 	}
@@ -423,13 +421,13 @@ public class Agent implements IAgent {
 			// System.out.println("-------------------- Execute " +
 			// i.incrementAndGet() + " --------------------");
 			// long begin = System.nanoTime();
-			IEvent<?> event = externalEventQueue.poll();
+			Object event = eventQueue.poll();
 			if (event == null) {
-				event = internalEventQueue.poll();
-				if (event == null) {
-					setState(AgentState.WAITING);
-					return;
-				}
+				// event = internalEventQueue.poll();
+				// if (event == null) {
+				setState(AgentState.WAITING);
+				return;
+				// }
 			}
 
 			// System.out.println("EventQueue: " + eventQueue.toString());

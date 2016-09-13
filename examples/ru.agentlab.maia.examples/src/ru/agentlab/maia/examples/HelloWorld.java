@@ -3,13 +3,13 @@ package ru.agentlab.maia.examples;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import ru.agentlab.maia.agent.IMessage;
 import ru.agentlab.maia.agent.goal.IGoalBase;
 import ru.agentlab.maia.belief.annotation.AxiomType;
 import ru.agentlab.maia.belief.annotation.InitialBelief;
 import ru.agentlab.maia.belief.annotation.OnBeliefAdded;
 import ru.agentlab.maia.goal.annotation.InitialGoal;
 import ru.agentlab.maia.goal.annotation.OnGoalAdded;
-import ru.agentlab.maia.message.IMessage;
 import ru.agentlab.maia.messaging.AclMessage;
 import ru.agentlab.maia.messaging.IMessageDeliveryService;
 

@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
-import ru.agentlab.maia.message.IMessage;
+import ru.agentlab.maia.agent.IMessage;
 import ru.agentlab.maia.message.impl.AclMessage;
 
 public class AclMessageDecoder extends MessageToMessageDecoder<String> {

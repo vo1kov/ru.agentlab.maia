@@ -1,5 +1,7 @@
 package ru.agentlab.maia.message;
 
+import ru.agentlab.maia.agent.IMessage;
+
 public interface IMessageDeliveryService {
 
 	void send(IMessage message);

@@ -17,9 +17,9 @@ import io.netty.handler.codec.MessageToMessageDecoder;
 import ru.agentlab.maia.agent.AgentAddress;
 import ru.agentlab.maia.agent.IAgent;
 import ru.agentlab.maia.agent.IAgentRegistry;
+import ru.agentlab.maia.agent.IMessage;
 import ru.agentlab.maia.agent.LocalAgentAddress;
 import ru.agentlab.maia.agent.RemoteAgentAddress;
-import ru.agentlab.maia.message.IMessage;
 import ru.agentlab.maia.message.IMessageDeliveryService;
 import ru.agentlab.maia.message.INetworkProtocol;
 
@@ -64,7 +64,7 @@ public abstract class MessageDeliveryService implements IMessageDeliveryService 
 	}
 
 	protected void sendInternal(IMessage message, IAgent agent) {
-		agent.fireExternalEvent(message);
+		agent.notify(message);
 	}
 
 	protected void sendExternal(IMessage message, SocketAddress address) {

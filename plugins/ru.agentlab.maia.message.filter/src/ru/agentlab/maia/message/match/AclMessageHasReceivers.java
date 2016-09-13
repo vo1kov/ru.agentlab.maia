@@ -6,7 +6,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-import ru.agentlab.maia.message.IMessage;
+import ru.agentlab.maia.agent.IMessage;
 
 public class AclMessageHasReceivers extends TypeSafeMatcher<IMessage> {
 

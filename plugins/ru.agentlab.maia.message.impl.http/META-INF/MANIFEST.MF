@@ -6,6 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: io.netty,
  com.google.gson,
- ru.agentlab.maia.message,
- ru.agentlab.maia.message.impl
+ ru.agentlab.maia.message;visibility:=reexport,
+ ru.agentlab.maia.message.impl;visibility:=reexport,
+ ru.agentlab.maia.agent;visibility:=reexport
 Export-Package: ru.agentlab.maia.message.impl.http

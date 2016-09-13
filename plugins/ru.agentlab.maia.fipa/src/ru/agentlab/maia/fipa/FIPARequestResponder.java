@@ -14,8 +14,8 @@ import javax.inject.Inject;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
 
+import ru.agentlab.maia.agent.IMessage;
 import ru.agentlab.maia.goal.IGoalBase;
-import ru.agentlab.maia.message.IMessage;
 import ru.agentlab.maia.message.IMessageDeliveryService;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
 

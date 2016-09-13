@@ -6,7 +6,7 @@ import static ru.agentlab.maia.fipa.FIPAProtocolNames.FIPA_SUBSCRIBE;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import ru.agentlab.maia.message.IMessage;
+import ru.agentlab.maia.agent.IMessage;
 import ru.agentlab.maia.message.IMessageDeliveryService;
 import ru.agentlab.maia.message.impl.AclMessage;
 

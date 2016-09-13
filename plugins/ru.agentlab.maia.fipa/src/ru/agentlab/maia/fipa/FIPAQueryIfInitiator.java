@@ -24,8 +24,8 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 
 import de.derivo.sparqldlapi.Query;
 import ru.agentlab.maia.agent.IAgent;
+import ru.agentlab.maia.agent.IMessage;
 import ru.agentlab.maia.belief.IBeliefBase;
-import ru.agentlab.maia.message.IMessage;
 import ru.agentlab.maia.message.IMessageDeliveryService;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
 import ru.agentlab.maia.message.impl.AclMessage;
