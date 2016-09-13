@@ -7,10 +7,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.ANNOTATION_TYPE)
-public @interface PlanEventFilter {
+public @interface PlanEventTypeConverter {
 
-	Class<? extends IPlanEventFilterConverter> converter();
-
-	Class<?> eventType();
+	Class<? extends IPlanEventTypeConverter> value();
 
 }

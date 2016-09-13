@@ -8,12 +8,14 @@ import java.lang.annotation.Target;
 
 import ru.agentlab.maia.agent.annotation.converter.OnRoleXXXConverter;
 import ru.agentlab.maia.agent.event.RoleAddedEvent;
-import ru.agentlab.maia.converter.PlanEventFilter;
+import ru.agentlab.maia.converter.PlanEventFilterConverter;
+import ru.agentlab.maia.converter.PlanEventType;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@PlanEventFilter(converter = OnRoleXXXConverter.class, eventType = RoleAddedEvent.class)
+@PlanEventType(RoleAddedEvent.class)
+@PlanEventFilterConverter(OnRoleXXXConverter.class)
 public @interface OnRoleAdded {
 
 	Class<?> value();

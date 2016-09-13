@@ -6,8 +6,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import ru.agentlab.maia.converter.PlanEventFilter;
-import ru.agentlab.maia.converter.PlanExtra;
+import ru.agentlab.maia.converter.PlanEventFilterConverter;
+import ru.agentlab.maia.converter.PlanEventType;
+import ru.agentlab.maia.converter.PlanExtraConverter;
 import ru.agentlab.maia.time.TimerEvent;
 import ru.agentlab.maia.time.annotation.converter.OnTimerDateTimeExtraPlansConverter;
 import ru.agentlab.maia.time.annotation.converter.OnTimerXXXEventMatcherConverter;
@@ -15,8 +16,9 @@ import ru.agentlab.maia.time.annotation.converter.OnTimerXXXEventMatcherConverte
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@PlanEventFilter(converter = OnTimerXXXEventMatcherConverter.class, eventType = TimerEvent.class)
-@PlanExtra(converter = OnTimerDateTimeExtraPlansConverter.class)
+@PlanEventType(TimerEvent.class)
+@PlanEventFilterConverter(OnTimerXXXEventMatcherConverter.class)
+@PlanExtraConverter(OnTimerDateTimeExtraPlansConverter.class)
 public @interface OnTimerDateTime {
 
 	String value();

@@ -6,9 +6,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import ru.agentlab.maia.agent.event.AgentUndeployedEvent;
+import ru.agentlab.maia.converter.PlanEventType;
+
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
+@PlanEventType(AgentUndeployedEvent.class)
 public @interface OnAgentUndeployed {
 
 }

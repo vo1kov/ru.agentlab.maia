@@ -54,11 +54,14 @@ import ru.agentlab.maia.container.InjectorException;
 import ru.agentlab.maia.container.impl.Container;
 import ru.agentlab.maia.converter.ConverterException;
 import ru.agentlab.maia.converter.IPlanEventFilterConverter;
+import ru.agentlab.maia.converter.IPlanEventTypeConverter;
 import ru.agentlab.maia.converter.IPlanExtraConverter;
 import ru.agentlab.maia.converter.IPlanStateFilterConverter;
-import ru.agentlab.maia.converter.PlanEventFilter;
-import ru.agentlab.maia.converter.PlanExtra;
-import ru.agentlab.maia.converter.PlanStateFilter;
+import ru.agentlab.maia.converter.PlanEventFilterConverter;
+import ru.agentlab.maia.converter.PlanEventType;
+import ru.agentlab.maia.converter.PlanEventTypeConverter;
+import ru.agentlab.maia.converter.PlanExtraConverter;
+import ru.agentlab.maia.converter.PlanStateFilterConverter;
 import ru.agentlab.maia.filter.IPlanEventFilter;
 import ru.agentlab.maia.filter.IPlanStateFilter;
 import ru.agentlab.maia.filter.impl.PlanStateFilters;
@@ -140,9 +143,9 @@ public class Agent implements IAgent {
 	public void notify(IMessage message) {
 		eventQueue.offer(message);
 //		boolean started = state.compareAndSet(AgentState.WAITING, AgentState.ACTIVE);
-//		if (started) {
-//			executor.submit(new ExecuteAction());
-//		}
+		// if (started) {
+		// executor.submit(new ExecuteAction());
+		// }
 	}
 
 	@Override
@@ -329,9 +332,10 @@ public class Agent implements IAgent {
 		Annotation[] annotations = method.getAnnotations();
 		Multimap<Class<?>, IPlan> result = ArrayListMultimap.create();
 		for (Annotation annotation : annotations) {
-			PlanExtra extraPlansAnnotation = annotation.annotationType().getAnnotation(PlanExtra.class);
+			PlanExtraConverter extraPlansAnnotation = annotation.annotationType()
+					.getAnnotation(PlanExtraConverter.class);
 			if (extraPlansAnnotation != null) {
-				Class<? extends IPlanExtraConverter> converterClass = extraPlansAnnotation.converter();
+				Class<? extends IPlanExtraConverter> converterClass = extraPlansAnnotation.value();
 				IPlanExtraConverter converter = injector.make(converterClass);
 				injector.inject(converter);
 				injector.invoke(converter, PostConstruct.class, null, null);
@@ -347,10 +351,11 @@ public class Agent implements IAgent {
 		Annotation[] annotations = method.getAnnotations();
 		List<Registration> result = new LinkedList<>();
 		for (Annotation annotation : annotations) {
-			PlanEventFilter eventMatcher = annotation.annotationType().getAnnotation(PlanEventFilter.class);
+			PlanEventFilterConverter eventMatcher = annotation.annotationType()
+					.getAnnotation(PlanEventFilterConverter.class);
 			if (eventMatcher != null) {
-				Class<? extends IPlanEventFilterConverter> converterClass = eventMatcher.converter();
-				Class<?> eventType = eventMatcher.eventType();
+				Class<? extends IPlanEventFilterConverter> converterClass = eventMatcher.value();
+				Class<?> eventType = getEventType(role, method, annotation, customData);
 				IPlanEventFilterConverter converter = injector.make(converterClass);
 				injector.inject(converter);
 				injector.invoke(converter, PostConstruct.class, null, null);
@@ -360,14 +365,33 @@ public class Agent implements IAgent {
 		return result;
 	}
 
+	private Class<?> getEventType(Object role, Method method, Annotation annotation, Map<String, Object> customData) {
+		IInjector injector = getInjector();
+		PlanEventType eventType = annotation.annotationType().getAnnotation(PlanEventType.class);
+		if (eventType != null) {
+			return eventType.value();
+		}
+		PlanEventTypeConverter eventTypeConverter = annotation.annotationType()
+				.getAnnotation(PlanEventTypeConverter.class);
+		if (eventTypeConverter != null) {
+			Class<? extends IPlanEventTypeConverter> converterClass = eventTypeConverter.value();
+			IPlanEventTypeConverter converter = injector.make(converterClass);
+			injector.inject(converter);
+			injector.invoke(converter, PostConstruct.class, null, null);
+			return converter.getEventType(role, method, annotation, customData);
+		}
+		return null;
+	}
+
 	private IPlanStateFilter getStateMatcher(Object role, Method method, Map<String, Object> customData) {
 		IInjector injector = getInjector();
 		Annotation[] annotations = method.getAnnotations();
 		List<IPlanStateFilter> result = new LinkedList<>();
 		for (Annotation annotation : annotations) {
-			PlanStateFilter stateMatcher = annotation.annotationType().getAnnotation(PlanStateFilter.class);
+			PlanStateFilterConverter stateMatcher = annotation.annotationType()
+					.getAnnotation(PlanStateFilterConverter.class);
 			if (stateMatcher != null) {
-				Class<? extends IPlanStateFilterConverter> converterClass = stateMatcher.converter();
+				Class<? extends IPlanStateFilterConverter> converterClass = stateMatcher.value();
 				IPlanStateFilterConverter converter = injector.make(converterClass);
 				injector.inject(converter);
 				injector.invoke(converter, PostConstruct.class, null, null);

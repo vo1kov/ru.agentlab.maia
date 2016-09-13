@@ -7,12 +7,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import ru.agentlab.maia.belief.annotation.converter.WhenHaveBeliefsConverter;
-import ru.agentlab.maia.converter.PlanStateFilter;
+import ru.agentlab.maia.converter.PlanStateFilterConverter;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@PlanStateFilter(converter=WhenHaveBeliefsConverter.class)
+@PlanStateFilterConverter(WhenHaveBeliefsConverter.class)
 public @interface WhenHaveBeliefs {
 
 	WhenHaveBelief[] value();

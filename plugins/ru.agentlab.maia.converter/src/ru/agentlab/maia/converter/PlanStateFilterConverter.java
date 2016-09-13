@@ -7,8 +7,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.ANNOTATION_TYPE)
-public @interface PlanExtra {
+public @interface PlanStateFilterConverter {
 
-	Class<? extends IPlanExtraConverter> converter();
+	Class<? extends IPlanStateFilterConverter> value();
 
 }

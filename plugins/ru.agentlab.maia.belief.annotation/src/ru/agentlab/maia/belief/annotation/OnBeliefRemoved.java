@@ -8,12 +8,14 @@ import java.lang.annotation.Target;
 
 import ru.agentlab.maia.belief.annotation.converter.OnBeliefXXXConverter;
 import ru.agentlab.maia.belief.event.BeliefRemovedEvent;
-import ru.agentlab.maia.converter.PlanEventFilter;
+import ru.agentlab.maia.converter.PlanEventFilterConverter;
+import ru.agentlab.maia.converter.PlanEventType;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@PlanEventFilter(converter = OnBeliefXXXConverter.class, eventType = BeliefRemovedEvent.class)
+@PlanEventType(BeliefRemovedEvent.class)
+@PlanEventFilterConverter(OnBeliefXXXConverter.class)
 public @interface OnBeliefRemoved {
 
 	AxiomType type();

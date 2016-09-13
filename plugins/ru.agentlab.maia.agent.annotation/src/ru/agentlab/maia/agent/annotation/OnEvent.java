@@ -6,10 +6,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import ru.agentlab.maia.agent.annotation.converter.GenericEventTypeConverter;
+import ru.agentlab.maia.converter.PlanEventTypeConverter;
+
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface AddedExternalEvent {
+@PlanEventTypeConverter(GenericEventTypeConverter.class)
+public @interface OnEvent {
 
 	Class<?> value();
 
