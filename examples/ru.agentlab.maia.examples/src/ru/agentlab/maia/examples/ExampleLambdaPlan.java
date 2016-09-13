@@ -3,10 +3,10 @@ package ru.agentlab.maia.examples;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import ru.agentlab.maia.agent.belief.BeliefAddedEvent;
+import ru.agentlab.maia.agent.IPlan;
+import ru.agentlab.maia.agent.IPlanBase;
 import ru.agentlab.maia.agent.impl.Plan;
-import ru.agentlab.maia.plan.IPlan;
-import ru.agentlab.maia.plan.IPlanBase;
+import ru.agentlab.maia.belief.event.BeliefAddedEvent;
 
 public class ExampleLambdaPlan {
 

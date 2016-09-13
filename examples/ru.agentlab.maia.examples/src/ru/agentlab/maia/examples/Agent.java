@@ -15,18 +15,18 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-import ru.agentlab.maia.agent.belief.IBeliefBase;
-import ru.agentlab.maia.agent.goal.IGoalBase;
+import ru.agentlab.maia.agent.annotation.OnRoleAdded;
+import ru.agentlab.maia.belief.IBeliefBase;
 import ru.agentlab.maia.belief.annotation.AxiomType;
 import ru.agentlab.maia.belief.annotation.InitialBelief;
 import ru.agentlab.maia.belief.annotation.OnBeliefAdded;
 import ru.agentlab.maia.belief.annotation.Prefix;
 import ru.agentlab.maia.belief.annotation.WhenHaveBelief;
 import ru.agentlab.maia.container.IInjector;
+import ru.agentlab.maia.goal.IGoalBase;
 import ru.agentlab.maia.goal.annotation.InitialGoal;
+import ru.agentlab.maia.message.IMessageDeliveryService;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
-import ru.agentlab.maia.messaging.IMessageDeliveryService;
-import ru.agentlab.maia.role.annotation.OnRoleAdded;
 
 @Prefix(name = "rdf", namespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns")
 @InitialBelief(value = { "test", "SDfsdf" }, type = AxiomType.CLASS_ASSERTION)
