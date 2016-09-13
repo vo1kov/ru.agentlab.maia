@@ -10,9 +10,10 @@ package ru.agentlab.maia.container;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
@@ -112,7 +113,7 @@ public interface IInjector {
 	default <T> T deploy(Class<? extends T> serviceClass, Class<T> interf) throws InjectorException {
 		T service = make(serviceClass);
 		inject(service);
-		invoke(service, PostConstruct.class, null, null);
+		invoke(service, PostConstruct.class, null);
 		getContainer().put(interf, service);
 		return service;
 	}
@@ -167,7 +168,9 @@ public interface IInjector {
 		return service;
 	}
 
-	Object invoke(Object object, Method method) throws InjectorException;
+	default Optional<Object> invoke(Object object, Method method) throws InjectorException {
+		return invoke(object, method, Collections.emptyMap());
+	}
 
 	/**
 	 * <p>
@@ -185,83 +188,28 @@ public interface IInjector {
 	 *             when creating or registering falls
 	 */
 
-	Object invoke(Object object, Method method, Object defaultValue) throws InjectorException;
+	Optional<Object> invoke(Object object, Method method, Map<String, Object> additional) throws InjectorException;
 
-	Object invoke(Object object, Method method, Map<String, Object> additional) throws InjectorException;
-
-	Object invoke(Object object, Method method, Object defaultValue, Map<String, Object> additional)
-			throws InjectorException;
-
-	default Object invoke(Object object, String methodName) throws InjectorException {
-		Method method = Arrays.stream(object.getClass().getDeclaredMethods())
-				.filter(m -> m.getName().equals(methodName)).findFirst()
-				.orElseThrow(() -> new InjectorException("Object have no method with name " + methodName));
-		return invoke(object, method);
+	default Optional<Object> invoke(Object object, String methodName) throws InjectorException {
+		return Stream.of(object.getClass().getDeclaredMethods()).filter(method -> method.getName().equals(methodName))
+				.findFirst().map(method -> invoke(object, method));
 	}
 
-	default Object invoke(Object object, String methodName, Object defaultValue) throws InjectorException {
-		Optional<Method> method = Arrays.stream(object.getClass().getMethods())
-				.filter(m -> m.getName().equals(methodName)).findFirst();
-		if (method.isPresent()) {
-			return invoke(object, method.get(), defaultValue);
-		} else {
-			return defaultValue;
-		}
-	}
-
-	default Object invoke(Object object, String methodName, Map<String, Object> additional) throws InjectorException {
-		Method method = Arrays.stream(object.getClass().getDeclaredMethods())
-				.filter(m -> m.getName().equals(methodName)).findFirst()
-				.orElseThrow(() -> new InjectorException("Object have no method with name " + methodName));
-		return invoke(object, method, additional);
-	}
-
-	default Object invoke(Object object, String methodName, Object defaultValue, Map<String, Object> additional)
+	default Optional<Object> invoke(Object object, String methodName, Map<String, Object> additional)
 			throws InjectorException {
-		Optional<Method> method = Arrays.stream(object.getClass().getMethods())
-				.filter(m -> m.getName().equals(methodName)).findFirst();
-		if (method.isPresent()) {
-			return invoke(object, method.get(), defaultValue, additional);
-		} else {
-			return defaultValue;
-		}
+		return Stream.of(object.getClass().getDeclaredMethods()).filter(method -> method.getName().equals(methodName))
+				.findFirst().map(method -> invoke(object, method, additional));
 	}
 
-	default Object invoke(Object object, Class<? extends Annotation> qualifier) throws InjectorException {
-		Method method = Arrays.stream(object.getClass().getDeclaredMethods())
-				.filter(m -> m.isAnnotationPresent(qualifier)).findFirst().orElseThrow(
-						() -> new InjectorException("Object have no method annotated with @" + qualifier.getName()));
-		return invoke(object, method);
+	default Optional<Object> invoke(Object object, Class<? extends Annotation> qualifier) throws InjectorException {
+		return Stream.of(object.getClass().getDeclaredMethods()).filter(method -> method.isAnnotationPresent(qualifier))
+				.findFirst().map(method -> invoke(object, method));
 	}
 
-	default Object invoke(Object object, Class<? extends Annotation> qualifier, Object defaultValue)
-			throws InjectorException {
-		Optional<Method> method = Arrays.stream(object.getClass().getMethods())
-				.filter(m -> m.isAnnotationPresent(qualifier)).findFirst();
-		if (method.isPresent()) {
-			return invoke(object, method.get(), defaultValue);
-		} else {
-			return defaultValue;
-		}
-	}
-
-	default Object invoke(Object object, Class<? extends Annotation> qualifier, Object defaultValue,
+	default Optional<Object> invoke(Object object, Class<? extends Annotation> qualifier,
 			Map<String, Object> additional) throws InjectorException {
-		Optional<Method> method = Arrays.stream(object.getClass().getMethods())
-				.filter(m -> m.isAnnotationPresent(qualifier)).findFirst();
-		if (method.isPresent()) {
-			return invoke(object, method.get(), defaultValue, additional);
-		} else {
-			return defaultValue;
-		}
-	}
-
-	default Object invoke(Object object, Class<? extends Annotation> qualifier, Map<String, Object> additional)
-			throws InjectorException {
-		Method method = Arrays.stream(object.getClass().getDeclaredMethods())
-				.filter(m -> m.isAnnotationPresent(qualifier)).findFirst().orElseThrow(
-						() -> new InjectorException("Object have no method annotated with @" + qualifier.getName()));
-		return invoke(object, method, additional);
+		return Stream.of(object.getClass().getDeclaredMethods()).filter(method -> method.isAnnotationPresent(qualifier))
+				.findFirst().map(method -> invoke(object, method, additional));
 	}
 
 	IContainer getContainer();

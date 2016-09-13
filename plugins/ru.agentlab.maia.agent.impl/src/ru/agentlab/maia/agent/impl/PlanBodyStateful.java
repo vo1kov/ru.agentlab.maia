@@ -26,7 +26,7 @@ public class PlanBodyStateful implements IPlanBody {
 
 	@Override
 	public void execute(IInjector injector, Map<String, Object> variables) throws Exception {
-		injector.invoke(role, method, null, variables);
+		injector.invoke(role, method, variables);
 	}
 
 }

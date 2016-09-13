@@ -17,6 +17,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -74,27 +76,6 @@ public class Injector implements IInjector {
 	}
 
 	@Override
-	public Object invoke(Object object, Method method) throws InjectorException {
-		return invoke(object, method, false, null, null);
-	}
-
-	@Override
-	public Object invoke(Object object, Method method, Object defaultValue) throws InjectorException {
-		return invoke(object, method, true, defaultValue, null);
-	}
-
-	@Override
-	public Object invoke(Object object, Method method, Map<String, Object> additional) throws InjectorException {
-		return invoke(object, method, false, null, additional);
-	}
-
-	@Override
-	public Object invoke(Object object, Method method, Object defaultValue, Map<String, Object> additional)
-			throws InjectorException {
-		return invoke(object, method, true, defaultValue, additional);
-	}
-
-	@Override
 	public void inject(Object object, Map<String, Object> additional) throws InjectorException {
 		if (object == null) {
 			throw new NullPointerException();
@@ -137,25 +118,17 @@ public class Injector implements IInjector {
 		return container;
 	}
 
-	protected Object invoke(Object object, Method method, boolean haveDefault, Object defaultValue,
-			Map<String, Object> additional) throws InjectorException {
-		if (method == null) {
-			if (haveDefault) {
-				return defaultValue;
-			} else {
-				throw new NullPointerException();
-			}
-		}
+	@Override
+	public Optional<Object> invoke(Object object, Method method, Map<String, Object> additional)
+			throws InjectorException {
+		Objects.requireNonNull(object);
+		Objects.requireNonNull(method);
 		Parameter[] parameters = method.getParameters();
 		Object[] values = new Object[parameters.length];
 		for (int i = 0; i < parameters.length; i++) {
 			Object resolved = resolveValue(parameters[i], additional);
 			if (resolved == null) {
-				if (haveDefault) {
-					return defaultValue;
-				} else {
-					throw new InjectorException();
-				}
+				throw new InjectorException();
 			}
 			values[i] = resolved;
 		}
@@ -165,13 +138,9 @@ public class Injector implements IInjector {
 			wasAccessible = false;
 		}
 		try {
-			return method.invoke(object, values);
+			return Optional.ofNullable(method.invoke(object, values));
 		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
-			if (haveDefault) {
-				return defaultValue;
-			} else {
-				throw new InjectorException(e);
-			}
+			throw new InjectorException(e);
 		} finally {
 			if (!wasAccessible) {
 				method.setAccessible(false);
