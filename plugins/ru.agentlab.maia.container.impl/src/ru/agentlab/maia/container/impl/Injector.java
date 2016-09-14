@@ -17,8 +17,10 @@ import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import javax.inject.Inject;
@@ -100,8 +102,10 @@ public class Injector implements IInjector {
 		Preconditions.checkNotNull(service, "Service for injection should be non null");
 		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
 
-		Stream.of(service.getClass().getDeclaredFields())
+		getAllFields(service.getClass())
+			.stream()
 			.filter(field -> field.isAnnotationPresent(Inject.class))
+			.distinct()
 			.forEach(field -> {
 				Object value = resolveValue(field, extra);
 				boolean wasAccessible = setAccessible(field);
@@ -124,9 +128,8 @@ public class Injector implements IInjector {
 		Preconditions.checkNotNull(method, "Method to invoke should be non null");
 		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
 
-		Object[] values = Stream.of(method.getParameters())
-			.map(parameter -> resolveValue(parameter, extra))
-			.toArray(size -> new Object[size]);
+		Object[] values = Stream.of(method.getParameters()).map(parameter -> resolveValue(parameter, extra)).toArray(
+			size -> new Object[size]);
 
 		boolean wasAccessible = setAccessible(method);
 		try {
@@ -136,6 +139,22 @@ public class Injector implements IInjector {
 		} finally {
 			revertAccessible(method, wasAccessible);
 		}
+	}
+
+	/**
+	 * Return the set of fields declared at all level of class hierachy
+	 */
+	public Set<Field> getAllFields(Class<?> clazz) {
+		return getAllFieldsRec(clazz, new HashSet<Field>());
+	}
+
+	private Set<Field> getAllFieldsRec(Class<?> clazz, Set<Field> fields) {
+		Class<?> superClazz = clazz.getSuperclass();
+		if (superClazz != null) {
+			getAllFieldsRec(superClazz, fields);
+		}
+		fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+		return fields;
 	}
 
 	/**
@@ -152,7 +171,8 @@ public class Injector implements IInjector {
 			throw new InjectorException("Constructor with parameters should be annotated with @Inject annotation");
 		}
 
-		Object[] values = Stream.of(constructor.getParameters())
+		Object[] values = Stream
+			.of(constructor.getParameters())
 			.map(parameter -> resolveValue(parameter, extra))
 			.toArray(size -> new Object[size]);
 
