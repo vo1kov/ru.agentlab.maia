@@ -12,6 +12,8 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
 
+import com.google.common.base.Preconditions;
+
 //import ru.agentlab.maia.exception.ServiceNotFound;
 
 /**
@@ -271,10 +273,13 @@ public interface IContainer {
 	 *            type of specified value.
 	 */
 	default <T> Object put(final Class<T> key, final T value) {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null");
-		}
+		Preconditions.checkNotNull(key, "Key must be not null");
+
 		return put(key.getName(), value);
+	}
+
+	default Object put(final Object value) {
+		return put(value.getClass().getName(), value);
 	}
 
 	Collection<Object> values();

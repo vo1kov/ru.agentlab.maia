@@ -17,130 +17,272 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
+import com.google.common.base.Preconditions;
+
 public interface IInjector {
 
-	<T> T make(Class<T> clazz, Map<String, Object> additional) throws InjectorException;
-
 	/**
-	 * <p>
 	 * Obtain an instance of the specified class and inject it with the context.
 	 * Class'es scope dictates if a new instance of the class will be created,
 	 * or existing instance will be reused.
 	 * 
+	 * @param <T>
+	 *            type of creating service
 	 * @param clazz
 	 *            the class to be instantiated
-	 * @param T
-	 *            type of creating service
+	 * @param extra
+	 *            additional values for injection
 	 * @return an instance of the specified class
+	 * @throws NullPointerException
+	 *             if {@code clazz} or {@code extra} argument is {@code null}.
+	 *             If you don't want use any extra values you should use empty
+	 *             map instead of {@code null}
 	 * @throws InjectorException
 	 *             if an exception occurred while performing this operation
 	 */
-	default <T> T make(Class<T> clazz) throws InjectorException {
-		return make(clazz, null);
-	}
-
-	void inject(Object object, Map<String, Object> additional) throws InjectorException;
+	<T> T make(Class<T> clazz, Map<String, Object> extra);
 
 	/**
-	 * <p>
+	 * Obtain an instance of the specified class and inject it with the context.
+	 * Class'es scope dictates if a new instance of the class will be created,
+	 * or existing instance will be reused.
+	 * 
+	 * @param <T>
+	 *            type of creating service
+	 * @param clazz
+	 *            the class to be instantiated
+	 * @return an instance of the specified class
+	 * @throws NullPointerException
+	 *             if {@code clazz} argument is {@code null}
+	 * @throws InjectorException
+	 *             if an exception occurred while performing this operation
+	 */
+	default <T> T make(Class<T> clazz) {
+		Preconditions.checkNotNull(clazz, "Class of creating service should be non null");
+
+		return make(clazz, Collections.emptyMap());
+	}
+
+	/**
+	 * Injects a context into a service with some extra values.
+	 * 
+	 * @param service
+	 *            the object to perform injection on
+	 * @param extra
+	 *            additional values for injection
+	 * @throws NullPointerException
+	 *             if {@code service} or {@code extra} argument is {@code null}.
+	 *             If you don't want use any extra values you should use empty
+	 *             map instead of {@code null}
+	 * @throws InjectorException
+	 *             if an exception occurred while performing this operation
+	 */
+	void inject(Object service, Map<String, Object> extra) throws InjectorException;
+
+	/**
 	 * Injects a context into a domain object.
 	 * 
-	 * @param object
+	 * @param service
 	 *            the object to perform injection on
+	 * @throws NullPointerException
+	 *             if {@code service} argument is {@code null}
 	 * @throws InjectorException
 	 *             if an exception occurred while performing this operation
 	 */
-	default void inject(Object object) throws InjectorException {
-		inject(object, null);
+	default void inject(Object service) {
+		Preconditions.checkNotNull(service, "Object to be injected should be non null");
+
+		inject(service, Collections.emptyMap());
 	}
 
 	/**
-	 * <p>
-	 * Create new service instance and register it to context
+	 * Create new service instance and register it to context.
 	 * 
+	 * @param <T>
+	 *            type of deployed service
 	 * @param clazz
 	 *            type of service to be deployed
+	 * @param extra
+	 *            additional values for injection
 	 * @return deployed service object
-	 * @param T
-	 *            type of deployed service
+	 * @throws NullPointerException
+	 *             if {@code clazz} or {@code extra} argument is {@code null}.
+	 *             If you don't want use any extra values you should use empty
+	 *             map instead of {@code null}
 	 * @throws InjectorException
-	 *             when creating or registering falls
+	 *             if an exception occurred while performing this operation
 	 */
-	default <T> T deploy(Class<T> serviceClass) throws InjectorException {
-		T service = make(serviceClass);
-		inject(service);
-		invoke(service, PostConstruct.class, null);
-		getContainer().put(serviceClass, service);
+	default <T> T deploy(Class<T> clazz, Map<String, Object> extra) {
+		Preconditions.checkNotNull(clazz, "Class of deploying service should be non null");
+		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
+
+		T service = make(clazz, extra);
+		inject(service, extra);
+		invoke(service, PostConstruct.class, extra);
+		getContainer().put(service);
 		return service;
 	}
 
 	/**
-	 * <p>
-	 * Create new service instance and register it to context with specified key
+	 * Create new service instance and register it to context.
 	 * 
+	 * @param <T>
+	 *            type of deployed service
+	 * @param clazz
+	 *            type of service to be deployed
+	 * @return deployed service object
+	 * @throws NullPointerException
+	 *             if {@code clazz} argument is {@code null}
+	 * @throws InjectorException
+	 *             if an exception occurred while performing this operation
+	 */
+	default <T> T deploy(Class<T> clazz) {
+		Preconditions.checkNotNull(clazz, "Class of deploying service should be non null");
+
+		return deploy(clazz, Collections.emptyMap());
+	}
+
+	/**
+	 * Create new service instance and register it to context with specified
+	 * key.
+	 * 
+	 * @param <T>
+	 *            type of deployed service
 	 * @param clazz
 	 *            type of service to be deployed
 	 * @param key
 	 *            key for registration in context
-	 * @param T
-	 *            type of deployed service
 	 * @return deployed service object
+	 * @throws NullPointerException
+	 *             if {@code clazz} or {@code key} argument is {@code null}
+	 * @throws IllegalArgumentException
+	 *             if {@code key} argument is empty string
 	 * @throws InjectorException
-	 *             when creating or registering falls
+	 *             if an exception occurred while performing this operation
 	 */
-	default <T> T deploy(Class<T> serviceClass, String key) throws InjectorException {
-		T service = make(serviceClass);
-		inject(service);
-		invoke(service, PostConstruct.class, null);
+	default <T> T deploy(Class<T> clazz, String key, Map<String, Object> extra) {
+		Preconditions.checkNotNull(clazz, "Class of service for deploying should be non null");
+		Preconditions.checkNotNull(key, "Key for registration should be non null");
+		Preconditions.checkArgument(!key.isEmpty(), "Key for registration should be non empty");
+		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
+
+		T service = make(clazz, extra);
+		inject(service, extra);
+		invoke(service, PostConstruct.class, extra);
 		getContainer().put(key, service);
 		return service;
 	}
 
 	/**
-	 * <p>
-	 * Create new service instance and register it to context with specified key
+	 * Create new service instance and register it to context with specified
+	 * key.
 	 * 
+	 * @param <T>
+	 *            type of deployed service
+	 * @param clazz
+	 *            type of service to be deployed
+	 * @param key
+	 *            key for registration in context
+	 * @return deployed service object
+	 * @throws NullPointerException
+	 *             if clazz or key is {@code null}
+	 * @throws InjectorException
+	 *             if an exception occurred while performing this operation
+	 */
+	default <T> T deploy(Class<T> clazz, String key) {
+		Preconditions.checkNotNull(clazz, "Class of service for deploying should be non null");
+		Preconditions.checkNotNull(key, "Key for registration should be non null");
+		Preconditions.checkArgument(!key.isEmpty(), "Key for registration should be non empty");
+
+		return deploy(clazz, key, Collections.emptyMap());
+	}
+
+	/**
+	 * Create new service instance and register it to context with specified
+	 * key.
+	 * 
+	 * @param <T>
+	 *            type of deployed service
 	 * @param clazz
 	 *            type of service to be deployed
 	 * @param interf
 	 *            interface for registration in context
-	 * @param T
-	 *            type of deployed service
 	 * @return deployed service object
 	 * @throws InjectorException
-	 *             when creating or registering falls
+	 *             if an exception occurred while performing this operation
 	 */
-	default <T> T deploy(Class<? extends T> serviceClass, Class<T> interf) throws InjectorException {
-		T service = make(serviceClass);
-		inject(service);
-		invoke(service, PostConstruct.class, null);
+	default <T> T deploy(Class<? extends T> serviceClass, Class<T> interf, Map<String, Object> extra) {
+		Preconditions.checkNotNull(serviceClass, "Class of service for deploying should be non null");
+		Preconditions.checkNotNull(interf, "Class of service for registration should be non null");
+		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
+
+		T service = make(serviceClass, extra);
+		inject(service, extra);
+		invoke(service, PostConstruct.class, extra);
 		getContainer().put(interf, service);
 		return service;
 	}
 
 	/**
-	 * <p>
+	 * Create new service instance and register it to context with specified
+	 * key.
+	 * 
+	 * @param <T>
+	 *            type of deployed service
+	 * @param clazz
+	 *            type of service to be deployed
+	 * @param interf
+	 *            interface for registration in context
+	 * @return deployed service object
+	 * @throws InjectorException
+	 *             if an exception occurred while performing this operation
+	 */
+	default <T> T deploy(Class<? extends T> serviceClass, Class<T> interf) {
+		Preconditions.checkNotNull(serviceClass, "Class of service for deploying should be non null");
+		Preconditions.checkNotNull(interf, "Class of service for registration should be non null");
+
+		return deploy(serviceClass, interf, Collections.emptyMap());
+	}
+
+	/**
 	 * Inject context to service object and register it to context
 	 * 
 	 * @param service
 	 *            service object to be deployed
-	 * @param T
-	 *            type of deployed service
+	 * @param extra
+	 *            additional values for injection
 	 * @return deployed service object
 	 * @throws InjectorException
-	 *             when injecting falls
+	 *             if an exception occurred while performing this operation
 	 */
-	default Object deploy(Object service) throws InjectorException {
-		inject(service);
-		invoke(service, PostConstruct.class, null);
-		Class<?> _class = service.getClass();
-		String _name = _class.getName();
-		getContainer().put(_name, service);
+	default Object deploy(Object service, Map<String, Object> extra) {
+		Preconditions.checkNotNull(service, "Service for deploying should be non null");
+		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
+
+		inject(service, extra);
+		invoke(service, PostConstruct.class, extra);
+		getContainer().put(service);
 		return service;
 	}
 
 	/**
-	 * <p>
+	 * Inject context to service object and register it to context
+	 * 
+	 * @param service
+	 *            service object to be deployed
+	 * @return deployed service object
+	 * @throws NullPointerException
+	 *             if service parameter is {@code null}
+	 * @throws InjectorException
+	 *             if an exception occurred while performing this operation
+	 */
+	default Object deploy(Object service) {
+		Preconditions.checkNotNull(service, "Service for deploying should be non null");
+
+		return deploy(service, Collections.emptyMap());
+	}
+
+	/**
 	 * Inject context to service object and register it to context with
 	 * specified key
 	 * 
@@ -148,70 +290,154 @@ public interface IInjector {
 	 *            service object to be deployed
 	 * @param key
 	 *            key for registration in context
-	 * @param T
-	 *            type of deployed service
+	 * @param extra
+	 *            additional values for injection
 	 * @return deployed service object
+	 * @throws NullPointerException
+	 *             if service or key or extra parameter is {@code null}, if you
+	 *             don't want use any extra values you should use empty map
+	 *             instead of {@code null}
+	 * @throws IllegalArgumentException
+	 *             if key parameter is empty string
 	 * @throws InjectorException
-	 *             when creating or registering falls
+	 *             if an exception occurred while performing this operation
 	 */
-	default Object deploy(Object service, String key) throws InjectorException {
-		inject(service);
-		invoke(service, PostConstruct.class, null);
+	default Object deploy(Object service, String key, Map<String, Object> extra) {
+		Preconditions.checkNotNull(service, "Service for deploying should be non null");
+		Preconditions.checkNotNull(key, "Key for registration should be non null");
+		Preconditions.checkArgument(!key.isEmpty(), "Key for registration should be non empty");
+		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
+
+		inject(service, extra);
+		invoke(service, PostConstruct.class, extra);
 		getContainer().put(key, service);
 		return service;
 	}
 
-	default <T> T deploy(T service, Class<? super T> interf) throws InjectorException {
-		inject(service);
-		invoke(service, PostConstruct.class, null);
-		getContainer().put(interf, service);
-		return service;
-	}
-
-	default Optional<Object> invoke(Object object, Method method) throws InjectorException {
-		return invoke(object, method, Collections.emptyMap());
-	}
-
 	/**
-	 * <p>
 	 * Inject context to service object and register it to context with
 	 * specified key
 	 * 
 	 * @param service
 	 *            service object to be deployed
+	 * @param key
+	 *            key for registration in context
+	 * @return deployed service object
+	 * @throws NullPointerException
+	 *             if service or key parameter is {@code null}
+	 * @throws IllegalArgumentException
+	 *             if key parameter is empty string
+	 * @throws InjectorException
+	 *             if an exception occurred while performing this operation
+	 */
+	default Object deploy(Object service, String key) {
+		Preconditions.checkNotNull(service, "Service for deploying should be non null");
+		Preconditions.checkNotNull(key, "Key for registration should be non null");
+		Preconditions.checkArgument(!key.isEmpty(), "Key for registration should be non empty");
+
+		return deploy(service, key, Collections.emptyMap());
+	}
+
+	/**
+	 * Inject context to service object and register it to context with
+	 * specified key
+	 * 
+	 * @param <T>
+	 *            type of deployed service
+	 * @param service
+	 *            service object to be deployed
 	 * @param interf
 	 *            interface for registration in context
-	 * @param T
-	 *            type of deployed service
+	 * @param extra
+	 *            additional values for injection
 	 * @return deployed service object
 	 * @throws InjectorException
-	 *             when creating or registering falls
+	 *             if an exception occurred while performing this operation
 	 */
+	default <T> T deploy(T service, Class<? super T> interf, Map<String, Object> extra) {
+		Preconditions.checkNotNull(service, "Service for deploying should be non null");
+		Preconditions.checkNotNull(interf, "Interface class should be non null");
+		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
 
-	Optional<Object> invoke(Object object, Method method, Map<String, Object> additional) throws InjectorException;
-
-	default Optional<Object> invoke(Object object, String methodName) throws InjectorException {
-		return Stream.of(object.getClass().getDeclaredMethods()).filter(method -> method.getName().equals(methodName))
-				.findFirst().map(method -> invoke(object, method));
+		inject(service, extra);
+		invoke(service, PostConstruct.class, extra);
+		getContainer().put(interf, service);
+		return service;
 	}
 
-	default Optional<Object> invoke(Object object, String methodName, Map<String, Object> additional)
+	/**
+	 * Inject context to service object and register it to context with
+	 * specified key
+	 * 
+	 * @param <T>
+	 *            type of deployed service
+	 * @param service
+	 *            service object to be deployed
+	 * @param interf
+	 *            interface for registration in context
+	 * @return deployed service object
+	 * @throws InjectorException
+	 *             if an exception occurred while performing this operation
+	 */
+	default <T> T deploy(T service, Class<? super T> interf) {
+		Preconditions.checkNotNull(service, "Service for deploying should be non null");
+		Preconditions.checkNotNull(interf, "Interface class should be non null");
+
+		return deploy(service, interf, Collections.emptyMap());
+	}
+
+	Optional<Object> invoke(Object service, Method method, Map<String, Object> extra) throws InjectorException;
+
+	default Optional<Object> invoke(Object service, Method method) {
+		Preconditions.checkNotNull(service, "Service for invoking should be non null");
+		Preconditions.checkNotNull(method, "Method should be non null");
+
+		return invoke(service, method, Collections.emptyMap());
+	}
+
+	default Optional<Object> invoke(Object service, String methodName, Map<String, Object> extra)
 			throws InjectorException {
-		return Stream.of(object.getClass().getDeclaredMethods()).filter(method -> method.getName().equals(methodName))
-				.findFirst().map(method -> invoke(object, method, additional));
+		Preconditions.checkNotNull(service, "Service for invoking should be non null");
+		Preconditions.checkNotNull(methodName, "Method name should be non null");
+		Preconditions.checkArgument(!methodName.isEmpty(), "Method name should be non empty");
+		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
+
+		return Stream.of(service.getClass().getDeclaredMethods())
+			.filter(method -> method.getName().equals(methodName))
+			.findFirst()
+			.map(method -> invoke(service, method, extra));
 	}
 
-	default Optional<Object> invoke(Object object, Class<? extends Annotation> qualifier) throws InjectorException {
-		return Stream.of(object.getClass().getDeclaredMethods()).filter(method -> method.isAnnotationPresent(qualifier))
-				.findFirst().map(method -> invoke(object, method));
+	default Optional<Object> invoke(Object service, String methodName) {
+		Preconditions.checkNotNull(service, "Service for invoking should be non null");
+		Preconditions.checkNotNull(methodName, "Method name should be non null");
+		Preconditions.checkArgument(!methodName.isEmpty(), "Method name should be non empty");
+
+		return invoke(service, methodName, Collections.emptyMap());
 	}
 
-	default Optional<Object> invoke(Object object, Class<? extends Annotation> qualifier,
-			Map<String, Object> additional) throws InjectorException {
-		return Stream.of(object.getClass().getDeclaredMethods()).filter(method -> method.isAnnotationPresent(qualifier))
-				.findFirst().map(method -> invoke(object, method, additional));
+	default Optional<Object> invoke(Object service, Class<? extends Annotation> qualifier, Map<String, Object> extra)
+			throws InjectorException {
+		Preconditions.checkNotNull(service, "Service for invoking should be non null");
+		Preconditions.checkNotNull(qualifier, "Qualifier should be non null");
+		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
+
+		return Stream.of(service.getClass().getDeclaredMethods())
+			.filter(method -> method.isAnnotationPresent(qualifier))
+			.findFirst()
+			.map(method -> invoke(service, method, extra));
 	}
 
+	default Optional<Object> invoke(Object service, Class<? extends Annotation> qualifier) {
+		Preconditions.checkNotNull(service, "Service for invoking should be non null");
+		Preconditions.checkNotNull(qualifier, "Qualifier should be non null");
+
+		return invoke(service, qualifier, Collections.emptyMap());
+	}
+
+	/**
+	 * @return container associated with this injector
+	 */
 	IContainer getContainer();
 
 }

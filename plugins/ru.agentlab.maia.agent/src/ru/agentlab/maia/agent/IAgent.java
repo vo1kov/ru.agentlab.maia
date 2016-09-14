@@ -9,6 +9,7 @@
 package ru.agentlab.maia.agent;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Future;
@@ -37,7 +38,7 @@ public interface IAgent {
 	Object addRole(Class<?> roleClass, Map<String, Object> parameters);
 
 	default Object addRole(Class<?> roleClass) {
-		return addRole(roleClass, null);
+		return addRole(roleClass, Collections.emptyMap());
 	}
 
 	boolean removeRole(Object roleObject);
@@ -47,7 +48,7 @@ public interface IAgent {
 	Future<Object> submitAddRole(Class<?> roleClass, Map<String, Object> parameters);
 
 	default Future<Object> submitAddRole(Class<?> roleClass) {
-		return submitAddRole(roleClass, null);
+		return submitAddRole(roleClass, Collections.emptyMap());
 	}
 
 	Future<Boolean> submitRemoveRole(Object roleObject);
