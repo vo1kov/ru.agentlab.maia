@@ -9,12 +9,12 @@ import java.lang.annotation.Target;
 import ru.agentlab.maia.converter.PlanEventFilterConverter;
 import ru.agentlab.maia.converter.PlanEventType;
 import ru.agentlab.maia.message.annotation.converter.OnMessageXXXConverter;
-import ru.agentlab.maia.message.event.MessageAddedEvent;
+import ru.agentlab.maia.message.impl.AclMessage;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@PlanEventType(MessageAddedEvent.class)
+@PlanEventType(AclMessage.class)
 @PlanEventFilterConverter(OnMessageXXXConverter.class)
 public @interface OnMessageReceived {
 

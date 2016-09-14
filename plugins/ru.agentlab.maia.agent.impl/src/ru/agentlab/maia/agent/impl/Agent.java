@@ -142,7 +142,8 @@ public class Agent implements IAgent {
 	@Override
 	public void notify(IMessage message) {
 		eventQueue.offer(message);
-//		boolean started = state.compareAndSet(AgentState.WAITING, AgentState.ACTIVE);
+		// boolean started = state.compareAndSet(AgentState.WAITING,
+		// AgentState.ACTIVE);
 		// if (started) {
 		// executor.submit(new ExecuteAction());
 		// }
@@ -184,10 +185,10 @@ public class Agent implements IAgent {
 		IInjector injector = agentContainer.getInjector();
 		agentContainer.setParent(container);
 		injector.inject(this);
-		injector.invoke(this, PostConstruct.class, null, null);
+		injector.invoke(this, PostConstruct.class);
 		for (Object service : agentContainer.values()) {
 			injector.inject(service);
-			injector.invoke(service, PostConstruct.class, null, null);
+			injector.invoke(service, PostConstruct.class);
 		}
 		container.put(uuid.toString(), this);
 		registry.put(uuid, new LocalAgentAddress(this));
@@ -288,7 +289,7 @@ public class Agent implements IAgent {
 			IInjector injector = getInjector();
 			Object roleObject = injector.make(roleClass, parameters);
 			injector.inject(roleObject, parameters);
-			injector.invoke(roleObject, PostConstruct.class, null, parameters);
+			injector.invoke(roleObject, PostConstruct.class, parameters);
 
 			PrefixManager prefixes = new DefaultPrefixManager();
 			putService(PrefixManager.class, prefixes);
@@ -338,7 +339,7 @@ public class Agent implements IAgent {
 				Class<? extends IPlanExtraConverter> converterClass = extraPlansAnnotation.value();
 				IPlanExtraConverter converter = injector.make(converterClass);
 				injector.inject(converter);
-				injector.invoke(converter, PostConstruct.class, null, null);
+				injector.invoke(converter, PostConstruct.class);
 				Multimap<Class<?>, IPlan> plans = converter.getPlans(role, method, annotation, customData);
 				result.putAll(plans);
 			}
@@ -358,7 +359,7 @@ public class Agent implements IAgent {
 				Class<?> eventType = getEventType(role, method, annotation, customData);
 				IPlanEventFilterConverter converter = injector.make(converterClass);
 				injector.inject(converter);
-				injector.invoke(converter, PostConstruct.class, null, null);
+				injector.invoke(converter, PostConstruct.class);
 				result.add(new Registration(converter.getMatcher(role, method, annotation, customData), eventType));
 			}
 		}
@@ -377,7 +378,7 @@ public class Agent implements IAgent {
 			Class<? extends IPlanEventTypeConverter> converterClass = eventTypeConverter.value();
 			IPlanEventTypeConverter converter = injector.make(converterClass);
 			injector.inject(converter);
-			injector.invoke(converter, PostConstruct.class, null, null);
+			injector.invoke(converter, PostConstruct.class);
 			return converter.getEventType(role, method, annotation, customData);
 		}
 		return null;
@@ -394,7 +395,7 @@ public class Agent implements IAgent {
 				Class<? extends IPlanStateFilterConverter> converterClass = stateMatcher.value();
 				IPlanStateFilterConverter converter = injector.make(converterClass);
 				injector.inject(converter);
-				injector.invoke(converter, PostConstruct.class, null, null);
+				injector.invoke(converter, PostConstruct.class);
 				result.add(converter.getMatcher(role, method, annotation, customData));
 			}
 		}

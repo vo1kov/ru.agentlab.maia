@@ -2,6 +2,7 @@ package ru.agentlab.maia.message.impl;
 
 import java.net.SocketAddress;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -37,23 +38,23 @@ public abstract class MessageDeliveryService implements IMessageDeliveryService 
 			@Named("boss-group") EventLoopGroup bossGroup) {
 		INetworkProtocol networkProtocol = getNetworkProtocol();
 		bootstrap = networkProtocol.getClientBootstrap(workerGroup);
-		serverBootstrap = networkProtocol.getServerBootstrap(workerGroup, bossGroup,
-				new MessageToMessageDecoder<AclMessage>() {
-					@Override
-					protected void decode(ChannelHandlerContext ctx, AclMessage msg, List<Object> arg2)
-							throws Exception {
-						send(msg);
-						ctx.close();
-					}
-				});
+		serverBootstrap = networkProtocol
+			.getServerBootstrap(workerGroup, bossGroup, new MessageToMessageDecoder<AclMessage>() {
+				@Override
+				protected void decode(ChannelHandlerContext ctx, AclMessage msg, List<Object> arg2) throws Exception {
+					send(msg);
+					ctx.close();
+				}
+			});
 		startServer();
 	}
 
 	@Override
 	public void send(IMessage message) {
-		AgentAddress address = registry.get(message.getReceiver());
+		UUID receiver = message.getReceiver();
+		AgentAddress address = registry.get(receiver);
 		if (address == null) {
-			throw new RuntimeException("Agent did not found");
+			throw new RuntimeException("Agent [" + receiver + "] did not found");
 		}
 		if (address instanceof LocalAgentAddress) {
 			IAgent agent = ((LocalAgentAddress) address).getAgent();
