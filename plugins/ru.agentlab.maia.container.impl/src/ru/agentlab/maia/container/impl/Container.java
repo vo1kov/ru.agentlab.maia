@@ -8,6 +8,8 @@
  *******************************************************************************/
 package ru.agentlab.maia.container.impl;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -67,14 +69,14 @@ public class Container implements IContainer {
 
 	@Override
 	public Object getLocal(String key) {
-		check(key);
+		checkNotNull(key);
 		Object result = map.get(key);
 		return result;
 	}
 
 	@Override
 	public Object put(String key, Object value) {
-		check(key);
+		checkNotNull(key);
 		return map.put(key, value);
 	}
 
@@ -127,11 +129,4 @@ public class Container implements IContainer {
 		map.clear();
 		return true;
 	}
-
-	private void check(String key) {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null");
-		}
-	}
-
 }
