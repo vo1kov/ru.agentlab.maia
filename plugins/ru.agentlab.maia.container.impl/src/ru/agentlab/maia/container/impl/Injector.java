@@ -8,6 +8,8 @@
  *******************************************************************************/
 package ru.agentlab.maia.container.impl;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -25,8 +27,6 @@ import java.util.stream.Stream;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import com.google.common.base.Preconditions;
 
 import ru.agentlab.maia.container.IContainer;
 import ru.agentlab.maia.container.IInjector;
@@ -68,8 +68,8 @@ public class Injector implements IInjector {
 	 */
 	@Override
 	public <T> T make(Class<T> clazz, Map<String, Object> extra) {
-		Preconditions.checkNotNull(clazz, "Class of creating service should be non null");
-		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
+		checkNotNull(clazz, "Class of creating service should be non null");
+		checkNotNull(extra, "Extra values should be non null, use empty map instead");
 
 		Constructor<?>[] constructors = clazz.getDeclaredConstructors();
 		Arrays.sort(constructors, comparator);
@@ -99,8 +99,8 @@ public class Injector implements IInjector {
 	 */
 	@Override
 	public void inject(Object service, Map<String, Object> extra) {
-		Preconditions.checkNotNull(service, "Service for injection should be non null");
-		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
+		checkNotNull(service, "Service for injection should be non null");
+		checkNotNull(extra, "Extra values should be non null, use empty map instead");
 
 		getAllFields(service.getClass())
 			.stream()
@@ -124,9 +124,9 @@ public class Injector implements IInjector {
 	 */
 	@Override
 	public Optional<Object> invoke(Object service, Method method, Map<String, Object> extra) {
-		Preconditions.checkNotNull(service, "Service for invoking should be non null");
-		Preconditions.checkNotNull(method, "Method to invoke should be non null");
-		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
+		checkNotNull(service, "Service for invoking should be non null");
+		checkNotNull(method, "Method to invoke should be non null");
+		checkNotNull(extra, "Extra values should be non null, use empty map instead");
 
 		Object[] values = Stream.of(method.getParameters()).map(parameter -> resolveValue(parameter, extra)).toArray(
 			size -> new Object[size]);

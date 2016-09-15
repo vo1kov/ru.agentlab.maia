@@ -90,10 +90,13 @@
 <plugin id="com.google.jsr305.source"/>
 <plugin id="javax.inject" version="1.0.0.v20091030"/>
 <plugin id="javax.inject.source" version="1.0.0.v20091030"/>
+<plugin id="javax.inject.source" version="1.0.0.v20091030"/>
 <plugin id="net.sf.trove4j"/>
 <plugin id="net.sf.trove4j.source"/>
 <plugin id="org.apache.commons.io"/>
 <plugin id="org.apache.commons.io.source"/>
+<plugin id="org.apache.commons.lang"/>
+<plugin id="org.apache.commons.lang.source"/>
 <plugin id="org.apache.felix.gogo.command"/>
 <plugin id="org.apache.felix.gogo.command.source"/>
 <plugin id="org.apache.felix.gogo.runtime"/>
@@ -101,6 +104,7 @@
 <plugin id="org.apache.felix.gogo.shell"/>
 <plugin id="org.apache.felix.gogo.shell.source"/>
 <plugin id="org.apache.log4j" version="1.2.15.v201012070815"/>
+<plugin id="org.apache.log4j.source" version="1.2.15.v201012070815"/>
 <plugin id="org.apache.log4j.source" version="1.2.15.v201012070815"/>
 <plugin id="org.aspectj.runtime"/>
 <plugin id="org.aspectj.runtime.source"/>
@@ -137,6 +141,7 @@
 <plugin id="org.hamcrest.text"/>
 <plugin id="org.hamcrest.text.source"/>
 <plugin id="org.junit" version="4.12.0.v201504281640"/>
+<plugin id="org.junit.source" version="4.12.0.v201504281640"/>
 <plugin id="org.junit.source" version="4.12.0.v201504281640"/>
 <plugin id="org.mockito"/>
 <plugin id="org.mockito.source"/>

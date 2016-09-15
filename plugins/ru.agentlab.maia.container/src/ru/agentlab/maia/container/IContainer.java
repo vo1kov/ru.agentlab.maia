@@ -8,13 +8,11 @@
  *******************************************************************************/
 package ru.agentlab.maia.container;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
-
-import com.google.common.base.Preconditions;
-
-//import ru.agentlab.maia.exception.ServiceNotFound;
 
 /**
  * Container for storing services and agents.
@@ -79,9 +77,7 @@ public interface IContainer {
 	 * @see #getService(Class)
 	 */
 	default Object get(final String key) {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null");
-		}
+		checkNotNull(key, "Key string should be not null");
 		Object result = getLocal(key);
 		if (result != null) {
 			return result;
@@ -115,9 +111,7 @@ public interface IContainer {
 	 * @see #getService(String)
 	 */
 	default <T> T get(Class<T> key) {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null");
-		}
+		checkNotNull(key, "Key class should be not null");
 		Object result = getLocal(key);
 		if (result != null) {
 			return key.cast(result);
@@ -176,9 +170,7 @@ public interface IContainer {
 	 * @see #getServiceLocal(String)
 	 */
 	default <T> T getLocal(Class<T> key) {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null");
-		}
+		checkNotNull(key, "Key class should be not null");
 		if (key == IInjector.class) {
 			return key.cast(getInjector());
 		}
@@ -192,7 +184,7 @@ public interface IContainer {
 	 * 
 	 * @return keys of registered services.
 	 */
-	Set<String> getKeySet();
+	Set<Object> getKeySet();
 
 	/**
 	 * <p>
@@ -233,9 +225,7 @@ public interface IContainer {
 	 * @see #remove(String)
 	 */
 	default Object remove(final Class<?> key) {
-		if (key == null) {
-			throw new IllegalArgumentException("Key must be not null");
-		}
+		checkNotNull(key, "Key class should be not null");
 		return remove(key.getName());
 	}
 
@@ -267,15 +257,14 @@ public interface IContainer {
 	 *            key of registered service as type of the value to return. If
 	 *            <code>null</code> then IllegalArgumentException will be
 	 *            thrown.
-	 * @param value
+	 * @param service
 	 *            the value to be stored
 	 * @param <T>
 	 *            type of specified value.
 	 */
-	default <T> Object put(final Class<T> key, final T value) {
-		Preconditions.checkNotNull(key, "Key must be not null");
-
-		return put(key.getName(), value);
+	default <T> Object put(Class<? super T> key, T service) {
+		checkNotNull(key, "Key should be not null");
+		return put(key.getName(), service);
 	}
 
 	default Object put(final Object value) {
@@ -283,4 +272,6 @@ public interface IContainer {
 	}
 
 	Collection<Object> values();
+
+	Object remove(Object service);
 }

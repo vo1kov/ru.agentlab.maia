@@ -8,6 +8,8 @@
  *******************************************************************************/
 package ru.agentlab.maia.container;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Collections;
@@ -58,7 +60,7 @@ public interface IInjector {
 	 *             if an exception occurred while performing this operation
 	 */
 	default <T> T make(Class<T> clazz) {
-		Preconditions.checkNotNull(clazz, "Class of creating service should be non null");
+		checkNotNull(clazz, "Class of creating service should be non null");
 
 		return make(clazz, Collections.emptyMap());
 	}
@@ -90,7 +92,7 @@ public interface IInjector {
 	 *             if an exception occurred while performing this operation
 	 */
 	default void inject(Object service) {
-		Preconditions.checkNotNull(service, "Object to be injected should be non null");
+		checkNotNull(service, "Object to be injected should be non null");
 
 		inject(service, Collections.emptyMap());
 	}
@@ -113,8 +115,8 @@ public interface IInjector {
 	 *             if an exception occurred while performing this operation
 	 */
 	default <T> T deploy(Class<T> clazz, Map<String, Object> extra) {
-		Preconditions.checkNotNull(clazz, "Class of deploying service should be non null");
-		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
+		checkNotNull(clazz, "Class of deploying service should be non null");
+		checkNotNull(extra, "Extra values should be non null, use empty map instead");
 
 		T service = make(clazz, extra);
 		inject(service, extra);
@@ -137,7 +139,7 @@ public interface IInjector {
 	 *             if an exception occurred while performing this operation
 	 */
 	default <T> T deploy(Class<T> clazz) {
-		Preconditions.checkNotNull(clazz, "Class of deploying service should be non null");
+		checkNotNull(clazz, "Class of deploying service should be non null");
 
 		return deploy(clazz, Collections.emptyMap());
 	}
@@ -161,10 +163,10 @@ public interface IInjector {
 	 *             if an exception occurred while performing this operation
 	 */
 	default <T> T deploy(Class<T> clazz, String key, Map<String, Object> extra) {
-		Preconditions.checkNotNull(clazz, "Class of service for deploying should be non null");
-		Preconditions.checkNotNull(key, "Key for registration should be non null");
+		checkNotNull(clazz, "Class of service for deploying should be non null");
+		checkNotNull(key, "Key for registration should be non null");
 		Preconditions.checkArgument(!key.isEmpty(), "Key for registration should be non empty");
-		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
+		checkNotNull(extra, "Extra values should be non null, use empty map instead");
 
 		T service = make(clazz, extra);
 		inject(service, extra);
@@ -190,8 +192,8 @@ public interface IInjector {
 	 *             if an exception occurred while performing this operation
 	 */
 	default <T> T deploy(Class<T> clazz, String key) {
-		Preconditions.checkNotNull(clazz, "Class of service for deploying should be non null");
-		Preconditions.checkNotNull(key, "Key for registration should be non null");
+		checkNotNull(clazz, "Class of service for deploying should be non null");
+		checkNotNull(key, "Key for registration should be non null");
 		Preconditions.checkArgument(!key.isEmpty(), "Key for registration should be non empty");
 
 		return deploy(clazz, key, Collections.emptyMap());
@@ -212,9 +214,9 @@ public interface IInjector {
 	 *             if an exception occurred while performing this operation
 	 */
 	default <T> T deploy(Class<? extends T> serviceClass, Class<T> interf, Map<String, Object> extra) {
-		Preconditions.checkNotNull(serviceClass, "Class of service for deploying should be non null");
-		Preconditions.checkNotNull(interf, "Class of service for registration should be non null");
-		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
+		checkNotNull(serviceClass, "Class of service for deploying should be non null");
+		checkNotNull(interf, "Class of service for registration should be non null");
+		checkNotNull(extra, "Extra values should be non null, use empty map instead");
 
 		T service = make(serviceClass, extra);
 		inject(service, extra);
@@ -238,8 +240,8 @@ public interface IInjector {
 	 *             if an exception occurred while performing this operation
 	 */
 	default <T> T deploy(Class<? extends T> serviceClass, Class<T> interf) {
-		Preconditions.checkNotNull(serviceClass, "Class of service for deploying should be non null");
-		Preconditions.checkNotNull(interf, "Class of service for registration should be non null");
+		checkNotNull(serviceClass, "Class of service for deploying should be non null");
+		checkNotNull(interf, "Class of service for registration should be non null");
 
 		return deploy(serviceClass, interf, Collections.emptyMap());
 	}
@@ -256,8 +258,8 @@ public interface IInjector {
 	 *             if an exception occurred while performing this operation
 	 */
 	default Object deploy(Object service, Map<String, Object> extra) {
-		Preconditions.checkNotNull(service, "Service for deploying should be non null");
-		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
+		checkNotNull(service, "Service for deploying should be non null");
+		checkNotNull(extra, "Extra values should be non null, use empty map instead");
 
 		inject(service, extra);
 		invoke(service, PostConstruct.class, extra);
@@ -277,7 +279,7 @@ public interface IInjector {
 	 *             if an exception occurred while performing this operation
 	 */
 	default Object deploy(Object service) {
-		Preconditions.checkNotNull(service, "Service for deploying should be non null");
+		checkNotNull(service, "Service for deploying should be non null");
 
 		return deploy(service, Collections.emptyMap());
 	}
@@ -303,10 +305,10 @@ public interface IInjector {
 	 *             if an exception occurred while performing this operation
 	 */
 	default Object deploy(Object service, String key, Map<String, Object> extra) {
-		Preconditions.checkNotNull(service, "Service for deploying should be non null");
-		Preconditions.checkNotNull(key, "Key for registration should be non null");
+		checkNotNull(service, "Service for deploying should be non null");
+		checkNotNull(key, "Key for registration should be non null");
 		Preconditions.checkArgument(!key.isEmpty(), "Key for registration should be non empty");
-		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
+		checkNotNull(extra, "Extra values should be non null, use empty map instead");
 
 		inject(service, extra);
 		invoke(service, PostConstruct.class, extra);
@@ -331,8 +333,8 @@ public interface IInjector {
 	 *             if an exception occurred while performing this operation
 	 */
 	default Object deploy(Object service, String key) {
-		Preconditions.checkNotNull(service, "Service for deploying should be non null");
-		Preconditions.checkNotNull(key, "Key for registration should be non null");
+		checkNotNull(service, "Service for deploying should be non null");
+		checkNotNull(key, "Key for registration should be non null");
 		Preconditions.checkArgument(!key.isEmpty(), "Key for registration should be non empty");
 
 		return deploy(service, key, Collections.emptyMap());
@@ -355,9 +357,9 @@ public interface IInjector {
 	 *             if an exception occurred while performing this operation
 	 */
 	default <T> T deploy(T service, Class<? super T> interf, Map<String, Object> extra) {
-		Preconditions.checkNotNull(service, "Service for deploying should be non null");
-		Preconditions.checkNotNull(interf, "Interface class should be non null");
-		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
+		checkNotNull(service, "Service for deploying should be non null");
+		checkNotNull(interf, "Interface class should be non null");
+		checkNotNull(extra, "Extra values should be non null, use empty map instead");
 
 		inject(service, extra);
 		invoke(service, PostConstruct.class, extra);
@@ -380,8 +382,8 @@ public interface IInjector {
 	 *             if an exception occurred while performing this operation
 	 */
 	default <T> T deploy(T service, Class<? super T> interf) {
-		Preconditions.checkNotNull(service, "Service for deploying should be non null");
-		Preconditions.checkNotNull(interf, "Interface class should be non null");
+		checkNotNull(service, "Service for deploying should be non null");
+		checkNotNull(interf, "Interface class should be non null");
 
 		return deploy(service, interf, Collections.emptyMap());
 	}
@@ -389,28 +391,29 @@ public interface IInjector {
 	Optional<Object> invoke(Object service, Method method, Map<String, Object> extra) throws InjectorException;
 
 	default Optional<Object> invoke(Object service, Method method) {
-		Preconditions.checkNotNull(service, "Service for invoking should be non null");
-		Preconditions.checkNotNull(method, "Method should be non null");
+		checkNotNull(service, "Service for invoking should be non null");
+		checkNotNull(method, "Method should be non null");
 
 		return invoke(service, method, Collections.emptyMap());
 	}
 
 	default Optional<Object> invoke(Object service, String methodName, Map<String, Object> extra)
 			throws InjectorException {
-		Preconditions.checkNotNull(service, "Service for invoking should be non null");
-		Preconditions.checkNotNull(methodName, "Method name should be non null");
+		checkNotNull(service, "Service for invoking should be non null");
+		checkNotNull(methodName, "Method name should be non null");
 		Preconditions.checkArgument(!methodName.isEmpty(), "Method name should be non empty");
-		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
+		checkNotNull(extra, "Extra values should be non null, use empty map instead");
 
-		return Stream.of(service.getClass().getDeclaredMethods())
+		return Stream
+			.of(service.getClass().getDeclaredMethods())
 			.filter(method -> method.getName().equals(methodName))
 			.findFirst()
 			.map(method -> invoke(service, method, extra));
 	}
 
 	default Optional<Object> invoke(Object service, String methodName) {
-		Preconditions.checkNotNull(service, "Service for invoking should be non null");
-		Preconditions.checkNotNull(methodName, "Method name should be non null");
+		checkNotNull(service, "Service for invoking should be non null");
+		checkNotNull(methodName, "Method name should be non null");
 		Preconditions.checkArgument(!methodName.isEmpty(), "Method name should be non empty");
 
 		return invoke(service, methodName, Collections.emptyMap());
@@ -418,19 +421,20 @@ public interface IInjector {
 
 	default Optional<Object> invoke(Object service, Class<? extends Annotation> qualifier, Map<String, Object> extra)
 			throws InjectorException {
-		Preconditions.checkNotNull(service, "Service for invoking should be non null");
-		Preconditions.checkNotNull(qualifier, "Qualifier should be non null");
-		Preconditions.checkNotNull(extra, "Extra values should be non null, use empty map instead");
+		checkNotNull(service, "Service for invoking should be non null");
+		checkNotNull(qualifier, "Qualifier should be non null");
+		checkNotNull(extra, "Extra values should be non null, use empty map instead");
 
-		return Stream.of(service.getClass().getDeclaredMethods())
+		return Stream
+			.of(service.getClass().getDeclaredMethods())
 			.filter(method -> method.isAnnotationPresent(qualifier))
 			.findFirst()
 			.map(method -> invoke(service, method, extra));
 	}
 
 	default Optional<Object> invoke(Object service, Class<? extends Annotation> qualifier) {
-		Preconditions.checkNotNull(service, "Service for invoking should be non null");
-		Preconditions.checkNotNull(qualifier, "Qualifier should be non null");
+		checkNotNull(service, "Service for invoking should be non null");
+		checkNotNull(qualifier, "Qualifier should be non null");
 
 		return invoke(service, qualifier, Collections.emptyMap());
 	}
