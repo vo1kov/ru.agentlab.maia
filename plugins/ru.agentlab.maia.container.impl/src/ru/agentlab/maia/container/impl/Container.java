@@ -11,12 +11,10 @@ package ru.agentlab.maia.container.impl;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.atomic.AtomicReference;
 
 import ru.agentlab.maia.container.IContainer;
 import ru.agentlab.maia.container.IInjector;
@@ -33,15 +31,7 @@ import ru.agentlab.maia.container.IInjector;
  * 
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
  */
-public class Container implements IContainer {
-
-	protected final UUID uuid = UUID.randomUUID();
-
-	protected final IInjector injector = new Injector(this);
-
-	protected final AtomicReference<IContainer> parent = new AtomicReference<IContainer>(null);
-
-	protected final Set<IContainer> childs = new ConcurrentSkipListSet<IContainer>();
+public class Container extends AbstractContainer {
 
 	protected final Map<String, Object> map = new ConcurrentHashMap<String, Object>();
 
@@ -53,18 +43,16 @@ public class Container implements IContainer {
 	}
 
 	@Override
-	public UUID getUuid() {
-		return uuid;
+	public boolean clear() {
+		map.clear();
+		return true;
 	}
 
 	@Override
-	public IContainer getParent() {
-		return parent.get();
-	}
-
-	@Override
-	public IInjector getInjector() {
-		return injector;
+	public Set<Object> getKeySet() {
+		Set<Object> result = new HashSet<>();
+		result.addAll(map.keySet());
+		return result;
 	}
 
 	@Override
@@ -81,42 +69,15 @@ public class Container implements IContainer {
 	}
 
 	@Override
+	public Object remove(Object service) {
+		checkNotNull(service, "Service should be non null");
+		return map.remove(service.getClass());
+	}
+
+	@Override
 	public Object remove(String key) {
-		check(key);
+		checkNotNull(key);
 		return map.remove(key);
-	}
-
-	@Override
-	public IContainer setParent(IContainer container) {
-		return parent.getAndSet(container);
-	}
-
-	@Override
-	public Iterable<IContainer> getChilds() {
-		return childs;
-	}
-
-	@Override
-	public void addChild(IContainer container) {
-		childs.add(container);
-		container.setParent(this);
-	}
-
-	@Override
-	public void removeChild(IContainer container) {
-		childs.remove(container);
-		container.setParent(null);
-	}
-
-	@Override
-	public void clearChilds() {
-		childs.forEach(container -> container.setParent(null));
-		childs.clear();
-	}
-
-	@Override
-	public Set<String> getKeySet() {
-		return map.keySet();
 	}
 
 	@Override
@@ -124,9 +85,4 @@ public class Container implements IContainer {
 		return map.values();
 	}
 
-	@Override
-	public boolean clear() {
-		map.clear();
-		return true;
-	}
 }

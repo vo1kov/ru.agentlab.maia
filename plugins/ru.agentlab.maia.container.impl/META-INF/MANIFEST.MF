@@ -5,5 +5,6 @@ Bundle-SymbolicName: ru.agentlab.maia.container.impl
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: ru.agentlab.maia.container,
- com.google.guava
+ com.google.guava,
+ org.apache.commons.lang;bundle-version="2.6.0"
 Export-Package: ru.agentlab.maia.container.impl

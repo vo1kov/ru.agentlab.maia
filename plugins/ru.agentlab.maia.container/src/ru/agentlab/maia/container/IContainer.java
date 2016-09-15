@@ -192,7 +192,7 @@ public interface IContainer {
 	 * 
 	 * @return keys of registered services.
 	 */
-	Set<String> getKeySet();
+	Set<Object> getKeySet();
 
 	/**
 	 * <p>
@@ -267,15 +267,15 @@ public interface IContainer {
 	 *            key of registered service as type of the value to return. If
 	 *            <code>null</code> then IllegalArgumentException will be
 	 *            thrown.
-	 * @param value
+	 * @param service
 	 *            the value to be stored
 	 * @param <T>
 	 *            type of specified value.
 	 */
-	default <T> Object put(final Class<T> key, final T value) {
+	default <T> Object put(Class<? super T> key, T service) {
 		Preconditions.checkNotNull(key, "Key must be not null");
 
-		return put(key.getName(), value);
+		return put(key.getName(), service);
 	}
 
 	default Object put(final Object value) {
@@ -283,4 +283,6 @@ public interface IContainer {
 	}
 
 	Collection<Object> values();
+
+	Object remove(Object service);
 }
