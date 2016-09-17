@@ -7,63 +7,69 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import ru.agentlab.maia.container.impl.ContainerWithHierarchy;
-import ru.agentlab.maia.container.impl.test.doubles.A;
-import ru.agentlab.maia.container.impl.test.doubles.B;
-import ru.agentlab.maia.container.impl.test.doubles.Int;
 import ru.agentlab.maia.test.util.category.speed.QuickTests;
 import ru.agentlab.maia.test.util.category.type.UnitTests;
 
 @Category({ UnitTests.class, QuickTests.class })
 public class ContainerWithHierarchySmokeTest {
 
+	public class ParentClass implements ParentInterface {
+	}
+
+	public class ChildClass extends ParentClass {
+	}
+
+	public interface ParentInterface {
+	}
+
 	ContainerWithHierarchy container = new ContainerWithHierarchy();
 
 	@Test
 	public void testInheritance() {
 		// Given
-		B b = new B();
+		ChildClass childClass = new ChildClass();
 		// When
-		container.put(b);
+		container.put(childClass);
 		// Then
-		assertThat(container.getLocal(A.class), equalTo(b));
-		assertThat(container.getLocal(Int.class), equalTo(b));
-		assertThat(container.getLocal(B.class), equalTo(b));
+		assertThat(container.getLocal(ParentClass.class), equalTo(childClass));
+		assertThat(container.getLocal(ParentInterface.class), equalTo(childClass));
+		assertThat(container.getLocal(ChildClass.class), equalTo(childClass));
 	}
 
 	@Test
 	public void testInheritance2() {
 		// Given
-		A a = new A();
-		B b = new B();
+		ParentClass parentClass = new ParentClass();
+		ChildClass childClass = new ChildClass();
 		// When
-		container.put(a);
-		container.put(b);
+		container.put(parentClass);
+		container.put(childClass);
 		// Then
-		assertThat(container.getLocal(Int.class), equalTo(a));
+		assertThat(container.getLocal(ParentInterface.class), equalTo(parentClass));
 		// When
-		container.remove(a);
+		container.remove(parentClass);
 		// Then
-		assertThat(container.getLocal(Int.class), equalTo(b));
+		assertThat(container.getLocal(ParentInterface.class), equalTo(childClass));
 	}
 
 	@Test
 	public void testObjectClass() {
 		// Given
-		A a = new A();
-		B b = new B();
+		ParentClass parentClass = new ParentClass();
+		ChildClass childClass = new ChildClass();
 		// When
-		container.put(a);
-		container.put(b);
-		container.put(Object.class, a);
-		container.put(Object.class, b);
+		container.put(parentClass);
+		container.put(childClass);
+		container.put(Object.class, parentClass);
+		container.put(Object.class, childClass);
 		// Then
-		assertThat(container.getLocal(Object.class), equalTo(b));
+		assertThat(container.getLocal(Object.class), equalTo(childClass));
 		// When
-		container.remove(b);
+		container.remove(childClass);
 		// Then
-		assertThat(container.getLocal(Object.class), equalTo(a));
+		assertThat(container.getLocal(Object.class), equalTo(parentClass));
 		// When
-		container.remove(a);
+		container.remove(parentClass);
 		// Then
 		assertThat(container.getLocal(Object.class), equalTo(null));
 
