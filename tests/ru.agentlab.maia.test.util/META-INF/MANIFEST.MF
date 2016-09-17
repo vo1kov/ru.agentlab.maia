@@ -4,4 +4,7 @@ Bundle-Name: Util
 Bundle-SymbolicName: ru.agentlab.maia.test.util
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: ru.agentlab.maia.test.util
+Export-Package: ru.agentlab.maia.test.util,
+ ru.agentlab.maia.test.util.category.speed,
+ ru.agentlab.maia.test.util.category.stability,
+ ru.agentlab.maia.test.util.category.type
