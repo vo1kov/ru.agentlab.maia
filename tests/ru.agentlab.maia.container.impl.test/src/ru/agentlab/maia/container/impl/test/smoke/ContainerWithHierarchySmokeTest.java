@@ -4,12 +4,16 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import ru.agentlab.maia.container.impl.ContainerWithHierarchy;
 import ru.agentlab.maia.container.impl.test.doubles.A;
 import ru.agentlab.maia.container.impl.test.doubles.B;
 import ru.agentlab.maia.container.impl.test.doubles.Int;
+import ru.agentlab.maia.test.util.category.speed.QuickTests;
+import ru.agentlab.maia.test.util.category.type.UnitTests;
 
+@Category({ UnitTests.class, QuickTests.class })
 public class ContainerWithHierarchySmokeTest {
 
 	ContainerWithHierarchy container = new ContainerWithHierarchy();
