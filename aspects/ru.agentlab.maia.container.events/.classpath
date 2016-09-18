@@ -6,7 +6,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="src" path="xtend-gen"/>
 	<classpathentry including="**/*.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="aj-src"/>
 	<classpathentry kind="src" path="/ru.agentlab.maia.container.aspect">
