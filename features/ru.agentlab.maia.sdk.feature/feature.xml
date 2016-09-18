@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="ru.agentlab.maia.sdk.feature"
-      label="MAIA SDK Feature"
+      label="MAIA SDK Feature (All in One)"
       version="1.0.0.qualifier"
       provider-name="http://www.agentlab.ru/">
 
@@ -18,49 +18,28 @@ SDK contains only interfaces and some abstract implementations and have no any c
       [Enter License Description here.]
    </license>
 
-   <requires>
-      <import plugin="com.google.guava"/>
-      <import plugin="org.eclipse.xtext.xbase.lib"/>
-      <import plugin="org.eclipse.xtend.lib"/>
-      <import plugin="org.eclipse.xtend.lib.macro"/>
-      <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="ru.agentlab.maia" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="ru.agentlab.maia.annotation" version="1.0.0" match="greaterOrEqual"/>
-   </requires>
+   <includes
+         id="ru.agentlab.maia.agent.feature"
+         version="0.0.0"/>
 
-   <plugin
-         id="ru.agentlab.maia.event"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <includes
+         id="ru.agentlab.maia.belief.feature"
+         version="0.0.0"/>
 
-   <plugin
-         id="ru.agentlab.maia"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <includes
+         id="ru.agentlab.maia.container.feature"
+         version="0.0.0"/>
 
-   <plugin
-         id="ru.agentlab.maia.agent"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <includes
+         id="ru.agentlab.maia.goal.feature"
+         version="0.0.0"/>
 
-   <plugin
-         id="ru.agentlab.maia.annotation"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <includes
+         id="ru.agentlab.maia.message.feature"
+         version="0.0.0"/>
 
-   <plugin
-         id="ru.agentlab.maia.container"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <includes
+         id="ru.agentlab.maia.time.feature"
+         version="0.0.0"/>
 
 </feature>

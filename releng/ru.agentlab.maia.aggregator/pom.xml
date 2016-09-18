@@ -15,21 +15,42 @@
 	<modules>
 		<module>../../plugins/de.derivo.sparqldlapi</module>
 		<module>../../plugins/io.netty</module>
+		
 		<module>../../plugins/ru.agentlab.maia.agent</module>
 		<module>../../plugins/ru.agentlab.maia.agent.annotation</module>
-		<!-- <module>../../plugins/ru.agentlab.maia.agent.factory</module> -->
+		<module>../../plugins/ru.agentlab.maia.agent.factory</module>
 		<module>../../plugins/ru.agentlab.maia.agent.impl</module>
+		
+		<module>../../plugins/ru.agentlab.maia.belief</module>
+		<module>../../plugins/ru.agentlab.maia.belief.annotation</module>
+		<module>../../plugins/ru.agentlab.maia.belief.filter</module>
+		<module>../../plugins/ru.agentlab.maia.belief.impl</module>
 
 		<module>../../plugins/ru.agentlab.maia.container</module>
-		<!-- <module>../../plugins/ru.agentlab.maia.container.factory</module> -->
+		<module>../../plugins/ru.agentlab.maia.container.factory</module>
 		<module>../../plugins/ru.agentlab.maia.container.impl</module>
+		
 		<module>../../plugins/ru.agentlab.maia.converter</module>
-
-		<!-- <module>../../plugins/ru.agentlab.maia.container</module> -->
-		<!-- <module>../../plugins/ru.agentlab.maia.event</module> -->
-		<!-- <module>../../plugins/ru.agentlab.maia.event.osgi</module> -->
-		<!-- <module>../../plugins/ru.agentlab.maia.hamcrest.message</module> -->
-		<!-- <module>../../plugins/ru.agentlab.maia.hamcrest.owlapi</module> -->
+		
+		<module>../../plugins/ru.agentlab.maia.event</module>
+		<module>../../plugins/ru.agentlab.maia.event.osgi</module>
+		
+		<module>../../plugins/ru.agentlab.maia.fipa</module>
+		
+		<module>../../plugins/ru.agentlab.maia.goal</module>
+		<module>../../plugins/ru.agentlab.maia.goal.annotation</module>
+		<module>../../plugins/ru.agentlab.maia.goal.filter</module>
+		<module>../../plugins/ru.agentlab.maia.goal.impl</module>
+		
+		<module>../../plugins/ru.agentlab.maia.message</module>
+		<module>../../plugins/ru.agentlab.maia.message.annotation</module>
+		<module>../../plugins/ru.agentlab.maia.message.filter</module>
+		<module>../../plugins/ru.agentlab.maia.message.impl</module>
+		<module>../../plugins/ru.agentlab.maia.message.impl.http</module>
+		
+		<module>../../plugins/ru.agentlab.maia.organization</module>
+		<module>../../plugins/ru.agentlab.maia.time</module>
+		<module>../../plugins/ru.agentlab.maia.time.annotation</module>
 
 		<module>../../tests/ru.agentlab.maia.tests.util</module>
 		<!-- <module>../../tests/ru.agentlab.maia.agent.tests</module> -->
@@ -39,9 +60,16 @@
 		<!-- <module>../../aspects/ru.agentlab.maia.container.events</module> -->
 		<!-- <module>../../aspects/ru.agentlab.maia.container.logs</module> -->
 
-		<!-- <module>../../features/ru.agentlab.maia.sdk.feature</module> -->
+		<module>../../features/ru.agentlab.maia.agent.feature</module>
+		<module>../../features/ru.agentlab.maia.belief.feature</module>
+		<module>../../features/ru.agentlab.maia.goal.feature</module>
+		<module>../../features/ru.agentlab.maia.container.feature</module>
+		<module>../../features/ru.agentlab.maia.message.feature</module>
+		<module>../../features/ru.agentlab.maia.time.feature</module>
+		
+		<module>../../features/ru.agentlab.maia.sdk.feature</module>
 
-		<!-- <module>../../releng/ru.agentlab.maia.repository</module> -->
+		<module>../../releng/ru.agentlab.maia.repository</module>
 		<module>../../releng/ru.agentlab.maia.target</module>
 	</modules>
 
