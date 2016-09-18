@@ -2,7 +2,7 @@ package ru.agentlab.maia.container.events
 
 import java.util.HashMap
 import org.eclipse.xtend.lib.annotations.Accessors
-import ru.agentlab.maia.IContainer
+import ru.agentlab.maia.container.IContainer
 import ru.agentlab.maia.event.IMaiaEvent
 
 class MaiaContextFactoryCreateChildEvent implements IMaiaEvent {
