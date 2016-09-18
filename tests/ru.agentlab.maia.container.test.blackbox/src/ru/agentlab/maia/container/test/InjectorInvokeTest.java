@@ -33,7 +33,7 @@ import ru.agentlab.maia.container.IContainer;
 import ru.agentlab.maia.container.IInjector;
 import ru.agentlab.maia.container.InjectorException;
 import ru.agentlab.maia.container.impl.Injector;
-import ru.agentlab.maia.test.util.LoggerRule;
+import ru.agentlab.maia.tests.util.LoggerRule;
 
 /**
  * 

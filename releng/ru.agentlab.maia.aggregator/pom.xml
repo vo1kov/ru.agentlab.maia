@@ -23,16 +23,17 @@
 		<module>../../plugins/ru.agentlab.maia.container</module>
 		<!-- <module>../../plugins/ru.agentlab.maia.container.factory</module> -->
 		<module>../../plugins/ru.agentlab.maia.container.impl</module>
-
 		<module>../../plugins/ru.agentlab.maia.converter</module>
+
 		<!-- <module>../../plugins/ru.agentlab.maia.container</module> -->
 		<!-- <module>../../plugins/ru.agentlab.maia.event</module> -->
 		<!-- <module>../../plugins/ru.agentlab.maia.event.osgi</module> -->
 		<!-- <module>../../plugins/ru.agentlab.maia.hamcrest.message</module> -->
 		<!-- <module>../../plugins/ru.agentlab.maia.hamcrest.owlapi</module> -->
 
-		<!-- <module>../../tests/ru.agentlab.maia.test.util</module> -->
-		<!-- <module>../../tests/ru.agentlab.maia.agent.test</module> -->
+		<module>../../tests/ru.agentlab.maia.tests.util</module>
+		<!-- <module>../../tests/ru.agentlab.maia.agent.tests</module> -->
+		<module>../../tests/ru.agentlab.maia.container.impl.tests</module>
 
 		<!-- <module>../../aspects/ru.agentlab.maia.container.aspect</module> -->
 		<!-- <module>../../aspects/ru.agentlab.maia.container.events</module> -->
