@@ -8,3 +8,4 @@ Export-Package: ru.agentlab.maia.test.util,
  ru.agentlab.maia.test.util.category.speed,
  ru.agentlab.maia.test.util.category.stability,
  ru.agentlab.maia.test.util.category.type
+Require-Bundle: org.junit
