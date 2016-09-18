@@ -71,3 +71,6 @@ Thumbs.db
 # Agent Platform #
 APDescription.txt
 MTPs-Main-Container.txt
+
+# Maven pomless build generated files
+.polyglot.build.properties

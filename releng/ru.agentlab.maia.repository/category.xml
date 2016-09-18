@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
+   <feature url="features/ru.agentlab.maia.agent.feature_1.0.0.qualifier.jar" id="ru.agentlab.maia.agent.feature" version="1.0.0.qualifier">
+      <category name="ru.agentlab.maia"/>
+   </feature>
+   <feature url="features/ru.agentlab.maia.belief.feature_1.0.0.qualifier.jar" id="ru.agentlab.maia.belief.feature" version="1.0.0.qualifier">
+      <category name="ru.agentlab.maia"/>
+   </feature>
+   <feature url="features/ru.agentlab.maia.container.feature_1.0.0.qualifier.jar" id="ru.agentlab.maia.container.feature" version="1.0.0.qualifier">
+      <category name="ru.agentlab.maia"/>
+   </feature>
+   <feature url="features/ru.agentlab.maia.goal.feature_1.0.0.qualifier.jar" id="ru.agentlab.maia.goal.feature" version="1.0.0.qualifier">
+      <category name="ru.agentlab.maia"/>
+   </feature>
+   <feature url="features/ru.agentlab.maia.message.feature_1.0.0.qualifier.jar" id="ru.agentlab.maia.message.feature" version="1.0.0.qualifier">
+      <category name="ru.agentlab.maia"/>
+   </feature>
+   <feature url="features/ru.agentlab.maia.time.feature_1.0.0.qualifier.jar" id="ru.agentlab.maia.time.feature" version="1.0.0.qualifier">
+      <category name="ru.agentlab.maia"/>
+   </feature>
    <feature url="features/ru.agentlab.maia.sdk.feature_1.0.0.qualifier.jar" id="ru.agentlab.maia.sdk.feature" version="1.0.0.qualifier">
       <category name="ru.agentlab.maia"/>
    </feature>
