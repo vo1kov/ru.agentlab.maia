@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import org.semanticweb.owlapi.model.OWLAxiom;
 
 import ru.agentlab.maia.agent.IMessage;
+import ru.agentlab.maia.agent.annotation.FinalPlan;
 import ru.agentlab.maia.goal.IGoalBase;
 import ru.agentlab.maia.message.IMessageDeliveryService;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
@@ -26,13 +27,15 @@ public class FIPARequestResponder {
 
 	@Inject
 	private IGoalBase goalBase;
+	
+	IGoalParser parser;
 
 	private final Map<String, OWLAxiom> addedGoals = new HashMap<>();
 
 	@OnMessageReceived(performative = REQUEST, protocol = FIPA_REQUEST)
 	public void onRequest(IMessage message) {
 		try {
-			OWLAxiom goal = getGoal(message);
+			OWLAxiom goal = parser.parse(message.getContent());
 			goalBase.addGoal(goal);
 			addedGoals.put(message.getConversationId(), goal);
 
@@ -41,7 +44,8 @@ public class FIPARequestResponder {
 			messaging.reply(message, REFUSE);
 		}
 	}
-
+	
+	@FinalPlan
 	@OnMessageReceived(performative = CANCEL, protocol = FIPA_REQUEST)
 	public void onCancel(IMessage message) {
 		OWLAxiom goal = addedGoals.get(message.getConversationId());
@@ -49,11 +53,6 @@ public class FIPARequestResponder {
 			goalBase.removeGoal(goal);
 			messaging.reply(message, INFORM);
 		}
-	}
-
-	private OWLAxiom getGoal(IMessage message) {
-		message.getContent();
-		return null;
 	}
 
 }
