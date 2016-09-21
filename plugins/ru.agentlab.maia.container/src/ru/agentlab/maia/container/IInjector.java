@@ -97,6 +97,8 @@ public interface IInjector {
 		inject(service, Collections.emptyMap());
 	}
 
+	void uninject(Object service);
+
 	/**
 	 * Create new service instance and register it to context.
 	 * 

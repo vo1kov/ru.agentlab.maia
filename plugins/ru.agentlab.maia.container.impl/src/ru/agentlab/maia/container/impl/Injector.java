@@ -10,7 +10,6 @@ package ru.agentlab.maia.container.impl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -28,6 +27,9 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.lang.ClassUtils;
+import org.apache.commons.lang.reflect.FieldUtils;
+
 import ru.agentlab.maia.container.IContainer;
 import ru.agentlab.maia.container.IInjector;
 import ru.agentlab.maia.container.InjectorException;
@@ -39,25 +41,26 @@ import ru.agentlab.maia.container.InjectorException;
  */
 public class Injector implements IInjector {
 
-	private static final Map<Class<?>, Class<?>> PRIMITIVES_TO_WRAPPERS = new HashMap<Class<?>, Class<?>>();
+	private static final Map<Class<?>, Object> DEFAULT_VALUES = new HashMap<>();
 
-	static {
-		PRIMITIVES_TO_WRAPPERS.put(boolean.class, Boolean.class);
-		PRIMITIVES_TO_WRAPPERS.put(byte.class, Byte.class);
-		PRIMITIVES_TO_WRAPPERS.put(char.class, Character.class);
-		PRIMITIVES_TO_WRAPPERS.put(double.class, Double.class);
-		PRIMITIVES_TO_WRAPPERS.put(float.class, Float.class);
-		PRIMITIVES_TO_WRAPPERS.put(int.class, Integer.class);
-		PRIMITIVES_TO_WRAPPERS.put(long.class, Long.class);
-		PRIMITIVES_TO_WRAPPERS.put(short.class, Short.class);
-		PRIMITIVES_TO_WRAPPERS.put(void.class, Void.class);
-	}
-
-	private final static Comparator<Constructor<?>> comparator = (c1, c2) -> {
+	protected final static Comparator<Constructor<?>> comparator = (c1, c2) -> {
 		return Integer.compare(c1.getParameterTypes().length, c2.getParameterTypes().length);
 	};
 
-	private final IContainer container;
+	static {
+		// @formatter:off
+		DEFAULT_VALUES.put(byte.class,    (byte)    0);
+		DEFAULT_VALUES.put(short.class,   (short)   0);
+		DEFAULT_VALUES.put(int.class,     (int)     0);
+		DEFAULT_VALUES.put(long.class,    (long)    0L);
+		DEFAULT_VALUES.put(float.class,   (float)   0.0F);
+		DEFAULT_VALUES.put(double.class,  (double)  0.0D);
+		DEFAULT_VALUES.put(boolean.class, (boolean) false);
+		DEFAULT_VALUES.put(char.class,    (char)    '\u0000');
+		// @formatter:on
+	}
+
+	protected final IContainer container;
 
 	public Injector(IContainer container) {
 		this.container = container;
@@ -67,31 +70,8 @@ public class Injector implements IInjector {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public <T> T make(Class<T> clazz, Map<String, Object> extra) {
-		checkNotNull(clazz, "Class of creating service should be non null");
-		checkNotNull(extra, "Extra values should be non null, use empty map instead");
-
-		Constructor<?>[] constructors = clazz.getDeclaredConstructors();
-		Arrays.sort(constructors, comparator);
-
-		Throwable lastException = null;
-		for (Constructor<?> constructor : constructors) {
-			boolean wasAccessible = setAccessible(constructor);
-			try {
-				Object instance = tryConstruct(constructor, extra);
-				return clazz.cast(instance);
-			} catch (NoClassDefFoundError | NoSuchMethodError | InstantiationException | IllegalAccessException
-					| IllegalArgumentException | InvocationTargetException e) {
-				lastException = e;
-			} finally {
-				revertAccessible(constructor, wasAccessible);
-			}
-		}
-		if (lastException != null) {
-			throw new InjectorException(lastException);
-		} else {
-			throw new InjectorException("Could not find satisfiable constructor in " + clazz.getName());
-		}
+	public IContainer getContainer() {
+		return container;
 	}
 
 	/**
@@ -101,20 +81,16 @@ public class Injector implements IInjector {
 	public void inject(Object service, Map<String, Object> extra) {
 		checkNotNull(service, "Service for injection should be non null");
 		checkNotNull(extra, "Extra values should be non null, use empty map instead");
-
 		getAllFields(service.getClass())
 			.stream()
 			.filter(field -> field.isAnnotationPresent(Inject.class))
 			.distinct()
 			.forEach(field -> {
 				Object value = resolveValue(field, extra);
-				boolean wasAccessible = setAccessible(field);
 				try {
-					field.set(service, value);
-				} catch (IllegalArgumentException | IllegalAccessException e) {
-					throw new InjectorException();
-				} finally {
-					revertAccessible(field, wasAccessible);
+					FieldUtils.writeField(field, service, value, true);
+				} catch (IllegalAccessException e1) {
+					e1.printStackTrace();
 				}
 			});
 	}
@@ -127,28 +103,72 @@ public class Injector implements IInjector {
 		checkNotNull(service, "Service for invoking should be non null");
 		checkNotNull(method, "Method to invoke should be non null");
 		checkNotNull(extra, "Extra values should be non null, use empty map instead");
-
 		Object[] values = Stream.of(method.getParameters()).map(parameter -> resolveValue(parameter, extra)).toArray(
 			size -> new Object[size]);
-
-		boolean wasAccessible = setAccessible(method);
 		try {
-			return Optional.ofNullable(method.invoke(service, values));
+			method.setAccessible(true);
+			Object result = method.invoke(service, values);
+			return Optional.ofNullable(result);
 		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
 			throw new InjectorException(e);
-		} finally {
-			revertAccessible(method, wasAccessible);
 		}
 	}
 
 	/**
-	 * Return the set of fields declared at all level of class hierachy
+	 * {@inheritDoc}
 	 */
-	public Set<Field> getAllFields(Class<?> clazz) {
+	@Override
+	public <T> T make(Class<T> clazz, Map<String, Object> extra) {
+		checkNotNull(clazz, "Class of creating service should be non null");
+		checkNotNull(extra, "Extra values should be non null, use empty map instead");
+		Constructor<?>[] constructors = clazz.getDeclaredConstructors();
+		Arrays.sort(constructors, comparator);
+		Throwable lastException = null;
+		for (Constructor<?> constructor : constructors) {
+			constructor.setAccessible(true);
+			try {
+				Object instance = tryConstruct(constructor, extra);
+				return clazz.cast(instance);
+			} catch (NoClassDefFoundError | NoSuchMethodError | InstantiationException | IllegalAccessException
+					| IllegalArgumentException | InvocationTargetException e) {
+				lastException = e;
+			}
+		}
+		if (lastException != null) {
+			throw new InjectorException(lastException);
+		} else {
+			throw new InjectorException("Could not find satisfiable constructor in " + clazz.getName());
+		}
+	}
+
+	@Override
+	public void uninject(Object service) {
+		checkNotNull(service, "Service for injection should be non null");
+		getAllFields(service.getClass())
+			.stream()
+			.filter(field -> field.isAnnotationPresent(Inject.class))
+			.distinct()
+			.forEach(field -> {
+				Object value = DEFAULT_VALUES.get(field.getType());
+				try {
+					FieldUtils.writeField(field, service, value, true);
+				} catch (IllegalAccessException e1) {
+					e1.printStackTrace();
+				}
+			});
+	}
+
+	/**
+	 * Return the set of fields declared at all level of class hierarchy
+	 * <p>
+	 * TODO: Apache Commons 3.2+ have the same functionality.
+	 * FieldUtils::getAllFieldsList.
+	 */
+	protected Set<Field> getAllFields(Class<?> clazz) {
 		return getAllFieldsRec(clazz, new HashSet<Field>());
 	}
 
-	private Set<Field> getAllFieldsRec(Class<?> clazz, Set<Field> fields) {
+	protected Set<Field> getAllFieldsRec(Class<?> clazz, Set<Field> fields) {
 		Class<?> superClazz = clazz.getSuperclass();
 		if (superClazz != null) {
 			getAllFieldsRec(superClazz, fields);
@@ -157,70 +177,7 @@ public class Injector implements IInjector {
 		return fields;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public IContainer getContainer() {
-		return container;
-	}
-
-	protected <T> T tryConstruct(Constructor<T> constructor, Map<String, Object> extra)
-			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		if (constructor.getParameterCount() > 0 && !constructor.isAnnotationPresent(Inject.class)) {
-			throw new InjectorException("Constructor with parameters should be annotated with @Inject annotation");
-		}
-
-		Object[] values = Stream
-			.of(constructor.getParameters())
-			.map(parameter -> resolveValue(parameter, extra))
-			.toArray(size -> new Object[size]);
-
-		return constructor.newInstance(values);
-	}
-
-	private boolean setAccessible(AccessibleObject object) {
-		if (!object.isAccessible()) {
-			object.setAccessible(true);
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	private void revertAccessible(AccessibleObject object, boolean wasAccessible) {
-		if (!wasAccessible) {
-			object.setAccessible(false);
-		}
-	}
-
-	private Object resolveValue(Parameter parameter, Map<String, Object> extra) {
-		if (parameter.isAnnotationPresent(Named.class)) {
-			String key = parameter.getAnnotation(Named.class).value();
-			return resolveValue(key, extra);
-		} else {
-			Class<?> key = parameter.getType();
-			if (key.isPrimitive()) {
-				key = (Class<?>) PRIMITIVES_TO_WRAPPERS.get(key);
-			}
-			return resolveValue(key, extra);
-		}
-	}
-
-	private Object resolveValue(Field field, Map<String, Object> extra) {
-		if (field.isAnnotationPresent(Named.class)) {
-			String key = field.getAnnotation(Named.class).value();
-			return resolveValue(key, extra);
-		} else {
-			Class<?> key = field.getType();
-			if (key.isPrimitive()) {
-				key = (Class<?>) PRIMITIVES_TO_WRAPPERS.get(key);
-			}
-			return resolveValue(key, extra);
-		}
-	}
-
-	private Object resolveValue(Class<?> key, Map<String, Object> extra) {
+	protected Object resolveValue(Class<?> key, Map<String, Object> extra) {
 		Object extraValue = extra.get(key.getName());
 		if (extraValue != null) {
 			return extraValue;
@@ -233,7 +190,27 @@ public class Injector implements IInjector {
 		}
 	}
 
-	private Object resolveValue(String key, Map<String, Object> extra) {
+	protected Object resolveValue(Field field, Map<String, Object> extra) {
+		if (field.isAnnotationPresent(Named.class)) {
+			String key = field.getAnnotation(Named.class).value();
+			return resolveValue(key, extra);
+		} else {
+			Class<?> key = ClassUtils.primitiveToWrapper(field.getType());
+			return resolveValue(key, extra);
+		}
+	}
+
+	protected Object resolveValue(Parameter parameter, Map<String, Object> extra) {
+		if (parameter.isAnnotationPresent(Named.class)) {
+			String key = parameter.getAnnotation(Named.class).value();
+			return resolveValue(key, extra);
+		} else {
+			Class<?> key = ClassUtils.primitiveToWrapper(parameter.getType());
+			return resolveValue(key, extra);
+		}
+	}
+
+	protected Object resolveValue(String key, Map<String, Object> extra) {
 		Object extraValue = extra.get(key);
 		if (extraValue != null) {
 			return extraValue;
@@ -244,5 +221,18 @@ public class Injector implements IInjector {
 			}
 			return value;
 		}
+	}
+
+	protected <T> T tryConstruct(Constructor<T> constructor, Map<String, Object> extra)
+			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		if (constructor.getParameterCount() > 0 && !constructor.isAnnotationPresent(Inject.class)) {
+			throw new InjectorException("Constructor with parameters should be annotated with @Inject annotation");
+		}
+		Object[] values = Stream
+			.of(constructor.getParameters())
+			.map(parameter -> resolveValue(parameter, extra))
+			.toArray(size -> new Object[size]);
+
+		return constructor.newInstance(values);
 	}
 }
