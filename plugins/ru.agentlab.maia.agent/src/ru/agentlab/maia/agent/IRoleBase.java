@@ -18,6 +18,11 @@ public interface IRoleBase {
 
 	IRole create(Object role, Map<String, Object> parameters);
 
+	default IRole create(Object role) {
+		checkNotNull(role, "Role to create should be non null");
+		return create(role, Collections.emptyMap());
+	}
+
 	void add(IRole role);
 
 	default void addAll(IRole[] roles) {
