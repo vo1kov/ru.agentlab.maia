@@ -4,15 +4,18 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
+import java.util.Random;
+
 import javax.inject.Inject;
 
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 
 import ru.agentlab.maia.container.impl.Injector;
 
 public class InjectorUninjectFunctionalTest {
+
+	static Random random = new Random();
 
 	static class FakePrimitive {
 		@Inject
@@ -33,14 +36,14 @@ public class InjectorUninjectFunctionalTest {
 		char charValue;
 		{
 			// Imitate value injection
-			byteValue = (byte) RandomUtils.nextInt();
-			shortValue = (short) RandomUtils.nextInt();
-			intValue = (int) RandomUtils.nextInt();
-			longValue = (long) RandomUtils.nextLong();
-			floatValue = (float) RandomUtils.nextFloat();
-			doubleValue = (double) RandomUtils.nextDouble();
+			byteValue = (byte) random.nextInt();
+			shortValue = (short) random.nextInt();
+			intValue = (int) random.nextInt();
+			longValue = (long) random.nextLong();
+			floatValue = (float) random.nextFloat();
+			doubleValue = (double) random.nextDouble();
 			booleanValue = (boolean) true;
-			charValue = (char) RandomUtils.nextInt();
+			charValue = (char) random.nextInt();
 		}
 	}
 
