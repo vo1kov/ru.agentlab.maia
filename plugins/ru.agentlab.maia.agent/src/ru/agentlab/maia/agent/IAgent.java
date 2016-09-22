@@ -41,6 +41,8 @@ public interface IAgent {
 	Collection<IRole> getRoles();
 
 	IRole addRole(Class<?> roleClass, Map<String, Object> parameters);
+	
+	void activate(IRole role);
 
 	IRole addRole(Object role, Map<String, Object> parameters);
 

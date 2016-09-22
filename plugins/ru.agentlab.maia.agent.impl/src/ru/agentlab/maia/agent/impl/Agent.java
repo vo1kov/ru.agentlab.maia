@@ -56,12 +56,13 @@ public class Agent implements IAgent {
 			}
 
 			planBase.getOptions(event).forEach(option -> {
+				Map<String, Object> values = option.getValues();
+				IPlan<?> plan = option.getPlan();
 				try {
-					Map<String, Object> values = option.getValues();
-					IPlan<?> plan = option.getPlan();
 					plan.execute(getInjector(), values);
 				} catch (Exception e) {
 					e.printStackTrace();
+					throw new RuntimeException("Exception while execute [" + plan + "] plan");
 				}
 			});
 
@@ -228,6 +229,17 @@ public class Agent implements IAgent {
 			}
 		} else {
 			throw new ConcurrentModificationException();
+		}
+	}
+
+	@Override
+	public void activate(IRole role) {
+		checkNotNull(role, "Role to activate should be non null");
+		lock.lock();
+		try {
+			internalActivateRole(role);
+		} finally {
+			lock.unlock();
 		}
 	}
 
@@ -447,6 +459,23 @@ public class Agent implements IAgent {
 			IRole role = roleBase.create(roleObject, parameters);
 			roleBase.add(role);
 			return role;
+		}
+	}
+
+	protected void internalActivateRole(IRole role) {
+		switch (state.get()) {
+		case UNKNOWN:
+			throw new IllegalStateException("Agent should be deployed into container before adding new roles.");
+		case ACTIVE:
+		case WAITING:
+			throw new IllegalStateException("Agent is in ACTIVE state, use submit method instead.");
+		case TRANSIT:
+			throw new IllegalStateException("Agent is in TRANSIT state, can't add new roles.");
+		case STOPPING:
+			throw new IllegalStateException("Agent is in STOPPING state, can't add new roles.");
+		case IDLE:
+		default:
+			roleBase.activate(role);
 		}
 	}
 
