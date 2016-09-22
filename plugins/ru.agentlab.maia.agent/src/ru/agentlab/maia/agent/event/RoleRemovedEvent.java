@@ -1,10 +1,11 @@
 package ru.agentlab.maia.agent.event;
 
 import ru.agentlab.maia.agent.Event;
+import ru.agentlab.maia.agent.IRole;
 
-public class RoleRemovedEvent extends Event<Object> {
+public class RoleRemovedEvent extends Event<IRole> {
 
-	public RoleRemovedEvent(Object role) {
+	public RoleRemovedEvent(IRole role) {
 		super(role);
 	}
 

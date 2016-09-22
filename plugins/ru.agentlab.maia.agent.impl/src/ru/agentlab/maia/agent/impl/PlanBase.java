@@ -8,10 +8,13 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent.impl;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Queue;
 import java.util.stream.Stream;
 
@@ -23,86 +26,121 @@ import ru.agentlab.maia.agent.IPlanBase;
 import ru.agentlab.maia.agent.Option;
 import ru.agentlab.maia.agent.event.AgentStartedEvent;
 import ru.agentlab.maia.agent.event.AgentStoppedEvent;
-import ru.agentlab.maia.filter.IPlanEventFilter;
-import ru.agentlab.maia.filter.IPlanStateFilter;
 
 public class PlanBase implements IPlanBase {
 
 	protected final Queue<Object> eventQueue;
 
-	protected final Multimap<Class<?>, IPlan> plans = ArrayListMultimap.create();
+	protected final Multimap<Class<?>, IPlan<?>> plans = ArrayListMultimap.create();
 
 	public PlanBase(Queue<Object> eventQueue) {
-		Objects.requireNonNull(eventQueue);
+		checkNotNull(eventQueue);
 		this.eventQueue = eventQueue;
 	}
 
 	@Override
-	public void add(Class<?> type, IPlan plan) {
-		Objects.requireNonNull(type);
-		Objects.requireNonNull(plan);
-		plans.put(type, plan);
+	public void add(IPlan<?> plan) {
+		checkNotNull(plan);
+		plans.put(plan.getType(), plan);
 	}
 
 	@Override
-	public void addAll(Multimap<Class<?>, IPlan> map) {
-		Objects.requireNonNull(map);
-		plans.putAll(map);
+	public void addAll(Collection<IPlan<?>> plans) {
+		checkNotNull(plans);
+		plans.forEach(plan -> this.plans.put(plan.getType(), plan));
 	}
 
 	@Override
-	public void addAll(Class<?> key, Iterable<? extends IPlan> plan) {
-		Objects.requireNonNull(key);
-		Objects.requireNonNull(plan);
-		plans.putAll(key, plan);
+	public void addAll(IPlan<?>[] plans) {
+		checkNotNull(plans);
+		for (int i = 0; i < plans.length; i++) {
+			IPlan<?> plan = plans[i];
+			this.plans.put(plan.getType(), plan);
+		}
 	}
 
 	@Override
-	public void remove(Class<?> type, IPlan plan) {
-		Objects.requireNonNull(type);
-		Objects.requireNonNull(plan);
-		plans.remove(type, plan);
+	public void addAll(Stream<IPlan<?>> plans) {
+		checkNotNull(plans);
+		plans.forEach(plan -> this.plans.put(plan.getType(), plan));
 	}
 
 	@Override
-	public Collection<IPlan> getStartPlans() {
+	public void remove(IPlan<?> plan) {
+		checkNotNull(plan);
+		plans.remove(plan.getType(), plan);
+	}
+
+	@Override
+	public void removeAll(Collection<IPlan<?>> plans) {
+		checkNotNull(plans);
+		plans.forEach(plan -> this.plans.remove(plan.getType(), plan));
+	}
+
+	@Override
+	public void removeAll(IPlan<?>[] plans) {
+		checkNotNull(plans);
+		for (int i = 0; i < plans.length; i++) {
+			IPlan<?> plan = plans[i];
+			this.plans.remove(plan.getType(), plan);
+		}
+	}
+
+	@Override
+	public void removeAll(Stream<IPlan<?>> plans) {
+		checkNotNull(plans);
+		plans.forEach(plan -> this.plans.remove(plan.getType(), plan));
+	}
+
+	@Override
+	public Collection<IPlan<?>> getStartPlans() {
 		return plans.get(AgentStartedEvent.class);
 	}
 
 	@Override
-	public Collection<IPlan> getStopPlans() {
+	public Collection<IPlan<?>> getStopPlans() {
 		return plans.get(AgentStoppedEvent.class);
 	}
 
 	@Override
 	public Stream<Option> getOptions(Object event) {
-		Objects.requireNonNull(event);
+		// checkNotNull(event);
+		assert event != null;
 		// Object payload = event.getPayload();
 		Class<?> eventType = event.getClass();
 		// if (event instanceof ExternalAddedEvent) {
 		// eventType = event.getPayload().getClass();
 		// }
-		Collection<IPlan> collection = plans.get(eventType);
-		return collection.stream().map(plan -> {
+		Collection<IPlan<?>> collection = plans.get(eventType);
+		List<Option> result = new ArrayList<>();
+		for (IPlan<?> plan : collection) {
 			Map<String, Object> variables = new HashMap<>();
 			variables.put(eventType.getName(), event);
-			IPlanEventFilter<?> eventMatcher = plan.getEventMatcher();
-			IPlanStateFilter stateMatcher = plan.getStateMatcher();
-			if (eventMatcher.matches(event, variables) && stateMatcher.matches(event, variables)) {
-				return new Option(plan.getPlanBody(), variables);
-			} else {
-				return null;
+			if (plan.unify(event, variables)) {
+				result.add(new Option(plan, variables));
 			}
-		}).filter(Objects::nonNull);
+		}
+		return result.stream();
+		// return collection.stream().map(plan -> {
+		//
+		// IPlanEventFilter<?> eventMatcher = plan.getEventMatcher();
+		// IPlanStateFilter stateMatcher = plan.getStateMatcher();
+		// if (eventMatcher.matches(event, variables) &&
+		// stateMatcher.matches(event, variables)) {
+		// return new Option(plan.getPlanBody(), variables);
+		// } else {
+		// return null;
+		// }
+		// }).filter(Objects::nonNull);
 	}
 
 	@Override
-	public Stream<IPlan> getPlansStream() {
+	public Stream<IPlan<?>> getPlansStream() {
 		return plans.values().stream();
 	}
 
 	@Override
-	public Collection<IPlan> getPlans() {
+	public Collection<IPlan<?>> getPlans() {
 		return plans.values();
 	}
 

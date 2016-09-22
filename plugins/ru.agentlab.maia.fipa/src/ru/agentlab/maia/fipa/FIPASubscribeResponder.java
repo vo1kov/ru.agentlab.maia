@@ -23,7 +23,6 @@ import ru.agentlab.maia.agent.IMessage;
 import ru.agentlab.maia.agent.IPlan;
 import ru.agentlab.maia.agent.IPlanBase;
 import ru.agentlab.maia.agent.impl.Plan;
-import ru.agentlab.maia.belief.event.BeliefAddedEvent;
 import ru.agentlab.maia.message.IMessageDeliveryService;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
 
@@ -35,14 +34,14 @@ public class FIPASubscribeResponder {
 	@Inject
 	private IMessageDeliveryService messaging;
 
-	private final Map<String, IPlan> addedPlans = new HashMap<>();
+	private final Map<String, IPlan<?>> addedPlans = new HashMap<>();
 
 	@OnMessageReceived(performative = SUBSCRIBE, protocol = FIPA_SUBSCRIBE)
 	public void onSubscribe(IMessage message) {
 		try {
-			IPlan plan = getPlan(message);
+			IPlan<?> plan = getPlan(message);
 			addedPlans.put(message.getConversationId(), plan);
-			planBase.add(BeliefAddedEvent.class, plan);
+			planBase.add(plan);
 
 			messaging.reply(message, AGREE);
 		} catch (Exception e) {
@@ -52,20 +51,20 @@ public class FIPASubscribeResponder {
 
 	@OnMessageReceived(performative = CANCEL, protocol = FIPA_SUBSCRIBE)
 	public void onCancel(IMessage message) {
-		IPlan plan = addedPlans.get(message.getConversationId());
+		IPlan<?> plan = addedPlans.get(message.getConversationId());
 		if (plan != null) {
-			planBase.remove(BeliefAddedEvent.class, plan);
+			planBase.remove(plan);
 			messaging.reply(message, INFORM);
 		}
 	}
 
-	private IPlan getPlan(IMessage message) {
+	private IPlan<?> getPlan(IMessage message) {
 		//
 		//
 		// TODO: extract template from message
 		//
 		//
-		IPlan plan = new Plan(this, () -> {
+		IPlan<Object> plan = new Plan<>(Object.class, () -> {
 			messaging.reply(message, INFORM);
 		});
 		return plan;

@@ -8,21 +8,34 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent;
 
-import ru.agentlab.maia.filter.IPlanEventFilter;
-import ru.agentlab.maia.filter.IPlanStateFilter;
+import java.util.Map;
 
-public interface IPlan {
+import ru.agentlab.maia.container.IInjector;
 
-	IPlanBody getPlanBody();
-	
-	Object getRole();
+/**
+ * @param <T>
+ *            event type
+ * 
+ * @author Dmitriy Shishkin <shishkindimon@gmail.com>
+ */
+public interface IPlan<T> {
 
-	void setStateMatcher(IPlanStateFilter stateMatcher);
+	// IPlanBody getPlanBody();
+	//
+	// Object getRole();
+	//
+	// void setStateMatcher(IPlanStateFilter stateMatcher);
+	//
+	// IPlanStateFilter getStateMatcher();
+	//
+	// void setEventMatcher(IPlanEventFilter<?> eventMatcher);
+	//
+	// IPlanEventFilter<?> getEventMatcher();
 
-	IPlanStateFilter getStateMatcher();
+	Class<T> getType();
 
-	void setEventMatcher(IPlanEventFilter<?> eventMatcher);
+	boolean unify(Object event, Map<String, Object> variables);
 
-	IPlanEventFilter<?> getEventMatcher();
+	void execute(IInjector injector, Map<String, Object> variables) throws Exception;
 
 }
