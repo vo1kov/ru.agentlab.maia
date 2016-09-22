@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test
-Bundle-SymbolicName: ru.agentlab.maia.agent.tests
+Bundle-SymbolicName: ru.agentlab.maia.belief.annotation.tests
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
@@ -15,7 +15,6 @@ Require-Bundle: com.google.guava,
  org.semanticweb.owlapi.tools;bundle-version="4.1.3",
  org.slf4j.api;bundle-version="1.7.2",
  net.sf.trove4j;bundle-version="3.0.3",
- ru.agentlab.maia.test.util;bundle-version="1.0.0",
  ru.agentlab.maia.container.impl,
  ru.agentlab.maia.agent.impl;bundle-version="1.0.0",
  ru.agentlab.maia.belief,
@@ -27,6 +26,11 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.container.factory,
  org.hamcrest.core;bundle-version="1.3.0",
  ru.agentlab.maia.agent.factory,
- org.semanticweb.owlapi.api
+ org.semanticweb.owlapi.api,
+ ru.agentlab.maia.tests.util;bundle-version="1.0.0",
+ org.junit;bundle-version="4.12.0",
+ org.hamcrest;bundle-version="1.1.0",
+ org.mockito;bundle-version="1.9.5",
+ ru.agentlab.maia.belief.filter;bundle-version="1.0.0"
 Fragment-Host: ru.agentlab.maia.agent
 

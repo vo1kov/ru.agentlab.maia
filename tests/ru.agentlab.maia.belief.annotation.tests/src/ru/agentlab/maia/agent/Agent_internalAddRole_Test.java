@@ -41,10 +41,9 @@ import com.google.common.collect.ImmutableSet;
 
 import ru.agentlab.maia.agent.doubles.DummyService;
 import ru.agentlab.maia.agent.impl.Agent;
-import ru.agentlab.maia.annotation.ConverterException;
 import ru.agentlab.maia.container.IInjector;
 import ru.agentlab.maia.container.InjectorException;
-import ru.agentlab.maia.test.util.LoggerRule;
+import ru.agentlab.maia.tests.util.LoggerRule;
 
 /**
  * <p>

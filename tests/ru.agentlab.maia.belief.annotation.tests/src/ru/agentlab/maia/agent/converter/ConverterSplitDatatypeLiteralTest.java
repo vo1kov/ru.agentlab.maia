@@ -21,7 +21,7 @@ import org.junit.runners.Parameterized.Parameters;
 import org.semanticweb.owlapi.vocab.Namespaces;
 
 import ru.agentlab.maia.annotation.Converter;
-import ru.agentlab.maia.test.util.LoggerRule;
+import ru.agentlab.maia.tests.util.LoggerRule;
 
 /**
  * Test method {@link Converter#splitDatatypeLiteral(String)} which split

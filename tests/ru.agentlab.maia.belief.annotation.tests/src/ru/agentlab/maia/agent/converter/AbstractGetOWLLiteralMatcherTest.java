@@ -14,7 +14,7 @@ import org.semanticweb.owlapi.vocab.Namespaces;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 import ru.agentlab.maia.annotation.Converter;
-import ru.agentlab.maia.test.util.LoggerRule;
+import ru.agentlab.maia.tests.util.LoggerRule;
 
 /**
  * 
