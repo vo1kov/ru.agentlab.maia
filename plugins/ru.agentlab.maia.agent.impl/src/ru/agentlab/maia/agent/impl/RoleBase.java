@@ -18,6 +18,8 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import ru.agentlab.maia.agent.IPlan;
 import ru.agentlab.maia.agent.IPlanBase;
 import ru.agentlab.maia.agent.IRole;
@@ -135,10 +137,10 @@ public class RoleBase implements IRoleBase {
 		for (Method method : role.getClass().getDeclaredMethods()) {
 			Map<String, Object> customData = new HashMap<>();
 			IPlanStateFilter stateMatcher = getStateMatcher(role, method, customData);
-			List<Registration> registrations = getRegistrations(role, method, customData);
+			List<Pair<Class<?>, IPlanEventFilter<?>>> registrations = getRegistrations(role, method, customData);
 			registrations.forEach(
 				registration -> result
-					.add(new Plan(registration.eventType, method, registration.eventMathcer, stateMatcher)));
+					.add(new Plan(registration.getLeft(), method, registration.getRight(), stateMatcher)));
 			List<IPlan<?>> extraPlans = getExtraPlans(role, method, customData);
 			result.addAll(extraPlans);
 		}
@@ -163,9 +165,10 @@ public class RoleBase implements IRoleBase {
 		return null;
 	}
 
-	private List<Registration> getRegistrations(Object role, Method method, Map<String, Object> customData) {
+	private List<Pair<Class<?>, IPlanEventFilter<?>>> getRegistrations(Object role, Method method,
+			Map<String, Object> customData) {
 		Annotation[] annotations = method.getAnnotations();
-		List<Registration> result = new ArrayList<>();
+		List<Pair<Class<?>, IPlanEventFilter<?>>> result = new ArrayList<>();
 		for (Annotation annotation : annotations) {
 			PlanEventFilterConverter eventMatcher = annotation
 				.annotationType()
@@ -176,7 +179,7 @@ public class RoleBase implements IRoleBase {
 				IPlanEventFilterConverter converter = injector.make(converterClass);
 				injector.inject(converter);
 				injector.invoke(converter, PostConstruct.class);
-				result.add(new Registration(converter.getMatcher(role, method, annotation, customData), eventType));
+				result.add(Pair.of(eventType, converter.getMatcher(role, method, annotation, customData)));
 			}
 		}
 		return result;
@@ -221,20 +224,6 @@ public class RoleBase implements IRoleBase {
 			}
 		}
 		return Collections.emptyList();
-	}
-
-	private static class Registration {
-
-		IPlanEventFilter<?> eventMathcer;
-
-		Class<?> eventType;
-
-		public Registration(IPlanEventFilter<?> mathcer, Class<?> eventType) {
-			super();
-			this.eventMathcer = mathcer;
-			this.eventType = eventType;
-		}
-
 	}
 
 }
