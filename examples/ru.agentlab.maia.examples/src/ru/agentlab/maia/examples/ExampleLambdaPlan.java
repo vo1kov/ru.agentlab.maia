@@ -18,11 +18,11 @@ public class ExampleLambdaPlan {
 
 	@PostConstruct
 	public void setup() {
-		IPlan plan = new Plan(this, () -> {
+		IPlan<BeliefAddedEvent> plan = new Plan<>(BeliefAddedEvent.class, () -> {
 			System.out.println(service);
 			System.out.println(service.hashCode());
 		});
-		planBase.add(BeliefAddedEvent.class, plan);
+		planBase.add(plan);
 	}
 
 }
