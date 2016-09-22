@@ -4,11 +4,7 @@ Bundle-Name: Impl
 Bundle-SymbolicName: ru.agentlab.maia.message.impl
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: com.google.guava,
- org.eclipse.xtext.xbase.lib,
- org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro,
- io.netty;bundle-version="4.0.26",
+Require-Bundle: io.netty;bundle-version="4.0.26",
  org.slf4j.api;bundle-version="1.7.2",
  javax.inject;bundle-version="1.0.0",
  ru.agentlab.maia.message;bundle-version="1.0.0",

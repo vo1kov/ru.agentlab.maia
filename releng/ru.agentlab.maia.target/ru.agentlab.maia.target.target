@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="ru.agentlab.maia.target" sequenceNumber="90">
+<?pde version="3.8"?><target name="ru.agentlab.maia.target" sequenceNumber="92">
 <locations>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.semanticweb.owlapi.feature.feature.group" version="4.0.0.201602051203"/>
+<unit id="org.semanticweb.owlapi.feature.source.feature.group" version="4.0.0.201602051203"/>
+<repository location="http://agentlab.ru/p2/orbit/org.semanticweb.owlapi/updates/nightly/latest/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.equinox.weaving.sdk.feature.group" version="1.2.0.201604061446"/>
+<unit id="org.aspectj.feature.group" version="1.8.9.201604061446"/>
+<unit id="org.eclipse.ajdt.feature.group" version="2.2.4.201604061446"/>
+<repository location="http://download.eclipse.org/tools/ajdt/45/dev/update"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="com.google.guava.feature.source.feature.group" version="18.0.0.201502021635"/>
+<unit id="com.google.guava.feature.feature.group" version="18.0.0.201502021635"/>
+<repository location="http://www.agentlab.ru/eclipse/update/com.google.guava/18.0.0.201502021635/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.apache.commons.lang3.source" version="3.1.0.v201403281430"/>
+<unit id="org.apache.commons.lang3" version="3.1.0.v201403281430"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/"/>
+</location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.slf4j.impl.log4j12" version="1.7.2.v20131105-2200"/>
 <unit id="org.apache.commons.logging.source" version="1.1.1.v201101211721"/>
@@ -45,22 +66,6 @@
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.semanticweb.owlapi.feature.feature.group" version="4.0.0.201602051203"/>
-<unit id="org.semanticweb.owlapi.feature.source.feature.group" version="4.0.0.201602051203"/>
-<repository location="http://agentlab.ru/p2/orbit/org.semanticweb.owlapi/updates/nightly/latest/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.equinox.weaving.sdk.feature.group" version="1.2.0.201604061446"/>
-<unit id="org.aspectj.feature.group" version="1.8.9.201604061446"/>
-<unit id="org.eclipse.ajdt.feature.group" version="2.2.4.201604061446"/>
-<repository location="http://download.eclipse.org/tools/ajdt/45/dev/update"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="com.google.guava.feature.source.feature.group" version="18.0.0.201502021635"/>
-<unit id="com.google.guava.feature.feature.group" version="18.0.0.201502021635"/>
-<repository location="http://www.agentlab.ru/eclipse/update/com.google.guava/18.0.0.201502021635/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="net.sf.trove4j.feature.source.feature.group" version="3.0.3.201602051202"/>
 <unit id="net.sf.trove4j.feature.feature.group" version="3.0.3.201602051202"/>
 <repository location="http://agentlab.ru/p2/orbit/net.sf.trove4j/drops/nightly/3.0.3.201602051202/"/>
@@ -68,10 +73,6 @@
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.sdk.ide" version="4.5.0.I20150603-2000"/>
 <repository location="http://download.eclipse.org/eclipse/updates/4.5"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.xtend.sdk.feature.group" version="2.8.4.v201508050135"/>
-<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
 </location>
 </locations>
 <includeBundles>
@@ -95,17 +96,16 @@
 <plugin id="net.sf.trove4j.source"/>
 <plugin id="org.apache.commons.io"/>
 <plugin id="org.apache.commons.io.source"/>
-<plugin id="org.apache.commons.lang"/>
-<plugin id="org.apache.commons.lang.source"/>
+<plugin id="org.apache.commons.lang3"/>
+<plugin id="org.apache.commons.lang3.source"/>
 <plugin id="org.apache.felix.gogo.command"/>
 <plugin id="org.apache.felix.gogo.command.source"/>
 <plugin id="org.apache.felix.gogo.runtime"/>
 <plugin id="org.apache.felix.gogo.runtime.source"/>
 <plugin id="org.apache.felix.gogo.shell"/>
 <plugin id="org.apache.felix.gogo.shell.source"/>
-<plugin id="org.apache.log4j" version="1.2.15.v201012070815"/>
-<plugin id="org.apache.log4j.source" version="1.2.15.v201012070815"/>
-<plugin id="org.apache.log4j.source" version="1.2.15.v201012070815"/>
+<plugin id="org.apache.log4j"/>
+<plugin id="org.apache.log4j.source"/>
 <plugin id="org.aspectj.runtime"/>
 <plugin id="org.aspectj.runtime.source"/>
 <plugin id="org.aspectj.weaver"/>
@@ -123,12 +123,6 @@
 <plugin id="org.eclipse.osgi.services"/>
 <plugin id="org.eclipse.osgi.services.source"/>
 <plugin id="org.eclipse.osgi.source"/>
-<plugin id="org.eclipse.xtend.lib"/>
-<plugin id="org.eclipse.xtend.lib.macro"/>
-<plugin id="org.eclipse.xtend.lib.macro.source"/>
-<plugin id="org.eclipse.xtend.lib.source"/>
-<plugin id="org.eclipse.xtext.xbase.lib"/>
-<plugin id="org.eclipse.xtext.xbase.lib.source"/>
 <plugin id="org.hamcrest"/>
 <plugin id="org.hamcrest.core"/>
 <plugin id="org.hamcrest.core.source"/>
