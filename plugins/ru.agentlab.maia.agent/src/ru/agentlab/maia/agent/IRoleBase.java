@@ -26,15 +26,15 @@ public interface IRoleBase {
 	boolean add(IRole role);
 
 	default boolean addAll(IRole[] roles) {
-		return Stream.of(roles).map(this::add).anyMatch(result -> result == true);
+		return Stream.of(roles).map(this::add).reduce(false, (a, b) -> a || b);
 	}
 
 	default boolean addAll(Collection<IRole> roles) {
-		return roles.stream().map(this::add).anyMatch(result -> result == true);
+		return roles.stream().map(this::add).reduce(false, (a, b) -> a || b);
 	}
 
 	default boolean addAll(Stream<IRole> roles) {
-		return roles.map(this::add).anyMatch(result -> result == true);
+		return roles.map(this::add).reduce(false, (a, b) -> a || b);
 	}
 
 	default boolean addAndActivate(IRole role) {
@@ -53,15 +53,15 @@ public interface IRoleBase {
 	boolean remove(IRole role);
 
 	default boolean removeAll(IRole[] roles) {
-		return Stream.of(roles).map(this::remove).anyMatch(result -> result == true);
+		return Stream.of(roles).map(this::remove).reduce(false, (a, b) -> a || b);
 	}
 
 	default boolean removeAll(Collection<IRole> roles) {
-		return roles.stream().map(this::remove).anyMatch(result -> result == true);
+		return roles.stream().map(this::remove).reduce(false, (a, b) -> a || b);
 	}
 
 	default boolean removeAll(Stream<IRole> roles) {
-		return roles.map(this::remove).anyMatch(result -> result == true);
+		return roles.map(this::remove).reduce(false, (a, b) -> a || b);
 	}
 
 	Collection<IRole> getRoles();

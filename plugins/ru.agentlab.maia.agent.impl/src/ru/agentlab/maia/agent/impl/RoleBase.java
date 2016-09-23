@@ -135,6 +135,10 @@ public class RoleBase implements IRoleBase {
 
 	@Override
 	public void clear() {
+		roles.forEach(role -> {
+			deactivate(role);
+			eventQueue.offer(new RoleRemovedEvent(role));
+		});
 		roles.clear();
 	}
 
