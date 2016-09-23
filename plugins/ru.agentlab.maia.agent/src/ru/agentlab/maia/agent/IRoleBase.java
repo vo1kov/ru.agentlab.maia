@@ -23,46 +23,45 @@ public interface IRoleBase {
 		return create(role, Collections.emptyMap());
 	}
 
-	void add(IRole role);
+	boolean add(IRole role);
 
-	default void addAll(IRole[] roles) {
-		for (int i = 0; i < roles.length; i++) {
-			add(roles[i]);
-		}
+	default boolean addAll(IRole[] roles) {
+		return Stream.of(roles).map(this::add).anyMatch(result -> result == true);
 	}
 
-	default void addAll(Collection<IRole> roles) {
-		roles.forEach(this::add);
+	default boolean addAll(Collection<IRole> roles) {
+		return roles.stream().map(this::add).anyMatch(result -> result == true);
 	}
 
-	default void addAll(Stream<IRole> roles) {
-		roles.forEach(this::add);
+	default boolean addAll(Stream<IRole> roles) {
+		return roles.map(this::add).anyMatch(result -> result == true);
 	}
 
-	default void addAndActivate(IRole role) {
+	default boolean addAndActivate(IRole role) {
 		checkNotNull(role, "Role to add should be non null");
-		add(role);
-		activate(role);
+		if (add(role)) {
+			return activate(role);
+		} else {
+			return false;
+		}
 	}
 
 	boolean activate(IRole role);
 
 	boolean deactivate(IRole role);
 
-	void remove(IRole role);
+	boolean remove(IRole role);
 
-	default void removeAll(IRole[] roles) {
-		for (int i = 0; i < roles.length; i++) {
-			remove(roles[i]);
-		}
+	default boolean removeAll(IRole[] roles) {
+		return Stream.of(roles).map(this::remove).anyMatch(result -> result == true);
 	}
 
-	default void removeAll(Collection<IRole> roles) {
-		roles.forEach(this::remove);
+	default boolean removeAll(Collection<IRole> roles) {
+		return roles.stream().map(this::remove).anyMatch(result -> result == true);
 	}
 
-	default void removeAll(Stream<IRole> roles) {
-		roles.forEach(this::remove);
+	default boolean removeAll(Stream<IRole> roles) {
+		return roles.map(this::remove).anyMatch(result -> result == true);
 	}
 
 	Collection<IRole> getRoles();

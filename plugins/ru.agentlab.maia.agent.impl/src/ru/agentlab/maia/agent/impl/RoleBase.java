@@ -74,10 +74,13 @@ public class RoleBase implements IRoleBase {
 	}
 
 	@Override
-	public void add(IRole role) {
+	public boolean add(IRole role) {
 		checkNotNull(role, "Role to add should be non null");
 		if (roles.add(role)) {
 			eventQueue.offer(new RoleAddedEvent(role));
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -114,11 +117,14 @@ public class RoleBase implements IRoleBase {
 	}
 
 	@Override
-	public void remove(IRole role) {
+	public boolean remove(IRole role) {
 		checkNotNull(role, "Role to remove should be non null");
 		deactivate(role);
 		if (roles.remove(role)) {
 			eventQueue.offer(new RoleRemovedEvent(role));
+			return true;
+		} else {
+			return false;
 		}
 	}
 
