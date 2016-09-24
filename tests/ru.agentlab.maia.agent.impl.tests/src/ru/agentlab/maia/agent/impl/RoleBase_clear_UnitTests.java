@@ -46,10 +46,6 @@ public class RoleBase_clear_UnitTests extends RoleBaseAbstractTest {
 		// Then
 		thenRolesEmpty();
 		thenQueueFired(Lists.newArrayList(new RoleRemovedEvent(role)));
-		// Stream.of(role).map(r -> {
-		// return new Event[] { new RoleDeactivatedEvent(r), new
-		// RoleRemovedEvent(r) };
-		// }).flatMap(array -> Stream.of(array)).collect(Collectors.toList()));
 	}
 
 	@Test
