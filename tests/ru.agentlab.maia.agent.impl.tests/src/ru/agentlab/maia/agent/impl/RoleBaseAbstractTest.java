@@ -152,6 +152,10 @@ public abstract class RoleBaseAbstractTest {
 		return roleBase.remove(role);
 	}
 
+	protected Collection<IRole> whenGetRoles() {
+		return roleBase.getRoles();
+	}
+
 	protected void whenClear() {
 		roleBase.clear();
 	}
