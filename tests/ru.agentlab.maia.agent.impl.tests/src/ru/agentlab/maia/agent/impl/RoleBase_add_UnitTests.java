@@ -1,7 +1,6 @@
 package ru.agentlab.maia.agent.impl;
 
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Collections;
 
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -58,7 +57,7 @@ public class RoleBase_add_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, true);
 		thenRolesSize(1);
 		thenRolesContains(role);
-		thenQueueFired(Stream.of(role).map(r -> new RoleAddedEvent(r)).collect(Collectors.toList()));
+		thenQueueFired(Collections.singletonList(new RoleAddedEvent(role)));
 	}
 
 	@Test
@@ -72,7 +71,7 @@ public class RoleBase_add_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, true);
 		thenRolesSize(2);
 		thenRolesContains(role);
-		thenQueueFired(Stream.of(role).map(r -> new RoleAddedEvent(r)).collect(Collectors.toList()));
+		thenQueueFired(Collections.singletonList(new RoleAddedEvent(role)));
 	}
 
 	@Test
@@ -86,7 +85,7 @@ public class RoleBase_add_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, true);
 		thenRolesSize(11);
 		thenRolesContains(role);
-		thenQueueFired(Stream.of(role).map(r -> new RoleAddedEvent(r)).collect(Collectors.toList()));
+		thenQueueFired(Collections.singletonList(new RoleAddedEvent(role)));
 	}
 
 	@Test
@@ -100,7 +99,7 @@ public class RoleBase_add_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, false);
 		thenRolesSize(1);
 		thenRolesContains(role);
-		thenEventQueueNotFired();
+		thenQueueNotFired();
 	}
 
 	@Test
@@ -114,7 +113,7 @@ public class RoleBase_add_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, false);
 		thenRolesSize(100);
 		thenRolesContains(role);
-		thenEventQueueNotFired();
+		thenQueueNotFired();
 	}
 
 }

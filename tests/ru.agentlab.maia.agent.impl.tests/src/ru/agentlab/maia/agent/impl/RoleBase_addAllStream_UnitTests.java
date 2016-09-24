@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import ru.agentlab.maia.agent.IRole;
-import ru.agentlab.maia.agent.event.RoleAddedEvent;
 import ru.agentlab.maia.tests.util.category.speed.QuickTests;
 import ru.agentlab.maia.tests.util.category.type.UnitTests;
 import ru.agentlab.maia.tests.util.category.visibility.WhiteBoxTests;
@@ -58,7 +57,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		// Then
 		thenResult(result, false);
 		thenRolesSize(0);
-		thenEventQueueNotFired();
+		thenQueueNotFired();
 	}
 
 	@Test
@@ -71,7 +70,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		// Then
 		thenResult(result, false);
 		thenRolesSize(1);
-		thenEventQueueNotFired();
+		thenQueueNotFired();
 	}
 
 	@Test
@@ -84,7 +83,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		// Then
 		thenResult(result, false);
 		thenRolesSize(10);
-		thenEventQueueNotFired();
+		thenQueueNotFired();
 	}
 
 	@Test
@@ -98,7 +97,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, false);
 		thenRolesSize(1);
 		thenRolesContainsAll(roles);
-		thenEventQueueNotFired();
+		thenQueueNotFired();
 	}
 
 	@Test
@@ -112,7 +111,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, false);
 		thenRolesSize(10);
 		thenRolesContainsAll(roles);
-		thenEventQueueNotFired();
+		thenQueueNotFired();
 	}
 
 	@Test
@@ -126,7 +125,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, false);
 		thenRolesSize(10);
 		thenRolesContainsAll(roles);
-		thenEventQueueNotFired();
+		thenQueueNotFired();
 	}
 
 	@Test
@@ -140,7 +139,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, true);
 		thenRolesSize(1);
 		thenRolesContainsAll(roles);
-		thenQueueFired(roles.stream().map(r -> new RoleAddedEvent(r)).collect(Collectors.toList()));
+		thenQueueFired(mapToRoleAddedEvent(roles));
 	}
 
 	@Test
@@ -154,7 +153,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, true);
 		thenRolesSize(2);
 		thenRolesContainsAll(roles);
-		thenQueueFired(roles.stream().map(r -> new RoleAddedEvent(r)).collect(Collectors.toList()));
+		thenQueueFired(mapToRoleAddedEvent(roles));
 	}
 
 	@Test
@@ -168,7 +167,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, true);
 		thenRolesSize(11);
 		thenRolesContainsAll(roles);
-		thenQueueFired(roles.stream().map(r -> new RoleAddedEvent(r)).collect(Collectors.toList()));
+		thenQueueFired(mapToRoleAddedEvent(roles));
 	}
 
 	@Test
@@ -184,7 +183,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, true);
 		thenRolesSize(2);
 		thenRolesContainsAll(roles);
-		thenQueueFired(newRoles.stream().map(r -> new RoleAddedEvent(r)).collect(Collectors.toList()));
+		thenQueueFired(mapToRoleAddedEvent(newRoles));
 	}
 
 	@Test
@@ -200,7 +199,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, true);
 		thenRolesSize(11);
 		thenRolesContainsAll(roles);
-		thenQueueFired(newRoles.stream().map(r -> new RoleAddedEvent(r)).collect(Collectors.toList()));
+		thenQueueFired(mapToRoleAddedEvent(newRoles));
 	}
 
 	@Test
@@ -216,7 +215,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, true);
 		thenRolesSize(11);
 		thenRolesContainsAll(roles);
-		thenQueueFired(newRoles.stream().map(r -> new RoleAddedEvent(r)).collect(Collectors.toList()));
+		thenQueueFired(mapToRoleAddedEvent(newRoles));
 	}
 
 	@Test
@@ -230,7 +229,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, true);
 		thenRolesSize(5);
 		thenRolesContainsAll(roles);
-		thenQueueFired(roles.stream().map(r -> new RoleAddedEvent(r)).collect(Collectors.toList()));
+		thenQueueFired(mapToRoleAddedEvent(roles));
 	}
 
 	@Test
@@ -244,7 +243,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, true);
 		thenRolesSize(6);
 		thenRolesContainsAll(roles);
-		thenQueueFired(roles.stream().map(r -> new RoleAddedEvent(r)).collect(Collectors.toList()));
+		thenQueueFired(mapToRoleAddedEvent(roles));
 	}
 
 	@Test
@@ -258,7 +257,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, true);
 		thenRolesSize(15);
 		thenRolesContainsAll(roles);
-		thenQueueFired(roles.stream().map(r -> new RoleAddedEvent(r)).collect(Collectors.toList()));
+		thenQueueFired(mapToRoleAddedEvent(roles));
 	}
 
 	@Test
@@ -274,7 +273,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, true);
 		thenRolesSize(6);
 		thenRolesContainsAll(roles);
-		thenQueueFired(newRoles.stream().map(r -> new RoleAddedEvent(r)).collect(Collectors.toList()));
+		thenQueueFired(mapToRoleAddedEvent(newRoles));
 	}
 
 	@Test
@@ -290,7 +289,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, true);
 		thenRolesSize(15);
 		thenRolesContainsAll(roles);
-		thenQueueFired(newRoles.stream().map(r -> new RoleAddedEvent(r)).collect(Collectors.toList()));
+		thenQueueFired(mapToRoleAddedEvent(newRoles));
 	}
 
 	@Test
@@ -306,7 +305,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		thenResult(result, true);
 		thenRolesSize(15);
 		thenRolesContainsAll(roles);
-		thenQueueFired(newRoles.stream().map(r -> new RoleAddedEvent(r)).collect(Collectors.toList()));
+		thenQueueFired(mapToRoleAddedEvent(newRoles));
 	}
 
 }

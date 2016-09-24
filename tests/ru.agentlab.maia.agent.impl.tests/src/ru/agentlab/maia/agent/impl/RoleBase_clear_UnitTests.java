@@ -32,8 +32,8 @@ public class RoleBase_clear_UnitTests extends RoleBaseAbstractTest {
 		// When
 		whenClear();
 		// Then
-		thenRolesContainsNoRoles();
-		thenEventQueueNotFired();
+		thenRolesEmpty();
+		thenQueueNotFired();
 	}
 
 	@Test
@@ -44,7 +44,7 @@ public class RoleBase_clear_UnitTests extends RoleBaseAbstractTest {
 		// When
 		whenClear();
 		// Then
-		thenRolesContainsNoRoles();
+		thenRolesEmpty();
 		thenQueueFired(Lists.newArrayList(new RoleRemovedEvent(role)));
 		// Stream.of(role).map(r -> {
 		// return new Event[] { new RoleDeactivatedEvent(r), new
@@ -60,7 +60,7 @@ public class RoleBase_clear_UnitTests extends RoleBaseAbstractTest {
 		// When
 		whenClear();
 		// Then
-		thenRolesContainsNoRoles();
+		thenRolesEmpty();
 		thenQueueFired(Lists.newArrayList(new RoleDeactivatedEvent(role), new RoleRemovedEvent(role)));
 	}
 
@@ -72,7 +72,7 @@ public class RoleBase_clear_UnitTests extends RoleBaseAbstractTest {
 		// When
 		whenClear();
 		// Then
-		thenRolesContainsNoRoles();
+		thenRolesEmpty();
 		thenQueueFired(inactiveRoles.stream().map(r -> new RoleRemovedEvent(r)).collect(Collectors.toList()));
 	}
 
@@ -84,7 +84,7 @@ public class RoleBase_clear_UnitTests extends RoleBaseAbstractTest {
 		// When
 		whenClear();
 		// Then
-		thenRolesContainsNoRoles();
+		thenRolesEmpty();
 		thenQueueFired(activeRoles.stream().map(role -> {
 			return new Event[] { new RoleDeactivatedEvent(role), new RoleRemovedEvent(role) };
 		}).flatMap(Stream::of).collect(Collectors.toList()));
@@ -103,7 +103,7 @@ public class RoleBase_clear_UnitTests extends RoleBaseAbstractTest {
 		// When
 		whenClear();
 		// Then
-		thenRolesContainsNoRoles();
+		thenRolesEmpty();
 		Stream<Event> activeRoleEvents = activeRoles.stream().map(role -> {
 			return new Event[] { new RoleDeactivatedEvent(role), new RoleRemovedEvent(role) };
 		}).flatMap(Stream::of);

@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.iterableWithSize;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -26,6 +27,7 @@ import org.mockito.ArgumentCaptor;
 
 import ru.agentlab.maia.agent.IPlanBase;
 import ru.agentlab.maia.agent.IRole;
+import ru.agentlab.maia.agent.event.RoleAddedEvent;
 import ru.agentlab.maia.container.IInjector;
 
 public abstract class RoleBaseAbstractTest {
@@ -146,6 +148,10 @@ public abstract class RoleBaseAbstractTest {
 		return roleBase.addAll(roles);
 	}
 
+	protected boolean whenRemove(IRole role) {
+		return roleBase.remove(role);
+	}
+
 	protected void whenClear() {
 		roleBase.clear();
 	}
@@ -167,11 +173,11 @@ public abstract class RoleBaseAbstractTest {
 		assertThat(capturedEvents, containsInAnyOrder(matchers));
 	}
 
-	protected void thenEventQueueNotFired() {
+	protected void thenQueueNotFired() {
 		verifyZeroInteractions(eventQueue);
 	}
 
-	protected void thenRolesContainsNoRoles() {
+	protected void thenRolesEmpty() {
 		assertThat(roleBase.getRoles(), empty());
 	}
 
@@ -192,8 +198,35 @@ public abstract class RoleBaseAbstractTest {
 		assertThat(roleBase.getRoles(), hasItems(array));
 	}
 
+	protected void thenRolesNotContains(IRole role) {
+		assertThat(roleBase.getRoles(), not(hasItem(role)));
+	}
+
+	protected void thenRolesNotContainsAll(Collection<IRole> roles) {
+		assertThat(roleBase.getRoles(), not(hasItems(roles.toArray(new IRole[roles.size()]))));
+	}
+
+	protected void thenRolesNotContainsAll(IRole[] roles) {
+		assertThat(roleBase.getRoles(), not(hasItems(roles)));
+	}
+
+	protected void thenRolesNotContainsAll(Stream<IRole> roles) {
+		IRole[] array = roles.toArray(size -> new IRole[size]);
+		assertThat(roleBase.getRoles(), not(hasItems(array)));
+	}
+
 	protected void thenRolesSize(int size) {
 		assertThat(roleBase.getRoles(), iterableWithSize(size));
+	}
+
+	// ============================ Utility ============================
+
+	protected List<Object> mapToRoleAddedEvent(Collection<IRole> roles) {
+		return roles.stream().map(role -> new RoleAddedEvent(role)).collect(Collectors.toList());
+	}
+
+	protected List<Object> mapToRoleAddedEvent(IRole[] roles) {
+		return Stream.of(roles).map(role -> new RoleAddedEvent(role)).collect(Collectors.toList());
 	}
 
 }
