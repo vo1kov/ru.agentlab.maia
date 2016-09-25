@@ -30,6 +30,7 @@ public class RoleBase_getRoles_UnitTests extends RoleBaseAbstractTest {
 		Collection<IRole> result = whenGetRoles();
 		// Then
 		assertThat(result, empty());
+		thenQueueNotFired();
 	}
 
 	@Test
@@ -41,6 +42,7 @@ public class RoleBase_getRoles_UnitTests extends RoleBaseAbstractTest {
 		Collection<IRole> result = whenGetRoles();
 		// Then
 		assertThat(result, containsInAnyOrder(roles.toArray(new IRole[roles.size()])));
+		thenQueueNotFired();
 	}
 
 	@Test
@@ -52,6 +54,7 @@ public class RoleBase_getRoles_UnitTests extends RoleBaseAbstractTest {
 		Collection<IRole> result = whenGetRoles();
 		// Then
 		assertThat(result, containsInAnyOrder(roles.toArray(new IRole[roles.size()])));
+		thenQueueNotFired();
 	}
 
 }

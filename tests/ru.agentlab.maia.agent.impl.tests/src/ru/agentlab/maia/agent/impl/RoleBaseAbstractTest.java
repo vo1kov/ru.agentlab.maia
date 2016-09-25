@@ -15,8 +15,10 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -32,6 +34,9 @@ import ru.agentlab.maia.container.IInjector;
 
 public abstract class RoleBaseAbstractTest {
 
+	static public class DummyService {
+	}
+
 	@SuppressWarnings("unchecked")
 	protected Queue<Object> eventQueue = mock(Queue.class);
 
@@ -42,6 +47,30 @@ public abstract class RoleBaseAbstractTest {
 	protected RoleBase roleBase = new RoleBase(eventQueue, injector, planBase);
 
 	// ======================== Given Arguments ========================
+
+	protected Class<?> givenNullClass() {
+		return null;
+	}
+
+	protected Object givenNullObject() {
+		return null;
+	}
+
+	protected Class<?> givenDummyServiceClass() {
+		return DummyService.class;
+	}
+
+	protected Object givenDummyService() {
+		return new DummyService();
+	}
+
+	protected Map<String, Object> givenNullMap() {
+		return null;
+	}
+
+	protected Map<String, Object> givenEmptyMap() {
+		return Collections.emptyMap();
+	}
 
 	protected IRole givenNullRole() {
 		return null;
@@ -146,6 +175,22 @@ public abstract class RoleBaseAbstractTest {
 
 	protected boolean whenAddAll(Stream<IRole> roles) {
 		return roleBase.addAll(roles);
+	}
+
+	protected IRole whenCreate(Class<?> clazz) {
+		return roleBase.create(clazz);
+	}
+
+	protected IRole whenCreate(Class<?> clazz, Map<String, Object> map) {
+		return roleBase.create(clazz, map);
+	}
+
+	protected IRole whenCreate(Object objectRole) {
+		return roleBase.create(objectRole);
+	}
+
+	protected IRole whenCreate(Object objectRole, Map<String, Object> map) {
+		return roleBase.create(objectRole, map);
 	}
 
 	protected boolean whenRemove(IRole role) {
