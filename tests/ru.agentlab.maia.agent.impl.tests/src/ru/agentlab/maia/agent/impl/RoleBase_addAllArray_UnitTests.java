@@ -23,7 +23,7 @@ public class RoleBase_addAllArray_UnitTests extends RoleBaseAbstractTest {
 		givenEmptyRoles();
 		IRole[] roles = givenNullArray();
 		// When
-		roleBase.addAll(roles);
+		whenAddAll(roles);
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -32,7 +32,7 @@ public class RoleBase_addAllArray_UnitTests extends RoleBaseAbstractTest {
 		givenStoredRoles(1);
 		IRole[] roles = givenNullArray();
 		// When
-		roleBase.addAll(roles);
+		whenAddAll(roles);
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -41,14 +41,14 @@ public class RoleBase_addAllArray_UnitTests extends RoleBaseAbstractTest {
 		givenStoredRoles(10);
 		IRole[] roles = givenNullArray();
 		// When
-		roleBase.addAll(roles);
+		whenAddAll(roles);
 	}
 
 	@Test
 	public void emptyArray_whenHave0Roles() {
 		// Given
 		givenEmptyRoles();
-		IRole[] roles = new IRole[0];
+		IRole[] roles = givenEmptyArray();
 		// When
 		boolean result = whenAddAll(roles);
 		// Then
@@ -61,7 +61,7 @@ public class RoleBase_addAllArray_UnitTests extends RoleBaseAbstractTest {
 	public void emptyArray_whenHave1Roles() {
 		// Given
 		givenStoredRoles(1);
-		IRole[] roles = new IRole[0];
+		IRole[] roles = givenEmptyArray();
 		// When
 		boolean result = whenAddAll(roles);
 		// Then
@@ -74,7 +74,7 @@ public class RoleBase_addAllArray_UnitTests extends RoleBaseAbstractTest {
 	public void emptyArray_whenHave10Roles() {
 		// Given
 		givenStoredRoles(10);
-		IRole[] roles = new IRole[0];
+		IRole[] roles = givenEmptyArray();
 		// When
 		boolean result = whenAddAll(roles);
 		// Then

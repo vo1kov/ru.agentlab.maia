@@ -108,6 +108,10 @@ public abstract class RoleBaseAbstractTest {
 		return null;
 	}
 
+	protected Collection<IRole> givenEmptyCollection() {
+		return Collections.emptyList();
+	}
+
 	protected Collection<IRole> givenNewRolesCollection(int size) {
 		return IntStream.range(0, size).mapToObj(i -> mock(IRole.class)).collect(Collectors.toList());
 	}
@@ -119,6 +123,10 @@ public abstract class RoleBaseAbstractTest {
 
 	protected IRole[] givenNullArray() {
 		return null;
+	}
+
+	protected IRole[] givenEmptyArray() {
+		return new IRole[0];
 	}
 
 	protected IRole[] givenNewRolesArray(int size) {

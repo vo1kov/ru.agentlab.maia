@@ -1,7 +1,6 @@
 package ru.agentlab.maia.agent.impl;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -27,7 +26,7 @@ public class RoleBase_addAllCollection_UnitTests extends RoleBaseAbstractTest {
 		givenEmptyRoles();
 		Collection<IRole> roles = givenNullCollection();
 		// When
-		roleBase.addAll(roles);
+		whenAddAll(roles);
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -36,7 +35,7 @@ public class RoleBase_addAllCollection_UnitTests extends RoleBaseAbstractTest {
 		givenStoredRoles(1);
 		Collection<IRole> roles = givenNullCollection();
 		// When
-		roleBase.addAll(roles);
+		whenAddAll(roles);
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -45,14 +44,14 @@ public class RoleBase_addAllCollection_UnitTests extends RoleBaseAbstractTest {
 		givenStoredRoles(10);
 		Collection<IRole> roles = givenNullCollection();
 		// When
-		roleBase.addAll(roles);
+		whenAddAll(roles);
 	}
 
 	@Test
 	public void emptyCollection_whenHave0Roles() {
 		// Given
 		givenEmptyRoles();
-		Collection<IRole> roles = Collections.emptyList();
+		Collection<IRole> roles = givenEmptyCollection();
 		// When
 		boolean result = whenAddAll(roles);
 		// Then
@@ -65,7 +64,7 @@ public class RoleBase_addAllCollection_UnitTests extends RoleBaseAbstractTest {
 	public void emptyCollection_whenHave1Roles() {
 		// Given
 		givenStoredRoles(1);
-		Collection<IRole> roles = Collections.emptyList();
+		Collection<IRole> roles = givenEmptyCollection();
 		// When
 		boolean result = whenAddAll(roles);
 		// Then
@@ -78,7 +77,7 @@ public class RoleBase_addAllCollection_UnitTests extends RoleBaseAbstractTest {
 	public void emptyCollection_whenHave10Roles() {
 		// Given
 		givenStoredRoles(10);
-		Collection<IRole> roles = Collections.emptyList();
+		Collection<IRole> roles = givenEmptyCollection();
 		// When
 		boolean result = whenAddAll(roles);
 		// Then

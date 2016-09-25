@@ -26,7 +26,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		givenEmptyRoles();
 		Stream<IRole> roles = givenNullStream();
 		// When
-		roleBase.addAll(roles);
+		whenAddAll(roles);
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -35,7 +35,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		givenStoredRoles(1);
 		Stream<IRole> roles = givenNullStream();
 		// When
-		roleBase.addAll(roles);
+		whenAddAll(roles);
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -44,7 +44,7 @@ public class RoleBase_addAllStream_UnitTests extends RoleBaseAbstractTest {
 		givenStoredRoles(10);
 		Stream<IRole> roles = givenNullStream();
 		// When
-		roleBase.addAll(roles);
+		whenAddAll(roles);
 	}
 
 	@Test
