@@ -1,5 +1,6 @@
 package ru.agentlab.maia.agent.impl;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.lang.annotation.Annotation;
@@ -18,6 +19,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import ru.agentlab.maia.agent.IPlan;
@@ -53,6 +55,9 @@ public class RoleBase implements IRoleBase {
 	protected IPlanBase planBase;
 
 	public RoleBase(Queue<Object> eventQueue, IInjector injector, IPlanBase planBase) {
+		checkNotNull(eventQueue, "Event Queue should be non null");
+		checkNotNull(injector, "Injector should be non null");
+		checkNotNull(planBase, "Plan Base should be non null");
 		this.injector = injector;
 		this.eventQueue = eventQueue;
 		this.planBase = planBase;
@@ -62,6 +67,7 @@ public class RoleBase implements IRoleBase {
 	public IRole create(Class<?> roleClass, Map<String, Object> parameters) {
 		checkNotNull(roleClass, "Role class to create should be non null");
 		checkNotNull(parameters, "Extra should be non null, use empty map instead");
+		checkArgument(!ClassUtils.isPrimitiveOrWrapper(roleClass), "Role class to create should be non primitive type");
 		Object role = injector.make(roleClass, parameters);
 		return new Role(role, getPlans(role), parameters);
 	}
@@ -70,6 +76,9 @@ public class RoleBase implements IRoleBase {
 	public IRole create(Object role, Map<String, Object> parameters) {
 		checkNotNull(role, "Role should be non null");
 		checkNotNull(parameters, "Extra should be non null, use empty map instead");
+		checkArgument(
+			!ClassUtils.isPrimitiveOrWrapper(role.getClass()),
+			"Role class to create should be non primitive type");
 		return new Role(role, getPlans(role), parameters);
 	}
 

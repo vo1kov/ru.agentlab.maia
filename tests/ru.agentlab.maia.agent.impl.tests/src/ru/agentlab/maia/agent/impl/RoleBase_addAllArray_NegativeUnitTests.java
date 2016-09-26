@@ -3,24 +3,26 @@ package ru.agentlab.maia.agent.impl;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import ru.agentlab.maia.agent.IRole;
 import ru.agentlab.maia.tests.util.category.speed.QuickTests;
 import ru.agentlab.maia.tests.util.category.type.UnitTests;
 import ru.agentlab.maia.tests.util.category.visibility.WhiteBoxTests;
 
 /**
- * Tests for {@link RoleBase#create(Object)}
+ * Tests for {@link RoleBase#addAll(IRole[])}
  * 
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
  */
 @Category({ UnitTests.class, QuickTests.class, WhiteBoxTests.class })
-public class RoleBase_createObject_UnitTests extends RoleBaseAbstractTest {
+public class RoleBase_addAllArray_NegativeUnitTests extends RoleBaseAbstractTest {
 
-	@Test(expected = NullPointerException.class)
-	public void nullObject() {
+	@Test
+	public void nullArray() {
 		// Given
-		Object objectRole = givenNullObject();
+		thrown.expect(NullPointerException.class);
+		thrown.expectMessage("Roles to add should be non null");
 		// When
-		whenCreate(objectRole);
+		roleBase.addAll((IRole[]) null);
 	}
 
 }
