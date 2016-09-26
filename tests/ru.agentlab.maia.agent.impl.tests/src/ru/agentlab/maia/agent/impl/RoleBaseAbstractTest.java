@@ -25,6 +25,7 @@ import org.mockito.ArgumentCaptor;
 import ru.agentlab.maia.agent.IPlan;
 import ru.agentlab.maia.agent.IPlanBase;
 import ru.agentlab.maia.agent.IRole;
+import ru.agentlab.maia.agent.event.RoleAddedEvent;
 import ru.agentlab.maia.agent.event.RoleDeactivatedEvent;
 import ru.agentlab.maia.agent.event.RoleRemovedEvent;
 import ru.agentlab.maia.container.IInjector;
@@ -52,7 +53,7 @@ public abstract class RoleBaseAbstractTest {
 	}
 
 	public static Object added(IRole role) {
-		return new RoleDeactivatedEvent(role);
+		return new RoleAddedEvent(role);
 	}
 
 	public static Object removed(IRole role) {

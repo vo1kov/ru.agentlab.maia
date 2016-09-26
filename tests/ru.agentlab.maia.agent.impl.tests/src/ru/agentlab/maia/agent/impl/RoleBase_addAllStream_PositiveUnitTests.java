@@ -2,7 +2,6 @@ package ru.agentlab.maia.agent.impl;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
@@ -79,7 +78,6 @@ public class RoleBase_addAllStream_PositiveUnitTests extends RoleBaseAbstractTes
 		boolean result = roleBase.addAll(rolesToAdd);
 		// Then
 		assertThat(result, equalTo(expected));
-		assertThat(roleBase.getRoles(), hasItems((IRole[]) rolesToAdd.toArray(size -> new IRole[size])));
 		assertThat(roleBase.getRoles(), containsInAnyOrder(rolesAfter));
 		thenQueueFired(events);
 	}

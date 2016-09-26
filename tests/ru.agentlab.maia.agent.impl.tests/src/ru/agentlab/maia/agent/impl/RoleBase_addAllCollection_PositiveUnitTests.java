@@ -4,7 +4,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.emptyList;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
@@ -80,7 +79,6 @@ public class RoleBase_addAllCollection_PositiveUnitTests extends RoleBaseAbstrac
 		boolean result = roleBase.addAll(rolesToAdd);
 		// Then
 		assertThat(result, equalTo(expected));
-		assertThat(roleBase.getRoles(), hasItems(rolesToAdd.toArray(new IRole[rolesToAdd.size()])));
 		assertThat(roleBase.getRoles(), containsInAnyOrder(rolesAfter));
 		thenQueueFired(events);
 	}

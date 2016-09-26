@@ -26,14 +26,17 @@ public interface IRoleBase {
 	boolean add(IRole role);
 
 	default boolean addAll(IRole[] roles) {
+		checkNotNull(roles, "Roles to add should be non null");
 		return Stream.of(roles).map(this::add).reduce(false, (a, b) -> a || b);
 	}
 
 	default boolean addAll(Collection<IRole> roles) {
+		checkNotNull(roles, "Roles to add should be non null");
 		return roles.stream().map(this::add).reduce(false, (a, b) -> a || b);
 	}
 
 	default boolean addAll(Stream<IRole> roles) {
+		checkNotNull(roles, "Roles to add should be non null");
 		return roles.map(this::add).reduce(false, (a, b) -> a || b);
 	}
 
@@ -53,14 +56,17 @@ public interface IRoleBase {
 	boolean remove(IRole role);
 
 	default boolean removeAll(IRole[] roles) {
+		checkNotNull(roles, "Roles to remove should be non null");
 		return Stream.of(roles).map(this::remove).reduce(false, (a, b) -> a || b);
 	}
 
 	default boolean removeAll(Collection<IRole> roles) {
+		checkNotNull(roles, "Roles to remove should be non null");
 		return roles.stream().map(this::remove).reduce(false, (a, b) -> a || b);
 	}
 
 	default boolean removeAll(Stream<IRole> roles) {
+		checkNotNull(roles, "Roles to remove should be non null");
 		return roles.map(this::remove).reduce(false, (a, b) -> a || b);
 	}
 
