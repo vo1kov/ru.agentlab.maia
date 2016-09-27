@@ -152,7 +152,7 @@ public class RoleBase implements IRoleBase {
 			List<Pair<Class<?>, IPlanEventFilter<?>>> registrations = getRegistrations(role, method, customData);
 			registrations.forEach(
 				registration -> result
-					.add(new Plan(registration.getLeft(), method, registration.getRight(), stateMatcher)));
+					.add(new Plan(registration.getLeft(), role, method, registration.getRight(), stateMatcher)));
 			List<IPlan<?>> extraPlans = getExtraPlans(role, method, customData);
 			result.addAll(extraPlans);
 		}

@@ -104,13 +104,8 @@ public class PlanBase implements IPlanBase {
 
 	@Override
 	public Stream<Option> getOptions(Object event) {
-		// checkNotNull(event);
 		assert event != null;
-		// Object payload = event.getPayload();
 		Class<?> eventType = event.getClass();
-		// if (event instanceof ExternalAddedEvent) {
-		// eventType = event.getPayload().getClass();
-		// }
 		Collection<IPlan<?>> collection = plans.get(eventType);
 		List<Option> result = new ArrayList<>();
 		for (IPlan<?> plan : collection) {
@@ -121,17 +116,6 @@ public class PlanBase implements IPlanBase {
 			}
 		}
 		return result.stream();
-		// return collection.stream().map(plan -> {
-		//
-		// IPlanEventFilter<?> eventMatcher = plan.getEventMatcher();
-		// IPlanStateFilter stateMatcher = plan.getStateMatcher();
-		// if (eventMatcher.matches(event, variables) &&
-		// stateMatcher.matches(event, variables)) {
-		// return new Option(plan.getPlanBody(), variables);
-		// } else {
-		// return null;
-		// }
-		// }).filter(Objects::nonNull);
 	}
 
 	@Override

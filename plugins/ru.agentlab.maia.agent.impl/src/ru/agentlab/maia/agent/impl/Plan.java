@@ -20,56 +20,56 @@ public class Plan<T> implements IPlan<T> {
 
 	protected final IPlanBody planBody;
 
-	protected final Class<T> roleClass;
+	protected final Class<T> eventClass;
 
-	public Plan(Class<T> roleClass, IPlanBody planBody, IPlanEventFilter<? super T> eventMatcher, IPlanStateFilter stateMatcher) {
-		Objects.requireNonNull(roleClass);
+	public Plan(Class<T> eventClass, IPlanBody planBody, IPlanEventFilter<? super T> eventMatcher, IPlanStateFilter stateMatcher) {
+		Objects.requireNonNull(eventClass);
 		Objects.requireNonNull(planBody);
 		Objects.requireNonNull(eventMatcher);
 		Objects.requireNonNull(stateMatcher);
-		this.roleClass = roleClass;
+		this.eventClass = eventClass;
 		this.planBody = planBody;
 		this.eventMatcher = eventMatcher;
 		this.stateMatcher = stateMatcher;
 	}
 
-	public Plan(Class<T> roleClass, Method method, IPlanEventFilter<? super T> eventMatcher, IPlanStateFilter stateMatcher) {
-		this(roleClass, getPlanBody(roleClass, method), eventMatcher, stateMatcher);
+	public Plan(Class<T> eventClass, Object roleObject, Method method, IPlanEventFilter<? super T> eventMatcher, IPlanStateFilter stateMatcher) {
+		this(eventClass, getPlanBody(roleObject, method), eventMatcher, stateMatcher);
 	}
 
-	public Plan(Class<T> roleClass, Method method, IPlanEventFilter<? super T> eventMatcher) {
-		this(roleClass, getPlanBody(roleClass, method), eventMatcher, PlanStateFilters.anything());
+	public Plan(Class<T> eventClass, Object roleObject, Method method, IPlanEventFilter<? super T> eventMatcher) {
+		this(eventClass, getPlanBody(roleObject, method), eventMatcher, PlanStateFilters.anything());
 	}
 
-	public Plan(Class<T> roleClass, Method method, IPlanStateFilter stateMatcher) {
-		this(roleClass, getPlanBody(roleClass, method), PlanEventFilters.anything(), stateMatcher);
+	public Plan(Class<T> eventClass, Object roleObject, Method method, IPlanStateFilter stateMatcher) {
+		this(eventClass, getPlanBody(roleObject, method), PlanEventFilters.anything(), stateMatcher);
 	}
 
-	public Plan(Class<T> roleClass, Method method) {
-		this(roleClass, getPlanBody(roleClass, method), PlanEventFilters.anything(), PlanStateFilters.anything());
+	public Plan(Class<T> eventClass, Object roleObject, Method method) {
+		this(eventClass, getPlanBody(roleObject, method), PlanEventFilters.anything(), PlanStateFilters.anything());
 	}
 
-	public Plan(Class<T> roleClass, Runnable lambda, IPlanEventFilter<T> eventMatcher, IPlanStateFilter stateMatcher) {
-		this(roleClass, new PlanBodyLambda(lambda), eventMatcher, stateMatcher);
+	public Plan(Class<T> eventClass, Runnable lambda, IPlanEventFilter<T> eventMatcher, IPlanStateFilter stateMatcher) {
+		this(eventClass, new PlanBodyLambda(lambda), eventMatcher, stateMatcher);
 	}
 
-	public Plan(Class<T> roleClass, Runnable lambda, IPlanEventFilter<T> eventMatcher) {
-		this(roleClass, new PlanBodyLambda(lambda), eventMatcher, PlanStateFilters.anything());
+	public Plan(Class<T> eventClass, Runnable lambda, IPlanEventFilter<T> eventMatcher) {
+		this(eventClass, new PlanBodyLambda(lambda), eventMatcher, PlanStateFilters.anything());
 	}
 
-	public Plan(Class<T> roleClass, Runnable lambda, IPlanStateFilter stateMatcher) {
-		this(roleClass, new PlanBodyLambda(lambda), PlanEventFilters.anything(), stateMatcher);
+	public Plan(Class<T> eventClass, Runnable lambda, IPlanStateFilter stateMatcher) {
+		this(eventClass, new PlanBodyLambda(lambda), PlanEventFilters.anything(), stateMatcher);
 	}
 
-	public Plan(Class<T> roleClass, Runnable lambda) {
-		this(roleClass, new PlanBodyLambda(lambda), PlanEventFilters.anything(), PlanStateFilters.anything());
+	public Plan(Class<T> eventClass, Runnable lambda) {
+		this(eventClass, new PlanBodyLambda(lambda), PlanEventFilters.anything(), PlanStateFilters.anything());
 	}
 
-	public static IPlanBody getPlanBody(Object roleClass, Method method) {
+	public static IPlanBody getPlanBody(Object roleObject, Method method) {
 		if (method.getParameterCount() == 0) {
-			return new PlanBodyStateles(roleClass, method);
+			return new PlanBodyStateles(roleObject, method);
 		} else {
-			return new PlanBodyStateful(roleClass, method);
+			return new PlanBodyStateful(roleObject, method);
 		}
 	}
 
@@ -107,7 +107,7 @@ public class Plan<T> implements IPlan<T> {
 
 	@Override
 	public Class<T> getType() {
-		return roleClass;
+		return eventClass;
 	}
 
 	@Override
