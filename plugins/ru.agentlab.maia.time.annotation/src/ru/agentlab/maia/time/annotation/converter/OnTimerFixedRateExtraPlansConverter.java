@@ -2,6 +2,8 @@ package ru.agentlab.maia.time.annotation.converter;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
@@ -9,9 +11,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 
 import javax.inject.Inject;
-
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 
 import ru.agentlab.maia.agent.IPlan;
 import ru.agentlab.maia.agent.event.AgentStartedEvent;
@@ -30,8 +29,7 @@ public class OnTimerFixedRateExtraPlansConverter implements IPlanExtraConverter 
 	Queue<Object> eventQueue;
 
 	@Override
-	public Multimap<Class<?>, IPlan> getPlans(Object role, Method method, Annotation annotation,
-			Map<String, Object> customData) {
+	public List<IPlan<?>> getPlans(Object role, Method method, Annotation annotation, Map<String, Object> customData) {
 		OnTimerFixedRate onTimerDelay = (OnTimerFixedRate) annotation;
 
 		final UUID eventKey = (UUID) customData.get(annotation.getClass().getName());
@@ -39,8 +37,11 @@ public class OnTimerFixedRateExtraPlansConverter implements IPlanExtraConverter 
 
 		Runnable onStartPlan = () -> {
 			System.out.println("Register schedule");
-			futures[0] = scheduler.scheduleAtFixedRate(() -> eventQueue.offer(new TimerEvent(eventKey)),
-					onTimerDelay.delay(), onTimerDelay.value(), onTimerDelay.unit());
+			futures[0] = scheduler.scheduleAtFixedRate(
+				() -> eventQueue.offer(new TimerEvent(eventKey)),
+				onTimerDelay.delay(),
+				onTimerDelay.value(),
+				onTimerDelay.unit());
 		};
 
 		Runnable onStopPlan = () -> {
@@ -48,9 +49,9 @@ public class OnTimerFixedRateExtraPlansConverter implements IPlanExtraConverter 
 			futures[0].cancel(true);
 		};
 
-		Multimap<Class<?>, IPlan> result = ArrayListMultimap.create();
-		result.put(AgentStartedEvent.class, new Plan(role, onStartPlan));
-		result.put(AgentStoppedEvent.class, new Plan(role, onStopPlan));
+		List<IPlan<?>> result = new ArrayList<>();
+		result.add(new Plan<AgentStartedEvent>(AgentStartedEvent.class, onStartPlan)); // AgentStartedEvent.class,
+		result.add(new Plan<AgentStoppedEvent>(AgentStoppedEvent.class, onStopPlan)); // AgentStoppedEvent.class,
 		return result;
 	}
 

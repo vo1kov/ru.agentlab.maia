@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import org.apache.commons.lang.ClassUtils;
+import org.apache.commons.lang3.ClassUtils;
 
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
@@ -79,7 +79,6 @@ public class ContainerWithHierarchy extends AbstractContainer {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public <T> T put(Class<? super T> key, T service) {
 		checkNotNull(key, "Key class should be non null");
 		checkNotNull(service, "Service should be non null");
@@ -96,7 +95,6 @@ public class ContainerWithHierarchy extends AbstractContainer {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public Object put(Object service) {
 		checkNotNull(service, "Service should be non null");
 		Class<? extends Object> key = service.getClass();
@@ -119,7 +117,6 @@ public class ContainerWithHierarchy extends AbstractContainer {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public Object remove(Object service) {
 		checkNotNull(service, "Service should be non null");
 		Class<? extends Object> clazz = service.getClass();

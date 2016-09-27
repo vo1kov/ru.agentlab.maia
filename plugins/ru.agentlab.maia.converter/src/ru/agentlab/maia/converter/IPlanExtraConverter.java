@@ -2,15 +2,13 @@ package ru.agentlab.maia.converter;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.Multimap;
 
 import ru.agentlab.maia.agent.IPlan;
 
 public interface IPlanExtraConverter {
 
-	Multimap<Class<?>, IPlan> getPlans(Object role, Method method, Annotation annotation,
-			Map<String, Object> customData);
+	List<IPlan<?>> getPlans(Object role, Method method, Annotation annotation, Map<String, Object> customData);
 
 }

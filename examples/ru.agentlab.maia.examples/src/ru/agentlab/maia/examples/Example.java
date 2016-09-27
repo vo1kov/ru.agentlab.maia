@@ -27,11 +27,11 @@ public class Example {
 	@OnGoalAdded(value = { "foaf:Teenager", "foaf:Tomas" }, type = AxiomType.CLASS_ASSERTION)
 	@OnGoalFailed(value = { "foaf:Teenager", "foaf:Tomas" }, type = AxiomType.CLASS_ASSERTION)
 	public void setup() {
-		IPlan plan = new Plan(this, () -> {
+		IPlan<BeliefAddedEvent> plan = new Plan<>(BeliefAddedEvent.class, () -> {
 			System.out.println(service);
 			System.out.println(service.hashCode());
 		});
-		planBase.add(BeliefAddedEvent.class, plan);
+		planBase.add(plan);
 	}
 
 }

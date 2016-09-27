@@ -18,11 +18,6 @@
 <repository location="http://www.agentlab.ru/eclipse/update/com.google.guava/18.0.0.201502021635/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.apache.commons.lang3.source" version="3.1.0.v201403281430"/>
-<unit id="org.apache.commons.lang3" version="3.1.0.v201403281430"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.slf4j.impl.log4j12" version="1.7.2.v20131105-2200"/>
 <unit id="org.apache.commons.logging.source" version="1.1.1.v201101211721"/>
 <unit id="javax.inject" version="1.0.0.v20091030"/>
@@ -63,6 +58,8 @@
 <unit id="com.google.inject" version="3.0.0.v201605172100"/>
 <unit id="com.google.inject.multibindings" version="3.0.0.v201605172100"/>
 <unit id="com.google.inject.assistedinject.source" version="3.0.0.v201402270930"/>
+<unit id="org.apache.commons.lang3.source" version="3.1.0.v201403281430"/>
+<unit id="org.apache.commons.lang3" version="3.1.0.v201403281430"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
@@ -79,8 +76,8 @@
 <plugin id="com.google.gson"/>
 <plugin id="com.google.gson.source"/>
 <plugin id="com.google.guava" version="18.0.0.201502021635"/>
-<plugin id="com.google.guava.source" version="18.0.0.201502021635"/>
 <plugin id="com.google.guava.source" version="15.0.0.v201403281430"/>
+<plugin id="com.google.guava.source" version="18.0.0.201502021635"/>
 <plugin id="com.google.inject"/>
 <plugin id="com.google.inject.assistedinject"/>
 <plugin id="com.google.inject.assistedinject.source"/>

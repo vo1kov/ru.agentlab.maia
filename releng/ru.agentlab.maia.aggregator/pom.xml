@@ -44,7 +44,7 @@
 		<module>../../plugins/ru.agentlab.maia.time.annotation</module>
 
 		<module>../../tests/ru.agentlab.maia.tests.util</module>
-		<!-- <module>../../tests/ru.agentlab.maia.agent.tests</module> -->
+		<module>../../tests/ru.agentlab.maia.agent.impl.tests</module>
 		<module>../../tests/ru.agentlab.maia.container.impl.tests</module>
 
 		<module>../../aspects/ru.agentlab.maia.container.aspect</module>

@@ -31,23 +31,25 @@ public class LoggerRule implements TestRule {
 			public void evaluate() throws Throwable {
 				System.out.println();
 				System.out.println(
-						"--------------------------- " + description.getDisplayName() + " ---------------------------");
+					"--------------------------- " + description.getDisplayName() + " ---------------------------");
 				System.out.println();
-				Stream.of(test.getClass().getFields()).filter(f -> f.isAnnotationPresent(Parameter.class))
-						.forEach(f -> {
-							try {
-								System.out.println("Input parameter: [" + f.getName() + "] = ["
-										+ LoggerRule.this.toString(f.get(test)) + "]");
-							} catch (Exception e) {
+				Stream
+					.of(test.getClass().getFields())
+					.filter(f -> f.isAnnotationPresent(Parameter.class))
+					.forEach(f -> {
+						try {
+							System.out.println(
+								"Input parameter: [" + f.getName() + "] = [" + LoggerRule.this.toString(f.get(test))
+										+ "]");
+						} catch (Exception e) {
 
-							}
-						});
+						}
+					});
 				try {
 					base.evaluate();
 					System.out.println("Finished successfully");
 				} catch (Exception e) {
-					System.out.println("Finished with fail");
-					e.printStackTrace();
+					System.out.println("Finished with exception: " + e.getClass() + " " + e.getLocalizedMessage());
 					throw e;
 				}
 			}

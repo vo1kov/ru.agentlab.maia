@@ -4,18 +4,18 @@ import java.util.Map;
 
 public class Option {
 	
-	IPlanBody planBody;
+	IPlan<?> plan;
 	
 	Map<String, Object> values;
 
-	public Option(IPlanBody plan, Map<String, Object> values) {
+	public Option(IPlan<?> plan, Map<String, Object> values) {
 		super();
-		this.planBody = plan;
+		this.plan = plan;
 		this.values = values;
 	}
 
-	public IPlanBody getPlanBody() {
-		return planBody;
+	public IPlan<?> getPlan() {
+		return plan;
 	}
 
 	public Map<String, Object> getValues() {
