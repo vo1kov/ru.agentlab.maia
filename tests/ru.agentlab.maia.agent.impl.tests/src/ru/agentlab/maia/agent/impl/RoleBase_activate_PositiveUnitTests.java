@@ -68,7 +68,7 @@ public class RoleBase_activate_PositiveUnitTests extends RoleBaseAbstractTest {
 	public void evaluateTestCase() {
 		// Given
 		givenStoredRoles(rolesBefore);
-		IPlan<?>[] plans = new IPlan[3];
+		IPlan<?>[] plans = new IPlan[] { mock(IPlan.class), mock(IPlan.class), mock(IPlan.class) };
 		Map<String, Object> extra = mock(Map.class);
 		Object roleObject = mock(Object.class);
 		when(roleToActivate.getRoleObject()).thenReturn(roleObject);
