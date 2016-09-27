@@ -8,13 +8,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Random;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.hamcrest.Matcher;
@@ -25,6 +23,7 @@ import org.mockito.ArgumentCaptor;
 import ru.agentlab.maia.agent.IPlan;
 import ru.agentlab.maia.agent.IPlanBase;
 import ru.agentlab.maia.agent.IRole;
+import ru.agentlab.maia.agent.event.RoleActivatedEvent;
 import ru.agentlab.maia.agent.event.RoleAddedEvent;
 import ru.agentlab.maia.agent.event.RoleDeactivatedEvent;
 import ru.agentlab.maia.agent.event.RoleRemovedEvent;
@@ -56,6 +55,10 @@ public abstract class RoleBaseAbstractTest {
 		return new RoleAddedEvent(role);
 	}
 
+	public static Object activated(IRole role) {
+		return new RoleActivatedEvent(role);
+	}
+
 	public static Object removed(IRole role) {
 		return new RoleRemovedEvent(role);
 	}
@@ -81,8 +84,6 @@ public abstract class RoleBaseAbstractTest {
 
 	protected Random random = new Random();
 
-	// ======================== Given Arguments ========================
-
 	protected Class<?> givenDummyServiceClass() {
 		return DummyService.class;
 	}
@@ -100,24 +101,9 @@ public abstract class RoleBaseAbstractTest {
 		return mock(Map.class);
 	}
 
-	protected void givenStoredRoles(int size) {
-		roleBase.roles.clear();
-		IntStream.range(0, size).mapToObj(i -> mock(IRole.class)).forEach(roleBase.roles::add);
-	}
-
-	protected void givenStoredRoles(IRole role) {
-		roleBase.roles.clear();
-		roleBase.roles.add(role);
-	}
-
-	protected void givenStoredRoles(IRole[] roles) {
+	protected void givenStoredRoles(IRole... roles) {
 		roleBase.roles.clear();
 		Stream.of(roles).forEach(roleBase.roles::add);
-	}
-
-	protected void givenStoredRoles(Collection<IRole> roles) {
-		roleBase.roles.clear();
-		roles.forEach(roleBase.roles::add);
 	}
 
 	protected void thenQueueFired(Object[] expectedEvents) {

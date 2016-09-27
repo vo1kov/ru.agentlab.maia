@@ -95,7 +95,9 @@ public class RoleBase implements IRoleBase {
 
 	@Override
 	public boolean activate(IRole role) {
-		if (roles.contains(role) && !role.isActive()) {
+		checkNotNull(role, "Role to activate should be non null");
+		checkArgument(roles.contains(role), "Unknown role to activate, role should exists into role base");
+		if (!role.isActive()) {
 			Map<String, Object> extra = role.getExtra();
 			Object roleObject = role.getRoleObject();
 			injector.inject(roleObject, extra);
@@ -111,25 +113,16 @@ public class RoleBase implements IRoleBase {
 
 	@Override
 	public boolean deactivate(IRole role) {
-		if (roles.contains(role) && role.isActive()) {
-			Map<String, Object> extra = role.getExtra();
-			Object roleObject = role.getRoleObject();
-			planBase.removeAll(role.getPlans());
-			injector.invoke(roleObject, PreDestroy.class, extra);
-			injector.uninject(roleObject);
-			role.setActive(false);
-			eventQueue.offer(new RoleDeactivatedEvent(role));
-			return true;
-		} else {
-			return false;
-		}
+		checkNotNull(role, "Role to deactivate should be non null");
+		checkArgument(roles.contains(role), "Unknown role to deactivate, role should exists into role base");
+		return deactivateInternal(role);
 	}
 
 	@Override
 	public boolean remove(IRole role) {
 		checkNotNull(role, "Role to remove should be non null");
-		deactivate(role);
 		if (roles.remove(role)) {
+			deactivateInternal(role);
 			eventQueue.offer(new RoleRemovedEvent(role));
 			return true;
 		} else {
@@ -145,7 +138,7 @@ public class RoleBase implements IRoleBase {
 	@Override
 	public void clear() {
 		roles.forEach(role -> {
-			deactivate(role);
+			deactivateInternal(role);
 			eventQueue.offer(new RoleRemovedEvent(role));
 		});
 		roles.clear();
@@ -164,6 +157,21 @@ public class RoleBase implements IRoleBase {
 			result.addAll(extraPlans);
 		}
 		return result.toArray(new IPlan[result.size()]);
+	}
+
+	private boolean deactivateInternal(IRole role) {
+		if (role.isActive()) {
+			Map<String, Object> extra = role.getExtra();
+			Object roleObject = role.getRoleObject();
+			planBase.removeAll(role.getPlans());
+			injector.invoke(roleObject, PreDestroy.class, extra);
+			injector.uninject(roleObject);
+			role.setActive(false);
+			eventQueue.offer(new RoleDeactivatedEvent(role));
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private Class<?> getEventType(Object role, Method method, Annotation annotation, Map<String, Object> customData) {

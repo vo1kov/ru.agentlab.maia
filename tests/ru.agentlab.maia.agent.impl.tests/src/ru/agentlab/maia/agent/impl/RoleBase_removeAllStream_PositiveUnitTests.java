@@ -42,7 +42,7 @@ public class RoleBase_removeAllStream_PositiveUnitTests extends RoleBaseAbstract
 		/*   1 */ { Stream.of(R1),         new IRole[]{},           false,    new IRole[]{},               new Object[] {} },
 		/*   2 */ { Stream.of(R1, R2),     new IRole[]{},           false,    new IRole[]{},               new Object[] {} }, 
 		
-		/*   3 */ {  Stream.empty(),       new IRole[]{R1},         false,    new IRole[]{R1},             new Object[] {} }, 
+		/*   3 */ { Stream.empty(),        new IRole[]{R1},         false,    new IRole[]{R1},             new Object[] {} }, 
 		/*   4 */ { Stream.of(R1),         new IRole[]{R1},         true,     new IRole[]{},               new Object[] {removed(R1)} }, 
 		/*   5 */ { Stream.of(R2),         new IRole[]{R1},         false,    new IRole[]{R1},             new Object[] {} }, 
 		/*   6 */ { Stream.of(R1, R2),     new IRole[]{R1},         true,     new IRole[]{},               new Object[] {removed(R1)} }, 
