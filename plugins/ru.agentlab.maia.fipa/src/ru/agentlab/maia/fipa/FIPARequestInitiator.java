@@ -1,10 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2016 AgentLab.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
 package ru.agentlab.maia.fipa;
 
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.AGREE;
@@ -12,9 +5,8 @@ import static ru.agentlab.maia.fipa.FIPAPerformativeNames.CANCEL;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.FAILURE;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.INFORM;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.NOT_UNDERSTOOD;
-import static ru.agentlab.maia.fipa.FIPAPerformativeNames.QUERY_IF;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.REFUSE;
-import static ru.agentlab.maia.fipa.FIPAProtocolNames.FIPA_QUERY;
+import static ru.agentlab.maia.fipa.FIPAPerformativeNames.REQUEST;
 import static ru.agentlab.maia.fipa.FIPAProtocolNames.FIPA_REQUEST;
 
 import javax.annotation.PostConstruct;
@@ -29,13 +21,13 @@ import ru.agentlab.maia.message.annotation.OnMessageReceived;
 import ru.agentlab.maia.message.impl.AclMessage;
 import ru.agentlab.maia.time.TimerEvent;
 
-public class FIPAQueryIfInitiator extends AbstractInitiator {
+public class FIPARequestInitiator extends AbstractInitiator {
 
 	private State state = null;
 
 	@PostConstruct
 	public void onStart() {
-		send(FIPA_QUERY, QUERY_IF, template);
+		send(FIPA_REQUEST, REQUEST, template);
 		startTimer();
 		state = State.REQUEST_SENT;
 	}
@@ -73,11 +65,12 @@ public class FIPAQueryIfInitiator extends AbstractInitiator {
 			try {
 				OWLAxiom axiom = parser.parse(message.getContent());
 				successProtocol(axiom);
+				return;
 			} catch (Exception e) {
 				reply(message, NOT_UNDERSTOOD, e.getMessage());
 				abortProtocol(message);
+				return;
 			}
-			return;
 		case NOT_UNDERSTOOD:
 		case REFUSE:
 		case FAILURE:
@@ -112,7 +105,7 @@ public class FIPAQueryIfInitiator extends AbstractInitiator {
 	}
 
 	private boolean notMyMessage(AclMessage message) {
-		return !message.checkConversationId(conversationId.toString()) || !message.checkProtocol(FIPA_QUERY);
+		return !message.checkConversationId(conversationId.toString()) || !message.checkProtocol(FIPA_REQUEST);
 	}
 
 	private static enum State {

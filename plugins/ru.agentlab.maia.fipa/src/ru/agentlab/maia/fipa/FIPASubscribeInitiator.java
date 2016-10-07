@@ -9,24 +9,25 @@ package ru.agentlab.maia.fipa;
 
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.AGREE;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.CANCEL;
+import static ru.agentlab.maia.fipa.FIPAPerformativeNames.FAILURE;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.INFORM;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.NOT_UNDERSTOOD;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.REFUSE;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.SUBSCRIBE;
+import static ru.agentlab.maia.fipa.FIPAProtocolNames.FIPA_REQUEST;
 import static ru.agentlab.maia.fipa.FIPAProtocolNames.FIPA_SUBSCRIBE;
 
-import java.util.UUID;
-
-import javax.inject.Inject;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
 
-import ru.agentlab.maia.agent.IAgent;
 import ru.agentlab.maia.agent.IMessage;
-import ru.agentlab.maia.belief.IBeliefBase;
-import ru.agentlab.maia.message.IMessageDeliveryService;
+import ru.agentlab.maia.agent.annotation.OnEvent;
+import ru.agentlab.maia.agent.event.RoleRemovedEvent;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
 import ru.agentlab.maia.message.impl.AclMessage;
+import ru.agentlab.maia.time.TimerEvent;
 
 /**
  * 
@@ -61,83 +62,84 @@ import ru.agentlab.maia.message.impl.AclMessage;
  * @see ru.agentlab.maia.fipa.FIPASubscribeResponder
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>
  */
-public class FIPASubscribeInitiator {
+public class FIPASubscribeInitiator extends AbstractInitiator {
 
-	private final String conversationId = UUID.randomUUID().toString();
+	boolean waitForResponse = true;
 
-	@Inject
-	private IBeliefBase beliefBase;
-
-	@Inject
-	private IMessageDeliveryService messaging;
-
-	@Inject
-	private UUID targetAgent;
-
-	@Inject
-	private String template;
-
-	@Inject
-	private IBeliefParser parser;
-
-	@OnRoleActivated
-	public void onRoleActivated(IAgent agent) {
-		messaging.send(createMessageToTargetAgent(agent, SUBSCRIBE, template));
+	@PostConstruct
+	public void onStart() {
+		send(FIPA_SUBSCRIBE, SUBSCRIBE, template);
+		startTimer();
 	}
 
-	@OnMessageReceived(performative = AGREE, protocol = FIPA_SUBSCRIBE)
-	public void onAgree(IMessage message) {
-		if (!checkConversationId(message)) {
-			// Do nothing
+	@OnEvent(TimerEvent.class)
+	public void onDeadline(TimerEvent event) {
+		if (notMyEvent(event)) {
+			return;
+		}
+		addEvent(new ProtocolDeadlineEvent());
+		addGoal(new RoleRemovedEvent(role));
+	}
+
+	@OnMessageReceived
+	public void onMessage(AclMessage message) {
+		if (notMyMessage(message)) {
+			return;
+		}
+		switch (message.getPerformative()) {
+		case AGREE:
+			stopTimer();
+			return;
+		case INFORM:
+			stopTimer();
+			IBeliefParser parser = getBeliefParser(message.getLanguage());
+			if (parser == null) {
+				reply(message, NOT_UNDERSTOOD, "Unknown language [" + message.getLanguage() + "]");
+				abortProtocol(message);
+				return;
+			}
+			try {
+				OWLAxiom axiom = parser.parse(message.getContent());
+				successProtocol(axiom);
+				return;
+			} catch (Exception e) {
+				reply(message, NOT_UNDERSTOOD, e.getMessage());
+				abortProtocol(message);
+				return;
+			}
+		case NOT_UNDERSTOOD:
+		case REFUSE:
+		case FAILURE:
+			stopTimer();
+			abortProtocol(message);
 			return;
 		}
 	}
 
-	@OnMessageReceived(performative = NOT_UNDERSTOOD, protocol = FIPA_SUBSCRIBE)
-	public void onNotUnderstood(IMessage message) {
-		if (checkConversationId(message)) {
-			throw new NotUnderstoodException();
-		}
+	@PreDestroy
+	public void onDestroy() {
+		stopTimer();
+		send(FIPA_REQUEST, CANCEL);
 	}
 
-	@OnMessageReceived(performative = REFUSE, protocol = FIPA_SUBSCRIBE)
-	public void onRefuse(IMessage message) {
-		if (checkConversationId(message)) {
-			throw new RefuseException();
-		}
+	private void successProtocol(Object result) {
+		addEvent(new ProtocolSuccessEvent(role, result));
+		addGoal(new RoleRemovedEvent(role));
+		// state = State.FINISHED;
 	}
 
-	@OnMessageReceived(performative = INFORM, protocol = FIPA_SUBSCRIBE)
-	public void onInform(IMessage message) {
-		if (checkConversationId(message)) {
-			OWLAxiom axiom = parser.parse(message.getContent());
-			beliefBase.addBelief(axiom);
-		}
+	private void abortProtocol(IMessage message) {
+		addEvent(new ProtocolAbortedEvent(role, message));
+		addGoal(new RoleRemovedEvent(role));
+		// state = State.FINISHED;
 	}
 
-	@OnRoleDeactivated
-	public void onRoleDeactivated(IAgent agent) {
-		messaging.send(createMessageToTargetAgent(agent, CANCEL));
+	private boolean notMyEvent(TimerEvent event) {
+		return event.getEventKey() != conversationId;
 	}
 
-	private IMessage createMessageToTargetAgent(IAgent agent, String performative) {
-		IMessage message = new AclMessage();
-		message.setSender(agent.getUuid());
-		message.setReceiver(targetAgent);
-		message.setProtocol(FIPA_SUBSCRIBE);
-		message.setPerformative(performative);
-		message.setConversationId(conversationId);
-		return message;
-	}
-
-	private IMessage createMessageToTargetAgent(IAgent agent, String performative, String content) {
-		IMessage message = createMessageToTargetAgent(agent, performative);
-		message.setContent(content);
-		return message;
-	}
-
-	private boolean checkConversationId(IMessage message) {
-		return message.getConversationId().equals(conversationId);
+	private boolean notMyMessage(AclMessage message) {
+		return !message.checkConversationId(conversationId.toString()) || !message.checkProtocol(FIPA_SUBSCRIBE);
 	}
 
 }

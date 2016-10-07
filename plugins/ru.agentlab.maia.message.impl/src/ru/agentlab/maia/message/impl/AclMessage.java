@@ -189,4 +189,9 @@ public class AclMessage implements IMessage {
 		this.postTimeStamp = postTimeStamp;
 	}
 
+	@Override
+	public String toString() {
+		return "[" + getProtocol() + "]::[" + getPerformative() + "]::[" + getContent() + "]";
+	}
+
 }

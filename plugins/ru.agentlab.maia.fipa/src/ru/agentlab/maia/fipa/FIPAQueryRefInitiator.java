@@ -9,108 +9,120 @@ package ru.agentlab.maia.fipa;
 
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.AGREE;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.CANCEL;
+import static ru.agentlab.maia.fipa.FIPAPerformativeNames.FAILURE;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.INFORM;
+import static ru.agentlab.maia.fipa.FIPAPerformativeNames.NOT_UNDERSTOOD;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.QUERY_REF;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.REFUSE;
 import static ru.agentlab.maia.fipa.FIPAProtocolNames.FIPA_QUERY;
-
-import java.util.UUID;
+import static ru.agentlab.maia.fipa.FIPAProtocolNames.FIPA_REQUEST;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.inject.Inject;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
 
-import de.derivo.sparqldlapi.Query;
-import ru.agentlab.maia.agent.IAgent;
 import ru.agentlab.maia.agent.IMessage;
-import ru.agentlab.maia.belief.IBeliefBase;
-import ru.agentlab.maia.message.IMessageDeliveryService;
+import ru.agentlab.maia.agent.annotation.OnEvent;
+import ru.agentlab.maia.agent.event.RoleRemovedEvent;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
 import ru.agentlab.maia.message.impl.AclMessage;
+import ru.agentlab.maia.time.TimerEvent;
 
-public class FIPAQueryRefInitiator {
+public class FIPAQueryRefInitiator extends AbstractInitiator {
 
-	private String conversationId;
-
-	@Inject
-	private IBeliefBase beliefBase;
-
-	@Inject
-	private IMessageDeliveryService messaging;
-
-	@Inject
-	private UUID targetAgent;
-
-	@Inject
-	private Query template;
-
-	public FIPAQueryRefInitiator(UUID targetAgent, Query template) {
-		this.targetAgent = targetAgent;
-		this.template = template;
-	}
+	private State state = null;
 
 	@PostConstruct
-	public void onSetup(IAgent agent) {
-		conversationId = UUID.randomUUID().toString();
-		IMessage message = createMessageToTargetAgent(agent);
-		message.setPerformative(QUERY_REF);
-		message.setContent(template.toString());
-		messaging.send(message);
+	public void onStart() {
+		send(FIPA_QUERY, QUERY_REF, template);
+		startTimer();
+		state = State.REQUEST_SENT;
 	}
 
-	@OnMessageReceived(performative = AGREE, protocol = FIPA_QUERY)
-	public void onAgree(IMessage message) {
-		if (!checkConversationId(message)) {
+	@OnEvent(TimerEvent.class)
+	public void onDeadline(TimerEvent event) {
+		if (notMyEvent(event)) {
 			return;
+		}
+		if (state != State.FINISHED) {
+			addEvent(new ProtocolDeadlineEvent());
+			addGoal(new RoleRemovedEvent(role));
+			state = State.FINISHED;
 		}
 	}
 
-	@OnMessageReceived(performative = REFUSE, protocol = FIPA_QUERY)
-	public void onRefuse(IMessage message) {
-		if (!checkConversationId(message)) {
+	@OnMessageReceived
+	public void onMessage(AclMessage message) {
+		if (notMyMessage(message)) {
 			return;
 		}
-	}
-
-	@OnMessageReceived(performative = INFORM, protocol = FIPA_QUERY)
-	public void onInform(IMessage message) {
-		if (!checkConversationId(message)) {
+		switch (message.getPerformative()) {
+		case AGREE:
+			stopTimer();
+			state = State.WAIT_FOR_RESULT;
+			return;
+		case INFORM:
+			stopTimer();
+			IBeliefParser parser = getBeliefParser(message.getLanguage());
+			if (parser == null) {
+				reply(message, NOT_UNDERSTOOD, "Unknown language [" + message.getLanguage() + "]");
+				abortProtocol(message);
+				return;
+			}
+			try {
+				OWLAxiom axiom = parser.parse(message.getContent());
+				successProtocol(axiom);
+			} catch (Exception e) {
+				reply(message, NOT_UNDERSTOOD, e.getMessage());
+				abortProtocol(message);
+			}
+			return;
+		case NOT_UNDERSTOOD:
+		case REFUSE:
+		case FAILURE:
+			stopTimer();
+			abortProtocol(message);
 			return;
 		}
-		OWLAxiom axiom = getAxiom(message);
-		beliefBase.addBelief(axiom);
 	}
 
 	@PreDestroy
-	public void onDestroy(IAgent agent) {
-		IMessage message = createMessageToTargetAgent(agent);
-		message.setPerformative(CANCEL);
-		messaging.send(message);
-		conversationId = null;
+	public void onDestroy() {
+		stopTimer();
+		if (state == State.WAIT_FOR_RESULT) {
+			send(FIPA_REQUEST, CANCEL);
+		}
 	}
 
-	private IMessage createMessageToTargetAgent(IAgent agent) {
-		IMessage message = new AclMessage();
-		message.setSender(agent.getUuid());
-		message.setReceiver(targetAgent);
-		message.setProtocol(FIPA_QUERY);
-		message.setConversationId(conversationId);
-		return message;
+	private void successProtocol(Object result) {
+		addEvent(new ProtocolSuccessEvent(role, result));
+		addGoal(new RoleRemovedEvent(role));
+		state = State.FINISHED;
 	}
 
-	private boolean checkConversationId(IMessage message) {
-		return message.getConversationId().equals(conversationId);
+	private void abortProtocol(IMessage message) {
+		addEvent(new ProtocolAbortedEvent(role, message));
+		addGoal(new RoleRemovedEvent(role));
+		state = State.FINISHED;
 	}
 
-	private OWLAxiom getAxiom(IMessage message) {
-		//
-		//
-		// TODO: extract belief from message
-		//
-		//
-		return null;
+	private boolean notMyEvent(TimerEvent event) {
+		return event.getEventKey() != conversationId;
+	}
+
+	private boolean notMyMessage(AclMessage message) {
+		return !message.checkConversationId(conversationId.toString()) || !message.checkProtocol(FIPA_QUERY);
+	}
+
+	private static enum State {
+
+		REQUEST_SENT,
+
+		WAIT_FOR_RESULT,
+
+		FINISHED
+
 	}
 
 }

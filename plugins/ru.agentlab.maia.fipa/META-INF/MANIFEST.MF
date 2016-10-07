@@ -16,5 +16,8 @@ Require-Bundle: ru.agentlab.maia.message,
  ru.agentlab.maia.agent.annotation,
  ru.agentlab.maia.message.impl,
  ru.agentlab.maia.goal,
- de.derivo.sparqldlapi
+ de.derivo.sparqldlapi,
+ ru.agentlab.maia.goal.annotation,
+ ru.agentlab.maia.time,
+ ru.agentlab.maia.time.annotation
 Export-Package: ru.agentlab.maia.fipa
