@@ -3,7 +3,7 @@ package ru.agentlab.maia.agent;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -13,14 +13,14 @@ public interface IRoleBase {
 
 	default IRole create(Class<?> roleClass) {
 		checkNotNull(roleClass, "Role class to create should be non null");
-		return create(roleClass, Collections.emptyMap());
+		return create(roleClass, new HashMap<String, Object>());
 	}
 
 	IRole create(Object role, Map<String, Object> parameters);
 
 	default IRole create(Object role) {
 		checkNotNull(role, "Role to create should be non null");
-		return create(role, Collections.emptyMap());
+		return create(role, new HashMap<String, Object>());
 	}
 
 	boolean add(IRole role);

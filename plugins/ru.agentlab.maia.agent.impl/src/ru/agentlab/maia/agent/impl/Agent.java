@@ -144,6 +144,7 @@ public class Agent implements IAgent {
 		agentContainer.put(IAgent.class, this);
 		agentContainer.put(Queue.class, eventQueue);
 		agentContainer.put(IPlanBase.class, planBase);
+		agentContainer.put(IRoleBase.class, roleBase);
 	}
 
 	@Override
