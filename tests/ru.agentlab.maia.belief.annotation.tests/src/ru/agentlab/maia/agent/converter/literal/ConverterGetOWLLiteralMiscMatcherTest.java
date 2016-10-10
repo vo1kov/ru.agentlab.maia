@@ -20,10 +20,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import ru.agentlab.maia.agent.annotation.converter.LiteralNotInLexicalSpaceException;
+import ru.agentlab.maia.agent.annotation.converter.LiteralUnknownPrefixException;
+import ru.agentlab.maia.agent.annotation.converter.LiteralWrongFormatException;
 import ru.agentlab.maia.agent.converter.AbstractGetOWLLiteralMatcherTest;
-import ru.agentlab.maia.belief.annotation.converter.LiteralNotInLexicalSpaceException;
-import ru.agentlab.maia.belief.annotation.converter.LiteralUnknownPrefixException;
-import ru.agentlab.maia.belief.annotation.converter.LiteralWrongFormatException;
 
 /**
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>

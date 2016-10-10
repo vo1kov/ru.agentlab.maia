@@ -11,8 +11,8 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import ru.agentlab.maia.admin.bundles.internal.Activator;
+import ru.agentlab.maia.agent.IBeliefBase;
 import ru.agentlab.maia.agent.annotation.OnEvent;
-import ru.agentlab.maia.belief.IBeliefBase;
 
 public class BundleStateSensor {
 

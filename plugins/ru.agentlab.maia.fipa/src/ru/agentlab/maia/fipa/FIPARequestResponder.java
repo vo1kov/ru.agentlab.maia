@@ -14,10 +14,10 @@ import javax.annotation.PreDestroy;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
+import ru.agentlab.maia.agent.IGoal;
 import ru.agentlab.maia.agent.IMessage;
-import ru.agentlab.maia.goal.IGoal;
-import ru.agentlab.maia.goal.annotation.OnGoalFailed;
-import ru.agentlab.maia.goal.annotation.OnGoalSuccess;
+import ru.agentlab.maia.agent.annotation.OnGoalFailed;
+import ru.agentlab.maia.agent.annotation.OnGoalSuccess;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
 import ru.agentlab.maia.message.impl.AclMessage;
 

@@ -22,8 +22,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import ru.agentlab.maia.agent.annotation.converter.LiteralWrongBuildInDatatypeException;
 import ru.agentlab.maia.agent.converter.AbstractGetOWLLiteralMatcherTest;
-import ru.agentlab.maia.belief.annotation.converter.LiteralWrongBuildInDatatypeException;
 
 /**
  * @author Dmitriy Shishkin <shishkindimon@gmail.com>

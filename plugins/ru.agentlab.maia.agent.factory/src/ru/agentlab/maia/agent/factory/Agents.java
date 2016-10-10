@@ -1,11 +1,11 @@
 package ru.agentlab.maia.agent.factory;
 
 import ru.agentlab.maia.agent.IAgent;
+import ru.agentlab.maia.agent.IBeliefBase;
+import ru.agentlab.maia.agent.IGoalBase;
 import ru.agentlab.maia.agent.impl.Agent;
-import ru.agentlab.maia.belief.IBeliefBase;
-import ru.agentlab.maia.belief.impl.BeliefBase;
-import ru.agentlab.maia.goal.IGoalBase;
-import ru.agentlab.maia.goal.impl.GoalBase;
+import ru.agentlab.maia.agent.impl.BeliefBase;
+import ru.agentlab.maia.agent.impl.GoalBase;
 
 public class Agents {
 

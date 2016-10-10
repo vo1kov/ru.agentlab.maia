@@ -14,8 +14,8 @@ import javax.inject.Inject;
 
 import de.derivo.sparqldlapi.Query;
 import de.derivo.sparqldlapi.QueryResult;
+import ru.agentlab.maia.agent.IBeliefBase;
 import ru.agentlab.maia.agent.IMessage;
-import ru.agentlab.maia.belief.IBeliefBase;
 import ru.agentlab.maia.message.IMessageDeliveryService;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
 

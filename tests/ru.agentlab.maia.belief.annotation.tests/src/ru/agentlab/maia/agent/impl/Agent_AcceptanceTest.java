@@ -1,8 +1,8 @@
 package ru.agentlab.maia.agent.impl;
 
-import static ru.agentlab.maia.belief.annotation.AxiomType.CLASS_ASSERTION;
-import static ru.agentlab.maia.belief.annotation.AxiomType.DATA_PROPERTY_ASSERTION;
-import static ru.agentlab.maia.belief.annotation.AxiomType.SUBCLASS_OF;
+import static ru.agentlab.maia.agent.annotation.AxiomType.CLASS_ASSERTION;
+import static ru.agentlab.maia.agent.annotation.AxiomType.DATA_PROPERTY_ASSERTION;
+import static ru.agentlab.maia.agent.annotation.AxiomType.SUBCLASS_OF;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +22,14 @@ import org.semanticweb.owlapi.vocab.Namespaces;
 
 import de.derivo.sparqldlapi.QueryResult;
 import ru.agentlab.maia.agent.IAgent;
+import ru.agentlab.maia.agent.IBeliefBase;
 import ru.agentlab.maia.agent.IEvent;
 import ru.agentlab.maia.agent.ResolveException;
+import ru.agentlab.maia.agent.annotation.InitialBelief;
+import ru.agentlab.maia.agent.annotation.OnBeliefAdded;
+import ru.agentlab.maia.agent.annotation.WhenHaveBelief;
+import ru.agentlab.maia.agent.event.BeliefAddedEvent;
 import ru.agentlab.maia.agent.factory.Agents;
-import ru.agentlab.maia.belief.IBeliefBase;
-import ru.agentlab.maia.belief.annotation.InitialBelief;
-import ru.agentlab.maia.belief.annotation.OnBeliefAdded;
-import ru.agentlab.maia.belief.annotation.WhenHaveBelief;
-import ru.agentlab.maia.belief.event.BeliefAddedEvent;
 import ru.agentlab.maia.container.ContainerException;
 import ru.agentlab.maia.container.IContainer;
 import ru.agentlab.maia.container.InjectorException;

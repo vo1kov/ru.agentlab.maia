@@ -18,10 +18,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ru.agentlab.maia.agent.IMessage;
-import ru.agentlab.maia.belief.annotation.AxiomType;
-import ru.agentlab.maia.belief.annotation.OnBeliefAdded;
-import ru.agentlab.maia.belief.annotation.Prefix;
-import ru.agentlab.maia.belief.annotation.WhenHaveBelief;
+import ru.agentlab.maia.agent.annotation.AxiomType;
+import ru.agentlab.maia.agent.annotation.OnBeliefAdded;
+import ru.agentlab.maia.agent.annotation.Prefix;
+import ru.agentlab.maia.agent.annotation.WhenHaveBelief;
 import ru.agentlab.maia.message.IMessageDeliveryService;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
 import ru.agentlab.maia.message.impl.AclMessage;

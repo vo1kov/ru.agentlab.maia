@@ -1,7 +1,7 @@
 package ru.agentlab.maia.admin.bundles;
 
-import static ru.agentlab.maia.belief.annotation.AxiomType.DATA_PROPERTY_ASSERTION;
-import static ru.agentlab.maia.belief.annotation.AxiomType.OBJECT_PROPERTY_ASSERTION;
+import static ru.agentlab.maia.agent.annotation.AxiomType.DATA_PROPERTY_ASSERTION;
+import static ru.agentlab.maia.agent.annotation.AxiomType.OBJECT_PROPERTY_ASSERTION;
 
 import javax.inject.Named;
 
@@ -9,9 +9,9 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 
 import ru.agentlab.maia.admin.bundles.internal.Activator;
-import ru.agentlab.maia.belief.annotation.Prefix;
-import ru.agentlab.maia.belief.annotation.WhenHaveBelief;
-import ru.agentlab.maia.goal.annotation.OnGoalAdded;
+import ru.agentlab.maia.agent.annotation.OnGoalAdded;
+import ru.agentlab.maia.agent.annotation.Prefix;
+import ru.agentlab.maia.agent.annotation.WhenHaveBelief;
 
 @Prefix(name = "osgi", namespace = "http://www.agentlab.ru/ontologies/osgi")
 public class BundleManager {

@@ -10,5 +10,8 @@ Require-Bundle: javax.inject,
  ru.agentlab.maia.container.impl,
  ru.agentlab.maia.converter,
  org.apache.commons.lang3;bundle-version="3.1.0",
- com.google.guava
+ com.google.guava,
+ org.semanticweb.owlapi.compatibility,
+ de.derivo.sparqldlapi,
+ org.semanticweb.owlapi.impl
 Export-Package: ru.agentlab.maia.agent.impl

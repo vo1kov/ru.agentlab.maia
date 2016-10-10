@@ -5,8 +5,8 @@ import javax.inject.Inject;
 import ru.agentlab.maia.agent.IRole;
 import ru.agentlab.maia.agent.IRoleBase;
 import ru.agentlab.maia.agent.annotation.OnEvent;
+import ru.agentlab.maia.agent.event.GoalAddedEvent;
 import ru.agentlab.maia.agent.event.RoleRemovedEvent;
-import ru.agentlab.maia.goal.event.GoalAddedEvent;
 
 public class RoleManager {
 

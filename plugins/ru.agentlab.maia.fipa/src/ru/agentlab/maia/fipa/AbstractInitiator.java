@@ -16,11 +16,11 @@ import javax.inject.Named;
 import org.semanticweb.owlapi.model.OWLAxiom;
 
 import ru.agentlab.maia.agent.IAgent;
+import ru.agentlab.maia.agent.IGoalBase;
 import ru.agentlab.maia.agent.IMessage;
 import ru.agentlab.maia.agent.IRole;
 import ru.agentlab.maia.agent.annotation.Optional;
 import ru.agentlab.maia.container.IContainer;
-import ru.agentlab.maia.goal.IGoalBase;
 import ru.agentlab.maia.message.IMessageDeliveryService;
 import ru.agentlab.maia.message.impl.AclMessage;
 import ru.agentlab.maia.time.TimerEvent;

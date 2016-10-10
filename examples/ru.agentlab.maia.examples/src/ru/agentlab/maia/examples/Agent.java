@@ -15,16 +15,16 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
+import ru.agentlab.maia.agent.IBeliefBase;
+import ru.agentlab.maia.agent.IGoalBase;
+import ru.agentlab.maia.agent.annotation.AxiomType;
+import ru.agentlab.maia.agent.annotation.InitialBelief;
+import ru.agentlab.maia.agent.annotation.InitialGoal;
+import ru.agentlab.maia.agent.annotation.OnBeliefAdded;
 import ru.agentlab.maia.agent.annotation.OnRoleAdded;
-import ru.agentlab.maia.belief.IBeliefBase;
-import ru.agentlab.maia.belief.annotation.AxiomType;
-import ru.agentlab.maia.belief.annotation.InitialBelief;
-import ru.agentlab.maia.belief.annotation.OnBeliefAdded;
-import ru.agentlab.maia.belief.annotation.Prefix;
-import ru.agentlab.maia.belief.annotation.WhenHaveBelief;
+import ru.agentlab.maia.agent.annotation.Prefix;
+import ru.agentlab.maia.agent.annotation.WhenHaveBelief;
 import ru.agentlab.maia.container.IInjector;
-import ru.agentlab.maia.goal.IGoalBase;
-import ru.agentlab.maia.goal.annotation.InitialGoal;
 import ru.agentlab.maia.message.IMessageDeliveryService;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
 
