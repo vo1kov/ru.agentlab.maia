@@ -29,4 +29,16 @@ public class GoalBase implements IGoalBase {
 		return false;
 	}
 
+	@Override
+	public boolean addGoal(Object event) {
+		eventQueue.offer(new GoalAddedEvent(event));
+		return false;
+	}
+
+	@Override
+	public boolean removeGoal(Object event) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

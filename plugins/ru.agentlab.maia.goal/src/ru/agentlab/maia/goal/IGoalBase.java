@@ -12,7 +12,11 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 
 public interface IGoalBase {
 
+	boolean addGoal(Object event);
+
 	boolean addGoal(OWLAxiom axiom);
+
+	boolean removeGoal(Object event);
 
 	boolean removeGoal(OWLAxiom axiom);
 

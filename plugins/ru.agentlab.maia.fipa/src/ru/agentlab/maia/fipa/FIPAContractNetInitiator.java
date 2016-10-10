@@ -10,152 +10,149 @@ package ru.agentlab.maia.fipa;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.ACCEPT_PROPOSAL;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.CANCEL;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.CFP;
+import static ru.agentlab.maia.fipa.FIPAPerformativeNames.FAILURE;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.INFORM;
+import static ru.agentlab.maia.fipa.FIPAPerformativeNames.NOT_UNDERSTOOD;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.PROPOSE;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.REFUSE;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.REJECT_PROPOSAL;
 import static ru.agentlab.maia.fipa.FIPAProtocolNames.FIPA_CONTRACT_NET;
 
 import java.util.Collection;
-import java.util.Set;
-import java.util.UUID;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.TreeSet;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.inject.Inject;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
 
 import ru.agentlab.maia.agent.IAgent;
 import ru.agentlab.maia.agent.IMessage;
-import ru.agentlab.maia.belief.IBeliefBase;
-import ru.agentlab.maia.message.IMessageDeliveryService;
+import ru.agentlab.maia.agent.annotation.OnEvent;
+import ru.agentlab.maia.agent.event.RoleRemovedEvent;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
 import ru.agentlab.maia.message.impl.AclMessage;
+import ru.agentlab.maia.time.TimerEvent;
 
-public class FIPAContractNetInitiator {
+public class FIPAContractNetInitiator extends AbstractInitiator {
 
-	@Inject
-	private IBeliefBase beliefBase;
+	// TODO: Check select minimum, not maximum
+	protected Comparator<IMessage> proposalsComparator = (message1, message2) -> {
+		double price1 = Double.valueOf(message1.getContent().trim());
+		double price2 = Double.valueOf(message2.getContent().trim());
+		return Double.compare(price1, price2);
+	};
 
-	@Inject
-	private IMessageDeliveryService messaging;
+	private Collection<IMessage> proposals = new TreeSet<>(proposalsComparator);
 
-	@Inject
-	private Set<UUID> targetAgents;
+	private State state = null;
 
-	@Inject
-	private String template;
-
-	private Collection<IMessage> proposals;
-
-	private State state = State.INITIALIZED;
-
-	private String conversationId;
-
-	public FIPAContractNetInitiator(Set<UUID> targetAgents, String template) {
-		this.targetAgents = targetAgents;
-		this.template = template;
-	}
+	private int answers = 0;
 
 	@PostConstruct
-	public void onSetup(IAgent agent) {
-		conversationId = UUID.randomUUID().toString();
-		for (UUID targetAgent : targetAgents) {
-			IMessage message = new AclMessage();
-			message.setSender(agent.getUuid());
-			message.setReceiver(targetAgent);
-			message.setProtocol(FIPA_CONTRACT_NET);
-			message.setConversationId(conversationId);
-			message.setPerformative(CFP);
-			message.setContent(template);
-			messaging.send(message);
-		}
+	public void onStart() {
+		send(FIPA_CONTRACT_NET, CFP, template);
+		startTimer();
 		state = State.WAIT_FOR_PROPOSALS;
 	}
 
-	@OnMessageReceived(performative = PROPOSE, protocol = FIPA_CONTRACT_NET)
-	public void onPropose(IMessage message) {
-		if (!checkConversationId(message) && state != State.WAIT_FOR_PROPOSALS) {
+	@OnEvent(TimerEvent.class)
+	public void onDeadline(TimerEvent event) {
+		if (notMyEvent(event)) {
 			return;
 		}
-		proposals.add(message);
-		if (proposals.size() == targetAgents.size()) {
+		if (state == State.WAIT_FOR_PROPOSALS) {
 			estimateProposals();
 		}
 	}
 
-	@OnMessageReceived(performative = REFUSE, protocol = FIPA_CONTRACT_NET)
-	public void onRefuse(IMessage message) {
-		if (!checkConversationId(message) && state != State.WAIT_FOR_PROPOSALS) {
+	@OnMessageReceived
+	public void onMessage(AclMessage message) {
+		if (notMyMessage(message)) {
 			return;
 		}
-		proposals.add(message);
-		if (proposals.size() == targetAgents.size()) {
-			estimateProposals();
+		switch (message.getPerformative()) {
+		case PROPOSE:
+			proposals.add(message);
+		case NOT_UNDERSTOOD:
+		case REFUSE:
+			answers++;
+			if (targetAgents.size() == answers) {
+				stopTimer();
+				estimateProposals();
+			}
+			break;
+		case INFORM:
+			String lang = message.getLanguage();
+			IBeliefParser parser = getBeliefParser(lang);
+			if (parser == null) {
+				reply(message, NOT_UNDERSTOOD, "Unknown language [" + lang + "]");
+				abortProtocol(message);
+			} else {
+				try {
+					OWLAxiom axiom = parser.parse(message.getContent());
+					successProtocol(axiom);
+				} catch (Exception e) {
+					reply(message, NOT_UNDERSTOOD, e.getMessage());
+					abortProtocol(message);
+				}
+			}
+			break;
+		case FAILURE:
+			abortProtocol(message);
+			break;
 		}
-	}
-
-	@OnMessageReceived(performative = INFORM, protocol = FIPA_CONTRACT_NET)
-	public void onInform(IMessage message) {
-		if (!checkConversationId(message)) {
-			return;
-		}
-		OWLAxiom axiom = getAxiom(message);
-		beliefBase.addBelief(axiom);
 	}
 
 	@PreDestroy
 	public void onDestroy(IAgent agent) {
-		for (UUID targetAgent : targetAgents) {
-			IMessage message = new AclMessage();
-			message.setSender(agent.getUuid());
-			message.setReceiver(targetAgent);
-			message.setProtocol(FIPA_CONTRACT_NET);
-			message.setConversationId(conversationId);
-			message.setPerformative(CANCEL);
-			messaging.send(message);
+		stopTimer();
+		if (state == State.WAIT_FOR_PROPOSALS) {
+			send(FIPA_CONTRACT_NET, CANCEL);
 		}
-		conversationId = null;
 	}
 
-	private void estimateProposals() {
-		state = State.ESTIMATE_PROPOSALS;
-		UUID minimal = null;
-		for (IMessage proposal : proposals) {
-			String price = proposal.getContent();
-			minimal = proposal.getSender();
-		}
-		UUID bestGuy = minimal;
-		for (IMessage proposal1 : proposals) {
-			if (proposal1.getSender() == bestGuy) {
-				messaging.reply(proposal1, ACCEPT_PROPOSAL);
-			} else {
-				messaging.reply(proposal1, REJECT_PROPOSAL);
+	protected void estimateProposals() {
+		Iterator<IMessage> it = proposals.iterator();
+		if (it.hasNext()) {
+			// Accept best proposal
+			reply(it.next(), ACCEPT_PROPOSAL);
+			while (it.hasNext()) {
+				// Reject all others
+				reply(it.next(), REJECT_PROPOSAL);
 			}
+			state = State.WAIT_FOR_RESULT;
+		} else {
+			// Everybody refused or not understood
+			abortProtocol(null);
 		}
 	}
 
-	private boolean checkConversationId(IMessage message) {
-		return message.getConversationId().equals(conversationId);
+	private void successProtocol(Object result) {
+		addEvent(new ProtocolSuccessEvent(role, result));
+		addGoal(new RoleRemovedEvent(role));
+		state = State.FINISHED;
 	}
 
-	private OWLAxiom getAxiom(IMessage message) {
-		//
-		//
-		// TODO: extract belief from message
-		//
-		//
-		return null;
+	private void abortProtocol(IMessage message) {
+		addEvent(new ProtocolAbortedEvent(role, message));
+		addGoal(new RoleRemovedEvent(role));
+		state = State.FINISHED;
+	}
+
+	private boolean notMyEvent(TimerEvent event) {
+		return event.getEventKey() != conversationId;
+	}
+
+	private boolean notMyMessage(IMessage message) {
+		return !message.checkConversationId(conversationId.toString()) || !message.checkProtocol(FIPA_CONTRACT_NET);
 	}
 
 	static enum State {
 
-		INITIALIZED,
-
 		WAIT_FOR_PROPOSALS,
-
-		ESTIMATE_PROPOSALS,
 
 		WAIT_FOR_RESULT,
 

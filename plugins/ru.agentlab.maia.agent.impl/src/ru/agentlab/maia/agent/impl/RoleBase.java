@@ -68,18 +68,28 @@ public class RoleBase implements IRoleBase {
 		checkNotNull(roleClass, "Role class to create should be non null");
 		checkNotNull(parameters, "Extra should be non null, use empty map instead");
 		checkArgument(!ClassUtils.isPrimitiveOrWrapper(roleClass), "Role class to create should be non primitive type");
-		Object role = injector.make(roleClass, parameters);
-		return new Role(role, getPlans(role), parameters);
+		Role role = new Role();
+		parameters.put(IRole.class.getName(), role);
+		Object roleObject = injector.make(roleClass, parameters);
+		role.extra = parameters;
+		role.plans = getPlans(roleObject);
+		role.roleObject = roleObject;
+		return role;
 	}
 
 	@Override
-	public IRole create(Object role, Map<String, Object> parameters) {
-		checkNotNull(role, "Role should be non null");
+	public IRole create(Object roleObject, Map<String, Object> parameters) {
+		checkNotNull(roleObject, "Role should be non null");
 		checkNotNull(parameters, "Extra should be non null, use empty map instead");
 		checkArgument(
-			!ClassUtils.isPrimitiveOrWrapper(role.getClass()),
+			!ClassUtils.isPrimitiveOrWrapper(roleObject.getClass()),
 			"Role class to create should be non primitive type");
-		return new Role(role, getPlans(role), parameters);
+		Role role = new Role();
+		parameters.put(IRole.class.getName(), role);
+		role.extra = parameters;
+		role.plans = getPlans(roleObject);
+		role.roleObject = roleObject;
+		return role;
 	}
 
 	@Override

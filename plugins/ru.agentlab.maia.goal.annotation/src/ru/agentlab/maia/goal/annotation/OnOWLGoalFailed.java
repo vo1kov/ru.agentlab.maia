@@ -6,9 +6,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import ru.agentlab.maia.belief.annotation.AxiomType;
+
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface OnGoalFailed {
+public @interface OnOWLGoalFailed {
+
+	AxiomType type();
+
+	String[] value();
 
 }

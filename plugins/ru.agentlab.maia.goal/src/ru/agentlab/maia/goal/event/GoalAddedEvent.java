@@ -1,12 +1,10 @@
 package ru.agentlab.maia.goal.event;
 
-import org.semanticweb.owlapi.model.OWLAxiom;
-
 import ru.agentlab.maia.agent.Event;
 
-public class GoalAddedEvent extends Event<OWLAxiom> {
+public class GoalAddedEvent extends Event<Object> {
 
-	public GoalAddedEvent(OWLAxiom goal) {
+	public GoalAddedEvent(Object goal) {
 		super(goal);
 	}
 

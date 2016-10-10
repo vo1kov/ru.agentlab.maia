@@ -15,12 +15,12 @@ public class Role implements IRole {
 
 	protected Object roleObject;
 
-	public Role(Object roleObject, IPlan<?>[] plans, Map<String, Object> extra) {
-		super();
-		this.roleObject = roleObject;
-		this.plans = plans;
-		this.extra = extra;
-	}
+//	public Role(Object roleObject, IPlan<?>[] plans, Map<String, Object> extra) {
+//		super();
+//		this.roleObject = roleObject;
+//		this.plans = plans;
+//		this.extra = extra;
+//	}
 
 	@Override
 	public Map<String, Object> getExtra() {

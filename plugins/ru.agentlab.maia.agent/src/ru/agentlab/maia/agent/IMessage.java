@@ -82,4 +82,16 @@ public interface IMessage {
 
 	IMessage getReply(String performative);
 
+	default boolean checkConversationId(String conversationId) {
+		return getConversationId().equals(conversationId);
+	}
+
+	default boolean checkProtocol(String protocol) {
+		return getProtocol().equalsIgnoreCase(protocol);
+	}
+
+	default boolean checkPerformative(String performative) {
+		return getPerformative().equalsIgnoreCase(performative);
+	}
+
 }

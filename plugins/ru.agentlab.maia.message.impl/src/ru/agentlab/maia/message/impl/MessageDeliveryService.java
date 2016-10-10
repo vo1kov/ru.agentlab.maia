@@ -1,6 +1,7 @@
 package ru.agentlab.maia.message.impl;
 
 import java.net.SocketAddress;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,10 +53,16 @@ public abstract class MessageDeliveryService implements IMessageDeliveryService 
 	@Override
 	public void send(IMessage message) {
 		UUID receiver = message.getReceiver();
+		message.setPostTimeStamp(LocalDateTime.now());
 		AgentAddress address = registry.get(receiver);
 		if (address == null) {
 			throw new RuntimeException("Agent [" + receiver + "] did not found");
 		}
+
+		System.out.println(
+			"[" + message.getSender() + "] " + "-------- " + message.getPerformative() + "(" + message.getContent()
+					+ ")" + " --------> " + "[" + message.getReceiver() + "]");
+
 		if (address instanceof LocalAgentAddress) {
 			IAgent agent = ((LocalAgentAddress) address).getAgent();
 			sendInternal(message, agent);
