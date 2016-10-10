@@ -10,6 +10,8 @@ package ru.agentlab.maia.fipa;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.ACCEPT_PROPOSAL;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.CANCEL;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.CFP;
+import static ru.agentlab.maia.fipa.FIPAPerformativeNames.FAILURE;
+import static ru.agentlab.maia.fipa.FIPAPerformativeNames.INFORM;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.NOT_UNDERSTOOD;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.PROPOSE;
 import static ru.agentlab.maia.fipa.FIPAPerformativeNames.REFUSE;
@@ -21,7 +23,6 @@ import java.util.Map;
 
 import javax.annotation.PreDestroy;
 
-import ru.agentlab.maia.agent.IAgent;
 import ru.agentlab.maia.agent.IMessage;
 import ru.agentlab.maia.goal.IGoal;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
@@ -69,13 +70,36 @@ public class FIPAContractNetResponder extends AbstractResponder {
 		case REJECT_PROPOSAL:
 		case CANCEL:
 		case NOT_UNDERSTOOD:
-			proposals.remove(message.getConversationId());
+			IGoal g = proposals.remove(message.getConversationId());
+			if (g != null) {
+				initials.remove(g);
+			}
 			break;
 		}
 	}
 
 	@PreDestroy
-	public void onDestroy(IAgent agent) {
+	public void onDestroy() {
+		initials.forEach((goal, message) -> {
+			goalBase.removeGoal(goal);
+			reply(message, FAILURE, "Destroying role.. Bye..");
+		});
+	}
+
+	@OnGoalSuccess
+	public void onGoalSuccess(IGoal goal) {
+		IMessage request = initials.get(goal);
+		if (request != null) {
+			reply(request, INFORM, "Goal success");
+		}
+	}
+
+	@OnGoalFailed
+	public void onGoalFailed(IGoal goal) {
+		IMessage request = initials.get(goal);
+		if (request != null) {
+			reply(request, FAILURE, "Goal failed");
+		}
 	}
 
 	private boolean notMyMessage(IMessage message) {
