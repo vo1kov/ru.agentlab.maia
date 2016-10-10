@@ -12,7 +12,7 @@ import ru.agentlab.maia.belief.annotation.AxiomType;
 import ru.agentlab.maia.fipa.FIPAPerformativeNames;
 import ru.agentlab.maia.goal.IGoalBase;
 import ru.agentlab.maia.goal.annotation.OnGoalAdded;
-import ru.agentlab.maia.goal.annotation.OnGoalFailed;
+import ru.agentlab.maia.goal.annotation.OnOWLGoalFailed;
 import ru.agentlab.maia.message.IMessageDeliveryService;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
 
@@ -55,7 +55,7 @@ public class BundleRequestResponder {
 		}
 	}
 
-	@OnGoalFailed(value = "", type = AxiomType.CLASS_ASSERTION)
+	@OnOWLGoalFailed(value = "", type = AxiomType.CLASS_ASSERTION)
 	public void onGoalFailed(OWLAxiom goal) {
 		IMessage message = requests.get(goal);
 		if (message != null) {
