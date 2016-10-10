@@ -28,7 +28,6 @@ Require-Bundle: com.google.guava,
  ru.agentlab.maia.tests.util;bundle-version="1.0.0",
  org.junit;bundle-version="4.12.0",
  org.hamcrest;bundle-version="1.1.0",
- org.mockito;bundle-version="1.9.5",
- ru.agentlab.maia.belief.filter;bundle-version="1.0.0"
+ org.mockito;bundle-version="1.9.5"
 Fragment-Host: ru.agentlab.maia.agent
 

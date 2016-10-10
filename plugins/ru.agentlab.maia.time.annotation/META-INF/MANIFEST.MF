@@ -10,5 +10,4 @@ Require-Bundle: javax.inject,
  org.hamcrest.library;bundle-version="1.3.0",
  ru.agentlab.maia.agent,
  ru.agentlab.maia.agent.impl,
- ru.agentlab.maia.converter,
  ru.agentlab.maia.time;bundle-version="1.0.0"
