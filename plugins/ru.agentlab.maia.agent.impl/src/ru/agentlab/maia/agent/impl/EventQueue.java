@@ -4,13 +4,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import ru.agentlab.maia.agent.AgentState;
 
-public class AgentEventQueue<T> extends ConcurrentLinkedQueue<T> {
+public class EventQueue<T> extends ConcurrentLinkedQueue<T> {
 
 	private static final long serialVersionUID = 1L;
 	
 	private Agent agent;
 
-	public AgentEventQueue(Agent agent) {
+	public EventQueue(Agent agent) {
 		this.agent = agent;
 	}
 

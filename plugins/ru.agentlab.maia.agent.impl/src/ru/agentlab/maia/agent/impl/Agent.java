@@ -131,7 +131,7 @@ public class Agent implements IAgent {
 
 	protected final IContainer agentContainer = new Container();
 
-	protected final Queue<Object> eventQueue = new AgentEventQueue<Object>(this);
+	protected final Queue<Object> eventQueue = new EventQueue<Object>(this);
 
 	protected final IPlanBase planBase = new PlanBase(eventQueue);
 
