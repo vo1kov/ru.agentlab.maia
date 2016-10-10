@@ -47,10 +47,11 @@ public class FIPARequestResponder extends AbstractResponder {
 				goalBase.addGoal(goal);
 				addedGoals.put(message, goal);
 				reply(message, AGREE);
+				return;
 			} catch (Exception e) {
 				reply(message, NOT_UNDERSTOOD, "Exception was thrown " + e.getClass() + " " + e.getMessage());
+				return;
 			}
-			return;
 		case NOT_UNDERSTOOD:
 		case CANCEL:
 			IGoal goal = addedGoals.get(message);
@@ -65,7 +66,7 @@ public class FIPARequestResponder extends AbstractResponder {
 	public void onDestroy() {
 		addedGoals.forEach((message, goal) -> {
 			goalBase.removeGoal(goal);
-			reply(message, FAILURE, "Destroing role.. Bye..");
+			reply(message, FAILURE, "Destroying role.. Bye..");
 		});
 	}
 
