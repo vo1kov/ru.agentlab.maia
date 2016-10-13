@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import ru.agentlab.maia.agent.annotation.HaveGoalNegativeDataPropertyAssertionAxiom;
+import ru.agentlab.maia.agent.annotation.state.HaveGoalNegativeDataPropertyAssertionAxiom;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

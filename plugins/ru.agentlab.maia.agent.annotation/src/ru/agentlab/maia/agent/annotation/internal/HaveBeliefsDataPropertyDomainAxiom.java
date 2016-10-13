@@ -6,13 +6,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import ru.agentlab.maia.agent.annotation.state.HaveBeliefClassAssertionAxiom;
+import ru.agentlab.maia.agent.annotation.state.HaveBeliefDataPropertyDomainAxiom;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface HaveBeliefsClassAssertionAxiom {
+public @interface HaveBeliefsDataPropertyDomainAxiom {
 
-	HaveBeliefClassAssertionAxiom[] value();
+	HaveBeliefDataPropertyDomainAxiom[] value();
 
 }

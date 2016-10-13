@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import ru.agentlab.maia.agent.annotation.HaveBeliefDataPropertyAssertionAxiom;
+import ru.agentlab.maia.agent.annotation.state.HaveBeliefDataPropertyAssertionAxiom;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
