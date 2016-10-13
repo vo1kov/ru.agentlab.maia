@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -43,85 +42,6 @@ import ru.agentlab.maia.container.impl.Container;
  */
 public class Agent implements IAgent {
 
-	protected final class ExecuteAction extends RecursiveAction {
-
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		protected void compute() {
-			Object event = eventQueue.poll();
-			if (event == null) {
-				setState(AgentState.WAITING);
-				return;
-			}
-
-			planBase.getOptions(event).forEach(option -> {
-				Map<String, Object> values = option.getValues();
-				IPlan<?> plan = option.getPlan();
-				try {
-					plan.execute(getInjector(), values);
-				} catch (Exception e) {
-					e.printStackTrace();
-					throw new RuntimeException("Exception while execute [" + plan + "] plan");
-				}
-			});
-
-			if (isActive()) {
-				ExecuteAction action = new ExecuteAction();
-				executor.submit(action);
-			} else {
-				setState(AgentState.IDLE);
-			}
-		}
-
-	}
-
-	protected final class StartAgentAction extends RecursiveAction {
-
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		protected void compute() {
-			setState(AgentState.ACTIVE);
-			planBase.getStartPlans().forEach(plan -> {
-				try {
-					plan.execute(getInjector(), null);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			});
-
-			if (isActive()) {
-				ExecuteAction action = new ExecuteAction();
-				executor.submit(action);
-			} else {
-				setState(AgentState.IDLE);
-			}
-		}
-	}
-
-	protected final class StopAgentAction extends RecursiveAction {
-
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		protected void compute() {
-			setState(AgentState.STOPPING);
-			planBase.getStopPlans().forEach(plan -> {
-				try {
-					plan.execute(getInjector(), null);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			});
-			setState(AgentState.IDLE);
-			unlock();
-		}
-	}
-
-	@Inject
-	protected IAgentRegistry registry;
-
 	@Inject
 	protected ForkJoinPool executor;
 
@@ -145,6 +65,24 @@ public class Agent implements IAgent {
 		agentContainer.put(Queue.class, eventQueue);
 		agentContainer.put(IPlanBase.class, planBase);
 		agentContainer.put(IRoleBase.class, roleBase);
+	}
+
+	OWLClassAssertionAxiom createAgentStartedBelief(OWLDataFactory factory) {
+		return factory.getOWLClassAssertionAxiom(
+			factory.getOWLClass(MaiaOntology.OWL_CLASS_STARTED_AGENT),
+			factory.getOWLNamedIndividual(MaiaOntology.OWL_INDIVIDUAL_THIS_AGENT));
+	}
+
+	OWLClassAssertionAxiom createAgentStoppedBelief(OWLDataFactory factory) {
+		return factory.getOWLClassAssertionAxiom(
+			factory.getOWLClass(MaiaOntology.OWL_CLASS_STOPPED_AGENT),
+			factory.getOWLNamedIndividual(MaiaOntology.OWL_INDIVIDUAL_THIS_AGENT));
+	}
+
+	OWLClassAssertionAxiom createAgentStoppingBelief(OWLDataFactory factory) {
+		return factory.getOWLClassAssertionAxiom(
+			factory.getOWLClass(MaiaOntology.OWL_CLASS_STOPPING_AGENT),
+			factory.getOWLNamedIndividual(MaiaOntology.OWL_INDIVIDUAL_THIS_AGENT));
 	}
 
 	@Override
