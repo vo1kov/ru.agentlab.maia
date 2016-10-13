@@ -182,23 +182,6 @@ public class Agent implements IAgent {
 		}
 	}
 
-	public <T> T deployService(Class<? super T> interf, Class<T> clazz) {
-		T service = getInjector().make(clazz);
-		return getInjector().deploy(service, interf);
-	}
-
-	public <T> T deployService(Class<T> clazz) {
-		return getInjector().deploy(clazz);
-	}
-
-	public void deployService(String key, Object value) {
-		agentContainer.put(key, value);
-	}
-
-	public <T> T deployService(T service, Class<T> interf) {
-		return getInjector().deploy(service, interf);
-	}
-
 	@Override
 	public void deployTo(IContainer container) {
 		checkNotNull(container, "Container should be non null");
@@ -226,14 +209,6 @@ public class Agent implements IAgent {
 		return roleBase.getRoles();
 	}
 
-	public <T> T getService(Class<T> key) {
-		return agentContainer.get(key);
-	}
-
-	public Object getService(String key) {
-		return agentContainer.get(key);
-	}
-
 	@Override
 	public AgentState getState() {
 		return state.get();
@@ -246,15 +221,7 @@ public class Agent implements IAgent {
 
 	@Override
 	public void notify(IMessage message) {
-		eventQueue.offer(message);
-	}
-
-	public <T> void putService(Class<T> key, T value) {
-		agentContainer.put(key, value);
-	}
-
-	public void putService(String key, Object value) {
-		agentContainer.put(key, value);
+		eventQueue.offer(new AddedExternalEvent(message));
 	}
 
 	@Override
