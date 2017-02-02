@@ -18,7 +18,7 @@ public class OnRoleXXXConverter implements IPlanEventFilterConverter {
 	@Override
 	public IPlanEventFilter<?> getMatcher(Object role, Method method, Annotation annotation,
 			Map<String, Object> customData) {
-		Class<?> value = Util.getMethodValue(annotation, "value", Class.class);
+		Class<?> value = Util.getMethodActualValue(annotation, "value", Class.class);
 		return hamcrest(anyOf(instanceOf(value), equalTo(value)));
 	}
 }

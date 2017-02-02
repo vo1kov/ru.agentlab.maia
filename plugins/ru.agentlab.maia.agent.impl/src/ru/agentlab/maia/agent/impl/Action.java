@@ -3,6 +3,7 @@ package ru.agentlab.maia.agent.impl;
 import java.util.Map;
 import java.util.concurrent.RecursiveAction;
 
+import ru.agentlab.maia.agent.IEvent;
 import ru.agentlab.maia.agent.IPlan;
 
 abstract class Action extends RecursiveAction {
@@ -15,7 +16,8 @@ abstract class Action extends RecursiveAction {
 		this.agent = agent;
 	}
 
-	void handleEvent(Object event) {
+	void handleEvent(IEvent<?> event) {
+		System.out.println("Action handle " + event);
 		agent.planBase.getOptions(event).forEach(option -> {
 			Map<String, Object> values = option.getValues();
 			IPlan<?> plan = option.getPlan();

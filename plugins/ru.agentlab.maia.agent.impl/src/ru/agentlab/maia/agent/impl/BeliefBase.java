@@ -8,110 +8,131 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent.impl;
 
-import java.util.Queue;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Set;
-import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
-import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.reasoner.structural.StructuralReasonerFactory;
+import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 
-import de.derivo.sparqldlapi.QueryEngine;
+import com.google.common.collect.Sets;
+
 import ru.agentlab.maia.agent.IBeliefBase;
-import ru.agentlab.maia.agent.IEvent;
-import ru.agentlab.maia.agent.event.BeliefAddedEvent;
-import ru.agentlab.maia.agent.event.BeliefRemovedEvent;
 
 public class BeliefBase implements IBeliefBase {
 
-	@Inject
-	private OWLOntologyManager manager;
+	protected OWLOntologyManager manager;
 
-	@Inject
-	private OWLDataFactory factory;
+	OWLOntology ontology;
 
-	@Inject
-	private UUID uuid;
-
-	private OWLOntology ontology;
-
-	private QueryEngine engine;
-
-	private OWLOntologyChangeListener listener;
-
-	@PostConstruct
-	public void init(Queue<IEvent<?>> eventQueue) throws OWLOntologyCreationException {
-		ontology = manager.createOntology(IRI.create(uuid.toString()));
-		engine = QueryEngine.create(manager, (new StructuralReasonerFactory()).createReasoner(ontology), true);
-		if (listener != null) {
-			manager.removeOntologyChangeListener(listener);
-		}
-		listener = changes -> {
-			changes.forEach(change -> {
-				if (change.getOntology() == ontology) {
-					OWLAxiom axiom = change.getAxiom();
-					if (change.isAddAxiom()) {
-						eventQueue.offer(new BeliefAddedEvent(axiom));
-					} else if (change.isRemoveAxiom()) {
-						eventQueue.offer(new BeliefRemovedEvent(axiom));
-					}
-				}
-			});
-		};
-		manager.addOntologyChangeListener(listener);
+	public BeliefBase(OWLOntologyManager manager, OWLOntology ontology) {
+		checkNotNull(manager, "OWLOntologyManager for belief base should be non null");
+		checkNotNull(ontology, "OWLOntology for belief base should be non null");
+		this.manager = manager;
+		this.ontology = ontology;
 	}
 
 	@Override
-	public void addBelief(OWLAxiom axiom) {
-		manager.addAxiom(ontology, axiom);
-	}
-	
-	@Override
-	public void addBeliefs(Set<OWLAxiom> axioms) {
-		manager.addAxioms(ontology, axioms);
+	public ChangeApplied add(OWLAxiom axiom) {
+		checkNotNull(axiom, "Axiom to add should be non null");
+		return manager.addAxiom(ontology, axiom);
 	}
 
 	@Override
-	public void removeBelief(OWLAxiom axiom) {
-		manager.removeAxiom(ontology, axiom);
-	}
-	
-	@Override
-	public void removeBeliefs(Set<OWLAxiom> axioms) {
-		manager.removeAxioms(ontology, axioms);
+	public ChangeApplied addAll(OWLAxiom... axioms) {
+		checkNotNull(axioms, "Axioms array to add should be non null");
+		Set<OWLAxiom> set = Sets.newHashSet(axioms);
+		return manager.addAxioms(ontology, set);
 	}
 
 	@Override
-	public boolean containsBelief(OWLAxiom axiom) {
+	public ChangeApplied addAll(Set<OWLAxiom> axioms) {
+		checkNotNull(axioms, "Axioms set to add should be non null");
+		return manager.addAxioms(ontology, axioms);
+	}
+
+	@Override
+	public ChangeApplied addAll(Stream<OWLAxiom> axioms) {
+		checkNotNull(axioms, "Axioms stream to add should be non null");
+		Set<OWLAxiom> set = axioms.collect(Collectors.toSet());
+		return manager.addAxioms(ontology, set);
+	}
+
+	@Override
+	public ChangeApplied remove(OWLAxiom axiom) {
+		checkNotNull(axiom, "Axiom to remove should be non null");
+		return manager.removeAxiom(ontology, axiom);
+	}
+
+	@Override
+	public ChangeApplied removeAll(OWLAxiom... axioms) {
+		checkNotNull(axioms, "Axioms array to remove should be non null");
+		Set<OWLAxiom> set = Sets.newHashSet(axioms);
+		return manager.removeAxioms(ontology, set);
+	}
+
+	@Override
+	public ChangeApplied removeAll(Set<OWLAxiom> axioms) {
+		checkNotNull(axioms, "Axioms set to remove should be non null");
+		return manager.removeAxioms(ontology, axioms);
+	}
+
+	@Override
+	public ChangeApplied removeAll(Stream<OWLAxiom> axioms) {
+		checkNotNull(axioms, "Axioms stream to remove should be non null");
+		Set<OWLAxiom> set = axioms.collect(Collectors.toSet());
+		return manager.removeAxioms(ontology, set);
+	}
+
+	@Override
+	public ChangeApplied clean() {
+		return manager.removeAxioms(ontology, ontology.getAxioms());
+	}
+
+	@Override
+	public boolean contains(OWLAxiom axiom) {
+		checkNotNull(axiom, "Axiom to test should be non null");
 		return ontology.containsAxiom(axiom);
 	}
 
 	@Override
-	public QueryEngine getQueryEngine() {
-		return engine;
+	public boolean containsAll(OWLAxiom... axioms) {
+		checkNotNull(axioms, "Axioms array to test should be non null");
+		return Stream.of(axioms).allMatch(ontology::containsAxiom);
 	}
 
 	@Override
-	public OWLOntologyManager getManager() {
-		return manager;
+	public boolean containsAll(Set<OWLAxiom> axioms) {
+		checkNotNull(axioms, "Axioms set to test should be non null");
+		return axioms.stream().allMatch(ontology::containsAxiom);
 	}
 
 	@Override
-	public OWLDataFactory getFactory() {
-		return factory;
+	public boolean containsAll(Stream<OWLAxiom> axioms) {
+		checkNotNull(axioms, "Axioms stream to test should be non null");
+		return axioms.allMatch(ontology::containsAxiom);
 	}
 
 	@Override
-	public OWLOntology getOntology() {
-		return ontology;
+	public boolean containsAny(OWLAxiom... axioms) {
+		checkNotNull(axioms, "Axioms array to test should be non null");
+		return Stream.of(axioms).anyMatch(ontology::containsAxiom);
+	}
+
+	@Override
+	public boolean containsAny(Set<OWLAxiom> axioms) {
+		checkNotNull(axioms, "Axioms set to test should be non null");
+		return axioms.stream().anyMatch(ontology::containsAxiom);
+	}
+
+	@Override
+	public boolean containsAny(Stream<OWLAxiom> axioms) {
+		checkNotNull(axioms, "Axioms stream to test should be non null");
+		return axioms.anyMatch(ontology::containsAxiom);
 	}
 
 }

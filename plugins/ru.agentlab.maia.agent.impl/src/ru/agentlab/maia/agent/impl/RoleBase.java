@@ -22,14 +22,11 @@ import javax.annotation.PreDestroy;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
+import ru.agentlab.maia.agent.IEvent;
 import ru.agentlab.maia.agent.IPlan;
 import ru.agentlab.maia.agent.IPlanBase;
 import ru.agentlab.maia.agent.IRole;
 import ru.agentlab.maia.agent.IRoleBase;
-import ru.agentlab.maia.agent.event.RoleActivatedEvent;
-import ru.agentlab.maia.agent.event.RoleAddedEvent;
-import ru.agentlab.maia.agent.event.RoleDeactivatedEvent;
-import ru.agentlab.maia.agent.event.RoleRemovedEvent;
 import ru.agentlab.maia.container.IInjector;
 import ru.agentlab.maia.converter.IPlanEventFilterConverter;
 import ru.agentlab.maia.converter.IPlanEventTypeConverter;
@@ -50,11 +47,11 @@ public class RoleBase implements IRoleBase {
 
 	protected IInjector injector;
 
-	protected Queue<Object> eventQueue;
+	protected Queue<IEvent<?>> eventQueue;
 
 	protected IPlanBase planBase;
 
-	public RoleBase(Queue<Object> eventQueue, IInjector injector, IPlanBase planBase) {
+	public RoleBase(Queue<IEvent<?>> eventQueue, IInjector injector, IPlanBase planBase) {
 		checkNotNull(eventQueue, "Event Queue should be non null");
 		checkNotNull(injector, "Injector should be non null");
 		checkNotNull(planBase, "Plan Base should be non null");
@@ -96,7 +93,7 @@ public class RoleBase implements IRoleBase {
 	public boolean add(IRole role) {
 		checkNotNull(role, "Role to add should be non null");
 		if (roles.add(role)) {
-			eventQueue.offer(new RoleAddedEvent(role));
+			// eventQueue.offer(new RoleAddedEvent(role));
 			return true;
 		} else {
 			return false;
@@ -114,7 +111,7 @@ public class RoleBase implements IRoleBase {
 			injector.invoke(roleObject, PostConstruct.class, extra);
 			planBase.addAll(role.getPlans());
 			role.setActive(true);
-			eventQueue.offer(new RoleActivatedEvent(role));
+			// eventQueue.offer(new RoleActivatedEvent(role));
 			return true;
 		} else {
 			return false;
@@ -133,7 +130,7 @@ public class RoleBase implements IRoleBase {
 		checkNotNull(role, "Role to remove should be non null");
 		if (roles.remove(role)) {
 			deactivateInternal(role);
-			eventQueue.offer(new RoleRemovedEvent(role));
+			// eventQueue.offer(new RoleRemovedEvent(role));
 			return true;
 		} else {
 			return false;
@@ -149,7 +146,7 @@ public class RoleBase implements IRoleBase {
 	public void clear() {
 		roles.forEach(role -> {
 			deactivateInternal(role);
-			eventQueue.offer(new RoleRemovedEvent(role));
+			// eventQueue.offer(new RoleRemovedEvent(role));
 		});
 		roles.clear();
 	}
@@ -177,7 +174,7 @@ public class RoleBase implements IRoleBase {
 			injector.invoke(roleObject, PreDestroy.class, extra);
 			injector.uninject(roleObject);
 			role.setActive(false);
-			eventQueue.offer(new RoleDeactivatedEvent(role));
+			// eventQueue.offer(new RoleDeactivatedEvent(role));
 			return true;
 		} else {
 			return false;

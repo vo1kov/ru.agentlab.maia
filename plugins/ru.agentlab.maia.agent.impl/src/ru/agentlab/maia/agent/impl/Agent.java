@@ -10,28 +10,45 @@ package ru.agentlab.maia.agent.impl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.ConcurrentModificationException;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+
 import ru.agentlab.maia.agent.AgentState;
 import ru.agentlab.maia.agent.IAgent;
 import ru.agentlab.maia.agent.IAgentRegistry;
+import ru.agentlab.maia.agent.IAgentStateChangeListener;
+import ru.agentlab.maia.agent.IBeliefBase;
+import ru.agentlab.maia.agent.IEvent;
+import ru.agentlab.maia.agent.IGoalBase;
 import ru.agentlab.maia.agent.IMessage;
-import ru.agentlab.maia.agent.IPlan;
 import ru.agentlab.maia.agent.IPlanBase;
 import ru.agentlab.maia.agent.IRole;
 import ru.agentlab.maia.agent.IRoleBase;
 import ru.agentlab.maia.agent.LocalAgentAddress;
+import ru.agentlab.maia.agent.event.AddedExternalEvent;
 import ru.agentlab.maia.container.IContainer;
 import ru.agentlab.maia.container.IInjector;
 import ru.agentlab.maia.container.impl.Container;
@@ -47,17 +64,28 @@ public class Agent implements IAgent {
 
 	protected final UUID uuid = UUID.randomUUID();
 
-	protected final AtomicReference<AgentState> state = new AtomicReference<>(AgentState.UNKNOWN);
+	private AgentState state = AgentState.UNKNOWN;
 
 	protected final IContainer agentContainer = new Container();
 
-	protected final Queue<Object> eventQueue = new EventQueue<Object>(this);
+	protected Queue<IEvent<?>> eventQueue = new EventQueue<>(this);
 
-	protected final IPlanBase planBase = new PlanBase(eventQueue);
+	protected IBeliefBase beliefBase;
 
-	protected final IRoleBase roleBase = new RoleBase(eventQueue, getInjector(), planBase);
+	protected IGoalBase goalBase;
 
-	protected final ReentrantReadWriteLock.WriteLock lock = new ReentrantReadWriteLock().writeLock();
+	protected IPlanBase planBase = new PlanBase();
+
+	protected IRoleBase roleBase = new RoleBase(eventQueue, getInjector(), planBase);
+
+	private OWLOntologyChangeListener listener;
+
+	protected OWLIndividual selfIndividual;
+
+	@Inject
+	protected OWLDataFactory factory;
+
+	private final ReentrantReadWriteLock.WriteLock lock = new ReentrantReadWriteLock().writeLock();
 
 	{
 		agentContainer.put(UUID.class, uuid);
@@ -67,22 +95,44 @@ public class Agent implements IAgent {
 		agentContainer.put(IRoleBase.class, roleBase);
 	}
 
-	OWLClassAssertionAxiom createAgentStartedBelief(OWLDataFactory factory) {
-		return factory.getOWLClassAssertionAxiom(
-			factory.getOWLClass(MaiaOntology.OWL_CLASS_STARTED_AGENT),
-			factory.getOWLNamedIndividual(MaiaOntology.OWL_INDIVIDUAL_THIS_AGENT));
+	@PostConstruct
+	public void init(OWLOntologyManager manager, OWLDataFactory factory) throws OWLOntologyCreationException {
+		selfIndividual = factory.getOWLNamedIndividual(IRI.create(uuid.toString()));
+		OWLOntology ontology = getOntology(manager);
+		OWLAnnotationProperty desiredAnnotationProperty = factory
+			.getOWLAnnotationProperty(IGoalBase.DESIRED_ANNOTATION_IRI);
+		Set<OWLAnnotation> annotations = Collections
+			.singleton(factory.getOWLAnnotation(desiredAnnotationProperty, factory.getOWLLiteral(true)));
+
+		beliefBase = new BeliefBase(manager, ontology);
+		goalBase = new GoalBase(manager, ontology, annotations);
+		agentContainer.put(IBeliefBase.class, beliefBase);
+		agentContainer.put(IGoalBase.class, goalBase);
+		// OWLReasoner reasoner = (new
+		// StructuralReasonerFactory()).createReasoner(ontology);
+		// QueryEngine engine = QueryEngine.create(manager, reasoner, true);
+		if (listener != null) {
+			manager.removeOntologyChangeListener(listener);
+		}
+		listener = new OntologyChangeListener(
+			eventQueue,
+			ontology,
+			axiom -> !axiom.getAnnotations(desiredAnnotationProperty).isEmpty());
+		manager.addOntologyChangeListener(listener);
 	}
 
-	OWLClassAssertionAxiom createAgentStoppedBelief(OWLDataFactory factory) {
-		return factory.getOWLClassAssertionAxiom(
-			factory.getOWLClass(MaiaOntology.OWL_CLASS_STOPPED_AGENT),
-			factory.getOWLNamedIndividual(MaiaOntology.OWL_INDIVIDUAL_THIS_AGENT));
+	@Override
+	public void submit(Runnable runnabale) {
+		executor.submit(new ActionExternal(this, runnabale));
 	}
 
-	OWLClassAssertionAxiom createAgentStoppingBelief(OWLDataFactory factory) {
-		return factory.getOWLClassAssertionAxiom(
-			factory.getOWLClass(MaiaOntology.OWL_CLASS_STOPPING_AGENT),
-			factory.getOWLNamedIndividual(MaiaOntology.OWL_INDIVIDUAL_THIS_AGENT));
+	private OWLOntology getOntology(OWLOntologyManager manager) throws OWLOntologyCreationException {
+		IRI ontologyIRI = IRI.create(uuid.toString());
+		OWLOntology ontology = manager.getOntology(ontologyIRI);
+		if (ontology == null) {
+			ontology = manager.createOntology(ontologyIRI);
+		}
+		return ontology;
 	}
 
 	@Override
@@ -195,6 +245,7 @@ public class Agent implements IAgent {
 			injector.invoke(service, PostConstruct.class);
 		}
 		container.put(uuid.toString(), this);
+		IAgentRegistry registry = container.get(IAgentRegistry.class);
 		registry.put(uuid, new LocalAgentAddress(this));
 		setState(AgentState.IDLE);
 	}
@@ -211,7 +262,7 @@ public class Agent implements IAgent {
 
 	@Override
 	public AgentState getState() {
-		return state.get();
+		return state;
 	}
 
 	@Override
@@ -300,13 +351,13 @@ public class Agent implements IAgent {
 	@Override
 	public void start() {
 		lock.lock();
-		executor.submit(new StartAgentAction());
+		executor.submit(new ActionStart(this));
 	}
 
 	@Override
 	public void tryStart() {
 		if (lock.tryLock()) {
-			executor.submit(new StartAgentAction());
+			executor.submit(new ActionStart(this));
 		} else {
 			throw new ConcurrentModificationException();
 		}
@@ -315,7 +366,7 @@ public class Agent implements IAgent {
 	@Override
 	public void tryStart(long timeout, TimeUnit unit) throws InterruptedException {
 		if (lock.tryLock(timeout, unit)) {
-			executor.submit(new StartAgentAction());
+			executor.submit(new ActionStart(this));
 		} else {
 			throw new ConcurrentModificationException();
 		}
@@ -323,7 +374,7 @@ public class Agent implements IAgent {
 
 	@Override
 	public void stop() {
-		executor.submit(new StopAgentAction());
+		executor.submit(new ActionStop(this));
 	}
 
 	protected IInjector getInjector() {
@@ -331,7 +382,7 @@ public class Agent implements IAgent {
 	}
 
 	protected IRole internalAddRole(Class<?> roleClass, Map<String, Object> parameters) {
-		switch (state.get()) {
+		switch (state) {
 		case UNKNOWN:
 			throw new IllegalStateException("Agent should be deployed into container before adding new roles.");
 		case ACTIVE:
@@ -350,7 +401,7 @@ public class Agent implements IAgent {
 	}
 
 	protected IRole internalAddRole(Object roleObject, Map<String, Object> parameters) {
-		switch (state.get()) {
+		switch (state) {
 		case UNKNOWN:
 			throw new IllegalStateException("Agent should be deployed into container before adding new roles.");
 		case ACTIVE:
@@ -369,7 +420,7 @@ public class Agent implements IAgent {
 	}
 
 	protected void internalActivateRole(IRole role) {
-		switch (state.get()) {
+		switch (state) {
 		case UNKNOWN:
 			throw new IllegalStateException("Agent should be deployed into container before adding new roles.");
 		case ACTIVE:
@@ -386,7 +437,7 @@ public class Agent implements IAgent {
 	}
 
 	protected void internalRemoveRole(IRole role) {
-		switch (state.get()) {
+		switch (state) {
 		case UNKNOWN:
 			throw new IllegalStateException("Agent should be deployed into container before adding new roles.");
 		case ACTIVE:
@@ -403,7 +454,7 @@ public class Agent implements IAgent {
 	}
 
 	protected void internalClearRoles() {
-		switch (state.get()) {
+		switch (state) {
 		case UNKNOWN:
 			throw new IllegalStateException("Agent should be deployed into container before adding new roles.");
 		case ACTIVE:
@@ -423,12 +474,38 @@ public class Agent implements IAgent {
 		return getState() == AgentState.ACTIVE;
 	}
 
+	final List<IAgentStateChangeListener> listeners = new ArrayList<>();
+
+	private boolean allow = true;
+
 	protected void setState(AgentState newState) {
-		state.set(newState);
+		if (allow && state != newState) {
+			AgentState oldState = state;
+			state = newState;
+			allow = !(newState == AgentState.WAITING);
+			listeners.forEach(listener -> listener.changed(oldState, newState));
+			allow = true;
+		}
 	}
 
-	private void unlock() {
+	void unlock() {
 		lock.unlock();
+	}
+
+	@Override
+	public void addStateChangeListener(IAgentStateChangeListener listener) {
+		listeners.add(listener);
+
+	}
+
+	@Override
+	public void removeStateChangeListener(IAgentStateChangeListener listener) {
+		listeners.remove(listener);
+	}
+
+	@Override
+	public OWLIndividual getSelfIndividual() {
+		return selfIndividual;
 	}
 
 }

@@ -1,7 +1,5 @@
 package ru.agentlab.maia.agent.impl;
 
-import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
-
 import ru.agentlab.maia.agent.AgentState;
 
 final class ActionStart extends Action {
@@ -14,9 +12,12 @@ final class ActionStart extends Action {
 
 	@Override
 	protected void compute() {
-		agent.setState(AgentState.ACTIVE);
-		OWLClassAssertionAxiom axiom = agent.createAgentStartedBelief(null);
-		agent.beliefBase.add(axiom);
-		agent.executor.submit(new ActionExecute(agent));
+		try {
+			agent.setState(AgentState.ACTIVE);
+			agent.roleBase.activateAll();
+			agent.executor.submit(new ActionExecute(agent));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

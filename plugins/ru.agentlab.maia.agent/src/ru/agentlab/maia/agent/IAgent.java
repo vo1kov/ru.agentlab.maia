@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import org.semanticweb.owlapi.model.OWLIndividual;
+
 import ru.agentlab.maia.container.IContainer;
 
 /**
@@ -85,5 +87,13 @@ public interface IAgent {
 	void tryClearRoles(long timeout, TimeUnit unit) throws InterruptedException;
 
 	void notify(IMessage event);
+
+	void addStateChangeListener(IAgentStateChangeListener listener);
+
+	void removeStateChangeListener(IAgentStateChangeListener listener);
+
+	OWLIndividual getSelfIndividual();
+
+	void submit(Runnable runnabale);
 
 }

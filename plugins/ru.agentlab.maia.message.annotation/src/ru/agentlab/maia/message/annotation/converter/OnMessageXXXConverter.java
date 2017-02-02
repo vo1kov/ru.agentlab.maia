@@ -39,13 +39,13 @@ public class OnMessageXXXConverter implements IPlanEventFilterConverter {
 		List<Matcher<? super IMessage>> matchers = new ArrayList<>();
 
 		// performative
-		String performative = Util.getMethodValue(ann, "performative", String.class);
+		String performative = Util.getMethodActualValue(ann, "performative", String.class);
 		if (!performative.isEmpty()) {
 			matchers.add(hasPerformative(equalTo(performative)));
 		}
 
 		// sender
-		String sender = Util.getMethodValue(ann, "sender", String.class);
+		String sender = Util.getMethodActualValue(ann, "sender", String.class);
 		if (!sender.isEmpty()) {
 			matchers.add(hasSender(equalTo(UUID.fromString(sender))));
 		}
@@ -59,37 +59,37 @@ public class OnMessageXXXConverter implements IPlanEventFilterConverter {
 		Matcher<? super List<UUID>> replyToMatcher;
 
 		// content
-		String content = Util.getMethodValue(ann, "content", String.class);
+		String content = Util.getMethodActualValue(ann, "content", String.class);
 		if (!content.isEmpty()) {
 			matchers.add(hasContent(equalTo(performative)));
 		}
 
 		// replyWith
-		String replyWith = Util.getMethodValue(ann, "replyWith", String.class);
+		String replyWith = Util.getMethodActualValue(ann, "replyWith", String.class);
 		if (!replyWith.isEmpty()) {
 			matchers.add(hasReplyWith(equalTo(performative)));
 		}
 
 		// inReplyTo
-		String inReplyTo = Util.getMethodValue(ann, "inReplyTo", String.class);
+		String inReplyTo = Util.getMethodActualValue(ann, "inReplyTo", String.class);
 		if (!inReplyTo.isEmpty()) {
 			matchers.add(hasInReplyTo(equalTo(performative)));
 		}
 
 		// encoding
-		String encoding = Util.getMethodValue(ann, "encoding", String.class);
+		String encoding = Util.getMethodActualValue(ann, "encoding", String.class);
 		if (!encoding.isEmpty()) {
 			matchers.add(hasEncoding(equalTo(performative)));
 		}
 
 		// language
-		String language = Util.getMethodValue(ann, "language", String.class);
+		String language = Util.getMethodActualValue(ann, "language", String.class);
 		if (!language.isEmpty()) {
 			matchers.add(hasLanguage(equalTo(performative)));
 		}
 
 		// ontology
-		String ontology = Util.getMethodValue(ann, "ontology", String.class);
+		String ontology = Util.getMethodActualValue(ann, "ontology", String.class);
 		if (!ontology.isEmpty()) {
 			matchers.add(hasOntology(equalTo(performative)));
 		}
@@ -99,13 +99,13 @@ public class OnMessageXXXConverter implements IPlanEventFilterConverter {
 		Matcher<? super LocalDateTime> replyByMatcher;
 
 		// protocol
-		String protocol = Util.getMethodValue(ann, "protocol", String.class);
+		String protocol = Util.getMethodActualValue(ann, "protocol", String.class);
 		if (!protocol.isEmpty()) {
 			matchers.add(hasProtocol(equalTo(performative)));
 		}
 
 		// conversationId
-		String conversationId = Util.getMethodValue(ann, "conversationId", String.class);
+		String conversationId = Util.getMethodActualValue(ann, "conversationId", String.class);
 		if (!conversationId.isEmpty()) {
 			matchers.add(hasConversationId(equalTo(performative)));
 		}

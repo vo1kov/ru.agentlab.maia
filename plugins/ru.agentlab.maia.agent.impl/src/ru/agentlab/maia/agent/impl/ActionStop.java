@@ -1,9 +1,6 @@
 package ru.agentlab.maia.agent.impl;
 
-import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
-
 import ru.agentlab.maia.agent.AgentState;
-import ru.agentlab.maia.agent.Event;
 import ru.agentlab.maia.agent.event.AddedBeliefClassAssertionAxiomEvent;
 
 final class ActionStop extends Action {
@@ -16,19 +13,20 @@ final class ActionStop extends Action {
 
 	@Override
 	protected void compute() {
-		agent.setState(AgentState.STOPPING);
-		OWLClassAssertionAxiom axiom = agent.createAgentStoppingBelief(null);
-		Event<OWLClassAssertionAxiom> event = new AddedBeliefClassAssertionAxiomEvent(axiom);
-		agent.beliefBase.add(axiom);
-
-		handleEvent(event);
-
-		OWLClassAssertionAxiom axiom2 = agent.createAgentStoppedBelief(null);
-		agent.beliefBase.add(axiom2);
-
-		agent.eventQueue.clear();
-
-		agent.setState(AgentState.IDLE);
-		agent.unlock();
+		try {
+			agent.setState(AgentState.STOPPING);
+			handleEvent(
+				new AddedBeliefClassAssertionAxiomEvent(
+					agent.factory.getOWLClassAssertionAxiom(
+						agent.factory.getOWLClass(MaiaOntology.IRIs.AGENT_STOPPING_IRI),
+						agent.getSelfIndividual())));
+			agent.roleBase.deactivateAll();
+			agent.setState(AgentState.IDLE);
+			agent.eventQueue.clear();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			agent.unlock();
+		}
 	}
 }

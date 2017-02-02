@@ -74,8 +74,8 @@ public class OnBeliefXXXConverter implements IPlanEventFilterConverter {
 	public IPlanEventFilter<?> getMatcher(Object role, Method method, Annotation annotation,
 			Map<String, Object> customData) {
 		Annotation ann = annotation;
-		AxiomType type = Util.getMethodValue(ann, TYPE, AxiomType.class);
-		String[] args = Util.getMethodValue(ann, VALUE, String[].class);
+		AxiomType type = Util.getMethodActualValue(ann, TYPE, AxiomType.class);
+		String[] args = Util.getMethodActualValue(ann, VALUE, String[].class);
 		checkLength(args, type.getArity());
 		// int length = args.length;
 		try {

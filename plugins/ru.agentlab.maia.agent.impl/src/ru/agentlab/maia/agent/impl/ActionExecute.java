@@ -1,6 +1,7 @@
 package ru.agentlab.maia.agent.impl;
 
 import ru.agentlab.maia.agent.AgentState;
+import ru.agentlab.maia.agent.IEvent;
 
 final class ActionExecute extends Action {
 
@@ -12,15 +13,17 @@ final class ActionExecute extends Action {
 
 	@Override
 	protected void compute() {
-		Object event = agent.eventQueue.poll();
+		IEvent<?> event = agent.eventQueue.poll();
 		if (event == null) {
-			agent.setState(AgentState.WAITING);
+			if (agent.getState() == AgentState.ACTIVE) {
+				agent.setState(AgentState.WAITING);
+			}
 			return;
 		}
 
 		handleEvent(event);
 
-		if (agent.isActive()) {
+		if (agent.getState() == AgentState.ACTIVE) {
 			agent.executor.submit(new ActionExecute(agent));
 		} else {
 			agent.setState(AgentState.IDLE);

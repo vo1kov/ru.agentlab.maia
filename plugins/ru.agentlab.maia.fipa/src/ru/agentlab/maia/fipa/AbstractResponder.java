@@ -40,7 +40,7 @@ public class AbstractResponder {
 	protected IAgentFilter filter = new AllowAllAgentFilter();
 
 	protected void addGoal(Object event) {
-		goalBase.addGoal(event);
+		goalBase.add(event);
 	}
 
 	protected void addEvent(Object event) {

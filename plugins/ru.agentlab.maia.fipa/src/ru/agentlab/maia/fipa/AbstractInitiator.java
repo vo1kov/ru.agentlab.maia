@@ -81,7 +81,7 @@ public class AbstractInitiator {
 	private ScheduledFuture<?> future;
 
 	protected void addGoal(Object event) {
-		goalBase.addGoal(event);
+		goalBase.add(event);
 	}
 
 	protected void addEvent(Object event) {

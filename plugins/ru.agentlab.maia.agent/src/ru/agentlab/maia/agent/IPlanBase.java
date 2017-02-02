@@ -21,8 +21,6 @@ public interface IPlanBase {
 
 	Stream<IPlan<?>> getPlansStream();
 
-	Stream<Option> getOptions(Object event);
-
 	void addAll(Collection<IPlan<?>> plans);
 
 	void addAll(IPlan<?>[] plans);
@@ -35,8 +33,6 @@ public interface IPlanBase {
 
 	void removeAll(Stream<IPlan<?>> plans);
 
-	Collection<IPlan<?>> getStopPlans();
-
-	Collection<IPlan<?>> getStartPlans();
+	Stream<Option> getOptions(IEvent<?> event);
 
 }

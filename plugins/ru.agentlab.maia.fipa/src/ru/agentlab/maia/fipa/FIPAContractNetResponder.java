@@ -67,7 +67,7 @@ public class FIPAContractNetResponder extends AbstractResponder {
 			return;
 		case ACCEPT_PROPOSAL:
 			IGoal goal = proposals.get(message.getConversationId());
-			goalBase.addGoal(goal);
+			goalBase.add(goal);
 			return;
 		case REJECT_PROPOSAL:
 		case CANCEL:
@@ -83,7 +83,7 @@ public class FIPAContractNetResponder extends AbstractResponder {
 	@PreDestroy
 	public void onDestroy() {
 		initials.forEach((goal, message) -> {
-			goalBase.removeGoal(goal);
+			goalBase.remove(goal);
 			reply(message, FAILURE, "Destroying role.. Bye..");
 		});
 	}

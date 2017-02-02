@@ -43,8 +43,8 @@ public class InitialBeliefConverter {
 	PrefixManager prefixManager;
 
 	public OWLAxiom getAxiom(Annotation ann) {
-		AxiomType type = Util.getMethodValue(ann, "type", AxiomType.class);
-		String[] args = Util.getMethodValue(ann, "value", String[].class);
+		AxiomType type = Util.getMethodActualValue(ann, "type", AxiomType.class);
+		String[] args = Util.getMethodActualValue(ann, "value", String[].class);
 		checkNoVariables(args);
 		checkLength(args, type.getArity());
 		switch (type) {

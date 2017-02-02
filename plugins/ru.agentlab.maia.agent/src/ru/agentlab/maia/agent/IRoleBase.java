@@ -51,7 +51,15 @@ public interface IRoleBase {
 
 	boolean activate(IRole role);
 
+	default void activateAll() {
+		getRoles().stream().forEach(this::activate);
+	}
+
 	boolean deactivate(IRole role);
+
+	default void deactivateAll() {
+		getRoles().stream().forEach(this::deactivate);
+	}
 
 	boolean remove(IRole role);
 

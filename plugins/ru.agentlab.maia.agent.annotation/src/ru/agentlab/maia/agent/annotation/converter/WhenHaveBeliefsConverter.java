@@ -78,8 +78,8 @@ public class WhenHaveBeliefsConverter implements IPlanStateFilterConverter {
 	}
 
 	public QueryAtomType getQueryType(Annotation ann) throws ConverterException {
-		AxiomType type = Util.getMethodValue(ann, TYPE, AxiomType.class);
-		String[] args = Util.getMethodValue(ann, VALUE, String[].class);
+		AxiomType type = Util.getMethodActualValue(ann, TYPE, AxiomType.class);
+		String[] args = Util.getMethodActualValue(ann, VALUE, String[].class);
 		checkLength(args, type.getArity());
 		switch (type) {
 		case ANNOTATION_ASSERTION:

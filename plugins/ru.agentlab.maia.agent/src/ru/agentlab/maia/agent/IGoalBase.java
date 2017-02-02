@@ -8,40 +8,35 @@
  *******************************************************************************/
 package ru.agentlab.maia.agent;
 
-import org.semanticweb.owlapi.model.OWLAxiom;
+import java.util.Set;
+import java.util.stream.Stream;
+
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLIndividualAxiom;
+import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 
 public interface IGoalBase {
 
-	boolean addGoal(Object event);
+	public final static String MAIA_NS = "http://www.agentlab.ru/ontologies/maia#";
 
-	boolean addGoal(OWLAxiom axiom);
+	public final static IRI DESIRED_ANNOTATION_IRI = IRI.create(MAIA_NS + "Desired");
 
-	boolean removeGoal(Object event);
+	ChangeApplied add(OWLIndividualAxiom axiom);
 
-	boolean removeGoal(OWLAxiom axiom);
+	ChangeApplied addAll(OWLIndividualAxiom... axioms);
 
-	default void addGoals(OWLAxiom... axioms) {
-		for (OWLAxiom axiom : axioms) {
-			addGoal(axiom);
-		}
-	}
+	ChangeApplied addAll(Set<OWLIndividualAxiom> axioms);
 
-	default void addGoals(Iterable<OWLAxiom> axioms) {
-		for (OWLAxiom axiom : axioms) {
-			addGoal(axiom);
-		}
-	}
+	ChangeApplied addAll(Stream<OWLIndividualAxiom> axioms);
 
-	default void removeGoals(OWLAxiom... axioms) {
-		for (OWLAxiom axiom : axioms) {
-			removeGoal(axiom);
-		}
-	}
+	ChangeApplied remove(OWLIndividualAxiom event);
 
-	default void removeGoals(Iterable<OWLAxiom> axioms) {
-		for (OWLAxiom axiom : axioms) {
-			removeGoal(axiom);
-		}
-	}
+	ChangeApplied removeAll(OWLIndividualAxiom... axioms);
+
+	ChangeApplied removeAll(Set<OWLIndividualAxiom> axioms);
+
+	ChangeApplied removeAll(Stream<OWLIndividualAxiom> axioms);
+
+	ChangeApplied clean();
 
 }

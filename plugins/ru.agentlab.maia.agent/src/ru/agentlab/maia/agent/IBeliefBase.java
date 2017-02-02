@@ -9,49 +9,43 @@
 package ru.agentlab.maia.agent;
 
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-
-import de.derivo.sparqldlapi.QueryEngine;
+import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 
 public interface IBeliefBase {
 
-	void addBelief(OWLAxiom axiom);
+	ChangeApplied add(OWLAxiom axiom);
 
-	void removeBelief(OWLAxiom axiom);
+	ChangeApplied addAll(OWLAxiom... axioms);
 
-	boolean containsBelief(OWLAxiom axiom);
+	ChangeApplied addAll(Set<OWLAxiom> axioms);
 
-	default void addBeliefs(Set<OWLAxiom> axioms) {
-		for (OWLAxiom axiom : axioms) {
-			addBelief(axiom);
-		}
-	}
+	ChangeApplied addAll(Stream<OWLAxiom> axioms);
 
-	default void removeBeliefs(Set<OWLAxiom> axioms) {
-		for (OWLAxiom axiom : axioms) {
-			removeBelief(axiom);
-		}
-	}
+	ChangeApplied remove(OWLAxiom axiom);
 
-	default boolean containsBeliefs(Set<OWLAxiom> axioms) {
-		for (OWLAxiom axiom : axioms) {
-			if (!containsBelief(axiom)) {
-				return false;
-			}
-		}
-		return true;
-	}
+	ChangeApplied removeAll(OWLAxiom... axioms);
 
-	OWLOntology getOntology();
+	ChangeApplied removeAll(Set<OWLAxiom> axioms);
 
-	OWLDataFactory getFactory();
+	ChangeApplied removeAll(Stream<OWLAxiom> axioms);
 
-	OWLOntologyManager getManager();
+	ChangeApplied clean();
 
-	QueryEngine getQueryEngine();
+	boolean contains(OWLAxiom axiom);
+
+	boolean containsAll(OWLAxiom... axioms);
+
+	boolean containsAll(Set<OWLAxiom> axioms);
+
+	boolean containsAll(Stream<OWLAxiom> axioms);
+
+	boolean containsAny(OWLAxiom... axioms);
+
+	boolean containsAny(Set<OWLAxiom> axioms);
+
+	boolean containsAny(Stream<OWLAxiom> axioms);
 
 }

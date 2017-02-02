@@ -12,7 +12,7 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import ru.agentlab.maia.admin.bundles.internal.Activator;
 import ru.agentlab.maia.agent.IBeliefBase;
-import ru.agentlab.maia.agent.annotation.OnEvent;
+import ru.agentlab.maia.agent.annotation.trigger.AddedExternalEvent;
 
 public class BundleStateSensor {
 
@@ -27,7 +27,7 @@ public class BundleStateSensor {
 		Activator.context.addBundleListener(eventQueue::offer);
 	}
 
-	@OnEvent(BundleEvent.class)
+	@AddedExternalEvent(BundleEvent.class)
 	public void onBundleChanged(BundleEvent event) {
 		String object = "";
 		switch (event.getType()) {
@@ -56,7 +56,7 @@ public class BundleStateSensor {
 		OWLAxiom axiom = factory.getOWLObjectPropertyAssertionAxiom(
 				factory.getOWLObjectProperty(IRI.create("osgi", "hasState")),
 				factory.getOWLNamedIndividual(IRI.create(subject)), factory.getOWLNamedIndividual(IRI.create(object)));
-		beliefBase.addBelief(axiom);
+		beliefBase.add(axiom);
 
 	}
 

@@ -10,6 +10,8 @@ import ru.agentlab.maia.agent.annotation.InitialBelief;
 import ru.agentlab.maia.agent.annotation.InitialGoal;
 import ru.agentlab.maia.agent.annotation.OnBeliefAdded;
 import ru.agentlab.maia.agent.annotation.OnGoalAdded;
+import ru.agentlab.maia.agent.annotation.trigger.AddedBeliefDataPropertyAssertionAxiom;
+import ru.agentlab.maia.agent.annotation.trigger.AddedGoalClassAssertionAxiom;
 import ru.agentlab.maia.message.IMessageDeliveryService;
 import ru.agentlab.maia.message.impl.AclMessage;
 
@@ -25,12 +27,12 @@ public class HelloWorld {
 	IMessageDeliveryService messaging;
 
 	@PostConstruct
-	@OnBeliefAdded(value = { "?some", "hasLength", "value^^xsd:string" }, type = AxiomType.DATA_PROPERTY_ASSERTION)
+	@AddedBeliefDataPropertyAssertionAxiom({ "?some", "hasLength", "value^^xsd:string" })
 	public void setup(IGoalBase goalBase) {
 	}
 
-	@OnGoalAdded(value = { "init" }, type = AxiomType.CLASS_ASSERTION)
-	@OnBeliefAdded(value = { "?some", "hasLength", "2^^xsd:float" }, type = AxiomType.DATA_PROPERTY_ASSERTION)
+	@AddedGoalClassAssertionAxiom({ "init" })
+	@AddedBeliefDataPropertyAssertionAxiom({ "?some", "hasLength", "2^^xsd:float" })
 	public void onInit() {
 		IMessage message = new AclMessage();
 		message.setContent("Hello World");

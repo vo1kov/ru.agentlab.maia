@@ -59,11 +59,11 @@ public class Agent_AcceptanceTest {
 		}
 
 		System.out.println("START AGENTS");
-		for (Agent agent : agents) {
+		for (IAgent agent : agents) {
 			agent.start();
 		}
 		Thread.sleep(50_000);
-		for (Agent agent : agents) {
+		for (IAgent agent : agents) {
 			agent.stop();
 		}
 		for (Agent agent : agents) {
@@ -88,9 +88,9 @@ public class Agent_AcceptanceTest {
 			System.out.println(agent.getUuid());
 			PrefixManager prefixes = new DefaultPrefixManager();
 			OWLDataFactory factory = bb.getFactory();
-			bb.addBelief(factory.getOWLSubClassOfAxiom(factory.getOWLClass(prefixes.getIRI("rdf:Some")),
+			bb.add(factory.getOWLSubClassOfAxiom(factory.getOWLClass(prefixes.getIRI("rdf:Some")),
 					factory.getOWLClass(prefixes.getIRI("owl:Thing"))));
-			bb.addBelief(factory.getOWLClassAssertionAxiom(factory.getOWLClass(prefixes.getIRI("rdf:Some")),
+			bb.add(factory.getOWLClassAssertionAxiom(factory.getOWLClass(prefixes.getIRI("rdf:Some")),
 					factory.getOWLNamedIndividual(prefixes.getIRI("rdf:ind"))));
 		}
 

@@ -1,6 +1,6 @@
 package ru.agentlab.maia.agent.annotation.converter;
 
-public abstract class AnnotationFormatException extends Exception {
+public abstract class AnnotationFormatException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 

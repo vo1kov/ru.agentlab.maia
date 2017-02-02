@@ -11,19 +11,19 @@ import static ru.agentlab.maia.fipa.FIPAProtocolNames.FIPA_REQUEST;
 
 import javax.annotation.PreDestroy;
 
+import org.semanticweb.owlapi.model.OWLIndividualAxiom;
+
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import ru.agentlab.maia.agent.IGoal;
 import ru.agentlab.maia.agent.IMessage;
-import ru.agentlab.maia.agent.annotation.OnGoalFailed;
-import ru.agentlab.maia.agent.annotation.OnGoalSuccess;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
 import ru.agentlab.maia.message.impl.AclMessage;
 
 public class FIPARequestResponder extends AbstractResponder {
 
-	private final BiMap<IMessage, IGoal> goals = HashBiMap.create();
+	private final BiMap<IMessage, OWLIndividualAxiom> goals = HashBiMap.create();
 
 	@OnMessageReceived
 	public void onMessage(AclMessage message) {
@@ -43,8 +43,8 @@ public class FIPARequestResponder extends AbstractResponder {
 				return;
 			}
 			try {
-				IGoal goal = parser.parse(message.getContent());
-				goalBase.addGoal(goal);
+				OWLIndividualAxiom goal = parser.parse(message.getContent());
+				goalBase.add(goal);
 				goals.put(message, goal);
 				reply(message, AGREE);
 				return;
@@ -54,9 +54,9 @@ public class FIPARequestResponder extends AbstractResponder {
 			}
 		case NOT_UNDERSTOOD:
 		case CANCEL:
-			IGoal goal = goals.get(message);
+			OWLIndividualAxiom goal = goals.get(message);
 			if (goal != null) {
-				goalBase.removeGoal(goal);
+				goalBase.remove(goal);
 			}
 			return;
 		}
@@ -65,12 +65,11 @@ public class FIPARequestResponder extends AbstractResponder {
 	@PreDestroy
 	public void onDestroy() {
 		goals.forEach((message, goal) -> {
-			goalBase.removeGoal(goal);
+			goalBase.remove(goal);
 			reply(message, FAILURE, "Destroying role.. Bye..");
 		});
 	}
 
-	@OnGoalSuccess
 	public void onGoalSuccess(IGoal goal) {
 		IMessage request = goals.inverse().get(goal);
 		if (request != null) {
@@ -78,7 +77,6 @@ public class FIPARequestResponder extends AbstractResponder {
 		}
 	}
 
-	@OnGoalFailed
 	public void onGoalFailed(IGoal goal) {
 		IMessage request = goals.inverse().get(goal);
 		if (request != null) {

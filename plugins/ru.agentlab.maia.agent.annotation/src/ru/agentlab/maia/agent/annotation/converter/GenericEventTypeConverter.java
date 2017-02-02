@@ -4,7 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import ru.agentlab.maia.agent.annotation.OnEvent;
+import ru.agentlab.maia.agent.annotation.trigger.AddedExternalEvent;
 import ru.agentlab.maia.converter.IPlanEventTypeConverter;
 
 public class GenericEventTypeConverter implements IPlanEventTypeConverter {
@@ -18,7 +18,7 @@ public class GenericEventTypeConverter implements IPlanEventTypeConverter {
 	 */
 	@Override
 	public Class<?> getEventType(Object role, Method method, Annotation annotation, Map<String, Object> customData) {
-		OnEvent onEvent = (OnEvent) annotation;
+		AddedExternalEvent onEvent = (AddedExternalEvent) annotation;
 		return onEvent.value();
 	}
 }

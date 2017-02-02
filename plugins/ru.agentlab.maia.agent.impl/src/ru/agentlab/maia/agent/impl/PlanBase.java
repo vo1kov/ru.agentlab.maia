@@ -15,28 +15,19 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.stream.Stream;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+import ru.agentlab.maia.agent.IEvent;
 import ru.agentlab.maia.agent.IPlan;
 import ru.agentlab.maia.agent.IPlanBase;
 import ru.agentlab.maia.agent.Option;
-import ru.agentlab.maia.agent.event.AgentStartedEvent;
-import ru.agentlab.maia.agent.event.AgentStoppedEvent;
 
 public class PlanBase implements IPlanBase {
 
-	protected final Queue<Object> eventQueue;
-
 	protected final Multimap<Class<?>, IPlan<?>> plans = ArrayListMultimap.create();
-
-	public PlanBase(Queue<Object> eventQueue) {
-		checkNotNull(eventQueue);
-		this.eventQueue = eventQueue;
-	}
 
 	@Override
 	public void add(IPlan<?> plan) {
@@ -93,17 +84,7 @@ public class PlanBase implements IPlanBase {
 	}
 
 	@Override
-	public Collection<IPlan<?>> getStartPlans() {
-		return plans.get(AgentStartedEvent.class);
-	}
-
-	@Override
-	public Collection<IPlan<?>> getStopPlans() {
-		return plans.get(AgentStoppedEvent.class);
-	}
-
-	@Override
-	public Stream<Option> getOptions(Object event) {
+	public Stream<Option> getOptions(IEvent<?> event) {
 		assert event != null;
 		Class<?> eventType = event.getClass();
 		Collection<IPlan<?>> collection = plans.get(eventType);
@@ -111,7 +92,7 @@ public class PlanBase implements IPlanBase {
 		for (IPlan<?> plan : collection) {
 			Map<String, Object> variables = new HashMap<>();
 			variables.put(eventType.getName(), event);
-			if (plan.unify(event, variables)) {
+			if (plan.unify(event.getPayload(), variables)) {
 				result.add(new Option(plan, variables));
 			}
 		}

@@ -20,10 +20,10 @@ import ru.agentlab.maia.agent.IGoalBase;
 import ru.agentlab.maia.agent.annotation.AxiomType;
 import ru.agentlab.maia.agent.annotation.InitialBelief;
 import ru.agentlab.maia.agent.annotation.InitialGoal;
-import ru.agentlab.maia.agent.annotation.OnBeliefAdded;
 import ru.agentlab.maia.agent.annotation.OnRoleAdded;
 import ru.agentlab.maia.agent.annotation.Prefix;
-import ru.agentlab.maia.agent.annotation.WhenHaveBelief;
+import ru.agentlab.maia.agent.annotation.state.HaveBeliefClassAssertionAxiom;
+import ru.agentlab.maia.agent.annotation.trigger.AddedBeliefClassAssertionAxiom;
 import ru.agentlab.maia.container.IInjector;
 import ru.agentlab.maia.message.IMessageDeliveryService;
 import ru.agentlab.maia.message.annotation.OnMessageReceived;
@@ -58,14 +58,14 @@ public class Agent {
 	@Inject
 	IMessageDeliveryService messaging;
 
-	@OnBeliefAdded(value = { "?classified", "?classifier" }, type = AxiomType.CLASS_ASSERTION)
-	@WhenHaveBelief(value = { "?classifier", "?c" }, type = AxiomType.CLASS_ASSERTION)
+	@AddedBeliefClassAssertionAxiom
+	@HaveBeliefClassAssertionAxiom({ "?classifier", "?c" })
 	public void onSomeClassified() {
 
 	}
 
-	@OnBeliefAdded(value = { "?classified", "?classifier" }, type = AxiomType.CLASS_ASSERTION)
-	@WhenHaveBelief(value = { "?classifier", "owl:Thing" }, type = AxiomType.CLASS_ASSERTION)
+	@AddedBeliefClassAssertionAxiom({ "?classified", "?classifier" })
+	@HaveBeliefClassAssertionAxiom({ "?classifier", "owl:Thing" })
 	public void onSomeClassifiedw() {
 
 	}

@@ -1,5 +1,6 @@
 package ru.agentlab.maia.converter;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -11,13 +12,24 @@ public class Util {
 	private static final String SEPARATOR_LANGUAGE = "@";
 	private static final String SEPARATOR_DATATYPE = "^^";
 
-	public static <T> T getMethodValue(Object object, String methodName, Class<T> clazz) {
+	public static <T> T getMethodActualValue(Object object, String methodName, Class<T> clazz) {
 		try {
 			Method valueMethod = object.getClass().getMethod(methodName);
 			Object result = valueMethod.invoke(object);
 			return clazz.cast(result);
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static <T> T getMethodDefaultValue(Class<? extends Annotation> annotationClass, String methodName, Class<T> clazz) {
+		try {
+			Method method = annotationClass.getMethod(methodName,(Class[])null);
+			Object defaultValue = method.getDefaultValue();
+			return clazz.cast(defaultValue);
+		} catch (NoSuchMethodException | SecurityException | IllegalArgumentException e) {
 			e.printStackTrace();
 			return null;
 		}
