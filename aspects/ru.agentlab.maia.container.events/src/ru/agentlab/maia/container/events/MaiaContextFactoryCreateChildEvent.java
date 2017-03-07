@@ -3,8 +3,8 @@ package ru.agentlab.maia.container.events;
 import java.util.HashMap;
 import java.util.Map;
 
-import ru.agentlab.maia.container.IContainer;
-import ru.agentlab.maia.event.IMaiaEvent;
+import ru.agentlab.maia.IContainer;
+import ru.agentlab.maia.service.event.IMaiaEvent;
 
 public class MaiaContextFactoryCreateChildEvent implements IMaiaEvent {
 

@@ -17,21 +17,14 @@
    </license>
 
    <plugin
+         id="ru.agentlab.maia"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="ru.agentlab.maia.agent"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="ru.agentlab.maia.agent.annotation"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="ru.agentlab.maia.agent.impl"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -1,12 +1,12 @@
 package ru.agentlab.maia.admin.bundles;
 
-import static ru.agentlab.maia.fipa.FIPAPerformativeNames.AGREE;
-import static ru.agentlab.maia.fipa.FIPAPerformativeNames.CANCEL;
-import static ru.agentlab.maia.fipa.FIPAPerformativeNames.FAILURE;
-import static ru.agentlab.maia.fipa.FIPAPerformativeNames.INFORM;
-import static ru.agentlab.maia.fipa.FIPAPerformativeNames.REFUSE;
-import static ru.agentlab.maia.fipa.FIPAPerformativeNames.SUBSCRIBE;
-import static ru.agentlab.maia.fipa.FIPAProtocolNames.FIPA_SUBSCRIBE;
+import static ru.agentlab.maia.service.message.fipa.FIPAPerformativeNames.AGREE;
+import static ru.agentlab.maia.service.message.fipa.FIPAPerformativeNames.CANCEL;
+import static ru.agentlab.maia.service.message.fipa.FIPAPerformativeNames.FAILURE;
+import static ru.agentlab.maia.service.message.fipa.FIPAPerformativeNames.INFORM;
+import static ru.agentlab.maia.service.message.fipa.FIPAPerformativeNames.REFUSE;
+import static ru.agentlab.maia.service.message.fipa.FIPAPerformativeNames.SUBSCRIBE;
+import static ru.agentlab.maia.service.message.fipa.FIPAProtocolNames.FIPA_SUBSCRIBE;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,13 +18,13 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ru.agentlab.maia.agent.IMessage;
-import ru.agentlab.maia.belief.annotation.AxiomType;
-import ru.agentlab.maia.belief.annotation.OnBeliefAdded;
-import ru.agentlab.maia.belief.annotation.Prefix;
-import ru.agentlab.maia.belief.annotation.WhenHaveBelief;
-import ru.agentlab.maia.message.IMessageDeliveryService;
-import ru.agentlab.maia.message.annotation.OnMessageReceived;
-import ru.agentlab.maia.message.impl.AclMessage;
+import ru.agentlab.maia.agent.annotation.AxiomType;
+import ru.agentlab.maia.agent.annotation.OnBeliefAdded;
+import ru.agentlab.maia.agent.annotation.Prefix;
+import ru.agentlab.maia.agent.annotation.WhenHaveBelief;
+import ru.agentlab.maia.service.message.IMessageDeliveryService;
+import ru.agentlab.maia.service.message.annotation.OnMessageReceived;
+import ru.agentlab.maia.service.message.impl.AclMessage;
 
 @Prefix(name = "osgi", namespace = "http://www.agentlab.ru/ontologies/osgi")
 public class BundleSubscriptionResponder {

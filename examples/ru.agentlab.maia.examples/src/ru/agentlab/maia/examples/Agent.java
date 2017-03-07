@@ -11,22 +11,22 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
+import ru.agentlab.maia.IBeliefBase;
+import ru.agentlab.maia.IGoalBase;
+import ru.agentlab.maia.IInjector;
+import ru.agentlab.maia.agent.annotation.InitialBelief;
+import ru.agentlab.maia.agent.annotation.InitialGoal;
 import ru.agentlab.maia.agent.annotation.OnRoleAdded;
-import ru.agentlab.maia.belief.IBeliefBase;
-import ru.agentlab.maia.belief.annotation.AxiomType;
-import ru.agentlab.maia.belief.annotation.InitialBelief;
-import ru.agentlab.maia.belief.annotation.OnBeliefAdded;
-import ru.agentlab.maia.belief.annotation.Prefix;
-import ru.agentlab.maia.belief.annotation.WhenHaveBelief;
-import ru.agentlab.maia.container.IInjector;
-import ru.agentlab.maia.goal.IGoalBase;
-import ru.agentlab.maia.goal.annotation.InitialGoal;
-import ru.agentlab.maia.message.IMessageDeliveryService;
-import ru.agentlab.maia.message.annotation.OnMessageReceived;
+import ru.agentlab.maia.agent.annotation.Prefix;
+import ru.agentlab.maia.agent.annotation.state.HaveBeliefClassAssertionAxiom;
+import ru.agentlab.maia.agent.annotation.trigger.AddedBeliefClassAssertionAxiom;
+import ru.agentlab.maia.service.message.IMessageDeliveryService;
+import ru.agentlab.maia.service.message.annotation.OnMessageReceived;
 
 @Prefix(name = "rdf", namespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns")
 @InitialBelief(value = { "test", "SDfsdf" }, type = AxiomType.CLASS_ASSERTION)
@@ -58,14 +58,14 @@ public class Agent {
 	@Inject
 	IMessageDeliveryService messaging;
 
-	@OnBeliefAdded(value = { "?classified", "?classifier" }, type = AxiomType.CLASS_ASSERTION)
-	@WhenHaveBelief(value = { "?classifier", "?c" }, type = AxiomType.CLASS_ASSERTION)
+	@AddedBeliefClassAssertionAxiom
+	@HaveBeliefClassAssertionAxiom({ "?classifier", "?c" })
 	public void onSomeClassified() {
 
 	}
 
-	@OnBeliefAdded(value = { "?classified", "?classifier" }, type = AxiomType.CLASS_ASSERTION)
-	@WhenHaveBelief(value = { "?classifier", "owl:Thing" }, type = AxiomType.CLASS_ASSERTION)
+	@AddedBeliefClassAssertionAxiom({ "?classified", "?classifier" })
+	@HaveBeliefClassAssertionAxiom({ "?classifier", "owl:Thing" })
 	public void onSomeClassifiedw() {
 
 	}

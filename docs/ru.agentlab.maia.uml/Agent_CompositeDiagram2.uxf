@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2.0">
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>140</x>
+      <y>469</y>
+      <w>252</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+*Belief*
+*Base*
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>140</x>
+      <y>357</y>
+      <w>252</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+*Goal*
+*Base*
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>140</x>
+      <y>210</y>
+      <w>252</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+*Plan*
+*Base*
+layer=-1
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>112</x>
+      <y>56</y>
+      <w>434</w>
+      <h>497</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+*Agent*
+layer=-2
+bg=yellow
+fontsize=24</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>455</x>
+      <y>259</y>
+      <w>77</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+*Event*
+*Queue*
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>385</x>
+      <y>273</y>
+      <w>84</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+m1=&lt;&lt;emits&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>140</x>
+      <y>105</y>
+      <w>252</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+*Role*
+*Base*
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>385</x>
+      <y>119</y>
+      <w>126</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+m1=&lt;&lt;emits&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;160.0;10.0;160.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>385</x>
+      <y>294</y>
+      <w>119</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+m1=&lt;&lt;emits&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;170.0;150.0;170.0;150.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>385</x>
+      <y>294</y>
+      <w>140</w>
+      <h>217</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+m1=&lt;&lt;emits&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;280.0;180.0;280.0;180.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>154</x>
+      <y>147</y>
+      <w>70</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+Role
+layer=1
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>231</x>
+      <y>406</y>
+      <w>70</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+Goal
+layer=1
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>154</x>
+      <y>252</y>
+      <w>70</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+Plan
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>182</x>
+      <y>322</y>
+      <w>126</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+m1=&lt;&lt;create&gt;&gt;
+bg=yellow</panel_attributes>
+    <additional_attributes>120.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>175</x>
+      <y>175</y>
+      <w>56</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;create&gt;&gt;
+bg=yellow</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>231</x>
+      <y>147</y>
+      <w>70</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+Role
+layer=1
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>308</x>
+      <y>147</y>
+      <w>70</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+Role
+layer=1
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>231</x>
+      <y>252</y>
+      <w>70</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+Plan
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>308</x>
+      <y>252</y>
+      <w>70</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+Plan
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>308</x>
+      <y>294</y>
+      <w>70</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+Plan
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>231</x>
+      <y>294</y>
+      <w>70</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+Plan
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>154</x>
+      <y>294</y>
+      <w>70</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+Plan
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>189</x>
+      <y>175</y>
+      <w>84</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;create&gt;&gt;
+bg=yellow</panel_attributes>
+    <additional_attributes>10.0;10.0;90.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>343</x>
+      <y>175</y>
+      <w>56</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;create&gt;&gt;
+bg=yellow</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>259</x>
+      <y>175</y>
+      <w>91</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;create&gt;&gt;
+bg=yellow</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>259</x>
+      <y>175</y>
+      <w>84</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;create&gt;&gt;
+bg=yellow</panel_attributes>
+    <additional_attributes>10.0;10.0;90.0;110.0</additional_attributes>
+  </element>
+</diagram>

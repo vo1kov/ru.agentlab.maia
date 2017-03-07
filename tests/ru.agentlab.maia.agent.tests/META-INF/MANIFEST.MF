@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: ru.agentlab.maia.agent.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Fragment-Host: ru.agentlab.maia.agent
+Require-Bundle: org.junit;bundle-version="4.12.0",
+ org.mockito;bundle-version="1.9.5",
+ org.hamcrest;bundle-version="1.1.0",
+ ru.agentlab.maia.tests.util,
+ org.semanticweb.owlapi.apibinding

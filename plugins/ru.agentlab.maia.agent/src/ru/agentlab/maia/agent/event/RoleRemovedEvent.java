@@ -1,12 +1,13 @@
 package ru.agentlab.maia.agent.event;
 
-import ru.agentlab.maia.agent.Event;
-import ru.agentlab.maia.agent.IRole;
+import ru.agentlab.maia.Event;
+import ru.agentlab.maia.IRole;
 
 public class RoleRemovedEvent extends Event<IRole> {
 
-	public RoleRemovedEvent(IRole role) {
-		super(role);
+	public RoleRemovedEvent(IRole payload) {
+		super(payload);
+		// TODO Auto-generated constructor stub
 	}
 
 }

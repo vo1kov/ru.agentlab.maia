@@ -4,7 +4,7 @@ import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 
-import ru.agentlab.maia.event.IMaiaEvent;
+import ru.agentlab.maia.service.event.IMaiaEvent;
 
 public class MaiaContextInjectorInvokeEvent implements IMaiaEvent {
 

@@ -17,14 +17,14 @@
    </license>
 
    <plugin
-         id="ru.agentlab.maia.container"
+         id="ru.agentlab.maia"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="ru.agentlab.maia.container.impl"
+         id="ru.agentlab.maia.container"
          download-size="0"
          install-size="0"
          version="0.0.0"

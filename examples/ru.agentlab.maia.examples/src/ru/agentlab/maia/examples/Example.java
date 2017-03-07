@@ -3,15 +3,15 @@ package ru.agentlab.maia.examples;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import ru.agentlab.maia.agent.IPlan;
-import ru.agentlab.maia.agent.IPlanBase;
-import ru.agentlab.maia.agent.impl.Plan;
-import ru.agentlab.maia.belief.annotation.AxiomType;
-import ru.agentlab.maia.belief.annotation.OnBeliefAdded;
-import ru.agentlab.maia.belief.annotation.OnBeliefRemoved;
-import ru.agentlab.maia.belief.event.BeliefAddedEvent;
-import ru.agentlab.maia.goal.annotation.OnGoalAdded;
-import ru.agentlab.maia.goal.annotation.OnGoalFailed;
+import ru.agentlab.maia.IPlan;
+import ru.agentlab.maia.IPlanBase;
+import ru.agentlab.maia.agent.Plan;
+import ru.agentlab.maia.agent.annotation.trigger.AddedBeliefClassAssertionAxiom;
+import ru.agentlab.maia.agent.annotation.trigger.AddedGoalClassAssertionAxiom;
+import ru.agentlab.maia.agent.annotation.trigger.FailedGoalClassAssertionAxiom;
+import ru.agentlab.maia.agent.annotation.trigger.RemovedBeliefClassAssertionAxiom;
+import ru.agentlab.maia.agent.annotation.trigger.RemovedGoalClassAssertionAxiom;
+import ru.agentlab.maia.agent.event.BeliefAddedEvent;
 
 public class Example {
 
@@ -22,10 +22,11 @@ public class Example {
 	String service;
 
 	@PostConstruct
-	@OnBeliefAdded(value = { "foaf:Teenager", "foaf:Tomas" }, type = AxiomType.CLASS_ASSERTION)
-	@OnBeliefRemoved(value = { "foaf:Teenager", "foaf:Tomas" }, type = AxiomType.CLASS_ASSERTION)
-	@OnGoalAdded(value = { "foaf:Teenager", "foaf:Tomas" }, type = AxiomType.CLASS_ASSERTION)
-	@OnGoalFailed(value = { "foaf:Teenager", "foaf:Tomas" }, type = AxiomType.CLASS_ASSERTION)
+	@AddedBeliefClassAssertionAxiom({ "foaf:Teenager", "foaf:Tomas" })
+	@RemovedBeliefClassAssertionAxiom({ "foaf:Teenager", "foaf:Tomas" })
+	@AddedGoalClassAssertionAxiom({ "foaf:Teenager", "foaf:Tomas" })
+	@FailedGoalClassAssertionAxiom({ "foaf:Teenager", "foaf:Tomas" })
+	@RemovedGoalClassAssertionAxiom({ "foaf:Teenager", "foaf:Tomas" })
 	public void setup() {
 		IPlan<BeliefAddedEvent> plan = new Plan<>(BeliefAddedEvent.class, () -> {
 			System.out.println(service);
