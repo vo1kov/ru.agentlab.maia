@@ -45,7 +45,7 @@
           source="http:/www.eclipse.org/oomph/targlets/TargetDefinitionGenerator">
         <detail
             key="location">
-          <value>${ru.agentlab.maia.git.clone.location/releng/ru.agentlab.maia.target/ru.agentlab.maia.target.target}</value>
+          <value>${ru.agentlab.maia.git.clone.location/releng/ru.agentlab.maia.releng/ru.agentlab.maia.releng.target}</value>
         </detail>
         <detail
             key="includeAllPlatforms">
@@ -69,28 +69,75 @@
         </detail>
       </annotation>
       <requirement
+          name="com.google.gerrit.common"/>
+      <requirement
+          name="com.google.gson"/>
+      <requirement
+          name="com.google.inject"/>
+      <requirement
+          name="com.google.inject.assistedinject"/>
+      <requirement
+          name="com.google.inject.multibindings"/>
+      <requirement
           name="gov.nist.math.jama.gov.nist.math.jama"/>
+      <requirement
+          name="javax.annotation"/>
+      <requirement
+          name="javax.inject"/>
+      <requirement
+          name="net.sf.trove4j.feature.feature.group"/>
+      <requirement
+          name="org.apache.commons.io"/>
+      <requirement
+          name="org.apache.commons.lang3"/>
+      <requirement
+          name="org.apache.commons.logging"/>
       <requirement
           name="org.apache.commons.math"/>
       <requirement
           name="org.apache.commons.math3"/>
       <requirement
-          name="org.objenesis"/>
+          name="org.aspectj.feature.group"/>
+      <requirement
+          name="org.eclipse.ajdt.feature.group"/>
+      <requirement
+          name="org.eclipse.equinox.weaving.sdk.feature.group"/>
+      <requirement
+          name="org.eclipse.xtext.xbase.lib.feature.group"/>
       <requirement
           name="org.kohsuke.args4j"/>
       <requirement
+          name="org.objenesis"/>
+      <requirement
           name="org.sat4j.core"/>
+      <requirement
+          name="org.semanticweb.owlapi.feature.feature.group"/>
       <requirement
           name="*"/>
       <sourceLocator
-          rootFolder="${ru.agentlab.maia.git.clone.location}"
+          rootFolder="${ru.agentlab.maia.git.clone.location}/features"
+          locateNestedProjects="true"/>
+      <sourceLocator
+          rootFolder="${ru.agentlab.maia.git.clone.location}/plugins"
+          locateNestedProjects="true"/>
+      <sourceLocator
+          rootFolder="${ru.agentlab.maia.git.clone.location}/releng"
+          locateNestedProjects="true"/>
+      <sourceLocator
+          rootFolder="${ru.agentlab.maia.git.clone.location}/setups"
           locateNestedProjects="true"/>
       <repositoryList
           name="Neon">
         <repository
-            url="http://download.eclipse.org/tools/orbit/S-builds/S20161021172207/repository"/>
-        <repository
             url="http://agentlab.ru/pd/p2/eclipseorbit/"/>
+        <repository
+            url="http://agentlab.ru/p2/orbit/org.semanticweb.owlapi/updates/nightly/latest/"/>
+        <repository
+            url="http://download.eclipse.org/tools/ajdt/45/dev/update"/>
+        <repository
+            url="http://agentlab.ru/p2/orbit/net.sf.trove4j/drops/nightly/3.0.3.201602051202/"/>
+        <repository
+            url="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
       </repositoryList>
     </targlet>
   </setupTask>
@@ -139,7 +186,9 @@
     </workingSet>
     <description></description>
   </setupTask>
-  <stream name="develop"/>
+  <stream name="develop"
+      label=""/>
+  <stream name="master"/>
   <logicalProjectContainer
       xsi:type="setup:Project"
       href="index:/org.eclipse.setup#//@projectCatalogs[name='ru.agentlab']/@projects[name='osgi']"/>
