@@ -8,13 +8,26 @@
 	
 	<parent>
 		<groupId>ru.agentlab.maia</groupId>
-		<artifactId>ru.agentlab.maia.releng</artifactId>
+		<artifactId>ru.agentlab.maia.parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../releng/ru.agentlab.maia.releng/pom.xml</relativePath>
+		<relativePath>..</relativePath>
 	</parent>
 	
-	<build>
-		<plugins>
-		</plugins>
-	</build>
+	<modules>
+		<module>de.derivo.sparqldlapi</module>
+		<module>io.netty</module>
+
+		<module>ru.agentlab.maia</module>
+		<module>ru.agentlab.maia.agent</module>
+		<module>ru.agentlab.maia.container</module>
+
+		<module>ru.agentlab.maia.service.boot</module>
+		<module>ru.agentlab.maia.service.event</module>
+		<module>ru.agentlab.maia.service.event.osgi</module>
+		<module>ru.agentlab.maia.service.message</module>
+		<module>ru.agentlab.maia.service.message.fipa</module>
+		<module>ru.agentlab.maia.service.message.http</module>
+		<module>ru.agentlab.maia.service.time</module>
+	</modules>
+	
 </project>

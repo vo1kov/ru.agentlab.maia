@@ -8,13 +8,15 @@
 	
 	<parent>
 		<groupId>ru.agentlab.maia</groupId>
-		<artifactId>ru.agentlab.maia.releng</artifactId>
+		<artifactId>ru.agentlab.maia.parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../releng/ru.agentlab.maia.releng/pom.xml</relativePath>
+		<relativePath>..</relativePath>
 	</parent>
 	
-	<build>
-		<plugins>
-		</plugins>
-	</build>
+	<modules>
+		<module>ru.agentlab.maia.container.feature</module>
+		<module>ru.agentlab.maia.agent.feature</module>
+		<module>ru.agentlab.maia.service.message.feature</module>
+		<module>ru.agentlab.maia.service.time.feature</module>
+	</modules>
 </project>

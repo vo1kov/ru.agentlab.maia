@@ -5,6 +5,13 @@
 	<artifactId>de.derivo.sparqldlapi</artifactId>
 	<packaging>eclipse-plugin</packaging>
 
+	<parent>
+		<groupId>ru.agentlab.maia</groupId>
+		<artifactId>ru.agentlab.maia.plugins</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	
 	<dependencies>
 		<!-- http://mvnrepository.com/artifact/edu.stanford.protege/de-derivo-sparqldlapi -->
 		<dependency>
@@ -13,13 +20,6 @@
 			<version>2.0.0</version>
 		</dependency>
 	</dependencies>
-
-	<parent>
-		<groupId>ru.agentlab.maia</groupId>
-		<artifactId>ru.agentlab.maia.releng</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../../releng/ru.agentlab.maia.releng</relativePath>
-	</parent>
 
 	<build>
 		<plugins>

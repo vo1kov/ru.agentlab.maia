@@ -8,9 +8,9 @@
 
 	<parent>
 		<groupId>ru.agentlab.maia</groupId>
-		<artifactId>ru.agentlab.maia.releng</artifactId>
+		<artifactId>ru.agentlab.maia.plugins</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../../releng/ru.agentlab.maia.releng</relativePath>
+		<relativePath>..</relativePath>
 	</parent>
 
 	<dependencies>

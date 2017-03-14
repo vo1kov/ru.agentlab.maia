@@ -8,10 +8,16 @@
 	
 	<parent>
 		<groupId>ru.agentlab.maia</groupId>
-		<artifactId>ru.agentlab.maia.releng</artifactId>
+		<artifactId>ru.agentlab.maia.parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../releng/ru.agentlab.maia.releng/pom.xml</relativePath>
+		<relativePath>..</relativePath>
 	</parent>
+	
+	<modules>
+		<!-- <module>ru.agentlab.maia.container.aspect</module> -->
+		<!-- <module>ru.agentlab.maia.container.events</module> -->
+		<!-- <module>ru.agentlab.maia.container.logs</module> -->
+	</modules>
 	
 	<build>
 		<plugins>
